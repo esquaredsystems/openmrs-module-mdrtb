@@ -35,8 +35,8 @@ public class DstImpl extends TestImpl implements Dst {
 	// set up a dst object, given an existing obs
 	public DstImpl(Obs dst) {
 		
-		if (dst == null || !(dst.getConcept()
-		        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_CONSTRUCT)))) {
+		if (dst == null
+		        || !(dst.getConcept().equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_CONSTRUCT)))) {
 			throw new RuntimeException("Cannot initialize dst: invalid obs used for initialization.");
 		}
 		
@@ -67,9 +67,8 @@ public class DstImpl extends TestImpl implements Dst {
 	
 	public DstResult addResult() {
 		// create a new obs for the result, set to the proper values
-		Obs resultObs = new Obs(this.test.getPerson(),
-		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_RESULT), this.test.getObsDatetime(),
-		        this.test.getLocation());
+		Obs resultObs = new Obs(this.test.getPerson(), Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.DST_RESULT), this.test.getObsDatetime(), this.test.getLocation());
 		resultObs.setEncounter(this.test.getEncounter());
 		
 		// add the result to this obs group
@@ -95,8 +94,8 @@ public class DstImpl extends TestImpl implements Dst {
 	}
 	
 	public Boolean getDirect() {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIRECT_INDIRECT), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIRECT_INDIRECT), test);
 		
 		if (obs == null) {
 			return null;
@@ -117,8 +116,8 @@ public class DstImpl extends TestImpl implements Dst {
 	}
 	
 	public Concept getOrganismType() {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TYPE_OF_ORGANISM), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TYPE_OF_ORGANISM), test);
 		
 		if (obs == null) {
 			return null;
@@ -145,8 +144,9 @@ public class DstImpl extends TestImpl implements Dst {
 		if (test.getGroupMembers() != null) {
 			for (Obs obs : test.getGroupMembers()) {
 				// need to filter for voided obs, since get group members returns voided and non-voided
-				if (!obs.isVoided() && obs.getConcept()
-				        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_RESULT))) {
+				if (!obs.getVoided()
+				        && obs.getConcept().equals(
+				            Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_RESULT))) {
 					results.add(new DstResultImpl(obs));
 				}
 			}
@@ -216,9 +216,8 @@ public class DstImpl extends TestImpl implements Dst {
 		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COLONIES_IN_CONTROL),
-			        test.getObsDatetime(), test.getLocation());
+			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(
+			    MdrtbConcepts.COLONIES_IN_CONTROL), test.getObsDatetime(), test.getLocation());
 			obs.setEncounter(test.getEncounter());
 			test.addGroupMember(obs);
 		}
@@ -232,8 +231,8 @@ public class DstImpl extends TestImpl implements Dst {
 	}
 	
 	public void setDirect(Boolean direct) {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIRECT_INDIRECT), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIRECT_INDIRECT), test);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && direct == null) {
@@ -249,8 +248,9 @@ public class DstImpl extends TestImpl implements Dst {
 		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIRECT_INDIRECT),
-			        test.getObsDatetime(), test.getLocation());
+			obs = new Obs(test.getPerson(),
+			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIRECT_INDIRECT), test.getObsDatetime(),
+			        test.getLocation());
 			obs.setEncounter(test.getEncounter());
 			test.addGroupMember(obs);
 		}
@@ -288,8 +288,8 @@ public class DstImpl extends TestImpl implements Dst {
 	}
 	
 	public void setOrganismType(Concept organismType) {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TYPE_OF_ORGANISM), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TYPE_OF_ORGANISM), test);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && organismType == null) {
@@ -305,9 +305,8 @@ public class DstImpl extends TestImpl implements Dst {
 		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TYPE_OF_ORGANISM), test.getObsDatetime(),
-			        test.getLocation());
+			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class)
+			        .getConcept(MdrtbConcepts.TYPE_OF_ORGANISM), test.getObsDatetime(), test.getLocation());
 			obs.setEncounter(test.getEncounter());
 			test.addGroupMember(obs);
 		}
@@ -334,9 +333,8 @@ public class DstImpl extends TestImpl implements Dst {
 		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED),
-			        test.getObsDatetime(), test.getLocation());
+			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(
+			    MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED), test.getObsDatetime(), test.getLocation());
 			obs.setEncounter(test.getEncounter());
 			test.addGroupMember(obs);
 		}

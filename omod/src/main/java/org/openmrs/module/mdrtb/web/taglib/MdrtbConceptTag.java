@@ -23,6 +23,7 @@ import org.openmrs.ConceptMap;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNameTag;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 
 public class MdrtbConceptTag extends BodyTagSupport {
 	
@@ -51,8 +52,9 @@ public class MdrtbConceptTag extends BodyTagSupport {
 		
 		if (mappingVar != null) {
 			for (ConceptMap m : concept.getConceptMappings()) {
-				if (m.getSource().getName().equals("org.openmrs.module.mdrtb")) {
-					pageContext.setAttribute(mappingVar, m.getSourceCode());
+				if (m.getConceptReferenceTerm().getConceptSource().getName()
+				        .equals(MdrtbConstants.MDRTB_CONCEPT_MAPPING_CODE)) {
+					pageContext.setAttribute(mappingVar, m.getConceptReferenceTerm().getConceptSource());
 				}
 			}
 		}

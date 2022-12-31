@@ -47,7 +47,6 @@ public class SpecimenQuickEntryController extends AbstractSpecimenController {
 		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPUTUM);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showQuickEntry(@RequestParam(required = true, value = "patientId") Integer patientId, ModelMap map) {
 		map.put("patientId", patientId);
@@ -84,8 +83,8 @@ public class SpecimenQuickEntryController extends AbstractSpecimenController {
 				String inhResult = request.getParameter("inhResult" + i);
 				
 				// create the new specimen
-				Specimen specimen = Context.getService(MdrtbService.class)
-				        .createSpecimen(Context.getPatientService().getPatient(patientId));
+				Specimen specimen = Context.getService(MdrtbService.class).createSpecimen(
+				    Context.getPatientService().getPatient(patientId));
 				
 				// add the specimen-specific parameters
 				specimen.setLocation(location);

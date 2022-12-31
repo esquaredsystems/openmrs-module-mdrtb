@@ -69,21 +69,23 @@ public class WHOForm05 implements ReportSpecification {
 	 */
 	public List<RenderingMode> getRenderingModes() {
 		List<RenderingMode> l = new ArrayList<RenderingMode>();
-		l.add(ReportUtil.renderingModeFromResource("HTML", "org/openmrs/module/mdrtb/reporting/data/output/WHOForm05" + 
-			(StringUtils.isNotBlank(Context.getLocale().getLanguage()) ? "_" + Context.getLocale().getLanguage() : "") + ".html"));
+		l.add(ReportUtil.renderingModeFromResource("HTML", "org/openmrs/module/mdrtb/reporting/data/output/WHOForm05"
+		        + (StringUtils.isNotBlank(Context.getLocale().getLanguage()) ? "_" + Context.getLocale().getLanguage() : "")
+		        + ".html"));
 		return l;
 	}
-
+	
 	/**
 	 * @see ReportSpecification#validateAndCreateContext(Map)
 	 */
 	public EvaluationContext validateAndCreateContext(Map<String, Object> parameters) {
 		
 		EvaluationContext context = ReportUtil.constructContext(parameters);
-		Integer year = (Integer)parameters.get("year");
-		Integer quarter = (Integer)parameters.get("quarter");
+		Integer year = (Integer) parameters.get("year");
+		Integer quarter = (Integer) parameters.get("quarter");
 		if (quarter == null) {
-			throw new IllegalArgumentException(Context.getMessageSourceService().getMessage("mdrtb.error.pleaseEnterAQuarter"));
+			throw new IllegalArgumentException(Context.getMessageSourceService().getMessage(
+			    "mdrtb.error.pleaseEnterAQuarter"));
 		}
 		context.getParameterValues().putAll(ReportUtil.getPeriodDates(year, quarter, null));
 		return context;
@@ -92,20 +94,20 @@ public class WHOForm05 implements ReportSpecification {
 	/**
 	 * ReportSpecification#evaluateReport(EvaluationContext)
 	 */
-    public ReportData evaluateReport(EvaluationContext context) {
+	public ReportData evaluateReport(EvaluationContext context) {
 		
 		ReportDefinition report = new ReportDefinition();
 		
 		Location location = (Location) context.getParameterValue("location");
-		Date startDate = (Date)context.getParameterValue("startDate");
-		Date endDate = (Date)context.getParameterValue("endDate");
+		Date startDate = (Date) context.getParameterValue("startDate");
+		Date endDate = (Date) context.getParameterValue("endDate");
 		
 		// Set base cohort to patients assigned to passed location, if applicable
 		CohortDefinition locationFilter = Cohorts.getLocationFilter(location, startDate, endDate);
 		if (locationFilter != null) {
 			report.setBaseCohortDefinition(locationFilter, null);
 		}
-
+		
 		// Add the data set definitions
 		CohortCrossTabDataSetDefinition labResultDsd = new CohortCrossTabDataSetDefinition();
 		CohortDefinition polydr = Cohorts.getPolydrDetectionFilter(startDate, endDate);
@@ -121,8 +123,10 @@ public class WHOForm05 implements ReportSpecification {
 		report.addDataSetDefinition("labDetections", labResultDsd, null);
 		
 		CohortCrossTabDataSetDefinition treatmentDsd = new CohortCrossTabDataSetDefinition();
-		treatmentDsd.addRow("confirmed", Cohorts.getConfirmedMdrInProgramAndStartedTreatmentFilter(startDate, endDate), null);
-		treatmentDsd.addRow("suspected", Cohorts.getSuspectedMdrInProgramAndStartedTreatmentFilter(startDate, endDate), null);
+		treatmentDsd
+		        .addRow("confirmed", Cohorts.getConfirmedMdrInProgramAndStartedTreatmentFilter(startDate, endDate), null);
+		treatmentDsd
+		        .addRow("suspected", Cohorts.getSuspectedMdrInProgramAndStartedTreatmentFilter(startDate, endDate), null);
 		
 		Map<String, CohortDefinition> columns = ReportUtil.getMdrtbPreviousDrugUseFilterSet(startDate, endDate);
 		for (String key : columns.keySet()) {
@@ -132,12 +136,12 @@ public class WHOForm05 implements ReportSpecification {
 		report.addDataSetDefinition("startedTreatment", treatmentDsd, null);
 		
 		ReportData data;
-        try {
-	        data = Context.getService(ReportDefinitionService.class).evaluate(report, context);
-        }
-        catch (EvaluationException e) {
-        	throw new MdrtbAPIException("Unable to evaluate WHO Form 5 report", e);
-        }
+		try {
+			data = Context.getService(ReportDefinitionService.class).evaluate(report, context);
+		}
+		catch (EvaluationException e) {
+			throw new MdrtbAPIException("Unable to evaluate WHO Form 5 report", e);
+		}
 		return data;
 	}
 }

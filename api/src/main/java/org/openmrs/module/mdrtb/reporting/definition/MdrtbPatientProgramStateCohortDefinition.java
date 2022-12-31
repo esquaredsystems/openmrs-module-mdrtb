@@ -11,21 +11,23 @@ import org.openmrs.module.reporting.definition.configuration.ConfigurationProper
 
 @Localized("mdrtb.reporting.MdrtbPatientProgramStateCohortDefinition")
 public class MdrtbPatientProgramStateCohortDefinition extends BaseCohortDefinition {
-
-	@ConfigurationProperty(group="workflow")
+	
+	private static final long serialVersionUID = 1L;
+	
+	@ConfigurationProperty(group = "workflow")
 	private List<Concept> stateConcepts = new ArrayList<Concept>();
-
-	@ConfigurationProperty(group="workflow")
+	
+	@ConfigurationProperty(group = "workflow")
 	private Concept workflowConcept;
 	
-	@ConfigurationProperty(group="startDateGroup")
+	@ConfigurationProperty(group = "startDateGroup")
 	private Date startDate;
 	
-	@ConfigurationProperty(group="startDateGroup")
+	@ConfigurationProperty(group = "startDateGroup")
 	private Date endDate;
 	
 	//***** CONSTRUCTORS *****
-
+	
 	/**
 	 * Default Constructor
 	 */
@@ -43,28 +45,28 @@ public class MdrtbPatientProgramStateCohortDefinition extends BaseCohortDefiniti
 	}
 	
 	//***** PROPERTY ACCESS *****
-
+	
 	/**
 	 * @return the fromDate
 	 */
 	public Date getStartDate() {
 		return startDate;
 	}
-
+	
 	/**
 	 * @param fromDate the fromDate to set
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-
+	
 	/**
 	 * @return the toDate
 	 */
 	public Date getEndDate() {
 		return endDate;
 	}
-
+	
 	/**
 	 * @param toDate the toDate to set
 	 */
@@ -72,24 +74,22 @@ public class MdrtbPatientProgramStateCohortDefinition extends BaseCohortDefiniti
 		this.endDate = endDate;
 	}
 	
-	
-
 	public void setStateConcepts(List<Concept> stateConcepts) {
-	    this.stateConcepts = stateConcepts;
-    }
-
+		this.stateConcepts = stateConcepts;
+	}
+	
 	public List<Concept> getStateConcepts() {
-	    return stateConcepts;
-    }
-
+		return stateConcepts;
+	}
+	
 	public void setWorkflowConcept(Concept workflowConcept) {
-	    this.workflowConcept = workflowConcept;
-    }
-
+		this.workflowConcept = workflowConcept;
+	}
+	
 	public Concept getWorkflowConcept() {
-	    return workflowConcept;
-    }
-
+		return workflowConcept;
+	}
+	
 	public void addStateConcept(Concept stateConcept) {
 		this.stateConcepts.add(stateConcept);
 	}

@@ -28,19 +28,17 @@ import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbUtil;
+import org.openmrs.module.mdrtb.PatientValidator;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.form.custom.Form89;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
-import org.openmrs.module.mdrtb.program.MdrtbPatientProgramValidator;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
-import org.openmrs.module.mdrtb.program.TbPatientProgramValidator;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.mdrtb.status.VisitStatus;
 import org.openmrs.module.mdrtb.status.VisitStatusCalculator;
-import org.openmrs.module.mdrtb.validator.PatientValidator;
 import org.openmrs.module.mdrtb.web.controller.status.DashboardVisitStatusRenderer;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.openmrs.propertyeditor.ProgramWorkflowStateEditor;
@@ -215,9 +213,8 @@ public class ProgramController {
 		List<MdrtbPatientProgram> mdrtbPrograms = Context.getService(MdrtbService.class).getMdrtbPatientPrograms(patient);
 		List<TbPatientProgram> tbPrograms = Context.getService(MdrtbService.class).getTbPatientPrograms(patient);
 		
-		map.put("hasPrograms",
-		    ((mdrtbPrograms != null && mdrtbPrograms.size() != 0) || (tbPrograms != null && tbPrograms.size() != 0)) ? true
-		            : false);
+		map.put("hasPrograms", ((mdrtbPrograms != null && mdrtbPrograms.size() != 0) || (tbPrograms != null && tbPrograms
+		        .size() != 0)) ? true : false);
 		System.out.println("Prog:" + map.get("hasPrograms"));
 		
 		map.put("mdrtbPrograms", mdrtbPrograms);
@@ -244,12 +241,12 @@ public class ProgramController {
 		
 		// perform validation (validation needs to happen after patient is set since patient is used to pull up patient's previous programs)
 		if (program != null) {
-			new MdrtbPatientProgramValidator().validate(program, errors);
+			program.validate(program, errors);
 		}
 		
 		if (errors.hasErrors()) {
-			MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class)
-			        .getMostRecentMdrtbPatientProgram(patient);
+			MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class).getMostRecentMdrtbPatientProgram(
+			    patient);
 			map.put("hasActiveProgram", mostRecentProgram != null && mostRecentProgram.getActive() ? true : false);
 			map.put("patientId", patientId);
 			map.put("errors", errors);
@@ -359,8 +356,8 @@ public class ProgramController {
 				if (locDist != null) {
 					// Add this district only
 					map.addAttribute("districts", Arrays.asList(locDist));
-					List<Facility> facilityList = Context.getService(MdrtbService.class)
-					        .getFacilitiesByParent(locDist.getId());
+					List<Facility> facilityList = Context.getService(MdrtbService.class).getFacilitiesByParent(
+					    locDist.getId());
 					if (facilityList.size() == 0) { // Maybe it's Dushanbe
 						facilityList = Context.getService(MdrtbService.class).getFacilitiesByParent(locOb.getId());
 					}
@@ -381,8 +378,7 @@ public class ProgramController {
 					
 				} else {
 					// Otherwise add all districts
-					map.addAttribute("districts",
-					    Context.getService(MdrtbService.class).getDistrictsByParent(locOb.getId()));
+					map.addAttribute("districts", Context.getService(MdrtbService.class).getDistrictsByParent(locOb.getId()));
 				}
 			} else {
 				// Otherwise add all regions
@@ -459,12 +455,12 @@ public class ProgramController {
 		
 		// perform validation (validation needs to happen after patient is set since patient is used to pull up patient's previous programs)
 		if (program != null) {
-			new TbPatientProgramValidator().validate(program, errors);
+			program.validate(program, errors);
 		}
 		
 		if (errors.hasErrors()) {
-			TbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class)
-			        .getMostRecentTbPatientProgram(patient);
+			TbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class).getMostRecentTbPatientProgram(
+			    patient);
 			map.put("hasActiveProgram", mostRecentProgram != null && mostRecentProgram.getActive() ? true : false);
 			map.put("patientId", patientId);
 			map.put("errors", errors);
@@ -490,8 +486,8 @@ public class ProgramController {
 		
 		return new ModelAndView("redirect:" + visitStatus.getNewIntakeVisit().getLink() + "&returnUrl=" + request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form%3FpatientProgramId=" + program.getId());*/
 		
-		return new ModelAndView(
-		        "redirect:/module/mdrtb/form/tb03.form?patientProgramId=" + program.getId() + "&encounterId=-1");
+		return new ModelAndView("redirect:/module/mdrtb/form/tb03.form?patientProgramId=" + program.getId()
+		        + "&encounterId=-1");
 	}
 	
 	@RequestMapping(value = "/module/mdrtb/program/otherEnrollment.form", method = RequestMethod.GET)
@@ -575,8 +571,8 @@ public class ProgramController {
 	}
 	
 	@RequestMapping(value = "/module/mdrtb/program/otherEnrollmentMdrtb.form", method = RequestMethod.POST)
-	public ModelAndView processOtherEnrollMdrtb(@ModelAttribute("program") MdrtbPatientProgram program, BindingResult errors,
-	        @RequestParam(required = true, value = "patientId") Integer patientId,
+	public ModelAndView processOtherEnrollMdrtb(@ModelAttribute("program") MdrtbPatientProgram program,
+	        BindingResult errors, @RequestParam(required = true, value = "patientId") Integer patientId,
 	        @RequestParam(required = true, value = "oblast") String oblastId,
 	        @RequestParam(required = true, value = "district") String districtId,
 	        @RequestParam(required = false, value = "facility") String facilityId,
@@ -589,8 +585,8 @@ public class ProgramController {
 		}
 		
 		Location location = null;
-		System.out.println(
-		    "PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId + "\nID: " + identifierValue);
+		System.out.println("PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId + "\nID: "
+		        + identifierValue);
 		
 		if (facilityId != null && facilityId.length() != 0)
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
@@ -609,8 +605,8 @@ public class ProgramController {
 		
 		if (errors.hasErrors()) {
 			System.out.println("errors");
-			MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class)
-			        .getMostRecentMdrtbPatientProgram(patient);
+			MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class).getMostRecentMdrtbPatientProgram(
+			    patient);
 			map.put("hasActiveProgram", mostRecentProgram != null && mostRecentProgram.getActive() ? true : false);
 			map.put("patientId", patientId);
 			map.put("errors", errors);
@@ -655,12 +651,12 @@ public class ProgramController {
 		
 		// perform validation (validation needs to happen after patient is set since patient is used to pull up patient's previous programs)
 		if (program != null) {
-			new MdrtbPatientProgramValidator().validate(program, errors);
+			program.validate(program, errors);
 		}
 		
 		if (errors.hasErrors()) {
-			MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class)
-			        .getMostRecentMdrtbPatientProgram(patient);
+			MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class).getMostRecentMdrtbPatientProgram(
+			    patient);
 			map.put("hasActiveProgram", mostRecentProgram != null && mostRecentProgram.getActive() ? true : false);
 			map.put("patientId", patientId);
 			map.put("errors", errors);
@@ -704,8 +700,8 @@ public class ProgramController {
 		
 		return new ModelAndView("redirect:" + visitStatus.getNewIntakeVisit().getLink() + "&returnUrl=" + request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form%3FpatientProgramId=" + program.getId());*/
 		
-		return new ModelAndView(
-		        "redirect:/module/mdrtb/form/tb03u.form?patientProgramId=" + program.getId() + "&encounterId=-1");
+		return new ModelAndView("redirect:/module/mdrtb/form/tb03u.form?patientProgramId=" + program.getId()
+		        + "&encounterId=-1");
 	}
 	
 	@RequestMapping(value = "/module/mdrtb/program/otherEnrollmentTb.form", method = RequestMethod.POST)
@@ -760,12 +756,12 @@ public class ProgramController {
 		
 		// perform validation (validation needs to happen after patient is set since patient is used to pull up patient's previous programs)
 		if (program != null) {
-			new TbPatientProgramValidator().validate(program, errors);
+			program.validate(program, errors);
 		}
 		
 		if (errors.hasErrors()) {
-			TbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class)
-			        .getMostRecentTbPatientProgram(patient);
+			TbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class).getMostRecentTbPatientProgram(
+			    patient);
 			map.put("hasActiveProgram", mostRecentProgram != null && mostRecentProgram.getActive() ? true : false);
 			map.put("patientId", patientId);
 			map.put("errors", errors);
@@ -773,8 +769,7 @@ public class ProgramController {
 			map.put("oblasts", Context.getService(MdrtbService.class).getRegions());
 			if (oblastId != null) {
 				map.put("oblastSelected", oblastId);
-				map.put("districts",
-				    Context.getService(MdrtbService.class).getDistrictsByParent(Integer.parseInt(oblastId)));
+				map.put("districts", Context.getService(MdrtbService.class).getDistrictsByParent(Integer.parseInt(oblastId)));
 			}
 			
 			if (districtId != null) {
@@ -810,8 +805,8 @@ public class ProgramController {
 		
 		return new ModelAndView("redirect:" + visitStatus.getNewIntakeVisit().getLink() + "&returnUrl=" + request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form%3FpatientProgramId=" + program.getId());*/
 		
-		return new ModelAndView(
-		        "redirect:/module/mdrtb/form/tb03.form?patientProgramId=" + program.getId() + "&encounterId=-1");
+		return new ModelAndView("redirect:/module/mdrtb/form/tb03.form?patientProgramId=" + program.getId()
+		        + "&encounterId=-1");
 	}
 	
 	public List<PatientIdentifier> getUnassignedDotsIdentifiers(Patient p) {
@@ -853,14 +848,13 @@ public class ProgramController {
 		return ids;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public Boolean isIdentifierAssigned(PatientIdentifier pi, boolean mdr) {
-		Collection<org.openmrs.PatientProgram> ppList = Context.getProgramWorkflowService()
-		        .getPatientPrograms(pi.getPatient());
+		Collection<org.openmrs.PatientProgram> ppList = Context.getProgramWorkflowService().getPatientPrograms(
+		    pi.getPatient(), null, null, null, null, null, false);
 		PatientIdentifier temp = null;
 		for (org.openmrs.PatientProgram pp : ppList) {
-			temp = Context.getService(MdrtbService.class)
-			        .getGenPatientProgramIdentifier(Context.getProgramWorkflowService().getPatientProgram(pp.getId()));
+			temp = Context.getService(MdrtbService.class).getGenPatientProgramIdentifier(
+			    Context.getProgramWorkflowService().getPatientProgram(pp.getId()));
 			if (temp != null && temp.getId().intValue() == pi.getId().intValue())
 				return true;
 		}
@@ -872,14 +866,15 @@ public class ProgramController {
 	public ModelAndView addIdToProgram(@RequestParam(required = true, value = "ppid") Integer patientProgramId,
 	        @RequestParam(required = true, value = "idToAdd") Integer patientIdentifierId, ModelMap map) {
 		Context.getService(MdrtbService.class).addIdentifierToProgram(patientIdentifierId, patientProgramId);
-		return new ModelAndView(
-		        "redirect:/module/mdrtb/program/enrollment.form?patientProgramId=" + patientProgramId + "&patientId="
-		                + Context.getProgramWorkflowService().getPatientProgram(patientProgramId).getPatient().getId());
+		return new ModelAndView("redirect:/module/mdrtb/program/enrollment.form?patientProgramId=" + patientProgramId
+		        + "&patientId="
+		        + Context.getProgramWorkflowService().getPatientProgram(patientProgramId).getPatient().getId());
 	}
 	
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/module/mdrtb/program/editProgramTb.form", method = RequestMethod.POST)
-	public ModelAndView processEditProgramTb(@ModelAttribute("program") TbPatientProgram program, BindingResult errors,
+	public ModelAndView processEditProgramTb(
+	        @ModelAttribute("program") TbPatientProgram program,
+	        BindingResult errors,
 	        @RequestParam(required = true, value = "programId") Integer programId,
 	        @RequestParam(required = true, value = "dateEnrolled") Date enrollmentDate,
 	        @RequestParam(required = true, value = "classificationAccordingToPatientGroups") Integer classificationAccordingToPatientGroups,
@@ -891,10 +886,14 @@ public class ProgramController {
 		TbPatientProgram tpp = ms.getTbPatientProgram(programId);
 		
 		tpp.setDateEnrolled(enrollmentDate);
-		tpp.setClassificationAccordingToPatientGroups(
-		    Context.getProgramWorkflowService().getState(classificationAccordingToPatientGroups));
-		tpp.setClassificationAccordingToPreviousDrugUse(
-		    Context.getProgramWorkflowService().getState(classificationAccordingToPreviousDrugUse));
+		//TODO: Write unit test to see if the right workflow state is returned
+		ProgramWorkflowState programWorkflowStateAccordingToPatientGroups = Context.getService(MdrtbService.class)
+		        .getProgramWorkflowState(Context.getConceptService().getConcept(classificationAccordingToPatientGroups));
+		tpp.setClassificationAccordingToPatientGroups(programWorkflowStateAccordingToPatientGroups);
+		
+		ProgramWorkflowState programWorkflowStateAccordingToPreviousDrugUse = Context.getService(MdrtbService.class)
+		        .getProgramWorkflowState(Context.getConceptService().getConcept(classificationAccordingToPreviousDrugUse));
+		tpp.setClassificationAccordingToPreviousDrugUse(programWorkflowStateAccordingToPreviousDrugUse);
 		if (tpp != null) {
 			// save the actual update
 			Context.getProgramWorkflowService().savePatientProgram(tpp.getPatientProgram());
@@ -942,9 +941,10 @@ public class ProgramController {
 		
 	}
 	
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/module/mdrtb/program/editProgramMdrtb.form", method = RequestMethod.POST)
-	public ModelAndView processEditProgramMdrtb(@ModelAttribute("program") TbPatientProgram program, BindingResult errors,
+	public ModelAndView processEditProgramMdrtb(
+	        @ModelAttribute("program") TbPatientProgram program,
+	        BindingResult errors,
 	        @RequestParam(required = true, value = "programId") Integer programId,
 	        @RequestParam(required = true, value = "dateEnrolled") Date enrollmentDate,
 	        @RequestParam(required = true, value = "classificationAccordingToPreviousTreatment") Integer classificationAccordingToPreviousTreatment,
@@ -956,10 +956,15 @@ public class ProgramController {
 		MdrtbPatientProgram tpp = ms.getMdrtbPatientProgram(programId);
 		
 		tpp.setDateEnrolled(enrollmentDate);
-		tpp.setClassificationAccordingToPreviousTreatment(
-		    Context.getProgramWorkflowService().getState(classificationAccordingToPreviousTreatment));
-		tpp.setClassificationAccordingToPreviousDrugUse(
-		    Context.getProgramWorkflowService().getState(classificationAccordingToPreviousDrugUse));
+		
+		//TODO: Write unit test to see if the right workflow state is returned
+		ProgramWorkflowState stateAccordingToPreviousTreatment = Context.getService(MdrtbService.class)
+		        .getProgramWorkflowState(Context.getConceptService().getConcept(classificationAccordingToPreviousTreatment));
+		tpp.setClassificationAccordingToPreviousTreatment(stateAccordingToPreviousTreatment);
+		
+		ProgramWorkflowState stateAccordingToDrugUse = Context.getService(MdrtbService.class).getProgramWorkflowState(
+		    Context.getConceptService().getConcept(classificationAccordingToPreviousDrugUse));
+		tpp.setClassificationAccordingToPreviousTreatment(stateAccordingToDrugUse);
 		
 		if (tpp != null) {
 			// save the actual update

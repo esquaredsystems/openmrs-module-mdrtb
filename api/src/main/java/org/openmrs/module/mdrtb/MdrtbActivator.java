@@ -16,17 +16,16 @@ package org.openmrs.module.mdrtb;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.GlobalProperty;
-import org.openmrs.PatientIdentifierType;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
-import org.openmrs.layout.web.address.AddressSupport;
-import org.openmrs.layout.web.address.AddressTemplate;
+import org.openmrs.layout.address.AddressSupport;
+import org.openmrs.layout.address.AddressTemplate;
 import org.openmrs.module.BaseModuleActivator;
 import org.openmrs.module.ModuleActivator;
 
@@ -96,17 +95,23 @@ public class MdrtbActivator extends BaseModuleActivator implements ModuleActivat
 	 * Configures any global properties that need to be configured
 	 */
 	private void configureGlobalProperties() {
-		// configure the primary patient identifier type if needed
-		if (StringUtils
-		        .isBlank(Context.getAdministrationService().getGlobalProperty("mdrtb.primaryPatientIdentifierType"))) {
-			List<PatientIdentifierType> types = Context.getPatientService().getAllPatientIdentifierTypes();
-			// just pick the first identifier to use as the primary
-			if (types.size() > 0) {
-				GlobalProperty primaryIdType = Context.getAdministrationService()
-				        .getGlobalPropertyObject("mdrtb.primaryPatientIdentifierType");
-				primaryIdType.setPropertyValue(types.get(0).getName());
-				Context.getAdministrationService().saveGlobalProperty(primaryIdType);
-			}
+
+		AdministrationService administrationService = Context.getAdministrationService();
+
+		String FILE_EXTENSIONS_NAMES = ".bmp ,.jpg ,.jpeg,.jfif,.GIF,.png,.bat,.BPG,.FLV,.AVI,.MOV,.M4P,.MPG,.WMV,.3gp,.RM,.SWF,.3GP,.ACT,.AIFF,.MP3,.WAV,.OGG,.FLAC,.AU,.RAW,.docx,.docm,.dotx,.docb,.dotm,.pdf";
+		setGlobalProperty(administrationService, "mdrtb.fileExtensions", FILE_EXTENSIONS_NAMES);
+		//TODO: Put in TB patient ID instead of OpenMRS Identification Number
+		setGlobalProperty(administrationService, "mdrtb.primaryPatientIdentifierType", "OpenMRS Identification Number");
+
+	}
+	
+	private static void setGlobalProperty(AdministrationService service, String prop, String val) {
+		GlobalProperty gp = service.getGlobalPropertyObject(prop);
+		if (gp == null) {
+			service.saveGlobalProperty(new GlobalProperty(prop, val));
+		} else if (StringUtils.isEmpty(gp.getPropertyValue())) {
+			gp.setPropertyValue(val);
+			service.saveGlobalProperty(gp);
 		}
 	}
 	

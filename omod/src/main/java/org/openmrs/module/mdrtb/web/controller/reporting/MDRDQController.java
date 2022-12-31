@@ -36,8 +36,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+@SuppressWarnings("unused")
 @Controller
-
 public class MDRDQController {
 	
 	@InitBinder
@@ -195,8 +195,8 @@ public class MDRDQController {
 		ArrayList<Location> locList = null;
 		if (oblastId != null) {
 			if (oblastId.intValue() == 186) {
-				locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId,
-				    facilityId);
+				locList = Context.getService(MdrtbService.class)
+				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
 			} else {
 				locList = Context.getService(MdrtbService.class).getLocationList(oblastId, districtId, facilityId);
 			}
@@ -223,7 +223,7 @@ public class MDRDQController {
 			DQItem dqi = new DQItem();
 			Patient patient = tf.getPatient();
 			
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			//patientList.add(patient);

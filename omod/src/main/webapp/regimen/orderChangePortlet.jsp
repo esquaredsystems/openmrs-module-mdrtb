@@ -17,8 +17,6 @@
 					{
 						'orderId':'', 
 						'generic':'${mdrtb:getConcept(dc.generic).id}',
-						//COMMENTED FOR TAJIKISTAN
-						//'drugId':'${mdrtb:getDrug(dc.drugId).id}',
 						'dose':'${dc.dose}',
 						'units':'${dc.units}',
 						'frequency':'${dc.frequency}',
@@ -158,8 +156,6 @@
 						<c:set var="isStopped" value="${mdrtb:collectionContains(change.ordersEnded, drugOrder)}"/>
 						<tr>
 							<td style="text-align:left; padding-left:10px; padding-right:10px; white-space:nowrap;">${drugOrder.concept.name.name}</td>
-							<!-- COMMENTED FOR TAJIKISTAN -->
-							<!-- <td style="text-align:left; padding-left:10px; padding-right:10px; white-space:nowrap;">${drugOrder.drug.name}</td> -->						
 							<td class="cellStyle">
 								<c:if test="${!empty drugOrder.dose}">
 									${drugOrder.dose} ${drugOrder.units}

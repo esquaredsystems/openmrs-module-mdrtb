@@ -196,7 +196,6 @@ public class TB03FormController {
 		return new ModelAndView("/module/mdrtb/form/tb03", model);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView processTB03Form(@ModelAttribute("tb03") TB03Form tb03, BindingResult errors,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
@@ -232,8 +231,9 @@ public class TB03FormController {
 			tb03.setLocation(location);
 		}
 		
-		if (tb03.getCauseOfDeath() != null && tb03.getCauseOfDeath().getId().intValue() != Context
-		        .getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH_BY_OTHER_DISEASES).getId().intValue()) {
+		if (tb03.getCauseOfDeath() != null
+		        && tb03.getCauseOfDeath().getId().intValue() != Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.DEATH_BY_OTHER_DISEASES).getId().intValue()) {
 			tb03.setOtherCauseOfDeath(null);
 		}
 		
@@ -270,24 +270,26 @@ public class TB03FormController {
 		catch (Exception e) {}
 		
 		try {
-			ProgramWorkflow groupByDrugFlow = Context.getService(MdrtbService.class).getProgramWorkflow(program,
+			ProgramWorkflow groupByDrugFlow = Context.getService(MdrtbService.class).getProgramWorkflow(
+			    program,
 			    Context.getService(MdrtbService.class)
 			            .getConcept(MdrtbConcepts.DOTS_CLASSIFICATION_ACCORDING_TO_PREVIOUS_DRUG_USE).getId());
-			ProgramWorkflowState groupByDrugState = Context.getService(MdrtbService.class)
-			        .getProgramWorkflowState(groupByDrugFlow, groupByDrug.getId());
+			ProgramWorkflowState groupByDrugState = Context.getService(MdrtbService.class).getProgramWorkflowState(
+			    groupByDrugFlow, groupByDrug.getId());
 			tpp.setClassificationAccordingToPreviousDrugUse(groupByDrugState);
 		}
 		catch (Exception e) {}
 		
-		PatientProgram pp = Context.getProgramWorkflowService()
-		        .getPatientProgram(tpp.getPatientProgram().getPatientProgramId());
+		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(
+		    tpp.getPatientProgram().getPatientProgramId());
 		Context.getProgramWorkflowService().savePatientProgram(pp);
 		
 		//TX OUTCOME
 		//PATIENT GROUP
 		//PATIENT DEATH AND CAUSE OF DEATH
-		if (outcome != null && (outcome.getId().intValue() == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.outcome.died.conceptId")))) {
+		if (outcome != null
+		        && (outcome.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		            "mdrtb.outcome.died.conceptId")))) {
 			Patient patient = tpp.getPatient();
 			if (!patient.getDead()) {
 				patient.setDead(new Boolean(true));
@@ -439,8 +441,8 @@ public class TB03FormController {
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		//return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RESISTANCE_TYPE);
 		ArrayList<ConceptAnswer> answerArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.RESISTANCE_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.RESISTANCE_TYPE);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> concepts = new HashSet<Concept>();

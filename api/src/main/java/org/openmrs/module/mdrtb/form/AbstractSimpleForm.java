@@ -1,5 +1,6 @@
 package org.openmrs.module.mdrtb.form;
 
+import java.util.Collection;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
@@ -7,15 +8,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterRole;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.service.MdrtbService;
-
 
 public abstract class AbstractSimpleForm implements SimpleForm {
 	
@@ -36,25 +38,29 @@ public abstract class AbstractSimpleForm implements SimpleForm {
 		this.encounter = encounter;
 	}
 	
-	
 	public Integer getId() {
 		return this.encounter.getId();
 	}
 	
 	public void setEncounter(Encounter encounter) {
-	    this.encounter = encounter;
-    }
-
-	public Encounter getEncounter() {
-	    return encounter;
-    }
-	
-	public Person getProvider() {
-		return encounter.getProvider();
+		this.encounter = encounter;
 	}
 	
-	public void setProvider(Person provider) {
-		encounter.setProvider(provider);
+	public Encounter getEncounter() {
+		return encounter;
+	}
+	
+	public Person getProvider() {
+		return MdrtbUtil.getEncounterProvider(encounter);
+	}
+	
+	public void setProvider(Person person) {
+		Collection<Provider> providers = Context.getProviderService().getProvidersByPerson(person, false);
+		if (!providers.isEmpty()) {
+			EncounterRole role = Context.getEncounterService().getEncounterRoleByUuid(
+			    EncounterRole.UNKNOWN_ENCOUNTER_ROLE_UUID);
+			encounter.setProvider(role, providers.iterator().next());
+		}
 	}
 	
 	public Patient getPatient() {
@@ -73,7 +79,7 @@ public abstract class AbstractSimpleForm implements SimpleForm {
 	public Date getEncounterDatetime() {
 		return encounter.getEncounterDatetime();
 	}
-
+	
 	public void setEncounterDatetime(Date date) {
 		encounter.setEncounterDatetime(date);
 		
@@ -121,11 +127,13 @@ public abstract class AbstractSimpleForm implements SimpleForm {
 	}
 	
 	public String getSystolicBloodPressure() {
-		return fetchObs(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SYSTOLIC_BLOOD_PRESSURE), this.encounter);
+		return fetchObs(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SYSTOLIC_BLOOD_PRESSURE),
+		    this.encounter);
 	}
 	
 	public void setSystolicBloodPressure(String pressure) {
-		updateObs(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SYSTOLIC_BLOOD_PRESSURE), this.encounter, pressure);
+		updateObs(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SYSTOLIC_BLOOD_PRESSURE), this.encounter,
+		    pressure);
 	}
 	
 	public String getRespiratoryRate() {
@@ -145,28 +153,26 @@ public abstract class AbstractSimpleForm implements SimpleForm {
 	}
 	
 	/**
-	 * Utility method that fetches the obs off the encounter that is associated with the specified concept
+	 * Utility method that fetches the obs off the encounter that is associated with the specified
+	 * concept
 	 */
 	private String fetchObs(Concept concept, Encounter encounter) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(concept, encounter);
 		if (obs == null) {
 			return null;
-		}
-		else {
+		} else {
 			// get the value based on the datatype
 			if (concept.getDatatype().equals(Context.getConceptService().getConceptDatatypeByName("NUMERIC"))) {
 				return obs.getValueNumeric().toString();
-			} 
-			else {
-			    return obs.getValueText();
+			} else {
+				return obs.getValueText();
 			}
 		}
 	}
 	
-	
 	/**
-	 * Utility method that fetches the obs on the encounter that is associated with the specified concept
-	 * and updates it if needed
+	 * Utility method that fetches the obs on the encounter that is associated with the specified
+	 * concept and updates it if needed
 	 */
 	private void updateObs(Concept concept, Encounter encounter, String value) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(concept, encounter);
@@ -185,16 +191,15 @@ public abstract class AbstractSimpleForm implements SimpleForm {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by MDR-TB module");
 			}
-				
+			
 			// now create the new Obs and add it to the encounter
-			if(StringUtils.isNotBlank(value)) {
-				obs = new Obs (encounter.getPatient(), concept, encounter.getEncounterDatetime(), encounter.getLocation());
+			if (StringUtils.isNotBlank(value)) {
+				obs = new Obs(encounter.getPatient(), concept, encounter.getEncounterDatetime(), encounter.getLocation());
 				
 				// set value numeric if concept is type numeric, otherwise set value text
 				if (concept.getDatatype().equals(Context.getConceptService().getConceptDatatypeByName("NUMERIC"))) {
 					obs.setValueNumeric(Double.valueOf(value));
-				}
-				else {
+				} else {
 					obs.setValueText(value);
 				}
 				encounter.addObs(obs);

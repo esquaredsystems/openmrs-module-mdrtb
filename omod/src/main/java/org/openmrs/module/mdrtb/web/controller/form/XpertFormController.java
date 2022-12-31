@@ -79,10 +79,9 @@ public class XpertFormController {
 			if (!mdr) {
 				TbPatientProgram tbProgram = Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId);
 				form = new XpertForm(tbProgram.getPatient());
-			}
-			else {
-				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class)
-				        .getMdrtbPatientProgram(patientProgramId);
+			} else {
+				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(
+				    patientProgramId);
 				
 				form = new XpertForm(mdrtbProgram.getPatient());
 				form.setLocation(mdrtbProgram.getLocation());
@@ -214,8 +213,9 @@ public class XpertFormController {
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;
 		}
-		if (xpert.getMtbResult() != null && xpert.getMtbResult().getId().intValue() != Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.MTB_POSITIVE).getId().intValue()) {
+		if (xpert.getMtbResult() != null
+		        && xpert.getMtbResult().getId().intValue() != Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.MTB_POSITIVE).getId().intValue()) {
 			
 			System.out.println("Setting null");
 			xpert.setRifResult(null);
@@ -233,16 +233,14 @@ public class XpertFormController {
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
 			if (!mdr) {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/tbdashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getTbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			}
 			
 			else {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getMdrtbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			}
 		}
 		

@@ -21,15 +21,17 @@ import org.openmrs.module.reporting.definition.configuration.ConfigurationProper
 
 @Localized("mdrtb.reporting.MdrtbTreatmentStartedCohortDefinition")
 public class MdrtbTreatmentStartedCohortDefinition extends BaseCohortDefinition {
-
-    @ConfigurationProperty(group="startDateGroup")
+	
+	private static final long serialVersionUID = 1L;
+	
+	@ConfigurationProperty(group = "startDateGroup")
 	private Date fromDate;
 	
-	@ConfigurationProperty(group="startDateGroup")
+	@ConfigurationProperty(group = "startDateGroup")
 	private Date toDate;
 	
 	//***** CONSTRUCTORS *****
-
+	
 	/**
 	 * Default Constructor
 	 */
@@ -47,28 +49,28 @@ public class MdrtbTreatmentStartedCohortDefinition extends BaseCohortDefinition 
 	}
 	
 	//***** PROPERTY ACCESS *****
-
+	
 	/**
 	 * @return the fromDate
 	 */
 	public Date getFromDate() {
 		return fromDate;
 	}
-
+	
 	/**
 	 * @param fromDate the fromDate to set
 	 */
 	public void setFromDate(Date fromDate) {
 		this.fromDate = fromDate;
 	}
-
+	
 	/**
 	 * @return the toDate
 	 */
 	public Date getToDate() {
 		return toDate;
 	}
-
+	
 	/**
 	 * @param toDate the toDate to set
 	 */

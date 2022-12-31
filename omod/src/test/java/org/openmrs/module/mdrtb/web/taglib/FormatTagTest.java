@@ -1,16 +1,13 @@
 package org.openmrs.module.mdrtb.web.taglib;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Locale;
-
-import junit.framework.Assert;
-
 
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.api.ConceptNameType;
-
-
 
 public class FormatTagTest {
 	
@@ -18,7 +15,7 @@ public class FormatTagTest {
 	public void formatTagFormatObjectMethod_shouldFormatConceptWithShortNamebyDefault() {
 		FormatTag tag = new FormatTag();
 		Concept c = configureConceptWithNames();
-		Assert.assertEquals("Eng", tag.formatObject(c));
+		assertEquals("Eng", tag.formatObject(c));
 	}
 	
 	@Test
@@ -27,9 +24,8 @@ public class FormatTagTest {
 		Concept c = configureConceptWithNames();
 		
 		tag.setNameType("fully_specified");
-		Assert.assertEquals("English Name", tag.formatObject(c));
+		assertEquals("English Name", tag.formatObject(c));
 	}
-	
 	
 	private Concept configureConceptWithNames() {
 		Concept c = new Concept();

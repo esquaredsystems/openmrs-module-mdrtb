@@ -16,7 +16,7 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.Verifies;
 
 public class MdrtbTreatmentStartedCohortDefinitionEvaluatorTest extends BaseModuleContextSensitiveTest {
-
+	
 	/**
 	 * @see BaseContextSensitiveTest#useInMemoryDatabase()
 	 */
@@ -41,13 +41,13 @@ public class MdrtbTreatmentStartedCohortDefinitionEvaluatorTest extends BaseModu
 		cd.addParameter(new Parameter("toDate", "To Date", Date.class));
 		
 		int runningTotal = 0;
-		for (int i=1998; i<=2010; i++) {
+		for (int i = 1998; i <= 2010; i++) {
 			EvaluationContext context = new EvaluationContext();
 			context.addParameterValue("fromDate", DateUtil.getDateTime(i, 1, 1));
 			context.addParameterValue("toDate", DateUtil.getDateTime(i, 12, 31));
 			EvaluatedCohort cohort = Context.getService(CohortDefinitionService.class).evaluate(cd, context);
 			runningTotal += cohort.size();
-			System.out.println("Num who started treatment in " + i + ": " + cohort.size() + "[" + cohort.getCommaSeparatedPatientIds() + "]");
+			System.out.println("Num who started treatment in " + i + ": " + cohort.size());
 		}
 		System.out.println("Total all years: " + runningTotal);
 	}

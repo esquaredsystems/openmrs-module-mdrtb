@@ -22,8 +22,9 @@ public class HAINImpl extends TestImpl implements HAIN {
 	// set up a xpert object, given an existing obs
 	public HAINImpl(Obs hain) {
 		
-		if (hain == null || !(hain.getConcept()
-		        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT)))) {
+		if (hain == null
+		        || !(hain.getConcept().equals(Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.HAIN_CONSTRUCT)))) {
 			throw new RuntimeException("Cannot initialize xpert: invalid obs used for initialization.");
 		}
 		
@@ -38,9 +39,8 @@ public class HAINImpl extends TestImpl implements HAIN {
 		}
 		
 		// note that we are setting the location null--tests don't immediately inherit the location of the parent encounter
-		test = new Obs(encounter.getPatient(),
-		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT),
-		        encounter.getEncounterDatetime(), null);
+		test = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.HAIN_CONSTRUCT), encounter.getEncounterDatetime(), null);
 	}
 	
 	@Override
@@ -151,9 +151,8 @@ public class HAINImpl extends TestImpl implements HAIN {
 		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ISONIAZID_RESISTANCE),
-			        test.getObsDatetime(), test.getLocation());
+			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(
+			    MdrtbConcepts.ISONIAZID_RESISTANCE), test.getObsDatetime(), test.getLocation());
 			obs.setEncounter(test.getEncounter());
 			test.addGroupMember(obs);
 		}
@@ -192,9 +191,8 @@ public class HAINImpl extends TestImpl implements HAIN {
 		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE),
-			        test.getObsDatetime(), test.getLocation());
+			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(
+			    MdrtbConcepts.RIFAMPICIN_RESISTANCE), test.getObsDatetime(), test.getLocation());
 			obs.setEncounter(test.getEncounter());
 			test.addGroupMember(obs);
 		}
@@ -245,8 +243,8 @@ public class HAINImpl extends TestImpl implements HAIN {
 	}
 	
 	public Concept getMtbBurden() {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
 		
 		if (obs == null) {
 			return null;
@@ -256,8 +254,8 @@ public class HAINImpl extends TestImpl implements HAIN {
 	}
 	
 	public void setMtbBurden(Concept mtbBurden) {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && mtbBurden == null) {
@@ -273,9 +271,8 @@ public class HAINImpl extends TestImpl implements HAIN {
 		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test.getObsDatetime(),
-			        test.getLocation());
+			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class)
+			        .getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test.getObsDatetime(), test.getLocation());
 			obs.setEncounter(test.getEncounter());
 			test.addGroupMember(obs);
 		}
@@ -285,8 +282,8 @@ public class HAINImpl extends TestImpl implements HAIN {
 	}
 	
 	public Concept getMethod() {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), test);
 		
 		if (obs == null) {
 			return null;
@@ -296,8 +293,8 @@ public class HAINImpl extends TestImpl implements HAIN {
 	}
 	
 	public void setMethod(Concept method) {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), test);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && method == null) {

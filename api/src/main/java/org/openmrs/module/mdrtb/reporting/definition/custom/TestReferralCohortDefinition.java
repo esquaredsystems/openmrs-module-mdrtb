@@ -21,21 +21,19 @@ import org.openmrs.module.reporting.definition.configuration.ConfigurationProper
 
 @Localized("mdrtb.reporting.TestReferralCohortDefinition")
 public class TestReferralCohortDefinition extends BaseCohortDefinition {
-
-    public static final long serialVersionUID = 1L;
-    
-	@ConfigurationProperty(group="startDateGroup")
+	
+	public static final long serialVersionUID = 1L;
+	
+	@ConfigurationProperty(group = "startDateGroup")
 	private Date fromDate;
 	
-	@ConfigurationProperty(group="startDateGroup")
+	@ConfigurationProperty(group = "startDateGroup")
 	private Date toDate;
 	
 	private String testType;
 	
-	
-	
 	//***** CONSTRUCTORS *****
-
+	
 	/**
 	 * Default Constructor
 	 */
@@ -53,28 +51,28 @@ public class TestReferralCohortDefinition extends BaseCohortDefinition {
 	}
 	
 	//***** PROPERTY ACCESS *****
-
+	
 	/**
 	 * @return the minResultDate
 	 */
 	public Date getFromDate() {
 		return fromDate;
 	}
-
+	
 	/**
 	 * @param minResultDate the minResultDate to set
 	 */
 	public void setFromDate(Date fromDate) {
 		this.fromDate = fromDate;
 	}
-
+	
 	/**
 	 * @return the maxResultDate
 	 */
 	public Date getToDate() {
 		return toDate;
 	}
-
+	
 	/**
 	 * @param maxResultDate the maxResultDate to set
 	 */
@@ -82,14 +80,12 @@ public class TestReferralCohortDefinition extends BaseCohortDefinition {
 		this.toDate = toDate;
 	}
 	
-
 	public String getTestType() {
 		return testType;
 	}
-
+	
 	public void setTestType(String testType) {
 		this.testType = testType;
 	}
-
 	
 }

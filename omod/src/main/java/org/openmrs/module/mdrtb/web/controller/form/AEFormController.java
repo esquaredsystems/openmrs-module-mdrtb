@@ -17,7 +17,7 @@ import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
-import org.openmrs.module.mdrtb.form.custom.AEForm;
+import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.form.custom.RegimenForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -59,7 +59,7 @@ public class AEFormController {
 	}
 	
 	@ModelAttribute("aeForm")
-	public AEForm getAEForm(@RequestParam(required = true, value = "encounterId") Integer encounterId,
+	public AdverseEventsForm getAEForm(@RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId/*,
 	                                                                                           @RequestParam(required = false, value = "previousProgramId") Integer previousProgramId*/)
 	        throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException,
@@ -69,7 +69,7 @@ public class AEFormController {
 		if (encounterId == -1) {
 			MdrtbPatientProgram tbProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId);
 			
-			AEForm form = new AEForm(tbProgram.getPatient());
+			AdverseEventsForm form = new AdverseEventsForm(tbProgram.getPatient());
 			
 			// prepopulate the intake form with any program information
 			//form.setEncounterDatetime(tbProgram.getDateEnrolled());
@@ -77,15 +77,15 @@ public class AEFormController {
 			form.setPatProgId(patientProgramId);
 			return form;
 		} else {
-			return new AEForm(Context.getEncounterService().getEncounter(encounterId));
+			return new AdverseEventsForm(Context.getEncounterService().getEncounter(encounterId));
 		}
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showAEForm(@RequestParam(required = false, value = "returnUrl") String returnUrl,
-	        /*@RequestParam(value="loc", required=false) String district,
-	        @RequestParam(value="ob", required=false) String oblast,*/
-	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
+	/*@RequestParam(value="loc", required=false) String district,
+	@RequestParam(value="ob", required=false) String oblast,*/
+	@RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode, ModelMap model) {
 		/*List<Region> oblasts;
@@ -94,12 +94,13 @@ public class AEFormController {
 		
 		if(oblast==null)
 		*/
-		AEForm aeForm = null;
+		AdverseEventsForm aeForm = null;
 		if (encounterId != -1) { //we are editing an existing encounter
-			aeForm = new AEForm(Context.getEncounterService().getEncounter(encounterId));
+			aeForm = new AdverseEventsForm(Context.getEncounterService().getEncounter(encounterId));
 		} else {
 			try {
 				aeForm = getAEForm(-1, patientProgramId);
+				model.addAttribute("aeForm", aeForm);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
@@ -109,12 +110,11 @@ public class AEFormController {
 		if (mode != null && mode.length() != 0) {
 			model.addAttribute("mode", mode);
 		}
-		
 		return new ModelAndView("/module/mdrtb/form/ae", model);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView processAEForm(@ModelAttribute("aeForm") AEForm aeForm, BindingResult errors,
+	public ModelAndView processAEForm(@ModelAttribute("aeForm") AdverseEventsForm aeForm, BindingResult errors,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        /* @RequestParam(required = true, value = "oblast") String oblastId,
 	         @RequestParam(required = true, value = "district") String districtId,
@@ -126,11 +126,13 @@ public class AEFormController {
 		System.out.println(aeForm.getProvider());
 		System.out.println(aeForm.getEncounterDatetime());
 		
-		if (aeForm.getTypeOfEvent() != null && aeForm.getTypeOfEvent().getId().intValue() == Context
-		        .getService(MdrtbService.class).getConcept(MdrtbConcepts.SERIOUS).getId().intValue()) {
+		if (aeForm.getTypeOfEvent() != null
+		        && aeForm.getTypeOfEvent().getId().intValue() == Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.SERIOUS).getId().intValue()) {
 			aeForm.setTypeOfSpecialEvent(null);
-		} else if (aeForm.getTypeOfEvent() != null && aeForm.getTypeOfEvent().getId().intValue() == Context
-		        .getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_SPECIAL_INTEREST).getId().intValue()) {
+		} else if (aeForm.getTypeOfEvent() != null
+		        && aeForm.getTypeOfEvent().getId().intValue() == Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.OF_SPECIAL_INTEREST).getId().intValue()) {
 			aeForm.setTypeOfSAE(null);
 		} else if (aeForm.getTypeOfEvent() == null) {
 			aeForm.setTypeOfSpecialEvent(null);
@@ -145,10 +147,11 @@ public class AEFormController {
 		if (aeForm.getCausalityDrug3() == null) {
 			aeForm.setCausalityAssessmentResult3(null);
 		}
-		if (aeForm.getActionOutcome() != null && (aeForm.getActionOutcome().getId().intValue() == Context
-		        .getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_RESOLVED).getId().intValue()
-		        || aeForm.getActionOutcome().getId().intValue() == Context.getService(MdrtbService.class)
-		                .getConcept(MdrtbConcepts.RESOLVING).getId().intValue())) {
+		if (aeForm.getActionOutcome() != null
+		        && (aeForm.getActionOutcome().getId().intValue() == Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.NOT_RESOLVED).getId().intValue() || aeForm.getActionOutcome().getId()
+		                .intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESOLVING).getId()
+		                .intValue())) {
 			aeForm.setOutcomeDate(null);
 		}
 		// save the actual update
@@ -161,7 +164,7 @@ public class AEFormController {
 		
 		// if there is no return URL, default to the patient dashboard
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
-			returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form";
+			return new ModelAndView(new RedirectView(request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form"));
 		}
 		returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
 		    Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId).getPatient().getId(),
@@ -199,8 +202,8 @@ public class AEFormController {
 	@ModelAttribute("aeOptions")
 	public ArrayList<ConceptAnswer> getPossibleAdverseEvents() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.ADVERSE_EVENT);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.ADVERSE_EVENT);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -242,8 +245,8 @@ public class AEFormController {
 	@ModelAttribute("typeOptions")
 	public Collection<ConceptAnswer> getPossibleEventType() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.ADVERSE_EVENT_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.ADVERSE_EVENT_TYPE);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -264,8 +267,8 @@ public class AEFormController {
 	@ModelAttribute("saeOptions")
 	public Collection<ConceptAnswer> getPossibleSAEType() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.SAE_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.SAE_TYPE);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -288,8 +291,8 @@ public class AEFormController {
 	@ModelAttribute("specialOptions")
 	public Collection<ConceptAnswer> getPossibleSpecialType() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.SPECIAL_INTEREST_EVENT_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.SPECIAL_INTEREST_EVENT_TYPE);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -320,8 +323,8 @@ public class AEFormController {
 	
 	@ModelAttribute("cdOptions")
 	public Collection<ConceptAnswer> getCausalityDrugOptions() {
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.CAUSALITY_DRUG_1);
+		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.CAUSALITY_DRUG_1);
 		return ca;
 		
 	}
@@ -329,8 +332,8 @@ public class AEFormController {
 	@ModelAttribute("carOptions")
 	public Collection<ConceptAnswer> getCausalityAssessmentOptions() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_1);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_1);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -353,8 +356,8 @@ public class AEFormController {
 	@ModelAttribute("actions")
 	public Collection<ConceptAnswer> getActionOptions() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.ADVERSE_EVENT_ACTION);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.ADVERSE_EVENT_ACTION);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -378,8 +381,8 @@ public class AEFormController {
 	@ModelAttribute("outcomes")
 	public Collection<ConceptAnswer> getActionOutcomes() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.ADVERSE_EVENT_OUTCOME);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.ADVERSE_EVENT_OUTCOME);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -402,8 +405,8 @@ public class AEFormController {
 	@ModelAttribute("meddraCodes")
 	public ArrayList<ConceptAnswer> getMeddraCodeOptions() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.MEDDRA_CODE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.MEDDRA_CODE);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -433,8 +436,8 @@ public class AEFormController {
 	@ModelAttribute("drugRechallenges")
 	public ArrayList<ConceptAnswer> getRechallengeOptions() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.DRUG_RECHALLENGE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.DRUG_RECHALLENGE);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -454,12 +457,11 @@ public class AEFormController {
 	}
 	
 	@ModelAttribute("regimens")
-	public ArrayList<String> getRegimens(
-	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId) {
+	public ArrayList<String> getRegimens(@RequestParam(required = true, value = "patientProgramId") Integer patientProgramId) {
 		ArrayList<String> regimens = new ArrayList<String>();
 		MdrtbPatientProgram pp = Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId);
-		ArrayList<RegimenForm> regimenList = Context.getService(MdrtbService.class)
-		        .getRegimenFormsForProgram(pp.getPatient(), patientProgramId);
+		ArrayList<RegimenForm> regimenList = Context.getService(MdrtbService.class).getRegimenFormsForProgram(
+		    pp.getPatient(), patientProgramId);
 		
 		for (RegimenForm form : regimenList) {
 			String s = form.getRegimenSummary();
@@ -474,8 +476,8 @@ public class AEFormController {
 	@ModelAttribute("yesno")
 	public ArrayList<ConceptAnswer> getYesNo() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();

@@ -8,140 +8,265 @@ import org.openmrs.api.context.Context;
 public class TB03uData implements Comparable<TB03uData> {
 	
 	private Patient patient;
+	
 	private String identifierDOTS;
+	
 	private Integer dotsYear;
+	
 	private String identifierMDR;
+	
 	private String tb03uRegistrationDate;
+	
 	private Integer ageAtTB03uRegistration;
+	
 	private String dateOfBirth;
+	
 	private String reg2Number;
+	
 	private String siteOfDisease;
+	
 	private Integer regGroup;
+	
 	private String mdrtbStatus;
+	
 	private String mdrConfDate;
+	
 	private String treatmentRegimen;
+	
 	private String tb03uTreatmentStartDate;
+	
 	private String treatmentLocation;
+	
 	private HashMap<String, String> dstResults;
+	
 	private String dstCollectionDate;
+	
 	private String dstResultDate;
+	
 	private String drugResistance;
+	
 	private String diagnosticMethod;
+	
 	private String hivTestResult;
+	
 	private String hivTestDate;
+	
 	private String artStartDate;
+	
 	private String cpStartDate;
+	
 	private String month0SmearResult;
+	
 	private String month1SmearResult;
+	
 	private String month2SmearResult;
+	
 	private String month3SmearResult;
+	
 	private String month4SmearResult;
+	
 	private String month5SmearResult;
+	
 	private String month6SmearResult;
+	
 	private String month7SmearResult;
+	
 	private String month8SmearResult;
+	
 	private String month9SmearResult;
+	
 	private String month10SmearResult;
+	
 	private String month11SmearResult;
+	
 	private String month12SmearResult;
+	
 	private String month15SmearResult;
+	
 	private String month18SmearResult;
+	
 	private String month21SmearResult;
+	
 	private String month24SmearResult;
+	
 	private String month27SmearResult;
+	
 	private String month30SmearResult;
+	
 	private String month33SmearResult;
+	
 	private String month36SmearResult;
+	
 	private String month0SmearResultDate;
+	
 	private String month1SmearResultDate;
+	
 	private String month2SmearResultDate;
+	
 	private String month3SmearResultDate;
+	
 	private String month4SmearResultDate;
+	
 	private String month5SmearResultDate;
+	
 	private String month6SmearResultDate;
+	
 	private String month7SmearResultDate;
+	
 	private String month8SmearResultDate;
+	
 	private String month9SmearResultDate;
+	
 	private String month10SmearResultDate;
+	
 	private String month11SmearResultDate;
+	
 	private String month12SmearResultDate;
+	
 	private String month15SmearResultDate;
+	
 	private String month18SmearResultDate;
+	
 	private String month21SmearResultDate;
+	
 	private String month24SmearResultDate;
+	
 	private String month27SmearResultDate;
+	
 	private String month30SmearResultDate;
+	
 	private String month33SmearResultDate;
+	
 	private String month36SmearResultDate;
 	
 	private String month0CultureResult;
+	
 	private String month1CultureResult;
+	
 	private String month2CultureResult;
+	
 	private String month3CultureResult;
+	
 	private String month4CultureResult;
+	
 	private String month5CultureResult;
+	
 	private String month6CultureResult;
+	
 	private String month7CultureResult;
+	
 	private String month8CultureResult;
+	
 	private String month9CultureResult;
+	
 	private String month10CultureResult;
+	
 	private String month11CultureResult;
+	
 	private String month12CultureResult;
+	
 	private String month15CultureResult;
+	
 	private String month18CultureResult;
+	
 	private String month21CultureResult;
+	
 	private String month24CultureResult;
+	
 	private String month27CultureResult;
+	
 	private String month30CultureResult;
+	
 	private String month33CultureResult;
+	
 	private String month36CultureResult;
+	
 	private String month0CultureResultDate;
+	
 	private String month1CultureResultDate;
+	
 	private String month2CultureResultDate;
+	
 	private String month3CultureResultDate;
+	
 	private String month4CultureResultDate;
+	
 	private String month5CultureResultDate;
+	
 	private String month6CultureResultDate;
+	
 	private String month7CultureResultDate;
+	
 	private String month8CultureResultDate;
+	
 	private String month9CultureResultDate;
+	
 	private String month10CultureResultDate;
+	
 	private String month11CultureResultDate;
+	
 	private String month12CultureResultDate;
+	
 	private String month15CultureResultDate;
+	
 	private String month18CultureResultDate;
+	
 	private String month21CultureResultDate;
+	
 	private String month24CultureResultDate;
+	
 	private String month27CultureResultDate;
+	
 	private String month30CultureResultDate;
+	
 	private String month33CultureResultDate;
+	
 	private String month36CultureResultDate;
 	
 	private Integer tb03uTreatmentOutcome;
+	
 	private String tb03uTreatmentOutcomeDate;
+	
 	private Boolean diedOfTB;
 	
 	private String xpertMTBResult;
+	
 	private String xpertRIFResult;
+	
 	private String xpertTestDate;
+	
 	private String xpertTestNumber;
+	
 	private String xpertLab;
 	
 	private String hainMTBResult;
+	
 	private String hainINHResult;
+	
 	private String hainRIFResult;
+	
 	private String hainTestDate;
+	
 	private String hainTestNumber;
+	
 	private String hainLab;
+	
 	private String hain2MTBResult;
+	
 	private String hain2InjResult;
+	
 	private String hain2FqResult;
+	
 	private String hain2TestDate;
+	
 	private String hain2TestNumber;
+	
 	private String hain2Lab;
 	
 	private String relapsed;
+	
 	private Integer relapseMonth;
+	
 	private String notes;
 	
 	public TB03uData() {
@@ -152,60 +277,60 @@ public class TB03uData implements Comparable<TB03uData> {
 		
 		if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.new.conceptId")))
 			this.regGroup = 0;
-		else if (regGroup == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterRelapse1.conceptId")))
+		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.afterRelapse1.conceptId")))
 			this.regGroup = 1;
-		else if (regGroup == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterRelapse2.conceptId")))
+		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.afterRelapse2.conceptId")))
 			this.regGroup = 2;
-		else if (regGroup == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterDefault1.conceptId")))
+		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.afterDefault1.conceptId")))
 			this.regGroup = 3;
-		else if (regGroup == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterDefault2.conceptId")))
+		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.afterDefault2.conceptId")))
 			this.regGroup = 4;
-		else if (regGroup == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterFailure1.conceptId")))
+		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.afterFailure1.conceptId")))
 			this.regGroup = 5;
-		else if (regGroup == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterFailure2.conceptId")))
+		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.afterFailure2.conceptId")))
 			this.regGroup = 6;
 		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.other.conceptId")))
 			this.regGroup = 7;
-		else if (regGroup == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.transferIn.conceptId")))
+		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.transferIn.conceptId")))
 			this.regGroup = 8;
 		
 	}
 	
 	public void setTb03uTreatmentOutcome(Integer tb03uTreatmentOutcome) {
 		//System.out.println("---->" + tb03uTreatmentOutcome);
-		if (tb03uTreatmentOutcome.intValue() == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.outcome.cured.conceptId")))
+		if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.outcome.cured.conceptId")))
 			this.tb03uTreatmentOutcome = 0;
-		else if (tb03uTreatmentOutcome.intValue() == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.outcome.txCompleted.conceptId")))
+		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.outcome.txCompleted.conceptId")))
 			this.tb03uTreatmentOutcome = 1;
-		else if (tb03uTreatmentOutcome.intValue() == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.outcome.txFailure.conceptId")))
+		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.outcome.txFailure.conceptId")))
 			this.tb03uTreatmentOutcome = 4;
-		else if (tb03uTreatmentOutcome.intValue() == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.outcome.died.conceptId"))) {
+		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.outcome.died.conceptId"))) {
 			if (diedOfTB)
 				this.tb03uTreatmentOutcome = 2;
 			else
 				this.tb03uTreatmentOutcome = 3;
 		}
 		
-		else if (tb03uTreatmentOutcome.intValue() == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.outcome.ltfu.conceptId")))
+		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.outcome.ltfu.conceptId")))
 			this.tb03uTreatmentOutcome = 5;
 		/*else if(tb03uTreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.outcome.canceled.conceptId")))
 			this.tb03uTreatmentOutcome = 6;
 		else if(tb03uTreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.outcome.sld2.conceptId")))
 			this.tb03uTreatmentOutcome = 7;*/
-		else if (tb03uTreatmentOutcome.intValue() == Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.outcome.transferout.conceptId")))
+		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.outcome.transferout.conceptId")))
 			this.tb03uTreatmentOutcome = 6;
 	}
 	

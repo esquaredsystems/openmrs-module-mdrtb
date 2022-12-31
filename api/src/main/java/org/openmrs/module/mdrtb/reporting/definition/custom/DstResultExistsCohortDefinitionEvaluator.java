@@ -26,24 +26,22 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
  */
 @Handler(supports = { DstResultExistsCohortDefinition.class })
 public class DstResultExistsCohortDefinitionEvaluator implements CohortDefinitionEvaluator {
-
+	
 	/**
 	 * Default Constructor
 	 */
 	public DstResultExistsCohortDefinitionEvaluator() {
 	}
-
+	
 	/**
-	 * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition,
-	 *      EvaluationContext)
-	 *
+	 * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition, EvaluationContext)
 	 */
 	public EvaluatedCohort evaluate(CohortDefinition cohortDefinition, EvaluationContext context) {
-
+		
 		DstResultExistsCohortDefinition cd = (DstResultExistsCohortDefinition) cohortDefinition;
 		// Cohort c = null;
 		Cohort c = MdrtbQueryService.getPatientsWithDSTResults(context, cd.getMinResultDate(), cd.getMaxResultDate());
-
-    	return new EvaluatedCohort(c, cohortDefinition, context);
+		
+		return new EvaluatedCohort(c, cohortDefinition, context);
 	}
 }

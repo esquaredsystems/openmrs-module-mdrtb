@@ -37,16 +37,17 @@ public class GermCellTag extends TagSupport {
 			if (culture.getOrganismType() != null) {
 				if (organismType == null) {
 					organismType = culture.getOrganismType();
-					if (organismType.equals(
-					    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_MYCOBACTERIA_NON_CODED))) {
+					if (organismType.equals(Context.getService(MdrtbService.class).getConcept(
+					    MdrtbConcepts.OTHER_MYCOBACTERIA_NON_CODED))) {
 						if (StringUtils.isEmpty(organismTypeNonCoded)) {
 							organismTypeNonCoded = culture.getOrganismTypeNonCoded();
 						}
 					}
 				}
 				// if we have a conflict between two cultures, report a conflict
-				else if (!organismType.equals(culture.getOrganismType()) || (StringUtils.isNotEmpty(organismTypeNonCoded)
-				        && !organismTypeNonCoded.equals(culture.getOrganismTypeNonCoded()))) {
+				else if (!organismType.equals(culture.getOrganismType())
+				        || (StringUtils.isNotEmpty(organismTypeNonCoded) && !organismTypeNonCoded.equals(culture
+				                .getOrganismTypeNonCoded()))) {
 					organismType = null;
 					ret = "Multiple";
 					break;
@@ -55,13 +56,12 @@ public class GermCellTag extends TagSupport {
 		}
 		
 		if (organismType != null) {
-			if (organismType
-			        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_MYCOBACTERIA_NON_CODED))) {
+			if (organismType.equals(Context.getService(MdrtbService.class).getConcept(
+			    MdrtbConcepts.OTHER_MYCOBACTERIA_NON_CODED))) {
 				ret = organismTypeNonCoded;
 			} else {
-				ret = MdrtbUtil
-				        .getConceptName(organismType, Context.getLocale().getLanguage(), ConceptNameType.FULLY_SPECIFIED)
-				        .getName();
+				ret = MdrtbUtil.getConceptName(organismType, Context.getLocale().getLanguage(),
+				    ConceptNameType.FULLY_SPECIFIED).getName();
 			}
 		}
 		

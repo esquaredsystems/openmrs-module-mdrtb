@@ -20,13 +20,12 @@ import org.openmrs.ProgramWorkflowState;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
-import org.openmrs.module.mdrtb.MdrtbUtil;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 /*import org.openmrs.module.mdrtb.program.MdrtbPatientProgramHospitalizationValidator;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgramValidator;*/
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgramHospitalizationValidator;
-import org.openmrs.module.mdrtb.program.TbPatientProgramValidator;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.mdrtb.status.HivStatusCalculator;
 import org.openmrs.module.mdrtb.status.LabResultsStatusCalculator;
@@ -89,7 +88,8 @@ public class MdrtbDOTSDashboardController {
 	
 	@ModelAttribute("patientDied")
 	public ProgramWorkflowState getPatientDiedState() {
-		return MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
+		return Context.getService(MdrtbService.class).getProgramWorkflowState(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
 	}
 	
 	@ModelAttribute("hospitalizationState")
@@ -98,7 +98,7 @@ public class MdrtbDOTSDashboardController {
 		if (hospitalizationStateId == null) {
 			return null;
 		} else {
-			return Context.getProgramWorkflowService().getPatientState(hospitalizationStateId);
+			return Context.getService(MdrtbService.class).getPatientState(hospitalizationStateId);
 		}
 	}
 	
@@ -166,8 +166,8 @@ public class MdrtbDOTSDashboardController {
 		
 		// add the patientId
 		map.put("patientId", program.getPatient().getId());
-		Integer conceptNewId = Integer
-		        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"));
+		Integer conceptNewId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.NEW_CONCEPT_ID_GP));
 		if (conceptNewId.equals(program.getClassificationAccordingToPatientGroups().getConcept().getConceptId())) {
 			map.put("isNew", "new");
 		}
@@ -197,8 +197,8 @@ public class MdrtbDOTSDashboardController {
 		// add any flags
 		addFlags(statusMap, map);
 		
-		EncounterType tb03Type = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
+		EncounterType tb03Type = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
 		List<Encounter> tb03List = Context.getService(MdrtbService.class).getEncountersWithNoProgramId(tb03Type,
 		    program.getPatient());
 		map.put("unlinkedtb03s", tb03List);
@@ -248,7 +248,7 @@ public class MdrtbDOTSDashboardController {
 		
 		// perform validation 
 		if (program != null) {
-			new TbPatientProgramValidator().validate(program, errors);
+			program.validate(program, errors);
 		}
 		
 		if (errors.hasErrors()) {
@@ -261,13 +261,14 @@ public class MdrtbDOTSDashboardController {
 		Context.getProgramWorkflowService().savePatientProgram(program.getPatientProgram());
 		
 		// mark the patient as died if required
-		ProgramWorkflowState patientDied = MdrtbUtil
-		        .getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
+		ProgramWorkflowState patientDied = Context.getService(MdrtbService.class).getProgramWorkflowState(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
 		if (program.getOutcome() != null && program.getOutcome().equals(patientDied) && !program.getPatient().getDead()) {
-			Context.getPatientService().processDeath(program.getPatient(), program.getDateCompleted(),
-			    (causeOfDeath != null ? causeOfDeath
-			            : Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.UNKNOWN)),
-			    null);
+			Context.getPatientService().processDeath(
+			    program.getPatient(),
+			    program.getDateCompleted(),
+			    (causeOfDeath != null ? causeOfDeath : Context.getService(MdrtbService.class).getConcept(
+			        MdrtbConcepts.UNKNOWN)), null);
 		}
 		
 		// clears the command object from the session
@@ -285,7 +286,7 @@ public class MdrtbDOTSDashboardController {
 		
 		// perform validation 
 		if (program != null) {
-			new TbPatientProgramValidator().validate(program, errors);
+			program.validate(program, errors);
 		}
 		
 		if (errors.hasErrors()) {
@@ -298,12 +299,14 @@ public class MdrtbDOTSDashboardController {
 		Context.getProgramWorkflowService().savePatientProgram(program.getPatientProgram());
 		
 		// mark the patient as died if required
-		ProgramWorkflowState patientDied = MdrtbUtil
-		        .getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
+		ProgramWorkflowState patientDied = Context.getService(MdrtbService.class).getProgramWorkflowState(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
 		if (program.getOutcome() != null && program.getOutcome().equals(patientDied) && !program.getPatient().getDead()) {
-			Context.getService(MdrtbService.class).processDeath(program.getPatient(), program.getDateCompleted(),
-			    (causeOfDeath != null ? causeOfDeath
-			            : Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.UNKNOWN)));
+			Context.getService(MdrtbService.class).processDeath(
+			    program.getPatient(),
+			    program.getDateCompleted(),
+			    (causeOfDeath != null ? causeOfDeath : Context.getService(MdrtbService.class).getConcept(
+			        MdrtbConcepts.UNKNOWN)));
 		}
 		
 		// clears the command object from the session

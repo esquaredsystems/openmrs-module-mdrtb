@@ -68,7 +68,6 @@ public class MdrtbManageContactsController extends SimpleFormController {
 				Integer patientId = Integer.valueOf(patientIdString);
 				MessageSourceAccessor msa = this.getMessageSourceAccessor();
 				if (action != null && msa.getMessage("mdrtb.save").equals(action)) {
-					MdrtbService ms = (MdrtbService) Context.getService(MdrtbService.class);
 					
 					SimpleDateFormat sdf = Context.getDateFormat();
 					ConceptService cs = Context.getConceptService();
@@ -107,8 +106,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 								Obs oParent = new Obs();
 								Integer testResultAnswer = Integer.valueOf(testResultString);
 								Integer testResultTypeAnswer = Integer.valueOf(testResultType);
-								oParent.setConcept(Context.getService(MdrtbService.class)
-								        .getConcept(MdrtbConcepts.PATIENT_CONTACT_TB_TEST_RESULT));
+								oParent.setConcept(Context.getService(MdrtbService.class).getConcept(
+								    MdrtbConcepts.PATIENT_CONTACT_TB_TEST_RESULT));
 								oParent.setCreator(Context.getAuthenticatedUser());
 								oParent.setDateCreated(new Date());
 								// this might not be right, but it satisfies not
@@ -116,9 +115,9 @@ public class MdrtbManageContactsController extends SimpleFormController {
 								Date testResultDate = sdf.parse(testResultDateString);
 								oParent.setObsDatetime(testResultDate);
 								
-								if (mcp.getPerson().isPatient()) {
-									for (Encounter enc : es
-									        .getEncountersByPatient(ps.getPatient(mcp.getPerson().getPersonId()))) {
+								if (mcp.getPerson().getIsPatient()) {
+									for (Encounter enc : es.getEncountersByPatient(ps.getPatient(mcp.getPerson()
+									        .getPersonId()))) {
 										if (enc.getEncounterDatetime().getTime() == testResultDate.getTime()) {
 											oParent.setEncounter(enc);
 											oParent.setLocation(enc.getLocation());
@@ -134,8 +133,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 								oParent.setVoided(false);
 								
 								Obs oResult = new Obs();
-								oResult.setConcept(
-								    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SIMPLE_TB_TEST_RESULT));
+								oResult.setConcept(Context.getService(MdrtbService.class).getConcept(
+								    MdrtbConcepts.SIMPLE_TB_TEST_RESULT));
 								oResult.setCreator(Context.getAuthenticatedUser());
 								oResult.setDateCreated(new Date());
 								// this might not be right, but it satisfies not
@@ -151,8 +150,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 								oParent.addGroupMember(oResult);
 								
 								Obs oType = new Obs();
-								oType.setConcept(
-								    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SIMPLE_TB_TEST_TYPE));
+								oType.setConcept(Context.getService(MdrtbService.class).getConcept(
+								    MdrtbConcepts.SIMPLE_TB_TEST_TYPE));
 								oType.setCreator(Context.getAuthenticatedUser());
 								oType.setDateCreated(new Date());
 								// this might not be right, but it satisfies not
@@ -238,8 +237,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 						        && !newRelationshipTypeString.equals("") && newGenderString != null
 						        && !newGenderString.equals("")) {
 							
-							String relationshipKey = newRelationshipTypeString
-							        .substring(newRelationshipTypeString.length() - 1, newRelationshipTypeString.length());
+							String relationshipKey = newRelationshipTypeString.substring(
+							    newRelationshipTypeString.length() - 1, newRelationshipTypeString.length());
 							newRelationshipTypeString = newRelationshipTypeString.substring(0,
 							    newRelationshipTypeString.length() - 1);
 							
@@ -280,8 +279,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 								
 								if (newContactIdString != null && !newContactIdString.equals("")) {
 									
-									String contactAttributType = Context.getAdministrationService()
-									        .getGlobalProperty("mdrtb.patient_contact_id_attribute_type");
+									String contactAttributType = Context.getAdministrationService().getGlobalProperty(
+									    "mdrtb.patient_contact_id_attribute_type");
 									PersonAttributeType contactAttType = perS
 									        .getPersonAttributeTypeByName(contactAttributType);
 									PersonAttribute pa = new PersonAttribute();
@@ -366,10 +365,9 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			PersonService ps = Context.getPersonService();
 			String patientIdString = request.getParameter("patientId");
 			mp.setPatient(Context.getPatientService().getPatient(Integer.valueOf(patientIdString)));
-			String rtString = Context.getAdministrationService()
-			        .getGlobalProperty("mdrtb.treatment_supporter_relationship_type");
+			String rtString = Context.getAdministrationService().getGlobalProperty(
+			    "mdrtb.treatment_supporter_relationship_type");
 			RelationshipType rt = ps.getRelationshipTypeByName(rtString);
-			MdrtbService ms = (MdrtbService) Context.getService(MdrtbService.class);
 			Program program = Context.getService(MdrtbService.class).getMdrtbProgram();
 			for (Relationship contact : ps.getRelationshipsByPerson(mp.getPatient())) {
 				//bi-directional:
@@ -383,8 +381,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 					contactTmp = ps.getPerson(contactTmp.getPersonId());
 					mcp.setPerson(contactTmp);
 					mcp.setRelationship(contact);
-					mcp.setIsPatient(contactTmp.isPatient());
-					if (mcp.getPerson().isPatient()) {
+					mcp.setIsPatient(contactTmp.getIsPatient());
+					if (mcp.getPerson().getIsPatient()) {
 						List<PatientProgram> ppsTmp = Context.getProgramWorkflowService().getPatientPrograms(
 						    Context.getPatientService().getPatient(contactTmp.getPersonId()), program, null, null, null,
 						    null, false);
@@ -392,18 +390,19 @@ public class MdrtbManageContactsController extends SimpleFormController {
 							mcp.setIsTBPatient(true);
 					}
 					for (PersonAddress pa : contactTmp.getAddresses()) {
-						if (!pa.getVoided() && (mcp.getAddress() == null
-						        || (mcp.getAddress().getDateCreated().getTime() < pa.getDateCreated().getTime()
-						                && !mcp.getAddress().isPreferred())
-						        || pa.isPreferred()))
+						if (!pa.getVoided()
+						        && (mcp.getAddress() == null
+						                || (mcp.getAddress().getDateCreated().getTime() < pa.getDateCreated().getTime() && !mcp
+						                        .getAddress().getPreferred()) || pa.getPreferred()))
 							mcp.setAddress(pa);
 					}
 					
 					List<Obs> oListPhone = Context.getObsService().getObservationsByPersonAndConcept(mcp.getPerson(),
 					    (Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TELEPHONE_NUMBER)));
 					for (Obs phone : oListPhone) {
-						if (!phone.getVoided() && (mcp.getPhone() == null
-						        || (mcp.getPhone().getObsDatetime().getTime() < phone.getObsDatetime().getTime())))
+						if (!phone.getVoided()
+						        && (mcp.getPhone() == null || (mcp.getPhone().getObsDatetime().getTime() < phone
+						                .getObsDatetime().getTime())))
 							mcp.setPhone(phone);
 					}
 					
@@ -413,28 +412,27 @@ public class MdrtbManageContactsController extends SimpleFormController {
 						for (Obs o : oList) {
 							for (Obs oInner : o.getGroupMembers()) {
 								oInner.getConcept().getName().getName();
-								if (oInner.getConcept()
-								        .getConceptId() == (Context.getService(MdrtbService.class)
-								                .getConcept(MdrtbConcepts.SIMPLE_TB_TEST_RESULT)).getConceptId()
-								        && (mcp.getTestResult() == null || mcp.getTestResult().getObsDatetime()
-								                .getTime() <= oInner.getObsDatetime().getTime()))
+								if (oInner.getConcept().getConceptId() == (Context.getService(MdrtbService.class)
+								        .getConcept(MdrtbConcepts.SIMPLE_TB_TEST_RESULT)).getConceptId()
+								        && (mcp.getTestResult() == null || mcp.getTestResult().getObsDatetime().getTime() <= oInner
+								                .getObsDatetime().getTime()))
 									mcp.setTestResult(oInner);
-								if (oInner.getConcept()
-								        .getConceptId() == (Context.getService(MdrtbService.class)
-								                .getConcept(MdrtbConcepts.SIMPLE_TB_TEST_TYPE)).getConceptId()
-								        && (mcp.getTestType() == null || mcp.getTestType().getObsDatetime()
-								                .getTime() <= oInner.getObsDatetime().getTime()))
+								if (oInner.getConcept().getConceptId() == (Context.getService(MdrtbService.class)
+								        .getConcept(MdrtbConcepts.SIMPLE_TB_TEST_TYPE)).getConceptId()
+								        && (mcp.getTestType() == null || mcp.getTestType().getObsDatetime().getTime() <= oInner
+								                .getObsDatetime().getTime()))
 									mcp.setTestType(oInner);
 							}
 						}
 					}
 					//contact person attribute
-					String contactAttributType = Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.patient_contact_id_attribute_type");
+					String contactAttributType = Context.getAdministrationService().getGlobalProperty(
+					    "mdrtb.patient_contact_id_attribute_type");
 					PersonAttributeType contactAttType = ps.getPersonAttributeTypeByName(contactAttributType);
 					if (contactAttType != null) {
 						for (PersonAttribute patt : contactTmp.getActiveAttributes()) {
-							if (!patt.isVoided() && patt.getAttributeType().equals(contactAttType)
+							if (!patt.getVoided()
+							        && patt.getAttributeType().equals(contactAttType)
 							        && (mcp.getMdrtbContactId() == null || (mcp.getMdrtbContactId().getDateCreated()
 							                .getTime() < patt.getDateCreated().getTime()))) {
 								mcp.setMdrtbContactId(patt);
@@ -442,11 +440,15 @@ public class MdrtbManageContactsController extends SimpleFormController {
 						}
 					}
 					//known mdr
-					List<Obs> oKnownMDR = Context.getObsService().getObservationsByPersonAndConcept(mcp.getPerson(), (Context
-					        .getService(MdrtbService.class).getConcept(MdrtbConcepts.CONTACT_KNOWN_OR_CURRENT_MDR_CASE)));
+					List<Obs> oKnownMDR = Context.getObsService()
+					        .getObservationsByPersonAndConcept(
+					            mcp.getPerson(),
+					            (Context.getService(MdrtbService.class)
+					                    .getConcept(MdrtbConcepts.CONTACT_KNOWN_OR_CURRENT_MDR_CASE)));
 					for (Obs mdr : oKnownMDR) {
-						if (!mdr.getVoided() && (mcp.getKnownMdrtbContact() == null
-						        || (mcp.getKnownMdrtbContact().getObsDatetime().getTime() < mdr.getObsDatetime().getTime())))
+						if (!mdr.getVoided()
+						        && (mcp.getKnownMdrtbContact() == null || (mcp.getKnownMdrtbContact().getObsDatetime()
+						                .getTime() < mdr.getObsDatetime().getTime())))
 							mcp.setKnownMdrtbContact(mdr);
 					}
 					
@@ -464,8 +466,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			List<Obs> obsVisits = os.getObservationsByPersonAndConcept(mp.getPatient(), nextVisit);
 			
 			for (Obs o : obsVisits) {
-				if ((mp.getNextScheduledVisit() == null
-				        || mp.getNextScheduledVisit().getObsDatetime().before(o.getObsDatetime()))) {
+				if ((mp.getNextScheduledVisit() == null || mp.getNextScheduledVisit().getObsDatetime()
+				        .before(o.getObsDatetime()))) {
 					mp.setNextScheduledVisit(o);
 				}
 			}
@@ -488,8 +490,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			
 			//set program
 			
-			List<PatientProgram> pps = Context.getProgramWorkflowService().getPatientPrograms(mp.getPatient(), program, null,
-			    null, null, null, false);
+			List<PatientProgram> pps = Context.getProgramWorkflowService().getPatientPrograms(mp.getPatient(), program,
+			    null, null, null, null, false);
 			for (PatientProgram pp : pps) {
 				if (pp.getDateCompleted() == null && pp.getProgram().equals(program) && !pp.getVoided()) {
 					mp.setPatientProgram(pp);
@@ -555,8 +557,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			map.put("testTypeResponses",
 			    (Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SIMPLE_TB_TEST_TYPE)).getAnswers());
 			String dateFormat = Context.getDateFormat().toPattern();
-			String relationshipTypesString = Context.getAdministrationService()
-			        .getGlobalProperty("mdrtb.patient_identifier_type_list");
+			String relationshipTypesString = Context.getAdministrationService().getGlobalProperty(
+			    "mdrtb.patient_identifier_type_list");
 			
 			List<PatientIdentifierType> pitList = new ArrayList<PatientIdentifierType>();
 			for (StringTokenizer st = new StringTokenizer(relationshipTypesString, "|"); st.hasMoreTokens();) {
@@ -568,7 +570,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			map.put("patientIdentifierTypes", pitList);
 			map.put("dateFormat", dateFormat);
 			MessageSourceAccessor msa = getMessageSourceAccessor();
-			map.put("daysOfWeek",
+			map.put(
+			    "daysOfWeek",
 			    "'" + msa.getMessage("mdrtb.sunday") + "','" + msa.getMessage("mdrtb.monday") + "','"
 			            + msa.getMessage("mdrtb.tuesday") + "','" + msa.getMessage("mdrtb.wednesday") + "','"
 			            + msa.getMessage("mdrtb.thursday") + "','" + msa.getMessage("mdrtb.friday") + "','"
@@ -576,17 +579,20 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			            + msa.getMessage("mdrtb.mon") + "','" + msa.getMessage("mdrtb.tues") + "','"
 			            + msa.getMessage("mdrtb.wed") + "','" + msa.getMessage("mdrtb.thurs") + "','"
 			            + msa.getMessage("mdrtb.fri") + "','" + msa.getMessage("mdrtb.sat") + "'");
-			map.put("monthsOfYear", "'" + msa.getMessage("mdrtb.january") + "','" + msa.getMessage("mdrtb.february") + "','"
-			        + msa.getMessage("mdrtb.march") + "','" + msa.getMessage("mdrtb.april") + "','"
-			        + msa.getMessage("mdrtb.may") + "','" + msa.getMessage("mdrtb.june") + "','"
-			        + msa.getMessage("mdrtb.july") + "','" + msa.getMessage("mdrtb.august") + "','"
-			        + msa.getMessage("mdrtb.september") + "','" + msa.getMessage("mdrtb.october") + "','"
-			        + msa.getMessage("mdrtb.november") + "','" + msa.getMessage("mdrtb.december") + "','"
-			        + msa.getMessage("mdrtb.jan") + "','" + msa.getMessage("mdrtb.feb") + "','" + msa.getMessage("mdrtb.mar")
-			        + "','" + msa.getMessage("mdrtb.apr") + "','" + msa.getMessage("mdrtb.may") + "','"
-			        + msa.getMessage("mdrtb.jun") + "','" + msa.getMessage("mdrtb.jul") + "','" + msa.getMessage("mdrtb.aug")
-			        + "','" + msa.getMessage("mdrtb.sept") + "','" + msa.getMessage("mdrtb.oct") + "','"
-			        + msa.getMessage("mdrtb.nov") + "','" + msa.getMessage("mdrtb.dec") + "'");
+			map.put(
+			    "monthsOfYear",
+			    "'" + msa.getMessage("mdrtb.january") + "','" + msa.getMessage("mdrtb.february") + "','"
+			            + msa.getMessage("mdrtb.march") + "','" + msa.getMessage("mdrtb.april") + "','"
+			            + msa.getMessage("mdrtb.may") + "','" + msa.getMessage("mdrtb.june") + "','"
+			            + msa.getMessage("mdrtb.july") + "','" + msa.getMessage("mdrtb.august") + "','"
+			            + msa.getMessage("mdrtb.september") + "','" + msa.getMessage("mdrtb.october") + "','"
+			            + msa.getMessage("mdrtb.november") + "','" + msa.getMessage("mdrtb.december") + "','"
+			            + msa.getMessage("mdrtb.jan") + "','" + msa.getMessage("mdrtb.feb") + "','"
+			            + msa.getMessage("mdrtb.mar") + "','" + msa.getMessage("mdrtb.apr") + "','"
+			            + msa.getMessage("mdrtb.may") + "','" + msa.getMessage("mdrtb.jun") + "','"
+			            + msa.getMessage("mdrtb.jul") + "','" + msa.getMessage("mdrtb.aug") + "','"
+			            + msa.getMessage("mdrtb.sept") + "','" + msa.getMessage("mdrtb.oct") + "','"
+			            + msa.getMessage("mdrtb.nov") + "','" + msa.getMessage("mdrtb.dec") + "'");
 		}
 		return map;
 	}

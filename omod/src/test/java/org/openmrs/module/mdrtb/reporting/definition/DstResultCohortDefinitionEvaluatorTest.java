@@ -17,7 +17,7 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.openmrs.test.Verifies;
 
 public class DstResultCohortDefinitionEvaluatorTest extends BaseModuleContextSensitiveTest {
-
+	
 	/**
 	 * @see BaseContextSensitiveTest#useInMemoryDatabase()
 	 */
@@ -30,7 +30,7 @@ public class DstResultCohortDefinitionEvaluatorTest extends BaseModuleContextSen
 	public void setup() throws Exception {
 		authenticate();
 	}
-
+	
 	/**
 	 * @see {@link DstResultCohortDefinitionEvaluator#evaluate(CohortDefinition,EvaluationContext)}
 	 */
@@ -44,17 +44,17 @@ public class DstResultCohortDefinitionEvaluatorTest extends BaseModuleContextSen
 		cd.addParameter(new Parameter("maxResultDate", "To Date", Date.class));
 		
 		int runningTotal = 0;
-		for (int i=1998; i<=2010; i++) {
+		for (int i = 1998; i <= 2010; i++) {
 			EvaluationContext context = new EvaluationContext();
 			context.addParameterValue("minResultDate", DateUtil.getDateTime(i, 1, 1));
 			context.addParameterValue("maxResultDate", DateUtil.getDateTime(i, 12, 31));
 			EvaluatedCohort cohort = Context.getService(CohortDefinitionService.class).evaluate(cd, context);
 			runningTotal += cohort.size();
-			System.out.println("Num with MDR results " + i + ": " + cohort.size() + "[" + cohort.getCommaSeparatedPatientIds() + "]");
+			System.out.println("Num with MDR results " + i + ": " + cohort.size());
 		}
 		System.out.println("Total all years: " + runningTotal);
 	}
-
+	
 	/**
 	 * @see {@link DstResultCohortDefinitionEvaluator#evaluate(CohortDefinition,EvaluationContext)}
 	 */
@@ -65,6 +65,6 @@ public class DstResultCohortDefinitionEvaluatorTest extends BaseModuleContextSen
 		DstResultCohortDefinition cd = new DstResultCohortDefinition();
 		cd.setTbClassification(TbClassification.XDR_TB);
 		EvaluatedCohort cohort = Context.getService(CohortDefinitionService.class).evaluate(cd, context);
-		System.out.println("Num XDR: " + cohort.size() + " - " + cohort.getCommaSeparatedPatientIds());
+		System.out.println("Num XDR: " + cohort.size());
 	}
 }

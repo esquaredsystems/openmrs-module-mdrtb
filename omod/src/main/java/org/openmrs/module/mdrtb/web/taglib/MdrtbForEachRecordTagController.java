@@ -34,7 +34,6 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.util.OpenmrsConstants;
-import org.openmrs.util.OpenmrsUtil;
 import org.springframework.util.StringUtils;
 
 public class MdrtbForEachRecordTagController extends BodyTagSupport {
@@ -152,8 +151,8 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 			
 			Map<String, String> opts = new HashMap<String, String>();
 			for (ConceptAnswer a : civilStatus.getAnswers()) {
-				opts.put(a.getAnswerConcept().getConceptId().toString(),
-				    a.getAnswerConcept().getName(locale, false).getName());
+				opts.put(a.getAnswerConcept().getConceptId().toString(), a.getAnswerConcept().getName(locale, false)
+				        .getName());
 			}
 			records = opts.entrySet().iterator();
 			if (select != null)
@@ -216,7 +215,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 		} else if (name.equals("conceptSet")) {
 			if (conceptSet == null)
 				throw new IllegalArgumentException("Must specify conceptSet");
-			Concept c = OpenmrsUtil.getConceptByIdOrName(conceptSet);
+			Concept c = Context.getConceptService().getConcept(conceptSet);
 			if (c == null)
 				throw new IllegalArgumentException("Can't find conceptSet " + conceptSet);
 			List<Concept> list = Context.getConceptService().getConceptsByConceptSet(c);
@@ -224,7 +223,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 		} else if (name.equals("answer")) {
 			if (concept == null)
 				throw new IllegalArgumentException("Must specify concept");
-			Concept c = OpenmrsUtil.getConceptByIdOrName(concept);
+			Concept c = Context.getConceptService().getConcept(concept);
 			if (c == null)
 				throw new IllegalArgumentException("Can't find concept " + concept);
 			if (c.getAnswers() != null)
@@ -275,7 +274,8 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 			}
 			pageContext.setAttribute("record", obj);
 			
-			boolean isSelected = obj.equals(select) || (select instanceof Collection && ((Collection<?>) select).contains(obj));
+			boolean isSelected = obj.equals(select)
+			        || (select instanceof Collection && ((Collection<?>) select).contains(obj));
 			pageContext.setAttribute("selected", isSelected ? "selected" : "");
 			
 			if (name.equals("civilStatus")) { //Kludge until this in the db and not a HashMap

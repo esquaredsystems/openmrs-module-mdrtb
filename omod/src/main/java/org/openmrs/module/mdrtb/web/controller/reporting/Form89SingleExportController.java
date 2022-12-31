@@ -47,7 +47,6 @@ import org.openmrs.module.mdrtbdrugforecast.web.controller.status.DashboardTreat
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-
 public class Form89SingleExportController {
 	
 	@InitBinder
@@ -135,7 +134,7 @@ public class Form89SingleExportController {
 		
 	}
 	
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	@SuppressWarnings({ "deprecation" })
 	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/reporting/form89Single")
 	public static String doForm89(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
@@ -143,8 +142,8 @@ public class Form89SingleExportController {
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
 		System.out.println("---POST-----");
-		System.out.println(
-		    "PARAMS:" + oblastId + " " + districtId + " " + facilityId + " " + year + " " + quarter + " " + month);
+		System.out.println("PARAMS:" + oblastId + " " + districtId + " " + facilityId + " " + year + " " + quarter + " "
+		        + month);
 		/*Region o = null;
 		if(oblast!=null && !oblast.equals("") && location == null)
 			o =  Context.getService(MdrtbService.class).getOblast(Integer.parseInt(oblast));
@@ -251,7 +250,7 @@ public class Form89SingleExportController {
 			Concept q = f89.getAnatomicalSite();
 			
 			if (q != null)
-				f89Data.setSiteOfDisease(q.getName().getShortName());
+				f89Data.setSiteOfDisease(q.getShortNameInLocale(Context.getLocale()).getName());
 			if (f89.getForm89Date() != null) {
 				f89Data.setForm89Date(sdf.format(f89.getForm89Date()));
 			}
@@ -275,7 +274,7 @@ public class Form89SingleExportController {
 			/* Smear diagnosticSmear = TB03Util.getDiagnosticSmear(tf);
 			if(diagnosticSmear!=null) {
 					if(diagnosticSmear.getResult()!=null) 
-						tb03Data.setDiagnosticSmearResult(diagnosticSmear.getResult().getName().getShortName());
+						tb03Data.setDiagnosticSmearResult(diagnosticSmear.getResult().getShortNameInLocale(Context.getLocale()).getName());
 					if(diagnosticSmear.getResultDate()!=null)
 						tb03Data.setDiagnosticSmearDate(sdf.format(diagnosticSmear.getResultDate()));
 					
@@ -287,9 +286,9 @@ public class Form89SingleExportController {
 			Xpert firstXpert = TB03Util.getFirstXpert(tf);
 			if(firstXpert!=null) {
 				if(firstXpert.getResult()!=null)
-					tb03Data.setXpertMTBResult(firstXpert.getResult().getName().getShortName());
+					tb03Data.setXpertMTBResult(firstXpert.getResult().getShortNameInLocale(Context.getLocale()).getName());
 				if(firstXpert.getRifResistance()!=null)
-					tb03Data.setXpertRIFResult(firstXpert.getRifResistance().getName().getShortName());
+					tb03Data.setXpertRIFResult(firstXpert.getRifResistance().getShortNameInLocale(Context.getLocale()).getName());
 				if(firstXpert.getResultDate()!=null)
 					tb03Data.setXpertTestDate(sdf.format(firstXpert.getResultDate()));
 				
@@ -302,11 +301,11 @@ public class Form89SingleExportController {
 			HAIN firstHAIN = TB03Util.getFirstHAIN(tf);
 			if(firstHAIN!=null) {
 				if(firstHAIN.getResult()!=null)
-					tb03Data.setHainMTBResult(firstHAIN.getResult().getName().getShortName());
+					tb03Data.setHainMTBResult(firstHAIN.getResult().getShortNameInLocale(Context.getLocale()).getName());
 				if(firstHAIN.getRifResistance()!=null)
-					tb03Data.setHainRIFResult(firstHAIN.getRifResistance().getName().getShortName());
+					tb03Data.setHainRIFResult(firstHAIN.getRifResistance().getShortNameInLocale(Context.getLocale()).getName());
 				if(firstHAIN.getInhResistance()!=null)
-					tb03Data.setHainINHResult(firstHAIN.getInhResistance().getName().getShortName());
+					tb03Data.setHainINHResult(firstHAIN.getInhResistance().getShortNameInLocale(Context.getLocale()).getName());
 				if(firstHAIN.getResultDate()!=null)
 					tb03Data.setHainTestDate(sdf.format(firstHAIN.getResultDate()));
 				
@@ -317,7 +316,7 @@ public class Form89SingleExportController {
 			Culture diagnosticCulture  = TB03Util.getDiagnosticCulture(tf);
 			if(diagnosticCulture!=null) {
 				if(diagnosticCulture.getResult()!=null)
-					tb03Data.setCultureResult(diagnosticCulture.getResult().getName().getShortName());
+					tb03Data.setCultureResult(diagnosticCulture.getResult().getShortNameInLocale(Context.getLocale()).getName());
 				if(diagnosticCulture.getResultDate()!=null)
 					tb03Data.setCultureTestDate(sdf.format(diagnosticCulture.getResultDate()));
 				tb03Data.setCultureTestNumber(diagnosticCulture.getRealSpecimenId());
@@ -332,7 +331,8 @@ public class Form89SingleExportController {
 			if (diagnosticSmear != null) {
 				System.out.println("SMEAR ID:" + diagnosticSmear.getId());
 				if (diagnosticSmear.getSmearResult() != null) {
-					f89Data.setDiagnosticSmearResult(diagnosticSmear.getSmearResult().getName().getShortName());
+					f89Data.setDiagnosticSmearResult(diagnosticSmear.getSmearResult()
+					        .getShortNameInLocale(Context.getLocale()).getName());
 					//System.out.println("RESULT:" + diagnosticSmear.getResult());
 				}
 				if (diagnosticSmear.getEncounterDatetime() != null) {
@@ -345,8 +345,8 @@ public class Form89SingleExportController {
 				
 				Location loc = diagnosticSmear.getLocation();
 				if (loc != null) {
-					if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-						f89Data.setDiagnosticSmearLab(loc.getRegion());
+					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+						f89Data.setDiagnosticSmearLab(loc.getAddress6());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -369,9 +369,9 @@ public class Form89SingleExportController {
 				firstXpert = xperts.get(0);
 			if (firstXpert != null) {
 				if (firstXpert.getMtbResult() != null)
-					f89Data.setXpertMTBResult(firstXpert.getMtbResult().getName().getShortName());
+					f89Data.setXpertMTBResult(firstXpert.getMtbResult().getShortNameInLocale(Context.getLocale()).getName());
 				if (firstXpert.getRifResult() != null)
-					f89Data.setXpertRIFResult(firstXpert.getRifResult().getName().getShortName());
+					f89Data.setXpertRIFResult(firstXpert.getRifResult().getShortNameInLocale(Context.getLocale()).getName());
 				if (firstXpert.getEncounterDatetime() != null)
 					f89Data.setXpertTestDate(sdf.format(firstXpert.getEncounterDatetime()));
 				
@@ -379,8 +379,8 @@ public class Form89SingleExportController {
 				
 				Location loc = firstXpert.getLocation();
 				if (loc != null) {
-					if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-						f89Data.setXpertLab(loc.getRegion());
+					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+						f89Data.setXpertLab(loc.getAddress6());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -400,11 +400,11 @@ public class Form89SingleExportController {
 			
 			if (firstHAIN != null) {
 				if (firstHAIN.getMtbResult() != null)
-					f89Data.setHainMTBResult(firstHAIN.getMtbResult().getName().getShortName());
+					f89Data.setHainMTBResult(firstHAIN.getMtbResult().getShortNameInLocale(Context.getLocale()).getName());
 				if (firstHAIN.getRifResult() != null)
-					f89Data.setHainRIFResult(firstHAIN.getRifResult().getName().getShortName());
+					f89Data.setHainRIFResult(firstHAIN.getRifResult().getShortNameInLocale(Context.getLocale()).getName());
 				if (firstHAIN.getInhResult() != null)
-					f89Data.setHainINHResult(firstHAIN.getInhResult().getName().getShortName());
+					f89Data.setHainINHResult(firstHAIN.getInhResult().getShortNameInLocale(Context.getLocale()).getName());
 				if (firstHAIN.getEncounterDatetime() != null)
 					f89Data.setHainTestDate(sdf.format(firstHAIN.getEncounterDatetime()));
 				
@@ -412,8 +412,8 @@ public class Form89SingleExportController {
 				
 				Location loc = firstHAIN.getLocation();
 				if (loc != null) {
-					if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-						f89Data.setHainLab(loc.getRegion());
+					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+						f89Data.setHainLab(loc.getAddress6());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -435,19 +435,19 @@ public class Form89SingleExportController {
 			
 			if (firstHAIN2 != null) {
 				if (firstHAIN2.getMtbResult() != null)
-					f89Data.setHain2MTBResult(firstHAIN2.getMtbResult().getName().getShortName());
+					f89Data.setHain2MTBResult(firstHAIN2.getMtbResult().getShortNameInLocale(Context.getLocale()).getName());
 				if (firstHAIN2.getFqResult() != null)
-					f89Data.setHain2FqResult(firstHAIN2.getFqResult().getName().getShortName());
+					f89Data.setHain2FqResult(firstHAIN2.getFqResult().getShortNameInLocale(Context.getLocale()).getName());
 				if (firstHAIN2.getInjResult() != null)
-					f89Data.setHain2InjResult(firstHAIN2.getInjResult().getName().getShortName());
+					f89Data.setHain2InjResult(firstHAIN2.getInjResult().getShortNameInLocale(Context.getLocale()).getName());
 				if (firstHAIN2.getEncounterDatetime() != null)
 					f89Data.setHain2TestDate(sdf.format(firstHAIN2.getEncounterDatetime()));
 				
 				f89Data.setHain2TestNumber(firstHAIN2.getSpecimenId());
 				Location loc = firstHAIN2.getLocation();
 				if (loc != null) {
-					if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-						f89Data.setHain2Lab(loc.getRegion());
+					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+						f89Data.setHain2Lab(loc.getAddress6());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.jfree.util.Log;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Obs;
@@ -18,6 +19,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
@@ -238,7 +240,7 @@ public class PatientListContoller {
 		int i = 0;
 		Person p = null;
 		for (TB03Form tf : tb03s) {
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			i++;
 			p = Context.getPersonService().getPerson(tf.getPatient().getId());
@@ -298,8 +300,8 @@ public class PatientListContoller {
 				
 				if (ds.getSmearResult() != null) {
 					
-					if (ds.getSmearResult().getConceptId().intValue() == ms.getConcept(MdrtbConcepts.NEGATIVE).getConceptId()
-					        .intValue()) {
+					if (ds.getSmearResult().getConceptId().intValue() == ms.getConcept(MdrtbConcepts.NEGATIVE)
+					        .getConceptId().intValue()) {
 						report += openTD() + getMessage("mdrtb.negativeShort") + closeTD();
 					}
 					
@@ -613,7 +615,7 @@ public class PatientListContoller {
 		Person p = null;
 		int i = 0;
 		for (TB03Form tf : tb03s) {
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -657,12 +659,13 @@ public class PatientListContoller {
 		p = null;
 		i = 0;
 		for (TB03Form tf : tb03s) {
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
-			if (temp != null && temp.getValueCoded() != null
-			        && (temp.getValueCoded().getId().intValue() == relapse1Concept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == relapse2Concept.getId().intValue())) {
+			if (temp != null
+			        && temp.getValueCoded() != null
+			        && (temp.getValueCoded().getId().intValue() == relapse1Concept.getId().intValue() || temp
+			                .getValueCoded().getId().intValue() == relapse2Concept.getId().intValue())) {
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
 				i++;
 				report += openTR();
@@ -702,13 +705,14 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
-			if (temp != null && temp.getValueCoded() != null
-			        && (temp.getValueCoded().getId().intValue() == default1Concept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == default2Concept.getId().intValue())) {
+			if (temp != null
+			        && temp.getValueCoded() != null
+			        && (temp.getValueCoded().getId().intValue() == default1Concept.getId().intValue() || temp
+			                .getValueCoded().getId().intValue() == default2Concept.getId().intValue())) {
 				
 				i++;
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
@@ -749,13 +753,14 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
-			if (temp != null && temp.getValueCoded() != null
-			        && (temp.getValueCoded().getId().intValue() == failure1Concept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == failure2Concept.getId().intValue())) {
+			if (temp != null
+			        && temp.getValueCoded() != null
+			        && (temp.getValueCoded().getId().intValue() == failure1Concept.getId().intValue() || temp
+			                .getValueCoded().getId().intValue() == failure2Concept.getId().intValue())) {
 				
 				i++;
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
@@ -795,7 +800,7 @@ public class PatientListContoller {
 		p = null;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -837,7 +842,7 @@ public class PatientListContoller {
 		p = null;
 		i = 0;
 		for (TB03Form tf : tb03s) {
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -864,6 +869,7 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
+	
 	//////////
 	
 	@RequestMapping("/module/mdrtb/reporting/dotsCasesByAnatomicalSite")
@@ -937,7 +943,7 @@ public class PatientListContoller {
 		Person p = null;
 		int i = 0;
 		for (TB03Form tf : tb03s) {
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -984,7 +990,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1012,6 +1018,7 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
+	
 	///////////
 	
 	@RequestMapping("/module/mdrtb/reporting/byDrugResistance")
@@ -1091,7 +1098,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1137,7 +1144,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1183,7 +1190,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1229,7 +1236,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1275,7 +1282,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1321,7 +1328,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1367,7 +1374,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1412,7 +1419,7 @@ public class PatientListContoller {
 		p = null;
 		i = 0;
 		for (TB03Form tf : tb03s) {
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1458,7 +1465,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1564,7 +1571,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1612,7 +1619,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1659,14 +1666,15 @@ public class PatientListContoller {
 		p = null;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
 			temp2 = MdrtbUtil.getObsFromEncounter(siteConcept, tf.getEncounter());
-			if (temp != null && temp.getValueCoded() != null
-			        && (temp.getValueCoded().getId().intValue() == relapse1Concept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == relapse2Concept.getId().intValue())) {
+			if (temp != null
+			        && temp.getValueCoded() != null
+			        && (temp.getValueCoded().getId().intValue() == relapse1Concept.getId().intValue() || temp
+			                .getValueCoded().getId().intValue() == relapse2Concept.getId().intValue())) {
 				if (temp2 != null && temp2.getValueCoded() != null
 				        && temp2.getValueCoded().getId().intValue() == pulConcept.getId().intValue()) {
 					if (MdrtbUtil.isDiagnosticBacPositive(tf)) {
@@ -1707,14 +1715,15 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
 			temp2 = MdrtbUtil.getObsFromEncounter(siteConcept, tf.getEncounter());
-			if (temp != null && temp.getValueCoded() != null
-			        && (temp.getValueCoded().getId().intValue() == relapse1Concept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == relapse2Concept.getId().intValue())) {
+			if (temp != null
+			        && temp.getValueCoded() != null
+			        && (temp.getValueCoded().getId().intValue() == relapse1Concept.getId().intValue() || temp
+			                .getValueCoded().getId().intValue() == relapse2Concept.getId().intValue())) {
 				if (temp2 != null && temp2.getValueCoded() != null
 				        && temp2.getValueCoded().getId().intValue() == pulConcept.getId().intValue()) {
 					if (!MdrtbUtil.isDiagnosticBacPositive(tf)) {
@@ -1761,16 +1770,17 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
 			temp2 = MdrtbUtil.getObsFromEncounter(siteConcept, tf.getEncounter());
-			if (temp != null && temp.getValueCoded() != null
+			if (temp != null
+			        && temp.getValueCoded() != null
 			        && (temp.getValueCoded().getId().intValue() == default1Concept.getId().intValue()
 			                || temp.getValueCoded().getId().intValue() == default2Concept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == failure1Concept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == failure2Concept.getId().intValue())) {
+			                || temp.getValueCoded().getId().intValue() == failure1Concept.getId().intValue() || temp
+			                .getValueCoded().getId().intValue() == failure2Concept.getId().intValue())) {
 				if (temp2 != null && temp2.getValueCoded() != null
 				        && temp2.getValueCoded().getId().intValue() == pulConcept.getId().intValue()) {
 					if (!MdrtbUtil.isDiagnosticBacPositive(tf)) {
@@ -1814,16 +1824,17 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
 			temp2 = MdrtbUtil.getObsFromEncounter(siteConcept, tf.getEncounter());
-			if (temp != null && temp.getValueCoded() != null
+			if (temp != null
+			        && temp.getValueCoded() != null
 			        && (temp.getValueCoded().getId().intValue() == default1Concept.getId().intValue()
 			                || temp.getValueCoded().getId().intValue() == default2Concept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == failure1Concept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == failure2Concept.getId().intValue())) {
+			                || temp.getValueCoded().getId().intValue() == failure1Concept.getId().intValue() || temp
+			                .getValueCoded().getId().intValue() == failure2Concept.getId().intValue())) {
 				if (temp2 != null && temp2.getValueCoded() != null
 				        && temp2.getValueCoded().getId().intValue() == pulConcept.getId().intValue()) {
 					if (MdrtbUtil.isDiagnosticBacPositive(tf)) {
@@ -1868,7 +1879,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -1917,7 +1928,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03Form tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -2023,7 +2034,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (TB03uForm tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -2064,7 +2075,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03uForm tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -2166,13 +2177,14 @@ public class PatientListContoller {
 		int i = 0;
 		for (TB03uForm tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
-			if (temp != null && temp.getValueCoded() != null
-			        && (temp.getValueCoded().getId().intValue() == curedConcept.getId().intValue()
-			                || temp.getValueCoded().getId().intValue() == txCompleted.getId().intValue())) {
+			if (temp != null
+			        && temp.getValueCoded() != null
+			        && (temp.getValueCoded().getId().intValue() == curedConcept.getId().intValue() || temp.getValueCoded()
+			                .getId().intValue() == txCompleted.getId().intValue())) {
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
 				i++;
 				report += openTR();
@@ -2243,8 +2255,8 @@ public class PatientListContoller {
 		    month);
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		dateMap.get("startDate");
+		dateMap.get("endDate");
 		//NEW CASES 
 		Concept mdr = ms.getConcept(MdrtbConcepts.MDR_TB);
 		report += "<h4>" + getMessage("mdrtb.mdrtb") + "</h4>";
@@ -2263,7 +2275,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (TB03uForm tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -2303,7 +2315,7 @@ public class PatientListContoller {
 		i = 0;
 		for (TB03uForm tf : tb03s) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
@@ -2328,6 +2340,7 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
+	
 	//
 	//////////////////////////////
 	
@@ -2375,7 +2388,7 @@ public class PatientListContoller {
 		
 		String report = "";
 		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.AGE_AT_FORM89_REGISTRATION);
+		ms.getConcept(MdrtbConcepts.AGE_AT_FORM89_REGISTRATION);
 		
 		/*ArrayList<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);*/
 		
@@ -2413,7 +2426,7 @@ public class PatientListContoller {
 		
 		for (TB03Form tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			if (tf.getPatient().getGender().equals("F")) {
@@ -2494,7 +2507,7 @@ public class PatientListContoller {
 		
 		String report = "";
 		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.AGE_AT_FORM89_REGISTRATION);
+		ms.getConcept(MdrtbConcepts.AGE_AT_FORM89_REGISTRATION);
 		
 		/*ArrayList<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);*/
 		ArrayList<TB03Form> forms = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
@@ -2522,7 +2535,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (TB03Form tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			if (tf.getPatient().getGender().equals("M")) {
@@ -2610,7 +2623,7 @@ public class PatientListContoller {
 		Form89 f89 = null;
 		for (TB03Form tb03 : tb03List) {
 			
-			if (tb03.getPatient() == null || tb03.getPatient().isVoided()) {
+			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -2619,16 +2632,17 @@ public class PatientListContoller {
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null || regGroup.getConceptId().intValue() != Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+			if (regGroup == null
+			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
+			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
 				
 			}
 			
-			ArrayList<Form89> fList = Context.getService(MdrtbService.class)
-			        .getForm89FormsFilledForPatientProgram(tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
+			ArrayList<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
+			    tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
@@ -3168,7 +3182,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			TB03Form tb03 = null;
@@ -3203,8 +3217,9 @@ public class PatientListContoller {
 	}
 	
 	@RequestMapping("/module/mdrtb/reporting/detectedFromContact")
-	public String detectedFromContact(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
-	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
+	public String detectedFromContact(@RequestParam("district") Integer districtId,
+	        @RequestParam("oblast") Integer oblastId, @RequestParam("facility") Integer facilityId,
+	        @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
@@ -3271,7 +3286,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			TB03Form tb03 = null;
@@ -3372,7 +3387,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			TB03Form tb03 = null;
@@ -3471,7 +3486,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			TB03Form tb03 = null;
@@ -3570,7 +3585,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			TB03Form tb03 = null;
@@ -3666,7 +3681,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			TB03Form tb03 = null;
 			tf.initTB03(tf.getPatProgId());
@@ -3763,7 +3778,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			TB03Form tb03 = null;
 			tf.initTB03(tf.getPatProgId());
@@ -3860,7 +3875,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			TB03Form tb03 = null;
 			tf.initTB03(tf.getPatProgId());
@@ -3955,7 +3970,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			TB03Form tb03 = null;
 			tf.initTB03(tf.getPatProgId());
@@ -4053,7 +4068,7 @@ public class PatientListContoller {
 		int i = 0;
 		for (Form89 tf : forms) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			TB03Form tb03 = null;
@@ -4129,7 +4144,7 @@ public class PatientListContoller {
 		
 		String report = "";
 		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.PROFESSION);
+		ms.getConcept(MdrtbConcepts.PROFESSION);
 		
 		ArrayList<Form89> workerList = new ArrayList<Form89>();
 		ArrayList<Form89> govtList = new ArrayList<Form89>();
@@ -4187,7 +4202,7 @@ public class PatientListContoller {
 		
 		for (TB03Form tb03 : tb03List) {
 			
-			if (tb03.getPatient() == null || tb03.getPatient().isVoided()) {
+			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -4196,16 +4211,17 @@ public class PatientListContoller {
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null || regGroup.getConceptId().intValue() != Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+			if (regGroup == null
+			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
+			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
 				
 			}
 			
-			ArrayList<Form89> fList = Context.getService(MdrtbService.class)
-			        .getForm89FormsFilledForPatientProgram(tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
+			ArrayList<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
+			    tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
@@ -4872,7 +4888,7 @@ public class PatientListContoller {
 		
 		String report = "";
 		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.POPULATION_CATEGORY);
+		ms.getConcept(MdrtbConcepts.POPULATION_CATEGORY);
 		
 		ArrayList<Form89> thisList = new ArrayList<Form89>();
 		ArrayList<Form89> otherList = new ArrayList<Form89>();
@@ -4896,8 +4912,8 @@ public class PatientListContoller {
 		int otherId = otherConcept.getConceptId().intValue();
 		Concept foreignerConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FOREIGNER);
 		int foreignerId = foreignerConcept.getConceptId().intValue();
-		Concept welfareConcept = Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.RESIDENT_SOCIAL_SECURITY_FACILITY);
+		Concept welfareConcept = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.RESIDENT_SOCIAL_SECURITY_FACILITY);
 		int welfareId = welfareConcept.getConceptId().intValue();
 		Concept homelessConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOMELESS);
 		int homelessId = homelessConcept.getConceptId().intValue();
@@ -4913,7 +4929,7 @@ public class PatientListContoller {
 		
 		for (TB03Form tb03 : tb03List) {
 			
-			if (tb03.getPatient() == null || tb03.getPatient().isVoided()) {
+			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -4922,16 +4938,17 @@ public class PatientListContoller {
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null || regGroup.getConceptId().intValue() != Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+			if (regGroup == null
+			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
+			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
 				
 			}
 			
-			ArrayList<Form89> fList = Context.getService(MdrtbService.class)
-			        .getForm89FormsFilledForPatientProgram(tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
+			ArrayList<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
+			    tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
@@ -4993,7 +5010,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		Obs temp = null;
 		Person p = null;
 		int i = 0;
 		for (Form89 tf : thisList) {
@@ -5036,7 +5052,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		temp = null;
 		p = null;
 		i = 0;
 		for (Form89 tf : otherList) {
@@ -5081,7 +5096,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		temp = null;
 		p = null;
 		i = 0;
 		for (Form89 tf : foreignerList) {
@@ -5125,7 +5139,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		temp = null;
 		p = null;
 		i = 0;
 		for (Form89 tf : welfareList) {
@@ -5168,7 +5181,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		temp = null;
 		p = null;
 		i = 0;
 		for (Form89 tf : homelessList) {
@@ -5211,7 +5223,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		temp = null;
 		p = null;
 		i = 0;
 		for (Form89 tf : prisonerList) {
@@ -5255,7 +5266,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		temp = null;
 		p = null;
 		i = 0;
 		for (Form89 tf : investigationList) {
@@ -5336,7 +5346,7 @@ public class PatientListContoller {
 		
 		String report = "";
 		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.LOCATION_TYPE);
+		ms.getConcept(MdrtbConcepts.LOCATION_TYPE);
 		
 		/*ArrayList<Form89> tb03s = Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);
 		Collections.sort(tb03s);*/
@@ -5371,7 +5381,7 @@ public class PatientListContoller {
 		Date endDate = (Date)(dateMap.get("endDate"));*/
 		
 		for (TB03Form tb03 : tb03List) {
-			if (tb03.getPatient() == null || tb03.getPatient().isVoided()) {
+			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -5380,16 +5390,17 @@ public class PatientListContoller {
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null || regGroup.getConceptId().intValue() != Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+			if (regGroup == null
+			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
+			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
 				
 			}
 			
-			ArrayList<Form89> fList = Context.getService(MdrtbService.class)
-			        .getForm89FormsFilledForPatientProgram(tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
+			ArrayList<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
+			    tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
@@ -5417,8 +5428,7 @@ public class PatientListContoller {
 			
 		}
 		
-		//RESIDENT_OF_TERRITORY
-		Concept q = ms.getConcept(MdrtbConcepts.CITY);
+		ms.getConcept(MdrtbConcepts.CITY);
 		report += "<h4>" + getMessage("mdrtb.lists.city") + "</h4>";
 		report += openTable();
 		report += openTR();
@@ -5459,8 +5469,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + cityList.size();
 		report += "<br/>";
 		
-		//RESIDENT_OTHER_TERRITORY
-		q = ms.getConcept(MdrtbConcepts.VILLAGE);
+		ms.getConcept(MdrtbConcepts.VILLAGE);
 		report += "<h4>" + getMessage("mdrtb.lists.village") + "</h4>";
 		report += openTable();
 		report += openTR();
@@ -5504,6 +5513,7 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
+	
 	//////////////////////////////////////////////////////////////////////////
 	
 	////////////////////////////////////
@@ -5550,7 +5560,7 @@ public class PatientListContoller {
 		
 		String report = "";
 		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.PLACE_OF_DETECTION);
+		ms.getConcept(MdrtbConcepts.PLACE_OF_DETECTION);
 		
 		/*ArrayList<Form89> tb03s = Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);
 		Collections.sort(tb03s);*/
@@ -5591,7 +5601,7 @@ public class PatientListContoller {
 		Date endDate = (Date)(dateMap.get("endDate"));*/
 		
 		for (TB03Form tb03 : tb03List) {
-			if (tb03.getPatient() == null || tb03.getPatient().isVoided()) {
+			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -5600,16 +5610,17 @@ public class PatientListContoller {
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null || regGroup.getConceptId().intValue() != Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+			if (regGroup == null
+			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
+			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
 				
 			}
 			
-			ArrayList<Form89> fList = Context.getService(MdrtbService.class)
-			        .getForm89FormsFilledForPatientProgram(tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
+			ArrayList<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
+			    tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
@@ -5659,7 +5670,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		Obs temp = null;
 		Person p = null;
 		int i = 0;
 		for (Form89 tf : tbList) {
@@ -5702,12 +5712,11 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		temp = null;
 		p = null;
 		i = 0;
 		for (Form89 tf : phcList) {
 			
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			TB03Form tb03 = null;
@@ -5748,7 +5757,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		temp = null;
 		p = null;
 		i = 0;
 		for (Form89 tf : privateList) {
@@ -5791,7 +5799,6 @@ public class PatientListContoller {
 		report += openTD() + "" + closeTD();
 		report += closeTR();
 		
-		temp = null;
 		p = null;
 		i = 0;
 		for (Form89 tf : otherList) {
@@ -5870,7 +5877,7 @@ public class PatientListContoller {
 		
 		String report = "";
 		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION);
+		ms.getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION);
 		
 		//ArrayList<Form89> tb03s = Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);
 		ArrayList<Form89> selfRefList = new ArrayList<Form89>();
@@ -5892,8 +5899,8 @@ public class PatientListContoller {
 		int selfRefId = selfRefConcept.getConceptId().intValue();
 		Concept baselineExamConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.BASELINE_EXAM);
 		int baselineExamId = baselineExamConcept.getConceptId().intValue();
-		Concept postmortemConcept = Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.POSTMORTERM_IDENTIFICATION);
+		Concept postmortemConcept = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.POSTMORTERM_IDENTIFICATION);
 		int postMortemId = postmortemConcept.getConceptId().intValue();
 		Concept contactConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
 		int contactId = contactConcept.getConceptId().intValue();
@@ -5909,7 +5916,7 @@ public class PatientListContoller {
 		Date endDate = (Date)(dateMap.get("endDate"));*/
 		
 		for (TB03Form tb03 : tb03List) {
-			if (tb03.getPatient() == null || tb03.getPatient().isVoided()) {
+			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -5918,16 +5925,15 @@ public class PatientListContoller {
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null || regGroup.getConceptId().intValue() != Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+			if (regGroup == null
+			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
+			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
-				
 			}
 			
-			ArrayList<Form89> fList = Context.getService(MdrtbService.class)
-			        .getForm89FormsFilledForPatientProgram(tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
+			ArrayList<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
+			    tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
@@ -6181,9 +6187,9 @@ public class PatientListContoller {
 	////////////////////////////////////////////////
 	
 	@RequestMapping("/module/mdrtb/reporting/byMethodOfDetection")
-	
-	public String byMethodOfDetection(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
-	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
+	public String byMethodOfDetection(@RequestParam("district") Integer districtId,
+	        @RequestParam("oblast") Integer oblastId, @RequestParam("facility") Integer facilityId,
+	        @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
@@ -6224,7 +6230,7 @@ public class PatientListContoller {
 		
 		String report = "";
 		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.METHOD_OF_DETECTION);
+		ms.getConcept(MdrtbConcepts.METHOD_OF_DETECTION);
 		
 		ArrayList<Form89> fluorographyList = new ArrayList<Form89>();
 		ArrayList<Form89> genexpertList = new ArrayList<Form89>();
@@ -6244,8 +6250,8 @@ public class PatientListContoller {
 		Concept method = null;
 		
 		//METHOD
-		Concept fluorographyConcept = Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.FLURORESCENT_MICROSCOPY);
+		Concept fluorographyConcept = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.FLURORESCENT_MICROSCOPY);
 		int fluorographyId = fluorographyConcept.getConceptId().intValue();
 		Concept genexpertConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENEXPERT);
 		int genexpertId = genexpertConcept.getConceptId().intValue();
@@ -6269,7 +6275,7 @@ public class PatientListContoller {
 		
 		for (TB03Form tb03 : tb03List) {
 			
-			if (tb03.getPatient() == null || tb03.getPatient().isVoided()) {
+			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -6278,16 +6284,17 @@ public class PatientListContoller {
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null || regGroup.getConceptId().intValue() != Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+			if (regGroup == null
+			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
+			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
 				
 			}
 			
-			ArrayList<Form89> fList = Context.getService(MdrtbService.class)
-			        .getForm89FormsFilledForPatientProgram(tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
+			ArrayList<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
+			    tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
@@ -6720,8 +6727,9 @@ public class PatientListContoller {
 	}
 	
 	@RequestMapping("/module/mdrtb/reporting/byPulmonaryLocation")
-	public String byPulmonaryLocation(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
-	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
+	public String byPulmonaryLocation(@RequestParam("district") Integer districtId,
+	        @RequestParam("oblast") Integer oblastId, @RequestParam("facility") Integer facilityId,
+	        @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
@@ -6808,7 +6816,7 @@ public class PatientListContoller {
 		
 		for (TB03Form tb03 : tb03List) {
 			
-			if (tb03.getPatient() == null || tb03.getPatient().isVoided()) {
+			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -6817,16 +6825,17 @@ public class PatientListContoller {
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null || regGroup.getConceptId().intValue() != Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+			if (regGroup == null
+			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
+			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
 				
 			}
 			
-			ArrayList<Form89> fList = Context.getService(MdrtbService.class)
-			        .getForm89FormsFilledForPatientProgram(tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
+			ArrayList<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
+			    tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
@@ -7391,7 +7400,7 @@ public class PatientListContoller {
 		
 		for (TB03Form tb03 : tb03List) {
 			
-			if (tb03.getPatient() == null || tb03.getPatient().isVoided()) {
+			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -7400,16 +7409,17 @@ public class PatientListContoller {
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null || regGroup.getConceptId().intValue() != Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+			if (regGroup == null
+			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
+			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
 				
 			}
 			
-			ArrayList<Form89> fList = Context.getService(MdrtbService.class)
-			        .getForm89FormsFilledForPatientProgram(tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
+			ArrayList<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
+			    tb03.getPatient(), null, tb03.getPatProgId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
@@ -8003,7 +8013,7 @@ public class PatientListContoller {
 		for (TB03uForm tuf : tb03us) {
 			tf = null;
 			rf = null;
-			if (tuf.getPatient() == null || tuf.getPatient().isVoided())
+			if (tuf.getPatient() == null || tuf.getPatient().getVoided())
 				continue;
 			
 			//tuf = Context.getService(MdrtbService.class).getTB03uFormForProgram(tf.getPatient(), tf.getPatProgId());
@@ -8421,7 +8431,7 @@ public class PatientListContoller {
 		for (TB03Form tf : tb03s) {
 			resist = null;
 			found = false;
-			if (tf.getPatient() == null || tf.getPatient().isVoided())
+			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			
 			resist = tf.getResistanceType();
@@ -8440,16 +8450,17 @@ public class PatientListContoller {
 			}
 			
 			//find mdrtb program with TB03 same as this form
-			List<MdrtbPatientProgram> mdrtbPrograms = Context.getService(MdrtbService.class)
-			        .getMdrtbPatientPrograms(tf.getPatient());
+			List<MdrtbPatientProgram> mdrtbPrograms = Context.getService(MdrtbService.class).getMdrtbPatientPrograms(
+			    tf.getPatient());
 			if (mdrtbPrograms != null && mdrtbPrograms.size() != 0) {
 				for (MdrtbPatientProgram mpp : mdrtbPrograms) {
 					TB03uForm tuf = mpp.getTb03u();
 					if (tuf != null) {
 						tutf = tuf.getTb03();
 						if (tutf != null) {
-							if (!tutf.getEncounter().isVoided() && (tutf.getEncounter().getEncounterId().intValue() == tf
-							        .getEncounter().getEncounterId().intValue())) {
+							if (!tutf.getEncounter().getVoided()
+							        && (tutf.getEncounter().getEncounterId().intValue() == tf.getEncounter()
+							                .getEncounterId().intValue())) {
 								found = true;
 								break;
 							}
@@ -8808,7 +8819,6 @@ public class PatientListContoller {
 		report += closeTR();
 		
 		RegimenForm rf = null;
-		Concept outcomeConcept = null;
 		int curedId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED).getConceptId().intValue();
 		int txCompId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETED).getConceptId()
 		        .intValue();
@@ -8817,11 +8827,12 @@ public class PatientListContoller {
 		for (TB03uForm tuf : tb03us) {
 			
 			rf = null;
-			if (tuf.getPatient() == null || tuf.getPatient().isVoided())
+			if (tuf.getPatient() == null || tuf.getPatient().getVoided())
 				continue;
 			
-			if (tuf.getTreatmentOutcome() == null || (tuf.getTreatmentOutcome().getConceptId().intValue() != curedId
-			        && tuf.getTreatmentOutcome().getConceptId().intValue() != txCompId))
+			if (tuf.getTreatmentOutcome() == null
+			        || (tuf.getTreatmentOutcome().getConceptId().intValue() != curedId && tuf.getTreatmentOutcome()
+			                .getConceptId().intValue() != txCompId))
 				continue;
 			
 			//tuf = Context.getService(MdrtbService.class).getTB03uFormForProgram(tf.getPatient(), tf.getPatProgId());
@@ -9115,9 +9126,9 @@ public class PatientListContoller {
 		return "<td align=\"left\">";
 	}
 	
-	private String openTD(String attribute) {
-		return "<td align=\"left\">";
-	}
+	//	private String openTD(String attribute) {
+	//		return "<td align=\"left\">";
+	//	}
 	
 	private String closeTD() {
 		return "</td>";
@@ -9325,11 +9336,11 @@ public class PatientListContoller {
 		
 		Integer ppid = tf.getPatProgId();
 		TbPatientProgram tpp = Context.getService(MdrtbService.class).getTbPatientProgram(ppid);
-		Date startDate = tpp.getDateEnrolled();
+		tpp.getDateEnrolled();
 		Date endDate = tpp.getDateCompleted();
 		
-		ArrayList<TransferInForm> allTifs = Context.getService(MdrtbService.class)
-		        .getTransferInFormsFilledForPatient(tf.getPatient());
+		ArrayList<TransferInForm> allTifs = Context.getService(MdrtbService.class).getTransferInFormsFilledForPatient(
+		    tf.getPatient());
 		
 		for (TransferInForm temp : allTifs) {
 			if (tf.getEncounterDatetime().equals(temp.getEncounterDatetime())) {
@@ -9501,7 +9512,7 @@ public class PatientListContoller {
 	
 	private static RegimenForm getFirstRegimenChangeForPatient(Patient p, Integer patProgId) {
 		
-		int patientId = p.getPatientId().intValue();
+		p.getPatientId().intValue();
 		ArrayList<RegimenForm> forms = Context.getService(MdrtbService.class).getRegimenFormsForProgram(p, patProgId);
 		
 		if (forms == null)
@@ -9510,9 +9521,7 @@ public class PatientListContoller {
 		if (forms.size() >= 2) {
 			return forms.get(1);
 		}
-		
 		return null;
-		
 	}
 	
 }

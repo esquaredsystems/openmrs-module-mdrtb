@@ -29,12 +29,12 @@ public class WHOForm05Test extends BaseModuleContextSensitiveTest {
 	public String getWebappName() {
 		return "openmrs_haiti_mdrtb";
 	}
-    
-    @Test
+	
+	@Test
 	public void render() throws Exception {
-    	
+		
 		ReportSpecification report = new WHOForm05();
-
+		
 		Map<String, Object> parameters = new LinkedHashMap<String, Object>();
 		parameters.put("location", Context.getLocationService().getLocation(2));
 		parameters.put("year", 2009);
@@ -51,5 +51,5 @@ public class WHOForm05Test extends BaseModuleContextSensitiveTest {
 			System.out.println(e.getKey().getLabel() + ": " + ((Cohort)e.getValue()).getCommaSeparatedPatientIds());
 		}
 		*/
-    }
+	}
 }

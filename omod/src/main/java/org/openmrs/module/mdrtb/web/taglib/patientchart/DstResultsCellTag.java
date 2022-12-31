@@ -70,8 +70,10 @@ public class DstResultsCellTag extends TagSupport {
 						concentration = dstResult.getConcentration().toString() + " - ";
 					}
 					
-					title = title + concentration + MdrtbUtil.getConceptName(dstResult.getResult(),
-					    Context.getLocale().getLanguage(), ConceptNameType.FULLY_SPECIFIED).getName() + "<br>";
+					title = title
+					        + concentration
+					        + MdrtbUtil.getConceptName(dstResult.getResult(), Context.getLocale().getLanguage(),
+					            ConceptNameType.FULLY_SPECIFIED).getName() + "<br>";
 					
 					// TODO: figure out if this is the right rule: if there are multiple results for the same drug
 					// right now I'm setting the result to intermediate (so it will pick up that color)
@@ -86,15 +88,20 @@ public class DstResultsCellTag extends TagSupport {
 			
 			String color = Context.getService(MdrtbService.class).getColorForConcept(result);
 			
-			ret = "<td class=\"chartCell\" style=\"background-color:" + drugColor
+			ret = "<td class=\"chartCell\" style=\"background-color:"
+			        + drugColor
 			        + "\"><table style=\"padding:0px; border:0px; margin0px; width:100%;\"><tr><td class=\"chartCell\""
 			        + ("true".equalsIgnoreCase(this.showTooltip) ? " title=\"" + title + "\"" : "")
-			        + " style=\"background-color:" + color + ";" + style + "\">"
+			        + " style=\"background-color:"
+			        + color
+			        + ";"
+			        + style
+			        + "\">"
 			        + MdrtbUtil.getConceptName(result, Context.getLocale().getLanguage(), ConceptNameType.FULLY_SPECIFIED)
-			                .getName()
-			        + "</td></tr></table></td>";
+			                .getName() + "</td></tr></table></td>";
 		} else {
-			ret = "<td class=\"chartCell\" style=\"background-color:" + drugColor
+			ret = "<td class=\"chartCell\" style=\"background-color:"
+			        + drugColor
 			        + "\"><table style=\"padding:0px; border:0px; margin0px; width:100%;\"><tr><td class=\"chartCell\"/></tr></table></td>";
 		}
 		

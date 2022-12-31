@@ -86,8 +86,11 @@ public class DashboardHivStatusRenderer implements HivStatusRenderer {
 			Date endDate = ((Regimen) regimens.get(0).getValue()).getStartDate();
 			
 			DateFormat df = new SimpleDateFormat(MdrtbConstants.DATE_FORMAT_DISPLAY, Context.getLocale());
-			artTreatment.setDisplayString(df.format(startDate) + " - " + (endDate == null ? df.format(endDate)
-			        : Context.getMessageSourceService().getMessage("mdrtb.present")));
+			artTreatment
+			        .setDisplayString(df.format(startDate)
+			                + " - "
+			                + (endDate == null ? df.format(endDate) : Context.getMessageSourceService().getMessage(
+			                    "mdrtb.present")));
 		}
 	}
 }

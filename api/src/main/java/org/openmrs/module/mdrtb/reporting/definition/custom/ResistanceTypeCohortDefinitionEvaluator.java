@@ -26,28 +26,25 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
  */
 @Handler(supports = { ResistanceTypeCohortDefinition.class })
 public class ResistanceTypeCohortDefinitionEvaluator implements CohortDefinitionEvaluator {
-
+	
 	/**
 	 * Default Constructor
 	 */
 	public ResistanceTypeCohortDefinitionEvaluator() {
 	}
-
+	
 	/**
-	 * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition,
-	 *      EvaluationContext)
-	 *
+	 * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition, EvaluationContext)
 	 */
 	public EvaluatedCohort evaluate(CohortDefinition cohortDefinition, EvaluationContext context) {
-
+		
 		ResistanceTypeCohortDefinition cd = (ResistanceTypeCohortDefinition) cohortDefinition;
 		// Cohort c = null;
-
+		
 		Cohort c = null;
-
-		c = MdrtbQueryService.getPatientsByResitantType(context, cd.getStartDate(), cd.getEndDate(),
-				cd.getResistanceType());
-
-    	return new EvaluatedCohort(c, cohortDefinition, context);
+		
+		c = MdrtbQueryService.getPatientsByResitantType(context, cd.getStartDate(), cd.getEndDate(), cd.getResistanceType());
+		
+		return new EvaluatedCohort(c, cohortDefinition, context);
 	}
 }

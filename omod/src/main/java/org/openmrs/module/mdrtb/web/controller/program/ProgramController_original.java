@@ -12,7 +12,6 @@ import org.openmrs.Patient;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
-import org.openmrs.module.mdrtb.program.MdrtbPatientProgramValidator;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.mdrtb.status.VisitStatus;
 import org.openmrs.module.mdrtb.status.VisitStatusCalculator;
@@ -77,8 +76,8 @@ public class ProgramController_original {
 		}
 		
 		// we need to determine if this patient currently in active in an mdr-tb program to determine what fields to display
-		MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class)
-		        .getMostRecentMdrtbPatientProgram(patient);
+		MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class).getMostRecentMdrtbPatientProgram(
+		    patient);
 		map.put("hasActiveProgram", (mostRecentProgram != null && mostRecentProgram.getActive()) ? true : false);
 		map.put("patientId", patientId);
 		return new ModelAndView("/module/mdrtb/program/showEnroll", map);
@@ -101,12 +100,12 @@ public class ProgramController_original {
 		
 		// perform validation (validation needs to happen after patient is set since patient is used to pull up patient's previous programs)
 		if (program != null) {
-			new MdrtbPatientProgramValidator().validate(program, errors);
+			program.validate(program, errors);
 		}
 		
 		if (errors.hasErrors()) {
-			MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class)
-			        .getMostRecentMdrtbPatientProgram(patient);
+			MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class).getMostRecentMdrtbPatientProgram(
+			    patient);
 			map.put("hasActiveProgram", mostRecentProgram != null && mostRecentProgram.getActive() ? true : false);
 			map.put("patientId", patientId);
 			map.put("errors", errors);

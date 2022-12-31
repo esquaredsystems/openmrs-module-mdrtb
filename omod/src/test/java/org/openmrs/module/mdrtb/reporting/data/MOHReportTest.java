@@ -24,12 +24,12 @@ public class MOHReportTest extends BaseModuleContextSensitiveTest {
 	public void setup() throws Exception {
 		authenticate();
 	}
-    
-    @Test
+	
+	@Test
 	public void render() throws Exception {
-    	
+		
 		ReportSpecification report = new MOHReport();
-
+		
 		Map<String, Object> parameters = new LinkedHashMap<String, Object>();
 		parameters.put("location", Context.getLocationService().getLocation(2));
 		parameters.put("year", 2009);
@@ -38,5 +38,5 @@ public class MOHReportTest extends BaseModuleContextSensitiveTest {
 		ReportData data = report.evaluateReport(context);
 		RenderingMode mode = new RenderingMode(new PreviewReportRenderer(), "Preview", null, null);
 		mode.getRenderer().render(data, mode.getArgument(), System.out);
-    }
+	}
 }

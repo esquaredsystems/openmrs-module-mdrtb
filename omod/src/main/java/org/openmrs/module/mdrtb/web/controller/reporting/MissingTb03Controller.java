@@ -46,7 +46,6 @@ import org.openmrs.module.mdrtbdrugforecast.web.controller.status.DashboardTreat
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-
 public class MissingTb03Controller {
 	
 	@InitBinder
@@ -200,7 +199,7 @@ public class MissingTb03Controller {
 			dqi = new DQItem();
 			Patient patient = tf.getPatient();//Context.getPatientService().getPatient(i);
 			
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			
@@ -221,7 +220,7 @@ public class MissingTb03Controller {
 				dqi = new DQItem();
 				Patient patient = p.getPatient();//Context.getPatientService().getPatient(i);
 				
-				if (patient == null || patient.isVoided()) {
+				if (patient == null || patient.getVoided()) {
 					continue;
 				}
 				

@@ -1,6 +1,7 @@
 package org.openmrs.module.mdrtb.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -14,22 +15,29 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Cohort;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNameTag;
 import org.openmrs.ConceptSet;
+import org.openmrs.DrugOrder;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
+import org.openmrs.LocationTag;
 import org.openmrs.Obs;
+import org.openmrs.Order;
+import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientProgram;
+import org.openmrs.PatientState;
 import org.openmrs.Person;
 import org.openmrs.Program;
 import org.openmrs.ProgramWorkflow;
@@ -37,21 +45,22 @@ import org.openmrs.ProgramWorkflowState;
 import org.openmrs.Role;
 import org.openmrs.User;
 import org.openmrs.api.APIException;
+import org.openmrs.api.OrderContext;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.mdrtb.BaseLocation;
 import org.openmrs.module.mdrtb.Country;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
-import org.openmrs.module.mdrtb.MdrtbConceptMap;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.TbUtil;
 import org.openmrs.module.mdrtb.comparator.PatientProgramComparator;
 import org.openmrs.module.mdrtb.comparator.PersonByNameComparator;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
-import org.openmrs.module.mdrtb.form.custom.AEForm;
+import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
 import org.openmrs.module.mdrtb.form.custom.DSTForm;
 import org.openmrs.module.mdrtb.form.custom.DrugResistanceDuringTreatmentForm;
@@ -84,22 +93,21 @@ import org.openmrs.module.mdrtb.specimen.custom.HAIN2Impl;
 import org.openmrs.module.mdrtb.specimen.custom.HAINImpl;
 import org.openmrs.module.mdrtb.specimen.custom.Xpert;
 import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
+import org.openmrs.module.reporting.cohort.query.service.CohortQueryService;
 import org.openmrs.module.reporting.common.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService {
-	
-	private static final String UUID_REGEX = "^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]+$";
+public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Autowired
 	protected HibernateMdrtbDAO dao;
 	
-	private MdrtbConceptMap conceptMap = new MdrtbConceptMap(); // TODO: should this be a bean?
+	private MdrtbConcepts conceptMap = new MdrtbConcepts(); // TODO: should this be a bean?
 	
 	// caches
 	private Map<Integer, String> colorMapCache = null;
@@ -126,7 +134,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			}
 			catch (Exception e) {}
 			// Next try UUID
-			if (lookup.length() == 36 && lookup.matches(UUID_REGEX)) {
+			if (lookup.length() == 36 && lookup.matches(MdrtbConstants.UUID_REGEX)) {
 				try {
 					Concept c = Context.getConceptService().getConceptByUuid(lookup);
 					if (c != null) {
@@ -153,19 +161,19 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public void initializeEverythingAboutConcept(Concept c) {
 		if (c != null) {
 			c.getDatatype().getHl7Abbreviation();
-			for (ConceptName cns : c.getNames()){
+			for (ConceptName cns : c.getNames()) {
 				Collection<ConceptNameTag> tags = cns.getTags();
-				for (ConceptNameTag cnTag : tags){
+				for (ConceptNameTag cnTag : tags) {
 					cnTag.getTag();
 				}
-            }
+			}
 			Collection<ConceptAnswer> cas = c.getAnswers();
 			if (cas != null) {
 				for (ConceptAnswer ca : cas) {
 					Collection<ConceptName> cnsTmp = ca.getAnswerConcept().getNames();
-					for (ConceptName cn:cnsTmp) {
+					for (ConceptName cn : cnsTmp) {
 						Collection<ConceptNameTag> tags = cn.getTags();
-						for (ConceptNameTag cnTag:tags) {
+						for (ConceptNameTag cnTag : tags) {
 							cnTag.getTag();
 						}
 					}
@@ -178,9 +186,24 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		this.conceptMap.resetCache();
 	}
 	
+	@SuppressWarnings("deprecation")
+	public List<Encounter> getEncounters(Patient patient, Location location, Date start, Date end,
+	        Collection<EncounterType> types) {
+		// return Context.getEncounterService().getEncounters(patient, null, null, null, null, types, false);
+		return Context.getEncounterService().getEncounters(patient, location, start, end, null, types, null, null, null,
+		    false);
+	}
+	
+	public List<Encounter> getEncountersByPatientAndTypes(Patient patient, Collection<EncounterType> types) {
+		return getEncounters(patient, null, null, null, types);
+	}
+	
+	public List<Encounter> getTbEncounters(Patient patient) {
+		return getEncounters(patient, null, null, null, TbUtil.getTbEncounterTypes());
+	}
+	
 	public List<Encounter> getMdrtbEncounters(Patient patient) {
-		return Context.getEncounterService().getEncounters(patient, null, null, null, null,
-		    MdrtbUtil.getMdrtbEncounterTypes(), null, false);
+		return getEncounters(patient, null, null, null, MdrtbUtil.getMdrtbEncounterTypes());
 	}
 	
 	public List<MdrtbPatientProgram> getAllMdrtbPatientPrograms() {
@@ -190,8 +213,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<MdrtbPatientProgram> getAllMdrtbPatientProgramsInDateRange(Date startDate, Date endDate) {
 		// (program must have started before the end date of the period, and must not
 		// have ended before the start of the period)
-		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getMdrtbProgram(), null,
-		    endDate, startDate, null, false);
+		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getMdrtbProgram(),
+		    null, endDate, startDate, null, false);
 		
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
@@ -238,8 +261,9 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<MdrtbPatientProgram> programs = new LinkedList<MdrtbPatientProgram>();
 		
 		for (MdrtbPatientProgram program : getMdrtbPatientPrograms(patient)) {
-			if ((endDate == null || program.getDateEnrolled().before(endDate)) && (program.getDateCompleted() == null
-			        || startDate == null || !program.getDateCompleted().before(startDate))) {
+			if ((endDate == null || program.getDateEnrolled().before(endDate))
+			        && (program.getDateCompleted() == null || startDate == null || !program.getDateCompleted().before(
+			            startDate))) {
 				programs.add(program);
 			}
 		}
@@ -293,8 +317,9 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public Specimen getSpecimen(Encounter encounter) {
 		// return null if there is no encounter, or if the encounter if of the wrong
 		// type
-		if (encounter == null || encounter.getEncounterType() != Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type"))) {
+		if (encounter == null
+		        || encounter.getEncounterType() != Context.getEncounterService().getEncounterType(
+		            Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type"))) {
 			log.error("Unable to fetch specimen obj: getSpecimen called with invalid encounter");
 			return null;
 		}
@@ -322,8 +347,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<EncounterType> specimenEncounterTypes = new LinkedList<EncounterType>();
 		specimenEncounterTypes.add(specimenEncounterType);
 		
-		specimenEncounters = Context.getEncounterService().getEncounters(patient, locationCollected, startDateCollected,
-		    endDateCollected, null, specimenEncounterTypes, null, false);
+		specimenEncounters = getEncounters(patient, locationCollected, startDateCollected, endDateCollected,
+		    specimenEncounterTypes);
 		
 		for (Encounter encounter : specimenEncounters) {
 			specimens.add(new SpecimenImpl(encounter));
@@ -348,8 +373,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// We need the specimen encounters to potentially be viewable by a bacteriology
 		// htmlform:
 		Encounter enc = (Encounter) specimen.getSpecimen();
-		String formIdWithWhichToViewEncounter = Context.getAdministrationService()
-		        .getGlobalProperty("mdrtb.formIdToAttachToBacteriologyEntry");
+		String formIdWithWhichToViewEncounter = Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.formIdToAttachToBacteriologyEntry");
 		try {
 			if (formIdWithWhichToViewEncounter != null && !formIdWithWhichToViewEncounter.equals(""))
 				enc.setForm(Context.getFormService().getForm(Integer.valueOf(formIdWithWhichToViewEncounter)));
@@ -376,9 +401,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Obs obs = Context.getObsService().getObs(testId);
 		
 		// the id must refer to a valid obs, which is a smear, culture, or dst construct
-		if (obs == null || !(obs.getConcept().equals(this.getConcept(MdrtbConcepts.SMEAR_CONSTRUCT))
-		        || obs.getConcept().equals(this.getConcept(MdrtbConcepts.CULTURE_CONSTRUCT))
-		        || obs.getConcept().equals(this.getConcept(MdrtbConcepts.DST_CONSTRUCT)))) {
+		if (obs == null
+		        || !(obs.getConcept().equals(this.getConcept(MdrtbConcepts.SMEAR_CONSTRUCT))
+		                || obs.getConcept().equals(this.getConcept(MdrtbConcepts.CULTURE_CONSTRUCT)) || obs.getConcept()
+		                .equals(this.getConcept(MdrtbConcepts.DST_CONSTRUCT)))) {
 			throw new APIException("Unable to delete specimen test: invalid test id " + testId);
 		} else {
 			Context.getObsService().voidObs(obs, "voided by Mdr-tb module specimen tracking UI");
@@ -567,8 +593,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		if (program != null && program.getActive()) {
 			program.setDateCompleted(deathDate);
-			program.setOutcome(
-			    MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED)));
+			program.setOutcome(getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED)));
 			Context.getProgramWorkflowService().savePatientProgram(program.getPatientProgram());
 		}
 		
@@ -668,18 +693,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public Set<ProgramWorkflowState> getPossibleMdrtbProgramOutcomes() {
-		return getPossibleMdrtbWorkflowStates(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME));
+		return getPossibleMdrtbWorkflowStates(Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME));
 	}
 	
 	public Set<ProgramWorkflowState> getPossibleClassificationsAccordingToPreviousDrugUse() {
-		return getPossibleMdrtbWorkflowStates(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_DRUG_USE));
+		return getPossibleMdrtbWorkflowStates(Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_DRUG_USE));
 	}
 	
 	public Set<ProgramWorkflowState> getPossibleClassificationsAccordingToPreviousTreatment() {
-		return getPossibleMdrtbWorkflowStates(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT));
+		return getPossibleMdrtbWorkflowStates(Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT));
 	}
 	
 	public String getColorForConcept(Concept concept) {
@@ -716,8 +741,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	 */
 	private Set<ProgramWorkflowState> getPossibleMdrtbWorkflowStates(Concept workflowConcept) {
 		// get the mdrtb program via the name listed in global properties
-		Program mdrtbProgram = Context.getProgramWorkflowService()
-		        .getProgramByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"));
+		Program mdrtbProgram = Context.getProgramWorkflowService().getProgramByName(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"));
 		
 		// get the workflow via the concept name
 		for (ProgramWorkflow workflow : mdrtbProgram.getAllWorkflows()) {
@@ -788,8 +813,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<EncounterType> specimenEncounterTypes = new LinkedList<EncounterType>();
 		specimenEncounterTypes.add(specimenEncounterType);
 		
-		specimenEncounters = Context.getEncounterService().getEncounters(patient, null, null, null, null,
-		    specimenEncounterTypes, null, false);
+		specimenEncounters = getEncountersByPatientAndTypes(patient, specimenEncounterTypes);
 		Obs temp = null;
 		for (Encounter encounter : specimenEncounters) {
 			temp = MdrtbUtil.getObsFromEncounter(
@@ -815,16 +839,12 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public Set<ProgramWorkflowState> getPossibleTbProgramOutcomes() {
-		return getPossibleTbWorkflowStates(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_TREATMENT_OUTCOME));
+		return getPossibleTbWorkflowStates(Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.TB_TREATMENT_OUTCOME));
 	}
 	
 	public Set<ProgramWorkflowState> getPossibleClassificationsAccordingToPatientGroups() {
 		return getPossibleTbWorkflowStates(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_GROUP));
-	}
-
-	@Deprecated
-	public List<String> getAllRayonsTJK() {
-		return dao.getAllRayonsTJK();
 	}
 	
 	public List<MdrtbPatientProgram> getAllMdrtbPatientProgramsEnrolledInDateRange(Date startDate, Date endDate) {
@@ -842,7 +862,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (PatientProgram program : programs) {
 			tbPrograms.add(new MdrtbPatientProgram(program));
 		}
-		
 		return tbPrograms;
 	}
 	
@@ -1130,8 +1149,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<Location> locationList = new ArrayList<Location>();
 		List<Location> locations = Context.getLocationService().getAllLocations(false);
 		for (Location loc : locations) {
-			if (loc.getRegion() != null) {
-				if (loc.getRegion().equals(facility.getName()))
+			if (loc.getAddress6() != null) {
+				if (loc.getAddress6().equals(facility.getName()))
 					locationList.add(loc);
 			}
 		}
@@ -1222,21 +1241,12 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return locationList;
 	}
 	
+	//TODO: Write unit test to check if only the locations with enrollment tag are returned
 	public List<Location> getEnrollmentLocations() {
-		// TODO: Deal with these hard-coded strings
-		List<Location> allLocations = Context.getLocationService().getAllLocations();
-		List<Location> enrollmentLocations = new ArrayList<Location>();
-		for (Location loc : allLocations) {
-			String locName = loc.getName();
-			if (!(locName.length() >= 2 && MdrtbUtil.areRussianStringsEqual(locName.substring(0, 2), "БЛ")
-			        && !(locName.length() >= 2 && MdrtbUtil.areRussianStringsEqual(locName.substring(0, 2), "ГЦ"))
-			        && !(locName.length() >= 4 && MdrtbUtil.areRussianStringsEqual(locName.substring(0, 4), "ОЦБТ"))
-			        && !MdrtbUtil.areRussianStringsEqual(locName, "РЦЗНТ Душанбе")
-			        && !MdrtbUtil.areRussianStringsEqual(locName, "НРЛ")
-			        && !MdrtbUtil.areRussianStringsEqual(locName, "НЛОЗ")))
-				enrollmentLocations.add(loc);
-		}
-		return enrollmentLocations;
+		LocationTag enrollmentTag = Context.getLocationService()
+		        .getLocationTagByUuid(MdrtbConstants.ENROLLMENT_LOCATION_TAG);
+		List<Location> list = Context.getLocationService().getLocationsByTag(enrollmentTag);
+		return list;
 	}
 	
 	public PatientIdentifier getPatientProgramIdentifier(MdrtbPatientProgram mpp) {
@@ -1377,8 +1387,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
 		et.add(Context.getEncounterService().getEncounterType(
 		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
-		List<Encounter> encs = Context.getEncounterService().getEncounters(tpp.getPatient(), null, null, null, null, et,
-		    false);
+		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
 			if (MdrtbUtil.getObsFromEncounter(
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_CONSTRUCT), e) != null) {
@@ -1402,8 +1411,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
 		et.add(Context.getEncounterService().getEncounterType(
 		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
-		List<Encounter> encs = Context.getEncounterService().getEncounters(tpp.getPatient(), null, null, null, null, et,
-		    false);
+		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
 			if (MdrtbUtil.getObsFromEncounter(
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_CONSTRUCT), e) != null) {
@@ -1427,8 +1435,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
 		et.add(Context.getEncounterService().getEncounterType(
 		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
-		List<Encounter> encs = Context.getEncounterService().getEncounters(tpp.getPatient(), null, null, null, null, et,
-		    false);
+		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
 			if (MdrtbUtil.getObsFromEncounter(
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), e) != null) {
@@ -1452,11 +1459,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
 		et.add(Context.getEncounterService().getEncounterType(
 		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
-		List<Encounter> encs = Context.getEncounterService().getEncounters(tpp.getPatient(), null, null, null, null, et,
-		    false);
+		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
-			if (MdrtbUtil.getObsFromEncounter(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), e) != null) {
+			if (MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+			        .getConcept(MdrtbConcepts.HAIN_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(
 				    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
 				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
@@ -1477,8 +1483,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
 		et.add(Context.getEncounterService().getEncounterType(
 		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
-		List<Encounter> encs = Context.getEncounterService().getEncounters(tpp.getPatient(), null, null, null, null, et,
-		    false);
+		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
 			if (MdrtbUtil.getObsFromEncounter(
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN2_CONSTRUCT), e) != null) {
@@ -1502,11 +1507,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
 		et.add(Context.getEncounterService().getEncounterType(
 		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
-		List<Encounter> encs = Context.getEncounterService().getEncounters(tpp.getPatient(), null, null, null, null, et,
-		    false);
+		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
-			if (MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_CONSTRUCT),
-			    e) != null) {
+			if (MdrtbUtil.getObsFromEncounter(
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(
 				    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
 				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
@@ -1525,8 +1529,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		ArrayList<DrugResistanceDuringTreatmentForm> drdts = new ArrayList<DrugResistanceDuringTreatmentForm>();
 		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
 		et.add(Context.getEncounterService().getEncounterType("Resistance During Treatment"));
-		List<Encounter> encs = Context.getEncounterService().getEncounters(tpp.getPatient(), null, null, null, null, et,
-		    false);
+		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
 			// if(MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN2_CONSTRUCT),
 			// e)!=null) {
@@ -1549,7 +1552,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		typeList.add(et);
 		
 		ArrayList<Encounter> encs = new ArrayList<Encounter>();
-		List<Encounter> all = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		List<Encounter> all = getEncountersByPatientAndTypes(p, typeList);
 		
 		for (Encounter e : all) {
 			if (MdrtbUtil.getObsFromEncounter(
@@ -1564,9 +1567,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public void addProgramIdToEncounter(Integer encounterId, Integer programId) {
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(programId);
 		Encounter e = Context.getEncounterService().getEncounter(encounterId);
-		Obs idObs = new Obs(pp.getPatient(),
-		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID),
-		        e.getEncounterDatetime(), e.getLocation());
+		Obs idObs = new Obs(pp.getPatient(), Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.PATIENT_PROGRAM_ID), e.getEncounterDatetime(), e.getLocation());
 		idObs.setEncounter(e);
 		idObs.setObsDatetime(e.getEncounterDatetime());
 		idObs.setLocation(e.getLocation());
@@ -1585,8 +1587,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
@@ -1601,7 +1603,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			locList.add(location);
 		List<Encounter> temp = null;
 		for (Location l : locList) {
-			temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+			temp = getEncounters(null, l, startDate, endDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new TB03Form(e));
 			}
@@ -1628,8 +1630,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		log.debug("STR:" + startDate);
 		log.debug("END:" + endDate);
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
@@ -1637,23 +1639,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		if (locList != null && locList.size() != 0) {
 			for (Location l : locList) {
-				temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+				temp = getEncounters(null, l, startDate, endDate, typeList);
 				for (Encounter e : temp) {
 					forms.add(new TB03Form(e));
 				}
-				
 			}
-		}
-		
-		else {
-			temp = Context.getEncounterService().getEncounters(null, null, startDate, endDate, null, typeList, null, false);
+		} else {
+			temp = getEncounters(null, null, startDate, endDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new TB03Form(e));
 			}
 		}
-		
 		return forms;
-		
 	}
 	
 	public ArrayList<TB03uForm> getTB03uFormsFilled(Location location, String oblast, Integer year, String quarter,
@@ -1666,8 +1663,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
@@ -1682,19 +1679,15 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			locList.add(location);
 		List<Encounter> temp = null;
 		for (Location l : locList) {
-			temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+			temp = getEncounters(null, l, startDate, endDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new TB03uForm(e));
 			}
-			
 		}
-		
 		return forms;
-		
 	}
 	
-	public ArrayList<TB03uForm> getTB03uFormsFilled(ArrayList<Location> locList, Integer year, String quarter,
-	        String month) {
+	public ArrayList<TB03uForm> getTB03uFormsFilled(ArrayList<Location> locList, Integer year, String quarter, String month) {
 		
 		ArrayList<TB03uForm> forms = new ArrayList<TB03uForm>();
 		
@@ -1703,15 +1696,15 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
 		
 		if (locList == null || locList.size() == 0) {
-			temp = Context.getEncounterService().getEncounters(null, null, startDate, endDate, null, typeList, null, false);
+			temp = getEncounters(null, null, startDate, endDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new TB03uForm(e));
 			}
@@ -1719,16 +1712,13 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		else {
 			for (Location l : locList) {
-				temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+				temp = getEncounters(null, l, startDate, endDate, typeList);
 				for (Encounter e : temp) {
 					forms.add(new TB03uForm(e));
 				}
 			}
-			
 		}
-		
 		return forms;
-		
 	}
 	
 	public ArrayList<Form89> getForm89FormsFilled(Location location, String oblast, Integer year, String quarter,
@@ -1741,8 +1731,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
@@ -1757,15 +1747,12 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			locList.add(location);
 		List<Encounter> temp = null;
 		for (Location l : locList) {
-			temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+			temp = getEncounters(null, l, startDate, endDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new Form89(e));
 			}
-			
 		}
-		
 		return forms;
-		
 	}
 	
 	public ArrayList<Form89> getForm89FormsFilled(ArrayList<Location> locList, Integer year, String quarter, String month) {
@@ -1777,32 +1764,27 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
 		
 		if (locList == null || locList.size() == 0) {
-			temp = Context.getEncounterService().getEncounters(null, null, startDate, endDate, null, typeList, null, false);
+			temp = getEncounters(null, null, startDate, endDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new Form89(e));
 			}
-		}
-		
-		else {
+		} else {
 			for (Location l : locList) {
-				temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+				temp = getEncounters(null, l, startDate, endDate, typeList);
 				for (Encounter e : temp) {
 					forms.add(new Form89(e));
 				}
 			}
-			
 		}
-		
 		return forms;
-		
 	}
 	
 	public ArrayList<Form89> getForm89FormsFilledForPatientProgram(Patient p, Location location, Integer patProgId,
@@ -1824,13 +1806,12 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		}
 		
 		Concept ppid = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
-		List<Encounter> temp = Context.getEncounterService().getEncounters(p, location, startDate, endDate, null, typeList,
-		    null, false);
+		List<Encounter> temp = getEncounters(p, location, startDate, endDate, typeList);
 		if (temp != null) {
 			for (Encounter e : temp) {
 				Obs ppObs = MdrtbUtil.getObsFromEncounter(ppid, e);
@@ -1856,23 +1837,20 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_out_encounter_type"));
+		EncounterType eType = MdrtbConstants.TRANSFER_OUT_ENCOUNTER_TYPE;
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
 		
 		if (locList == null || locList.size() == 0) {
-			temp = Context.getEncounterService().getEncounters(null, null, startDate, endDate, null, typeList, null, false);
+			temp = getEncounters(null, null, startDate, endDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new TransferOutForm(e));
 			}
-		}
-		
-		else {
+		} else {
 			for (Location l : locList) {
-				temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+				temp = getEncounters(null, l, startDate, endDate, typeList);
 				for (Encounter e : temp) {
 					forms.add(new TransferOutForm(e));
 				}
@@ -1893,15 +1871,15 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_in_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_in_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
 		
 		if (locList == null || locList.size() == 0) {
-			temp = Context.getEncounterService().getEncounters(null, null, startDate, endDate, null, typeList, null, false);
+			temp = getEncounters(null, null, startDate, endDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new TransferInForm(e));
 			}
@@ -1909,7 +1887,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		else {
 			for (Location l : locList) {
-				temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+				temp = getEncounters(null, l, startDate, endDate, typeList);
 				for (Encounter e : temp) {
 					forms.add(new TransferInForm(e));
 				}
@@ -1923,13 +1901,12 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public ArrayList<TransferOutForm> getTransferOutFormsFilledForPatient(Patient p) {
 		
 		ArrayList<TransferOutForm> forms = new ArrayList<TransferOutForm>();
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_out_encounter_type"));
+		EncounterType eType = MdrtbConstants.TRANSFER_OUT_ENCOUNTER_TYPE;
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
-		temp = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		temp = getEncountersByPatientAndTypes(p, typeList);
 		for (Encounter e : temp) {
 			forms.add(new TransferOutForm(e));
 		}
@@ -1941,13 +1918,13 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public ArrayList<TransferInForm> getTransferInFormsFilledForPatient(Patient p) {
 		
 		ArrayList<TransferInForm> forms = new ArrayList<TransferInForm>();
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_in_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_in_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
-		temp = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		temp = getEncountersByPatientAndTypes(p, typeList);
 		for (Encounter e : temp) {
 			forms.add(new TransferInForm(e));
 		}
@@ -1957,8 +1934,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public Set<ProgramWorkflowState> getPossibleDOTSClassificationsAccordingToPreviousDrugUse() {
-		Set<ProgramWorkflowState> temp = getPossibleTbWorkflowStates(Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.DOTS_CLASSIFICATION_ACCORDING_TO_PREVIOUS_DRUG_USE));
+		Set<ProgramWorkflowState> temp = getPossibleTbWorkflowStates(Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.DOTS_CLASSIFICATION_ACCORDING_TO_PREVIOUS_DRUG_USE));
 		
 		return temp;
 	}
@@ -1966,8 +1943,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public TB03Form getClosestTB03Form(Location location, Date encounterDate, Patient patient) {
 		TB03Form ret = null;
 		Integer encounterId = null;
-		EncounterType intakeType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
+		EncounterType intakeType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
 		String query = "select encounter_id from encounter where location_id=" + location.getId()
 		        + " AND encounter_datetime <= '" + encounterDate + "' AND patient_id=" + patient.getId()
 		        + " AND encounter_type=" + intakeType.getId() + " AND voided=0 ORDER BY encounter_datetime DESC";
@@ -2032,7 +2009,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			boolean hasRegion = oblast != null;
 			boolean hasDistrict = district != null;
 			boolean hasFacility = facility != null;
-
+			
 			if (hasRegion) {
 				if (!location.getStateProvince().equalsIgnoreCase(oblast.getName())) {
 					continue;
@@ -2047,7 +2024,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 						}
 					}
 				}
-				locList.add(location);			
+				locList.add(location);
 			}
 		}
 		log.debug("LOCS:" + locList.size());
@@ -2069,17 +2046,16 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
 		
 		// CHECK
-		
 		if (locList == null || locList.size() == 0) {
-			temp = Context.getEncounterService().getEncounters(null, null, null, null, null, typeList, null, false);
+			temp = getEncounters(null, null, null, null, typeList);
 			for (Encounter e : temp) {
 				Obs o = MdrtbUtil.getObsFromEncounter(
 				    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE), e);
@@ -2089,13 +2065,9 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 					forms.add(new TB03uForm(e));
 				}
 			}
-			
-		}
-		
-		else {
-			
+		} else {
 			for (Location l : locList) {
-				temp = Context.getEncounterService().getEncounters(null, l, null, null, null, typeList, null, false);
+				temp = getEncounters(null, l, null, null, typeList);
 				for (Encounter e : temp) {
 					Obs o = MdrtbUtil.getObsFromEncounter(
 					    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE), e);
@@ -2111,16 +2083,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public List<Country> getCountries() {
-		//		AddressHierarchyLevel countryLevel = new AddressHierarchyLevel();
-		//		countryLevel.setLevelId(1);
-		//		List<AddressHierarchyEntry> list = getAddressService().getAddressHierarchyEntriesByLevel(countryLevel);
-		//		
-		//		for (AddressHierarchyEntry add : list) {
-		//			Integer id = add.getId();
-		//			String name = add.getName();
-		//			
-		//			ret.add(new Country(name, id));
-		//		}
 		List<Country> countries = new ArrayList<Country>();
 		List<BaseLocation> list = dao.getAddressHierarchyLocationsByHierarchyLevel(Country.HIERARCHY_LEVEL);
 		for (BaseLocation baseLocation : list) {
@@ -2133,50 +2095,44 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		ArrayList<TB03Form> forms = new ArrayList<TB03Form>();
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
 		Concept idConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
-		temp = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		temp = getEncountersByPatientAndTypes(p, typeList);
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
 			        && idObs.getValueNumeric().intValue() == patientProgId.intValue()) {
 				forms.add(new TB03Form(e));
 			}
-			
 		}
-		
 		return forms;
-		
 	}
 	
 	public ArrayList<Form89> getForm89FormsForProgram(Patient p, Integer patientProgId) {
 		
 		ArrayList<Form89> forms = new ArrayList<Form89>();
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
 		Concept idConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
-		temp = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		temp = getEncountersByPatientAndTypes(p, typeList);
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
 			        && idObs.getValueNumeric().intValue() == patientProgId.intValue()) {
 				forms.add(new Form89(e));
 			}
-			
 		}
-		
 		return forms;
-		
 	}
 	
 	public void evict(Object obj) {
@@ -2187,14 +2143,14 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		TB03uForm form = null;
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
+		EncounterType eType = Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
 		List<Encounter> temp = null;
 		Concept idConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
-		temp = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		temp = getEncountersByPatientAndTypes(p, typeList);
 		
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
@@ -2203,11 +2159,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				form = new TB03uForm(e);
 				break;
 			}
-			
 		}
-		
 		return form;
-		
 	}
 	
 	public ArrayList<RegimenForm> getRegimenFormsForProgram(Patient p, Integer patientProgId) {
@@ -2220,26 +2173,22 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		List<Encounter> temp = null;
 		Concept idConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
-		temp = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		temp = getEncountersByPatientAndTypes(p, typeList);
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
 			        && idObs.getValueNumeric().intValue() == patientProgId.intValue()) {
 				forms.add(new RegimenForm(e));
 			}
-			
 		}
 		Collections.sort(forms);
 		// Collections.reverse(forms);
 		return forms;
-		
 	}
 	
 	public ArrayList<RegimenForm> getRegimenFormsFilled(ArrayList<Location> locList, Integer year, String quarter,
 	        String month) {
-		
 		ArrayList<RegimenForm> forms = new ArrayList<RegimenForm>();
-		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
 		Date startDate = (Date) (dateMap.get("startDate"));
@@ -2259,7 +2208,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<Encounter> temp = null;
 		
 		if (locList == null || locList.size() == 0) {
-			temp = Context.getEncounterService().getEncounters(null, null, startDate, endDate, null, typeList, null, false);
+			temp = getEncounters(null, null, startDate, endDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new RegimenForm(e));
 			}
@@ -2268,7 +2217,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		else {
 			
 			for (Location l : locList) {
-				temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+				temp = getEncounters(null, l, startDate, endDate, typeList);
 				for (Encounter e : temp) {
 					forms.add(new RegimenForm(e));
 				}
@@ -2287,50 +2236,42 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		
-		List<Encounter> temp = Context.getEncounterService().getEncounters(null, null, null, null, null, typeList, null,
-		    false);
+		List<Encounter> temp = getEncounters(null, null, null, null, typeList);
 		
 		for (Encounter e : temp) {
 			if (!pList.contains(e.getPatient())) {
 				pList.add(e.getPatient());
 			}
 		}
-		
 		return pList;
 	}
 	
 	public RegimenForm getPreviousRegimenFormForPatient(Patient p, ArrayList<Location> locList, Date beforeDate) {
-		RegimenForm form = null;
 		EncounterType eType = Context.getEncounterService().getEncounterType("PV Regimen");
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
 		List<Encounter> temp = null;
 		ArrayList<RegimenForm> forms = new ArrayList<RegimenForm>();
 		if (locList == null || locList.size() == 0) {
-			temp = Context.getEncounterService().getEncounters(p, null, null, beforeDate, null, typeList, null, false);
+			temp = getEncounters(p, null, null, beforeDate, typeList);
 			for (Encounter e : temp) {
 				forms.add(new RegimenForm(e));
 			}
 		}
 		
 		else {
-			
 			for (Location l : locList) {
-				temp = Context.getEncounterService().getEncounters(p, l, null, beforeDate, null, typeList, null, false);
+				temp = getEncounters(p, l, null, beforeDate, typeList);
 				for (Encounter e : temp) {
 					forms.add(new RegimenForm(e));
 				}
 			}
-			
 		}
 		if (forms != null && forms.size() != 0) {
 			Collections.sort(forms);
 			return forms.get(forms.size() - 1);
-		}
-		
-		else
+		} else
 			return null;
-		
 	}
 	
 	public RegimenForm getCurrentRegimenFormForPatient(Patient p, Date beforeDate) {
@@ -2343,29 +2284,25 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Date currentDate = null;
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTimeInMillis(beforeDate.getTime());
-		gc.add(gc.DATE, 1);
+		gc.add(Calendar.DATE, 1);
 		currentDate = gc.getTime();
 		
 		ArrayList<RegimenForm> forms = new ArrayList<RegimenForm>();
 		
-		temp = Context.getEncounterService().getEncounters(p, null, null, currentDate, null, typeList, null, false);
+		temp = getEncounters(p, null, null, currentDate, typeList);
 		for (Encounter e : temp) {
 			forms.add(new RegimenForm(e));
 		}
-		
 		if (forms != null && forms.size() != 0) {
 			Collections.sort(forms);
 			return forms.get(forms.size() - 1);
-		}
-		
-		else
+		} else
 			return null;
-		
 	}
 	
-	public ArrayList<AEForm> getAEFormsFilled(ArrayList<Location> locList, Integer year, String quarter, String month) {
+	public ArrayList<AdverseEventsForm> getAEFormsFilled(ArrayList<Location> locList, Integer year, String quarter, String month) {
 		
-		ArrayList<AEForm> forms = new ArrayList<AEForm>();
+		ArrayList<AdverseEventsForm> forms = new ArrayList<AdverseEventsForm>();
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
@@ -2386,18 +2323,15 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<Encounter> temp = null;
 		
 		if (locList == null || locList.size() == 0) {
-			temp = Context.getEncounterService().getEncounters(null, null, startDate, endDate, null, typeList, null, false);
+			temp = getEncounters(null, null, startDate, endDate, typeList);
 			for (Encounter e : temp) {
-				forms.add(new AEForm(e));
+				forms.add(new AdverseEventsForm(e));
 			}
-		}
-		
-		else {
-			
+		} else {
 			for (Location l : locList) {
-				temp = Context.getEncounterService().getEncounters(null, l, startDate, endDate, null, typeList, null, false);
+				temp = getEncounters(null, l, startDate, endDate, typeList);
 				for (Encounter e : temp) {
-					forms.add(new AEForm(e));
+					forms.add(new AdverseEventsForm(e));
 				}
 			}
 		}
@@ -2407,9 +2341,9 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 	}
 	
-	public ArrayList<AEForm> getAEFormsForProgram(Patient p, Integer patientProgId) {
+	public ArrayList<AdverseEventsForm> getAEFormsForProgram(Patient p, Integer patientProgId) {
 		
-		ArrayList<AEForm> forms = new ArrayList<AEForm>();
+		ArrayList<AdverseEventsForm> forms = new ArrayList<AdverseEventsForm>();
 		
 		EncounterType eType = Context.getEncounterService().getEncounterType("Adverse Event");
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
@@ -2417,12 +2351,12 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		List<Encounter> temp = null;
 		Concept idConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
-		temp = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		temp = getEncountersByPatientAndTypes(p, typeList);
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
 			        && idObs.getValueNumeric().intValue() == patientProgId.intValue()) {
-				forms.add(new AEForm(e));
+				forms.add(new AdverseEventsForm(e));
 			}
 			
 		}
@@ -2473,7 +2407,11 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			String facName = fac.getName();
 			List<Location> locs = Context.getLocationService().getAllLocations(false);
 			for (Location l : locs) {
-				if (MdrtbUtil.areRussianStringsEqual(l.getName(), facName)) {
+				// Committed after upgrade to v2.0
+				//				if (MdrtbUtil.areRussianStringsEqual(l.getName(), facName)) {
+				//					locList.add(l);
+				//				}
+				if (l.getName().equalsIgnoreCase(facName)) {
 					locList.add(l);
 				}
 			}
@@ -2505,9 +2443,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 					break;
 				}
 			}
-			
 		}
-		
 		return tbPrograms;
 	}
 	
@@ -2548,7 +2484,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		List<Encounter> temp = null;
 		Concept idConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
-		temp = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		// temp = Context.getEncounterService().getEncounters(p, null, null, null, null, typeList, null, false);
+		temp = Context.getService(MdrtbService.class).getEncounters(p, null, null, null, typeList);
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
@@ -2557,14 +2494,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			}
 			
 		}
-		
 		return forms;
-		
-	}
-	
-	public List<Encounter> getTbEncounters(Patient patient) {
-		return Context.getEncounterService().getEncounters(patient, null, null, null, null, TbUtil.getTbEncounterTypes(),
-		    null, false);
 	}
 	
 	public List<TbPatientProgram> getAllTbPatientPrograms() {
@@ -2579,7 +2509,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		
 		// ADD BY ALI August 13th 2017
 		TbPatientProgram temp = null;
-		//
 		
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
@@ -2603,8 +2532,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<TbPatientProgram> getTbPatientPrograms(Patient patient) {
 		
-		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(patient, getTbProgram(), null,
-		    null, null, null, false);
+		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(patient, getTbProgram(),
+		    null, null, null, null, false);
 		
 		// ADD BY ALI Aug 13th 2017
 		TbPatientProgram temp = null;
@@ -2644,8 +2573,9 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<TbPatientProgram> programs = new LinkedList<TbPatientProgram>();
 		
 		for (TbPatientProgram program : getTbPatientPrograms(patient)) {
-			if ((endDate == null || program.getDateEnrolled().before(endDate)) && (program.getDateCompleted() == null
-			        || startDate == null || !program.getDateCompleted().before(startDate))) {
+			if ((endDate == null || program.getDateEnrolled().before(endDate))
+			        && (program.getDateCompleted() == null || startDate == null || !program.getDateCompleted().before(
+			            startDate))) {
 				programs.add(program);
 			}
 		}
@@ -2690,12 +2620,93 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return null;
 	}
 	
-	public ProgramWorkflowState getProgramWorkflowState(ProgramWorkflow programWorkflow, Integer conceptId) throws APIException {
+	public ProgramWorkflowState getProgramWorkflowState(ProgramWorkflow programWorkflow, Integer conceptId)
+	        throws APIException {
 		for (ProgramWorkflowState s : programWorkflow.getStates()) {
 			if (s.getConcept().getConceptId().equals(conceptId)) {
 				return s;
 			}
 		}
 		return null;
+	}
+	
+	public List<DrugOrder> getDrugOrders(Patient patient) {
+		OrderType drugOrderType = Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID);
+		List<Order> orders = Context.getOrderService().getAllOrdersByPatient(patient);
+		List<DrugOrder> drugOrders = new ArrayList<DrugOrder>();
+		for (Order order : orders) {
+			if (order.isType(drugOrderType)) {
+				drugOrders.add((DrugOrder) order);
+			}
+		}
+		return null;
+	}
+	
+	public DrugOrder saveDrugOrder(DrugOrder drugOrder) {
+		OrderContext orderContext = new OrderContext();
+		orderContext.setOrderType(Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID));
+		orderContext.setCareSetting(Context.getOrderService().getCareSetting(1)); // Outpatient care setting
+		Context.getOrderService().saveOrder(drugOrder, orderContext);
+		return drugOrder;
+	}
+	
+	/**
+	 * Gets a specific ProgramWorkflowState, given the concept associated with the state
+	 */
+	public ProgramWorkflowState getProgramWorkflowState(Concept programWorkflowStateConcept) {
+		List<ProgramWorkflowState> list = Context.getProgramWorkflowService().getProgramWorkflowStatesByConcept(
+		    programWorkflowStateConcept);
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+		return null;
+	}
+	
+	/**
+	 * @deprecated replace with Context.getProgramWorkflowService().getStateByUuid in all
+	 *             implementations
+	 */
+	@Deprecated
+	public PatientState getPatientState(Integer stateId) {
+		if (stateId != null) {
+			return (PatientState) dao.getSessionFactory().getCurrentSession()
+			        .createQuery("from PatientState s where patientStateId = :psid").setInteger("psid", stateId.intValue())
+			        .uniqueResult();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Patient> getPatients(Collection<Integer> patientIds) {
+		if (!patientIds.isEmpty()) {
+			List<Patient> list = patientIds.stream().map(id -> Context.getPatientService().getPatient(id)).collect(Collectors.toList());
+			return list;
+		}
+		return null;
+	}
+	
+	@Override
+	public Map<Integer, List<DrugOrder>> getDrugOrders(Cohort cohort, Concept drugSet) {
+		
+		List<Concept> drugConcepts = null;
+		if (drugSet != null) {
+			List<ConceptSet> concepts = Context.getConceptService().getConceptSetsByConcept(drugSet);
+			drugConcepts = new ArrayList<Concept>();
+			for (ConceptSet cs : concepts) {
+				drugConcepts.add(cs.getConcept());
+			}
+		}
+		
+		Map<Integer, List<DrugOrder>> drugOrders = dao.getDrugOrders(cohort, drugConcepts);
+		return drugOrders;
+	}
+	
+	public Cohort getPatientsByProgramAndState(Program program, List<ProgramWorkflowState> stateList, Date fromDate,
+	        Date toDate) {
+		Cohort patientsInStates = Context.getService(CohortQueryService.class).getPatientsInStates(stateList, fromDate,
+		    toDate);
+		List<PatientProgram> list = Context.getProgramWorkflowService().getPatientPrograms(patientsInStates,
+		    Arrays.asList(program));
+		return new Cohort(list);
 	}
 }

@@ -63,8 +63,8 @@ public class RegimenHistoryTag extends TagSupport {
 		
 		StringBuilder sb = new StringBuilder();
 		
-		DateFormat df = (ObjectUtil.isNull(dateFormat) ? Context.getDateFormat()
-		        : new SimpleDateFormat(dateFormat, Context.getLocale()));
+		DateFormat df = (ObjectUtil.isNull(dateFormat) ? Context.getDateFormat() : new SimpleDateFormat(dateFormat,
+		        Context.getLocale()));
 		String activeCss = ObjectUtil.nvlStr(activeCssClass, "activeRegimenRow");
 		String futureCss = ObjectUtil.nvlStr(futureCssClass, "futureRegimenRow");
 		String prefix = ObjectUtil.nvlStr(messagePrefix, "mdrtb.");
@@ -91,9 +91,9 @@ public class RegimenHistoryTag extends TagSupport {
 			Map<String, Concept> allDrugs = new TreeMap<String, Concept>();
 			for (Regimen r : allRegimens) {
 				for (Concept c : r.getUniqueGenerics()) {
-					allDrugs.put(MdrtbUtil
-					        .getConceptName(c, Context.getLocale().getLanguage(), ConceptNameType.FULLY_SPECIFIED).getName(),
-					    c);
+					allDrugs.put(
+					    MdrtbUtil.getConceptName(c, Context.getLocale().getLanguage(), ConceptNameType.FULLY_SPECIFIED)
+					            .getName(), c);
 				}
 			}
 			
@@ -104,7 +104,7 @@ public class RegimenHistoryTag extends TagSupport {
 			}
 			
 			if (invert) { //time goes down
-				
+			
 				sb.append("<table class='" + cssClass + "'><tbody>");
 				sb.append("<tr><th>" + dateTitle + "</th>");
 				
@@ -128,7 +128,8 @@ public class RegimenHistoryTag extends TagSupport {
 						for (Concept c : allDrugs.values()) {
 							sb.append("<td>" + (regimen.containsGeneric(c) ? drugIndicator : " &nbsp;") + "</td>");
 						}
-						sb.append("<td>" + (regimen.isFuture() ? futureTitle : regimen.getDurationInDays() + " " + daysTitle)
+						sb.append("<td>"
+						        + (regimen.isFuture() ? futureTitle : regimen.getDurationInDays() + " " + daysTitle)
 						        + "</td>");
 						
 						sb.append("<td style=\"text-align:left;\" width=\"100%\">"
@@ -137,7 +138,7 @@ public class RegimenHistoryTag extends TagSupport {
 				}
 				sb.append("</tbody></table>");
 			} else { //time goes horizontal
-				
+			
 				sb.append("<table class='" + cssClass + "'><tbody>");
 				
 				List<List<String>> rowData = new ArrayList<List<String>>();

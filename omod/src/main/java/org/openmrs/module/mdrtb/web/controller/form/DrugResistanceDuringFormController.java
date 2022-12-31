@@ -72,8 +72,8 @@ public class DrugResistanceDuringFormController {
 		if (encounterId == -1) {
 			DrugResistanceDuringTreatmentForm form = null;
 			
-			MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class)
-			        .getMdrtbPatientProgram(patientProgramId);
+			MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(
+			    patientProgramId);
 			
 			form = new DrugResistanceDuringTreatmentForm(mdrtbProgram.getPatient());
 			
@@ -115,10 +115,9 @@ public class DrugResistanceDuringFormController {
 		return new ModelAndView("/module/mdrtb/form/resistanceDuringTx", model);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView processDrdtForm(@ModelAttribute("drdt") DrugResistanceDuringTreatmentForm drdt, BindingResult errors,
-	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
+	public ModelAndView processDrdtForm(@ModelAttribute("drdt") DrugResistanceDuringTreatmentForm drdt,
+	        BindingResult errors, @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        
 	        @RequestParam(required = false, value = "returnUrl") String returnUrl, SessionStatus status,
 	        HttpServletRequest request, ModelMap map) {
@@ -135,9 +134,8 @@ public class DrugResistanceDuringFormController {
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
 			
 			returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form";
-			returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-			    Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId).getPatient().getId(),
-			    patientProgramId);
+			returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+			        .getMdrtbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			
 		}
 		
@@ -168,8 +166,8 @@ public class DrugResistanceDuringFormController {
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		
 		ArrayList<ConceptAnswer> typeArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.DRUG_RESISTANCE_DURING_TREATMENT);
+		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.DRUG_RESISTANCE_DURING_TREATMENT);
 		for (int i = 0; i < 4; i++) {
 			typeArray.add(null);
 		}

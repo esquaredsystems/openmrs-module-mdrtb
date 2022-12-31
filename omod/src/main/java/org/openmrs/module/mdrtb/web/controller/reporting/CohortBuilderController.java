@@ -34,10 +34,12 @@ import org.openmrs.ConceptAnswer;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.cohort.CohortSearchHistory;
+import org.openmrs.module.reporting.report.service.ReportService;
 import org.openmrs.reporting.PatientFilter;
 import org.openmrs.reporting.PatientSearch;
 import org.openmrs.reporting.PatientSearchReportObject;
 import org.openmrs.reporting.ReportObjectService;
+import org.openmrs.module.reporting.*;
 import org.openmrs.util.HandlerUtil;
 import org.openmrs.web.WebConstants;
 import org.springframework.util.StringUtils;
@@ -45,7 +47,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.view.RedirectView;
 
-@SuppressWarnings({ "deprecation", "unused", "rawtypes" })
+//TODO: Deal with this class
+@SuppressWarnings({ "unused" })
 public class CohortBuilderController implements Controller {
 	
 	protected final Log log = LogFactory.getLog(getClass());
@@ -84,22 +87,19 @@ public class CohortBuilderController implements Controller {
 	}
 	
 	private void setMySearchHistory(HttpServletRequest request, CohortSearchHistory history) {
-		Context.setVolatileUserData("CohortBuilderSearchHistory", history);
+		// Removed after upgrade to v2.0
+		// Context.setVolatileUserData("CohortBuilderSearchHistory", history);
 	}
 	
 	private CohortSearchHistory getMySearchHistory(HttpServletRequest request) {
-		try {
-			Object searchHistoryObj = Context.getVolatileUserData("CohortBuilderSearchHistory");
-			return (CohortSearchHistory) searchHistoryObj;
-		}
-		catch (Exception e) {
-			log.debug("An error occurred while trying to retrieve search history for user.", e);
-		}
-		return null;
+		// Removed after upgrade to v2.0
+		// return (CohortSearchHistory) Context.getVolatileUserData("CohortBuilderSearchHistory");
+		// Instead, return empty history
+		return new CohortSearchHistory();
 	}
 	
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+	        IOException {
 		Map<String, Object> model = new HashMap<String, Object>();
 		if (Context.isAuthenticated()) {
 			CohortSearchHistory history = getMySearchHistory(request);
@@ -217,7 +217,7 @@ public class CohortBuilderController implements Controller {
 						if (u.length != 2) {
 							throw new IllegalArgumentException("Shortcut arguments must be name#Type. arg = " + arg);
 						}
-						Class clz;
+						Class<?> clz;
 						try {
 							clz = Class.forName(u[1]);
 						}
@@ -256,8 +256,7 @@ public class CohortBuilderController implements Controller {
 				}
 				
 			} else {
-				ReportObjectService rs = (ReportObjectService) Context.getService(ReportObjectService.class);
-				PatientFilter pf = rs.getPatientFilterByName(spec);
+				PatientFilter pf = Context.getService(ReportObjectService.class).getPatientFilterByName(spec);
 				if (label == null)
 					label = pf.getName();
 				if (pf != null)
@@ -321,16 +320,16 @@ public class CohortBuilderController implements Controller {
 		}
 	}
 	
-	public ModelAndView clearHistory(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
+	public ModelAndView clearHistory(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+	        IOException {
 		if (Context.isAuthenticated()) {
 			setMySearchHistory(request, null);
 		}
 		return new ModelAndView(new RedirectView(getSuccessView()));
 	}
 	
-	public ModelAndView addFilter(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
+	public ModelAndView addFilter(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+	        IOException {
 		if (Context.isAuthenticated()) {
 			ReportObjectService rs = (ReportObjectService) Context.getService(ReportObjectService.class);
 			CohortSearchHistory history = getMySearchHistory(request);
@@ -373,8 +372,8 @@ public class CohortBuilderController implements Controller {
 		return new ModelAndView(new RedirectView(getSuccessView()));
 	}
 	
-	public ModelAndView removeFilter(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
+	public ModelAndView removeFilter(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+	        IOException {
 		if (Context.isAuthenticated()) {
 			CohortSearchHistory history = getMySearchHistory(request);
 			String temp = request.getParameter("index");
@@ -388,7 +387,7 @@ public class CohortBuilderController implements Controller {
 	
 	public class ArgHolder {
 		
-		private Class argClass;
+		private Class<?> argClass;
 		
 		private String argName;
 		
@@ -397,17 +396,17 @@ public class CohortBuilderController implements Controller {
 		public ArgHolder() {
 		}
 		
-		public ArgHolder(Class argClass, String argName, Object argValue) {
+		public ArgHolder(Class<?> argClass, String argName, Object argValue) {
 			this.argClass = argClass;
 			this.argName = argName;
 			this.argValue = argValue;
 		}
 		
-		public Class getArgClass() {
+		public Class<?> getArgClass() {
 			return argClass;
 		}
 		
-		public void setArgClass(Class argClass) {
+		public void setArgClass(Class<?> argClass) {
 			this.argClass = argClass;
 		}
 		
@@ -428,8 +427,8 @@ public class CohortBuilderController implements Controller {
 		}
 		
 		public boolean hasValue() {
-			return argValue != null && ((argValue instanceof String && ((String) argValue).length() > 0)
-			        || (argValue instanceof String[] && ((String[]) argValue).length > 0));
+			return argValue != null
+			        && ((argValue instanceof String && ((String) argValue).length() > 0) || (argValue instanceof String[] && ((String[]) argValue).length > 0));
 		}
 		
 		public String toString() {
@@ -437,13 +436,13 @@ public class CohortBuilderController implements Controller {
 		}
 	}
 	
-	private boolean checkClassHelper(Class checkFor, Class checkFirst, Class checkNext) {
+	private boolean checkClassHelper(Class<?> checkFor, Class<?> checkFirst, Class<?> checkNext) {
 		return checkFor.equals(checkFirst)
 		        || ((checkFirst.equals(Object.class) || checkFirst.equals(List.class)) && checkFor.equals(checkNext));
 	}
 	
-	public ModelAndView addDynamicFilter(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException, ClassNotFoundException {
+	public ModelAndView addDynamicFilter(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+	        IOException, ClassNotFoundException {
 		if (Context.isAuthenticated()) {
 			String filterClassName = request.getParameter("filterClass");
 			String temp = request.getParameter("vars");
@@ -466,7 +465,7 @@ public class CohortBuilderController implements Controller {
 					throw new IllegalArgumentException("shortcut option arguments must be label#Type. " + msg);
 				}
 				String name = u[0];
-				Class c;
+				Class<?> c;
 				boolean isList = false;
 				if (u[1].startsWith("*")) {
 					u[1] = u[1].substring(1);
@@ -509,8 +508,8 @@ public class CohortBuilderController implements Controller {
 		return new ModelAndView(new RedirectView(getSuccessView()));
 	}
 	
-	public ModelAndView saveHistory(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
+	public ModelAndView saveHistory(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+	        IOException {
 		// TODO: fix this!
 		if (Context.isAuthenticated()) {
 			String name = request.getParameter("name");

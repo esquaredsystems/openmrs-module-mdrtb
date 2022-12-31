@@ -221,7 +221,6 @@ public class SpecimenController extends AbstractSpecimenController {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showSpecimen(@RequestParam(required = false, value = "testId") String testId, ModelMap map) {
 		
@@ -249,7 +248,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param removeScannedLabReports
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=specimen")
 	public ModelAndView processSubmit(@ModelAttribute("specimen") Specimen specimen, BindingResult specimenErrors,
 	        SessionStatus status, HttpServletRequest request, ModelMap map,
@@ -320,7 +318,7 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Handles the submission of a smear form
-	 *
+	 * 
 	 * @param smear
 	 * @param smearErrors
 	 * @param status
@@ -330,7 +328,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param testId
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=smear")
 	public ModelAndView processSubmit(@ModelAttribute("smear") Smear smear, BindingResult errors, SessionStatus status,
 	        HttpServletRequest request, ModelMap map,
@@ -387,10 +384,9 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param testId
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=culture")
-	public ModelAndView processSubmit(@ModelAttribute("culture") Culture culture, BindingResult errors, SessionStatus status,
-	        HttpServletRequest request, ModelMap map,
+	public ModelAndView processSubmit(@ModelAttribute("culture") Culture culture, BindingResult errors,
+	        SessionStatus status, HttpServletRequest request, ModelMap map,
 	        @RequestParam(required = true, value = "specimenId") Integer specimenId,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId) {
 		
@@ -445,7 +441,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param removeDstResults
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=dst")
 	public ModelAndView processSubmit(@ModelAttribute("dst") Dst dst, BindingResult errors, SessionStatus status,
 	        HttpServletRequest request, ModelMap map,
@@ -558,7 +553,7 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Handles the submission of a xpert form
-	 *
+	 * 
 	 * @param xpert
 	 * @param xpertErrors
 	 * @param status
@@ -568,7 +563,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param testId
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=xpert")
 	public ModelAndView processSubmit(@ModelAttribute("xpert") Xpert xpert, BindingResult errors, SessionStatus status,
 	        HttpServletRequest request, ModelMap map,
@@ -609,7 +603,7 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Handles the submission of a xpert form
-	 *
+	 * 
 	 * @param hain
 	 * @param hainErrors
 	 * @param status
@@ -619,7 +613,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param testId
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=hain")
 	public ModelAndView processSubmit(@ModelAttribute("hain") HAIN hain, BindingResult errors, SessionStatus status,
 	        HttpServletRequest request, ModelMap map,

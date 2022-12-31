@@ -18,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/module/mdrtb/form/select.form")
 public class SelectFormController {
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showForm(@RequestParam(required = true, value = "formType") String formType,
 	        @RequestParam(required = true, value = "patientId") Integer patientId,
@@ -28,8 +27,8 @@ public class SelectFormController {
 		List<Form> forms;
 		
 		if (formType.equals("intake")) {
-			EncounterType[] intake = { Context.getEncounterService()
-			        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type")) };
+			EncounterType[] intake = { Context.getEncounterService().getEncounterType(
+			    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type")) };
 			forms = Context.getFormService().getForms(null, true, Arrays.asList(intake), false, null, null, null);
 		} else if (formType.equals("followUp")) {
 			EncounterType[] followUp = { Context.getEncounterService().getEncounterType(

@@ -49,7 +49,8 @@ public class CloseReportChangesController {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	@RequestMapping(method = RequestMethod.POST) //, value="/module/mdrtb/reporting/viewClosedReportChanges"
+	@RequestMapping(method = RequestMethod.POST)
+	//, value="/module/mdrtb/reporting/viewClosedReportChanges"
 	public ModelAndView viewClosedReportsPost(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam("oblast") Integer oblast, @RequestParam("district") Integer district,
 	        @RequestParam("facility") Integer facility, @RequestParam("year") Integer year,
@@ -89,8 +90,8 @@ public class CloseReportChangesController {
 		Map<Integer, Obs> modifiedObs = new HashMap<Integer, Obs>();
 		Map<Encounter, Patient> modifiedPatients = new HashMap<Encounter, Patient>();
 		
-		List<Encounter> encounters = (List<Encounter>) Context.getService(MdrtbService.class)
-		        .getEncountersByEncounterTypes(reportEncounterTypes, startDate, endDate, null);
+		List<Encounter> encounters = (List<Encounter>) Context.getService(MdrtbService.class).getEncountersByEncounterTypes(
+		    reportEncounterTypes, startDate, endDate, null);
 		if (encounters != null) {
 			for (Encounter encounter : encounters) {
 				if (encounter != null) {
@@ -198,7 +199,7 @@ public class CloseReportChangesController {
 			/* tempData.add(Integer.toString(encounter.getId())); // encounter id
 			tempData.add(Integer.toString(encounter.getEncounterType().getId())); // encounter type id
 			tempData.add(encounter.getEncounterType().getName()); // encounter type name 
-			*/ patientData.add(tempData);
+			*/patientData.add(tempData);
 			iterator1.remove();
 		}
 		

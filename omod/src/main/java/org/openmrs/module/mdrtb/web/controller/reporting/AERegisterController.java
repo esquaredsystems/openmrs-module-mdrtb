@@ -13,9 +13,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.Region;
-import org.openmrs.module.mdrtb.form.custom.AEForm;
+import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
-import org.openmrs.module.mdrtb.reporting.pv.AERegisterData;
+import org.openmrs.module.mdrtb.reporting.pv.AdverseEventsRegisterData;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-
 public class AERegisterController {
 	
 	@InitBinder
@@ -142,23 +141,23 @@ public class AERegisterController {
 		ArrayList<Location> locList = null;
 		if (oblastId != null) {
 			if (oblastId.intValue() == 186) {
-				locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId,
-				    facilityId);
+				locList = Context.getService(MdrtbService.class)
+				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
 			} else {
 				locList = Context.getService(MdrtbService.class).getLocationList(oblastId, districtId, facilityId);
 			}
 		}
 		
-		ArrayList<AEForm> forms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter, month);
+		ArrayList<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter, month);
 		
-		ArrayList<AERegisterData> aeRegister = new ArrayList<AERegisterData>();
+		ArrayList<AdverseEventsRegisterData> aeRegister = new ArrayList<AdverseEventsRegisterData>();
 		
 		System.out.println("list size:" + forms.size());
 		//CohortDefinition baseCohort = null;
 		
 		//start of Table 1
-		for (AEForm af : forms) {
-			AERegisterData aerd = new AERegisterData(af);
+		for (AdverseEventsForm af : forms) {
+			AdverseEventsRegisterData aerd = new AdverseEventsRegisterData(af);
 			aeRegister.add(aerd);
 		}
 		

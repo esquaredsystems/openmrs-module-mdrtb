@@ -10,12 +10,12 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.DrugOrder;
-import org.openmrs.User;
+import org.openmrs.OrderType;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.reporting.common.ObjectUtil;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.DrugEditor;
-import org.openmrs.util.OpenmrsConstants;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -60,60 +60,21 @@ public class SaveDrugOrderController {
 	        @RequestParam(required = false, value = "discontinuedReason") Concept discontinuedReason,
 	        HttpServletRequest request, ModelMap model) throws Exception {
 		
-		User user = Context.getAuthenticatedUser();
-		
-		// TODO: Validate here
-		
 		DrugOrder drugOrder = null;
 		if (ObjectUtil.isNull(orderId)) {
 			drugOrder = new DrugOrder();
 			drugOrder.setPatient(Context.getPatientService().getPatient(patientId));
-			drugOrder.setOrderType(Context.getOrderService().getOrderType(OpenmrsConstants.ORDERTYPE_DRUG));
+			drugOrder.setOrderType(Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID));
 		} else {
-			drugOrder = Context.getOrderService().getOrder(orderId, DrugOrder.class);
+			drugOrder = (DrugOrder) Context.getOrderService().getOrder(orderId);
 		}
-		drugOrder.setConcept(generic);
-		drugOrder.setDrug(drug);
-		drugOrder.setDose(dose);
-		drugOrder.setUnits(units);
-		if (ObjectUtil.isNull(frequency)) {
-			frequency = "";
-			String separator = "";
-			if (ObjectUtil.notNull(perDay)) {
-				//frequency += perDay + "/day";
-				frequency += perDay + Context.getMessageSourceService().getMessage("mdrtb.perday");
-				separator = " ";
-			}
-			if (ObjectUtil.notNull(perWeek)) {
-				//frequency += separator + perWeek + " days/week";
-				frequency += separator + perWeek + " " + Context.getMessageSourceService().getMessage("mdrtb.daysperweek");
-			}
+		String durationUnits = "DAYS";
+		if (ObjectUtil.notNull(perWeek)) {
+			durationUnits = "WEEKS";
 		}
-		drugOrder.setFrequency(frequency);
-		drugOrder.setInstructions(instructions);
-		drugOrder.setStartDate(changeDate);
-		drugOrder.setAutoExpireDate(autoExpireDate);
+		drugOrder = MdrtbUtil.updateDrugOrder(drugOrder, generic, drug, dose, units, durationUnits, frequency, instructions,
+		    changeDate, autoExpireDate, discontinuedDate, discontinuedReason);
 		
-		if (drugOrder.getDiscontinued() == Boolean.TRUE) { // If originally was discontinued, but no longer, null out fields
-			if (discontinuedDate == null) {
-				drugOrder.setDiscontinued(false);
-				drugOrder.setDiscontinuedDate(null);
-				drugOrder.setDiscontinuedBy(null);
-				drugOrder.setDiscontinuedReason(null);
-			} else {
-				drugOrder.setDiscontinuedDate(discontinuedDate);
-				drugOrder.setDiscontinuedReason(discontinuedReason);
-			}
-		} else {
-			if (discontinuedDate != null) {
-				drugOrder.setDiscontinued(true);
-				drugOrder.setDiscontinuedDate(discontinuedDate);
-				drugOrder.setDiscontinuedBy(user);
-				drugOrder.setDiscontinuedReason(discontinuedReason);
-			}
-		}
-		
-		Context.getOrderService().saveOrder(drugOrder);
 		return "redirect:/module/mdrtb/regimen/manageDrugOrders.form?patientId=" + patientId + "&patientProgramId="
 		        + patientProgramId;
 	}

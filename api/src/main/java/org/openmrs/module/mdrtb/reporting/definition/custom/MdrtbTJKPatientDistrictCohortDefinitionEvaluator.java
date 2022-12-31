@@ -13,10 +13,11 @@
  */
 package org.openmrs.module.mdrtb.reporting.definition.custom;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.openmrs.Cohort;
+import org.openmrs.CohortMembership;
 import org.openmrs.Concept;
 import org.openmrs.Patient;
 import org.openmrs.PersonAddress;
@@ -24,7 +25,6 @@ import org.openmrs.annotation.Handler;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
-import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.reporting.MdrtbQueryService;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
@@ -37,47 +37,49 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
  */
 @Handler(supports = { MdrtbTJKPatientDistrictCohortDefinition.class })
 public class MdrtbTJKPatientDistrictCohortDefinitionEvaluator implements CohortDefinitionEvaluator {
-
+	
 	/**
 	 * Default Constructor
 	 */
 	public MdrtbTJKPatientDistrictCohortDefinitionEvaluator() {
 	}
-
+	
 	/**
-	 * @see CohortDefinitionEvaluator#evaluateCohort(CohortDefinition,
-	 *      EvaluationContext)
-	 * @should return patients whose first TB regimen was during the passed period
-	 *         with the given Rayon in their address
+	 * @see CohortDefinitionEvaluator#evaluateCohort(CohortDefinition, EvaluationContext)
+	 * @should return patients whose first TB regimen was during the passed period with the given
+	 *         Rayon in their address
 	 */
 	public EvaluatedCohort evaluate(CohortDefinition cohortDefinition, EvaluationContext context) {
 		Cohort fc = new Cohort();
 		MdrtbTJKPatientDistrictCohortDefinition cd = (MdrtbTJKPatientDistrictCohortDefinition) cohortDefinition;
 		Concept tbDrugSet = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOSIS_DRUGS);
 		Cohort treatmentStartCohort = MdrtbQueryService.getPatientsFirstStartingDrugs(context, cd.getFromDate(),
-				cd.getToDate(), tbDrugSet);
-
+		    cd.getToDate(), tbDrugSet);
+		
 		if (treatmentStartCohort.isEmpty())
-	    	return new EvaluatedCohort(treatmentStartCohort, cohortDefinition, context);
-
-		Set<Integer> tscIdSet = treatmentStartCohort.getMemberIds();
+			return new EvaluatedCohort(treatmentStartCohort, cohortDefinition, context);
+		
+		Collection<CohortMembership> tscIdSet = treatmentStartCohort.getMemberships();
 		System.out.println("SET SIZE:" + tscIdSet.size());
-		Iterator<Integer> itr = tscIdSet.iterator();
+		Iterator<CohortMembership> itr = tscIdSet.iterator();
 		Integer idCheck = null;
 		Patient patient = null;
 		PersonAddress addr = null;
 		PatientService ps = Context.getService(PatientService.class);
 		while (itr.hasNext()) {
-			idCheck = (Integer) itr.next();
+			idCheck = itr.next().getCohortMemberId();
 			patient = ps.getPatient(idCheck);
 			addr = patient.getPersonAddress();
-			if (MdrtbUtil.areRussianStringsEqual(addr.getCountyDistrict(), cd.getDistrict()))
-				// if(addr.getCountyDistrict()!= null &&
-				// (addr.getCountyDistrict().equalsIgnoreCase(cd.getDistrict())));
+			// Committed after upgrade to v2.0
+			//			if (MdrtbUtil.areRussianStringsEqual(addr.getCountyDistrict(), cd.getDistrict())) {
+			//				fc.addMember(idCheck);
+			//			}
+			if (addr.getCountyDistrict().equalsIgnoreCase(cd.getDistrict())) {
 				fc.addMember(idCheck);
+			}
 		}
-
+		
 		return new EvaluatedCohort(fc, cohortDefinition, context);
-
+		
 	}
 }

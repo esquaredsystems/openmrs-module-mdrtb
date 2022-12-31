@@ -60,14 +60,14 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	}
 	
 	public String getSpecimenId() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);
 		return obs == null ? null : obs.getValueText();
 	}
 	
 	public void setSpecimenId(String id) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && id == null) {
@@ -86,9 +86,8 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (id != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.SPECIMEN_ID), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(id);
 				encounter.addObs(obs);
 			}
@@ -127,9 +126,8 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (id != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueNumeric(new Double(id));
 				encounter.addObs(obs);
 			}
@@ -168,9 +166,8 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (month != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONTH_OF_TREATMENT),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.MONTH_OF_TREATMENT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueNumeric(new Double(month));
 				encounter.addObs(obs);
 			}

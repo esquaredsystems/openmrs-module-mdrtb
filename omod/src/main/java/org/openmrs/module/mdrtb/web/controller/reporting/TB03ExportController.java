@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import org.openmrs.Concept;
@@ -53,7 +52,6 @@ import org.openmrs.module.mdrtbdrugforecast.web.controller.status.DashboardTreat
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-
 public class TB03ExportController {
 	
 	@InitBinder
@@ -141,7 +139,7 @@ public class TB03ExportController {
 		
 	}
 	
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	@SuppressWarnings({ "deprecation" })
 	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/reporting/tb03")
 	public static String doTB03(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
@@ -149,8 +147,8 @@ public class TB03ExportController {
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
 		System.out.println("---POST-----");
-		System.out.println(
-		    "PARAMS:" + oblastId + " " + districtId + " " + facilityId + " " + year + " " + quarter + " " + month);
+		System.out.println("PARAMS:" + oblastId + " " + districtId + " " + facilityId + " " + year + " " + quarter + " "
+		        + month);
 		/*Region o = null;
 		if(oblast!=null && !oblast.equals("") && location == null)
 			o =  Context.getService(MdrtbService.class).getOblast(Integer.parseInt(oblast));
@@ -200,8 +198,8 @@ public class TB03ExportController {
 		ArrayList<Location> locList = null;
 		if (oblastId != null) {
 			if (oblastId.intValue() == 186) {
-				locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId,
-				    facilityId);
+				locList = Context.getService(MdrtbService.class)
+				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
 			}
 			
 			else {
@@ -226,7 +224,6 @@ public class TB03ExportController {
 		
 		Concept reg1New = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REGIMEN_1_NEW);
 		Concept reg1Rtx = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REGIMEN_1_RETREATMENT);
-		HashMap<Integer, Integer> idMap = new HashMap<Integer, Integer>();
 		
 		for (TB03Form tf : tb03List) {
 			TB03Data tb03Data = new TB03Data();
@@ -346,8 +343,8 @@ public class TB03ExportController {
 				
 				Location loc = diagnosticSmear.getLocation();
 				if (loc != null) {
-					if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-						tb03Data.setDiagnosticSmearLab(loc.getRegion());
+					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+						tb03Data.setDiagnosticSmearLab(loc.getAddress6());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -415,8 +412,8 @@ public class TB03ExportController {
 				
 				Location loc = firstXpert.getLocation();
 				if (loc != null) {
-					if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-						tb03Data.setXpertLab(loc.getRegion());
+					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+						tb03Data.setXpertLab(loc.getAddress6());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -463,8 +460,8 @@ public class TB03ExportController {
 				
 				Location loc = firstHAIN.getLocation();
 				if (loc != null) {
-					if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-						tb03Data.setHainLab(loc.getRegion());
+					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+						tb03Data.setHainLab(loc.getAddress6());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -493,8 +490,8 @@ public class TB03ExportController {
 				
 				Location loc = firstHAIN2.getLocation();
 				if (loc != null) {
-					if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-						tb03Data.setHain2Lab(loc.getRegion());
+					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+						tb03Data.setHain2Lab(loc.getAddress6());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -531,8 +528,8 @@ public class TB03ExportController {
 				
 				Location loc = diagnosticCulture.getLocation();
 				if (loc != null) {
-					if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-						tb03Data.setCultureLab(loc.getRegion());
+					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+						tb03Data.setCultureLab(loc.getAddress6());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -601,8 +598,8 @@ public class TB03ExportController {
 						tb03Data.setMonth2TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-								tb03Data.setMonth2TestLab(loc.getRegion());
+							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+								tb03Data.setMonth2TestLab(loc.getAddress6());
 							}
 							
 							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -622,8 +619,8 @@ public class TB03ExportController {
 						tb03Data.setMonth3TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-								tb03Data.setMonth3TestLab(loc.getRegion());
+							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+								tb03Data.setMonth3TestLab(loc.getAddress6());
 							}
 							
 							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -642,8 +639,8 @@ public class TB03ExportController {
 						tb03Data.setMonth5TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-								tb03Data.setMonth5TestLab(loc.getRegion());
+							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+								tb03Data.setMonth5TestLab(loc.getAddress6());
 							}
 							
 							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -662,8 +659,8 @@ public class TB03ExportController {
 						tb03Data.setMonth6TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-								tb03Data.setMonth6TestLab(loc.getRegion());
+							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+								tb03Data.setMonth6TestLab(loc.getAddress6());
 							}
 							
 							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -685,8 +682,8 @@ public class TB03ExportController {
 						tb03Data.setMonth3TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-								tb03Data.setMonth3TestLab(loc.getRegion());
+							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+								tb03Data.setMonth3TestLab(loc.getAddress6());
 							}
 							
 							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -705,8 +702,8 @@ public class TB03ExportController {
 						tb03Data.setMonth4TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-								tb03Data.setMonth4TestLab(loc.getRegion());
+							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+								tb03Data.setMonth4TestLab(loc.getAddress6());
 							}
 							
 							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -725,8 +722,8 @@ public class TB03ExportController {
 						tb03Data.setMonth5TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-								tb03Data.setMonth5TestLab(loc.getRegion());
+							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+								tb03Data.setMonth5TestLab(loc.getAddress6());
 							}
 							
 							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -746,8 +743,8 @@ public class TB03ExportController {
 						tb03Data.setMonth8TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getRegion() != null && loc.getRegion().length() != 0) {
-								tb03Data.setMonth8TestLab(loc.getRegion());
+							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+								tb03Data.setMonth8TestLab(loc.getAddress6());
 							}
 							
 							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {

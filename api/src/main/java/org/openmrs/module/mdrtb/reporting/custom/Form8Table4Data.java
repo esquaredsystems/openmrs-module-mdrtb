@@ -3,27 +3,43 @@ package org.openmrs.module.mdrtb.reporting.custom;
 public class Form8Table4Data {
 	
 	private Integer hospitalised;
+	
 	private Integer inHospital;
+	
 	private Integer firstNew;
+	
 	private Integer newBac;
+	
 	private Integer newOther;
 	
 	private Integer hospitalised014;
+	
 	private Integer inHospital014;
+	
 	private Integer firstNew014;
+	
 	private Integer newBac014;
+	
 	private Integer newOther014;
 	
 	private Integer hospitalised1517;
+	
 	private Integer inHospital1517;
+	
 	private Integer firstNew1517;
+	
 	private Integer newBac1517;
+	
 	private Integer newOther1517;
 	
 	private Integer hospitalised1819;
+	
 	private Integer inHospital1819;
+	
 	private Integer firstNew1819;
+	
 	private Integer newBac1819;
+	
 	private Integer newOther1819;
 	
 	public Form8Table4Data() {

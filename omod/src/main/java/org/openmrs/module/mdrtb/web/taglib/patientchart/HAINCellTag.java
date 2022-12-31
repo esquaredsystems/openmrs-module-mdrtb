@@ -118,11 +118,20 @@ public class HAINCellTag extends TagSupport {
 			// TODO: using the ../ is a little sketchy because it relies on directory structure not changing?
 			// TODO: this is operating on the assumption that all the bacs are from the same specimen
 			ret = "<td onmouseover=\"document.body.style.cursor = \'pointer\'\" onmouseout=\"document.body.style.cursor = \'default\'\" "
-			        + "onclick=\"window.location = \'../specimen/specimen.form?specimenId=" + hains.get(0).getSpecimenId()
-			        + "&testId=" + hains.get(0).getId() + this.parameters + "\'\""
+			        + "onclick=\"window.location = \'../specimen/specimen.form?specimenId="
+			        + hains.get(0).getSpecimenId()
+			        + "&testId="
+			        + hains.get(0).getId()
+			        + this.parameters
+			        + "\'\""
 			        + ("true".equalsIgnoreCase(this.showTooltip) ? " title=\"" + titleString + "\"" : "")
-			        + "style=\";background-color:" + colorString + ";" + this.style + "\" "
-			        + ((this.clazz != null && !this.clazz.isEmpty()) ? "class=\"" + this.clazz + "\"" : "") + ">&nbsp;"
+			        + "style=\";background-color:"
+			        + colorString
+			        + ";"
+			        + this.style
+			        + "\" "
+			        + ((this.clazz != null && !this.clazz.isEmpty()) ? "class=\"" + this.clazz + "\"" : "")
+			        + ">&nbsp;"
 			        + resultString + "&nbsp;</td>";
 		}
 		

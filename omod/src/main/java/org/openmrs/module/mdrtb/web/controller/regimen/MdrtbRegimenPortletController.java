@@ -122,8 +122,8 @@ public class MdrtbRegimenPortletController {
 				
 				// Resistance Probability: Experimental for Hamish
 				if (dstResults.isEmpty()) { // Only show this warning if no DSTs have been done
-					if ("true".equals(
-					    Context.getAdministrationService().getGlobalProperty("mdrtb.enableResistanceProbabilityWarning"))) {
+					if ("true".equals(Context.getAdministrationService().getGlobalProperty(
+					    "mdrtb.enableResistanceProbabilityWarning"))) {
 						Map<PredictionModel.RiskFactor, Boolean> riskFactors = PredictionModel.getRiskFactors(patient);
 						map.addAttribute("resistanceRiskFactors", riskFactors);
 						double probability = PredictionModel.calculateRiskProbability(riskFactors, 1);
@@ -133,8 +133,8 @@ public class MdrtbRegimenPortletController {
 						Concept rif = getMdrtbService().getConcept(MdrtbConcepts.RIFAMPICIN);
 						for (DrugOrder order : activeTbRegimen.getDrugOrders()) {
 							if (order.getConcept().equals(inh) || order.getConcept().equals(rif)) {
-								drugAlerts.put(order,
-								    MessageUtil.translate("mdrtb.probabilityOfResistance") + ": " + probability + "%");
+								drugAlerts.put(order, MessageUtil.translate("mdrtb.probabilityOfResistance") + ": "
+								        + probability + "%");
 							}
 						}
 					}

@@ -28,8 +28,8 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 	}
 	
 	public String getSpecimenId() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);
 		
 		if (obs == null) {
 			return null;
@@ -39,8 +39,8 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 	}
 	
 	public void setSpecimenId(String id) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && id == null) {
@@ -59,9 +59,8 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			
 			// now create the new Obs and add it to the encounter	
 			if (id != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.SPECIMEN_ID), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(id);
 				encounter.addObs(obs);
 			}
@@ -93,11 +92,9 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		if (obsgroup != null) {
 			obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT),
 			    obsgroup);
-		}
-		else {
-			obsgroup = new Obs(encounter.getPatient(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT),
-			        encounter.getEncounterDatetime(), encounter.getLocation());
+		} else {
+			obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+			    MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
 		}
 		
 		// if this obs have not been created, and there is no data to add, do nothing
@@ -123,9 +120,8 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			if (result != null) {
 				System.out.println("creating new obs");
 				//obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.MTB_RESULT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				obs.setObsGroup(obsgroup);
 				obsgroup.addGroupMember(obs);
@@ -164,9 +160,8 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			obs = MdrtbUtil.getObsFromObsGroup(
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE), obsgroup);
 		} else {
-			obsgroup = new Obs(encounter.getPatient(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT),
-			        encounter.getEncounterDatetime(), encounter.getLocation());
+			obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+			    MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
 		}
 		
 		// if this obs have not been created, and there is no data to add, do nothing
@@ -194,9 +189,8 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			if (result != null) {
 				System.out.println("creating new obs");
 				//obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.RIFAMPICIN_RESISTANCE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				obs.setObsGroup(obsgroup);
 				obsgroup.addGroupMember(obs);
@@ -239,9 +233,8 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			
 			// now create the new Obs and add it to the encounter	
 			if (id != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueNumeric(new Double(id));
 				encounter.addObs(obs);
 			}
@@ -280,9 +273,8 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			
 			// now create the new Obs and add it to the encounter	
 			if (month != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONTH_OF_TREATMENT),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.MONTH_OF_TREATMENT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueNumeric(new Double(month));
 				encounter.addObs(obs);
 			}
@@ -304,18 +296,21 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		        .getId().intValue()) {
 			ret = ret + Context.getMessageSourceService().getMessage("mdrtb.positiveShort");
 			
-			if (rifResult != null && rifResult.getId().intValue() == Context.getService(MdrtbService.class)
-			        .getConcept(MdrtbConcepts.DETECTED).getId().intValue()) {
+			if (rifResult != null
+			        && rifResult.getId().intValue() == Context.getService(MdrtbService.class)
+			                .getConcept(MdrtbConcepts.DETECTED).getId().intValue()) {
 				ret += "/" + Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
 			}
 			
-			else if (rifResult != null && rifResult.getId().intValue() == Context.getService(MdrtbService.class)
-			        .getConcept(MdrtbConcepts.NOT_DETECTED).getId().intValue()) {
+			else if (rifResult != null
+			        && rifResult.getId().intValue() == Context.getService(MdrtbService.class)
+			                .getConcept(MdrtbConcepts.NOT_DETECTED).getId().intValue()) {
 				ret += "/" + Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
 			}
 			
-			else if (rifResult != null && rifResult.getId().intValue() == Context.getService(MdrtbService.class)
-			        .getConcept(MdrtbConcepts.UNDETERMINED).getId().intValue()) {
+			else if (rifResult != null
+			        && rifResult.getId().intValue() == Context.getService(MdrtbService.class)
+			                .getConcept(MdrtbConcepts.UNDETERMINED).getId().intValue()) {
 				ret += "/" + Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
 			}
 		}

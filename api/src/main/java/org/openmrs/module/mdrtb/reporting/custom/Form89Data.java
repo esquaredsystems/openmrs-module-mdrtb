@@ -7,41 +7,69 @@ import org.openmrs.module.mdrtb.form.custom.Form89;
 public class Form89Data implements Comparable<Form89Data> {
 	
 	private Patient patient;
+	
 	private Form89 form89;
+	
 	private String identifier;
+	
 	private String tb03RegistrationDate;
+	
 	private Integer ageAtTB03Registration;
+	
 	private String dateOfBirth;
-
+	
 	private String siteOfDisease;
 	
 	private String dateFirstSeekingHelp;
+	
 	private String dateOfReturn;
+	
 	private String dateOfDecaySurvey;
+	
 	private String cmacDate;
+	
 	private String form89Date;
 	
 	private String diagnosticSmearResult;
+	
 	private String diagnosticSmearTestNumber;
+	
 	private String diagnosticSmearDate;
+	
 	private String diagnosticSmearLab;
+	
 	private String xpertMTBResult;
+	
 	private String xpertRIFResult;
+	
 	private String xpertTestDate;
+	
 	private String xpertTestNumber;
+	
 	private String xpertLab;
+	
 	private String hainMTBResult;
+	
 	private String hainINHResult;
+	
 	private String hainRIFResult;
+	
 	private String hainTestDate;
+	
 	private String hainTestNumber;
+	
 	private String hainLab;
 	
 	private String hain2MTBResult;
+	
 	private String hain2InjResult;
+	
 	private String hain2FqResult;
+	
 	private String hain2TestDate;
+	
 	private String hain2TestNumber;
+	
 	private String hain2Lab;
 	
 	public Form89Data() {

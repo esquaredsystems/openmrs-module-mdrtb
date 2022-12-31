@@ -58,7 +58,6 @@ import org.openmrs.module.mdrtbdrugforecast.web.controller.status.DashboardTreat
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-
 public class DOTSDQController {
 	
 	@InitBinder
@@ -247,7 +246,7 @@ public class DOTSDQController {
 			dqi = new DQItem();
 			Patient patient = tf.getPatient();//Context.getPatientService().getPatient(i);
 			
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			
@@ -410,8 +409,9 @@ public class DOTSDQController {
 			if (tf.getPatProgId() != null) {
 				
 				TbPatientProgram program = Context.getService(MdrtbService.class).getTbPatientProgram(tf.getPatProgId());
-				if (program == null || Context.getService(MdrtbService.class)
-				        .getGenPatientProgramIdentifier(program.getPatientProgram()) == null) {
+				if (program == null
+				        || Context.getService(MdrtbService.class)
+				                .getGenPatientProgramIdentifier(program.getPatientProgram()) == null) {
 					noDOTSId.add(dqi);
 					errorFlag = Boolean.TRUE;
 				}
@@ -435,7 +435,7 @@ public class DOTSDQController {
 			dqi = new DQItem();
 			Patient patient = tof.getPatient();//Context.getPatientService().getPatient(i);
 			
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			// patientList.add(patient);
@@ -478,7 +478,7 @@ public class DOTSDQController {
 			dqi = new DQItem();
 			Patient patient = tif.getPatient();//Context.getPatientService().getPatient(i);
 			
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			// patientList.add(patient);

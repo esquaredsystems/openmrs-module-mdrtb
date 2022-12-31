@@ -98,23 +98,23 @@ public class DrugCellTag extends TagSupport {
 		titleString.append(" ");
 		titleString.append(component.getDose());
 		titleString.append(" ");
-		titleString.append(component.getUnits());
+		titleString.append(component.getDoseUnits());
 		titleString.append("</nobr><br/><nobr>");
 		titleString.append(component.getFrequency());
 		titleString.append("</nobr><br/><nobr>");
-		titleString.append(df.format(component.getStartDate()));
+		titleString.append(df.format(component.getEffectiveStartDate()));
 		titleString.append("</nobr>");
 		
-		Date stopDate = ObjectUtil.nvl(component.getDiscontinuedDate(), component.getAutoExpireDate());
+		Date stopDate = ObjectUtil.nvl(component.getEffectiveStopDate(), component.getAutoExpireDate());
 		if (stopDate != null) {
 			titleString.append("<br/><nobr>");
 			titleString.append(df.format(stopDate));
 			titleString.append("</nobr>");
 		}
 		
-		if (component.getDiscontinuedReason() != null) {
+		if (component.getOrderReasonNonCoded() != null) {
 			titleString.append("<br/><nobr>");
-			titleString.append(component.getDiscontinuedReason().getBestName(Context.getLocale()));
+			titleString.append(component.getOrderReason().getName(Context.getLocale()));
 			titleString.append("</nobr>");
 		}
 		

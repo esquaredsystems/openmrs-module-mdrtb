@@ -49,12 +49,12 @@ public class TestReportRenderer extends SimpleHtmlReportRenderer {
 			w.write(key + ":\n");
 			DataSet dataset = results.getDataSets().get(key);
 			List<DataSetColumn> columns = dataset.getMetaData().getColumns();
-
+			
 			if (dataset instanceof MapDataSet) {
 				DataSetRow data = dataset.iterator().next();
 				if (dataset.getDefinition() instanceof CohortCrossTabDataSetDefinition) {
 					CohortCrossTabDataSetDefinition cdd = (CohortCrossTabDataSetDefinition) dataset.getDefinition();
-
+					
 					List<String> rows = new ArrayList<String>(cdd.getRows().keySet());
 					List<String> cols = new ArrayList<String>(cdd.getColumns().keySet());
 					
@@ -67,8 +67,7 @@ public class TestReportRenderer extends SimpleHtmlReportRenderer {
 							}
 							w.write("\n");
 						}
-					}
-					else if (cols.isEmpty()) {
+					} else if (cols.isEmpty()) {
 						for (String rowName : rows) {
 							w.write(rowName + ": ");
 							Object colValue = data.getColumnValue(rowName);
@@ -77,8 +76,7 @@ public class TestReportRenderer extends SimpleHtmlReportRenderer {
 							}
 							w.write("\n");
 						}
-					}
-					else {
+					} else {
 						w.write("\t");
 						for (String colName : cols) {
 							w.write(colName + "\t");
@@ -101,8 +99,7 @@ public class TestReportRenderer extends SimpleHtmlReportRenderer {
 							w.write("\n");
 						}
 					}
-				}
-				else {
+				} else {
 					for (DataSetColumn column : columns) {
 						w.write(column.getLabel() + ": ");
 						Object colValue = data.getColumnValue(column);
@@ -116,13 +113,12 @@ public class TestReportRenderer extends SimpleHtmlReportRenderer {
 						w.write("\n");
 					}
 				}
-			}
-			else {
+			} else {
 				for (DataSetColumn column : columns) {
-					w.write(column.getName()+"\t");
+					w.write(column.getName() + "\t");
 				}
 				w.write("\n");
-
+				
 				for (DataSetRow row : dataset) {
 					for (DataSetColumn column : columns) {
 						Object colValue = row.getColumnValue(column.getName());

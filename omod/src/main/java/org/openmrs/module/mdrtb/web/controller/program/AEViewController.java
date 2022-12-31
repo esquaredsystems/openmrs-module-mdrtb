@@ -10,7 +10,7 @@ import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.form.custom.AEForm;
+import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.propertyeditor.ConceptEditor;
@@ -53,7 +53,7 @@ public class AEViewController {
 		// add the patientId
 		map.put("patientId", program.getPatient().getId());
 		
-		ArrayList<AEForm> forms = Context.getService(MdrtbService.class).getAEFormsForProgram(program.getPatient(),
+		ArrayList<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsForProgram(program.getPatient(),
 		    program.getId());
 		
 		map.put("forms", forms);

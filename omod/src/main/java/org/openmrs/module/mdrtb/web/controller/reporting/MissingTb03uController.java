@@ -32,8 +32,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+@SuppressWarnings("unused")
 @Controller
-
 public class MissingTb03uController {
 	
 	@InitBinder
@@ -201,7 +201,7 @@ public class MissingTb03uController {
 			dqi = new DQItem();
 			Patient patient = tf.getPatient();
 			
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			//patientList.add(patient);
@@ -222,7 +222,7 @@ public class MissingTb03uController {
 				dqi = new DQItem();
 				Patient patient = p.getPatient();//Context.getPatientService().getPatient(i);
 				
-				if (patient == null || patient.isVoided()) {
+				if (patient == null || patient.getVoided()) {
 					continue;
 				}
 				

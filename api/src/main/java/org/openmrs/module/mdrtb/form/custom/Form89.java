@@ -167,9 +167,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_TYPE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.LOCATION_TYPE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -208,9 +207,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PROFESSION),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.PROFESSION), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -249,9 +247,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POPULATION_CATEGORY),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.POPULATION_CATEGORY), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -290,9 +287,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLACE_OF_DETECTION),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.PLACE_OF_DETECTION), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -331,9 +327,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (date != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_FIRST_SEEKING_HELP),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.DATE_FIRST_SEEKING_HELP), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueDatetime(date);
 				encounter.addObs(obs);
 			}
@@ -372,9 +367,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -413,9 +407,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.METHOD_OF_DETECTION),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.METHOD_OF_DETECTION), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -423,8 +416,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	}
 	
 	public Concept getEpSite() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
 		
 		if (obs == null) {
 			return null;
@@ -434,8 +427,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	}
 	
 	public void setEpSite(Concept site) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
@@ -454,9 +447,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SITE_OF_EPTB),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.SITE_OF_EPTB), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -495,9 +487,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ANATOMICAL_SITE_OF_TB), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -505,8 +496,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	}
 	
 	public Concept getEpLocation() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
 		
 		if (obs == null) {
 			return null;
@@ -516,8 +507,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	}
 	
 	public void setEpLocation(Concept site) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
@@ -536,9 +527,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SITE_OF_EPTB),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.SITE_OF_EPTB), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -578,9 +568,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRESENCE_OF_DECAY),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.PRESENCE_OF_DECAY), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -620,9 +609,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (date != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_DECAY_SURVEY),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.DATE_OF_DECAY_SURVEY), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueDatetime(date);
 				encounter.addObs(obs);
 			}
@@ -661,9 +649,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIABETES),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.DIABETES), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -702,7 +689,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CNSDL),
+				obs = new Obs(encounter.getPatient(),
+				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CNSDL),
 				        encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
@@ -742,9 +730,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -783,7 +770,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ULCER),
+				obs = new Obs(encounter.getPatient(),
+				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ULCER),
 				        encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
@@ -823,9 +811,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MENTAL_DISORDER),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.MENTAL_DISORDER), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -888,9 +875,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CANCER),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
+				        .getConcept(MdrtbConcepts.CANCER), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -929,9 +915,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COMORBID_HEPATITIS),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.COMORBID_HEPATITIS), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -970,9 +955,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.KIDNEY_DISEASE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.KIDNEY_DISEASE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -1014,9 +998,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NO_DISEASE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.NO_DISEASE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(site);
 				encounter.addObs(obs);
 			}
@@ -1056,9 +1039,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (site != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_DISEASE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.OTHER_DISEASE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(site);
 				encounter.addObs(obs);
 			}
@@ -1097,9 +1079,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (date != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CENTRAL_COMMISSION_DATE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CENTRAL_COMMISSION_DATE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueDatetime(date);
 				encounter.addObs(obs);
 			}
@@ -1138,9 +1119,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (number != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CENTRAL_COMMISSION_NUMBER),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CENTRAL_COMMISSION_NUMBER), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(number);
 				encounter.addObs(obs);
 			}
@@ -1148,8 +1128,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	}
 	
 	public Date getForm89Date() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FORM89_DATE),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FORM89_DATE), encounter);
 		
 		if (obs == null) {
 			return null;
@@ -1159,8 +1139,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	}
 	
 	public void setForm89Date(Date date) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FORM89_DATE),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FORM89_DATE), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && date == null) {
@@ -1179,9 +1159,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (date != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FORM89_DATE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.FORM89_DATE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueDatetime(date);
 				encounter.addObs(obs);
 			}
@@ -1220,9 +1199,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENERAL_PRESCRIBED_TREATMENT),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.GENERAL_PRESCRIBED_TREATMENT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -1261,9 +1239,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (id != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueNumeric(new Double(id));
 				encounter.addObs(obs);
 			}
@@ -1414,9 +1391,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (name != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NAME_OF_DOCTOR),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.NAME_OF_DOCTOR), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(name);
 				encounter.addObs(obs);
 			}
@@ -1455,9 +1431,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (name != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COUNTRY_OF_ORIGIN),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.COUNTRY_OF_ORIGIN), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(name);
 				encounter.addObs(obs);
 			}
@@ -1491,9 +1466,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (place != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLACE_OF_CENTRAL_COMMISSION),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.PLACE_OF_CENTRAL_COMMISSION), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(place);
 				encounter.addObs(obs);
 			}
@@ -1527,9 +1501,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (name != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CITY_OF_ORIGIN),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CITY_OF_ORIGIN), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(name);
 				encounter.addObs(obs);
 			}
@@ -1563,9 +1536,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (name != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_METHOD_OF_DETECTION),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.OTHER_METHOD_OF_DETECTION), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(name);
 				encounter.addObs(obs);
 			}
@@ -1573,14 +1545,14 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	}
 	
 	public String getComplication() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COMPLICATION), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.COMPLICATION), encounter);
 		return obs == null ? null : obs.getValueText();
 	}
 	
 	public void setComplication(String name) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COMPLICATION), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.COMPLICATION), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && name == null) {
@@ -1599,9 +1571,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (name != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COMPLICATION),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.COMPLICATION), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(name);
 				encounter.addObs(obs);
 			}
@@ -1638,9 +1609,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter
 			if (date != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_RETURN),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.DATE_OF_RETURN), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueDatetime(date);
 				encounter.addObs(obs);
 			}
@@ -1704,9 +1674,8 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PREGNANT),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.PREGNANT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}

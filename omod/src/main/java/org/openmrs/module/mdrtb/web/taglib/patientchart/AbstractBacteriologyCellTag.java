@@ -74,10 +74,11 @@ public abstract class AbstractBacteriologyCellTag extends TagSupport {
 						
 						// append the appropriate result to the result list
 						resultString = resultString.concat(MdrtbUtil.getConceptName(bac.getResult(),
-						    Context.getLocale().getLanguage(), ConceptNameType.FULLY_SPECIFIED).getName() + scanty);
+						    Context.getLocale().getLanguage(), ConceptNameType.FULLY_SPECIFIED).getName()
+						        + scanty);
 						
 						// append the appropriate title to the title list
-						titleString = titleString.concat(bac.getResult().getBestName(Context.getLocale()).toString() + " - "
+						titleString = titleString.concat(bac.getResult().getName(Context.getLocale()).toString() + " - "
 						        + bac.getLab().getDisplayString() + "<br/>");
 						
 						// now figure the overall result for the purpose of determining the color of the cell
@@ -117,11 +118,20 @@ public abstract class AbstractBacteriologyCellTag extends TagSupport {
 			// TODO: using the ../ is a little sketchy because it relies on directory structure not changing?
 			// TODO: this is operating on the assumption that all the bacs are from the same specimen
 			ret = "<td onmouseover=\"document.body.style.cursor = \'pointer\'\" onmouseout=\"document.body.style.cursor = \'default\'\" "
-			        + "onclick=\"window.location = \'../specimen/specimen.form?specimenId=" + bacs.get(0).getSpecimenId()
-			        + "&testId=" + bacs.get(0).getId() + this.parameters + "\'\""
+			        + "onclick=\"window.location = \'../specimen/specimen.form?specimenId="
+			        + bacs.get(0).getSpecimenId()
+			        + "&testId="
+			        + bacs.get(0).getId()
+			        + this.parameters
+			        + "\'\""
 			        + ("true".equalsIgnoreCase(this.showTooltip) ? " title=\"" + titleString + "\"" : "")
-			        + "style=\";background-color:" + colorString + ";" + this.style + "\" "
-			        + ((this.clazz != null && !this.clazz.isEmpty()) ? "class=\"" + this.clazz + "\"" : "") + ">&nbsp;"
+			        + "style=\";background-color:"
+			        + colorString
+			        + ";"
+			        + this.style
+			        + "\" "
+			        + ((this.clazz != null && !this.clazz.isEmpty()) ? "class=\"" + this.clazz + "\"" : "")
+			        + ">&nbsp;"
 			        + resultString + "&nbsp;</td>";
 		}
 		

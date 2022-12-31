@@ -25,7 +25,7 @@ import org.openmrs.module.mdrtb.Region;
 /**
  * @author owais.hussain@esquaredsystems.com
  */
-public class MdrtbServiceLocationTest extends MdrtbBase {
+public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	
 	MdrtbService service;
 	
@@ -36,20 +36,27 @@ public class MdrtbServiceLocationTest extends MdrtbBase {
 	LocalDate now = new LocalDate();
 	
 	Country tajikistan = new Country("Tajikistan", 1);
+	
 	Country scotland = new Country("Scotland", 2);
 	
 	Region dushanbe = new Region("Dushanbe", 3);
+	
 	Region khatlon = new Region("Khatlon Region", 4);
+	
 	Region republic = new Region("Republican Subordination", 5);
 	
 	District fayzobad = new District("Fayzobod District", 6);
+	
 	District nurobad = new District("Nurobod District", 7);
+	
 	District ferdowsi = new District("Ferdowsi District", 13);
+	
 	District mansur = new District("Shah Mansur District", 14);
 	
 	Facility fayzobodLab = new Facility("Fayzobod Central Testing Lab", 10);
+	
 	Facility dushanbeGeneralHospital = new Facility("Dushanbe General Hospital", 201);
-
+	
 	@Before
 	public void runBeforeEachTest() throws Exception {
 		super.initTestData();
@@ -144,7 +151,8 @@ public class MdrtbServiceLocationTest extends MdrtbBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocation(java.lang.Integer, java.lang.Integer, java.lang.Integer)}.
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocation(java.lang.Integer, java.lang.Integer, java.lang.Integer)}
+	 * .
 	 */
 	@Test
 	public final void testGetLocation() {
@@ -155,19 +163,22 @@ public class MdrtbServiceLocationTest extends MdrtbBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocationListForDushanbe(java.lang.Integer, java.lang.Integer, java.lang.Integer)}.
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocationListForDushanbe(java.lang.Integer, java.lang.Integer, java.lang.Integer)}
+	 * .
 	 */
 	@Test
 	@Ignore
 	public final void testGetLocationListForDushanbe() {
-		ArrayList<Location> list = service.getLocationListForDushanbe(dushanbe.getId(), null, dushanbeGeneralHospital.getId());
+		ArrayList<Location> list = service.getLocationListForDushanbe(dushanbe.getId(), null,
+		    dushanbeGeneralHospital.getId());
 		Location expected = Context.getLocationService().getLocation(dushanbeGeneralHospital.getId());
 		assertTrue(list.contains(expected));
 	}
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocationsFromDistrict(org.openmrs.module.mdrtb.District)}.
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocationsFromDistrict(org.openmrs.module.mdrtb.District)}
+	 * .
 	 */
 	@Test
 	@Ignore
@@ -177,7 +188,8 @@ public class MdrtbServiceLocationTest extends MdrtbBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocationsFromFacility(org.openmrs.module.mdrtb.Facility)}.
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocationsFromFacility(org.openmrs.module.mdrtb.Facility)}
+	 * .
 	 */
 	@Test
 	@Ignore
@@ -189,7 +201,8 @@ public class MdrtbServiceLocationTest extends MdrtbBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocationsFromRegion(org.openmrs.module.mdrtb.Region)}.
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getLocationsFromRegion(org.openmrs.module.mdrtb.Region)}
+	 * .
 	 */
 	@Test
 	@Ignore

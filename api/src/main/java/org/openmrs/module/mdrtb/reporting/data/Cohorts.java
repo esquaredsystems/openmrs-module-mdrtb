@@ -21,7 +21,6 @@ import java.util.List;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.ProgramWorkflowState;
-import org.openmrs.api.PatientSetService.TimeModifier;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants.TbClassification;
@@ -44,6 +43,7 @@ import org.openmrs.module.mdrtb.reporting.definition.custom.SLDRegimenTypeCohort
 import org.openmrs.module.mdrtb.reporting.definition.custom.TB03UCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.custom.TestReferralCohortDefinition;
 import org.openmrs.module.mdrtb.service.MdrtbService;
+import org.openmrs.module.reporting.cohort.definition.BaseObsCohortDefinition.TimeModifier;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.GenderCohortDefinition;
@@ -77,11 +77,17 @@ public class Cohorts {
 		return null;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public static CohortDefinition getEnteredStateDuringFilter(Integer stateId, Date startDate, Date endDate) {
-		return getEnteredStateDuringFilter(Context.getProgramWorkflowService().getState(stateId), startDate, endDate);
+		ProgramWorkflowState programWorkflowState = null;
+		//TODO: Context.getProgramWorkflowService().getState(stateId);
+		return getEnteredStateDuringFilter(programWorkflowState, startDate, endDate);
 	}
-		
+	
+	public static CohortDefinition getEnteredStateDuringFilter(String stateUuid, Date startDate, Date endDate) {
+		ProgramWorkflowState programWorkflowState = Context.getProgramWorkflowService().getStateByUuid(stateUuid);
+		return getEnteredStateDuringFilter(programWorkflowState, startDate, endDate);
+	}
+	
 	public static CohortDefinition getEnteredStateDuringFilter(ProgramWorkflowState state, Date startDate, Date endDate) {
 		PatientStateCohortDefinition cd = new PatientStateCohortDefinition();
 		cd.setStartedOnOrAfter(startDate);
@@ -108,8 +114,9 @@ public class Cohorts {
 	public static CohortDefinition getNotInStateDuringFilter(ProgramWorkflowState state, Date startDate, Date endDate) {
 		return new InverseCohortDefinition(getInStateDuringFilter(state, startDate, endDate));
 	}
-
-	public static CohortDefinition getMdrtbPatientProgramStateFilter(Concept workflowConcept, List<Concept> stateConcepts, Date startDate, Date endDate) {
+	
+	public static CohortDefinition getMdrtbPatientProgramStateFilter(Concept workflowConcept, List<Concept> stateConcepts,
+	        Date startDate, Date endDate) {
 		MdrtbPatientProgramStateCohortDefinition cd = new MdrtbPatientProgramStateCohortDefinition();
 		cd.setWorkflowConcept(workflowConcept);
 		cd.setStateConcepts(stateConcepts);
@@ -117,44 +124,61 @@ public class Cohorts {
 		cd.setEndDate(endDate);
 		return cd;
 	}
-		
-	public static CohortDefinition getMdrtbPatientProgramStateFilter(Concept workflowConcept, Concept stateConcept, Date startDate, Date endDate) {
+	
+	public static CohortDefinition getMdrtbPatientProgramStateFilter(Concept workflowConcept, Concept stateConcept,
+	        Date startDate, Date endDate) {
 		List<Concept> stateConcepts = new ArrayList<Concept>();
-		if(stateConcept!=null)
+		if (stateConcept != null)
 			stateConcepts.add(stateConcept);
 		
 		return getMdrtbPatientProgramStateFilter(workflowConcept, stateConcepts, startDate, endDate);
 	}
 	
 	public static CohortDefinition getCuredDuringFilter(Date startDate, Date endDate) {
-		return getEnteredStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED)), startDate, endDate);
+		return getEnteredStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED)), startDate, endDate);
 	}
 	
 	public static CohortDefinition getTreatmentCompletedDuringFilter(Date startDate, Date endDate) {
-		return getEnteredStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETED)), startDate, endDate);
+		return getEnteredStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETED)), startDate, endDate);
 	}
 	
 	public static CohortDefinition getFailedDuringFilter(Date startDate, Date endDate) {
-		return getEnteredStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_FAILED)), startDate, endDate);
+		return getEnteredStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_FAILED)), startDate, endDate);
 	}
 	
 	public static CohortDefinition getDefaultedDuringFilter(Date startDate, Date endDate) {
 		//TODO: MdrtbConcepts.DEFAULTED was changed to MdrtbConcepts.LOST_TO_FOLLOWUP. Ensure there's an upgrade script to migrate existing data
-		return getEnteredStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOST_TO_FOLLOWUP)), startDate, endDate);	
+		return getEnteredStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOST_TO_FOLLOWUP)), startDate, endDate);
 	}
 	
 	public static CohortDefinition getDiedDuringFilter(Date startDate, Date endDate) {
-		return getEnteredStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED)), startDate, endDate);
+		return getEnteredStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED)), startDate, endDate);
 	}
 	
 	public static CohortDefinition getTransferredDuringFilter(Date startDate, Date endDate) {
-		return getEnteredStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_OUT)), startDate, endDate);
+		return getEnteredStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_OUT)), startDate,
+		    endDate);
 	}
-
+	
 	public static CohortDefinition getRelapsedDuringFilter(Date startDate, Date endDate) {
 		//TODO: MdrtbConcepts.RELAPSE was changed to MdrtbConcepts.RELAPSE_AFTER_REGIMEN_1. Ensure there's an upgrade script to migrate existing data
-		return getEnteredStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_1)), startDate, endDate);
-
+		return getEnteredStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_1)), startDate,
+		    endDate);
+		
 	}
 	
 	public static CohortDefinition getPolydrDetectionFilter(Date startDate, Date endDate) {
@@ -164,7 +188,6 @@ public class Cohorts {
 		polydrPats.setMaxResultDate(endDate);
 		return polydrPats;
 	}
-		
 	
 	public static CohortDefinition getMdrDetectionFilter(Date startDate, Date endDate) {
 		DstResultCohortDefinition mdrPats = new DstResultCohortDefinition();
@@ -173,7 +196,7 @@ public class Cohorts {
 		mdrPats.setMaxResultDate(endDate);
 		return mdrPats;
 	}
-		
+	
 	public static CohortDefinition getXdrDetectionFilter(Date startDate, Date endDate) {
 		DstResultCohortDefinition xdrPats = new DstResultCohortDefinition();
 		xdrPats.setTbClassification(TbClassification.XDR_TB);
@@ -189,7 +212,8 @@ public class Cohorts {
 		return startedTreatmentCohort;
 	}
 	
-	public static CohortDefinition getProgramClosedAfterTreatmentStartedFilter(Date startDate, Date endDate, Integer monthsFromTreatmentStart) {
+	public static CohortDefinition getProgramClosedAfterTreatmentStartedFilter(Date startDate, Date endDate,
+	        Integer monthsFromTreatmentStart) {
 		MdrtbProgramClosedAfterTreatmentStartedCohortDefintion programClosedAfterTreatmentStartedCohort = new MdrtbProgramClosedAfterTreatmentStartedCohortDefintion();
 		programClosedAfterTreatmentStartedCohort.setFromDate(startDate);
 		programClosedAfterTreatmentStartedCohort.setToDate(endDate);
@@ -210,7 +234,7 @@ public class Cohorts {
 	}
 	
 	public static CohortDefinition getSuspectedMdrInProgramAndStartedTreatmentFilter(Date startDate, Date endDate) {
-		CompositionCohortDefinition suspected = new CompositionCohortDefinition();	
+		CompositionCohortDefinition suspected = new CompositionCohortDefinition();
 		
 		// TODO: this does not yet handle patient programs/relapses properly, as the MDR Detection filter start date is set to null,
 		// if a patient has multiple programs, it really should be set to the end date of the most recent previous program
@@ -220,22 +244,29 @@ public class Cohorts {
 		suspected.setCompositionString("inMdrProgram AND (NOT detectedWithMDR) AND startedTreatment");
 		return suspected;
 	}
-
-	public static CohortDefinition getNewlyHospitalizedDuringPeriod(Date startDate, Date endDate) {	
-		return getEnteredStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_HOSPITALIZED)), startDate, endDate);
+	
+	public static CohortDefinition getNewlyHospitalizedDuringPeriod(Date startDate, Date endDate) {
+		return getEnteredStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_HOSPITALIZED)), startDate, endDate);
 	}
-		
+	
 	public static CohortDefinition getEverHospitalizedDuringPeriod(Date startDate, Date endDate) {
-		return getInStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_HOSPITALIZED)), startDate, endDate);
+		return getInStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_HOSPITALIZED)), startDate, endDate);
 	}
 	
 	public static CohortDefinition getMostRecentlyAmbulatoryByEnd(Date startDate, Date endDate) {
-		return getNotInStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_HOSPITALIZED)), startDate, endDate);
+		return getNotInStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_HOSPITALIZED)), startDate, endDate);
 	}
 	
 	// TODO: figure out what obs to look for here--see ticket HATB-358
 	public static CohortDefinition getHivPositiveDuring(Date startDate, Date endDate) {
-		return ReportUtil.getCodedObsCohort(TimeModifier.ANY, 3753, startDate, endDate, SetComparator.IN, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POSITIVE).getId());
+		return ReportUtil.getCodedObsCohort(TimeModifier.ANY, 3753, startDate, endDate, SetComparator.IN, Context
+		        .getService(MdrtbService.class).getConcept(MdrtbConcepts.POSITIVE).getId());
 	}
 	
 	// TODO: figure out what obs to look for here--see ticket HATB-358
@@ -246,52 +277,63 @@ public class Cohorts {
 	}
 	
 	public static CohortDefinition getTransferredInDuring(Date startDate, Date endDate) {
-		return getEnteredStateDuringFilter(MdrtbUtil.getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_IN)), startDate, endDate);
+		return getEnteredStateDuringFilter(
+		    Context.getService(MdrtbService.class).getProgramWorkflowState(
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_IN)), startDate, endDate);
 	}
 	
 	public static CohortDefinition getMostRecentlySmearPositiveByDate(Date effectiveDate) {
-		return ReportUtil.getCodedObsCohort(TimeModifier.LAST, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_RESULT).getId(), 
-			null, effectiveDate, SetComparator.IN, MdrtbUtil.getPositiveResultConceptIds());
+		return ReportUtil.getCodedObsCohort(TimeModifier.LAST,
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_RESULT).getId(), null, effectiveDate,
+		    SetComparator.IN, MdrtbUtil.getPositiveResultConceptIds());
 	}
 	
 	public static CohortDefinition getAnySmearPositiveDuring(Date startDate, Date endDate) {
-		return ReportUtil.getCodedObsCohort(TimeModifier.ANY, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_RESULT).getId(),
-			startDate, endDate, SetComparator.IN, MdrtbUtil.getPositiveResultConceptIds());
+		return ReportUtil.getCodedObsCohort(TimeModifier.ANY,
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_RESULT).getId(), startDate, endDate,
+		    SetComparator.IN, MdrtbUtil.getPositiveResultConceptIds());
 	}
 	
 	public static CohortDefinition getMostRecentlySmearNegativeByDate(Date effectiveDate) {
-		return ReportUtil.getCodedObsCohort(TimeModifier.LAST, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_RESULT).getId(), 
-			null, effectiveDate, SetComparator.IN, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE).getId());
+		return ReportUtil.getCodedObsCohort(TimeModifier.LAST,
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_RESULT).getId(), null, effectiveDate,
+		    SetComparator.IN, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE).getId());
 	}
 	
 	public static CohortDefinition getAllSmearNegativeDuring(Date startDate, Date endDate) {
-		CompositionCohortDefinition cd = new CompositionCohortDefinition();	
-		cd.addSearch("anyNegative", ReportUtil.getCodedObsCohort(TimeModifier.ANY, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_RESULT).getId(), 
-			startDate, endDate, SetComparator.IN, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE).getId()), null);
+		CompositionCohortDefinition cd = new CompositionCohortDefinition();
+		cd.addSearch("anyNegative", ReportUtil.getCodedObsCohort(TimeModifier.ANY, Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.SMEAR_RESULT).getId(), startDate, endDate, SetComparator.IN,
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE).getId()), null);
 		cd.addSearch("anyPositive", getAnySmearPositiveDuring(startDate, endDate), null);
 		cd.setCompositionString("anyNegative AND (NOT anyPositive)");
 		return cd;
 	}
 	
 	public static CohortDefinition getAnyCulturePositiveDuring(Date startDate, Date endDate) {
-		return ReportUtil.getCodedObsCohort(TimeModifier.ANY, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT).getId(), 
-			startDate, endDate, SetComparator.IN, MdrtbUtil.getPositiveResultConceptIds());
+		return ReportUtil.getCodedObsCohort(TimeModifier.ANY,
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT).getId(), startDate, endDate,
+		    SetComparator.IN, MdrtbUtil.getPositiveResultConceptIds());
 	}
 	
 	public static CohortDefinition getAllCultureNegativeDuring(Date startDate, Date endDate) {
-		CompositionCohortDefinition cd = new CompositionCohortDefinition();	
-		cd.addSearch("anyNegative", ReportUtil.getCodedObsCohort(TimeModifier.ANY, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT).getId(),
-			startDate, endDate, SetComparator.IN, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE).getId()), null);
+		CompositionCohortDefinition cd = new CompositionCohortDefinition();
+		cd.addSearch("anyNegative", ReportUtil.getCodedObsCohort(TimeModifier.ANY, Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.CULTURE_RESULT).getId(), startDate, endDate, SetComparator.IN,
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE).getId()), null);
 		cd.addSearch("anyPositive", getAnyCulturePositiveDuring(startDate, endDate), null);
 		cd.setCompositionString("anyNegative AND (NOT anyPositive)");
 		return cd;
 	}
 	
-	public static CohortDefinition getFirstCulturePositiveDuring(Date startDate, Date endDate) {	
+	public static CohortDefinition getFirstCulturePositiveDuring(Date startDate, Date endDate) {
 		StringBuilder q = new StringBuilder();
 		q.append("select 	o.person_id ");
-		q.append("from		obs o, (select person_id, concept_id, min(obs_datetime) as obs_datetime from obs where concept_id = "  + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT).getId() +  " group by person_id) d ");
-		q.append("where		o.concept_id = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT).getId() + " ");
+		q.append("from		obs o, (select person_id, concept_id, min(obs_datetime) as obs_datetime from obs where concept_id = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT).getId()
+		        + " group by person_id) d ");
+		q.append("where		o.concept_id = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT).getId() + " ");
 		q.append("and		o.obs_datetime = d.obs_datetime ");
 		q.append("and		o.value_coded in (" + convertIntegerSetToString(MdrtbUtil.getPositiveResultConceptIds()) + ") ");
 		if (startDate != null) {
@@ -305,7 +347,8 @@ public class Cohorts {
 	
 	public static CohortDefinition getInMdrProgramEverDuring(Date startDate, Date endDate) {
 		InProgramCohortDefinition cd = new InProgramCohortDefinition();
-		cd.setPrograms(Arrays.asList(Context.getProgramWorkflowService().getProgramByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"))));
+		cd.setPrograms(Arrays.asList(Context.getProgramWorkflowService().getProgramByName(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"))));
 		cd.setOnOrAfter(startDate);
 		cd.setOnOrBefore(endDate);
 		return cd;
@@ -315,18 +358,22 @@ public class Cohorts {
 		StringBuilder q = new StringBuilder();
 		q.append("select 	o.person_id ");
 		q.append("from		obs o ");
-		q.append("where		o.concept_id = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_CONSTRUCT) + " ");
-	//	q.append("and       o.voided='0' ");
+		q.append("where		o.concept_id = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_CONSTRUCT) + " ");
+		//	q.append("and       o.voided='0' ");
 		q.append("and		o.obs_id not in ");
 		q.append("		(select obs_group_id from obs ");
-		q.append("		 where concept_id = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_RESULT_DATE) +" and value_datetime <= '" + DateUtil.formatDate(effectiveDate, "yyyy-MM-dd") + "') ");
+		q.append("		 where concept_id = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_RESULT_DATE)
+		        + " and value_datetime <= '" + DateUtil.formatDate(effectiveDate, "yyyy-MM-dd") + "') ");
 		return new SqlCohortDefinition(q.toString());
 	}
 	
-	public static CohortDefinition getMdrtbBacResultAfterTreatmentStart(Date startDate, Date endDate, Integer fromTreatmentMonth, Integer toTreatmentMonth, Result overallResult) {
+	public static CohortDefinition getMdrtbBacResultAfterTreatmentStart(Date startDate, Date endDate,
+	        Integer fromTreatmentMonth, Integer toTreatmentMonth, Result overallResult) {
 		MdrtbBacResultAfterTreatmentStartedCohortDefinition cd = new MdrtbBacResultAfterTreatmentStartedCohortDefinition();
 		cd.setFromDate(startDate);
-		cd.setToDate(endDate);		
+		cd.setToDate(endDate);
 		cd.setFromTreatmentMonth(fromTreatmentMonth);
 		cd.setToTreatmentMonth(toTreatmentMonth);
 		cd.setOverallResult(overallResult);
@@ -336,7 +383,7 @@ public class Cohorts {
 	/**
 	 * Utility methods
 	 */
-	private static String convertIntegerSetToString(Integer [] set) {
+	private static String convertIntegerSetToString(Integer[] set) {
 		StringBuilder result = new StringBuilder();
 		for (Integer integer : set) {
 			result.append(integer + ",");
@@ -358,7 +405,7 @@ public class Cohorts {
 	}
 	
 	public static CohortDefinition getPatientsReferredToTestFilter(Date fromDate, Date toDate, String testType) {
-		TestReferralCohortDefinition testReferredCohort =  new TestReferralCohortDefinition();
+		TestReferralCohortDefinition testReferredCohort = new TestReferralCohortDefinition();
 		testReferredCohort.setFromDate(fromDate);
 		testReferredCohort.setToDate(toDate);
 		testReferredCohort.setTestType(testType);
@@ -394,8 +441,10 @@ public class Cohorts {
 		StringBuilder q = new StringBuilder();
 		q.append("select 	o.person_id ");
 		q.append("from		obs o ");
-		q.append("where		o.concept_id = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
-		q.append("and		o.value_coded = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB).getId() + " ");
+		q.append("where		o.concept_id = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
+		q.append("and		o.value_coded = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB).getId() + " ");
 		return new SqlCohortDefinition(q.toString());
 	}
 	
@@ -403,15 +452,18 @@ public class Cohorts {
 		StringBuilder q = new StringBuilder();
 		q.append("select 	o.person_id ");
 		q.append("from		obs o ");
-		q.append("where		o.concept_id = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
-		q.append("and		o.value_coded = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB).getId() + " ");
+		q.append("where		o.concept_id = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
+		q.append("and		o.value_coded = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB).getId() + " ");
 		return new SqlCohortDefinition(q.toString());
 	}
 	
-	public static CohortDefinition getMdrtbAfterTreatmentStart(Date startDate, Date endDate, Integer fromTreatmentMonth, Integer toTreatmentMonth) {
+	public static CohortDefinition getMdrtbAfterTreatmentStart(Date startDate, Date endDate, Integer fromTreatmentMonth,
+	        Integer toTreatmentMonth) {
 		MdrtbAfterTreatmentStartedCohortDefinition cd = new MdrtbAfterTreatmentStartedCohortDefinition();
 		cd.setFromDate(startDate);
-		cd.setToDate(endDate);		
+		cd.setToDate(endDate);
 		cd.setFromTreatmentMonth(fromTreatmentMonth);
 		cd.setToTreatmentMonth(toTreatmentMonth);
 		
@@ -421,7 +473,7 @@ public class Cohorts {
 	public static CohortDefinition getPreviousMdrtbProgramOutcome(Date startDate, Date endDate, String outcome) {
 		MdrtbPreviousProgramOutcomeCohortDefinition cd = new MdrtbPreviousProgramOutcomeCohortDefinition();
 		cd.setFromDate(startDate);
-		cd.setToDate(endDate);		
+		cd.setToDate(endDate);
 		cd.setOutcome(outcome);
 		
 		return cd;
@@ -429,14 +481,15 @@ public class Cohorts {
 	
 	public static CohortDefinition getEnrolledInMDRProgramDuring(Date startDate, Date endDate) {
 		ProgramEnrollmentCohortDefinition pd = new ProgramEnrollmentCohortDefinition();
-		pd.setPrograms(Arrays.asList(Context.getProgramWorkflowService().getProgramByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"))));
+		pd.setPrograms(Arrays.asList(Context.getProgramWorkflowService().getProgramByName(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"))));
 		pd.setEnrolledOnOrAfter(startDate);
 		pd.setEnrolledOnOrBefore(endDate);
 		return pd;
 	}
 	
 	/**
-	 * @return the CohortDefinition for the Address and date 
+	 * @return the CohortDefinition for the Address and date
 	 */
 	public static CohortDefinition getTreatmentStartAndAddressFilterTJK(String rayon, Date fromDate, Date toDate) {
 		if (rayon != null) {
@@ -459,13 +512,15 @@ public class Cohorts {
 		return new SqlCohortDefinition(q.toString());
 	}
 	
-	public static CohortDefinition getAgeAtEnrollmentInMdrtbProgram(Date startDate, Date endDate, Integer minAge, Integer maxAge) {
+	public static CohortDefinition getAgeAtEnrollmentInMdrtbProgram(Date startDate, Date endDate, Integer minAge,
+	        Integer maxAge) {
 		AgetAtMdrtbProgramEnrollmentTJKCohortDefinition cd = new AgetAtMdrtbProgramEnrollmentTJKCohortDefinition();
 		cd.setEnrolledOnOrAfter(startDate);
-		cd.setEnrolledOnOrBefore(endDate);		
+		cd.setEnrolledOnOrBefore(endDate);
 		cd.setMinAge(minAge);
 		cd.setMaxAge(maxAge);
-		cd.setPrograms(Arrays.asList(Context.getProgramWorkflowService().getProgramByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"))));
+		cd.setPrograms(Arrays.asList(Context.getProgramWorkflowService().getProgramByName(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"))));
 		return cd;
 	}
 	
@@ -489,7 +544,7 @@ public class Cohorts {
 	public static CohortDefinition getAgeAtRegistration(Date startDate, Date endDate, Integer minAge, Integer maxAge) {
 		AgeAtMDRRegistrationCohortDefinition cd = new AgeAtMDRRegistrationCohortDefinition();
 		cd.setStartDate(startDate);
-		cd.setEndDate(endDate);		
+		cd.setEndDate(endDate);
 		cd.setMinAge(minAge);
 		cd.setMaxAge(maxAge);
 		return cd;
@@ -499,8 +554,10 @@ public class Cohorts {
 		StringBuilder q = new StringBuilder();
 		q.append("select 	o.person_id ");
 		q.append("from		obs o ");
-		q.append("where		o.concept_id = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
-		q.append("and		o.value_coded = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB).getId() + " ");
+		q.append("where		o.concept_id = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
+		q.append("and		o.value_coded = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB).getId() + " ");
 		if (startDate != null) {
 			q.append("and	o.obs_datetime >= '" + DateUtil.formatDate(startDate, "yyyy-MM-dd") + "' ");
 		}
@@ -514,8 +571,10 @@ public class Cohorts {
 		StringBuilder q = new StringBuilder();
 		q.append("select 	o.person_id ");
 		q.append("from		obs o ");
-		q.append("where		o.concept_id = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
-		q.append("and		o.value_coded = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB).getId() + " ");
+		q.append("where		o.concept_id = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
+		q.append("and		o.value_coded = "
+		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB).getId() + " ");
 		if (startDate != null) {
 			q.append("and	o.obs_datetime >= '" + DateUtil.formatDate(startDate, "yyyy-MM-dd") + "' ");
 		}
@@ -528,7 +587,7 @@ public class Cohorts {
 	public static CohortDefinition getSLDRegimenFilter(Date startDate, Date endDate, Concept regType) {
 		SLDRegimenTypeCohortDefinition cd = new SLDRegimenTypeCohortDefinition();
 		cd.setStartDate(startDate);
-		cd.setEndDate(endDate);		
+		cd.setEndDate(endDate);
 		cd.setRegType(regType);
 		return cd;
 	}

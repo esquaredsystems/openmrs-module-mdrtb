@@ -18,4 +18,5 @@
     <concept_class concept_class_id="16" name="Program" description="Represents a program" creator="1" date_created="2008-07-29 17:37:37" retired="0" uuid="31ecd5d4-0370-102d-b0e3-001ec94a0cc1"/>
     <concept_class concept_class_id="17" name="Workflow" description="A workflow in a program" creator="1" date_created="2008-07-29 17:36:10" retired="0" uuid="31ecd3cc-0370-102d-b0e3-001ec94a0cc1"/>
     <concept_class concept_class_id="18" name="State" description="A state in a program workflow" creator="1" date_created="2008-07-29 17:36:19" retired="0" uuid="31ecd4c6-0370-102d-b0e3-001ec94a0cc1"/>
+    <concept_class concept_class_id="19" name="Frequency" description="A frequency, repetition or reoccurrence" creator="1" date_created="2008-07-29 17:36:19" retired="0" uuid="31ecd4c6-0370-102d-b0e3-001ec94a0dd1"/>
 </dataset>

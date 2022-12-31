@@ -12,6 +12,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.form.custom.Form89;
@@ -135,7 +136,7 @@ public class TB07ReportController {
 		
 		System.out.println("Loading TB07");
 		
-		SimpleDateFormat sdf = Context.getDateFormat();
+		// SimpleDateFormat sdf = Context.getDateFormat();
 		// sdf.applyPattern("dd.MM.yyyy"); // Not needed if the above is working
 		
 		SimpleDateFormat rdateSDF = Context.getDateTimeFormat();
@@ -189,7 +190,7 @@ public class TB07ReportController {
 			}
 			
 			Patient patient = tf.getPatient();
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 				
 			}
@@ -255,7 +256,7 @@ public class TB07ReportController {
 			
 			if (q != null) {
 				
-				if (tf.getPatient().isDead()) {
+				if (tf.getPatient().getDead()) {
 					table1.setDied(table1.getDied() + 1);
 					if (ageAtRegistration < 15) {
 						table1.setDiedChildren(table1.getDiedChildren() + 1);
@@ -267,8 +268,8 @@ public class TB07ReportController {
 				}
 				
 				//NEW
-				if (q.getConceptId().intValue() == Integer
-				        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.new.conceptId"))) {
+				if (q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
+				        .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP)))) {
 					
 					if (f89 != null) {
 						Concept x = f89.getCircumstancesOfDetection();
@@ -579,8 +580,9 @@ public class TB07ReportController {
 							
 							if (f89 != null) {
 								Concept c = f89.getPregnant();
-								if (c != null && c.getId().intValue() == Context.getService(MdrtbService.class)
-								        .getConcept(MdrtbConcepts.YES).getId().intValue()) {
+								if (c != null
+								        && c.getId().intValue() == Context.getService(MdrtbService.class)
+								                .getConcept(MdrtbConcepts.YES).getId().intValue()) {
 									table1.setPregnant(table1.getPregnant() + 1);
 								}
 							}
@@ -768,10 +770,10 @@ public class TB07ReportController {
 				}
 				
 				//RELAPSE
-				else if (q.getConceptId().intValue() == Integer.parseInt(
-				    Context.getAdministrationService().getGlobalProperty("dotsreports.afterRelapse1.conceptId"))
-				        || q.getConceptId() == Integer.parseInt(
-				            Context.getAdministrationService().getGlobalProperty("dotsreports.afterRelapse2.conceptId"))) {
+				else if (q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
+				        .getGlobalProperty(MdrtbConstants.AFTER_RELAPSE1_CONCEPT_ID_GP)))
+				        || q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				            MdrtbConstants.AFTER_RELAPSE2_CONCEPT_ID_GP)))) {
 					
 					table1.setRelapseAll(table1.getRelapseAll() + 1);
 					if (hivPositive)
@@ -843,43 +845,35 @@ public class TB07ReportController {
 								} else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 									table1.setRelapseMalePulmonaryBC0514(table1.getRelapseMalePulmonaryBC0514() + 1);
 									if (hivPositive)
-										table1.setRelapseMalePulmonaryBCHIV0514(
-										    table1.getRelapseMalePulmonaryBCHIV0514() + 1);
+										table1.setRelapseMalePulmonaryBCHIV0514(table1.getRelapseMalePulmonaryBCHIV0514() + 1);
 								} else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 									table1.setRelapseMalePulmonaryBC1517(table1.getRelapseMalePulmonaryBC1517() + 1);
 									if (hivPositive)
-										table1.setRelapseMalePulmonaryBCHIV1517(
-										    table1.getRelapseMalePulmonaryBCHIV1517() + 1);
+										table1.setRelapseMalePulmonaryBCHIV1517(table1.getRelapseMalePulmonaryBCHIV1517() + 1);
 								} else if (ageAtRegistration >= 18 && ageAtRegistration < 20) {
 									table1.setRelapseMalePulmonaryBC1819(table1.getRelapseMalePulmonaryBC1819() + 1);
 									if (hivPositive)
-										table1.setRelapseMalePulmonaryBCHIV1819(
-										    table1.getRelapseMalePulmonaryBCHIV1819() + 1);
+										table1.setRelapseMalePulmonaryBCHIV1819(table1.getRelapseMalePulmonaryBCHIV1819() + 1);
 								} else if (ageAtRegistration >= 20 && ageAtRegistration < 25) {
 									table1.setRelapseMalePulmonaryBC2024(table1.getRelapseMalePulmonaryBC2024() + 1);
 									if (hivPositive)
-										table1.setRelapseMalePulmonaryBCHIV2024(
-										    table1.getRelapseMalePulmonaryBCHIV2024() + 1);
+										table1.setRelapseMalePulmonaryBCHIV2024(table1.getRelapseMalePulmonaryBCHIV2024() + 1);
 								} else if (ageAtRegistration >= 25 && ageAtRegistration < 35) {
 									table1.setRelapseMalePulmonaryBC2534(table1.getRelapseMalePulmonaryBC2534() + 1);
 									if (hivPositive)
-										table1.setRelapseMalePulmonaryBCHIV2534(
-										    table1.getRelapseMalePulmonaryBCHIV2534() + 1);
+										table1.setRelapseMalePulmonaryBCHIV2534(table1.getRelapseMalePulmonaryBCHIV2534() + 1);
 								} else if (ageAtRegistration >= 35 && ageAtRegistration < 45) {
 									table1.setRelapseMalePulmonaryBC3544(table1.getRelapseMalePulmonaryBC3544() + 1);
 									if (hivPositive)
-										table1.setRelapseMalePulmonaryBCHIV3544(
-										    table1.getRelapseMalePulmonaryBCHIV3544() + 1);
+										table1.setRelapseMalePulmonaryBCHIV3544(table1.getRelapseMalePulmonaryBCHIV3544() + 1);
 								} else if (ageAtRegistration >= 45 && ageAtRegistration < 55) {
 									table1.setRelapseMalePulmonaryBC4554(table1.getRelapseMalePulmonaryBC4554() + 1);
 									if (hivPositive)
-										table1.setRelapseMalePulmonaryBCHIV4554(
-										    table1.getRelapseMalePulmonaryBCHIV4554() + 1);
+										table1.setRelapseMalePulmonaryBCHIV4554(table1.getRelapseMalePulmonaryBCHIV4554() + 1);
 								} else if (ageAtRegistration >= 55 && ageAtRegistration < 65) {
 									table1.setRelapseMalePulmonaryBC5564(table1.getRelapseMalePulmonaryBC5564() + 1);
 									if (hivPositive)
-										table1.setRelapseMalePulmonaryBCHIV5564(
-										    table1.getRelapseMalePulmonaryBCHIV5564() + 1);
+										table1.setRelapseMalePulmonaryBCHIV5564(table1.getRelapseMalePulmonaryBCHIV5564() + 1);
 								} else if (ageAtRegistration >= 65) {
 									table1.setRelapseMalePulmonaryBC65(table1.getRelapseMalePulmonaryBC65() + 1);
 									if (hivPositive)
@@ -903,50 +897,42 @@ public class TB07ReportController {
 								} else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 									table1.setRelapseMalePulmonaryCD0514(table1.getRelapseMalePulmonaryCD0514() + 1);
 									if (hivPositive) {
-										table1.setRelapseMalePulmonaryCDHIV0514(
-										    table1.getRelapseMalePulmonaryCDHIV0514() + 1);
+										table1.setRelapseMalePulmonaryCDHIV0514(table1.getRelapseMalePulmonaryCDHIV0514() + 1);
 									}
 								} else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 									table1.setRelapseMalePulmonaryCD1517(table1.getRelapseMalePulmonaryCD1517() + 1);
 									if (hivPositive) {
-										table1.setRelapseMalePulmonaryCDHIV1517(
-										    table1.getRelapseMalePulmonaryCDHIV1517() + 1);
+										table1.setRelapseMalePulmonaryCDHIV1517(table1.getRelapseMalePulmonaryCDHIV1517() + 1);
 									}
 								} else if (ageAtRegistration >= 18 && ageAtRegistration < 20) {
 									table1.setRelapseMalePulmonaryCD1819(table1.getRelapseMalePulmonaryCD1819() + 1);
 									if (hivPositive) {
-										table1.setRelapseMalePulmonaryCDHIV1819(
-										    table1.getRelapseMalePulmonaryCDHIV1819() + 1);
+										table1.setRelapseMalePulmonaryCDHIV1819(table1.getRelapseMalePulmonaryCDHIV1819() + 1);
 									}
 								} else if (ageAtRegistration >= 20 && ageAtRegistration < 25) {
 									table1.setRelapseMalePulmonaryCD2024(table1.getRelapseMalePulmonaryCD2024() + 1);
 									if (hivPositive) {
-										table1.setRelapseMalePulmonaryCDHIV2024(
-										    table1.getRelapseMalePulmonaryCDHIV2024() + 1);
+										table1.setRelapseMalePulmonaryCDHIV2024(table1.getRelapseMalePulmonaryCDHIV2024() + 1);
 									}
 								} else if (ageAtRegistration >= 25 && ageAtRegistration < 35) {
 									table1.setRelapseMalePulmonaryCD2534(table1.getRelapseMalePulmonaryCD2534() + 1);
 									if (hivPositive) {
-										table1.setRelapseMalePulmonaryCDHIV2534(
-										    table1.getRelapseMalePulmonaryCDHIV2534() + 1);
+										table1.setRelapseMalePulmonaryCDHIV2534(table1.getRelapseMalePulmonaryCDHIV2534() + 1);
 									}
 								} else if (ageAtRegistration >= 35 && ageAtRegistration < 45) {
 									table1.setRelapseMalePulmonaryCD3544(table1.getRelapseMalePulmonaryCD3544() + 1);
 									if (hivPositive) {
-										table1.setRelapseMalePulmonaryCDHIV3544(
-										    table1.getRelapseMalePulmonaryCDHIV3544() + 1);
+										table1.setRelapseMalePulmonaryCDHIV3544(table1.getRelapseMalePulmonaryCDHIV3544() + 1);
 									}
 								} else if (ageAtRegistration >= 45 && ageAtRegistration < 55) {
 									table1.setRelapseMalePulmonaryCD4554(table1.getRelapseMalePulmonaryCD4554() + 1);
 									if (hivPositive) {
-										table1.setRelapseMalePulmonaryCDHIV4554(
-										    table1.getRelapseMalePulmonaryCDHIV4554() + 1);
+										table1.setRelapseMalePulmonaryCDHIV4554(table1.getRelapseMalePulmonaryCDHIV4554() + 1);
 									}
 								} else if (ageAtRegistration >= 55 && ageAtRegistration < 65) {
 									table1.setRelapseMalePulmonaryCD5564(table1.getRelapseMalePulmonaryCD5564() + 1);
 									if (hivPositive) {
-										table1.setRelapseMalePulmonaryCDHIV5564(
-										    table1.getRelapseMalePulmonaryCDHIV5564() + 1);
+										table1.setRelapseMalePulmonaryCDHIV5564(table1.getRelapseMalePulmonaryCDHIV5564() + 1);
 									}
 								} else if (ageAtRegistration >= 65) {
 									table1.setRelapseMalePulmonaryCD65(table1.getRelapseMalePulmonaryCD65() + 1);
@@ -973,50 +959,42 @@ public class TB07ReportController {
 							} else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 								table1.setRelapseMaleExtrapulmonary0514(table1.getRelapseMaleExtrapulmonary0514() + 1);
 								if (hivPositive) {
-									table1.setRelapseMaleExtrapulmonaryHIV0514(
-									    table1.getRelapseMaleExtrapulmonaryHIV0514() + 1);
+									table1.setRelapseMaleExtrapulmonaryHIV0514(table1.getRelapseMaleExtrapulmonaryHIV0514() + 1);
 								}
 							} else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 								table1.setRelapseMaleExtrapulmonary1517(table1.getRelapseMaleExtrapulmonary1517() + 1);
 								if (hivPositive) {
-									table1.setRelapseMaleExtrapulmonaryHIV1517(
-									    table1.getRelapseMaleExtrapulmonaryHIV1517() + 1);
+									table1.setRelapseMaleExtrapulmonaryHIV1517(table1.getRelapseMaleExtrapulmonaryHIV1517() + 1);
 								}
 							} else if (ageAtRegistration >= 18 && ageAtRegistration < 20) {
 								table1.setRelapseMaleExtrapulmonary1819(table1.getRelapseMaleExtrapulmonary1819() + 1);
 								if (hivPositive) {
-									table1.setRelapseMaleExtrapulmonaryHIV1819(
-									    table1.getRelapseMaleExtrapulmonaryHIV1819() + 1);
+									table1.setRelapseMaleExtrapulmonaryHIV1819(table1.getRelapseMaleExtrapulmonaryHIV1819() + 1);
 								}
 							} else if (ageAtRegistration >= 20 && ageAtRegistration < 25) {
 								table1.setRelapseMaleExtrapulmonary2024(table1.getRelapseMaleExtrapulmonary2024() + 1);
 								if (hivPositive) {
-									table1.setRelapseMaleExtrapulmonaryHIV2024(
-									    table1.getRelapseMaleExtrapulmonaryHIV2024() + 1);
+									table1.setRelapseMaleExtrapulmonaryHIV2024(table1.getRelapseMaleExtrapulmonaryHIV2024() + 1);
 								}
 							} else if (ageAtRegistration >= 25 && ageAtRegistration < 35) {
 								table1.setRelapseMaleExtrapulmonary2534(table1.getRelapseMaleExtrapulmonary2534() + 1);
 								if (hivPositive) {
-									table1.setRelapseMaleExtrapulmonaryHIV2534(
-									    table1.getRelapseMaleExtrapulmonaryHIV2534() + 1);
+									table1.setRelapseMaleExtrapulmonaryHIV2534(table1.getRelapseMaleExtrapulmonaryHIV2534() + 1);
 								}
 							} else if (ageAtRegistration >= 35 && ageAtRegistration < 45) {
 								table1.setRelapseMaleExtrapulmonary3544(table1.getRelapseMaleExtrapulmonary3544() + 1);
 								if (hivPositive) {
-									table1.setRelapseMaleExtrapulmonaryHIV3544(
-									    table1.getRelapseMaleExtrapulmonaryHIV3544() + 1);
+									table1.setRelapseMaleExtrapulmonaryHIV3544(table1.getRelapseMaleExtrapulmonaryHIV3544() + 1);
 								}
 							} else if (ageAtRegistration >= 45 && ageAtRegistration < 55) {
 								table1.setRelapseMaleExtrapulmonary4554(table1.getRelapseMaleExtrapulmonary4554() + 1);
 								if (hivPositive) {
-									table1.setRelapseMaleExtrapulmonaryHIV4554(
-									    table1.getRelapseMaleExtrapulmonaryHIV4554() + 1);
+									table1.setRelapseMaleExtrapulmonaryHIV4554(table1.getRelapseMaleExtrapulmonaryHIV4554() + 1);
 								}
 							} else if (ageAtRegistration >= 55 && ageAtRegistration < 65) {
 								table1.setRelapseMaleExtrapulmonary5564(table1.getRelapseMaleExtrapulmonary5564() + 1);
 								if (hivPositive) {
-									table1.setRelapseMaleExtrapulmonaryHIV5564(
-									    table1.getRelapseMaleExtrapulmonaryHIV5564() + 1);
+									table1.setRelapseMaleExtrapulmonaryHIV5564(table1.getRelapseMaleExtrapulmonaryHIV5564() + 1);
 								}
 							} else if (ageAtRegistration >= 65) {
 								table1.setRelapseMaleExtrapulmonary65(table1.getRelapseMaleExtrapulmonary65() + 1);
@@ -1089,53 +1067,51 @@ public class TB07ReportController {
 								if (ageAtRegistration >= 0 && ageAtRegistration < 5) {
 									table1.setRelapseFemalePulmonaryBC04(table1.getRelapseFemalePulmonaryBC04() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV04(
-										    table1.getRelapseFemalePulmonaryBCHIV04() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV04(table1.getRelapseFemalePulmonaryBCHIV04() + 1);
 								} else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 									table1.setRelapseFemalePulmonaryBC0514(table1.getRelapseFemalePulmonaryBC0514() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV0514(
-										    table1.getRelapseFemalePulmonaryBCHIV0514() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV0514(table1
+										        .getRelapseFemalePulmonaryBCHIV0514() + 1);
 								} else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 									table1.setRelapseFemalePulmonaryBC1517(table1.getRelapseFemalePulmonaryBC1517() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV1517(
-										    table1.getRelapseFemalePulmonaryBCHIV1517() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV1517(table1
+										        .getRelapseFemalePulmonaryBCHIV1517() + 1);
 								} else if (ageAtRegistration >= 18 && ageAtRegistration < 20) {
 									table1.setRelapseFemalePulmonaryBC1819(table1.getRelapseFemalePulmonaryBC1819() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV1819(
-										    table1.getRelapseFemalePulmonaryBCHIV1819() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV1819(table1
+										        .getRelapseFemalePulmonaryBCHIV1819() + 1);
 								} else if (ageAtRegistration >= 20 && ageAtRegistration < 25) {
 									table1.setRelapseFemalePulmonaryBC2024(table1.getRelapseFemalePulmonaryBC2024() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV2024(
-										    table1.getRelapseFemalePulmonaryBCHIV2024() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV2024(table1
+										        .getRelapseFemalePulmonaryBCHIV2024() + 1);
 								} else if (ageAtRegistration >= 25 && ageAtRegistration < 35) {
 									table1.setRelapseFemalePulmonaryBC2534(table1.getRelapseFemalePulmonaryBC2534() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV2534(
-										    table1.getRelapseFemalePulmonaryBCHIV2534() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV2534(table1
+										        .getRelapseFemalePulmonaryBCHIV2534() + 1);
 								} else if (ageAtRegistration >= 35 && ageAtRegistration < 45) {
 									table1.setRelapseFemalePulmonaryBC3544(table1.getRelapseFemalePulmonaryBC3544() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV3544(
-										    table1.getRelapseFemalePulmonaryBCHIV3544() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV3544(table1
+										        .getRelapseFemalePulmonaryBCHIV3544() + 1);
 								} else if (ageAtRegistration >= 45 && ageAtRegistration < 55) {
 									table1.setRelapseFemalePulmonaryBC4554(table1.getRelapseFemalePulmonaryBC4554() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV4554(
-										    table1.getRelapseFemalePulmonaryBCHIV4554() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV4554(table1
+										        .getRelapseFemalePulmonaryBCHIV4554() + 1);
 								} else if (ageAtRegistration >= 55 && ageAtRegistration < 65) {
 									table1.setRelapseFemalePulmonaryBC5564(table1.getRelapseFemalePulmonaryBC5564() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV5564(
-										    table1.getRelapseFemalePulmonaryBCHIV5564() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV5564(table1
+										        .getRelapseFemalePulmonaryBCHIV5564() + 1);
 								} else if (ageAtRegistration >= 65) {
 									table1.setRelapseFemalePulmonaryBC65(table1.getRelapseFemalePulmonaryBC65() + 1);
 									if (hivPositive)
-										table1.setRelapseFemalePulmonaryBCHIV65(
-										    table1.getRelapseFemalePulmonaryBCHIV65() + 1);
+										table1.setRelapseFemalePulmonaryBCHIV65(table1.getRelapseFemalePulmonaryBCHIV65() + 1);
 								}
 							}
 							
@@ -1150,62 +1126,60 @@ public class TB07ReportController {
 								if (ageAtRegistration >= 0 && ageAtRegistration < 5) {
 									table1.setRelapseFemalePulmonaryCD04(table1.getRelapseFemalePulmonaryCD04() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV04(
-										    table1.getRelapseFemalePulmonaryCDHIV04() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV04(table1.getRelapseFemalePulmonaryCDHIV04() + 1);
 									}
 								} else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 									table1.setRelapseFemalePulmonaryCD0514(table1.getRelapseFemalePulmonaryCD0514() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV0514(
-										    table1.getRelapseFemalePulmonaryCDHIV0514() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV0514(table1
+										        .getRelapseFemalePulmonaryCDHIV0514() + 1);
 									}
 								} else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 									table1.setRelapseFemalePulmonaryCD1517(table1.getRelapseFemalePulmonaryCD1517() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV1517(
-										    table1.getRelapseFemalePulmonaryCDHIV1517() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV1517(table1
+										        .getRelapseFemalePulmonaryCDHIV1517() + 1);
 									}
 								} else if (ageAtRegistration >= 18 && ageAtRegistration < 20) {
 									table1.setRelapseFemalePulmonaryCD1819(table1.getRelapseFemalePulmonaryCD1819() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV1819(
-										    table1.getRelapseFemalePulmonaryCDHIV1819() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV1819(table1
+										        .getRelapseFemalePulmonaryCDHIV1819() + 1);
 									}
 								} else if (ageAtRegistration >= 20 && ageAtRegistration < 25) {
 									table1.setRelapseFemalePulmonaryCD2024(table1.getRelapseFemalePulmonaryCD2024() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV2024(
-										    table1.getRelapseFemalePulmonaryCDHIV2024() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV2024(table1
+										        .getRelapseFemalePulmonaryCDHIV2024() + 1);
 									}
 								} else if (ageAtRegistration >= 25 && ageAtRegistration < 35) {
 									table1.setRelapseFemalePulmonaryCD2534(table1.getRelapseFemalePulmonaryCD2534() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV2534(
-										    table1.getRelapseFemalePulmonaryCDHIV2534() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV2534(table1
+										        .getRelapseFemalePulmonaryCDHIV2534() + 1);
 									}
 								} else if (ageAtRegistration >= 35 && ageAtRegistration < 45) {
 									table1.setRelapseFemalePulmonaryCD3544(table1.getRelapseFemalePulmonaryCD3544() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV3544(
-										    table1.getRelapseFemalePulmonaryCDHIV3544() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV3544(table1
+										        .getRelapseFemalePulmonaryCDHIV3544() + 1);
 									}
 								} else if (ageAtRegistration >= 45 && ageAtRegistration < 55) {
 									table1.setRelapseFemalePulmonaryCD4554(table1.getRelapseFemalePulmonaryCD4554() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV4554(
-										    table1.getRelapseFemalePulmonaryCDHIV4554() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV4554(table1
+										        .getRelapseFemalePulmonaryCDHIV4554() + 1);
 									}
 								} else if (ageAtRegistration >= 55 && ageAtRegistration < 65) {
 									table1.setRelapseFemalePulmonaryCD5564(table1.getRelapseFemalePulmonaryCD5564() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV5564(
-										    table1.getRelapseFemalePulmonaryCDHIV5564() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV5564(table1
+										        .getRelapseFemalePulmonaryCDHIV5564() + 1);
 									}
 								} else if (ageAtRegistration >= 65) {
 									table1.setRelapseFemalePulmonaryCD65(table1.getRelapseFemalePulmonaryCD65() + 1);
 									if (hivPositive) {
-										table1.setRelapseFemalePulmonaryCDHIV65(
-										    table1.getRelapseFemalePulmonaryCDHIV65() + 1);
+										table1.setRelapseFemalePulmonaryCDHIV65(table1.getRelapseFemalePulmonaryCDHIV65() + 1);
 									}
 								}
 							}
@@ -1222,62 +1196,60 @@ public class TB07ReportController {
 							if (ageAtRegistration >= 0 && ageAtRegistration < 5) {
 								table1.setRelapseFemaleExtrapulmonary04(table1.getRelapseFemaleExtrapulmonary04() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV04(
-									    table1.getRelapseFemaleExtrapulmonaryHIV04() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV04(table1.getRelapseFemaleExtrapulmonaryHIV04() + 1);
 								}
 							} else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 								table1.setRelapseFemaleExtrapulmonary0514(table1.getRelapseFemaleExtrapulmonary0514() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV0514(
-									    table1.getRelapseFemaleExtrapulmonaryHIV0514() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV0514(table1
+									        .getRelapseFemaleExtrapulmonaryHIV0514() + 1);
 								}
 							} else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 								table1.setRelapseFemaleExtrapulmonary1517(table1.getRelapseFemaleExtrapulmonary1517() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV1517(
-									    table1.getRelapseFemaleExtrapulmonaryHIV1517() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV1517(table1
+									        .getRelapseFemaleExtrapulmonaryHIV1517() + 1);
 								}
 							} else if (ageAtRegistration >= 18 && ageAtRegistration < 20) {
 								table1.setRelapseFemaleExtrapulmonary1819(table1.getRelapseFemaleExtrapulmonary1819() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV1819(
-									    table1.getRelapseFemaleExtrapulmonaryHIV1819() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV1819(table1
+									        .getRelapseFemaleExtrapulmonaryHIV1819() + 1);
 								}
 							} else if (ageAtRegistration >= 20 && ageAtRegistration < 25) {
 								table1.setRelapseFemaleExtrapulmonary2024(table1.getRelapseFemaleExtrapulmonary2024() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV2024(
-									    table1.getRelapseFemaleExtrapulmonaryHIV2024() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV2024(table1
+									        .getRelapseFemaleExtrapulmonaryHIV2024() + 1);
 								}
 							} else if (ageAtRegistration >= 25 && ageAtRegistration < 35) {
 								table1.setRelapseFemaleExtrapulmonary2534(table1.getRelapseFemaleExtrapulmonary2534() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV2534(
-									    table1.getRelapseFemaleExtrapulmonaryHIV2534() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV2534(table1
+									        .getRelapseFemaleExtrapulmonaryHIV2534() + 1);
 								}
 							} else if (ageAtRegistration >= 35 && ageAtRegistration < 45) {
 								table1.setRelapseFemaleExtrapulmonary3544(table1.getRelapseFemaleExtrapulmonary3544() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV3544(
-									    table1.getRelapseFemaleExtrapulmonaryHIV3544() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV3544(table1
+									        .getRelapseFemaleExtrapulmonaryHIV3544() + 1);
 								}
 							} else if (ageAtRegistration >= 45 && ageAtRegistration < 55) {
 								table1.setRelapseFemaleExtrapulmonary4554(table1.getRelapseFemaleExtrapulmonary4554() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV4554(
-									    table1.getRelapseFemaleExtrapulmonaryHIV4554() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV4554(table1
+									        .getRelapseFemaleExtrapulmonaryHIV4554() + 1);
 								}
 							} else if (ageAtRegistration >= 55 && ageAtRegistration < 65) {
 								table1.setRelapseFemaleExtrapulmonary5564(table1.getRelapseFemaleExtrapulmonary5564() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV5564(
-									    table1.getRelapseFemaleExtrapulmonaryHIV5564() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV5564(table1
+									        .getRelapseFemaleExtrapulmonaryHIV5564() + 1);
 								}
 							} else if (ageAtRegistration >= 65) {
 								table1.setRelapseFemaleExtrapulmonary65(table1.getRelapseFemaleExtrapulmonary65() + 1);
 								if (hivPositive) {
-									table1.setRelapseFemaleExtrapulmonaryHIV65(
-									    table1.getRelapseFemaleExtrapulmonaryHIV65() + 1);
+									table1.setRelapseFemaleExtrapulmonaryHIV65(table1.getRelapseFemaleExtrapulmonaryHIV65() + 1);
 								}
 							}
 						}
@@ -1286,10 +1258,10 @@ public class TB07ReportController {
 				}
 				
 				//FAILURE
-				else if (q.getConceptId().intValue() == Integer.parseInt(
-				    Context.getAdministrationService().getGlobalProperty("dotsreports.afterFailure1.conceptId"))
-				        || q.getConceptId() == Integer.parseInt(
-				            Context.getAdministrationService().getGlobalProperty("dotsreports.afterFailure2.conceptId"))) {
+				else if (q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
+				        .getGlobalProperty(MdrtbConstants.AFTER_FAILURE1_CONCEPT_ID_GP)))
+				        || q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        		MdrtbConstants.AFTER_FAILURE2_CONCEPT_ID_GP)))) {
 					table1.setFailureAll(table1.getFailureAll() + 1);
 					if (hivPositive)
 						table1.setFailureAllHIV(table1.getFailureAllHIV() + 1);
@@ -1380,10 +1352,10 @@ public class TB07ReportController {
 				}
 				
 				//DEFAULT
-				else if (q.getConceptId().intValue() == Integer.parseInt(
-				    Context.getAdministrationService().getGlobalProperty("dotsreports.afterDefault1.conceptId"))
-				        || q.getConceptId() == Integer.parseInt(
-				            Context.getAdministrationService().getGlobalProperty("dotsreports.afterDefault2.conceptId"))) {
+				else if (q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
+				        .getGlobalProperty(MdrtbConstants.AFTER_DEFAULT1_CONCEPT_ID_GP)))
+				        || q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				            MdrtbConstants.AFTER_DEFAULT2_CONCEPT_ID_GP)))) {
 					table1.setDefaultAll(table1.getDefaultAll() + 1);
 					if (hivPositive)
 						table1.setDefaultAllHIV(table1.getDefaultAllHIV() + 1);
@@ -1474,8 +1446,8 @@ public class TB07ReportController {
 				}
 				
 				//OTHER		
-				else if (q.getConceptId().intValue() == Integer
-				        .parseInt(Context.getAdministrationService().getGlobalProperty("dotsreports.other.conceptId"))) {
+				else if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
+				        .getGlobalProperty(MdrtbConstants.OTHER_CONCEPT_ID_GP))) {
 					table1.setOtherAll(table1.getOtherAll() + 1);
 					if (hivPositive)
 						table1.setOtherAllHIV(table1.getOtherAllHIV() + 1);
@@ -1583,24 +1555,24 @@ public class TB07ReportController {
 		table1.setRelapsePulmonaryCD(table1.getRelapseMalePulmonaryCD() + table1.getRelapseFemalePulmonaryCD());
 		table1.setRelapsePulmonaryCDHIV(table1.getRelapseMalePulmonaryCDHIV() + table1.getRelapseFemalePulmonaryCDHIV());
 		table1.setRelapseExtrapulmonary(table1.getRelapseMaleExtrapulmonary() + table1.getRelapseFemaleExtrapulmonary());
-		table1.setRelapseExtrapulmonaryHIV(
-		    table1.getRelapseMaleExtrapulmonaryHIV() + table1.getRelapseFemaleExtrapulmonaryHIV());
+		table1.setRelapseExtrapulmonaryHIV(table1.getRelapseMaleExtrapulmonaryHIV()
+		        + table1.getRelapseFemaleExtrapulmonaryHIV());
 		
 		table1.setFailurePulmonaryBC(table1.getFailureMalePulmonaryBC() + table1.getFailureFemalePulmonaryBC());
 		table1.setFailurePulmonaryBCHIV(table1.getFailureMalePulmonaryBCHIV() + table1.getFailureFemalePulmonaryBCHIV());
 		table1.setFailurePulmonaryCD(table1.getFailureMalePulmonaryCD() + table1.getFailureFemalePulmonaryCD());
 		table1.setFailurePulmonaryCDHIV(table1.getFailureMalePulmonaryCDHIV() + table1.getFailureFemalePulmonaryCDHIV());
 		table1.setFailureExtrapulmonary(table1.getFailureMaleExtrapulmonary() + table1.getFailureFemaleExtrapulmonary());
-		table1.setFailureExtrapulmonaryHIV(
-		    table1.getFailureMaleExtrapulmonaryHIV() + table1.getFailureFemaleExtrapulmonaryHIV());
+		table1.setFailureExtrapulmonaryHIV(table1.getFailureMaleExtrapulmonaryHIV()
+		        + table1.getFailureFemaleExtrapulmonaryHIV());
 		
 		table1.setDefaultPulmonaryBC(table1.getDefaultMalePulmonaryBC() + table1.getDefaultFemalePulmonaryBC());
 		table1.setDefaultPulmonaryBCHIV(table1.getDefaultMalePulmonaryBCHIV() + table1.getDefaultFemalePulmonaryBCHIV());
 		table1.setDefaultPulmonaryCD(table1.getDefaultMalePulmonaryCD() + table1.getDefaultFemalePulmonaryCD());
 		table1.setDefaultPulmonaryCDHIV(table1.getDefaultMalePulmonaryCDHIV() + table1.getDefaultFemalePulmonaryCDHIV());
 		table1.setDefaultExtrapulmonary(table1.getDefaultMaleExtrapulmonary() + table1.getDefaultFemaleExtrapulmonary());
-		table1.setDefaultExtrapulmonaryHIV(
-		    table1.getDefaultMaleExtrapulmonaryHIV() + table1.getDefaultFemaleExtrapulmonaryHIV());
+		table1.setDefaultExtrapulmonaryHIV(table1.getDefaultMaleExtrapulmonaryHIV()
+		        + table1.getDefaultFemaleExtrapulmonaryHIV());
 		
 		table1.setOtherPulmonaryBC(table1.getOtherMalePulmonaryBC() + table1.getOtherFemalePulmonaryBC());
 		table1.setOtherPulmonaryBCHIV(table1.getOtherMalePulmonaryBCHIV() + table1.getOtherFemalePulmonaryBCHIV());
@@ -1610,44 +1582,44 @@ public class TB07ReportController {
 		table1.setOtherExtrapulmonaryHIV(table1.getOtherMaleExtrapulmonaryHIV() + table1.getOtherFemaleExtrapulmonaryHIV());
 		
 		//RETREATMENT TOTAL
-		table1.setRetreatmentMalePulmonaryBC(
-		    table1.getFailureMalePulmonaryBC() + table1.getDefaultMalePulmonaryBC() + table1.getOtherMalePulmonaryBC());
+		table1.setRetreatmentMalePulmonaryBC(table1.getFailureMalePulmonaryBC() + table1.getDefaultMalePulmonaryBC()
+		        + table1.getOtherMalePulmonaryBC());
 		table1.setRetreatmentFemalePulmonaryBC(table1.getFailureFemalePulmonaryBC() + table1.getDefaultFemalePulmonaryBC()
 		        + table1.getOtherFemalePulmonaryBC());
 		table1.setRetreatmentPulmonaryBC(table1.getRetreatmentMalePulmonaryBC() + table1.getRetreatmentFemalePulmonaryBC());
-		table1.setRetreatmentMalePulmonaryBCHIV(table1.getFailureMalePulmonaryBCHIV() + table1.getDefaultMalePulmonaryBCHIV()
-		        + table1.getOtherMalePulmonaryBCHIV());
+		table1.setRetreatmentMalePulmonaryBCHIV(table1.getFailureMalePulmonaryBCHIV()
+		        + table1.getDefaultMalePulmonaryBCHIV() + table1.getOtherMalePulmonaryBCHIV());
 		table1.setRetreatmentFemalePulmonaryBCHIV(table1.getFailureFemalePulmonaryBCHIV()
 		        + table1.getDefaultFemalePulmonaryBCHIV() + table1.getOtherFemalePulmonaryBCHIV());
-		table1.setRetreatmentPulmonaryBCHIV(
-		    table1.getRetreatmentMalePulmonaryBCHIV() + table1.getRetreatmentFemalePulmonaryBCHIV());
-		table1.setRetreatmentMalePulmonaryCD(
-		    table1.getFailureMalePulmonaryCD() + table1.getDefaultMalePulmonaryCD() + table1.getOtherMalePulmonaryCD());
+		table1.setRetreatmentPulmonaryBCHIV(table1.getRetreatmentMalePulmonaryBCHIV()
+		        + table1.getRetreatmentFemalePulmonaryBCHIV());
+		table1.setRetreatmentMalePulmonaryCD(table1.getFailureMalePulmonaryCD() + table1.getDefaultMalePulmonaryCD()
+		        + table1.getOtherMalePulmonaryCD());
 		table1.setRetreatmentFemalePulmonaryCD(table1.getFailureFemalePulmonaryCD() + table1.getDefaultFemalePulmonaryCD()
 		        + table1.getOtherFemalePulmonaryCD());
 		table1.setRetreatmentPulmonaryCD(table1.getRetreatmentMalePulmonaryCD() + table1.getRetreatmentFemalePulmonaryCD());
-		table1.setRetreatmentMalePulmonaryCDHIV(table1.getFailureMalePulmonaryCDHIV() + table1.getDefaultMalePulmonaryCDHIV()
-		        + table1.getOtherMalePulmonaryCDHIV());
+		table1.setRetreatmentMalePulmonaryCDHIV(table1.getFailureMalePulmonaryCDHIV()
+		        + table1.getDefaultMalePulmonaryCDHIV() + table1.getOtherMalePulmonaryCDHIV());
 		table1.setRetreatmentFemalePulmonaryCDHIV(table1.getFailureFemalePulmonaryCDHIV()
 		        + table1.getDefaultFemalePulmonaryCDHIV() + table1.getOtherFemalePulmonaryCDHIV());
-		table1.setRetreatmentPulmonaryCDHIV(
-		    table1.getRetreatmentMalePulmonaryCDHIV() + table1.getRetreatmentFemalePulmonaryCDHIV());
-		table1.setRetreatmentMaleExtrapulmonary(table1.getFailureMaleExtrapulmonary() + table1.getDefaultMaleExtrapulmonary()
-		        + table1.getOtherMaleExtrapulmonary());
+		table1.setRetreatmentPulmonaryCDHIV(table1.getRetreatmentMalePulmonaryCDHIV()
+		        + table1.getRetreatmentFemalePulmonaryCDHIV());
+		table1.setRetreatmentMaleExtrapulmonary(table1.getFailureMaleExtrapulmonary()
+		        + table1.getDefaultMaleExtrapulmonary() + table1.getOtherMaleExtrapulmonary());
 		table1.setRetreatmentFemaleExtrapulmonary(table1.getFailureFemaleExtrapulmonary()
 		        + table1.getDefaultFemaleExtrapulmonary() + table1.getOtherFemaleExtrapulmonary());
-		table1.setRetreatmentExtrapulmonary(
-		    table1.getRetreatmentMaleExtrapulmonary() + table1.getRetreatmentFemaleExtrapulmonary());
+		table1.setRetreatmentExtrapulmonary(table1.getRetreatmentMaleExtrapulmonary()
+		        + table1.getRetreatmentFemaleExtrapulmonary());
 		table1.setRetreatmentMaleExtrapulmonaryHIV(table1.getFailureMaleExtrapulmonaryHIV()
 		        + table1.getDefaultMaleExtrapulmonaryHIV() + table1.getOtherMaleExtrapulmonaryHIV());
 		table1.setRetreatmentFemaleExtrapulmonaryHIV(table1.getFailureFemaleExtrapulmonaryHIV()
 		        + table1.getDefaultFemaleExtrapulmonaryHIV() + table1.getOtherFemaleExtrapulmonaryHIV());
-		table1.setRetreatmentExtrapulmonaryHIV(
-		    table1.getRetreatmentMaleExtrapulmonaryHIV() + table1.getRetreatmentFemaleExtrapulmonaryHIV());
+		table1.setRetreatmentExtrapulmonaryHIV(table1.getRetreatmentMaleExtrapulmonaryHIV()
+		        + table1.getRetreatmentFemaleExtrapulmonaryHIV());
 		
 		//GRAND TOTALS
-		table1.setTotalMalePulmonaryBC(
-		    table1.getNewMalePulmonaryBC() + table1.getRelapseMalePulmonaryBC() + table1.getRetreatmentMalePulmonaryBC());
+		table1.setTotalMalePulmonaryBC(table1.getNewMalePulmonaryBC() + table1.getRelapseMalePulmonaryBC()
+		        + table1.getRetreatmentMalePulmonaryBC());
 		table1.setTotalFemalePulmonaryBC(table1.getNewFemalePulmonaryBC() + table1.getRelapseFemalePulmonaryBC()
 		        + table1.getRetreatmentFemalePulmonaryBC());
 		table1.setTotalPulmonaryBC(table1.getTotalMalePulmonaryBC() + table1.getTotalFemalePulmonaryBC());
@@ -1658,8 +1630,8 @@ public class TB07ReportController {
 		        + table1.getRetreatmentFemalePulmonaryBCHIV());
 		table1.setTotalPulmonaryBCHIV(table1.getTotalMalePulmonaryBCHIV() + table1.getTotalFemalePulmonaryBCHIV());
 		
-		table1.setTotalMalePulmonaryCD(
-		    table1.getNewMalePulmonaryCD() + table1.getRelapseMalePulmonaryCD() + table1.getRetreatmentMalePulmonaryCD());
+		table1.setTotalMalePulmonaryCD(table1.getNewMalePulmonaryCD() + table1.getRelapseMalePulmonaryCD()
+		        + table1.getRetreatmentMalePulmonaryCD());
 		table1.setTotalFemalePulmonaryCD(table1.getNewFemalePulmonaryCD() + table1.getRelapseFemalePulmonaryCD()
 		        + table1.getRetreatmentFemalePulmonaryCD());
 		table1.setTotalPulmonaryCD(table1.getTotalMalePulmonaryCD() + table1.getTotalFemalePulmonaryCD());
@@ -1757,6 +1729,5 @@ public class TB07ReportController {
 		model.addAttribute("reportDate", rdateSDF.format(new Date()));
 		model.addAttribute("reportStatus", reportStatus);
 		return "/module/mdrtb/reporting/tb07Results";
-	}
-	
+	}	
 }

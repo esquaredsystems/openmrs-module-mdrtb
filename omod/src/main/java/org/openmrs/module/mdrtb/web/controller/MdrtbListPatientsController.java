@@ -35,7 +35,9 @@ public class MdrtbListPatientsController {
 	}
 	
 	@RequestMapping("/module/mdrtb/mdrtbListPatients")
-	public void listPatients(ModelMap model, @RequestParam(required = false, value = "displayMode") String displayMode,
+	public void listPatients(
+	        ModelMap model,
+	        @RequestParam(required = false, value = "displayMode") String displayMode,
 	        @RequestParam(required = false, value = "identifier") String identifier,
 	        @RequestParam(required = false, value = "name") String name,
 	        //@RequestParam(required=false, value="enrollment")		String enrollment,
@@ -64,10 +66,11 @@ public class MdrtbListPatientsController {
 		model.addAttribute("month", month);
 		
 		if (StringUtils.hasText(displayMode)) {
-			Cohort cohort = MdrtbUtil.getMdrPatientsTJK(identifier, name, /*enrollment,*/ location, oblast, states, minage,
+			Cohort cohort = MdrtbUtil.getMdrPatientsTJK(identifier, name, /*enrollment,*/location, oblast, states, minage,
 			    maxage, gender, year, quarter, month);
-			model.addAttribute("patientIds", cohort.getCommaSeparatedPatientIds());
-			model.addAttribute("patients", Context.getPatientSetService().getPatients(cohort.getMemberIds()));
+			model.addAttribute("patientIds", MdrtbUtil.getCohortCommaSeparatedPatientIds(cohort));
+			model.addAttribute("patients",
+			    Context.getService(MdrtbService.class).getPatients(MdrtbUtil.getcohortMembershipIds(cohort)));
 		}
 		
 		Program mdrtbProgram = Context.getService(MdrtbService.class).getMdrtbProgram();

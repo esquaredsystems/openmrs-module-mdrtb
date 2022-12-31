@@ -46,7 +46,8 @@ public class CloseReportController {
 		model.addAttribute("oblasts", oblasts);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST) //, value="/module/mdrtb/reporting/closeReport"
+	@RequestMapping(method = RequestMethod.POST)
+	//, value="/module/mdrtb/reporting/closeReport"
 	public String closeReportPost(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("district") Integer districtId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,
@@ -106,8 +107,8 @@ public class CloseReportController {
 				oblast = (Context.getService(MdrtbService.class).getOblast(Integer.parseInt(oblastId))).getId(); 
 			}*/
 			if (!(reportDate.equals(""))) {
-				date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
-				        .format(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").parse(reportDate));
+				date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new SimpleDateFormat("dd.MM.yyyy HH:mm:ss")
+				        .parse(reportDate));
 			}
 			if (!(table.equals(""))) {
 				tableData = new PDFHelper().compressCode(table);
@@ -163,7 +164,7 @@ public class CloseReportController {
 		if (formPath.equals("tb08uResults")) {
 			url = TB08uController.doTB08(d, o, f, y, q, m, model);//(report_location, report_oblast, report_year, report_quarter, report_month, model);
 		} else if (formPath.equals("tb07uResults")) {
-			url = TB07uController.doTB08(d, o, f, y, q, m, model);//(report_location, report_oblast, report_year, report_quarter, report_month, model);
+			url = TB07uController.doTB07u(d, o, f, y, q, m, model);//(report_location, report_oblast, report_year, report_quarter, report_month, model);
 		}
 		
 		else if (formPath.equals("dquResults")) {

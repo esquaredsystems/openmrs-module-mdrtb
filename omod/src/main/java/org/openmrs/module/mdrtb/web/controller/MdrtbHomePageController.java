@@ -40,6 +40,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MdrtbHomePageController {
 	
+	private static final String MDRTB_BIRT_REPORT_LIST = "mdrtb.birt_report_list";
+	
 	protected final static Log log = LogFactory.getLog(MdrtbHomePageController.class);
 	
 	@RequestMapping("/module/mdrtb/mdrtbIndex")
@@ -51,16 +53,16 @@ public class MdrtbHomePageController {
 			
 			// Load any configured BIRT reports
 			if (ModuleFactory.getStartedModulesMap().containsKey("birt")) {
-				String str = Context.getAdministrationService().getGlobalProperty("mdrtb.birt_report_list");
+				String str = Context.getAdministrationService().getGlobalProperty(MDRTB_BIRT_REPORT_LIST);
 				if (StringUtils.isNotEmpty(str)) {
 					String birtPrefix = "module/birt/generateReport.form?reportId=";
 					try {
-						Class<?> birtServiceClass = OpenmrsClassLoader.getInstance()
-						        .loadClass("org.openmrs.module.birt.BirtReportService");
+						Class<?> birtServiceClass = OpenmrsClassLoader.getInstance().loadClass(
+						    "org.openmrs.module.birt.BirtReportService");
 						Object reportService = Context.getService(birtServiceClass);
 						Method getReportsMethod = birtServiceClass.getDeclaredMethod("getReports");
-						Class<?> birtReportClass = OpenmrsClassLoader.getInstance()
-						        .loadClass("org.openmrs.module.birt.BirtReport");
+						Class<?> birtReportClass = OpenmrsClassLoader.getInstance().loadClass(
+						    "org.openmrs.module.birt.BirtReport");
 						Method getNameMethod = birtReportClass.getDeclaredMethod("getName");
 						Method getIdMethod = birtReportClass.getDeclaredMethod("getReportId");
 						
@@ -84,7 +86,7 @@ public class MdrtbHomePageController {
 			
 			// Load default reporting framework reports
 			ReportSpecification[] rpts = { new TB07TJK(), new DSTReportTJK() /*, new WHOForm05(), new WHOForm06(), new WHOForm07(), new OutcomeReport(),
-			        new MOHReport()*/ };
+			                                                                 new MOHReport()*/};
 			for (ReportSpecification spec : rpts) {
 				reports.put("module/mdrtb/reporting/reports.form?type=" + spec.getClass().getName(), spec.getName());
 			}

@@ -21,8 +21,9 @@ public class XpertImpl extends TestImpl implements Xpert {
 	
 	// set up a xpert object, given an existing obs
 	public XpertImpl(Obs xpert) {
-		if (xpert == null || !(xpert.getConcept()
-		        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT)))) {
+		if (xpert == null
+		        || !(xpert.getConcept().equals(Context.getService(MdrtbService.class).getConcept(
+		            MdrtbConcepts.XPERT_CONSTRUCT)))) {
 			throw new RuntimeException("Cannot initialize xpert: invalid obs used for initialization.");
 		}
 		test = xpert;
@@ -36,9 +37,8 @@ public class XpertImpl extends TestImpl implements Xpert {
 		}
 		
 		// note that we are setting the location null--tests don't immediately inherit the location of the parent encounter
-		test = new Obs(encounter.getPatient(),
-		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT),
-		        encounter.getEncounterDatetime(), null);
+		test = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), null);
 	}
 	
 	@Override
@@ -149,9 +149,8 @@ public class XpertImpl extends TestImpl implements Xpert {
 		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE),
-			        test.getObsDatetime(), test.getLocation());
+			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(
+			    MdrtbConcepts.RIFAMPICIN_RESISTANCE), test.getObsDatetime(), test.getLocation());
 			obs.setEncounter(test.getEncounter());
 			test.addGroupMember(obs);
 		}
@@ -202,8 +201,8 @@ public class XpertImpl extends TestImpl implements Xpert {
 	}
 	
 	public Concept getMtbBurden() {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
 		
 		if (obs == null) {
 			return null;
@@ -213,8 +212,8 @@ public class XpertImpl extends TestImpl implements Xpert {
 	}
 	
 	public void setMtbBurden(Concept mtbBurden) {
-		Obs obs = MdrtbUtil
-		        .getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && mtbBurden == null) {
@@ -230,9 +229,8 @@ public class XpertImpl extends TestImpl implements Xpert {
 		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test.getObsDatetime(),
-			        test.getLocation());
+			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class)
+			        .getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test.getObsDatetime(), test.getLocation());
 			obs.setEncounter(test.getEncounter());
 			test.addGroupMember(obs);
 		}

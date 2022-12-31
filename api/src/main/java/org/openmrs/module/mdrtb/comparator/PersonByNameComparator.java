@@ -7,15 +7,15 @@ import org.openmrs.PersonName;
 import org.openmrs.util.OpenmrsUtil;
 
 /**
- * A simple person comparator for sorting providers by name
- * (Remove this if/when it gets added to core)
+ * A simple person comparator for sorting providers by name (Remove this if/when it gets added to
+ * core)
  */
 public class PersonByNameComparator implements Comparator<Person> {
 	
 	public int compare(Person person1, Person person2) {
-
+		
 		// test for null cases (sorting them to be last in a list)
-		if(person1 == null || person1.getPersonName() == null) {
+		if (person1 == null || person1.getPersonName() == null) {
 			return 1;
 		} else if (person2 == null || person2.getPersonName() == null) {
 			return -1;
@@ -46,7 +46,7 @@ public class PersonByNameComparator implements Comparator<Person> {
 		if (ret == 0) {
 			ret = OpenmrsUtil.compareWithNullAsGreatest(name1.getFamilyNameSuffix(), name2.getFamilyNameSuffix());
 		}
-	
+		
 		return ret;
 	}
 }

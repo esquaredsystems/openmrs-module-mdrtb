@@ -29,10 +29,11 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 		// if there is a form linked to this encounter, assume it is an HTML Form Entry form
 		// (note, however, that we exclude specimen collection encounters--they can't have forms linked to them)
 		if (encounter.getForm() != null
-		        && !encounter.getEncounterType().equals(Context.getEncounterService().getEncounterType(
-		            Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")))) {
-			visit.setLink("/module/htmlformentry/htmlFormEntry.form?personId=" + encounter.getPatientId() + "&formId="
-			        + encounter.getForm().getId() + "&encounterId=" + encounter.getId() + "&mode=VIEW");
+		        && !encounter.getEncounterType().equals(
+		            Context.getEncounterService().getEncounterType(
+		                Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")))) {
+			visit.setLink("/module/htmlformentry/htmlFormEntry.form?personId=" + encounter.getPatient().getPatientId()
+			        + "&formId=" + encounter.getForm().getId() + "&encounterId=" + encounter.getId() + "&mode=VIEW");
 		}
 		// otherwise, create the link based on the encounter type of the visit
 		else {
@@ -72,10 +73,10 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 				visit.setLink("/module/mdrtb/form/resistanceDuringTx.form?patientId="
 				        + status.getPatientProgram().getPatient().getPatientId() + "&patientProgramId="
 				        + status.getPatientProgram().getId() + "&encounterId=" + encounter.getId());
-			} else if (type.equals(Context.getEncounterService().getEncounterType(Context.getAdministrationService()
-			        .getGlobalProperty("mdrtb.specimen_collection_encounter_type")))) {} else if (type.equals(
-			            Context.getEncounterService().getEncounterType(
-			                Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_out_encounter_type")))) {
+			} else if (type.equals(Context.getEncounterService().getEncounterType(
+			    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")))) {
+			} else if (type
+			        .equals(MdrtbConstants.TRANSFER_OUT_ENCOUNTER_TYPE)) {
 				visit.setLink("/module/mdrtb/form/transferOut.form?patientId="
 				        + status.getPatientProgram().getPatient().getPatientId() + "&patientProgramId="
 				        + status.getPatientProgram().getId() + "&encounterId=" + encounter.getId());
@@ -191,19 +192,19 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 		// have forms linked to them)
 		EncounterType type = encounter.getEncounterType();
 		
-		if (type.equals(Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type")))) {
+		if (type.equals(Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type")))) {
 			
-			visit.setLink(
-			    "/module/mdrtb/form/tb03.form?patientId=" + status.getPatientTbProgram().getPatient().getPatientId()
-			            + "&patientProgramId=" + status.getPatientTbProgram().getId() + "&encounterId=" + encounter.getId());
+			visit.setLink("/module/mdrtb/form/tb03.form?patientId="
+			        + status.getPatientTbProgram().getPatient().getPatientId() + "&patientProgramId="
+			        + status.getPatientTbProgram().getId() + "&encounterId=" + encounter.getId());
 		}
 		
-		else if (type.equals(Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type")))) {
-			visit.setLink(
-			    "/module/mdrtb/form/form89.form?patientId=" + status.getPatientTbProgram().getPatient().getPatientId()
-			            + "&patientProgramId=" + status.getPatientTbProgram().getId() + "&encounterId=" + encounter.getId());
+		else if (type.equals(Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type")))) {
+			visit.setLink("/module/mdrtb/form/form89.form?patientId="
+			        + status.getPatientTbProgram().getPatient().getPatientId() + "&patientProgramId="
+			        + status.getPatientTbProgram().getId() + "&encounterId=" + encounter.getId());
 		} else if (type.equals(Context.getEncounterService().getEncounterType(
 		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")))) {
 			/*
@@ -213,18 +214,17 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 			 */
 		}
 		
-		else if (type.equals(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_out_encounter_type")))) {
-			visit.setLink(
-			    "/module/mdrtb/form/transferOut.form?patientId=" + status.getPatientTbProgram().getPatient().getPatientId()
-			            + "&patientProgramId=" + status.getPatientTbProgram().getId() + "&encounterId=" + encounter.getId());
+		else if (type.equals(MdrtbConstants.TRANSFER_OUT_ENCOUNTER_TYPE)) {
+			visit.setLink("/module/mdrtb/form/transferOut.form?patientId="
+			        + status.getPatientTbProgram().getPatient().getPatientId() + "&patientProgramId="
+			        + status.getPatientTbProgram().getId() + "&encounterId=" + encounter.getId());
 		}
 		
 		else if (type.equals(Context.getEncounterService().getEncounterType(
 		    Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_in_encounter_type")))) {
-			visit.setLink(
-			    "/module/mdrtb/form/transferIn.form?patientId=" + status.getPatientTbProgram().getPatient().getPatientId()
-			            + "&patientProgramId=" + status.getPatientTbProgram().getId() + "&encounterId=" + encounter.getId());
+			visit.setLink("/module/mdrtb/form/transferIn.form?patientId="
+			        + status.getPatientTbProgram().getPatient().getPatientId() + "&patientProgramId="
+			        + status.getPatientTbProgram().getId() + "&encounterId=" + encounter.getId());
 		}
 		
 		else {

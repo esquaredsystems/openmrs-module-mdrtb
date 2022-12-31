@@ -83,9 +83,9 @@ public class RegimenFormController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showRegimenForm(@RequestParam(required = false, value = "returnUrl") String returnUrl,
-	        /*@RequestParam(value="loc", required=false) String district,
-	        @RequestParam(value="ob", required=false) String oblast,*/
-	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
+	/*@RequestParam(value="loc", required=false) String district,
+	@RequestParam(value="ob", required=false) String oblast,*/
+	@RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode, ModelMap model) {
 		RegimenForm regimenForm = null;
@@ -121,8 +121,9 @@ public class RegimenFormController {
 		System.out.println(regimenForm.getProvider());
 		System.out.println(regimenForm.getEncounterDatetime());
 		
-		if (regimenForm.getSldRegimenType() != null && regimenForm.getSldRegimenType().getId().intValue() != Context
-		        .getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_MDRTB_REGIMEN).getId().intValue()) {
+		if (regimenForm.getSldRegimenType() != null
+		        && regimenForm.getSldRegimenType().getId().intValue() != Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.OTHER_MDRTB_REGIMEN).getId().intValue()) {
 			regimenForm.setOtherRegimen(null);
 		}
 		
@@ -177,8 +178,8 @@ public class RegimenFormController {
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		/*return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RESISTANCE_TYPE);*/
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.RESISTANCE_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.RESISTANCE_TYPE);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -214,8 +215,8 @@ public class RegimenFormController {
 	@ModelAttribute("sldregimens")
 	public Collection<ConceptAnswer> getPossibleSLDRegimenrs() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.SLD_REGIMEN_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.SLD_REGIMEN_TYPE);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();

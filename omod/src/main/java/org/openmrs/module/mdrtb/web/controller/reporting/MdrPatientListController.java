@@ -25,7 +25,7 @@ public class MdrPatientListController {
 		view = (StringUtils.isEmpty(view) ? "patientSummary" : view);
 		
 		model.addAttribute("view", view);
-		model.addAttribute("patientIds", c.getCommaSeparatedPatientIds());
+		model.addAttribute("patientIds", MdrtbUtil.getCohortCommaSeparatedPatientIds(c));
 		model.addAttribute("location", l);
 		model.addAttribute("runDate", new Date());
 	}

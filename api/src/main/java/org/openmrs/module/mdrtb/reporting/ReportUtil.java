@@ -25,7 +25,6 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.openmrs.Concept;
 import org.openmrs.OpenmrsMetadata;
-import org.openmrs.api.PatientSetService.TimeModifier;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
@@ -34,6 +33,7 @@ import org.openmrs.module.mdrtb.reporting.data.Cohorts;
 import org.openmrs.module.mdrtb.reporting.definition.DstResultCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.custom.DstResultExistsCohortDefinition;
 import org.openmrs.module.mdrtb.service.MdrtbService;
+import org.openmrs.module.reporting.cohort.definition.BaseObsCohortDefinition.TimeModifier;
 import org.openmrs.module.reporting.cohort.definition.CodedObsCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition;
@@ -52,9 +52,9 @@ import org.openmrs.util.OpenmrsClassLoader;
  * Utility methods
  */
 public class ReportUtil {
-
+	
 	public static CodedObsCohortDefinition getCodedObsCohort(TimeModifier tm, Integer questionId, Date fromDate,
-			Date toDate, SetComparator operator, Integer... answerIds) {
+	        Date toDate, SetComparator operator, Integer... answerIds) {
 		CodedObsCohortDefinition cd = new CodedObsCohortDefinition();
 		cd.setTimeModifier(tm);
 		cd.setQuestion(Context.getConceptService().getConcept(questionId));
@@ -68,16 +68,16 @@ public class ReportUtil {
 		cd.setValueList(answers);
 		return cd;
 	}
-
+	
 	public static DstResultCohortDefinition getDstProfileCohort(String profile, Date effectiveDate) {
 		DstResultCohortDefinition cd = new DstResultCohortDefinition();
 		cd.setMaxResultDate(effectiveDate);
 		cd.setSpecificProfile(profile);
 		return cd;
 	}
-
+	
 	public static CohortDefinition getCompositionCohort(Map<String, Mapped<? extends CohortDefinition>> entries,
-			String operator) {
+	        String operator) {
 		if (entries.size() == 1) {
 			return entries.values().iterator().next().getParameterizable();
 		}
@@ -93,7 +93,7 @@ public class ReportUtil {
 		d.setCompositionString(s.toString());
 		return d;
 	}
-
+	
 	public static CohortDefinition getCompositionCohort(String operator, CohortDefinition... definitions) {
 		if (definitions.length == 1) {
 			return definitions[0];
@@ -113,7 +113,7 @@ public class ReportUtil {
 		d.setCompositionString(s.toString());
 		return d;
 	}
-
+	
 	public static CohortDefinition minus(CohortDefinition base, CohortDefinition... toSubtract) {
 		CompositionCohortDefinition d = new CompositionCohortDefinition();
 		d.addSearch("base", base, null);
@@ -130,14 +130,14 @@ public class ReportUtil {
 		d.setCompositionString(s.toString());
 		return d;
 	}
-
+	
 	/**
-	 * @return a new EvaluationContext with the passed parameters and a number of
-	 *         useful additional parameters
+	 * @return a new EvaluationContext with the passed parameters and a number of useful additional
+	 *         parameters
 	 */
 	public static EvaluationContext constructContext(Map<String, Object> parameters) {
 		EvaluationContext context = new EvaluationContext();
-
+		
 		if (parameters != null) {
 			for (Map.Entry<String, Object> e : parameters.entrySet()) {
 				context.addParameterValue(e.getKey(), e.getValue());
@@ -148,27 +148,27 @@ public class ReportUtil {
 				}
 			}
 		}
-
+		
 		context.addParameterValue("generationDate", new Date());
 		context.addParameterValue("generatedBy", Context.getAuthenticatedUser().getPersonName().getFullName());
 		return context;
 	}
-
+	
 	/**
-	 * Looks up a resource on the class path, and returns a RenderingMode based on
-	 * it
+	 * Looks up a resource on the class path, and returns a RenderingMode based on it
 	 * 
 	 * @throws UnsupportedEncodingException
 	 */
 	public static RenderingMode renderingModeFromResource(String label, String resourceName) {
-		InputStreamReader reader;
-
+		InputStreamReader reader = null;
+		
 		try {
 			reader = new InputStreamReader(OpenmrsClassLoader.getInstance().getResourceAsStream(resourceName), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+		}
+		catch (UnsupportedEncodingException e) {
 			throw new MdrtbAPIException("Error reading template from stream", e);
 		}
-
+		
 		if (reader != null) {
 			final ReportDesign design = new ReportDesign();
 			ReportDesignResource resource = new ReportDesignResource();
@@ -185,19 +185,22 @@ public class ReportUtil {
 			ReportRenderer renderer = null;
 			try {
 				resource.setContents(IOUtils.toByteArray(reader, "UTF-8"));
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				throw new RuntimeException("Error reading template from stream", e);
 			}
-
+			
 			design.getResources().add(resource);
 			if ("xls".equals(extension)) {
 				renderer = new ExcelTemplateRenderer() {
+					
 					public ReportDesign getDesign(String argument) {
 						return design;
 					}
 				};
 			} else {
 				renderer = new TextTemplateRenderer() {
+					
 					public ReportDesign getDesign(String argument) {
 						return design;
 					}
@@ -207,7 +210,7 @@ public class ReportUtil {
 		}
 		return null;
 	}
-
+	
 	// TODO: Accepting year, quarter and month as Objects is criminal. Must fix this
 	public static Map<String, Date> getPeriodDates(Object yearObj, Object quarterObj, Object monthObj) {
 		
@@ -265,36 +268,34 @@ public class ReportUtil {
 		periodDates.put("endDate", c.getTime());
 		return periodDates;
 	}
-
+	
 	public static Map<String, CohortDefinition> getMdrtbOutcomesFilterSet(Date startDate, Date endDate) {
 		Map<String, CohortDefinition> map = new HashMap<String, CohortDefinition>();
-
+		
 		Concept workflowConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME);
-
+		
 		CohortDefinition cured = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED), startDate, endDate);
+		
 		CohortDefinition complete = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETED), startDate,
-				endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETED), startDate, endDate);
+		
 		CohortDefinition failed = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_FAILED), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_FAILED), startDate, endDate);
+		
 		//TODO: Replace with LOST_TO_FOLLOWUP
 		CohortDefinition defaulted = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEFAULTED), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEFAULTED), startDate, endDate);
+		
 		CohortDefinition died = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED), startDate, endDate);
+		
 		CohortDefinition transferred = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_OUT), startDate,
-				endDate);
-
-		CohortDefinition stillEnrolled = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, new ArrayList<Concept>(),
-				startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_OUT), startDate, endDate);
+		
+		CohortDefinition stillEnrolled = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
+		    new ArrayList<Concept>(), startDate, endDate);
+		
 		map.put("Cured", cured);
 		map.put("TreatmentCompleted", complete);
 		map.put("Failed", failed);
@@ -303,78 +304,76 @@ public class ReportUtil {
 		map.put("Died", died);
 		map.put("TransferredOut", transferred);
 		map.put("StillEnrolled", stillEnrolled);
-
+		
 		return map;
 	}
-
+	
 	public static Map<String, CohortDefinition> getMdrtbPreviousDrugUseFilterSet(Date startDate, Date endDate) {
 		Map<String, CohortDefinition> map = new HashMap<String, CohortDefinition>();
-
-		Concept workflowConcept = Context.getService(MdrtbService.class)
-				.getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_DRUG_USE);
-
+		
+		Concept workflowConcept = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_DRUG_USE);
+		
 		CohortDefinition newPatient = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEW), startDate, endDate);
-
-		CohortDefinition previousFirstLine = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, Context
-				.getService(MdrtbService.class).getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_FIRST_LINE_DRUGS_ONLY),
-				startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEW), startDate, endDate);
+		
+		CohortDefinition previousFirstLine = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_FIRST_LINE_DRUGS_ONLY),
+		    startDate, endDate);
+		
 		CohortDefinition previousSecondLine = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_SECOND_LINE_DRUGS),
-				startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_SECOND_LINE_DRUGS),
+		    startDate, endDate);
+		
 		CohortDefinition unknown = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, new ArrayList<Concept>(),
-				startDate, endDate);
-
+		    startDate, endDate);
+		
 		map.put("New", newPatient);
 		map.put("PreviousFirstLine", previousFirstLine);
 		map.put("PreviousSecondLine", previousSecondLine);
 		map.put("Unknown", unknown);
-
+		
 		return map;
 	}
-
+	
 	public static Map<String, CohortDefinition> getMdrtbPreviousTreatmentFilterSet(Date startDate, Date endDate) {
 		Map<String, CohortDefinition> map = new HashMap<String, CohortDefinition>();
-
-		Concept workflowConcept = Context.getService(MdrtbService.class)
-				.getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT);
-
+		
+		Concept workflowConcept = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT);
+		
 		CohortDefinition newPatient = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEW), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEW), startDate, endDate);
+		
 		CohortDefinition relapseI = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_1), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_1), startDate, endDate);
+		
 		CohortDefinition relapseII = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2), startDate, endDate);
+		
 		CohortDefinition afterDefaultI = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_1), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_1), startDate, endDate);
+		
 		CohortDefinition afterDefaultII = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_2), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_2), startDate, endDate);
+		
 		// Modified for Tajikistan, original concepts was "TREATMENT AFTER FAILURE OF RE-TREATMENT MDR-TB PATIENT"
-		CohortDefinition failureCatI = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, Context
-				.getService(MdrtbService.class).getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_1),
-				startDate, endDate);
-
+		CohortDefinition failureCatI = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_1), startDate, endDate);
+		
 		// Modified for Tajikistan, original concepts was "TREATMENT AFTER FAILURE OF FIRST TREATMENT MDR-TB PATIENT"
-		CohortDefinition failureCatII = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, Context
-				.getService(MdrtbService.class).getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_2),
-				startDate, endDate);
-
+		CohortDefinition failureCatII = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_2), startDate, endDate);
+		
 		CohortDefinition transferred = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_IN), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_IN), startDate, endDate);
+		
 		CohortDefinition other = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-				Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER), startDate, endDate);
-
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER), startDate, endDate);
+		
 		CohortDefinition unknown = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, new ArrayList<Concept>(),
-				startDate, endDate);
-
+		    startDate, endDate);
+		
 		//TODO: Thoroughly investigate this usage. MUST write unit tests for all of these cases
 		map.put("New", newPatient);
 		map.put("Relapse", relapseI);
@@ -386,64 +385,63 @@ public class ReportUtil {
 		map.put("TransferredIn", transferred);
 		map.put("Other", other);
 		map.put("Unknown", unknown);
-
+		
 		return map;
 	}
-
+	
 	/**
-	 * Returns a map of patients ids to the list of active mdrtb patient programs
-	 * for that patient during the given date range
+	 * Returns a map of patients ids to the list of active mdrtb patient programs for that patient
+	 * during the given date range
 	 */
-	public static Map<Integer, List<MdrtbPatientProgram>> getMdrtbPatientProgramsInDateRangeMap(Date startDate,
-			Date endDate) {
-
+	public static Map<Integer, List<MdrtbPatientProgram>> getMdrtbPatientProgramsInDateRangeMap(Date startDate, Date endDate) {
+		
 		Map<Integer, List<MdrtbPatientProgram>> mdrtbPatientProgramsMap = new HashMap<Integer, List<MdrtbPatientProgram>>();
-
+		
 		// get all the mdrtb patient programs
-		for (MdrtbPatientProgram program : Context.getService(MdrtbService.class)
-				.getAllMdrtbPatientProgramsInDateRange(startDate, endDate)) {
+		for (MdrtbPatientProgram program : Context.getService(MdrtbService.class).getAllMdrtbPatientProgramsInDateRange(
+		    startDate, endDate)) {
 			Integer patientId = program.getPatient().getId();
-
+			
 			// create a new entry for this patient if we don't already have it
 			if (!mdrtbPatientProgramsMap.containsKey(patientId)) {
 				mdrtbPatientProgramsMap.put(patientId, new ArrayList<MdrtbPatientProgram>());
 			}
-
+			
 			// add the program
 			mdrtbPatientProgramsMap.get(patientId).add(program);
 		}
-
+		
 		return mdrtbPatientProgramsMap;
 	}
-
+	
 	public static Map<Integer, List<MdrtbPatientProgram>> getMdrtbPatientProgramsEnrolledInDateRangeMap(Date startDate,
-			Date endDate) {
-
+	        Date endDate) {
+		
 		Map<Integer, List<MdrtbPatientProgram>> tbPatientProgramsMap = new HashMap<Integer, List<MdrtbPatientProgram>>();
-
+		
 		// get all the mdrtb patient programs
 		for (MdrtbPatientProgram program : Context.getService(MdrtbService.class)
-				.getAllMdrtbPatientProgramsEnrolledInDateRange(startDate, endDate)) {
+		        .getAllMdrtbPatientProgramsEnrolledInDateRange(startDate, endDate)) {
 			Integer patientId = program.getPatient().getId();
-
+			
 			// create a new entry for this patient if we don't already have it
 			if (!tbPatientProgramsMap.containsKey(patientId)) {
 				tbPatientProgramsMap.put(patientId, new ArrayList<MdrtbPatientProgram>());
 			}
-
+			
 			// add the program
 			tbPatientProgramsMap.get(patientId).add(program);
 		}
-
+		
 		return tbPatientProgramsMap;
 	}
-
+	
 	public static DstResultExistsCohortDefinition getDstResultCohort(Date effectiveDate) {
 		DstResultExistsCohortDefinition cd = new DstResultExistsCohortDefinition();
 		cd.setMaxResultDate(effectiveDate);
 		return cd;
 	}
-
+	
 	public static CohortDefinition getCompositionCohort(String operator, List<CohortDefinition> definitions) {
 		if (definitions.size() == 1) {
 			return definitions.get(0);
@@ -463,5 +461,5 @@ public class ReportUtil {
 		d.setCompositionString(s.toString());
 		return d;
 	}
-
+	
 }

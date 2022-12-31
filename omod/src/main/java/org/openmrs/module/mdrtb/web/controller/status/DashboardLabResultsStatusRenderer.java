@@ -120,8 +120,8 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				    "{2} started on {1} at {0}", Context.getLocale()));
 			} else if (testStatus == TestStatus.RECEIVED) {
 				String[] params = { test.getLab().getDisplayString(), df.format(test.getDateReceived()), testType };
-				item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.labResultsStatus.received", params,
-				    "{2} received by {0} at {1}", Context.getLocale()));
+				item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.labResultsStatus.received",
+				    params, "{2} received by {0} at {1}", Context.getLocale()));
 			} else if (testStatus == TestStatus.ORDERED) {
 				String[] params = { test.getLab().getDisplayString(), df.format(test.getDateOrdered()), testType };
 				item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.labResultsStatus.ordered", params,

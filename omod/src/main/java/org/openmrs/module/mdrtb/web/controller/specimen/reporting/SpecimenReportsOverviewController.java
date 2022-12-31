@@ -42,7 +42,6 @@ public class SpecimenReportsOverviewController {
 		return Context.getLocationService().getAllLocations(false);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping("/module/mdrtb/specimen/specimenReportsOverview.form")
 	public ModelAndView showReports(@ModelAttribute("query") SpecimenReportsQuery query, BindingResult errors,
 	        SessionStatus status, HttpServletRequest request, ModelMap map) {
@@ -54,12 +53,12 @@ public class SpecimenReportsOverviewController {
 		}
 		// otherwise, save the values
 		else {
-			GlobalProperty daysSinceSmear = Context.getAdministrationService()
-			        .getGlobalPropertyObject("mdrtb.specimenReports.daysSinceSmear");
-			GlobalProperty daysSinceCulture = Context.getAdministrationService()
-			        .getGlobalPropertyObject("mdrtb.specimenReports.daysSinceCulture");
-			GlobalProperty defaultLabId = Context.getAdministrationService()
-			        .getGlobalPropertyObject("mdrtb.specimenReports.defaultLabId");
+			GlobalProperty daysSinceSmear = Context.getAdministrationService().getGlobalPropertyObject(
+			    "mdrtb.specimenReports.daysSinceSmear");
+			GlobalProperty daysSinceCulture = Context.getAdministrationService().getGlobalPropertyObject(
+			    "mdrtb.specimenReports.daysSinceCulture");
+			GlobalProperty defaultLabId = Context.getAdministrationService().getGlobalPropertyObject(
+			    "mdrtb.specimenReports.defaultLabId");
 			
 			daysSinceSmear.setPropertyValue(query.getDaysSinceSmear().toString());
 			daysSinceCulture.setPropertyValue(query.getDaysSinceCulture().toString());
@@ -83,10 +82,10 @@ public class SpecimenReportsOverviewController {
 		query.setStartDateCollected(startDate.getTime());
 		query.setEndDateCollected(new Date());
 		
-		query.setDaysSinceSmear(
-		    Integer.valueOf(Context.getAdministrationService().getGlobalProperty("mdrtb.specimenReports.daysSinceSmear")));
-		query.setDaysSinceCulture(
-		    Integer.valueOf(Context.getAdministrationService().getGlobalProperty("mdrtb.specimenReports.daysSinceCulture")));
+		query.setDaysSinceSmear(Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.specimenReports.daysSinceSmear")));
+		query.setDaysSinceCulture(Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.specimenReports.daysSinceCulture")));
 		query.setLab(Context.getLocationService().getLocation(
 		    Integer.valueOf(Context.getAdministrationService().getGlobalProperty("mdrtb.specimenReports.defaultLabId"))));
 	}

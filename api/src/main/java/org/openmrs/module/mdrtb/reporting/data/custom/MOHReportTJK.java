@@ -93,7 +93,8 @@ public class MOHReportTJK implements ReportSpecification {
 		Integer month = (Integer) parameters.get("month");*/
 		String quarter = (String) parameters.get("quarter");
 		String month = (String) parameters.get("month");
-		context.getParameterValues().putAll(ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month)));
+		context.getParameterValues().putAll(
+		    ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month)));
 		
 		return context;
 	}
@@ -102,15 +103,16 @@ public class MOHReportTJK implements ReportSpecification {
 	 * ReportSpecification#evaluateReport(EvaluationContext)
 	 */
 	public ReportData evaluateReport(EvaluationContext context) {
-
+		
 		Location location = (Location) context.getParameterValue("location");
-		Date startDate = (Date)context.getParameterValue("startDate");
-		Date endDate = (Date)context.getParameterValue("endDate");
-
+		Date startDate = (Date) context.getParameterValue("startDate");
+		Date endDate = (Date) context.getParameterValue("endDate");
+		
 		CohortDefinition inProgram = Cohorts.getInMdrProgramEverDuring(startDate, endDate);
 		//CohortDefinition atLocation = (location == null ? null : Cohorts.getLocationFilter(location, startDate, endDate));
 		//CohortDefinition atLocation = (location == null ? null : Cohorts.getLocationFilter(location, startDate, endDate));
-		CohortDefinition atLocation = (location==null || location.getCountyDistrict()==null ) ? null : Cohorts.getPatientsWithDistict(location);
+		CohortDefinition atLocation = (location == null || location.getCountyDistrict() == null) ? null : Cohorts
+		        .getPatientsWithDistict(location);
 		CohortDefinition newlyHospitalized = Cohorts.getNewlyHospitalizedDuringPeriod(startDate, endDate);
 		CohortDefinition allHospitalized = Cohorts.getEverHospitalizedDuringPeriod(startDate, endDate);
 		CohortDefinition startedTxDuring = Cohorts.getStartedTreatmentFilter(startDate, endDate);
@@ -123,7 +125,7 @@ public class MOHReportTJK implements ReportSpecification {
 		// TODO: figure out what obs to look for here--see ticket HATB-358
 		CohortDefinition newlyHivPositive = Cohorts.getNewlyHivPositive(startDate, endDate);
 		CohortDefinition everHivPositive = Cohorts.getHivPositiveDuring(null, endDate);
-	
+		
 		CohortDefinition transferredIn = Cohorts.getTransferredInDuring(startDate, endDate);
 		CohortDefinition controlSmearNegative = Cohorts.getAllSmearNegativeDuring(startDate, endDate);
 		CohortDefinition controlSmearPositive = Cohorts.getAnySmearPositiveDuring(startDate, endDate);
@@ -137,7 +139,7 @@ public class MOHReportTJK implements ReportSpecification {
 		CohortDefinition curedTx = Cohorts.getCuredDuringFilter(startDate, endDate);
 		CohortDefinition failedTx = Cohorts.getFailedDuringFilter(startDate, endDate);
 		CohortDefinition relapsedTx = Cohorts.getRelapsedDuringFilter(startDate, endDate);
-
+		
 		ReportDefinition report = new ReportDefinition();
 		report.setBaseCohortDefinition(ReportUtil.getCompositionCohort("AND", inProgram, atLocation), null);
 		
@@ -176,12 +178,12 @@ public class MOHReportTJK implements ReportSpecification {
 		}
 		
 		ReportData data;
-        try {
-	        data = Context.getService(ReportDefinitionService.class).evaluate(report, context);
-        }
-        catch (EvaluationException e) {
-	       throw new MdrtbAPIException("Unable to evaluate MOH Report", e);
-        }
+		try {
+			data = Context.getService(ReportDefinitionService.class).evaluate(report, context);
+		}
+		catch (EvaluationException e) {
+			throw new MdrtbAPIException("Unable to evaluate MOH Report", e);
+		}
 		return data;
 	}
 	
@@ -189,6 +191,6 @@ public class MOHReportTJK implements ReportSpecification {
 	 * Utility method to translate the report indicators
 	 */
 	private static String translate(String key) {
-		return MessageUtil.translate("mdrtb.indicatorReport."+key);
+		return MessageUtil.translate("mdrtb.indicatorReport." + key);
 	}
 }

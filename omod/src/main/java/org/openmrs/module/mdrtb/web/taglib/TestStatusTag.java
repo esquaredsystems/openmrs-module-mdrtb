@@ -39,8 +39,7 @@ public class TestStatusTag extends TagSupport {
 			ret = TestStatusRenderer.renderGroupShortStatus(tests);
 			
 			if (!type.equalsIgnoreCase("SHORT")) {
-				log.warn(
-				    "Invalid value for attribute type of testStatus tag. Only short type allowed for groups of tests. Rendering standard type.");
+				log.warn("Invalid value for attribute type of testStatus tag. Only short type allowed for groups of tests. Rendering standard type.");
 			}
 		}
 		

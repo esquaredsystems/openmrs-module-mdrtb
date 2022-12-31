@@ -3,402 +3,767 @@ package org.openmrs.module.mdrtb.reporting.custom;
 public class Form8Table1Data {
 	
 	private Integer activeTBTotalMale;
+	
 	private Integer activeTB04Male;
+	
 	private Integer activeTB0514Male;
+	
 	private Integer activeTB1517Male;
+	
 	private Integer activeTB1819Male;
+	
 	private Integer activeTB2024Male;
+	
 	private Integer activeTB2534Male;
+	
 	private Integer activeTB3544Male;
+	
 	private Integer activeTB4554Male;
+	
 	private Integer activeTB5564Male;
+	
 	private Integer activeTB65Male;
+	
 	private Integer activeTBRuralMale;
+	
 	private Integer activeTBTotalFemale;
+	
 	private Integer activeTB04Female;
+	
 	private Integer activeTB0514Female;
+	
 	private Integer activeTB1517Female;
+	
 	private Integer activeTB1819Female;
+	
 	private Integer activeTB2024Female;
+	
 	private Integer activeTB2534Female;
+	
 	private Integer activeTB3544Female;
+	
 	private Integer activeTB4554Female;
+	
 	private Integer activeTB5564Female;
+	
 	private Integer activeTB65Female;
+	
 	private Integer activeTBRuralFemale;
 	
 	private Integer respiratoryTBTotalMale;
+	
 	private Integer respiratoryTB04Male;
+	
 	private Integer respiratoryTB0514Male;
+	
 	private Integer respiratoryTB1517Male;
+	
 	private Integer respiratoryTB1819Male;
+	
 	private Integer respiratoryTB2024Male;
+	
 	private Integer respiratoryTB2534Male;
+	
 	private Integer respiratoryTB3544Male;
+	
 	private Integer respiratoryTB4554Male;
+	
 	private Integer respiratoryTB5564Male;
+	
 	private Integer respiratoryTB65Male;
+	
 	private Integer respiratoryTBRuralMale;
+	
 	private Integer respiratoryTBTotalFemale;
+	
 	private Integer respiratoryTB04Female;
+	
 	private Integer respiratoryTB0514Female;
+	
 	private Integer respiratoryTB1517Female;
+	
 	private Integer respiratoryTB1819Female;
+	
 	private Integer respiratoryTB2024Female;
+	
 	private Integer respiratoryTB2534Female;
+	
 	private Integer respiratoryTB3544Female;
+	
 	private Integer respiratoryTB4554Female;
+	
 	private Integer respiratoryTB5564Female;
+	
 	private Integer respiratoryTB65Female;
+	
 	private Integer respiratoryTBRuralFemale;
 	
 	private Integer pulmonaryTBTotalMale;
+	
 	private Integer pulmonaryTB04Male;
+	
 	private Integer pulmonaryTB0514Male;
+	
 	private Integer pulmonaryTB1517Male;
+	
 	private Integer pulmonaryTB1819Male;
+	
 	private Integer pulmonaryTB2024Male;
+	
 	private Integer pulmonaryTB2534Male;
+	
 	private Integer pulmonaryTB3544Male;
+	
 	private Integer pulmonaryTB4554Male;
+	
 	private Integer pulmonaryTB5564Male;
+	
 	private Integer pulmonaryTB65Male;
+	
 	private Integer pulmonaryTBRuralMale;
+	
 	private Integer pulmonaryTBTotalFemale;
+	
 	private Integer pulmonaryTB04Female;
+	
 	private Integer pulmonaryTB0514Female;
+	
 	private Integer pulmonaryTB1517Female;
+	
 	private Integer pulmonaryTB1819Female;
+	
 	private Integer pulmonaryTB2024Female;
+	
 	private Integer pulmonaryTB2534Female;
+	
 	private Integer pulmonaryTB3544Female;
+	
 	private Integer pulmonaryTB4554Female;
+	
 	private Integer pulmonaryTB5564Female;
+	
 	private Integer pulmonaryTB65Female;
+	
 	private Integer pulmonaryTBRuralFemale;
 	
 	private Integer bacExTBTotalMale;
+	
 	private Integer bacExTB04Male;
+	
 	private Integer bacExTB0514Male;
+	
 	private Integer bacExTB1517Male;
+	
 	private Integer bacExTB1819Male;
+	
 	private Integer bacExTB2024Male;
+	
 	private Integer bacExTB2534Male;
+	
 	private Integer bacExTB3544Male;
+	
 	private Integer bacExTB4554Male;
+	
 	private Integer bacExTB5564Male;
+	
 	private Integer bacExTB65Male;
+	
 	private Integer bacExTBRuralMale;
+	
 	private Integer bacExTBTotalFemale;
+	
 	private Integer bacExTB04Female;
+	
 	private Integer bacExTB0514Female;
+	
 	private Integer bacExTB1517Female;
+	
 	private Integer bacExTB1819Female;
+	
 	private Integer bacExTB2024Female;
+	
 	private Integer bacExTB2534Female;
+	
 	private Integer bacExTB3544Female;
+	
 	private Integer bacExTB4554Female;
+	
 	private Integer bacExTB5564Female;
+	
 	private Integer bacExTB65Female;
+	
 	private Integer bacExTBRuralFemale;
 	
 	private Integer fibCavTBTotalMale;
+	
 	private Integer fibCavTB04Male;
+	
 	private Integer fibCavTB0514Male;
+	
 	private Integer fibCavTB1517Male;
+	
 	private Integer fibCavTB1819Male;
+	
 	private Integer fibCavTB2024Male;
+	
 	private Integer fibCavTB2534Male;
+	
 	private Integer fibCavTB3544Male;
+	
 	private Integer fibCavTB4554Male;
+	
 	private Integer fibCavTB5564Male;
+	
 	private Integer fibCavTB65Male;
+	
 	private Integer fibCavTBRuralMale;
+	
 	private Integer fibCavTBTotalFemale;
+	
 	private Integer fibCavTB04Female;
+	
 	private Integer fibCavTB0514Female;
+	
 	private Integer fibCavTB1517Female;
+	
 	private Integer fibCavTB1819Female;
+	
 	private Integer fibCavTB2024Female;
+	
 	private Integer fibCavTB2534Female;
+	
 	private Integer fibCavTB3544Female;
+	
 	private Integer fibCavTB4554Female;
+	
 	private Integer fibCavTB5564Female;
+	
 	private Integer fibCavTB65Female;
+	
 	private Integer fibCavTBRuralFemale;
 	
 	private Integer nervousSystemTBTotalMale;
+	
 	private Integer nervousSystemTB04Male;
+	
 	private Integer nervousSystemTB0514Male;
+	
 	private Integer nervousSystemTB1517Male;
+	
 	private Integer nervousSystemTB1819Male;
+	
 	private Integer nervousSystemTB2024Male;
+	
 	private Integer nervousSystemTB2534Male;
+	
 	private Integer nervousSystemTB3544Male;
+	
 	private Integer nervousSystemTB4554Male;
+	
 	private Integer nervousSystemTB5564Male;
+	
 	private Integer nervousSystemTB65Male;
+	
 	private Integer nervousSystemTBRuralMale;
+	
 	private Integer nervousSystemTBTotalFemale;
+	
 	private Integer nervousSystemTB04Female;
+	
 	private Integer nervousSystemTB0514Female;
+	
 	private Integer nervousSystemTB1517Female;
+	
 	private Integer nervousSystemTB1819Female;
+	
 	private Integer nervousSystemTB2024Female;
+	
 	private Integer nervousSystemTB2534Female;
+	
 	private Integer nervousSystemTB3544Female;
+	
 	private Integer nervousSystemTB4554Female;
+	
 	private Integer nervousSystemTB5564Female;
+	
 	private Integer nervousSystemTB65Female;
+	
 	private Integer nervousSystemTBRuralFemale;
 	
 	private Integer otherOrgansTBTotalMale;
+	
 	private Integer otherOrgansTB04Male;
+	
 	private Integer otherOrgansTB0514Male;
+	
 	private Integer otherOrgansTB1517Male;
+	
 	private Integer otherOrgansTB1819Male;
+	
 	private Integer otherOrgansTB2024Male;
+	
 	private Integer otherOrgansTB2534Male;
+	
 	private Integer otherOrgansTB3544Male;
+	
 	private Integer otherOrgansTB4554Male;
+	
 	private Integer otherOrgansTB5564Male;
+	
 	private Integer otherOrgansTB65Male;
+	
 	private Integer otherOrgansTBRuralMale;
+	
 	private Integer otherOrgansTBTotalFemale;
+	
 	private Integer otherOrgansTB04Female;
+	
 	private Integer otherOrgansTB0514Female;
+	
 	private Integer otherOrgansTB1517Female;
+	
 	private Integer otherOrgansTB1819Female;
+	
 	private Integer otherOrgansTB2024Female;
+	
 	private Integer otherOrgansTB2534Female;
+	
 	private Integer otherOrgansTB3544Female;
+	
 	private Integer otherOrgansTB4554Female;
+	
 	private Integer otherOrgansTB5564Female;
+	
 	private Integer otherOrgansTB65Female;
+	
 	private Integer otherOrgansTBRuralFemale;
 	
 	private Integer osteoarticularTBTotalMale;
+	
 	private Integer osteoarticularTB04Male;
+	
 	private Integer osteoarticularTB0514Male;
+	
 	private Integer osteoarticularTB1517Male;
+	
 	private Integer osteoarticularTB1819Male;
+	
 	private Integer osteoarticularTB2024Male;
+	
 	private Integer osteoarticularTB2534Male;
+	
 	private Integer osteoarticularTB3544Male;
+	
 	private Integer osteoarticularTB4554Male;
+	
 	private Integer osteoarticularTB5564Male;
+	
 	private Integer osteoarticularTB65Male;
+	
 	private Integer osteoarticularTBRuralMale;
+	
 	private Integer osteoarticularTBTotalFemale;
+	
 	private Integer osteoarticularTB04Female;
+	
 	private Integer osteoarticularTB0514Female;
+	
 	private Integer osteoarticularTB1517Female;
+	
 	private Integer osteoarticularTB1819Female;
+	
 	private Integer osteoarticularTB2024Female;
+	
 	private Integer osteoarticularTB2534Female;
+	
 	private Integer osteoarticularTB3544Female;
+	
 	private Integer osteoarticularTB4554Female;
+	
 	private Integer osteoarticularTB5564Female;
+	
 	private Integer osteoarticularTB65Female;
+	
 	private Integer osteoarticularTBRuralFemale;
 	
 	private Integer urogenitalTBTotalMale;
+	
 	private Integer urogenitalTB04Male;
+	
 	private Integer urogenitalTB0514Male;
+	
 	private Integer urogenitalTB1517Male;
+	
 	private Integer urogenitalTB1819Male;
+	
 	private Integer urogenitalTB2024Male;
+	
 	private Integer urogenitalTB2534Male;
+	
 	private Integer urogenitalTB3544Male;
+	
 	private Integer urogenitalTB4554Male;
+	
 	private Integer urogenitalTB5564Male;
+	
 	private Integer urogenitalTB65Male;
+	
 	private Integer urogenitalTBRuralMale;
+	
 	private Integer urogenitalTBTotalFemale;
+	
 	private Integer urogenitalTB04Female;
+	
 	private Integer urogenitalTB0514Female;
+	
 	private Integer urogenitalTB1517Female;
+	
 	private Integer urogenitalTB1819Female;
+	
 	private Integer urogenitalTB2024Female;
+	
 	private Integer urogenitalTB2534Female;
+	
 	private Integer urogenitalTB3544Female;
+	
 	private Integer urogenitalTB4554Female;
+	
 	private Integer urogenitalTB5564Female;
+	
 	private Integer urogenitalTB65Female;
+	
 	private Integer urogenitalTBRuralFemale;
 	
 	private Integer lymphNodesTBTotalMale;
+	
 	private Integer lymphNodesTB04Male;
+	
 	private Integer lymphNodesTB0514Male;
+	
 	private Integer lymphNodesTB1517Male;
+	
 	private Integer lymphNodesTB1819Male;
+	
 	private Integer lymphNodesTB2024Male;
+	
 	private Integer lymphNodesTB2534Male;
+	
 	private Integer lymphNodesTB3544Male;
+	
 	private Integer lymphNodesTB4554Male;
+	
 	private Integer lymphNodesTB5564Male;
+	
 	private Integer lymphNodesTB65Male;
+	
 	private Integer lymphNodesTBRuralMale;
+	
 	private Integer lymphNodesTBTotalFemale;
+	
 	private Integer lymphNodesTB04Female;
+	
 	private Integer lymphNodesTB0514Female;
+	
 	private Integer lymphNodesTB1517Female;
+	
 	private Integer lymphNodesTB1819Female;
+	
 	private Integer lymphNodesTB2024Female;
+	
 	private Integer lymphNodesTB2534Female;
+	
 	private Integer lymphNodesTB3544Female;
+	
 	private Integer lymphNodesTB4554Female;
+	
 	private Integer lymphNodesTB5564Female;
+	
 	private Integer lymphNodesTB65Female;
+	
 	private Integer lymphNodesTBRuralFemale;
 	
 	private Integer abdominalTBTotalMale;
+	
 	private Integer abdominalTB04Male;
+	
 	private Integer abdominalTB0514Male;
+	
 	private Integer abdominalTB1517Male;
+	
 	private Integer abdominalTB1819Male;
+	
 	private Integer abdominalTB2024Male;
+	
 	private Integer abdominalTB2534Male;
+	
 	private Integer abdominalTB3544Male;
+	
 	private Integer abdominalTB4554Male;
+	
 	private Integer abdominalTB5564Male;
+	
 	private Integer abdominalTB65Male;
+	
 	private Integer abdominalTBRuralMale;
+	
 	private Integer abdominalTBTotalFemale;
+	
 	private Integer abdominalTB04Female;
+	
 	private Integer abdominalTB0514Female;
+	
 	private Integer abdominalTB1517Female;
+	
 	private Integer abdominalTB1819Female;
+	
 	private Integer abdominalTB2024Female;
+	
 	private Integer abdominalTB2534Female;
+	
 	private Integer abdominalTB3544Female;
+	
 	private Integer abdominalTB4554Female;
+	
 	private Integer abdominalTB5564Female;
+	
 	private Integer abdominalTB65Female;
+	
 	private Integer abdominalTBRuralFemale;
 	
 	private Integer eyeTBTotalMale;
+	
 	private Integer eyeTB04Male;
+	
 	private Integer eyeTB0514Male;
+	
 	private Integer eyeTB1517Male;
+	
 	private Integer eyeTB1819Male;
+	
 	private Integer eyeTB2024Male;
+	
 	private Integer eyeTB2534Male;
+	
 	private Integer eyeTB3544Male;
+	
 	private Integer eyeTB4554Male;
+	
 	private Integer eyeTB5564Male;
+	
 	private Integer eyeTB65Male;
+	
 	private Integer eyeTBRuralMale;
+	
 	private Integer eyeTBTotalFemale;
+	
 	private Integer eyeTB04Female;
+	
 	private Integer eyeTB0514Female;
+	
 	private Integer eyeTB1517Female;
+	
 	private Integer eyeTB1819Female;
+	
 	private Integer eyeTB2024Female;
+	
 	private Integer eyeTB2534Female;
+	
 	private Integer eyeTB3544Female;
+	
 	private Integer eyeTB4554Female;
+	
 	private Integer eyeTB5564Female;
+	
 	private Integer eyeTB65Female;
+	
 	private Integer eyeTBRuralFemale;
 	
 	private Integer miliaryTBTotalMale;
+	
 	private Integer miliaryTB04Male;
+	
 	private Integer miliaryTB0514Male;
+	
 	private Integer miliaryTB1517Male;
+	
 	private Integer miliaryTB1819Male;
+	
 	private Integer miliaryTB2024Male;
+	
 	private Integer miliaryTB2534Male;
+	
 	private Integer miliaryTB3544Male;
+	
 	private Integer miliaryTB4554Male;
+	
 	private Integer miliaryTB5564Male;
+	
 	private Integer miliaryTB65Male;
+	
 	private Integer miliaryTBRuralMale;
+	
 	private Integer miliaryTBTotalFemale;
+	
 	private Integer miliaryTB04Female;
+	
 	private Integer miliaryTB0514Female;
+	
 	private Integer miliaryTB1517Female;
+	
 	private Integer miliaryTB1819Female;
+	
 	private Integer miliaryTB2024Female;
+	
 	private Integer miliaryTB2534Female;
+	
 	private Integer miliaryTB3544Female;
+	
 	private Integer miliaryTB4554Female;
+	
 	private Integer miliaryTB5564Female;
+	
 	private Integer miliaryTB65Female;
+	
 	private Integer miliaryTBRuralFemale;
 	
 	private Integer resistantTBTotalMale;
+	
 	private Integer resistantTB04Male;
+	
 	private Integer resistantTB0514Male;
+	
 	private Integer resistantTB1517Male;
+	
 	private Integer resistantTB1819Male;
+	
 	private Integer resistantTB2024Male;
+	
 	private Integer resistantTB2534Male;
+	
 	private Integer resistantTB3544Male;
+	
 	private Integer resistantTB4554Male;
+	
 	private Integer resistantTB5564Male;
+	
 	private Integer resistantTB65Male;
+	
 	private Integer resistantTBRuralMale;
+	
 	private Integer resistantTBTotalFemale;
+	
 	private Integer resistantTB04Female;
+	
 	private Integer resistantTB0514Female;
+	
 	private Integer resistantTB1517Female;
+	
 	private Integer resistantTB1819Female;
+	
 	private Integer resistantTB2024Female;
+	
 	private Integer resistantTB2534Female;
+	
 	private Integer resistantTB3544Female;
+	
 	private Integer resistantTB4554Female;
+	
 	private Integer resistantTB5564Female;
+	
 	private Integer resistantTB65Female;
+	
 	private Integer resistantTBRuralFemale;
 	
 	private Integer tbhivTBTotalMale;
+	
 	private Integer tbhivTB04Male;
+	
 	private Integer tbhivTB0514Male;
+	
 	private Integer tbhivTB1517Male;
+	
 	private Integer tbhivTB1819Male;
+	
 	private Integer tbhivTB2024Male;
+	
 	private Integer tbhivTB2534Male;
+	
 	private Integer tbhivTB3544Male;
+	
 	private Integer tbhivTB4554Male;
+	
 	private Integer tbhivTB5564Male;
+	
 	private Integer tbhivTB65Male;
+	
 	private Integer tbhivTBRuralMale;
+	
 	private Integer tbhivTBTotalFemale;
+	
 	private Integer tbhivTB04Female;
+	
 	private Integer tbhivTB0514Female;
+	
 	private Integer tbhivTB1517Female;
+	
 	private Integer tbhivTB1819Female;
+	
 	private Integer tbhivTB2024Female;
+	
 	private Integer tbhivTB2534Female;
+	
 	private Integer tbhivTB3544Female;
+	
 	private Integer tbhivTB4554Female;
+	
 	private Integer tbhivTB5564Female;
+	
 	private Integer tbhivTB65Female;
+	
 	private Integer tbhivTBRuralFemale;
 	
 	private Integer ruralTBTotalMale;
+	
 	private Integer ruralTB04Male;
+	
 	private Integer ruralTB0514Male;
+	
 	private Integer ruralTB1517Male;
+	
 	private Integer ruralTB1819Male;
+	
 	private Integer ruralTB2024Male;
+	
 	private Integer ruralTB2534Male;
+	
 	private Integer ruralTB3544Male;
+	
 	private Integer ruralTB4554Male;
+	
 	private Integer ruralTB5564Male;
+	
 	private Integer ruralTB65Male;
 	
 	private Integer ruralTBTotalFemale;
+	
 	private Integer ruralTB04Female;
+	
 	private Integer ruralTB0514Female;
+	
 	private Integer ruralTB1517Female;
+	
 	private Integer ruralTB1819Female;
+	
 	private Integer ruralTB2024Female;
+	
 	private Integer ruralTB2534Female;
+	
 	private Integer ruralTB3544Female;
+	
 	private Integer ruralTB4554Female;
+	
 	private Integer ruralTB5564Female;
+	
 	private Integer ruralTB65Female;
 	
 	public Form8Table1Data() {

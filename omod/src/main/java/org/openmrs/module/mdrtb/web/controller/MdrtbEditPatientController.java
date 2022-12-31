@@ -36,9 +36,9 @@ import org.openmrs.api.PersonService.ATTR_VIEW_TYPE;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleFactory;
 import org.openmrs.module.mdrtb.MdrtbUtil;
+import org.openmrs.module.mdrtb.PatientValidator;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.service.MdrtbService;
-import org.openmrs.module.mdrtb.validator.PatientValidator;
 import org.openmrs.module.mdrtb.web.controller.command.PatientCommand;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
@@ -66,8 +66,6 @@ public class MdrtbEditPatientController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	PatientValidator validator = new PatientValidator();
-	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
 		//bind dates
@@ -87,8 +85,7 @@ public class MdrtbEditPatientController {
 	}
 	
 	@ModelAttribute("patientProgramId")
-	public Integer getPatientProgramId(
-	        @RequestParam(required = false, value = "patientProgramId") Integer patientProgramId) {
+	public Integer getPatientProgramId(@RequestParam(required = false, value = "patientProgramId") Integer patientProgramId) {
 		return patientProgramId;
 	}
 	
@@ -155,8 +152,8 @@ public class MdrtbEditPatientController {
 				Class<?> identifierSourceServiceClass = Context
 				        .loadClass("org.openmrs.module.idgen.service.IdentifierSourceService");
 				Object idgen = Context.getService(identifierSourceServiceClass);
-				Method getPatientIdentifierTypesByAutoGenerationOption = identifierSourceServiceClass
-				        .getMethod("getPatientIdentifierTypesByAutoGenerationOption", Boolean.class, Boolean.class);
+				Method getPatientIdentifierTypesByAutoGenerationOption = identifierSourceServiceClass.getMethod(
+				    "getPatientIdentifierTypesByAutoGenerationOption", Boolean.class, Boolean.class);
 				
 				return (List<PatientIdentifierType>) getPatientIdentifierTypesByAutoGenerationOption.invoke(idgen, false,
 				    true);
@@ -261,8 +258,8 @@ public class MdrtbEditPatientController {
 			
 			Set<Person> similarPersons = Context.getPersonService().getSimilarPeople(addName, birthYear, addGender);
 			Set<PatientListItem> similarPatients = new HashSet<PatientListItem>();
-			String primaryIdentifier = Context.getAdministrationService()
-			        .getGlobalProperty("mdrtb.primaryPatientIdentifierType");
+			String primaryIdentifier = Context.getAdministrationService().getGlobalProperty(
+			    "mdrtb.primaryPatientIdentifierType");
 			
 			// we only want to pass on similar persons who are patients in this case
 			for (Person person : similarPersons) {
@@ -358,8 +355,8 @@ public class MdrtbEditPatientController {
 					        (fixedLocation == null ? identifierLocation[i] : fixedLocation));
 					
 					// set this identifier as preferred if it is of the preferred tyoe
-					String preferredIdentifierTypeName = Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.primaryPatientIdentifierType");
+					String preferredIdentifierTypeName = Context.getAdministrationService().getGlobalProperty(
+					    "mdrtb.primaryPatientIdentifierType");
 					if (StringUtils.isNotBlank(preferredIdentifierTypeName)) {
 						PatientIdentifierType preferredIdentifierType = Context.getPatientService()
 						        .getPatientIdentifierTypeByName(preferredIdentifierTypeName);
@@ -377,6 +374,7 @@ public class MdrtbEditPatientController {
 		// (don't know if this is the exact right thing to do, but we need to create a new binding result
 		// since we are validating the patient, not the patient command)
 		result = new BeanPropertyBindingResult(patient, "patient");
+		PatientValidator validator = new PatientValidator();
 		validator.validate(patient, result);
 		if (result.hasErrors() || identifierId.length == 0) {
 			map.put("errors", result);

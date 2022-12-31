@@ -26,26 +26,23 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
  */
 @Handler(supports = { TestReferralCohortDefinition.class })
 public class TestReferralCohortDefinitionEvaluator implements CohortDefinitionEvaluator {
-
+	
 	/**
 	 * Default Constructor
 	 */
 	public TestReferralCohortDefinitionEvaluator() {
 	}
-
+	
 	/**
-	 * @see TestReferralCohortDefinition#evaluateCohort(CohortDefinition,
-	 *      EvaluationContext)
-	 * 
+	 * @see TestReferralCohortDefinition#evaluateCohort(CohortDefinition, EvaluationContext)
 	 */
 	public EvaluatedCohort evaluate(CohortDefinition cohortDefinition, EvaluationContext context) {
-
+		
 		TestReferralCohortDefinition cd = (TestReferralCohortDefinition) cohortDefinition;
 		// Cohort c = null;
-
-		Cohort c = MdrtbQueryService.getPatientsReferredToTest(context, cd.getFromDate(), cd.getToDate(),
-				cd.getTestType());
-
-    	return new EvaluatedCohort(c, cohortDefinition, context);
+		
+		Cohort c = MdrtbQueryService.getPatientsReferredToTest(context, cd.getFromDate(), cd.getToDate(), cd.getTestType());
+		
+		return new EvaluatedCohort(c, cohortDefinition, context);
 	}
 }

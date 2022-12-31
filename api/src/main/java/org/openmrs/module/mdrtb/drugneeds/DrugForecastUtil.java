@@ -28,18 +28,20 @@ import org.openmrs.module.mdrtb.regimen.RegimenUtils;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 
 public class DrugForecastUtil {
-
+	
 	private static Log log = LogFactory.getLog(DrugForecastUtil.class);
-
+	
 	public static final long MS_PER_DAY = 864086400;
+	
 	static Date beginningOfTime = new Date(0);
+	
 	static Date endOfTime;
 	static {
 		Calendar cal = new GregorianCalendar();
 		cal.set(Calendar.YEAR, 3999);
 		endOfTime = cal.getTime();
 	}
-
+	
 	public static Map<Drug, Integer> countPatientsTakingDrugs(Cohort cohort, Concept drugSet, Date onDate) {
 		Map<Drug, Set<Integer>> temp = new HashMap<Drug, Set<Integer>>();
 		for (DrugOrder o : getDrugOrders(cohort, drugSet, onDate, onDate)) {
@@ -48,6 +50,7 @@ public class DrugForecastUtil {
 			}
 		}
 		Map<Drug, Integer> ret = new TreeMap<Drug, Integer>(new Comparator<Drug>() {
+			
 			public int compare(Drug left, Drug right) {
 				return left.getName().compareTo(right.getName());
 			}
@@ -57,7 +60,7 @@ public class DrugForecastUtil {
 		}
 		return ret;
 	}
-
+	
 	public static Map<Concept, Integer> countPatientsTakingGenericDrugs(Cohort cohort, Concept drugSet, Date onDate) {
 		Map<Concept, Set<Integer>> temp = new HashMap<Concept, Set<Integer>>();
 		for (DrugOrder o : getDrugOrders(cohort, drugSet, onDate, onDate)) {
@@ -66,6 +69,7 @@ public class DrugForecastUtil {
 			}
 		}
 		Map<Concept, Integer> ret = new TreeMap<Concept, Integer>(new Comparator<Concept>() {
+			
 			public int compare(Concept left, Concept right) {
 				return left.getName(Context.getLocale()).getName().compareTo(right.getName(Context.getLocale()).getName());
 			}
@@ -75,10 +79,10 @@ public class DrugForecastUtil {
 		}
 		return ret;
 	}
-
-	public static Map<Drug, Double> simpleDrugNeedsCalculation(Cohort cohort, Concept drugSet, Date fromDate,
-			Date toDate) {
+	
+	public static Map<Drug, Double> simpleDrugNeedsCalculation(Cohort cohort, Concept drugSet, Date fromDate, Date toDate) {
 		Map<Drug, Double> ret = new TreeMap<Drug, Double>(new Comparator<Drug>() {
+			
 			public int compare(Drug left, Drug right) {
 				return left.getName().compareTo(right.getName());
 			}
@@ -91,7 +95,7 @@ public class DrugForecastUtil {
 		}
 		return ret;
 	}
-
+	
 	private static Collection<DrugOrder> getDrugOrders(Cohort cohort, Concept drugSet, Date fromDate, Date toDate) {
 		if (fromDate.compareTo(toDate) == 0) {
 			Calendar cal = Calendar.getInstance();
@@ -100,7 +104,8 @@ public class DrugForecastUtil {
 			toDate = cal.getTime();
 		}
 		List<DrugOrder> ret = new ArrayList<DrugOrder>();
-		for (Collection<DrugOrder> orders : Context.getPatientSetService().getDrugOrders(cohort, drugSet).values()) {
+		
+		for (Collection<DrugOrder> orders : Context.getService(MdrtbService.class).getDrugOrders(cohort, drugSet).values()) {
 			for (DrugOrder o : orders) {
 				if (daysOfOverlap(o, fromDate, toDate) > 0)
 					ret.add(o);
@@ -108,31 +113,34 @@ public class DrugForecastUtil {
 		}
 		return ret;
 	}
-
+	
 	private static double getDrugUsage(DrugOrder o, Date fromDate, Date toDate) {
 		Drug drug = o.getDrug();
 		if (drug == null)
 			return 0;
-		int days = daysOfOverlap(fromDate, toDate, o.getStartDate(),
-				o.isDiscontinuedRightNow() ? o.getDiscontinuedDate() : o.getAutoExpireDate());
+		int days = daysOfOverlap(fromDate, toDate, o.getEffectiveStartDate(),
+		    o.isDiscontinuedRightNow() ? o.getEffectiveStopDate() : o.getAutoExpireDate());
 		if (days <= 0)
 			return 0;
 		double pillsPerDose = (o.getDose() != null ? o.getDose() : 0);
 		if (pillsPerDose == 0)
 			return 0;
-		if (drug != null && drug.getDoseStrength() != null)
-			pillsPerDose /= drug.getDoseStrength();
+		if (drug != null && drug.getStrength() != null) {
+			//TODO: convert the old Dose Strength (Tip! Explore drug.getMaximumDailyDose()) and write test
+			// pillsPerDose = pillsPerDose / drug.getDoseStrength();
+		}
 		double dosesPerDay = 0;
 		try {
-			String s = o.getFrequency();
-			dosesPerDay = Integer.valueOf(s.substring(0, s.indexOf('/')));
-		} catch (Exception ex) {
+			//TODO: Write test and remove this
+			//			String s = o.getFrequency();
+			//			dosesPerDay = Integer.valueOf(s.substring(0, s.indexOf('/')));
+			dosesPerDay = o.getFrequency().getFrequencyPerDay();
 		}
+		catch (Exception ex) {}
 		double total = pillsPerDose * dosesPerDay * days;
-		
 		return total;
 	}
-
+	
 	public static <T> void increment(Map<T, Double> map, T key, double amount) {
 		Double d = map.get(key);
 		if (d == null)
@@ -140,7 +148,7 @@ public class DrugForecastUtil {
 		else
 			map.put(key, d + amount);
 	}
-
+	
 	public static <T> void increment(Map<T, Integer> map, T key, int amount) {
 		Integer i = map.get(key);
 		if (i == null)
@@ -148,7 +156,7 @@ public class DrugForecastUtil {
 		else
 			map.put(key, i + amount);
 	}
-
+	
 	public static <T> void addToSet(Map<T, Set<Integer>> map, T key, Integer value) {
 		Set<Integer> s = map.get(key);
 		if (s == null) {
@@ -157,12 +165,12 @@ public class DrugForecastUtil {
 		}
 		s.add(value);
 	}
-
+	
 	public static int daysOfOverlap(DrugOrder o, Date startDate, Date endDate) {
-		return daysOfOverlap(startDate, endDate, o.getStartDate(),
-				o.isDiscontinuedRightNow() ? o.getDiscontinuedDate() : o.getAutoExpireDate());
+		return daysOfOverlap(startDate, endDate, o.getEffectiveStartDate(),
+		    o.isDiscontinuedRightNow() ? o.getEffectiveStopDate() : o.getAutoExpireDate());
 	}
-
+	
 	public static int daysOfOverlap(Date aStart, Date aEnd, Date bStart, Date bEnd) {
 		if (aStart == null)
 			aStart = beginningOfTime;
@@ -176,11 +184,11 @@ public class DrugForecastUtil {
 		Date right = aEnd.before(bEnd) ? aEnd : bEnd;
 		return daysFrom(left, right);
 	}
-
+	
 	public static int daysFrom(Date d1, Date d2) {
 		return (int) ((d2.getTime() - d1.getTime()) / MS_PER_DAY);
 	}
-
+	
 	public static String formatNicely(Double dbl) {
 		if (dbl == null)
 			return "";
@@ -191,72 +199,69 @@ public class DrugForecastUtil {
 		}
 		return str;
 	}
-
-	public static ArrayList<PatientSLDMap> getPatientsTakingDrugs(Cohort cohort, Concept drugSet, Date fromDate,
-			Date toDate) {
+	
+	public static ArrayList<PatientSLDMap> getPatientsTakingDrugs(Cohort cohort, Concept drugSet, Date fromDate, Date toDate) {
 		HashMap<Integer, PatientSLDMap> patientDrugs = new HashMap<Integer, PatientSLDMap>();
 		ArrayList<PatientSLDMap> patients = new ArrayList<PatientSLDMap>();
 		Collection<DrugOrder> drugOrders = getDrugOrders(cohort, drugSet, fromDate, toDate);
-
+		
 		log.debug("DRUG ORDERS: " + drugOrders.size());
 		for (DrugOrder o : drugOrders) {
 			log.debug("ID:" + o.getPatient().getPatientId());
-
+			
 			log.debug("CONCEPT" + o.getConcept());
 			if (o.getConcept() != null) {
 				Patient tempPat = o.getPatient();
 				PatientSLDMap temp = patientDrugs.get(tempPat);
-
+				
 				if (temp == null) {
 					temp = new PatientSLDMap();
 					temp.setPatient(tempPat);
-
-					List<DrugOrder> drugOrdersByPatient = Context.getOrderService().getDrugOrdersByPatient(tempPat);
+					
+					List<DrugOrder> drugOrdersByPatient = Context.getService(MdrtbService.class).getDrugOrders(tempPat);
 					for (DrugOrder f : drugOrdersByPatient) {
-
+						
 						if (f.getConcept() != null) {
 							if (f.getConcept().equals(
-									Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PYRAZINAMIDE))) {
+							    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PYRAZINAMIDE))) {
 								temp.setOnPyrazinamide(true);
 							}
-
+							
 							else if (f.getConcept().equals(
-									Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ETHAMBUTOL))) {
+							    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ETHAMBUTOL))) {
 								temp.setOnEthambutol(true);
 							}
 						}
-
+						
 					}
-
+					
 					RegimenHistory tbHistory = RegimenUtils.getSLDRegimenHistory(tempPat);
-
+					
 					Regimen r = null;
 					if (tbHistory != null)
 						r = tbHistory.getStartingRegimen();
 					if (r != null)
 						temp.setTreatmentStartDate(r.getStartDate());
-
+					
 				}
-
+				
 				if (o.getConcept().equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAPREOMYCIN)))
 					temp.setOnCapreomycin(true);
-				else if (o.getConcept()
-						.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AMIKACIN)))
+				else if (o.getConcept().equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AMIKACIN)))
 					temp.setOnAmikacin(true);
 				else if (o.getConcept()
-						.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MOXIFLOXACIN)))
+				        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MOXIFLOXACIN)))
 					temp.setOnMoxifloxacin(true);
 				else if (o.getConcept()
-						.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LEVOFLOXACIN)))
+				        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LEVOFLOXACIN)))
 					temp.setOnLevofloxacin(true);
-				else if (o.getConcept()
-						.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PROTHIONAMIDE)))
+				else if (o.getConcept().equals(
+				    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PROTHIONAMIDE)))
 					temp.setOnProthionamide(true);
-				else if (o.getConcept()
-						.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CYCLOSERINE)))
+				else if (o.getConcept().equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CYCLOSERINE)))
 					temp.setOnCycloserine(true);
-				else if (o.getConcept()
-						.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.P_AMINOSALICYLIC_ACID)))
+				else if (o.getConcept().equals(
+				    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.P_AMINOSALICYLIC_ACID)))
 					temp.setOnPAS(true);
 				else if (!temp.getOnOther1())
 					temp.setOnOther1(true);
@@ -268,23 +273,23 @@ public class DrugForecastUtil {
 					temp.setOnOther4(true);
 				else if (!temp.getOnOther5())
 					temp.setOnOther5(true);
-
+				
 				patientDrugs.put(tempPat.getPatientId(), temp);
-
+				
 			} else {
 				log.debug("NULL DRUG");
 			}
-
+			
 		}
-
+		
 		log.debug("MAP: " + patientDrugs.size());
-
+		
 		for (PatientSLDMap psm : patientDrugs.values()) {
 			patients.add(psm);
 		}
-
+		
 		log.debug("LIST: " + patients.size());
-
+		
 		return patients;
 	}
 }

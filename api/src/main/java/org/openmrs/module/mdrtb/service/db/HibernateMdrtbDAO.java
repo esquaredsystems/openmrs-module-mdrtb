@@ -3,12 +3,21 @@ package org.openmrs.module.mdrtb.service.db;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.CacheMode;
+import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
+import org.openmrs.Cohort;
+import org.openmrs.Concept;
+import org.openmrs.DrugOrder;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.PatientIdentifier;
@@ -23,20 +32,20 @@ import org.springframework.stereotype.Component;
 //TODO: This entire class will be heavily refactored
 @Component
 public class HibernateMdrtbDAO implements MdrtbDAO {
-
+	
 	protected static final Log log = LogFactory.getLog(HibernateMdrtbDAO.class);
-
+	
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	public SessionFactory getSessionFactory() {
 		return this.sessionFactory;
 	}
-
+	
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
-
+	
 	/**
 	 * @see MdrtbDAO#getLocationsWithAnyProgramEnrollments()
 	 */
@@ -45,7 +54,7 @@ public class HibernateMdrtbDAO implements MdrtbDAO {
 		String query = "select distinct location from PatientProgram where voided = false";
 		return sessionFactory.getCurrentSession().createQuery(query).list();
 	}
-
+	
 	/**
 	 * @see MdrtbDAO#getAllRayonsTJK()
 	 */
@@ -58,45 +67,89 @@ public class HibernateMdrtbDAO implements MdrtbDAO {
 		}
 		return names;
 	}
-
+	
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public Map<Integer, List<DrugOrder>> getDrugOrders(Cohort patients, List<Concept> drugConcepts) throws DAOException {
+		Map<Integer, List<DrugOrder>> ret = new HashMap<Integer, List<DrugOrder>>();
+		if (patients != null && patients.size() == 0)
+			return ret;
+		
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DrugOrder.class);
+		criteria.setFetchMode("patient", FetchMode.JOIN);
+		criteria.setCacheMode(CacheMode.IGNORE);
+		
+		// only include this where clause if patients were passed in
+		if (patients != null)
+			criteria.add(Restrictions.in("patient.personId", patients.getMemberIds()));
+		
+		if (drugConcepts != null)
+			criteria.add(Restrictions.in("concept", drugConcepts));
+		criteria.add(Restrictions.eq("voided", false));
+		criteria.addOrder(org.hibernate.criterion.Order.asc("startDate"));
+		log.debug("criteria: " + criteria);
+		List<DrugOrder> temp = criteria.list();
+		for (DrugOrder regimen : temp) {
+			Integer ptId = regimen.getPatient().getPatientId();
+			List<DrugOrder> list = ret.get(ptId);
+			if (list == null) {
+				list = new ArrayList<DrugOrder>();
+				ret.put(ptId, list);
+			}
+			list.add(regimen);
+		}
+		return ret;
+	}
+	
 	public PatientIdentifier getPatientIdentifierById(Integer patientIdentifierId) {
 		return (PatientIdentifier) sessionFactory.getCurrentSession()
-				.createQuery("from PatientIdentifier p where patientIdentifierId = :pid")
-				.setInteger("pid", patientIdentifierId.intValue()).uniqueResult();
+		        .createQuery("from PatientIdentifier p where patientIdentifierId = :pid")
+		        .setInteger("pid", patientIdentifierId.intValue()).uniqueResult();
 	}
-
+	
 	public void doPDF(Integer oblast, Integer district, Integer facility, Integer year, String quarter, String month,
-			String reportDate, String tableData, boolean reportStatus, String reportName, String reportType) {
+	        String reportDate, String tableData, boolean reportStatus, String reportName, String reportType) {
 		try {
-			log.debug("Save PDF-PARAMS:" + oblast + ":" + district + ":" + facility + ":" + year + ":"
-					+ reportDate + ":" + tableData + ":" + reportName + ":" + reportType);
-
+			log.debug("Save PDF-PARAMS:" + oblast + ":" + district + ":" + facility + ":" + year + ":" + reportDate + ":"
+			        + tableData + ":" + reportName + ":" + reportType);
+			
 			Integer status = 0;
 			if (reportStatus == true) {
 				status = 1;
 			}
 			String sql = "INSERT INTO report_data (oblast_id, district_id, facility_id,year, quarter, month, report_date, table_data, report_status, report_name, report_type) VALUES ("
-					+ oblast + ", " + district + ", " + facility + ", " + year + ", '" + quarter + "', '" + month
-					+ "', '" + reportDate + "', '" + tableData + "', " + status + ", '" + reportName + "', '"
-					+ reportType + "')";
+			        + oblast
+			        + ", "
+			        + district
+			        + ", "
+			        + facility
+			        + ", "
+			        + year
+			        + ", '"
+			        + quarter
+			        + "', '"
+			        + month
+			        + "', '"
+			        + reportDate + "', '" + tableData + "', " + status + ", '" + reportName + "', '" + reportType + "')";
 			Session session = sessionFactory.getCurrentSession();
 			session.beginTransaction();
 			session.createSQLQuery(sql).executeUpdate();
 			session.getTransaction().commit();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public int countPDFRows() {
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		//TODO: How on earth is this even working for over 10 years? Makes zero sense as it will only return single record
-		List<String> list = (List<String>) session.createSQLQuery("select count(*) from report_data where report_type = 'MDRTB'").list();
+		List<String> list = (List<String>) session.createSQLQuery(
+		    "select count(*) from report_data where report_type = 'MDRTB'").list();
 		return list.size();
 	}
-
+	
 	public ArrayList<String> getPDFColumns() {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("report_id");
@@ -112,41 +165,40 @@ public class HibernateMdrtbDAO implements MdrtbDAO {
 		list.add("report_name");
 		return list;
 	}
-
+	
 	@SuppressWarnings({ "unchecked" })
 	public List<List<Integer>> getPDFData(String reportType) {
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		List<List<Integer>> list = new ArrayList<List<Integer>>();
-		list.add((List<Integer>) session
-				.createSQLQuery("select report_id from report_data where report_type = '" + reportType + "'").list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select oblast_id from report_data where report_type = '" + reportType + "'").list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select district_id from report_data where report_type = '" + reportType + "'").list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select facility_id from report_data where report_type = '" + reportType + "'").list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select year from report_data where report_type = '" + reportType + "'").list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select quarter from report_data where report_type = '" + reportType + "'").list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select month from report_data where report_type = '" + reportType + "'").list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select report_date from report_data where report_type = '" + reportType + "'").list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select report_status from report_data where report_type = '" + reportType + "'")
-				.list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select report_name from report_data where report_type = '" + reportType + "'").list());
-		list.add((List<Integer>) session
-				.createSQLQuery("select report_type from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select report_id from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select oblast_id from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select district_id from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select facility_id from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select year from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select quarter from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select month from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select report_date from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select report_status from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select report_name from report_data where report_type = '" + reportType + "'").list());
+		list.add((List<Integer>) session.createSQLQuery(
+		    "select report_type from report_data where report_type = '" + reportType + "'").list());
 		return list;
 	}
-
+	
 	@SuppressWarnings({ "unchecked" })
 	public List<String> readTableData(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
-			String month, String name, String date, String reportType) {
+	        String month, String name, String date, String reportType) {
 		String sql = "select table_data from report_data ";
 		if (name != null && !name.equals(""))
 			sql += " where report_name='" + name + "'";
@@ -156,55 +208,56 @@ public class HibernateMdrtbDAO implements MdrtbDAO {
 			sql += " and oblast_id=" + oblast;
 		else
 			sql += " and oblast_id IS NULL";
-
+		
 		if (district != null)
 			sql += " and district_id=" + district;
 		else
 			sql += " and district_id IS NULL";
-
+		
 		if (facility != null)
 			sql += " and facility_id=" + facility;
 		else
 			sql += " and facility_id IS NULL";
-
+		
 		if (year != null)
 			sql += " and year=" + year;
 		else
 			sql += "and year IS NULL";
-
+		
 		if (quarter != null && !quarter.equals(Context.getMessageSourceService().getMessage("mdrtb.annual")))
 			sql += " and quarter='" + quarter + "'";
 		else if (quarter.equals(Context.getMessageSourceService().getMessage("mdrtb.annual")))
 			sql += " and quarter='" + "" + "'";
 		else
 			sql += " and quarter IS NULL";
-
+		
 		if (month != null)
 			sql += " and month='" + month + "'";
 		else
 			sql += " and month IS NULL";
-
+		
 		sql += " and report_type= '" + reportType + "'";
-
+		
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		List<String> list = (List<String>) session.createSQLQuery(sql).list();
 		return list;
 	}
-
-	public void unlockReport(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
-			String month, String name, String date, String reportType) {
-		String sql = "delete from report_data " + processReportFilters(oblast, district, facility, year, quarter, month, name, reportType);
-
+	
+	public void unlockReport(Integer oblast, Integer district, Integer facility, Integer year, String quarter, String month,
+	        String name, String date, String reportType) {
+		String sql = "delete from report_data "
+		        + processReportFilters(oblast, district, facility, year, quarter, month, name, reportType);
+		
 		sql += " and report_type='" + reportType + "'";
 		Session session = sessionFactory.getCurrentSession();
 		session.beginTransaction();
 		session.createSQLQuery(sql).executeUpdate();
 		session.getTransaction().commit();
 	}
-
-	public String processReportFilters(Integer oblast, Integer district, Integer facility, Integer year, String quarter, String month,
-	        String name, String reportType) {
+	
+	public String processReportFilters(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
+	        String month, String name, String reportType) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("where report_type='" + reportType + "' ");
 		sb.append("".equals(name) ? "" : "and report_name='" + name + "' ");
@@ -222,14 +275,15 @@ public class HibernateMdrtbDAO implements MdrtbDAO {
 		sb.append(month == null ? "and month IS NULL " : " and month='" + month + "' ");
 		return sb.toString();
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public boolean readReportStatus(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
-			String month, String name, String reportType) {
-		String sql = "select report_status from report_data " + processReportFilters(oblast, district, facility, year, quarter, month, name, reportType);
+	        String month, String name, String reportType) {
+		String sql = "select report_status from report_data "
+		        + processReportFilters(oblast, district, facility, year, quarter, month, name, reportType);
 		
 		Session session = sessionFactory.getCurrentSession();
-//		session.beginTransaction();
+		//		session.beginTransaction();
 		List<String> statusList = (List<String>) session.createSQLQuery(sql).list();
 		List<String> list = new PDFHelper().byteToStrArray(statusList.toString());
 		boolean reportStatus = false;
@@ -239,18 +293,18 @@ public class HibernateMdrtbDAO implements MdrtbDAO {
 			}
 			catch (Exception e) {}
 		}
-//		session.getTransaction().commit();
+		//		session.getTransaction().commit();
 		return reportStatus;
 	}
-
+	
 	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames) {
 		return getEncountersByEncounterTypes(encounterTypeNames, null, null, null);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	/* TODO: Remove unused closeDate parameter */
 	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames, Date startDate, Date endDate,
-			Date closeDate) {
+	        Date closeDate) {
 		SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<Integer> encounterIds = new ArrayList<Integer>();
 		List<Integer> tempList = new ArrayList<Integer>();
@@ -258,22 +312,22 @@ public class HibernateMdrtbDAO implements MdrtbDAO {
 		Session session = sessionFactory.getCurrentSession();
 		for (String encounterTypeName : encounterTypeNames) {
 			sql = "select e.encounter_id from encounter e inner join encounter_type et where e.encounter_type=et.encounter_type_id and et.name='"
-					+ encounterTypeName + "' and e.voided=0";
-
+			        + encounterTypeName + "' and e.voided=0";
+			
 			if (startDate != null && endDate != null) {
 				sql += " and e.encounter_datetime between '" + dbDateFormat.format(startDate) + "' and '"
-						+ dbDateFormat.format(endDate) + "'";
+				        + dbDateFormat.format(endDate) + "'";
 			}
 			sql += ";";
 			tempList = (List<Integer>) session.createSQLQuery(sql).list();
-
+			
 			for (Integer encounterId : tempList) {
 				if (!(encounterIds.contains(encounterId))) {
 					encounterIds.add(encounterId);
 				}
 			}
 		}
-
+		
 		List<Encounter> encounters = new ArrayList<Encounter>();
 		Encounter encounter = new Encounter();
 		for (Integer encounterId : encounterIds) {
@@ -282,44 +336,46 @@ public class HibernateMdrtbDAO implements MdrtbDAO {
 		}
 		return encounters;
 	}
-
+	
 	public void evict(Object obj) {
 		sessionFactory.getCurrentSession().evict(obj);
 	}
-
+	
 	public BaseLocation getAddressHierarchyLocation(Integer locationId) {
-		String query = "select address_hierarchy_entry_id, name, level_id from address_hierarchy_entry where address_hierarchy_entry_id=" + locationId;
+		String query = "select address_hierarchy_entry_id, name, level_id from address_hierarchy_entry where address_hierarchy_entry_id="
+		        + locationId;
 		List<List<Object>> results = Context.getAdministrationService().executeSQL(query, true);
 		for (List<Object> list : results) {
-			Integer id = (Integer)(list.get(0));
+			Integer id = (Integer) (list.get(0));
 			String name = String.valueOf(list.get(1));
-			Integer levelId = (Integer)(list.get(2));
+			Integer levelId = (Integer) (list.get(2));
 			BaseLocation baseLocation = new BaseLocation(id, name, levelId);
 			baseLocation.setLevelId(levelId);
 			return baseLocation;
 		}
 		return null;
 	}
-
+	
 	public BaseLocation getAddressHierarchyLocationParent(BaseLocation child) {
 		String query = "select parent_id from address_hierarchy_entry where address_hierarchy_entry_id=" + child.getId();
 		List<List<Object>> results = Context.getAdministrationService().executeSQL(query, true);
 		for (List<Object> list : results) {
-			Integer id = (Integer)(list.get(0));
+			Integer id = (Integer) (list.get(0));
 			return getAddressHierarchyLocation(id);
 		}
 		return null;
 	}
-
+	
 	public List<BaseLocation> getAddressHierarchyLocationsByHierarchyLevel(Integer level) {
 		if (level == null) {
 			level = 0;
 		}
-		String query = "select distinct address_hierarchy_entry_id, name from address_hierarchy_entry where level_id=" + level;
+		String query = "select distinct address_hierarchy_entry_id, name from address_hierarchy_entry where level_id="
+		        + level;
 		List<List<Object>> results = Context.getAdministrationService().executeSQL(query, true);
 		List<BaseLocation> locations = new ArrayList<BaseLocation>();
 		for (List<Object> list : results) {
-			Integer id = (Integer)(list.get(0));
+			Integer id = (Integer) (list.get(0));
 			String name = String.valueOf(list.get(1));
 			BaseLocation baseLocation = new BaseLocation(id, name, level);
 			baseLocation.setLevelId(level);
@@ -327,15 +383,16 @@ public class HibernateMdrtbDAO implements MdrtbDAO {
 		}
 		return locations;
 	}
-
+	
 	public List<BaseLocation> getAddressHierarchyLocationsByParent(BaseLocation parent) {
-		String query = "select distinct address_hierarchy_entry_id, name, level_id from address_hierarchy_entry where parent_id=" + parent.getId();
+		String query = "select distinct address_hierarchy_entry_id, name, level_id from address_hierarchy_entry where parent_id="
+		        + parent.getId();
 		List<List<Object>> results = Context.getAdministrationService().executeSQL(query, true);
 		List<BaseLocation> locations = new ArrayList<BaseLocation>();
 		for (List<Object> list : results) {
-			Integer id = (Integer)(list.get(0));
+			Integer id = (Integer) (list.get(0));
 			String name = String.valueOf(list.get(1));
-			Integer levelId = (Integer)(list.get(2));
+			Integer levelId = (Integer) (list.get(2));
 			BaseLocation baseLocation = new BaseLocation(id, name, levelId);
 			baseLocation.setLevelId(levelId);
 			locations.add(baseLocation);

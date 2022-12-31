@@ -20,6 +20,7 @@ import org.openmrs.module.mdrtb.reporting.data.Cohorts;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.evaluator.InProgramCohortDefinitionEvaluator;
+import org.openmrs.module.reporting.cohort.query.service.CohortQueryService;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -45,7 +46,7 @@ public class DrugForecastController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/drugforecast/simpleUsage")
 	public void showSimpleForecastOptions(ModelMap model) {
-		Cohort cohort = Context.getPatientSetService().getAllPatients();
+		Cohort cohort = Context.getService(CohortQueryService.class).getPatientsWithGender(true, true, true);
 		cohort.setDescription("All patients in system");
 		List<Concept> drugSets = new ArrayList<Concept>();
 		MdrtbService ms = (MdrtbService) Context.getService(MdrtbService.class);
@@ -102,7 +103,8 @@ public class DrugForecastController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/drugforecast/patientsTakingDrugs")
 	public void showCountPatientsOnDrugsOptions(ModelMap model) {
-		Cohort cohort = Context.getPatientSetService().getAllPatients();
+		
+		Cohort cohort = Context.getService(CohortQueryService.class).getPatientsWithGender(true, true, true);
 		cohort.setDescription("All patients in system");
 		List<Concept> drugSets = new ArrayList<Concept>();
 		{
@@ -145,8 +147,8 @@ public class DrugForecastController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/drugforecast/patientsOnSLD")
 	public String doPatientsOnSLD(
-	        
-	        @RequestParam(value = "startDate", required = false) Date startDate,
+	
+	@RequestParam(value = "startDate", required = false) Date startDate,
 	        @RequestParam(value = "endDate", required = false) Date endDate,
 	        @RequestParam(value = "location", required = false) Location location, ModelMap model) {
 		
@@ -177,8 +179,8 @@ public class DrugForecastController {
 		InProgramCohortDefinitionEvaluator ipcde = new InProgramCohortDefinitionEvaluator();
 		ret = ipcde.evaluate(locationFilter, context);
 		
-		ArrayList<PatientSLDMap> patientsOnSLD = DrugForecastUtil.getPatientsTakingDrugs(ret,
-		    Context.getConceptService().getConcept(MdrtbConcepts.SECOND_LINE_DRUGS), startDate, endDate);
+		ArrayList<PatientSLDMap> patientsOnSLD = DrugForecastUtil.getPatientsTakingDrugs(ret, Context.getConceptService()
+		        .getConcept(MdrtbConcepts.SECOND_LINE_DRUGS), startDate, endDate);
 		model.put("cohort", ret);
 		model.put("patientSet", patientsOnSLD);
 		return "/module/mdrtb/drugforecast/patientsOnSLDResults";

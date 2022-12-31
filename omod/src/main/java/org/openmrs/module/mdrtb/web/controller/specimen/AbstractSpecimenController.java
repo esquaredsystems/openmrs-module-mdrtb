@@ -86,8 +86,7 @@ public abstract class AbstractSpecimenController {
 	}
 	
 	@ModelAttribute("patientProgramId")
-	public Integer getPatientProgramId(
-	        @RequestParam(required = false, value = "patientProgramId") Integer patientProgramId) {
+	public Integer getPatientProgramId(@RequestParam(required = false, value = "patientProgramId") Integer patientProgramId) {
 		
 		if (patientProgramId != null) {
 			return patientProgramId;

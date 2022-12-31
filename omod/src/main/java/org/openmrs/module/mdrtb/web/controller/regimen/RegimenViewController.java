@@ -57,8 +57,8 @@ public class RegimenViewController {
 		// add the patientId
 		map.put("patientId", program.getPatient().getId());
 		
-		ArrayList<RegimenForm> forms = Context.getService(MdrtbService.class).getRegimenFormsForProgram(program.getPatient(),
-		    program.getId());
+		ArrayList<RegimenForm> forms = Context.getService(MdrtbService.class).getRegimenFormsForProgram(
+		    program.getPatient(), program.getId());
 		
 		map.put("forms", forms);
 		

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>mdrtb</artifactId>
-		<version>3.2.1</version>
+		<version>4.0.1</version>
 	</parent>
 	<artifactId>mdrtb-omod</artifactId>
 	<packaging>jar</packaging>
@@ -18,7 +18,7 @@
 		<MODULE_VERSION>${project.parent.version}</MODULE_VERSION>
 		<MODULE_PACKAGE>${project.parent.groupId}.${project.parent.artifactId}</MODULE_PACKAGE>
 		<modulePath>C:/Users/owais/AppData/Roaming/OpenMRS/modules</modulePath>
-		<deployPath>C:/apache-tomcat-6/webapps/openmrs</deployPath>
+		<deployPath>C:/apache-tomcat-8/webapps/openmrs</deployPath>
 	</properties>
 
 	<dependencies>
@@ -59,11 +59,11 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>htmlwidgets</artifactId>
-			<version>${htmlwidgets.version}</version>
+			<version>${openmrs.htmlwidgets.version}</version>
 		</dependency>
 		<dependency>
             <groupId>org.openmrs.module</groupId>
-            <artifactId>reporting</artifactId>
+            <artifactId>reporting-api</artifactId>
             <version>${openmrs.reporting.version}</version>
         </dependency>
 		<dependency>
@@ -71,11 +71,6 @@
 			<artifactId>poi</artifactId>
 			<version>${poi.version}</version>
 		</dependency>
-	        <dependency>
-        	<groupId>joda-time</groupId>
-        	<artifactId>joda-time</artifactId>
-        	<version>${jodatime.version}</version>
-        </dependency>
         <dependency>
         	<groupId>com.itextpdf.tool</groupId>
         	<artifactId>xmlworker</artifactId>
@@ -85,45 +80,12 @@
 	</dependencies>
 
 	<build>
-		<finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/*.xml</include>
-					<include>**/*.txt</include>
-				</includes>
-			</testResource>
-			<testResource>
-				<directory>src/test/resources</directory>
-				<filtering>false</filtering>
-				<excludes>
-					<exclude>**/*.xml</exclude>
-					<exclude>**/*.txt</exclude>
-				</excludes>
-			</testResource>
-		</testResources>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-resources-plugin</artifactId>
-					<configuration>
-						<includeEmptyDirs>true</includeEmptyDirs>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-		<plugins>
-			<plugin>
-				<groupId>org.openmrs.maven.plugins</groupId>
-				<artifactId>maven-openmrs-plugin</artifactId>
+        <finalName>${project.parent.artifactId}-${project.parent.version}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.openmrs.maven.plugins</groupId>
+                <artifactId>maven-openmrs-plugin</artifactId>
 				<extensions>true</extensions>
 				<executions>
 					<execution>
@@ -141,10 +103,16 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-
-			<!-- manually configure tests so we exclude TestReportRenderer and the 
-				tests that require an in-memory database -->
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.6</version>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -159,36 +127,9 @@
 					</excludes>
 				</configuration>
 			</plugin>
-
-			<!-- Deploy to modules directory -->
-<!-- 			<plugin> -->
-<!-- 				<artifactId>maven-resources-plugin</artifactId> -->
-<!-- 				<version>3.1.0</version> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>copy-omod</id> -->
-<!-- 						<phase>install</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>copy-resources</goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<resources> -->
-<!-- 								<resource> -->
-<!-- 									<directory>/target</directory> -->
-<!-- 									<includes> -->
-<!-- 										<include>*.omod</include> -->
-<!-- 									</includes> -->
-<!-- 								</resource> -->
-<!-- 							</resources> -->
-<!-- 							<outputDirectory>${modulePath}</outputDirectory> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
-		</plugins>
-
-	</build>
-
+        </plugins>
+    </build>
+    
 	<!-- profile for deploying to the server -->
 	<profiles>
 		<profile>

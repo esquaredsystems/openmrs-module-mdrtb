@@ -74,8 +74,7 @@ public class DQItem {
 		}
 		if (patient.getGender().equals("M")) {
 			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.male");
-		}
-		else if (patient.getGender().equals("F")) {
+		} else if (patient.getGender().equals("F")) {
 			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.female");
 		}
 		return null;

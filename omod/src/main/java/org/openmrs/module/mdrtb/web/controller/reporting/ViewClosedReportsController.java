@@ -106,7 +106,8 @@ public class ViewClosedReportsController {
 		model.addAttribute("reportType", reportType);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST) //, value="/module/mdrtb/reporting/viewClosedReports")
+	@RequestMapping(method = RequestMethod.POST)
+	//, value="/module/mdrtb/reporting/viewClosedReports")
 	public ModelAndView viewClosedReportsPost(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("district") Integer districtId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,

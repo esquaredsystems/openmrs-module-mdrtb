@@ -13,8 +13,8 @@ public class MdrtbPatientHeaderPortletController extends PortletController {
 	
 	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
 		Patient patient = Context.getPatientService().getPatient((Integer) model.get("patientId"));
-		PatientIdentifier identifier = patient.getPatientIdentifier(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.primaryPatientIdentifierType"));
+		PatientIdentifier identifier = patient.getPatientIdentifier(Context.getAdministrationService().getGlobalProperty(
+		    "mdrtb.primaryPatientIdentifierType"));
 		
 		model.put("primaryIdentifier", identifier);
 	}

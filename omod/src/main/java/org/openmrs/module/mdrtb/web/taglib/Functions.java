@@ -105,7 +105,7 @@ public class Functions {
 	 * @return the comparison result between the two passed objects
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static <T extends Comparable>int compare(T c1, T c2) {
+	public static <T extends Comparable> int compare(T c1, T c2) {
 		return c1.compareTo(c2);
 	}
 	
@@ -144,7 +144,7 @@ public class Functions {
 			return null;
 		}
 		try {
-			return new SimpleDateFormat(format,Context.getLocale()).parse(s.toString());
+			return new SimpleDateFormat(format, Context.getLocale()).parse(s.toString());
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
@@ -162,9 +162,9 @@ public class Functions {
 	 * @return the matching drug (may be a reference to drug by id or name)
 	 */
 	public static Drug getDrug(String lookup) {
-		return Context.getConceptService().getDrugByNameOrId(lookup);
+		return Context.getConceptService().getDrug(lookup);
 	}
- 	
+	
 	/**
 	 * @return a List of Drugs who are in the set matching the passed conceptSet
 	 */

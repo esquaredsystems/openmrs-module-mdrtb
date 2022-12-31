@@ -19,8 +19,8 @@ public class DashboardTreatmentStatusRenderer implements TreatmentStatusRenderer
 		
 		String regimenStr = RegimenUtils.formatRegimenGenerics(regimen, " + ", "mdrtb.none");
 		String startDateStr = df.format(regimen.getStartDate());
-		String endDateStr = (regimen.getEndDate() != null ? df.format(regimen.getEndDate())
-		        : MessageUtil.translate("mdrtb.present"));
+		String endDateStr = (regimen.getEndDate() != null ? df.format(regimen.getEndDate()) : MessageUtil
+		        .translate("mdrtb.present"));
 		String typeStr = RegimenUtils.formatCodedObs(regimen.getReasonForStarting(), "");
 		
 		StringBuilder sb = new StringBuilder();

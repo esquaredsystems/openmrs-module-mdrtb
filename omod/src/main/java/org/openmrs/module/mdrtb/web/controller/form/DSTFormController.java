@@ -89,8 +89,8 @@ public class DSTFormController {
 			}
 			
 			else {
-				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class)
-				        .getMdrtbPatientProgram(patientProgramId);
+				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(
+				    patientProgramId);
 				
 				form = new DSTForm(mdrtbProgram.getPatient());
 				
@@ -187,16 +187,14 @@ public class DSTFormController {
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
 			if (!mdr) {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/tbdashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getTbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			}
 			
 			else {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getMdrtbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			}
 		}
 		

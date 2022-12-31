@@ -13,6 +13,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.form.custom.RegimenForm;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+@SuppressWarnings("unused")
 @Controller
 public class TB07uController {
 	
@@ -134,7 +136,7 @@ public class TB07uController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/reporting/tb07u")
-	public static String doTB08(@RequestParam("district") Integer districtId, @RequestParam("facility") Integer facilityId,
+	public static String doTB07u(@RequestParam("district") Integer districtId, @RequestParam("facility") Integer facilityId,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
@@ -148,8 +150,8 @@ public class TB07uController {
 		ArrayList<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter,
 		    month);
 		
-		ArrayList<RegimenForm> regList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year, quarter,
-		    month);
+		ArrayList<RegimenForm> regList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year,
+		    quarter, month);
 		if (regList != null) {
 			System.out.println("REG LIST: " + regList.size());
 		} else {
@@ -230,7 +232,7 @@ public class TB07uController {
 			rf = null;
 			
 			Patient patient = tf.getPatient();
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			
@@ -255,25 +257,25 @@ public class TB07uController {
 			
 			int groupId = q.getConceptId().intValue();
 			
-			if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.new.conceptId"))) {
+			if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
 				newCase = Boolean.TRUE;
-			} else if (groupId == Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterRelapse1.conceptId"))) {
+			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+					MdrtbConstants.AFTER_RELAPSE1_CONCEPT_ID_GP))) {
 				relapse1 = Boolean.TRUE;
-			} else if (groupId == Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterRelapse2.conceptId"))) {
+			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+					MdrtbConstants.AFTER_RELAPSE1_CONCEPT_ID_GP))) {
 				relapse2 = Boolean.TRUE;
-			} else if (groupId == Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterDefault1.conceptId"))) {
+			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+					MdrtbConstants.AFTER_DEFAULT1_CONCEPT_ID_GP))) {
 				default1 = Boolean.TRUE;
-			} else if (groupId == Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterDefault2.conceptId"))) {
+			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+					MdrtbConstants.AFTER_DEFAULT1_CONCEPT_ID_GP))) {
 				default2 = Boolean.TRUE;
-			} else if (groupId == Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterFailure1.conceptId"))) {
+			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+					MdrtbConstants.AFTER_FAILURE1_CONCEPT_ID_GP))) {
 				failure1 = Boolean.TRUE;
-			} else if (groupId == Integer
-			        .parseInt(Context.getAdministrationService().getGlobalProperty("mdrtb.afterFailure2.conceptId"))) {
+			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+					MdrtbConstants.AFTER_FAILURE1_CONCEPT_ID_GP))) {
 				failure2 = Boolean.TRUE;
 			} else {
 				other = Boolean.TRUE;
@@ -1406,9 +1408,8 @@ public class TB07uController {
 					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId().intValue(), regList, locList, year,
 					    quarter, month);
 				}
-				
 				else {
-					System.out.println("REG LIST NULL: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("REG LIST NULL: " + tf.getPatient().getPatientId());
 				}
 				
 				if (rf != null) {
@@ -1421,14 +1422,13 @@ public class TB07uController {
 						else if (regimen.getConceptId().intValue() == indBdq) {
 							isIndBdq = Boolean.TRUE;
 						}
-						
 						else {
-							System.out.println("REG NOT COUNTED: " + tf.getPatient().getPatientId().intValue());
+							System.out.println("REG NOT COUNTED: " + tf.getPatient().getPatientId());
 						}
 					}
 					
 					else {
-						System.out.println("REG NULL: " + tf.getPatient().getPatientId().intValue());
+						System.out.println("REG NULL: " + tf.getPatient().getPatientId());
 					}
 				}
 				

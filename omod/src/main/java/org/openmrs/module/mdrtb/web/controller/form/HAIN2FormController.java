@@ -93,8 +93,8 @@ public class HAIN2FormController {
 			}
 			
 			else {
-				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class)
-				        .getMdrtbPatientProgram(patientProgramId);
+				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(
+				    patientProgramId);
 				
 				form = new HAIN2Form(mdrtbProgram.getPatient());
 				
@@ -235,16 +235,14 @@ public class HAIN2FormController {
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
 			if (!mdr) {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/tbdashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getTbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			}
 			
 			else {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getMdrtbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			}
 		}
 		

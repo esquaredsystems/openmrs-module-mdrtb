@@ -27,20 +27,21 @@ import org.openmrs.Program;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO;
-import org.openmrs.web.test.BaseModuleWebContextSensitiveTest;
+import org.openmrs.test.BaseModuleContextSensitiveTest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author owais.hussain@esquaredsystems.com
  */
-public class MdrtbBase extends BaseModuleWebContextSensitiveTest {
+public class MdrtbTestBase extends BaseModuleContextSensitiveTest {
 	
-	protected static final String[] DATASETS = { "MdrtbTestService-initialData.xml", "concept.xml", "concept_answer.xml",
-	        "concept_class.xml", "concept_datatype.xml", "concept_description.xml", "concept_map_type.xml",
-	        "concept_name_tag_map.xml", "concept_name_tag.xml", "concept_name.xml", "concept_numeric.xml",
-	        "concept_reference_map.xml", "concept_reference_source.xml", "concept_reference_term.xml", "concept_set.xml",
-	        "concept_stop_word.xml", "address_hierarchy.xml" };
-
+	protected static final String[] DATASETS = { "global_property.xml", "concept_class.xml", "concept_datatype.xml",
+	        "concept.xml", "concept_name.xml", "concept_description.xml", "concept_answer.xml", "concept_map_type.xml",
+	        "concept_reference_source.xml", "concept_reference_term.xml", "concept_reference_map.xml", "concept_set.xml",
+	        "concept_stop_word.xml", "location.xml",
+	        // "concept_name_tag.xml", "concept_name_tag_map.xml", 
+	        "program_workflow.xml", "program_workflow_state.xml", "MdrtbTestService-initialData.xml" };
+	
 	protected Provider owais;
 	
 	protected Patient harry, hermione;
@@ -78,7 +79,7 @@ public class MdrtbBase extends BaseModuleWebContextSensitiveTest {
 	protected PatientProgram hermioneDotsProgram;
 	
 	protected Encounter harrySpecimenEncounter;
-
+	
 	@Autowired
 	protected HibernateMdrtbDAO dao;
 	
@@ -92,8 +93,8 @@ public class MdrtbBase extends BaseModuleWebContextSensitiveTest {
 		String query = "CREATE TABLE IF NOT EXISTS address_hierarchy_level (address_hierarchy_level_id int(11) NOT NULL AUTO_INCREMENT, name varchar(160), parent_level_id int(11), address_field varchar(50), uuid char(38) NOT NULL, required tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY (address_hierarchy_level_id));";
 		dao.getSessionFactory().getCurrentSession().createSQLQuery(query).executeUpdate();
 		query = "CREATE TABLE IF NOT EXISTS address_hierarchy_entry ( address_hierarchy_entry_id int(11) NOT NULL AUTO_INCREMENT, name varchar(160) , level_id int(11) NOT NULL, parent_id int(11) , user_generated_id varchar(11) , latitude double , longitude double , elevation double , uuid char(38) NOT NULL, PRIMARY KEY (address_hierarchy_entry_id));";
-		dao.getSessionFactory().getCurrentSession().createSQLQuery(query).executeUpdate();		
-
+		dao.getSessionFactory().getCurrentSession().createSQLQuery(query).executeUpdate();
+		
 		initializeInMemoryDatabase();
 		
 		for (String dataFile : DATASETS) {

@@ -21,6 +21,10 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Patient;
@@ -33,8 +37,8 @@ import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.regimen.Regimen;
 import org.openmrs.module.mdrtb.regimen.RegimenHistory;
 import org.openmrs.module.mdrtb.regimen.RegimenUtils;
+import org.openmrs.module.mdrtb.reporting.RegimenReportRow;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
-import org.openmrs.module.mdrtb.reporting.regimen.RegimenReportRow;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
@@ -47,23 +51,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-/*import org.openmrs.module.mdrtbdrugforecast.DrugCount;
-import org.openmrs.module.mdrtbdrugforecast.MdrtbDrugStock;
-import org.openmrs.module.mdrtbdrugforecast.MdrtbUtil;
-import org.openmrs.module.mdrtbdrugforecast.MdrtbConcepts;
-import org.openmrs.module.mdrtbdrugforecast.drugneeds.DrugForecastUtil;
-import org.openmrs.module.mdrtbdrugforecast.program.MdrtbPatientProgram;
-import org.openmrs.module.mdrtbdrugforecast.regimen.Regimen;
-import org.openmrs.module.mdrtbdrugforecast.regimen.RegimenUtils;
-import org.openmrs.module.mdrtbdrugforecast.reporting.definition.MdrtbDrugForecastTreatmentStartedCohortDefinition;
-import org.openmrs.module.mdrtbdrugforecast.reporting.definition.MdrtbDrugForecastTreatmentStartedOnDrugCohortDefinition;
-import org.openmrs.module.mdrtbdrugforecast.service.MdrtbDrugForecastService;
-import org.openmrs.module.mdrtbdrugforecast.status.TreatmentStatusCalculator;
-import org.openmrs.module.mdrtbdrugforecast.web.controller.status.DashboardTreatmentStatusRenderer;*/
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-
 public class RegimenController {
 	
 	@InitBinder
@@ -157,8 +147,8 @@ public class RegimenController {
 		
 		ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId, districtId,
 		    facilityId);
-		ArrayList<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
-		        .getTB03uFormsFilledWithTxStartDateDuring(locList, year, quarter, month);
+		ArrayList<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilledWithTxStartDateDuring(
+		    locList, year, quarter, month);
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
@@ -271,51 +261,51 @@ public class RegimenController {
 		// create 3 cell styles
 		HSSFCellStyle headerStyle = wb.createCellStyle();
 		//headerStyle.setFillForegroundColor(getColorIndex("79,129,89", wb));
-		headerStyle.setFillForegroundColor(HSSFColor.BLUE.index);
-		headerStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		headerStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		headerStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
-		headerStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		headerStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		headerStyle.setTopBorderColor(HSSFColor.WHITE.index);
-		headerStyle.setBottomBorderColor(HSSFColor.WHITE.index);
-		headerStyle.setRightBorderColor(HSSFColor.WHITE.index);
-		headerStyle.setLeftBorderColor(HSSFColor.WHITE.index);
+		headerStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.BLUE.getIndex());
+		headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		headerStyle.setAlignment(HorizontalAlignment.CENTER);
+		headerStyle.setVerticalAlignment(VerticalAlignment.CENTER);
+		headerStyle.setBorderBottom(BorderStyle.THIN);
+		headerStyle.setBorderTop(BorderStyle.THIN);
+		headerStyle.setBorderRight(BorderStyle.THIN);
+		headerStyle.setBorderLeft(BorderStyle.THIN);
+		headerStyle.setTopBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		headerStyle.setBottomBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		headerStyle.setRightBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		headerStyle.setLeftBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
 		
 		HSSFFont headerFont = wb.createFont();
-		headerFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		headerFont.setBold(true);
 		headerStyle.setFont(headerFont);
 		headerStyle.setWrapText(true);
 		
 		HSSFCellStyle oddStyle = wb.createCellStyle();
 		//oddStyle.setFillForegroundColor(getColorIndex("184,204,228", wb));
-		oddStyle.setFillForegroundColor(HSSFColor.BLUE_GREY.index);
-		oddStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		oddStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		oddStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		oddStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		oddStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		oddStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		oddStyle.setTopBorderColor(HSSFColor.WHITE.index);
-		oddStyle.setBottomBorderColor(HSSFColor.WHITE.index);
-		oddStyle.setRightBorderColor(HSSFColor.WHITE.index);
-		oddStyle.setLeftBorderColor(HSSFColor.WHITE.index);
+		oddStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.BLUE_GREY.getIndex());
+		oddStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		oddStyle.setAlignment(HorizontalAlignment.CENTER);
+		oddStyle.setBorderBottom(BorderStyle.THIN);
+		oddStyle.setBorderTop(BorderStyle.THIN);
+		oddStyle.setBorderRight(BorderStyle.THIN);
+		oddStyle.setBorderLeft(BorderStyle.THIN);
+		oddStyle.setTopBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		oddStyle.setBottomBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		oddStyle.setRightBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		oddStyle.setLeftBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
 		
 		HSSFCellStyle evenStyle = wb.createCellStyle();
 		//evenStyle.setFillForegroundColor(getColorIndex("220,230,241", wb));
-		evenStyle.setFillForegroundColor(HSSFColor.PALE_BLUE.index);
-		evenStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		evenStyle.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		evenStyle.setBorderBottom(HSSFCellStyle.BORDER_THIN);
-		evenStyle.setBorderTop(HSSFCellStyle.BORDER_THIN);
-		evenStyle.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		evenStyle.setBorderLeft(HSSFCellStyle.BORDER_THIN);
-		evenStyle.setTopBorderColor(HSSFColor.WHITE.index);
-		evenStyle.setBottomBorderColor(HSSFColor.WHITE.index);
-		evenStyle.setRightBorderColor(HSSFColor.WHITE.index);
-		evenStyle.setLeftBorderColor(HSSFColor.WHITE.index);
+		evenStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.PALE_BLUE.getIndex());
+		evenStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		evenStyle.setAlignment(HorizontalAlignment.CENTER);
+		evenStyle.setBorderBottom(BorderStyle.THIN);
+		evenStyle.setBorderTop(BorderStyle.THIN);
+		evenStyle.setBorderRight(BorderStyle.THIN);
+		evenStyle.setBorderLeft(BorderStyle.THIN);
+		evenStyle.setTopBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		evenStyle.setBottomBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		evenStyle.setRightBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
+		evenStyle.setLeftBorderColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
 		
 		HSSFRow headerRow = s.createRow(0);
 		headerRow.setHeight((short) 0x300);
@@ -550,9 +540,9 @@ public class RegimenController {
 			
 		}
 		HSSFPalette palette = wb.getCustomPalette();
-		palette.setColorAtIndex(HSSFColor.BLUE.index, (byte) 79, (byte) 129, (byte) 189);
-		palette.setColorAtIndex(HSSFColor.PALE_BLUE.index, (byte) 220, (byte) 230, (byte) 241);
-		palette.setColorAtIndex(HSSFColor.BLUE_GREY.index, (byte) 184, (byte) 204, (byte) 228);
+		palette.setColorAtIndex(HSSFColor.HSSFColorPredefined.BLUE.getIndex(), (byte) 79, (byte) 129, (byte) 189);
+		palette.setColorAtIndex(HSSFColor.HSSFColorPredefined.PALE_BLUE.getIndex(), (byte) 220, (byte) 230, (byte) 241);
+		palette.setColorAtIndex(HSSFColor.HSSFColorPredefined.BLUE_GREY.getIndex(), (byte) 184, (byte) 204, (byte) 228);
 		
 		// write the workbook to the output stream
 		// close our file (don't blow out our file handles
@@ -563,6 +553,9 @@ public class RegimenController {
 		catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		}
+		finally {
+			wb.close();
 		}
 		
 		File file = new File(System.getProperty("user.home") + File.separator + "regimenReport.xls");
@@ -606,7 +599,7 @@ public class RegimenController {
 		if (color != null) {
 			index = color.getIndex();
 		} else {
-			index = HSSFColor.WHITE.index;
+			index = HSSFColor.HSSFColorPredefined.WHITE.getIndex();
 		}
 		return index;
 	}

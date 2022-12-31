@@ -14,7 +14,7 @@ import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.Region;
-import org.openmrs.module.mdrtb.form.custom.AEForm;
+import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.form.custom.RegimenForm;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.reporting.pv.PVDataTable1;
@@ -35,8 +35,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+@SuppressWarnings("unused")
 @Controller
-
 public class AEReportController {
 	
 	@InitBinder
@@ -147,8 +147,8 @@ public class AEReportController {
 		ArrayList<Location> locList = null;
 		if (oblastId != null) {
 			if (oblastId.intValue() == 186) {
-				locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId,
-				    facilityId);
+				locList = Context.getService(MdrtbService.class)
+				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
 			} else {
 				locList = Context.getService(MdrtbService.class).getLocationList(oblastId, districtId, facilityId);
 			}
@@ -329,16 +329,16 @@ public class AEReportController {
 		// 	Integer specialInterestTypeId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIAL_INTEREST_EVENT_TYPE).getId();
 		
 		Integer deathId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED).getId();
-		Integer hospitilizationId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOSPITALIZATION_WORKFLOW)
-		        .getId();
+		Integer hospitilizationId = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.HOSPITALIZATION_WORKFLOW).getId();
 		Integer disabilityId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DISABILITY).getId();
-		Integer congenitalAbnormalityId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONGENITAL_ANOMALY)
-		        .getId();
+		Integer congenitalAbnormalityId = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.CONGENITAL_ANOMALY).getId();
 		Integer lifeThreateningExperienceId = Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.LIFE_THREATENING_EXPERIENCE).getId();
 		
-		Integer psychiatricDisorderId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PSYCHIATRIC_DISORDER)
-		        .getId();
+		Integer psychiatricDisorderId = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.PSYCHIATRIC_DISORDER).getId();
 		Integer myelosuppressionId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MYELOSUPPRESSION)
 		        .getId();
 		Integer lacticAcidosisId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LACTIC_ACIDOSIS).getId();
@@ -369,7 +369,7 @@ public class AEReportController {
 		Integer zId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PYRAZINAMIDE).getId();
 		Integer eId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ETHAMBUTOL).getId();
 		
-		ArrayList<AEForm> aeForms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter, month);
+		ArrayList<AdverseEventsForm> aeForms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter, month);
 		System.out.println("SZ:" + aeForms.size());
 		
 		boolean isStandard = false;
@@ -394,7 +394,7 @@ public class AEReportController {
 		boolean isSuspZ = false;
 		boolean isSuspE = false;
 		
-		for (AEForm ae : aeForms) {
+		for (AdverseEventsForm ae : aeForms) {
 			
 			isStandard = false;
 			isShort = false;
@@ -1859,7 +1859,7 @@ public class AEReportController {
 		
 		//TABLE 4 loop
 		
-		for (AEForm ae : aeForms) {
+		for (AdverseEventsForm ae : aeForms) {
 			
 			// TABLE 4
 			//Concept q = ae.getActionTaken();
@@ -1870,8 +1870,9 @@ public class AEReportController {
 				
 				id = q.getId();
 				System.out.println("ID1: " + id);
-				if (id != null && id.intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES)
-				        .getId().intValue()) {
+				if (id != null
+				        && id.intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES).getId()
+				                .intValue()) {
 					
 					q = ae.getAdverseEvent();
 					

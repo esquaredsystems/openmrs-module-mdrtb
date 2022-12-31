@@ -24,6 +24,8 @@ import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.annotation.Handler;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.MdrtbConstants;
+import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.reporting.cohort.EvaluatedCohort;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.evaluator.CohortDefinitionEvaluator;
@@ -32,40 +34,40 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
 /**
  * Evaluates an DstResultCohortDefinition and produces a Cohort
  */
-@Handler(supports={TB03UCohortDefinition.class})
+@Handler(supports = { TB03UCohortDefinition.class })
 public class TB03UCohortDefinitionEvaluator implements CohortDefinitionEvaluator {
-
+	
 	/**
 	 * Default Constructor
 	 */
-	public TB03UCohortDefinitionEvaluator() {}
+	public TB03UCohortDefinitionEvaluator() {
+	}
 	
 	/**
-     * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition, EvaluationContext)
-     *
-     */
-    public EvaluatedCohort evaluate(CohortDefinition cohortDefinition, EvaluationContext context) {
-    	
-    	TB03UCohortDefinition tcd = (TB03UCohortDefinition) cohortDefinition;
-    	Cohort c = new Cohort();
-    	
-    	EncounterType encType = Context.getEncounterService().getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
-    	ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
+	 * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition, EvaluationContext)
+	 */
+	public EvaluatedCohort evaluate(CohortDefinition cohortDefinition, EvaluationContext context) {
+		
+		TB03UCohortDefinition tcd = (TB03UCohortDefinition) cohortDefinition;
+		Cohort c = new Cohort();
+		
+		EncounterType encType = MdrtbConstants.TB03_INTAKE_ENCOUNTER_TYPE;
+		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(encType);
-    	
+		
 		Date startDate = tcd.getOnOrAfter();
-		Date tcdEnd  = tcd.getOnOrBefore();
+		Date tcdEnd = tcd.getOnOrBefore();
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTimeInMillis(tcdEnd.getTime());
 		gc.add(Calendar.DATE, 1);
 		Date endDate = gc.getTime();
-    	List<Encounter> tb03EncList = Context.getEncounterService().getEncounters(null, tcd.getLocation(), startDate, endDate, null, typeList, null, false);
-    	System.out.println("Finding patients for Location:  " +  tcd.getLocation());
-    	for(int i=0;i<tb03EncList.size(); i++) {
-    		if(!Context.getPatientService().getPatient(tb03EncList.get(i).getPatientId()).isVoided())
-    			c.addMember(tb03EncList.get(i).getPatientId());	
-    	}
-    	System.out.println("Found " + c.getSize() + " patients for Location:  " +  tcd.getLocation());
-    	return new EvaluatedCohort(c, cohortDefinition, context);
-    }
+		List<Encounter> tb03EncList = Context.getService(MdrtbService.class).getEncounters(null, tcd.getLocation(),
+		    startDate, endDate, typeList);
+		System.out.println("Finding patients for Location:  " + tcd.getLocation());
+		for (int i = 0; i < tb03EncList.size(); i++) {
+			if (!Context.getPatientService().getPatient(tb03EncList.get(i).getPatient().getPatientId()).getVoided())
+				c.addMember(tb03EncList.get(i).getPatient().getPatientId());
+		}
+		return new EvaluatedCohort(c, cohortDefinition, context);
+	}
 }

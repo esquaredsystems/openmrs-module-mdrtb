@@ -26,26 +26,24 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
  */
 @Handler(supports = { SLDRegimenTypeCohortDefinition.class })
 public class SLDRegimenTypeCohortDefinitionEvaluator implements CohortDefinitionEvaluator {
-
+	
 	/**
 	 * Default Constructor
 	 */
 	public SLDRegimenTypeCohortDefinitionEvaluator() {
 	}
-
+	
 	/**
-	 * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition,
-	 *      EvaluationContext)
-	 *
+	 * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition, EvaluationContext)
 	 */
 	public EvaluatedCohort evaluate(CohortDefinition cohortDefinition, EvaluationContext context) {
-
+		
 		SLDRegimenTypeCohortDefinition cd = (SLDRegimenTypeCohortDefinition) cohortDefinition;
 		// Cohort c = null;
-
+		
 		Cohort c = MdrtbQueryService.getPatientsWithSLDRegimenType(context, cd.getStartDate(), cd.getEndDate(),
-				cd.getRegType());
-
-    	return new EvaluatedCohort(c, cohortDefinition, context);
+		    cd.getRegType());
+		
+		return new EvaluatedCohort(c, cohortDefinition, context);
 	}
 }

@@ -1,8 +1,9 @@
 package org.openmrs.module.mdrtb;
 
 import java.lang.reflect.Method;
-import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -18,16 +20,22 @@ import org.apache.commons.logging.LogFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.openmrs.Cohort;
+import org.openmrs.CohortMembership;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.ConceptNameTag;
+import org.openmrs.Drug;
+import org.openmrs.DrugOrder;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterProvider;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.OrderFrequency;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientIdentifierType;
+import org.openmrs.Person;
 import org.openmrs.PersonAddress;
 import org.openmrs.Program;
 import org.openmrs.ProgramWorkflowState;
@@ -55,10 +63,13 @@ import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.InStateCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.ProgramEnrollmentCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.service.CohortDefinitionService;
+import org.openmrs.module.reporting.cohort.query.service.CohortQueryService;
+import org.openmrs.module.reporting.common.ObjectUtil;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.springframework.validation.Errors;
 
+//TODO: Should extend TbUtil
 public class MdrtbUtil {
 	
 	protected static final Log log = LogFactory.getLog(MdrtbUtil.class);
@@ -89,16 +100,16 @@ public class MdrtbUtil {
 	}
 	
 	/**
-	 * Iterates through all the obs in the test obs group and returns the first one that who concept
-	 * matches the specified concept Returns null if obs not found
+	 * Iterates through all the obs in the test obs group and returns the first one that the concept
+	 * matches the specified concept
 	 * 
-	 * @param group TODO
+	 * @param group Returns null if obs not found
 	 */
 	public static Obs getObsFromObsGroup(Concept concept, Obs group) {
 		if (group.getGroupMembers() != null) {
 			for (Obs obs : group.getGroupMembers()) {
 				// need to check for voided obs here because getGroupMembers returns voided obs
-				if (!obs.isVoided() && obs.getConcept().equals(concept)) {
+				if (!obs.getVoided() && obs.getConcept().equals(concept)) {
 					return obs;
 				}
 			}
@@ -113,7 +124,7 @@ public class MdrtbUtil {
 	public static Obs getObsFromEncounter(Concept concept, Encounter encounter) {
 		if (encounter.getObsAtTopLevel(false) != null) {
 			for (Obs obs : encounter.getObsAtTopLevel(false)) {
-				if (!obs.isVoided() && obs.getConcept().equals(concept)) {
+				if (!obs.getVoided() && obs.getConcept().equals(concept)) {
 					return obs;
 				}
 			}
@@ -139,14 +150,13 @@ public class MdrtbUtil {
 	public static Set<EncounterType> getMdrtbEncounterTypes() {
 		
 		Set<EncounterType> types = new HashSet<EncounterType>();
-		types.add(Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type")));
+		types.add(Context.getEncounterService().getEncounterType(
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type")));
 		types.add(Context.getEncounterService().getEncounterType(
 		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
+		types.add(MdrtbConstants.TRANSFER_OUT_ENCOUNTER_TYPE);
 		types.add(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_out_encounter_type")));
-		types.add(Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_in_encounter_type")));
+		    Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_in_encounter_type")));
 		// TODO: Refactor
 		types.add(Context.getEncounterService().getEncounterType("TB03u - XDR"));
 		types.add(Context.getEncounterService().getEncounterType("Resistance During Treatment"));
@@ -285,18 +295,6 @@ public class MdrtbUtil {
 	}
 	
 	/**
-	 * Gets a specific ProgramWorkflowState, given the concept associated with the state
-	 */
-	public static ProgramWorkflowState getProgramWorkflowState(Concept programWorkflowStateConcept) {
-		for (ProgramWorkflowState state : Context.getProgramWorkflowService().getStates()) {
-			if (state.getConcept().equals(programWorkflowStateConcept)) {
-				return state;
-			}
-		}
-		return null;
-	}
-	
-	/**
 	 * Auto-assign a patient identifier for a specific identifier type, if required, if the idgen
 	 * module is installed, using reflection Auto generated method comment
 	 */
@@ -320,7 +318,7 @@ public class MdrtbUtil {
 		
 		return null;
 	}
-
+	
 	/**
 	 * Given a concept, locale, and a string that represents a concept name tag, returns the first
 	 * concept name for that concept that matches the language and is tagged with the specified tag
@@ -331,21 +329,18 @@ public class MdrtbUtil {
 			log.error("No concept provided to findConceptName");
 			return null;
 		}
-		
 		ConceptNameTag tag = Context.getConceptService().getConceptNameTagByName(conceptNameTag);
-		
 		if (tag == null) {
 			log.warn("Invalid concept name tag parameter " + conceptNameTag + " passed to findConceptName");
 		}
 		
 		for (ConceptName name : concept.getNames()) {
-			if ((language == null || name.getLocale() == null || name.getLocale().getLanguage() == null
-			        || name.getLocale().getLanguage().equals(language))
+			if ((language == null || name.getLocale() == null || name.getLocale().getLanguage() == null || name.getLocale()
+			        .getLanguage().equals(language))
 			        && ((tag == null) || (name.getTags().contains(tag)))) {
 				return name;
 			}
 		}
-		
 		return null;
 	}
 	
@@ -362,9 +357,9 @@ public class MdrtbUtil {
 			log.error("No concept provided to getConceptName");
 			return null;
 		}
-
+		
 		ConceptName name = getConceptNameHelper(concept, language, conceptNameType);
-
+		
 		// if we haven't found a match for this language, try any language
 		if (name == null && language != null) {
 			name = getConceptNameHelper(concept, null, conceptNameType);
@@ -375,17 +370,17 @@ public class MdrtbUtil {
 		if (name == null && conceptNameType != ConceptNameType.FULLY_SPECIFIED) {
 			name = getConceptNameHelper(concept, language, ConceptNameType.FULLY_SPECIFIED);
 		}
-
+		
 		// if we still haven't found a match, just return a fully specified name
 		if (name == null) {
 			name = getConceptNameHelper(concept, null, ConceptNameType.FULLY_SPECIFIED);
 		}
-
+		
 		return name;
 	}
-
+	
 	private static ConceptName getConceptNameHelper(Concept concept, String language, ConceptNameType conceptNameType) {
-
+		
 		for (ConceptName name : concept.getNames()) {
 			// test here for a name where:
 			// 1) the language of the name = the incoming language parameter, or the
@@ -393,14 +388,14 @@ public class MdrtbUtil {
 			// 2) the type of the name = the incoming type parameter, or both the type of
 			// the name and the type parameter = null
 			
-			if ((language == null || (name.getLocale() != null && name.getLocale().getLanguage() != null
-			        && name.getLocale().getLanguage().equals(language)))
-			        && ((name.getConceptNameType() == null && conceptNameType == null)
-			                || (name.getConceptNameType() != null && name.getConceptNameType().equals(conceptNameType)))) {
+			if ((language == null || (name.getLocale() != null && name.getLocale().getLanguage() != null && name.getLocale()
+			        .getLanguage().equals(language)))
+			        && ((name.getConceptNameType() == null && conceptNameType == null) || (name.getConceptNameType() != null && name
+			                .getConceptNameType().equals(conceptNameType)))) {
 				return name;
 			}
 		}
-
+		
 		return null;
 	}
 	
@@ -467,12 +462,12 @@ public class MdrtbUtil {
 	        String enrollment, Location location, List<ProgramWorkflowState> states) {
 		
 		Cohort cohort = null;
-
+		
 		MdrtbService ms = (MdrtbService) Context.getService(MdrtbService.class);
-
+		
 		Date now = new Date();
 		Program mdrtbProgram = ms.getMdrtbProgram();
-
+		
 		if (enrolledOnOrAfter != null || enrolledOnOrBefore != null) {
 			ProgramEnrollmentCohortDefinition cd = new ProgramEnrollmentCohortDefinition();
 			cd.addProgram(mdrtbProgram);
@@ -486,33 +481,36 @@ public class MdrtbUtil {
 				throw new MdrtbAPIException("Unable to evalute program enrollment cohort", e);
 			}
 		}
-
+		
 		if ("current".equals(enrollment)) {
-			Cohort current = Context.getPatientSetService().getPatientsInProgram(mdrtbProgram, now, now);
+			Cohort current = Context.getService(CohortQueryService.class).getPatientsInProgram(Arrays.asList(mdrtbProgram),
+			    now, now);
 			cohort = nullSafeIntersect(cohort, current);
 		} else {
-			Cohort ever = Context.getPatientSetService().getPatientsInProgram(mdrtbProgram, null, null);
+			Cohort ever = Context.getService(CohortQueryService.class).getPatientsInProgram(Arrays.asList(mdrtbProgram),
+			    null, null);
 			if ("previous".equals(enrollment)) {
-				Cohort current = Context.getPatientSetService().getPatientsInProgram(mdrtbProgram, now, now);
+				Cohort current = Context.getService(CohortQueryService.class).getPatientsInProgram(
+				    Arrays.asList(mdrtbProgram), now, now);
 				Cohort previous = Cohort.subtract(ever, current);
 				cohort = nullSafeIntersect(cohort, previous);
 			} else if ("never".equals(enrollment)) {
 				if (cohort == null) {
-					cohort = Context.getPatientSetService().getAllPatients();
+					cohort = Context.getService(CohortQueryService.class).getPatientsWithGender(true, true, true);
 				}
 				cohort = Cohort.subtract(cohort, ever);
 			} else {
 				cohort = nullSafeIntersect(cohort, ever);
 			}
 		}
-
+		
 		if (StringUtils.isNotBlank(name) || StringUtils.isNotBlank(identifier)) {
 			name = "".equals(name) ? null : name;
 			identifier = "".equals(identifier) ? null : identifier;
 			Cohort nameIdMatches = new Cohort(Context.getPatientService().getPatients(name, identifier, null, false));
 			cohort = nullSafeIntersect(cohort, nameIdMatches);
 		}
-
+		
 		// If Location is specified, limit to patients at this Location
 		if (location != null) {
 			CohortDefinition lcd = Cohorts.getLocationFilter(location, now, now);
@@ -525,7 +523,7 @@ public class MdrtbUtil {
 			}
 			cohort = nullSafeIntersect(cohort, locationCohort);
 		}
-
+		
 		if (states != null) {
 			InStateCohortDefinition iscd = new InStateCohortDefinition();
 			iscd.setStates(states);
@@ -537,7 +535,7 @@ public class MdrtbUtil {
 				throw new MdrtbAPIException("Unable to evalute patients in states", e);
 			}
 		}
-
+		
 		return cohort;
 	}
 	
@@ -566,7 +564,7 @@ public class MdrtbUtil {
 		        && StringUtils.isBlank(address.getLongitude()) && StringUtils.isBlank(address.getAddress6())
 		        && StringUtils.isBlank(address.getAddress5()) && StringUtils.isBlank(address.getPostalCode());
 	}
-
+	
 	public static Cohort nullSafeIntersect(Cohort c1, Cohort c2) {
 		if (c1 == null) {
 			return c2;
@@ -580,7 +578,7 @@ public class MdrtbUtil {
 	/****** CUSTOM CODE STARTS HERE ******/
 	
 	//TODO: Remove this overrider by passing quarter as Integer only
-	public static Cohort getMdrPatientsTJK(String identifier, String name, /* String enrollment, */ Location location,
+	public static Cohort getMdrPatientsTJK(String identifier, String name, /* String enrollment, */Location location,
 	        String oblast, List<ProgramWorkflowState> states, Integer minage, Integer maxage, String gender, Integer year,
 	        String quarter, String month) {
 		Integer quarterInt = Integer.parseInt(quarter);
@@ -595,11 +593,11 @@ public class MdrtbUtil {
 	 * 
 	 * @return Cohort
 	 */
-	public static Cohort getMdrPatientsTJK(String identifier, String name, /* String enrollment, */ Location location,
+	public static Cohort getMdrPatientsTJK(String identifier, String name, /* String enrollment, */Location location,
 	        String oblast, List<ProgramWorkflowState> states, Integer minage, Integer maxage, String gender, Integer year,
 	        Integer quarter, Integer month) {
 		
-		Cohort cohort = Context.getPatientSetService().getAllPatients();
+		Cohort cohort = Context.getService(CohortQueryService.class).getPatientsWithGender(true, true, true);
 		
 		Date now = new Date();
 		Context.getService(MdrtbService.class).getMdrtbProgram();
@@ -629,7 +627,7 @@ public class MdrtbUtil {
 		}
 		
 		if (states != null) {
-			Cohort inStates = Context.getPatientSetService().getPatientsByProgramAndState(null, states, now, now);
+			Cohort inStates = Context.getService(MdrtbService.class).getPatientsByProgramAndState(null, states, now, now);
 			cohort = Cohort.intersect(cohort, inStates);
 		}
 		
@@ -689,13 +687,13 @@ public class MdrtbUtil {
 		if (gender != null && gender.length() != 0) {
 			Cohort genderCohort = new Cohort();
 			Patient patient = null;
-			Set<Integer> idSet = cohort.getMemberIds();
-			Iterator<Integer> itr = idSet.iterator();
+			Collection<CohortMembership> idSet = cohort.getMemberships();
+			Iterator<CohortMembership> itr = idSet.iterator();
 			Integer idCheck = null;
 			
 			PatientService ps = Context.getService(PatientService.class);
 			while (itr.hasNext()) {
-				idCheck = (Integer) itr.next();
+				idCheck = itr.next().getCohortMemberId();
 				patient = ps.getPatient(idCheck);
 				
 				if (patient.getGender().equalsIgnoreCase(gender)) {
@@ -708,25 +706,25 @@ public class MdrtbUtil {
 		return cohort;
 	}
 	
-	// TODO: Complete documentation
-	public static boolean areRussianStringsEqual(String s1, String s2) {
-		boolean result = false;
-		
-		if (s1 == null || s2 == null)
-			return false;
-		
-		if (s1.length() == 0 || s2.length() == 0)
-			return false;
-		
-		java.text.Collator collator = java.text.Collator.getInstance();
-		collator.setStrength(Collator.SECONDARY);
-		
-		int compResult = collator.compare(s1, s2);
-		if (compResult == 0)
-			return true;
-		
-		return result;
-	}
+	// Removed after upgarde to v2.0
+	//	public static boolean areRussianStringsEqual(String s1, String s2) {
+	//		boolean result = false;
+	//		
+	//		if (s1 == null || s2 == null)
+	//			return false;
+	//		
+	//		if (s1.length() == 0 || s2.length() == 0)
+	//			return false;
+	//		
+	//		java.text.Collator collator = java.text.Collator.getInstance();
+	//		collator.setStrength(Collator.SECONDARY);
+	//		
+	//		int compResult = collator.compare(s1, s2);
+	//		if (compResult == 0)
+	//			return true;
+	//		
+	//		return result;
+	//	}
 	
 	public static Cohort getMdrPatientsTJKFacility(String identifier, String name, String districtId, String oblastId,
 	        String facilityId, List<ProgramWorkflowState> states, Integer minage, Integer maxage, String gender,
@@ -752,7 +750,7 @@ public class MdrtbUtil {
 			Region obl = Context.getService(MdrtbService.class).getRegion(Integer.parseInt(oblastId));
 			locList = Context.getService(MdrtbService.class).getLocationsFromRegion(obl);
 		}
-		Cohort cohort = Context.getPatientSetService().getAllPatients();
+		Cohort cohort = Context.getService(CohortQueryService.class).getPatientsWithGender(true, true, true);
 		
 		Date now = new Date();
 		Context.getService(MdrtbService.class).getMdrtbProgram();
@@ -783,7 +781,7 @@ public class MdrtbUtil {
 		}
 		
 		if (states != null) {
-			Cohort inStates = Context.getPatientSetService().getPatientsByProgramAndState(null, states, now, now);
+			Cohort inStates = Context.getService(MdrtbService.class).getPatientsByProgramAndState(null, states, now, now);
 			cohort = Cohort.intersect(cohort, inStates);
 		}
 		
@@ -847,13 +845,13 @@ public class MdrtbUtil {
 		if (gender != null && gender.length() != 0) {
 			Cohort genderCohort = new Cohort();
 			Patient patient = null;
-			Set<Integer> idSet = cohort.getMemberIds();
-			Iterator<Integer> itr = idSet.iterator();
+			Collection<CohortMembership> idSet = cohort.getMemberships();
+			Iterator<CohortMembership> itr = idSet.iterator();
 			Integer idCheck = null;
 			
 			PatientService ps = Context.getService(PatientService.class);
 			while (itr.hasNext()) {
-				idCheck = (Integer) itr.next();
+				idCheck = itr.next().getCohortMemberId();
 				patient = ps.getPatient(idCheck);
 				
 				if (patient.getGender().equalsIgnoreCase(gender)) {
@@ -1037,7 +1035,7 @@ public class MdrtbUtil {
 			errors.reject(Context.getMessageSourceService().getMessage("mdrtb.emptyId"));
 		}
 		// Only validate if the PatientIdentifier is not voided
-		if (!pi.isVoided()) {
+		if (!pi.getVoided()) {
 			// Check is already in use by another patient
 			try {
 				String id = pi.getIdentifier();
@@ -1074,17 +1072,93 @@ public class MdrtbUtil {
 			String firstTwoDigits = yearString.substring(0, 2);
 			int centuryYear = Integer.parseInt(firstTwoDigits) * 100;
 			int yearFromId = Integer.parseInt(id.substring(2, 4)) + centuryYear;
-			log.debug("ID:" + id + "; First digits:" + firstTwoDigits + "; Year:" + centuryYear + "; Serial No.:" + yearFromId);
+			log.debug("ID:" + id + "; First digits:" + firstTwoDigits + "; Year:" + centuryYear + "; Serial No.:"
+			        + yearFromId);
 			
 			if (yearFromId > year) {
 				errors.reject(Context.getMessageSourceService().getMessage("mdrtb.yearInIdInFuture"));
 			}
 		}
 	}
-
+	
 	public static double timeDiffInWeeks(long milli) {
 		// return milli * 1000 * 60 * 24 * 7;
 		return milli * 10080000;
 	}
 	
+	/**
+	 * Save a DrugOrder and revise if needed E.g. Paracetamol 200mg tablets twice a day for 5 weeks
+	 * Set: Drug: Paracetamol Dose: 200; Units: MG; Frequency: TWICE A DAY; Duration: 5;
+	 * DurationUnits: WEEKS
+	 */
+	public static DrugOrder updateDrugOrder(DrugOrder drugOrder, Concept concept, Drug drug, Double dose, String drugUnit,
+	        String durationUnits, String frequency, String instructions, Date changeDate, Date autoExpireDate,
+	        Date discontinuedDate, Concept discontinuedReason) {
+		
+		DrugOrder revisedOrder = drugOrder.copy();
+		
+		// If originally was discontinued, but is now to be continued, then clone for revision
+		if (drugOrder.isDiscontinuedRightNow()) {
+			revisedOrder = drugOrder.cloneForRevision();
+		}
+		revisedOrder.setConcept(concept);
+		revisedOrder.setDrug(drug);
+		revisedOrder.setDose(dose);
+		revisedOrder.setDateActivated(changeDate);
+		revisedOrder.setAutoExpireDate(ObjectUtil.isNull(autoExpireDate) ? null : autoExpireDate);
+		revisedOrder.setInstructions(instructions);
+		
+		// Frequency: 
+		if (ObjectUtil.isNull(frequency)) {
+			OrderFrequency orderFrequency = new OrderFrequency();
+			try {
+				orderFrequency.setFrequencyPerDay(Double.parseDouble(frequency));
+				revisedOrder.setDurationUnits(Context.getService(MdrtbService.class).getConcept(durationUnits));
+				revisedOrder.setDoseUnits(Context.getService(MdrtbService.class).getConcept(drugUnit));
+			}
+			catch (Exception e) {
+				orderFrequency.setFrequencyPerDay(0D);
+			}
+		}
+		
+		// Should discontinue only if the order was active and the date of discontinuation was supplied
+		if (discontinuedDate != null) {
+			try {
+				Context.getOrderService().discontinueOrder(revisedOrder, discontinuedReason, discontinuedDate,
+				    revisedOrder.getOrderer(), drugOrder.getEncounter());
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				log.error(e.getMessage());
+			}
+		} else {
+			revisedOrder = Context.getService(MdrtbService.class).saveDrugOrder(revisedOrder);
+		}
+		return revisedOrder;
+	}
+	
+	public static Person getEncounterProvider(Encounter encounter) {
+		if (encounter != null) {
+			Set<EncounterProvider> providers = encounter.getActiveEncounterProviders();
+			if (!providers.isEmpty()) {
+				return providers.iterator().next().getProvider().getPerson();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns Ids of all members of the given {@link Cohort}
+	 * 
+	 * @param cohort
+	 * @return
+	 */
+	public static List<Integer> getcohortMembershipIds(Cohort cohort) {
+		List<Integer> ids = cohort.getMemberships().stream().map(m -> m.getCohortMemberId()).collect(Collectors.toList());
+		return ids;
+	}
+	
+	public static String getCohortCommaSeparatedPatientIds(Cohort cohort) {
+		return StringUtils.join(getcohortMembershipIds(cohort), ',');
+	}
 }

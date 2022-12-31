@@ -382,64 +382,8 @@
 <td><openmrs_tag:dateField formFieldName="encounterDatetime" startValue="${regimenForm.encounterDatetime}"/></td>
 </tr>
 
-<%-- <tr>
-<td><spring:message code="mdrtb.provider" text="Provider"/>:</td>
-<td>
-<select name="provider">
-<option value=""></option>
-<c:forEach var="provider" items="${providers}">
-	<option value="${provider.id}" <c:if test="${tb03.provider == provider}">selected</c:if>>${provider.personName}</option>
-</c:forEach>
-</select>
-</td>
-</tr> --%>
- 
-<%-- <tr>
-<td><spring:message code="mdrtb.location" text="Location"/>:</td>
-<td>
-<select name="location">
-<option value=""></option>
-<c:forEach var="location" items="${locations}">
-	<option value="${location.id}" <c:if test="${tb03.location == location}">selected</c:if>>${location.displayString}</option>
-</c:forEach>
-</select>
-</td>
-</tr> --%>
 </table>
 
-<%-- <table>
-<tr id="oblastDiv">
-			<td align="right"><spring:message code="mdrtb.oblast" /></td>
-			<td><select name="oblast" id="oblast" onchange="fun1()" >
-					<option value=""></option>
-					<c:forEach var="o" items="${oblasts}">
-						<option value="${o.id}">${o.name}</option>
-					</c:forEach>
-			</select></td>
-		</tr>
-		
-		<tr id="districtDiv">
-			<td align="right"><spring:message code="mdrtb.district" /></td>
-			<td><select name="district" id="district" onchange="fun2()" >
-					<option value=""></option>
-					<c:forEach var="dist" items="${districts}">
-						<option value="${dist.id}">${dist.name}</option>
-					</c:forEach>
-			</select></td>
-		</tr>
-		
-		<tr id="facilityDiv">
-			<td align="right"><spring:message code="mdrtb.facility" /></td>
-			<td><select name="facility" id="facility" >
-					<option value=""></option>
-					<c:forEach var="f" items="${facilities}">
-						<option value="${f.id}">${f.name}</option>
-					</c:forEach>
-			</select>
-			</td>
-		</tr>
-	</table>
-	 --%>
 <table>
 
 <tr>

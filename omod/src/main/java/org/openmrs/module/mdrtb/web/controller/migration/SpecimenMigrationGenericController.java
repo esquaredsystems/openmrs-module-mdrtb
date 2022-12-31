@@ -31,6 +31,7 @@ import org.openmrs.Program;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -62,17 +63,15 @@ public class SpecimenMigrationGenericController {
 		
 		// fetch the bac and dst encounter types
 		List<EncounterType> specimenEncounter = new LinkedList<EncounterType>();
-		specimenEncounter.add(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.test_result_encounter_type_bacteriology")));
-		specimenEncounter.add(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.test_result_encounter_type_DST")));
+		specimenEncounter.add(MdrtbConstants.MDRTB_BACTERIOLOGY_RESULT_ENCOUNTER_TYPE);
+		specimenEncounter.add(MdrtbConstants.MDRTB_LAB_RESULT_ENCOUNTER_TYPE);
 		
 		// loop thru all the bac and dst encounters
-		for (Encounter encounter : Context.getEncounterService().getEncounters(null, null, null, null, null,
-		    specimenEncounter, null, false)) {
+		for (Encounter encounter : Context.getService(MdrtbService.class).getEncounters(null, null, null, null,
+		    specimenEncounter)) {
 			// to handle any test patients where the encounter hasn't been voided for some reason
 			// also void any encounters with no obs
-			if (encounter.getPatient().isVoided()) {
+			if (encounter.getPatient().getVoided()) {
 				log.warn("Voiding encounter " + encounter.getId() + " because it belongs to a voided patient");
 				Context.getEncounterService().voidEncounter(encounter, "voided as part of mdr-tb migration");
 			} else if (encounter.getAllObs().size() == 0) {
@@ -86,8 +85,7 @@ public class SpecimenMigrationGenericController {
 				
 				// first we need to figure out if we are going to need to create a new specimen for this encounter or not by checking if accession numbers
 				for (Obs obs : encounter.getAllObs()) {
-					if (obs.getAccessionNumber() != null
-					        && specimenMap.get(obs.getAccessionNumber().toUpperCase()) != null) {
+					if (obs.getAccessionNumber() != null && specimenMap.get(obs.getAccessionNumber().toUpperCase()) != null) {
 						specimen = specimenMap.get(obs.getAccessionNumber().toUpperCase());
 						moveObsAndVoidEncounter = true; // since this specimen already exists, we need to move all the obs to the encounter associated with the existing specimen
 						break;
@@ -127,11 +125,8 @@ public class SpecimenMigrationGenericController {
 						
 						// iterate through all the obs in the test
 						for (Obs childObs : obs.getGroupMembers()) {
-							
-							// TODO: do I want to ignore voided obs... get Group Members doesn't do so automatically
-							
-							log.info(
-							    "Processing test obs " + childObs.getId() + " of concept type " + childObs.getConcept());
+							// TODO: do I want to ignore voided obs. get Group Members doesn't do so automatically
+							log.info("Processing test obs " + childObs.getId() + " of concept type " + childObs.getConcept());
 							
 							// check to see if this is a the sample source obs
 							if (childObs.getConcept().equals(
@@ -143,8 +138,8 @@ public class SpecimenMigrationGenericController {
 							}
 							
 							// check to see if this is a smear or culture result obs
-							if (childObs.getConcept()
-							        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_RESULT))
+							if (childObs.getConcept().equals(
+							    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_RESULT))
 							        || childObs.getConcept().equals(
 							            Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT))) {
 								// set the date collected based on the value datetime of this obs, and reset the value datetime of this obs
@@ -182,41 +177,41 @@ public class SpecimenMigrationGenericController {
 							
 							// change all DST contaminated to the proper type
 							// NOTE: PIH Haiti specific functionality??
-							if (obs.getConcept()
-							        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_CONSTRUCT))
-							        && childObs.getConcept()
-							                .equals(Context.getConceptService().getConceptByName("CONTAMINATED"))) {
-								childObs.setConcept(
-								    Context.getConceptService().getConceptByName("DRUG SENSITIVITY TEST CONTAMINATED"));
+							if (obs.getConcept().equals(
+							    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_CONSTRUCT))
+							        && childObs.getConcept().equals(
+							            Context.getConceptService().getConceptByName("CONTAMINATED"))) {
+								childObs.setConcept(Context.getConceptService().getConceptByName(
+								    "DRUG SENSITIVITY TEST CONTAMINATED"));
 								log.info("Changing concept on obs " + obs.getConcept().getId()
 								        + " from CONTAMINATED to DRUG SENSITIVITY TEST CONTAMINATED");
 							}
 							
 							// check to see if this is a colonies obs
-							if (childObs.getConcept()
-							        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COLONIES))) {
+							if (childObs.getConcept().equals(
+							    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COLONIES))) {
 								// only use the most recent colonies obs (to handle bug where colonies was being stored multiple times)
 								if (compareAndUpdateColonies(childObs, colonies)) {
-									log.warn("Encounter " + encounter.getId()
+									log.warn("Encounter "
+									        + encounter.getId()
 									        + " has multiple colonies obs with different values. Using obs with most recent datetime.");
 								}
 							}
 							
 							// check to see if this is a organism-type non-coded obs
-							if (childObs.getConcept().equals(Context.getService(MdrtbService.class)
-							        .getConcept(MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED))) {
+							if (childObs.getConcept().equals(
+							    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED))) {
 								// see if we can convert this to a coded type
 								if (StringUtils.isNotBlank(childObs.getValueText())) {
 									if (childObs.getValueText().equalsIgnoreCase("M. TUBERCULOSIS COMPLEX")) {
 										// if so, convert this to a coded obs
-										changeOrganismTypeToCoded(obs, childObs,
-										    Context.getConceptService().getConceptByName("M. TUBERCULOSIS COMPLEX"));
-										log.info(
-										    "Changed type of organism non-coded to coded M. TUBERCULOSIS COMPLEX for test "
-										            + obs.getId());
+										changeOrganismTypeToCoded(obs, childObs, Context.getConceptService()
+										        .getConceptByName("M. TUBERCULOSIS COMPLEX"));
+										log.info("Changed type of organism non-coded to coded M. TUBERCULOSIS COMPLEX for test "
+										        + obs.getId());
 									} else if (childObs.getValueText().equalsIgnoreCase("M. ABSCESSUS")) {
-										changeOrganismTypeToCoded(obs, childObs,
-										    Context.getConceptService().getConceptByName("M. ABSCESSUS"));
+										changeOrganismTypeToCoded(obs, childObs, Context.getConceptService()
+										        .getConceptByName("M. ABSCESSUS"));
 										log.info("Changed type of organism non-coded obs to coded M. ABSCESSUS for test "
 										        + obs.getId());
 									}
@@ -257,15 +252,13 @@ public class SpecimenMigrationGenericController {
 		
 		// fetch the bac and dst encounter types
 		List<EncounterType> specimenEncounter = new LinkedList<EncounterType>();
-		specimenEncounter.add(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.test_result_encounter_type_bacteriology")));
-		specimenEncounter.add(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.test_result_encounter_type_DST")));
+		specimenEncounter.add(MdrtbConstants.MDRTB_BACTERIOLOGY_RESULT_ENCOUNTER_TYPE);
+		specimenEncounter.add(MdrtbConstants.MDRTB_LAB_RESULT_ENCOUNTER_TYPE);
 		
 		// now void all unused encounters
 		// loop thru all the bac and dst encounters
-		for (Encounter encounter : Context.getEncounterService().getEncounters(null, null, null, null, null,
-		    specimenEncounter, null, false)) {
+		for (Encounter encounter : Context.getService(MdrtbService.class).getEncounters(null, null, null, null,
+		    specimenEncounter)) {
 			if (encounter.getAllObs().size() == 0) {
 				Context.getEncounterService().voidEncounter(encounter, "voided as part of mdr-tb migration");
 			}
@@ -286,8 +279,8 @@ public class SpecimenMigrationGenericController {
 		Concept typeOfPatientConcept = Context.getConceptService().getConcept("TYPE OF PATIENT");
 		Concept hospitalizedConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_HOSPITALIZED);
 		Concept ambulatoryConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AMBULATORY);
-		Concept hospitalizedSinceLastVisitConcept = Context.getConceptService()
-		        .getConceptByName("PATIENT PATIENT_HOSPITALIZED SINCE LAST VISIT");
+		Concept hospitalizedSinceLastVisitConcept = Context.getConceptService().getConceptByName(
+		    "PATIENT PATIENT_HOSPITALIZED SINCE LAST VISIT");
 		
 		Concept[] conceptParams = { typeOfPatientConcept, hospitalizedSinceLastVisitConcept };
 		
@@ -305,8 +298,8 @@ public class SpecimenMigrationGenericController {
 			if (status.size() > 0) {
 				
 				// get all the programs for this patient
-				List<MdrtbPatientProgram> programs = Context.getService(MdrtbService.class)
-				        .getMdrtbPatientPrograms(Context.getPatientService().getPatient(patient.getId()));
+				List<MdrtbPatientProgram> programs = Context.getService(MdrtbService.class).getMdrtbPatientPrograms(
+				    Context.getPatientService().getPatient(patient.getId()));
 				
 				Boolean isHospitalized = false;
 				Date hospitalizationDate = null;
@@ -316,8 +309,7 @@ public class SpecimenMigrationGenericController {
 					
 					// see if this is ambulatory/hospitalized phase
 					if ((obs.getConcept().equals(typeOfPatientConcept) && obs.getValueCoded().equals(hospitalizedConcept))
-					        || (obs.getConcept().equals(hospitalizedSinceLastVisitConcept)
-					                && obs.getValueAsBoolean() == true)) {
+					        || (obs.getConcept().equals(hospitalizedSinceLastVisitConcept) && obs.getValueAsBoolean() == true)) {
 						
 						// set the patient as hospitalized if necessary
 						if (!isHospitalized) {
@@ -329,8 +321,7 @@ public class SpecimenMigrationGenericController {
 					}
 					// if the patient is ambulatory
 					else if ((obs.getConcept().equals(typeOfPatientConcept) && obs.getValueCoded().equals(ambulatoryConcept))
-					        || (obs.getConcept().equals(hospitalizedSinceLastVisitConcept)
-					                && obs.getValueAsBoolean() == false)) {
+					        || (obs.getConcept().equals(hospitalizedSinceLastVisitConcept) && obs.getValueAsBoolean() == false)) {
 						
 						if (isHospitalized) {
 							createHospitalization(programs, patient, hospitalizationDate, obs.getObsDatetime());
@@ -353,8 +344,8 @@ public class SpecimenMigrationGenericController {
 	}
 	
 	@RequestMapping("/module/mdrtb/migration/generic/migrateLocations.form")
-	public ModelAndView migrateLocations()
-	        throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	public ModelAndView migrateLocations() throws IllegalArgumentException, NoSuchMethodException, IllegalAccessException,
+	        InvocationTargetException {
 		
 		PersonAttributeType healthCenterType = Context.getPersonService().getPersonAttributeTypeByName("Health Center");
 		
@@ -401,8 +392,8 @@ public class SpecimenMigrationGenericController {
 				if (location.getId() == null) {
 					log.error("location " + location.getDisplayString() + " does not have an ID");
 				} else {
-					for (MdrtbPatientProgram program : Context.getService(MdrtbService.class)
-					        .getMdrtbPatientPrograms(patient)) {
+					for (MdrtbPatientProgram program : Context.getService(MdrtbService.class).getMdrtbPatientPrograms(
+					    patient)) {
 						if (program.getLocation() == null) {
 							program.setLocation(location); // yes, this seems pointless, but I'm doin it to avoid a hiberate error
 							Context.getProgramWorkflowService().savePatientProgram(program.getPatientProgram());
@@ -419,10 +410,10 @@ public class SpecimenMigrationGenericController {
 	
 	@RequestMapping("/module/mdrtb/migration/generic/migrateRegistrationGroups.form")
 	public ModelAndView migrateRegistrationGroups() {
-		Concept previousDrugUse = Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_DRUG_USE);
-		Concept previousTreatment = Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT);
+		Concept previousDrugUse = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_DRUG_USE);
+		Concept previousTreatment = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT);
 		
 		Collection<ProgramWorkflowState> previousDrugUseStates = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPreviousDrugUse();
@@ -433,25 +424,25 @@ public class SpecimenMigrationGenericController {
 		for (Patient patient : Context.getPatientService().getAllPatients()) {
 			
 			// loop thru all the category 4 previous drug group registration group for this patient
-			for (Obs previousDrugUseObs : Context.getObsService().getObservationsByPersonAndConcept(patient,
-			    previousDrugUse)) {
+			for (Obs previousDrugUseObs : Context.getObsService()
+			        .getObservationsByPersonAndConcept(patient, previousDrugUse)) {
 				
 				// find out the proper patient program (if any) to set this state on
 				Date previousProgramEndDate = null;
 				for (MdrtbPatientProgram program : Context.getService(MdrtbService.class).getMdrtbPatientPrograms(patient)) {
-					if ((program.getDateCompleted() == null
-					        || previousDrugUseObs.getObsDatetime().before(program.getDateCompleted())
-					                && (previousProgramEndDate == null
-					                        || previousDrugUseObs.getObsDatetime().after(previousProgramEndDate)))) {
+					if ((program.getDateCompleted() == null || previousDrugUseObs.getObsDatetime().before(
+					    program.getDateCompleted())
+					        && (previousProgramEndDate == null || previousDrugUseObs.getObsDatetime().after(
+					            previousProgramEndDate)))) {
 						
 						// set the appropriate state for this patient
 						for (ProgramWorkflowState state : previousDrugUseStates) {
 							if (state.getConcept().equals(previousDrugUseObs.getValueCoded())) {
 								program.setClassificationAccordingToPreviousDrugUse(state);
 								Context.getProgramWorkflowService().savePatientProgram(program.getPatientProgram());
-								log.info(
-								    "Set previous workflow state previous drug use to " + state.toString() + " for program "
-								            + program.getPatientProgram().toString() + " of patient " + patient.toString());
+								log.info("Set previous workflow state previous drug use to " + state.toString()
+								        + " for program " + program.getPatientProgram().toString() + " of patient "
+								        + patient.toString());
 							}
 						}
 					}
@@ -468,19 +459,19 @@ public class SpecimenMigrationGenericController {
 				// find out the proper patient program (if any) to set this state on
 				Date previousProgramEndDate = null;
 				for (MdrtbPatientProgram program : Context.getService(MdrtbService.class).getMdrtbPatientPrograms(patient)) {
-					if ((program.getDateCompleted() == null
-					        || previousTreatmentObs.getObsDatetime().before(program.getDateCompleted())
-					                && (previousProgramEndDate == null
-					                        || previousTreatmentObs.getObsDatetime().after(previousProgramEndDate)))) {
+					if ((program.getDateCompleted() == null || previousTreatmentObs.getObsDatetime().before(
+					    program.getDateCompleted())
+					        && (previousProgramEndDate == null || previousTreatmentObs.getObsDatetime().after(
+					            previousProgramEndDate)))) {
 						
 						// set the appropriate state for this patient
 						for (ProgramWorkflowState state : previousTreatmentStates) {
 							if (state.getConcept().equals(previousTreatmentObs.getValueCoded())) {
 								program.setClassificationAccordingToPreviousTreatment(state);
 								Context.getProgramWorkflowService().savePatientProgram(program.getPatientProgram());
-								log.info(
-								    "Set previous workflow state previous treatment to " + state.toString() + " for program "
-								            + program.getPatientProgram().toString() + " of patient " + patient.toString());
+								log.info("Set previous workflow state previous treatment to " + state.toString()
+								        + " for program " + program.getPatientProgram().toString() + " of patient "
+								        + patient.toString());
 							}
 						}
 					}
@@ -501,8 +492,7 @@ public class SpecimenMigrationGenericController {
 		// we are getting rid of the "still on treatment" workflow state; for all patients with the "outcome" workflow set to this state,
 		// the workflow should be set to null
 		for (Patient patient : Context.getPatientService().getAllPatients(true)) {
-			for (MdrtbPatientProgram mdrtbProgram : Context.getService(MdrtbService.class)
-			        .getMdrtbPatientPrograms(patient)) {
+			for (MdrtbPatientProgram mdrtbProgram : Context.getService(MdrtbService.class).getMdrtbPatientPrograms(patient)) {
 				if (mdrtbProgram.getOutcome() != null && mdrtbProgram.getOutcome().getConcept().equals(stillOnTreatment)) {
 					mdrtbProgram.setOutcome(null);
 					Context.getProgramWorkflowService().savePatientProgram(mdrtbProgram.getPatientProgram());
@@ -558,15 +548,15 @@ public class SpecimenMigrationGenericController {
 	public ModelAndView markPatientsAsDeceased() {
 		
 		Program mdrtb = Context.getService(MdrtbService.class).getMdrtbProgram();
-		ProgramWorkflowState died = MdrtbUtil
-		        .getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
+		ProgramWorkflowState died = Context.getService(MdrtbService.class).getProgramWorkflowState(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
 		Concept unknown = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.UNKNOWN);
 		
 		for (PatientProgram program : Context.getProgramWorkflowService().getPatientPrograms(null, mdrtb, null, null, null,
 		    null, false)) {
 			MdrtbPatientProgram mdrtbProgram = new MdrtbPatientProgram(program);
 			if (mdrtbProgram.getOutcome() != null && mdrtbProgram.getOutcome().equals(died)
-			        && !program.getPatient().isDead()) {
+			        && !program.getPatient().getDead()) {
 				Patient patient = program.getPatient();
 				Context.getPatientService().processDeath(patient, program.getDateCompleted(), unknown, null);
 				log.info("Marking patient " + patient.getId() + " as deceased on " + program.getDateCompleted());
@@ -593,8 +583,7 @@ public class SpecimenMigrationGenericController {
 		        "mdrtb.lab_test_order_type", "mdrtb.listPatientsLocationMethod", "mdrtb.unknownLocationName",
 		        "mdrtb.show_lab", "mdrtb.patient_dashboard_tab_conf", "mdrtb.dstContradicatesDrugWarningColor",
 		        "mdrtb.probableResistanceWarningColor", "mdrtb.enableResistanceProbabilityWarning",
-		        "mdrtb.enable_specimen_tracking", "mdrtb.date_format_string",
-		        "mdrtb.patientIdentifierLocationToPrefixList" }; // note that this last prop might still be used in Rwanda?
+		        "mdrtb.enable_specimen_tracking", "mdrtb.date_format_string", "mdrtb.patientIdentifierLocationToPrefixList" }; // note that this last prop might still be used in Rwanda?
 		
 		for (String propertyName : GlOBAL_PROPS_TO_REMOVE) {
 			GlobalProperty prop = Context.getAdministrationService().getGlobalPropertyObject(propertyName);
@@ -635,7 +624,7 @@ public class SpecimenMigrationGenericController {
 	@RequestMapping("/module/mdrtb/migration/generic/voidPersonsAssociatedWithVoidedPatients.form")
 	public ModelAndView voidPersonsAssociatedWithVoidedPatients() {
 		for (Patient patient : Context.getPatientService().getAllPatients(true)) {
-			if (patient.isVoided() && !patient.isPersonVoided()) {
+			if (patient.getVoided() && !patient.getPersonVoided()) {
 				patient.setPersonVoided(patient.getVoided());
 				patient.setPersonVoidReason(patient.getVoidReason());
 				Context.getPatientService().savePatient(patient);
@@ -674,8 +663,7 @@ public class SpecimenMigrationGenericController {
 	
 	private Specimen createSpecimenFromEncounter(Encounter encounter) {
 		// change the encounter type to "specimen collection" encounter
-		encounter.setEncounterType(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
+		encounter.setEncounterType(MdrtbConstants.SPECIMEN_COLLECTION_ENCOUNTER_TYPE);
 		
 		// now instantiate a new specimen using this encounter
 		Specimen specimen = new SpecimenImpl(encounter);
@@ -683,7 +671,7 @@ public class SpecimenMigrationGenericController {
 		// set the patient and provider of the specimen to the patient and provider of the underlying encounter
 		// (not really needed, but just in case)
 		specimen.setPatient(encounter.getPatient());
-		specimen.setProvider(encounter.getProvider());
+		specimen.setProvider(MdrtbUtil.getEncounterProvider(encounter));
 		specimen.setLocation(encounter.getLocation());
 		
 		// NOTE: PIH-HAITI specific functionality...

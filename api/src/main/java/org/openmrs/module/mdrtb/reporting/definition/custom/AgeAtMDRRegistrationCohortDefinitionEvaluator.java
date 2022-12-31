@@ -26,26 +26,24 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
  */
 @Handler(supports = { AgeAtMDRRegistrationCohortDefinition.class })
 public class AgeAtMDRRegistrationCohortDefinitionEvaluator implements CohortDefinitionEvaluator {
-
+	
 	/**
 	 * Default Constructor
 	 */
 	public AgeAtMDRRegistrationCohortDefinitionEvaluator() {
 	}
-
+	
 	/**
-	 * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition,
-	 *      EvaluationContext)
-	 *
+	 * @see CohortDefinitionExistsEvaluator#evaluateCohort(CohortDefinition, EvaluationContext)
 	 */
 	public EvaluatedCohort evaluate(CohortDefinition cohortDefinition, EvaluationContext context) {
-
+		
 		AgeAtMDRRegistrationCohortDefinition cd = (AgeAtMDRRegistrationCohortDefinition) cohortDefinition;
 		// Cohort c = null;
-
+		
 		Cohort c = MdrtbQueryService.getPatientsWithAgeAtMDRRegistration(context, cd.getMinAge(), cd.getMaxAge(),
-				cd.getStartDate(), cd.getEndDate());
-
-    	return new EvaluatedCohort(c, cohortDefinition, context);
+		    cd.getStartDate(), cd.getEndDate());
+		
+		return new EvaluatedCohort(c, cohortDefinition, context);
 	}
 }

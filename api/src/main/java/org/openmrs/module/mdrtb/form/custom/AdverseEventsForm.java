@@ -11,23 +11,27 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 
-public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
+@SuppressWarnings("nls")
+public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<AdverseEventsForm> {
 	
-	public AEForm() {
+	private static final String VOID_REASON = "voided by Mdr-tb module specimen tracking UI";
+
+	public AdverseEventsForm() {
 		super();
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Adverse Event"));
+		this.encounter.setEncounterType(MdrtbConstants.ADVERSE_EVENT_ENCOUNTER_TYPE);
 	}
 	
-	public AEForm(Patient patient) {
+	public AdverseEventsForm(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Adverse Event"));
+		this.encounter.setEncounterType(MdrtbConstants.ADVERSE_EVENT_ENCOUNTER_TYPE);
 	}
 	
-	public AEForm(Encounter encounter) {
+	public AdverseEventsForm(Encounter encounter) {
 		super(encounter);
 	}
 	
@@ -53,14 +57,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -89,19 +92,19 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (test != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LAB_TEST_CONFIRMING_AE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.LAB_TEST_CONFIRMING_AE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(test);
 				encounter.addObs(obs);
 			}
 		}
 	}
+	
 	/////////////////////
 	
 	public String getSuspectedDrug() {
@@ -126,14 +129,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (drug != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SUSPECTED_DRUG),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.SUSPECTED_DRUG), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(drug);
 				encounter.addObs(obs);
 			}
@@ -162,14 +164,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (regimen != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_REGIMEN),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT_REGIMEN), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(regimen);
 				encounter.addObs(obs);
 			}
@@ -198,14 +199,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_TYPE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT_TYPE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -235,14 +235,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SAE_TYPE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.SAE_TYPE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -271,14 +270,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIAL_INTEREST_EVENT_TYPE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.SPECIAL_INTEREST_EVENT_TYPE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -308,14 +306,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (date != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YELLOW_CARD_DATE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.YELLOW_CARD_DATE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueDatetime(date);
 				encounter.addObs(obs);
 			}
@@ -344,14 +341,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (result != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_1),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_1), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				encounter.addObs(obs);
 			}
@@ -380,14 +376,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (result != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_2),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_2), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				encounter.addObs(obs);
 			}
@@ -416,14 +411,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (result != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_3),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_3), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				encounter.addObs(obs);
 			}
@@ -452,14 +446,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (result != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_DRUG_1),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CAUSALITY_DRUG_1), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				encounter.addObs(obs);
 			}
@@ -488,14 +481,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (result != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_DRUG_2),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CAUSALITY_DRUG_2), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				encounter.addObs(obs);
 			}
@@ -524,14 +516,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (result != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_DRUG_3),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CAUSALITY_DRUG_3), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				encounter.addObs(obs);
 			}
@@ -560,14 +551,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_ACTION),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT_ACTION), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -596,14 +586,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_ACTION_2),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT_ACTION_2), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -632,14 +621,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_ACTION_3),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT_ACTION_3), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -668,14 +656,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_ACTION_4),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT_ACTION_4), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -704,14 +691,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_ACTION_5),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT_ACTION_5), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -740,14 +726,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_OUTCOME),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT_OUTCOME), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -777,14 +762,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (date != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_OUTCOME_DATE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ADVERSE_EVENT_OUTCOME_DATE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueDatetime(date);
 				encounter.addObs(obs);
 			}
@@ -792,14 +776,14 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 	}
 	
 	public Concept getMeddraCode() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MEDDRA_CODE),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MEDDRA_CODE), encounter);
 		return obs == null ? null : obs.getValueCoded();
 	}
 	
 	public void setMeddraCode(Concept type) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MEDDRA_CODE),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MEDDRA_CODE), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
@@ -813,14 +797,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MEDDRA_CODE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.MEDDRA_CODE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -849,14 +832,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (type != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DRUG_RECHALLENGE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.DRUG_RECHALLENGE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}
@@ -886,21 +868,20 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (comment != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CLINICIAN_NOTES),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CLINICIAN_NOTES), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueText(comment);
 				encounter.addObs(obs);
 			}
 		}
 	}
 	
-	public int compareTo(AEForm form) {
+	public int compareTo(AdverseEventsForm form) {
 		
 		if (this.encounter.getEncounterDatetime() == null)
 			return 1;
@@ -932,14 +913,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (id != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueNumeric(new Double(id));
 				encounter.addObs(obs);
 			}
@@ -947,15 +927,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 	}
 	
 	public String getFacility() {
-		String ret = "";
 		Location loc = this.getEncounter().getLocation();
-		
-		ret = loc.getStateProvince();
+		String ret = loc.getStateProvince();
 		if (loc.getCountyDistrict() != null) {
 			ret += "/" + loc.getCountyDistrict();
 		}
-		if (loc.getRegion() != null && loc.getRegion().length() > 0) {
-			ret += "/" + loc.getRegion();
+		if (loc.getAddress6() != null && loc.getAddress6().length() > 0) {
+			ret += "/" + loc.getAddress6();
 		}
 		return ret;
 	}
@@ -969,8 +947,10 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 		
 		Concept c = getCausalityAssessmentResult1();
 		Concept d = getCausalityDrug1();
-		if (c != null && c.getId() != null && c.getId().intValue() != Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.NOT_CLASSIFIED).getId().intValue())
+		if (c != null
+		        && c.getId() != null
+		        && c.getId().intValue() != Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_CLASSIFIED)
+		                .getId().intValue())
 			;
 		{
 			if (d != null)
@@ -979,8 +959,10 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 		
 		c = getCausalityAssessmentResult2();
 		d = getCausalityDrug2();
-		if (c != null && c.getId() != null && c.getId().intValue() != Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.NOT_CLASSIFIED).getId().intValue())
+		if (c != null
+		        && c.getId() != null
+		        && c.getId().intValue() != Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_CLASSIFIED)
+		                .getId().intValue())
 			;
 		{
 			if (d != null)
@@ -989,8 +971,10 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 		
 		c = getCausalityAssessmentResult3();
 		d = getCausalityDrug3();
-		if (c != null && c.getId() != null && c.getId().intValue() != Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.NOT_CLASSIFIED).getId().intValue())
+		if (c != null
+		        && c.getId() != null
+		        && c.getId().intValue() != Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_CLASSIFIED)
+		                .getId().intValue())
 			;
 		{
 			if (d != null)
@@ -1022,14 +1006,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1058,14 +1041,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REQUIRES_DOSE_CHANGE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.REQUIRES_DOSE_CHANGE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1094,14 +1076,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CLINICAL_SCREEN_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CLINICAL_SCREEN_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1130,14 +1111,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.VISUAL_ACUITY_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.VISUAL_ACUITY_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1166,14 +1146,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SIMPLE_HEARING_TEST_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.SIMPLE_HEARING_TEST_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1202,14 +1181,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AUDIOGRAM_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.AUDIOGRAM_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1238,14 +1216,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEURO_INVESTIGATION_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.NEURO_INVESTIGATION_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1274,14 +1251,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CREATNINE_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CREATNINE_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1310,14 +1286,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AST_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.AST_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1346,14 +1321,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ALT_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ALT_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1382,14 +1356,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.BILIRUBIN_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.BILIRUBIN_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1418,14 +1391,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ALKALINE_PHOSPHATASE_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ALKALINE_PHOSPHATASE_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1454,14 +1426,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YGT_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.YGT_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1490,14 +1461,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ECG_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ECG_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1505,14 +1475,14 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 	}
 	
 	public Concept getLipaseDone() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LIPASE_DONE),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LIPASE_DONE), encounter);
 		return obs == null ? null : obs.getValueCoded();
 	}
 	
 	public void setLipaseDone(Concept event) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LIPASE_DONE),
-		    encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LIPASE_DONE), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && event == null) {
@@ -1526,14 +1496,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LIPASE_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.LIPASE_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1541,14 +1510,14 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 	}
 	
 	public Concept getAmylaseDone() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AMYLASE_DONE), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.AMYLASE_DONE), encounter);
 		return obs == null ? null : obs.getValueCoded();
 	}
 	
 	public void setAmylaseDone(Concept event) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AMYLASE_DONE), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.AMYLASE_DONE), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && event == null) {
@@ -1562,14 +1531,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AMYLASE_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.AMYLASE_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1598,14 +1566,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POTASSIUM_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.POTASSIUM_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1634,14 +1601,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MAGNESIUM_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.MAGNESIUM_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1649,14 +1615,14 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 	}
 	
 	public Concept getCalciumDone() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CALCIUM_DONE), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.CALCIUM_DONE), encounter);
 		return obs == null ? null : obs.getValueCoded();
 	}
 	
 	public void setCalciumDone(Concept event) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CALCIUM_DONE), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.CALCIUM_DONE), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && event == null) {
@@ -1670,14 +1636,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CALCIUM_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CALCIUM_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1685,14 +1650,14 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 	}
 	
 	public Concept getAlbuminDone() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ALBUMIN_DONE), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.ALBUMIN_DONE), encounter);
 		return obs == null ? null : obs.getValueCoded();
 	}
 	
 	public void setAlbuminDone(Concept event) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ALBUMIN_DONE), encounter);
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.ALBUMIN_DONE), encounter);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && event == null) {
@@ -1706,14 +1671,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ALBUMIN_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.ALBUMIN_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1742,14 +1706,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CBC_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.CBC_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1778,14 +1741,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.BLOOD_GLUCOSE_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.BLOOD_GLUCOSE_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1814,14 +1776,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.THYROID_TEST_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.THYROID_TEST_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1850,14 +1811,13 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (event != null) {
-				obs = new Obs(encounter.getPatient(),
-				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_TEST_DONE),
-				        encounter.getEncounterDatetime(), encounter.getLocation());
+				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
+				    MdrtbConcepts.OTHER_TEST_DONE), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(event);
 				encounter.addObs(obs);
 			}
@@ -1895,9 +1855,9 @@ public class AEForm extends AbstractSimpleForm implements Comparable<AEForm> {
 		String at = "";
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
 		int yesId = yes.getId().intValue();
-		Concept q = getClinicalScreenDone();
 		MessageSourceService mss = Context.getMessageSourceService();
 		
+		Concept q = getClinicalScreenDone();
 		if (q != null && q.getId().intValue() == yesId) {
 			at = mss.getMessage("mdrtb.pv.clinicalScreen") + ", ";
 		}

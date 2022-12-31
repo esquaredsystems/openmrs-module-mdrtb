@@ -10,17 +10,19 @@ import org.openmrs.module.reporting.definition.configuration.ConfigurationProper
 @Localized("mdrtb.reporting.ProgramLocationCohortDefinition")
 public class MdrtbProgramLocationCohortDefinition extends BaseCohortDefinition {
 	
-	@ConfigurationProperty(group="location")
+	private static final long serialVersionUID = 1L;
+	
+	@ConfigurationProperty(group = "location")
 	private Location location;
-
-	@ConfigurationProperty(group="startDateGroup")
+	
+	@ConfigurationProperty(group = "startDateGroup")
 	private Date startDate;
 	
-	@ConfigurationProperty(group="startDateGroup")
+	@ConfigurationProperty(group = "startDateGroup")
 	private Date endDate;
 	
 	//***** CONSTRUCTORS *****
-
+	
 	/**
 	 * Default Constructor
 	 */
@@ -38,46 +40,46 @@ public class MdrtbProgramLocationCohortDefinition extends BaseCohortDefinition {
 	}
 	
 	//***** PROPERTY ACCESS *****
-
+	
 	/**
 	 * @return the fromDate
 	 */
 	public Date getStartDate() {
 		return startDate;
 	}
-
+	
 	/**
 	 * @param fromDate the fromDate to set
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-
+	
 	/**
 	 * @return the toDate
 	 */
 	public Date getEndDate() {
 		return endDate;
 	}
-
+	
 	/**
 	 * @param toDate the toDate to set
 	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-
+	
 	/**
 	 * @return the location
 	 */
 	public Location getLocation() {
-	    return location;
-    }
+		return location;
+	}
 	
 	/**
 	 * @return location the location to set
 	 */
 	public void setLocation(Location location) {
-	    this.location = location;
-    }
+		this.location = location;
+	}
 }

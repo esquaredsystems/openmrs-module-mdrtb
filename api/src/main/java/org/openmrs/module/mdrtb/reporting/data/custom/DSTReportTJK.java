@@ -53,6 +53,7 @@ import org.openmrs.module.reporting.report.renderer.RenderingMode;
 /**
  * Outcome Report which reports on patient outcome by registration group
  */
+@SuppressWarnings("unused")
 public class DSTReportTJK implements ReportSpecification {
 	
 	/**
@@ -74,8 +75,9 @@ public class DSTReportTJK implements ReportSpecification {
 	 */
 	public List<Parameter> getParameters() {
 		List<Parameter> l = new ArrayList<Parameter>();
-		l.add(new Parameter("location",  Context.getMessageSourceService().getMessage("mdrtb.facility"), Location.class));
-		l.add(new Parameter("year", Context.getMessageSourceService().getMessage("mdrtb.yearOfTreatmentStart"), Integer.class));
+		l.add(new Parameter("location", Context.getMessageSourceService().getMessage("mdrtb.facility"), Location.class));
+		l.add(new Parameter("year", Context.getMessageSourceService().getMessage("mdrtb.yearOfTreatmentStart"),
+		        Integer.class));
 		l.add(new Parameter("quarter", Context.getMessageSourceService().getMessage("mdrtb.quarterOptional"), String.class));
 		l.add(new Parameter("month", Context.getMessageSourceService().getMessage("mdrtb.monthOptional"), String.class));
 		return l;
@@ -86,8 +88,9 @@ public class DSTReportTJK implements ReportSpecification {
 	 */
 	public List<RenderingMode> getRenderingModes() {
 		List<RenderingMode> l = new ArrayList<RenderingMode>();
-		l.add(ReportUtil.renderingModeFromResource("HTML", "org/openmrs/module/mdrtb/reporting/data/output/DSTForm" + 
-			(StringUtils.isNotBlank(Context.getLocale().getLanguage()) ? "_" + Context.getLocale().getLanguage() : "") + ".html"));
+		l.add(ReportUtil.renderingModeFromResource("HTML", "org/openmrs/module/mdrtb/reporting/data/output/DSTForm"
+		        + (StringUtils.isNotBlank(Context.getLocale().getLanguage()) ? "_" + Context.getLocale().getLanguage() : "")
+		        + ".html"));
 		return l;
 	}
 	
@@ -102,7 +105,8 @@ public class DSTReportTJK implements ReportSpecification {
 		Integer month = (Integer) parameters.get("month");*/
 		String quarter = (String) parameters.get("quarter");
 		String month = (String) parameters.get("month");
-		context.getParameterValues().putAll(ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month)));
+		context.getParameterValues().putAll(
+		    ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month)));
 		
 		return context;
 	}
@@ -110,7 +114,6 @@ public class DSTReportTJK implements ReportSpecification {
 	/**
 	 * ReportSpecification#evaluateReport(EvaluationContext)
 	 */
-	@SuppressWarnings("unchecked")
 	public ReportData evaluateReport(EvaluationContext context) {
 		
 		ReportDefinition report = new ReportDefinition();
@@ -119,37 +122,37 @@ public class DSTReportTJK implements ReportSpecification {
 		String oblast = (String) context.getParameterValue("oblast");
 		
 		Location location = (Location) context.getParameterValue("location");
-		Date startDate = (Date)context.getParameterValue("startDate");
-		Date endDate = (Date)context.getParameterValue("endDate");
+		Date startDate = (Date) context.getParameterValue("startDate");
+		Date endDate = (Date) context.getParameterValue("endDate");
 		
 		//OBLAST
 		Region o = null;
-		if(!oblast.equals("") && location == null)
-			o =  Context.getService(MdrtbService.class).getRegion(Integer.parseInt(oblast));
+		if (!oblast.equals("") && location == null)
+			o = Context.getService(MdrtbService.class).getRegion(Integer.parseInt(oblast));
 		
 		List<Location> locList = new ArrayList<Location>();
-		if(o != null && location == null)
+		if (o != null && location == null)
 			locList = Context.getService(MdrtbService.class).getLocationsFromRegion(o);
 		else if (location != null)
 			locList.add(location);
 		
-		if(location != null)
-			context.addParameterValue("location", location.getName()); 
-		else if(o != null)
-			context.addParameterValue("location", o.getName()); 
+		if (location != null)
+			context.addParameterValue("location", location.getName());
+		else if (o != null)
+			context.addParameterValue("location", o.getName());
 		else
-			context.addParameterValue("location", "All"); 
+			context.addParameterValue("location", "All");
 		
 		// Base Cohort is patients who started treatment during year, optionally at location
 		Map<String, Mapped<? extends CohortDefinition>> baseCohortDefs = new LinkedHashMap<String, Mapped<? extends CohortDefinition>>();
-
+		
 		//OBLAST
-		if (!locList.isEmpty()){
+		if (!locList.isEmpty()) {
 			List<CohortDefinition> cohortDefinitions = new ArrayList<CohortDefinition>();
-			for(Location loc : locList)
+			for (Location loc : locList)
 				cohortDefinitions.add(Cohorts.getLocationFilter(loc, startDate, endDate));
-				
-			if(!cohortDefinitions.isEmpty()){
+			
+			if (!cohortDefinitions.isEmpty()) {
 				report.setBaseCohortDefinition(ReportUtil.getCompositionCohort("OR", cohortDefinitions), null);
 			}
 		}
@@ -163,31 +166,40 @@ public class DSTReportTJK implements ReportSpecification {
 		CohortDefinition smearNegative = Cohorts.getAllSmearNegativeDuring(startDate, endDate);
 		CohortDefinition smearPositive = Cohorts.getAnySmearPositiveDuring(startDate, endDate);
 		
-		CohortDefinition failure = ReportUtil.getCompositionCohort("OR", groups.get("AfterFailureCategoryI"),groups.get("AfterFailureCategoryII"));
-		CohortDefinition total = ReportUtil.getCompositionCohort("OR",groups.get("New"),groups.get("Relapse"),groups.get("AfterDefault"),failure,groups.get("Other"));
-		dsd.addColumn("NewSSPos", ReportUtil.getCompositionCohort("AND",pulmonary,smearPositive,groups.get("New")),null);
-		dsd.addColumn("NewSSNeg", ReportUtil.getCompositionCohort("AND",pulmonary,smearNegative,groups.get("New")),null);
-		dsd.addColumn("NewExtra", ReportUtil.getCompositionCohort("AND",extrapulmonary,groups.get("New")),null);
+		CohortDefinition failure = ReportUtil.getCompositionCohort("OR", groups.get("AfterFailureCategoryI"),
+		    groups.get("AfterFailureCategoryII"));
+		CohortDefinition total = ReportUtil.getCompositionCohort("OR", groups.get("New"), groups.get("Relapse"),
+		    groups.get("AfterDefault"), failure, groups.get("Other"));
+		dsd.addColumn("NewSSPos", ReportUtil.getCompositionCohort("AND", pulmonary, smearPositive, groups.get("New")), null);
+		dsd.addColumn("NewSSNeg", ReportUtil.getCompositionCohort("AND", pulmonary, smearNegative, groups.get("New")), null);
+		dsd.addColumn("NewExtra", ReportUtil.getCompositionCohort("AND", extrapulmonary, groups.get("New")), null);
 		
-		dsd.addColumn("RelapseSSPos", ReportUtil.getCompositionCohort("AND",pulmonary,smearPositive,groups.get("Relapse")),null);
-		dsd.addColumn("RelapseSSNeg", ReportUtil.getCompositionCohort("AND",pulmonary,smearNegative,groups.get("Relapse")),null);
-		dsd.addColumn("RelapseExtra", ReportUtil.getCompositionCohort("AND",extrapulmonary,groups.get("Relapse")),null);
+		dsd.addColumn("RelapseSSPos",
+		    ReportUtil.getCompositionCohort("AND", pulmonary, smearPositive, groups.get("Relapse")), null);
+		dsd.addColumn("RelapseSSNeg",
+		    ReportUtil.getCompositionCohort("AND", pulmonary, smearNegative, groups.get("Relapse")), null);
+		dsd.addColumn("RelapseExtra", ReportUtil.getCompositionCohort("AND", extrapulmonary, groups.get("Relapse")), null);
 		
-		dsd.addColumn("DefaultSSPos", ReportUtil.getCompositionCohort("AND",pulmonary,smearPositive,groups.get("AfterDefault")),null);
-		dsd.addColumn("DefaultSSNeg", ReportUtil.getCompositionCohort("AND",pulmonary,smearNegative,groups.get("AfterDefault")),null);
-		dsd.addColumn("DefaultExtra", ReportUtil.getCompositionCohort("AND",extrapulmonary,groups.get("AfterDefault")),null);
+		dsd.addColumn("DefaultSSPos",
+		    ReportUtil.getCompositionCohort("AND", pulmonary, smearPositive, groups.get("AfterDefault")), null);
+		dsd.addColumn("DefaultSSNeg",
+		    ReportUtil.getCompositionCohort("AND", pulmonary, smearNegative, groups.get("AfterDefault")), null);
+		dsd.addColumn("DefaultExtra", ReportUtil.getCompositionCohort("AND", extrapulmonary, groups.get("AfterDefault")),
+		    null);
 		
-		dsd.addColumn("FailureSSPos", ReportUtil.getCompositionCohort("AND",pulmonary,smearPositive,failure),null);
-		dsd.addColumn("FailureSSNeg", ReportUtil.getCompositionCohort("AND",pulmonary,smearNegative,failure),null);
-		dsd.addColumn("FailureExtra", ReportUtil.getCompositionCohort("AND",extrapulmonary,failure),null);
+		dsd.addColumn("FailureSSPos", ReportUtil.getCompositionCohort("AND", pulmonary, smearPositive, failure), null);
+		dsd.addColumn("FailureSSNeg", ReportUtil.getCompositionCohort("AND", pulmonary, smearNegative, failure), null);
+		dsd.addColumn("FailureExtra", ReportUtil.getCompositionCohort("AND", extrapulmonary, failure), null);
 		
-		dsd.addColumn("OtherSSPos", ReportUtil.getCompositionCohort("AND",pulmonary,smearPositive,groups.get("Other")),null);
-		dsd.addColumn("OtherSSNeg", ReportUtil.getCompositionCohort("AND",pulmonary,smearNegative,groups.get("Other")),null);
-		dsd.addColumn("OtherExtra", ReportUtil.getCompositionCohort("AND",extrapulmonary,groups.get("Other")),null);
+		dsd.addColumn("OtherSSPos", ReportUtil.getCompositionCohort("AND", pulmonary, smearPositive, groups.get("Other")),
+		    null);
+		dsd.addColumn("OtherSSNeg", ReportUtil.getCompositionCohort("AND", pulmonary, smearNegative, groups.get("Other")),
+		    null);
+		dsd.addColumn("OtherExtra", ReportUtil.getCompositionCohort("AND", extrapulmonary, groups.get("Other")), null);
 		
-		dsd.addColumn("TotalSSPos", ReportUtil.getCompositionCohort("AND",pulmonary,smearPositive,total),null);
-		dsd.addColumn("TotalSSNeg", ReportUtil.getCompositionCohort("AND",pulmonary,smearNegative,total),null);
-		dsd.addColumn("TotalExtra", ReportUtil.getCompositionCohort("AND",extrapulmonary,total),null);
+		dsd.addColumn("TotalSSPos", ReportUtil.getCompositionCohort("AND", pulmonary, smearPositive, total), null);
+		dsd.addColumn("TotalSSNeg", ReportUtil.getCompositionCohort("AND", pulmonary, smearNegative, total), null);
+		dsd.addColumn("TotalExtra", ReportUtil.getCompositionCohort("AND", extrapulmonary, total), null);
 		
 		//rows
 		CohortDefinition culturePositive = Cohorts.getAnyCulturePositiveDuring(startDate, endDate);
@@ -195,30 +207,31 @@ public class DSTReportTJK implements ReportSpecification {
 		CohortDefinition dstResultExists = ReportUtil.getDstResultCohort(endDate);
 		CohortDefinition referredXpert = Cohorts.getPatientsReferredToTestFilter(null, endDate, MdrtbConcepts.GENEXPERT);
 		CohortDefinition referredHAIN = Cohorts.getPatientsReferredToTestFilter(null, endDate, MdrtbConcepts.HAIN_TEST);
-		CohortDefinition referredCulture = Cohorts.getPatientsReferredToTestFilter(null, endDate, MdrtbConcepts.CULTURE_RESULT);
-		
+		CohortDefinition referredCulture = Cohorts.getPatientsReferredToTestFilter(null, endDate,
+		    MdrtbConcepts.CULTURE_RESULT);
 		
 		CohortDefinition referredCultureOnly = ReportUtil.minus(referredCulture, culturePositive);
 		CohortDefinition referredXpertOnly = ReportUtil.minus(referredXpert, dstResultExists);
 		CohortDefinition referredHAINOnly = ReportUtil.minus(referredHAIN, dstResultExists);
-		CohortDefinition becameMdrtbAfterTreatmentStart  = Cohorts.getMdrtbAfterTreatmentStart(startDate, null, 0, null);
+		CohortDefinition becameMdrtbAfterTreatmentStart = Cohorts.getMdrtbAfterTreatmentStart(startDate, null, 0, null);
 		
 		dsd.addRow("referredXpert", referredXpertOnly, null);
 		dsd.addRow("referredHAIN", referredHAINOnly, null);
 		dsd.addRow("referredCulture", referredCultureOnly, null);
 		dsd.addRow("culturePositive", culturePositive, null);
 		dsd.addRow("dstResultExists", dstResultExists, null);
-		dsd.addRow("mdr", confirmedMdrtb,  null);
+		dsd.addRow("mdr", confirmedMdrtb, null);
 		dsd.addRow("mdrafter", becameMdrtbAfterTreatmentStart, null);
+		
 		report.addDataSetDefinition("results", dsd, null);
 		
 		ReportData data;
-        try {
-	        data = Context.getService(ReportDefinitionService.class).evaluate(report, context);
-        }
-        catch (EvaluationException e) {
-        	throw new MdrtbAPIException("Unable to evaluate Outcomes report", e);
-        }
+		try {
+			data = Context.getService(ReportDefinitionService.class).evaluate(report, context);
+		}
+		catch (EvaluationException e) {
+			throw new MdrtbAPIException("Unable to evaluate Outcomes report", e);
+		}
 		return data;
 	}
 }

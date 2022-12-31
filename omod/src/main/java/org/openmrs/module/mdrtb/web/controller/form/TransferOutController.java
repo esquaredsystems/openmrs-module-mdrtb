@@ -84,8 +84,8 @@ public class TransferOutController {
 			}
 			
 			else {
-				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class)
-				        .getMdrtbPatientProgram(patientProgramId);
+				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(
+				    patientProgramId);
 				
 				form = new TransferOutForm(mdrtbProgram.getPatient());
 				form.setLocation(mdrtbProgram.getLocation());
@@ -223,15 +223,12 @@ public class TransferOutController {
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
 			if (!mdr) {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/tbdashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
-			}
-			else {
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getTbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
+			} else {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getMdrtbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			}
 		}
 		return new ModelAndView(new RedirectView(returnUrl));

@@ -39,10 +39,11 @@ import org.openmrs.logic.util.LogicUtil;
 public class ProgramDataSourceMDRTB implements LogicDataSource {
 	
 	private static Log log = LogFactory.getLog(ProgramDataSourceMDRTB.class);
+	
 	private static final Collection<String> keys = new ArrayList<String>();
-
+	
 	/**
-	 * @see LogicDataSource#read(LogicContext, Cohort, .LogicCriteria)   
+	 * @see LogicDataSource#read(LogicContext, Cohort, .LogicCriteria)
 	 */
 	public Map<Integer, Result> read(LogicContext context, Cohort patients, LogicCriteria criteria) {
 		
@@ -54,22 +55,21 @@ public class ProgramDataSourceMDRTB implements LogicDataSource {
 			Integer personId = patientProgram.getPatient().getPersonId();
 			
 			Result result = new Result(patientProgram.getProgram().getConcept());
-            result.setResultDate(patientProgram.getDateEnrolled());
-
+			result.setResultDate(patientProgram.getDateEnrolled());
+			
 			if (result != null) {
 				if (!resultSet.containsKey(personId)) {
 					resultSet.put(personId, result);
-				} 
-				else {
-				    Result oldResult = resultSet.get(personId);
-				    if (oldResult.getResultDate().before(result.getResultDate())){
-				        resultSet.remove(personId);
-				        resultSet.put(personId, result);
-				    }    
+				} else {
+					Result oldResult = resultSet.get(personId);
+					if (oldResult.getResultDate().before(result.getResultDate())) {
+						resultSet.remove(personId);
+						resultSet.put(personId, result);
+					}
 				}
 			}
 		}
-
+		
 		LogicUtil.applyAggregators(resultSet, criteria, patients);
 		return resultSet;
 	}
@@ -103,24 +103,21 @@ public class ProgramDataSourceMDRTB implements LogicDataSource {
 	 * @return
 	 */
 	public Collection<PatientProgram> getPatientPrograms(Cohort patients, LogicCriteria criteria) {
-		  Collection<PatientProgram> patientPrograms = new ArrayList<PatientProgram>();
-		  ProgramWorkflowService service = Context.getProgramWorkflowService();
-
-		      
-		      String token = criteria.getRootToken();
-    		  Program prog = service.getProgramByName(token);
-    		  List<Program> progList = new ArrayList<Program>();
-    		  progList.add(prog);
-    		  patientPrograms = service.getPatientPrograms(patients, progList);
-
-
+		Collection<PatientProgram> patientPrograms = new ArrayList<PatientProgram>();
+		ProgramWorkflowService service = Context.getProgramWorkflowService();
+		
+		String token = criteria.getRootToken();
+		Program prog = service.getProgramByName(token);
+		List<Program> progList = new ArrayList<Program>();
+		progList.add(prog);
+		patientPrograms = service.getPatientPrograms(patients, progList);
+		
 		//log.info("Patient programs: " + patientPrograms.size());
 		return patientPrograms;
 		
 	}
 	
-    
-    public void addKey(String key) {
-        getKeys().add(key);
-    }
+	public void addKey(String key) {
+		getKeys().add(key);
+	}
 }

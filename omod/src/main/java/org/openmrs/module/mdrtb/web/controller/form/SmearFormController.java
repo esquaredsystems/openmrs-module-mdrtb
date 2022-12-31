@@ -98,8 +98,8 @@ public class SmearFormController {
 			}
 			
 			else {
-				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class)
-				        .getMdrtbPatientProgram(patientProgramId);
+				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(
+				    patientProgramId);
 				
 				form = new SmearForm(mdrtbProgram.getPatient());
 				
@@ -153,7 +153,7 @@ public class SmearFormController {
 								if (facilities != null) {
 									model.addAttribute("facilities", facilities);
 									for (Facility f : facilities) {
-										if (f.getName().equals(location.getRegion())) {
+										if (f.getName().equals(location.getAddress6())) {
 											model.addAttribute("facilitySelected", f.getId());
 											break;
 										}
@@ -189,7 +189,6 @@ public class SmearFormController {
 		return new ModelAndView("/module/mdrtb/form/smear", model);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView processSmearForm(@ModelAttribute("smear") SmearForm smear, BindingResult errors,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
@@ -234,16 +233,14 @@ public class SmearFormController {
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
 			if (!mdr) {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/tbdashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getTbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			}
 			
 			else {
 				returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form";
-				returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-				    Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId).getPatient().getId(),
-				    patientProgramId);
+				returnUrl = MdrtbWebUtil.appendParameters(returnUrl, Context.getService(MdrtbService.class)
+				        .getMdrtbPatientProgram(patientProgramId).getPatient().getId(), patientProgramId);
 			}
 		}
 		return new ModelAndView(new RedirectView(returnUrl));

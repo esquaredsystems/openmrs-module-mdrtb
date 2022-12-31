@@ -77,10 +77,11 @@ public class ReportingController_original {
 			mode.getRenderer().render(data, mode.getArgument(), response.getOutputStream());
 		}
 		catch (Exception e) {
-			response.getOutputStream()
-			        .print("<html><body><span class=\"error\">Error: " + e.getMessage() + "</span><br/><br/>");
 			response.getOutputStream().print(
-			    "<a href=\"#\" onclick=\"document.getElementById('errorDetailDiv').style.display = '';\">Error Details</a><br/><br/>");
+			    "<html><body><span class=\"error\">Error: " + e.getMessage() + "</span><br/><br/>");
+			response.getOutputStream()
+			        .print(
+			            "<a href=\"#\" onclick=\"document.getElementById('errorDetailDiv').style.display = '';\">Error Details</a><br/><br/>");
 			response.getOutputStream().print("<span id=\"errorDetailDiv\" style=\"display:none;\">");
 			for (StackTraceElement ste : e.getStackTrace()) {
 				response.getOutputStream().print(ste.toString());

@@ -68,7 +68,8 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 			map.put("dateFormat", dateFormat);
 			
 			MessageSourceAccessor msa = getMessageSourceAccessor();
-			map.put("daysOfWeek",
+			map.put(
+			    "daysOfWeek",
 			    "'" + msa.getMessage("mdrtb.sunday") + "','" + msa.getMessage("mdrtb.monday") + "','"
 			            + msa.getMessage("mdrtb.tuesday") + "','" + msa.getMessage("mdrtb.wednesday") + "','"
 			            + msa.getMessage("mdrtb.thursday") + "','" + msa.getMessage("mdrtb.friday") + "','"
@@ -76,17 +77,20 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 			            + msa.getMessage("mdrtb.mon") + "','" + msa.getMessage("mdrtb.tues") + "','"
 			            + msa.getMessage("mdrtb.wed") + "','" + msa.getMessage("mdrtb.thurs") + "','"
 			            + msa.getMessage("mdrtb.fri") + "','" + msa.getMessage("mdrtb.sat") + "'");
-			map.put("monthsOfYear", "'" + msa.getMessage("mdrtb.january") + "','" + msa.getMessage("mdrtb.february") + "','"
-			        + msa.getMessage("mdrtb.march") + "','" + msa.getMessage("mdrtb.april") + "','"
-			        + msa.getMessage("mdrtb.may") + "','" + msa.getMessage("mdrtb.june") + "','"
-			        + msa.getMessage("mdrtb.july") + "','" + msa.getMessage("mdrtb.august") + "','"
-			        + msa.getMessage("mdrtb.september") + "','" + msa.getMessage("mdrtb.october") + "','"
-			        + msa.getMessage("mdrtb.november") + "','" + msa.getMessage("mdrtb.december") + "','"
-			        + msa.getMessage("mdrtb.jan") + "','" + msa.getMessage("mdrtb.feb") + "','" + msa.getMessage("mdrtb.mar")
-			        + "','" + msa.getMessage("mdrtb.apr") + "','" + msa.getMessage("mdrtb.may") + "','"
-			        + msa.getMessage("mdrtb.jun") + "','" + msa.getMessage("mdrtb.jul") + "','" + msa.getMessage("mdrtb.aug")
-			        + "','" + msa.getMessage("mdrtb.sept") + "','" + msa.getMessage("mdrtb.oct") + "','"
-			        + msa.getMessage("mdrtb.nov") + "','" + msa.getMessage("mdrtb.dec") + "'");
+			map.put(
+			    "monthsOfYear",
+			    "'" + msa.getMessage("mdrtb.january") + "','" + msa.getMessage("mdrtb.february") + "','"
+			            + msa.getMessage("mdrtb.march") + "','" + msa.getMessage("mdrtb.april") + "','"
+			            + msa.getMessage("mdrtb.may") + "','" + msa.getMessage("mdrtb.june") + "','"
+			            + msa.getMessage("mdrtb.july") + "','" + msa.getMessage("mdrtb.august") + "','"
+			            + msa.getMessage("mdrtb.september") + "','" + msa.getMessage("mdrtb.october") + "','"
+			            + msa.getMessage("mdrtb.november") + "','" + msa.getMessage("mdrtb.december") + "','"
+			            + msa.getMessage("mdrtb.jan") + "','" + msa.getMessage("mdrtb.feb") + "','"
+			            + msa.getMessage("mdrtb.mar") + "','" + msa.getMessage("mdrtb.apr") + "','"
+			            + msa.getMessage("mdrtb.may") + "','" + msa.getMessage("mdrtb.jun") + "','"
+			            + msa.getMessage("mdrtb.jul") + "','" + msa.getMessage("mdrtb.aug") + "','"
+			            + msa.getMessage("mdrtb.sept") + "','" + msa.getMessage("mdrtb.oct") + "','"
+			            + msa.getMessage("mdrtb.nov") + "','" + msa.getMessage("mdrtb.dec") + "'");
 			
 		}
 		return map;
@@ -98,12 +102,13 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 		
 		if (Context.isAuthenticated()) {
 			
+			@SuppressWarnings("unchecked")
 			List<MdrtbTreatmentSupporter> tss = (List<MdrtbTreatmentSupporter>) object;
 			String deleteStringRoot = "del_checkbox_";
-			String treatSupAttributeTypeString = Context.getAdministrationService()
-			        .getGlobalProperty("mdrtb.treatment_supporter_person_attribute_type");
-			String relationshipTypeString = Context.getAdministrationService()
-			        .getGlobalProperty("mdrtb.treatment_supporter_relationship_type");
+			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(
+			    "mdrtb.treatment_supporter_person_attribute_type");
+			String relationshipTypeString = Context.getAdministrationService().getGlobalProperty(
+			    "mdrtb.treatment_supporter_relationship_type");
 			
 			PersonService ps = Context.getPersonService();
 			PersonAttributeType pat = ps.getPersonAttributeTypeByName(treatSupAttributeTypeString);
@@ -128,8 +133,9 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 						List<Relationship> rs = ps.getRelationshipsByPerson(p);
 						
 						for (Relationship r : rs) {
-							if (r.getPersonA().equals(p) && rt.getRelationshipTypeId().intValue() == r.getRelationshipType()
-							        .getRelationshipTypeId().intValue())
+							if (r.getPersonA().equals(p)
+							        && rt.getRelationshipTypeId().intValue() == r.getRelationshipType()
+							                .getRelationshipTypeId().intValue())
 								ps.voidRelationship(r, "person no longer a valid treatment supporter");
 						}
 						
@@ -153,15 +159,14 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 	protected Object formBackingObject(HttpServletRequest request) throws Exception {
 		List<MdrtbTreatmentSupporter> ret = new ArrayList<MdrtbTreatmentSupporter>();
 		if (Context.isAuthenticated()) {
-			MdrtbService ms = (MdrtbService) Context.getService(MdrtbService.class);
 			Concept phoneConcept = (Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TELEPHONE_NUMBER));
 			
 			//get the concept for TS Activity
 			Concept tsActivityConcept = (Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.TREATMENT_SUPPORTER_CURRENTLY_ACTIVE));
 			
-			String treatSupAttributeTypeString = Context.getAdministrationService()
-			        .getGlobalProperty("mdrtb.treatment_supporter_person_attribute_type");
+			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(
+			    "mdrtb.treatment_supporter_person_attribute_type");
 			PersonService ps = Context.getPersonService();
 			ObsService os = Context.getObsService();
 			PersonAttributeType pat = ps.getPersonAttributeTypeByName(treatSupAttributeTypeString);
@@ -169,8 +174,8 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 			for (Person p : persons) {
 				if (p.getActiveAttributes().size() > 0) {
 					for (PersonAttribute patTmp : p.getActiveAttributes()) {
-						if (patTmp.getAttributeType().getPersonAttributeTypeId().intValue() == pat.getPersonAttributeTypeId()
-						        .intValue() && !p.getDead() && !p.getPersonVoided()) {
+						if (patTmp.getAttributeType().getPersonAttributeTypeId().intValue() == pat
+						        .getPersonAttributeTypeId().intValue() && !p.getDead() && !p.getPersonVoided()) {
 							p.getAddresses();
 							MdrtbTreatmentSupporter mts = new MdrtbTreatmentSupporter();
 							mts.setPerson(p);

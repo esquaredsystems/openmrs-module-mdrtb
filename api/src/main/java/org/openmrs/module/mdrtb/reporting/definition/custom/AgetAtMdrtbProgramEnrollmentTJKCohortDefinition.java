@@ -7,6 +7,8 @@ import org.openmrs.module.reporting.definition.configuration.ConfigurationProper
 @Localized("dotsreports.reporting.AgetAtDotsProgramEnrollmentTJKCohortDefinition")
 public class AgetAtMdrtbProgramEnrollmentTJKCohortDefinition extends ProgramEnrollmentCohortDefinition {
 	
+	private static final long serialVersionUID = 1L;
+	
 	// note that, by convention, the first month of treatment is referred to as "treatment month 0"
 	// so, for instance, if you want to test Bac results during the first 5 months of treatment,
 	// then fromTreatmentMonth would be set to 0, and toTreatmentMonth set to 4, because you

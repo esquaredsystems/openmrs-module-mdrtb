@@ -7,13 +7,12 @@ import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 
-
 public interface SimpleForm {
-
+	
 	public Integer getId();
 	
 	public void setEncounter(Encounter encounter);
-
+	
 	public Encounter getEncounter();
 	
 	public Person getProvider();
@@ -25,7 +24,7 @@ public interface SimpleForm {
 	public void setPatient(Patient patient);
 	
 	public Date getEncounterDatetime();
-
+	
 	public void setEncounterDatetime(Date date);
 	
 	public Location getLocation();

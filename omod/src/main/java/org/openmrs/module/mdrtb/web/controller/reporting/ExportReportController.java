@@ -45,7 +45,8 @@ public class ExportReportController {
 		model.addAttribute("oblasts", oblasts);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST) //, value="/module/mdrtb/reporting/exportReport"
+	@RequestMapping(method = RequestMethod.POST)
+	//, value="/module/mdrtb/reporting/exportReport"
 	public String exportReportPost(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("district") Integer districtId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,
@@ -81,8 +82,8 @@ public class ExportReportController {
 				oblast = (Context.getService(MdrtbService.class).getOblast(Integer.parseInt(oblastId))).getId(); 
 			}*/
 			if (!(reportDate.equals(""))) {
-				date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
-				        .format(new SimpleDateFormat("dd.MM.yyyy").parse(reportDate));
+				date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new SimpleDateFormat("dd.MM.yyyy")
+				        .parse(reportDate));
 			}
 			if (!(table.equals(""))) {
 				table = table.replaceAll("<br>", " ");

@@ -25,7 +25,7 @@ import org.openmrs.module.mdrtb.Region;
 /**
  * @author owais.hussain@esquaredsystems.com
  */
-public class HibernateMdrtbDAOTest extends MdrtbBase {
+public class HibernateMdrtbDAOTest extends MdrtbTestBase {
 	
 	@Before
 	public void runBeforeEachTest() throws Exception {
@@ -34,7 +34,8 @@ public class HibernateMdrtbDAOTest extends MdrtbBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getLocationsWithAnyProgramEnrollments()}.
+	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getLocationsWithAnyProgramEnrollments()}
+	 * .
 	 */
 	@Test
 	public final void testGetLocationsWithAnyProgramEnrollments() {
@@ -45,17 +46,8 @@ public class HibernateMdrtbDAOTest extends MdrtbBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getAllRayonsTJK()}.
-	 */
-	@Test
-	public final void testGetAllRayonsTJK() {
-		List<String> list = dao.getAllRayonsTJK();
-		assertTrue(list.contains("Fayzobod District")); // Expect a district name
-	}
-	
-	/**
-	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getPatientIdentifierById(java.lang.Integer)}.
+	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getPatientIdentifierById(java.lang.Integer)}
+	 * .
 	 */
 	@Test
 	public final void testGetPatientIdentifierById() {
@@ -66,7 +58,8 @@ public class HibernateMdrtbDAOTest extends MdrtbBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getEncountersByEncounterTypes(java.util.List)}.
+	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getEncountersByEncounterTypes(java.util.List)}
+	 * .
 	 */
 	@Test
 	public final void testGetEncountersByEncounterTypes() {
@@ -79,7 +72,8 @@ public class HibernateMdrtbDAOTest extends MdrtbBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getEncountersByEncounterTypes(java.util.List, java.util.Date, java.util.Date, java.util.Date)}.
+	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getEncountersByEncounterTypes(java.util.List, java.util.Date, java.util.Date, java.util.Date)}
+	 * .
 	 */
 	@Test
 	public final void testGetEncountersByEncounterTypesAndDates() {
@@ -103,19 +97,19 @@ public class HibernateMdrtbDAOTest extends MdrtbBase {
 		List<BaseLocation> list = dao.getAddressHierarchyLocationsByHierarchyLevel(Country.HIERARCHY_LEVEL);
 		assertEquals(2, list.size()); // Expect two countries
 	}
-
+	
 	@Test
 	public final void testGetLocationsByHierarchyLevelRegion() {
 		List<BaseLocation> list = dao.getAddressHierarchyLocationsByHierarchyLevel(Region.HIERARCHY_LEVEL);
 		assertEquals(3, list.size()); // Expect three Tajik regions
 	}
-
+	
 	@Test
 	public final void testGetLocationsByHierarchyLevelDistrict() {
 		List<BaseLocation> list = dao.getAddressHierarchyLocationsByHierarchyLevel(District.HIERARCHY_LEVEL);
 		assertEquals(2, list.size()); // Expect two districts
 	}
-
+	
 	@Test
 	@Ignore
 	public final void testGetLocationsByParent() {

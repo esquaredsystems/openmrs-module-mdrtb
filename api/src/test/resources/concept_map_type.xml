@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <concept_map_type concept_map_type_id="1" name="SAME-AS" creator="1" date_created="2022-07-29 00:00:00" is_hidden="0" retired="0" uuid="35543629-7d8c-11e1-909d-c80aa9edcf4e"/>
+    <concept_map_type concept_map_type_id="1" name="SAME-AS" creator="1" date_created="2022-07-29 00:00:00" is_hidden="0" retired="0" uuid="35543629-7d8c-11e1-909d-c80aa9edcf4a"/>
     <concept_map_type concept_map_type_id="2" name="NARROWER-THAN" creator="1" date_created="2022-07-29 00:00:00" is_hidden="0" retired="0" uuid="43ac5109-7d8c-11e1-909d-c80aa9edcf4e"/>
     <concept_map_type concept_map_type_id="3" name="BROADER-THAN" creator="1" date_created="2022-07-29 00:00:00" is_hidden="0" retired="0" uuid="4b9d9421-7d8c-11e1-909d-c80aa9edcf4e"/>
     <concept_map_type concept_map_type_id="4" name="Associated finding" creator="1" date_created="2022-07-29 00:00:00" is_hidden="0" retired="0" uuid="55e02065-7d8c-11e1-909d-c80aa9edcf4e"/>

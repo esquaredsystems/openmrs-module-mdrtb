@@ -217,23 +217,26 @@ public class Form89Controller {
 			form89.setLocation(location);
 		}
 		
-		if (form89.getPopulationCategory() != null && form89.getPopulationCategory().getId().intValue() != Context
-		        .getService(MdrtbService.class).getConcept(MdrtbConcepts.FOREIGNER).getId().intValue()) {
+		if (form89.getPopulationCategory() != null
+		        && form89.getPopulationCategory().getId().intValue() != Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.FOREIGNER).getId().intValue()) {
 			
 			System.out.println("Setting null");
 			form89.setCountryOfOrigin(null);
 		}
 		
-		if (form89.getCircumstancesOfDetection() != null && form89.getCircumstancesOfDetection().getId()
-		        .intValue() != Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MIGRANT).getId().intValue()) {
+		if (form89.getCircumstancesOfDetection() != null
+		        && form89.getCircumstancesOfDetection().getId().intValue() != Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.MIGRANT).getId().intValue()) {
 			
 			System.out.println("Setting null");
 			form89.setCityOfOrigin(null);
 			form89.setDateOfReturn(null);
 		}
 		
-		if (form89.getMethodOfDetection() != null && form89.getMethodOfDetection().getId().intValue() != Context
-		        .getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER).getId().intValue()) {
+		if (form89.getMethodOfDetection() != null
+		        && form89.getMethodOfDetection().getId().intValue() != Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.OTHER).getId().intValue()) {
 			
 			System.out.println("Setting null");
 			form89.setOtherMethodOfDetection(null);
@@ -317,8 +320,8 @@ public class Form89Controller {
 	public Collection<ConceptAnswer> getPossibleMethodsOfDetection() {
 		
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.METHOD_OF_DETECTION);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.METHOD_OF_DETECTION);
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -425,8 +428,8 @@ public class Form89Controller {
 	public ArrayList<ConceptAnswer> getYesno() {
 		
 		ArrayList<ConceptAnswer> typeArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class)
-		        .getPossibleConceptAnswers(MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS);
+		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
+		    MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS);
 		for (int i = 0; i < 2; i++) {
 			typeArray.add(null);
 		}
