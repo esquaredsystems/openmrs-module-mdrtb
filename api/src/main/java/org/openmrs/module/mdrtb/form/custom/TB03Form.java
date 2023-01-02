@@ -15,6 +15,7 @@ import org.openmrs.PersonName;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
@@ -27,14 +28,14 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 	public TB03Form() {
 		super();
 		regNum = null;
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("TB03"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_TB03_TB_INTAKE);
 		
 	}
 	
 	public TB03Form(Patient patient) {
 		super(patient);
 		regNum = null;
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("TB03"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_TB03_TB_INTAKE);
 	}
 	
 	public TB03Form(Encounter encounter) {

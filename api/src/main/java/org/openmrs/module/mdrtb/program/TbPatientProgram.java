@@ -21,6 +21,7 @@ import org.openmrs.Person;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.TbUtil;
 import org.openmrs.module.mdrtb.comparator.PatientStateComparator;
@@ -46,7 +47,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 	public TbPatientProgram() {
 		this.program = new PatientProgram();
 		this.program.setProgram(Context.getProgramWorkflowService().getProgramByName(
-		    Context.getAdministrationService().getGlobalProperty("dotsreports.program_name")));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DOTS_PROGRAM_NAME)));
 	}
 	
 	public TbPatientProgram(PatientProgram program) {
@@ -564,18 +565,14 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 	
 	public TB03Form getTb03() {
 		TB03Form tb03 = null;
-		List<Encounter> encounters = null;
-		EncounterType intakeType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
-		
-		encounters = getTbEncountersDuringProgramObs();
+		List<Encounter> encounters = getTbEncountersDuringProgramObs();
 		
 		if (encounters != null) {
 			for (Encounter encounter : encounters) {
 				// create a new status item for this encounter
 				
 				// now place the visit in the appropriate "bucket"
-				if (encounter.getEncounterType().equals(intakeType)) {
+				if (encounter.getEncounterType().equals(MdrtbConstants.ET_TB03_TB_INTAKE)) {
 					tb03 = new TB03Form(encounter);
 					break;
 				}
@@ -587,18 +584,14 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 	
 	public Form89 getForm89() {
 		Form89 form89 = null;
-		List<Encounter> encounters = null;
-		EncounterType intakeType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
-		
-		encounters = getTbEncountersDuringProgramObs();
+		List<Encounter> encounters = getTbEncountersDuringProgramObs();
 		
 		if (encounters != null) {
 			for (Encounter encounter : encounters) {
 				// create a new status item for this encounter
 				
 				// now place the visit in the appropriate "bucket"
-				if (encounter.getEncounterType().equals(intakeType)) {
+				if (encounter.getEncounterType().equals(MdrtbConstants.ET_FORM89_TB_FOLLOWUP)) {
 					form89 = new Form89(encounter);
 					break;
 				}
@@ -614,10 +607,8 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 			return null;
 		}
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
 		List<EncounterType> eSet = new ArrayList<>();
-		eSet.add(eType);
+		eSet.add(MdrtbConstants.ET_FORM89_TB_FOLLOWUP);
 		List<Encounter> encs = Context.getService(MdrtbService.class).getEncountersByPatientAndTypes(program.getPatient(), eSet);
 		
 		ArrayList<Encounter> ret = new ArrayList<Encounter>();
@@ -639,10 +630,8 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 			return null;
 		}
 		
-		EncounterType eType = Context.getEncounterService()
-		        .getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
 		List<EncounterType> eSet = new ArrayList<>();
-		eSet.add(eType);
+		eSet.add(MdrtbConstants.ET_TB03_TB_INTAKE);
 		List<Encounter> encs = Context.getService(MdrtbService.class).getEncountersByPatientAndTypes(program.getPatient(), eSet);
 		if (encs != null) {
 			System.out.println("TB03 Encounters: " + encs.size());

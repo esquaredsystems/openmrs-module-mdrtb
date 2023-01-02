@@ -14,6 +14,7 @@ import org.openmrs.PersonAddress;
 import org.openmrs.PersonName;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
@@ -25,13 +26,12 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	
 	public Form89() {
 		super();
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Form 89"));
-		
+		this.encounter.setEncounterType(MdrtbConstants.ET_FORM89_TB_FOLLOWUP);
 	}
 	
 	public Form89(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Form 89"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_FORM89_TB_FOLLOWUP);
 	}
 	
 	public Form89(Encounter encounter) {

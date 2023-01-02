@@ -8,6 +8,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -16,13 +17,12 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 	
 	public RegimenForm() {
 		super();
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("PV Regimen"));
-		
+		this.encounter.setEncounterType(MdrtbConstants.ET_PV_REGIMEN);
 	}
 	
 	public RegimenForm(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("PV Regimen"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_PV_REGIMEN);
 	}
 	
 	public RegimenForm(Encounter encounter) {

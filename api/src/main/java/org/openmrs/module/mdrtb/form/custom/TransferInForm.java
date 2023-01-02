@@ -5,6 +5,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -13,13 +14,13 @@ public class TransferInForm extends AbstractSimpleForm {
 	
 	public TransferInForm() {
 		super();
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Transfer In"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_TRANSFER_IN);
 		
 	}
 	
 	public TransferInForm(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Transfer In"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_TRANSFER_IN);
 	}
 	
 	public TransferInForm(Encounter encounter) {

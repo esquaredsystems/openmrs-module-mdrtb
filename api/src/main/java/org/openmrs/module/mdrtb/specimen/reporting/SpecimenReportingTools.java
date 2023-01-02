@@ -16,6 +16,7 @@ import org.openmrs.EncounterType;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.comparator.PersonByNameComparator;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -42,8 +43,7 @@ public class SpecimenReportingTools {
 		Concept intermediate = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.INTERMEDIATE_TO_TB_DRUG);
 		Concept suceptible = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SUSCEPTIBLE_TO_TB_DRUG);
 		
-		EncounterType specimenEncounterType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type"));
+		EncounterType specimenEncounterType = MdrtbConstants.ET_SPECIMEN_COLLECTION;
 		
 		// select all the encounters of the specimen collection encounter type which are not voided and
 		// were collected between the start and end date, and are NOT in the set of encounters that have a smear result, culture result, or 
@@ -82,8 +82,7 @@ public class SpecimenReportingTools {
 		String positiveResultConceptIds = convertIntegerArrayToString(MdrtbUtil.getPositiveResultConceptIds());
 		String labIdString = convertIntegerArrayToString(labIds);
 		
-		EncounterType specimenEncounterType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type"));
+		EncounterType specimenEncounterType = MdrtbConstants.ET_SPECIMEN_COLLECTION;
 		
 		// select all encounters of the specimen collection encounter type that are not voided and and were collected within the start date
 		// and end date and have a positive culture result from the selected lab and are NOT in the set of encounters
@@ -160,8 +159,7 @@ public class SpecimenReportingTools {
 		String positiveResultConceptIds = convertIntegerArrayToString(MdrtbUtil.getPositiveResultConceptIds());
 		String labIdString = convertIntegerArrayToString(labIds);
 		
-		EncounterType specimenEncounterType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type"));
+		EncounterType specimenEncounterType = MdrtbConstants.ET_SPECIMEN_COLLECTION;
 		
 		// select all encounters of the specimen collection encounter type that are not voided and and were collected within the start date
 		// and end date and have a positive smear result from the selected lab and are NOT in the set of encounters
@@ -234,8 +232,7 @@ public class SpecimenReportingTools {
 		
 		String labIdString = convertIntegerArrayToString(labIds);
 		
-		EncounterType specimenEncounterType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type"));
+		EncounterType specimenEncounterType = MdrtbConstants.ET_SPECIMEN_COLLECTION;
 		
 		// select all the encounters of the specimen collection encounter type that were collected within the startDate and endDate and are
 		// not voided and have smear, culture or DST result from the selected lab that is marked as contaminated

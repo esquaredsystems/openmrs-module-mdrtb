@@ -4,7 +4,7 @@ import org.openmrs.module.reporting.cohort.definition.ProgramEnrollmentCohortDef
 import org.openmrs.module.reporting.common.Localized;
 import org.openmrs.module.reporting.definition.configuration.ConfigurationProperty;
 
-@Localized("dotsreports.reporting.AgetAtDotsProgramEnrollmentTJKCohortDefinition")
+@Localized
 public class AgetAtMdrtbProgramEnrollmentTJKCohortDefinition extends ProgramEnrollmentCohortDefinition {
 	
 	private static final long serialVersionUID = 1L;

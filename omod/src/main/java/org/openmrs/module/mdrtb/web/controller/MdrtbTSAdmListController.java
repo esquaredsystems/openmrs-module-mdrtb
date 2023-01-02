@@ -22,6 +22,7 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbTreatmentSupporter;
 import org.openmrs.module.mdrtb.propertyeditor.ObsEditor;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -105,10 +106,8 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 			@SuppressWarnings("unchecked")
 			List<MdrtbTreatmentSupporter> tss = (List<MdrtbTreatmentSupporter>) object;
 			String deleteStringRoot = "del_checkbox_";
-			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(
-			    "mdrtb.treatment_supporter_person_attribute_type");
-			String relationshipTypeString = Context.getAdministrationService().getGlobalProperty(
-			    "mdrtb.treatment_supporter_relationship_type");
+			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_TREATMENT_SUPPORTER_PERSON_ATTRIBUTE_TYPE);
+			String relationshipTypeString = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_TX_SUPPORTER_RELATIONSHIP_TYPE);
 			
 			PersonService ps = Context.getPersonService();
 			PersonAttributeType pat = ps.getPersonAttributeTypeByName(treatSupAttributeTypeString);
@@ -165,8 +164,7 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 			Concept tsActivityConcept = (Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.TREATMENT_SUPPORTER_CURRENTLY_ACTIVE));
 			
-			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(
-			    "mdrtb.treatment_supporter_person_attribute_type");
+			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_TREATMENT_SUPPORTER_PERSON_ATTRIBUTE_TYPE);
 			PersonService ps = Context.getPersonService();
 			ObsService os = Context.getObsService();
 			PersonAttributeType pat = ps.getPersonAttributeTypeByName(treatSupAttributeTypeString);

@@ -7,7 +7,7 @@ import org.openmrs.module.reporting.cohort.definition.BaseCohortDefinition;
 import org.openmrs.module.reporting.common.Localized;
 import org.openmrs.module.reporting.definition.configuration.ConfigurationProperty;
 
-@Localized("dotsreports.reporting.TB03CohortDefinition")
+@Localized
 public class TB03UCohortDefinition extends BaseCohortDefinition {
 	
 	private static final long serialVersionUID = 1L;
@@ -23,7 +23,6 @@ public class TB03UCohortDefinition extends BaseCohortDefinition {
 	
 	public TB03UCohortDefinition() {
 		super();
-		
 	}
 	
 	public Date getOnOrBefore() {

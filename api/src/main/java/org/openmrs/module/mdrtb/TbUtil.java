@@ -36,7 +36,7 @@ public class TbUtil {
 	
 	public static String getDOTSPatientIdentifier(Patient p) {
 		String ret = "";
-		String piList = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.DOTS_IDENTIFIER_TYPE_GP);
+		String piList = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE);
 		Set<PatientIdentifier> identifiers = p.getIdentifiers();
 		for (PatientIdentifier pi : identifiers) {
 			if (pi.getIdentifierType().getName().equals(piList)) {
@@ -110,11 +110,11 @@ public class TbUtil {
 	public static Set<EncounterType> getTbEncounterTypes() {
 		
 		Set<EncounterType> types = new HashSet<EncounterType>();
-		types.add(MdrtbConstants.TB03_INTAKE_ENCOUNTER_TYPE);
-		types.add(MdrtbConstants.FORM89_FOLLOWUP_ENCOUNTER_TYPE);
-		types.add(MdrtbConstants.SPECIMEN_COLLECTION_ENCOUNTER_TYPE);
-		types.add(MdrtbConstants.TRANSFER_OUT_ENCOUNTER_TYPE);
-		types.add(MdrtbConstants.TRANSFER_IN_ENCOUNTER_TYPE);
+		types.add(MdrtbConstants.ET_TB03_TB_INTAKE);
+		types.add(MdrtbConstants.ET_FORM89_TB_FOLLOWUP);
+		types.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
+		types.add(MdrtbConstants.ET_TRANSFER_OUT);
+		types.add(MdrtbConstants.ET_TRANSFER_IN);
 		return types;
 	}
 	
@@ -162,7 +162,7 @@ public class TbUtil {
 	public static List<List<Object>> getDefaultDstDrugs() {
 		List<List<Object>> drugs = new LinkedList<List<Object>>();
 		
-		String defaultDstDrugs = Context.getAdministrationService().getGlobalProperty("mdrtb.defaultDstDrugs");
+		String defaultDstDrugs = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DEFAULT_DST_DRUGS);
 		
 		if (StringUtils.isNotBlank(defaultDstDrugs)) {
 			// split on the pipe

@@ -6,6 +6,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -14,13 +15,13 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 	
 	public XpertForm() {
 		super();
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Specimen Collection"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		
 	}
 	
 	public XpertForm(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Specimen Collection"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 	}
 	
 	public XpertForm(Encounter encounter) {

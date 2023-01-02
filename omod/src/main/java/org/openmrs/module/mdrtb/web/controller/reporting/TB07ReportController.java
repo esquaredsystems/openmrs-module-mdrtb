@@ -269,7 +269,7 @@ public class TB07ReportController {
 				
 				//NEW
 				if (q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-				        .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP)))) {
+				        .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
 					
 					if (f89 != null) {
 						Concept x = f89.getCircumstancesOfDetection();
@@ -771,9 +771,9 @@ public class TB07ReportController {
 				
 				//RELAPSE
 				else if (q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-				        .getGlobalProperty(MdrtbConstants.AFTER_RELAPSE1_CONCEPT_ID_GP)))
+				        .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID)))
 				        || q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				            MdrtbConstants.AFTER_RELAPSE2_CONCEPT_ID_GP)))) {
+				            MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID)))) {
 					
 					table1.setRelapseAll(table1.getRelapseAll() + 1);
 					if (hivPositive)
@@ -1259,9 +1259,9 @@ public class TB07ReportController {
 				
 				//FAILURE
 				else if (q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-				        .getGlobalProperty(MdrtbConstants.AFTER_FAILURE1_CONCEPT_ID_GP)))
+				        .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))
 				        || q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				        		MdrtbConstants.AFTER_FAILURE2_CONCEPT_ID_GP)))) {
+				        		MdrtbConstants.GP_AFTER_FAILURE2_CONCEPT_ID)))) {
 					table1.setFailureAll(table1.getFailureAll() + 1);
 					if (hivPositive)
 						table1.setFailureAllHIV(table1.getFailureAllHIV() + 1);
@@ -1353,9 +1353,9 @@ public class TB07ReportController {
 				
 				//DEFAULT
 				else if (q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-				        .getGlobalProperty(MdrtbConstants.AFTER_DEFAULT1_CONCEPT_ID_GP)))
+				        .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
 				        || q.getConceptId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				            MdrtbConstants.AFTER_DEFAULT2_CONCEPT_ID_GP)))) {
+				            MdrtbConstants.GP_AFTER_DEFAULT2_CONCEPT_ID)))) {
 					table1.setDefaultAll(table1.getDefaultAll() + 1);
 					if (hivPositive)
 						table1.setDefaultAllHIV(table1.getDefaultAllHIV() + 1);
@@ -1447,7 +1447,7 @@ public class TB07ReportController {
 				
 				//OTHER		
 				else if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-				        .getGlobalProperty(MdrtbConstants.OTHER_CONCEPT_ID_GP))) {
+				        .getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID))) {
 					table1.setOtherAll(table1.getOtherAll() + 1);
 					if (hivPositive)
 						table1.setOtherAllHIV(table1.getOtherAllHIV() + 1);

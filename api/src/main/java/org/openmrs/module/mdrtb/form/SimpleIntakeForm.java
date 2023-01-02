@@ -6,6 +6,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 
@@ -13,15 +14,13 @@ public class SimpleIntakeForm extends AbstractSimpleForm {
 	
 	public SimpleIntakeForm() {
 		super();
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type")));
+		this.encounter.setEncounterType(MdrtbConstants.ET_TB03_TB_INTAKE);
 		
 	}
 	
 	public SimpleIntakeForm(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type")));
+		this.encounter.setEncounterType(MdrtbConstants.ET_TB03_TB_INTAKE);
 	}
 	
 	public SimpleIntakeForm(Encounter encounter) {

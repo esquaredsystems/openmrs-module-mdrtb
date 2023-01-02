@@ -257,25 +257,26 @@ public class TB07uController {
 			
 			int groupId = q.getConceptId().intValue();
 			
-			if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+					MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				newCase = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.AFTER_RELAPSE1_CONCEPT_ID_GP))) {
+					MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) {
 				relapse1 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.AFTER_RELAPSE1_CONCEPT_ID_GP))) {
+					MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) {
 				relapse2 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.AFTER_DEFAULT1_CONCEPT_ID_GP))) {
+					MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))) {
 				default1 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.AFTER_DEFAULT1_CONCEPT_ID_GP))) {
+					MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))) {
 				default2 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.AFTER_FAILURE1_CONCEPT_ID_GP))) {
+					MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) {
 				failure1 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.AFTER_FAILURE1_CONCEPT_ID_GP))) {
+					MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) {
 				failure2 = Boolean.TRUE;
 			} else {
 				other = Boolean.TRUE;

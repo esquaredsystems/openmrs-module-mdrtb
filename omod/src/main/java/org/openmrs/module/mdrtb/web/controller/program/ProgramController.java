@@ -27,6 +27,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.PatientValidator;
 import org.openmrs.module.mdrtb.Region;
@@ -135,8 +136,8 @@ public class ProgramController {
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_1));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_2));
-			classificationConcepts.add(ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_1));
-			classificationConcepts.add(ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_2));
+			classificationConcepts.add(ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_1));
+			classificationConcepts.add(ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_2));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.OTHER));
 			for (ProgramWorkflowState pws : states) {
 				for (Concept classification : classificationConcepts) {
@@ -162,8 +163,8 @@ public class ProgramController {
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_1));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_2));
-			classificationConcepts.add(ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_1));
-			classificationConcepts.add(ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_2));
+			classificationConcepts.add(ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_1));
+			classificationConcepts.add(ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_2));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.OTHER));
 			for (ProgramWorkflowState pws : states) {
 				for (Concept classification : classificationConcepts) {
@@ -183,16 +184,15 @@ public class ProgramController {
 	
 	@ModelAttribute("dotsIdentifier")
 	public PatientIdentifierType getDotsIdentifier() {
-		
 		return Context.getPatientService().getPatientIdentifierTypeByName(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.primaryPatientIdentifierType"));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE));
 	}
 	
 	@ModelAttribute("mdrIdentifier")
 	public PatientIdentifierType getMdrIdentifier() {
 		
 		return Context.getPatientService().getPatientIdentifierTypeByName(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.mdrIdentifierType"));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE));
 	}
 	
 	@RequestMapping("/module/mdrtb/program/showEnroll.form")
@@ -813,7 +813,7 @@ public class ProgramController {
 		List<PatientIdentifier> ids = null;
 		List<PatientIdentifier> ret = new ArrayList<PatientIdentifier>();
 		PatientIdentifierType pit = Context.getPatientService().getPatientIdentifierTypeByName(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.primaryPatientIdentifierType"));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE));
 		List<PatientIdentifierType> typeList = new ArrayList<PatientIdentifierType>();
 		typeList.add(pit);
 		List<Patient> patList = new ArrayList<Patient>();
@@ -832,7 +832,7 @@ public class ProgramController {
 		List<PatientIdentifier> ids = null;
 		List<PatientIdentifier> ret = new ArrayList<PatientIdentifier>();
 		PatientIdentifierType pit = Context.getPatientService().getPatientIdentifierTypeByName(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.mdrIdentifierType"));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE));
 		
 		List<PatientIdentifierType> typeList = new ArrayList<PatientIdentifierType>();
 		typeList.add(pit);

@@ -69,14 +69,13 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.springframework.validation.Errors;
 
-//TODO: Should extend TbUtil
 public class MdrtbUtil {
 	
 	protected static final Log log = LogFactory.getLog(MdrtbUtil.class);
 	
 	public static String getMdrtbPatientIdentifier(Patient p) {
 		String ret = "";
-		String piList = Context.getAdministrationService().getGlobalProperty("mdrtb.patient_identifier_type");
+		String piList = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 		Set<PatientIdentifier> identifiers = p.getIdentifiers();
 		for (PatientIdentifier pi : identifiers) {
 			if (pi.getIdentifierType().getName().equals(piList)) {
@@ -150,17 +149,12 @@ public class MdrtbUtil {
 	public static Set<EncounterType> getMdrtbEncounterTypes() {
 		
 		Set<EncounterType> types = new HashSet<EncounterType>();
-		types.add(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type")));
-		types.add(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
-		types.add(MdrtbConstants.TRANSFER_OUT_ENCOUNTER_TYPE);
-		types.add(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.transfer_in_encounter_type")));
-		// TODO: Refactor
-		types.add(Context.getEncounterService().getEncounterType("TB03u - XDR"));
-		types.add(Context.getEncounterService().getEncounterType("Resistance During Treatment"));
-		
+		types.add(MdrtbConstants.ET_TB03U_MDRTB_INTAKE);
+		types.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
+		types.add(MdrtbConstants.ET_TRANSFER_OUT);
+		types.add(MdrtbConstants.ET_TRANSFER_IN);
+		types.add(MdrtbConstants.ET_TB03U_XDRTB_INTAKE);
+		types.add(MdrtbConstants.ET_RESISTANCE_DURING_TREATMENT);
 		return types;
 	}
 	
@@ -205,7 +199,7 @@ public class MdrtbUtil {
 	public static List<List<Object>> getDefaultDstDrugs() {
 		List<List<Object>> drugs = new LinkedList<List<Object>>();
 		
-		String defaultDstDrugs = Context.getAdministrationService().getGlobalProperty("mdrtb.defaultDstDrugs");
+		String defaultDstDrugs = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DEFAULT_DST_DRUGS);
 		
 		if (StringUtils.isNotBlank(defaultDstDrugs)) {
 			// split on the pipe

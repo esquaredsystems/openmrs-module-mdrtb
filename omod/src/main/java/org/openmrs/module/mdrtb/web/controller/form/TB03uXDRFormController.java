@@ -23,6 +23,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.form.custom.TB03uXDRForm;
@@ -249,7 +250,7 @@ public class TB03uXDRFormController {
 		//PATIENT DEATH AND CAUSE OF DEATH
 		if (outcome != null
 		        && outcome.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		            "mdrtb.outcome.died.conceptId"))) {
+		        		MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
 			Patient patient = tpp.getPatient();
 			if (!patient.getDead())
 				patient.setDead(new Boolean(true));
@@ -365,12 +366,12 @@ public class TB03uXDRFormController {
 			} else if (pws.getConcept().getId().intValue() == ms.getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_2).getId()
 			        .intValue()) {
 				stateArray.set(4, pws);
-			} else if (pws.getConcept().getId().intValue() == ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_1).getId()
+			} else if (pws.getConcept().getId().intValue() == ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_1).getId()
 			        .intValue()) {
 				stateArray.set(5, pws);
 			}
 			
-			else if (pws.getConcept().getId().intValue() == ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_2).getId()
+			else if (pws.getConcept().getId().intValue() == ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_2).getId()
 			        .intValue()) {
 				stateArray.set(6, pws);
 			}
@@ -465,7 +466,7 @@ public class TB03uXDRFormController {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> concepts = new HashSet<Concept>();
 			concepts.add(ms.getConcept(MdrtbConcepts.CURED));
-			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_COMPLETED));
+			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_COMPLETE));
 			concepts.add(ms.getConcept(MdrtbConcepts.DIED));
 			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_FAILED));
 			concepts.add(ms.getConcept(MdrtbConcepts.LOST_TO_FOLLOWUP));

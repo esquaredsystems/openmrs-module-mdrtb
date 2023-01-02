@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -54,11 +55,11 @@ public class SpecimenReportsOverviewController {
 		// otherwise, save the values
 		else {
 			GlobalProperty daysSinceSmear = Context.getAdministrationService().getGlobalPropertyObject(
-			    "mdrtb.specimenReports.daysSinceSmear");
+			    MdrtbConstants.GP_SPECIMEN_REPORTS_DAYS_SINCE_SMEAR);
 			GlobalProperty daysSinceCulture = Context.getAdministrationService().getGlobalPropertyObject(
-			    "mdrtb.specimenReports.daysSinceCulture");
+			    MdrtbConstants.GP_SPECIMEN_REPORTS_DAYS_SINCE_CULTURE);
 			GlobalProperty defaultLabId = Context.getAdministrationService().getGlobalPropertyObject(
-			    "mdrtb.specimenReports.defaultLabId");
+			    MdrtbConstants.GP_SPECIMEN_REPORTS_DEFAULT_LAB_ID);
 			
 			daysSinceSmear.setPropertyValue(query.getDaysSinceSmear().toString());
 			daysSinceCulture.setPropertyValue(query.getDaysSinceCulture().toString());
@@ -83,10 +84,10 @@ public class SpecimenReportsOverviewController {
 		query.setEndDateCollected(new Date());
 		
 		query.setDaysSinceSmear(Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
-		    "mdrtb.specimenReports.daysSinceSmear")));
+		    MdrtbConstants.GP_SPECIMEN_REPORTS_DAYS_SINCE_SMEAR)));
 		query.setDaysSinceCulture(Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
-		    "mdrtb.specimenReports.daysSinceCulture")));
+		    MdrtbConstants.GP_SPECIMEN_REPORTS_DAYS_SINCE_CULTURE)));
 		query.setLab(Context.getLocationService().getLocation(
-		    Integer.valueOf(Context.getAdministrationService().getGlobalProperty("mdrtb.specimenReports.defaultLabId"))));
+		    Integer.valueOf(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_SPECIMEN_REPORTS_DEFAULT_LAB_ID))));
 	}
 }

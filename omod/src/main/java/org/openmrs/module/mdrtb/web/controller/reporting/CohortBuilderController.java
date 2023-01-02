@@ -39,6 +39,7 @@ import org.openmrs.reporting.PatientFilter;
 import org.openmrs.reporting.PatientSearch;
 import org.openmrs.reporting.PatientSearchReportObject;
 import org.openmrs.reporting.ReportObjectService;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.reporting.*;
 import org.openmrs.util.HandlerUtil;
 import org.openmrs.web.WebConstants;
@@ -47,7 +48,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.view.RedirectView;
 
-//TODO: Deal with this class
 @SuppressWarnings({ "unused" })
 public class CohortBuilderController implements Controller {
 	
@@ -108,7 +108,7 @@ public class CohortBuilderController implements Controller {
 				setMySearchHistory(request, history);
 			}
 			List<Shortcut> shortcuts = new ArrayList<Shortcut>();
-			String shortcutProperty = Context.getAdministrationService().getGlobalProperty("cohort.cohortBuilder.shortcuts");
+			String shortcutProperty = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_COHORT_COHORT_BUILDER_SHORTCUTS);
 			if (shortcutProperty != null && shortcutProperty.length() > 0) {
 				String[] shortcutSpecs = shortcutProperty.split(";");
 				for (int i = 0; i < shortcutSpecs.length; ++i) {
@@ -143,7 +143,7 @@ public class CohortBuilderController implements Controller {
 			
 			List<Concept> drugSets = new ArrayList<Concept>();
 			{
-				String temp = Context.getAdministrationService().getGlobalProperty("cohortBuilder.drugSets");
+				String temp = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_COHORT_BUILDER_DRUG_SETS);
 				if (StringUtils.hasText(temp)) {
 					String[] drugSetNames = temp.split(",");
 					for (String setName : drugSetNames) {

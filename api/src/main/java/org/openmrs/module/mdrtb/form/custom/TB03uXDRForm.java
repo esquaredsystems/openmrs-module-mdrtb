@@ -14,6 +14,7 @@ import org.openmrs.PersonName;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
@@ -23,12 +24,12 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	
 	public TB03uXDRForm() {
 		super();
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("TB03u - XDR"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_TB03U_XDRTB_INTAKE);
 	}
 	
 	public TB03uXDRForm(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("TB03u - XDR"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_TB03U_XDRTB_INTAKE);
 	}
 	
 	public TB03uXDRForm(Encounter encounter) {

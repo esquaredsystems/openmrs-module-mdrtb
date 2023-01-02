@@ -21,6 +21,7 @@ import org.openmrs.Person;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.TbUtil;
 import org.openmrs.module.mdrtb.comparator.PatientStateComparator;
@@ -44,7 +45,7 @@ public class MdrtbPatientProgram implements Comparable<MdrtbPatientProgram>, Val
 	public MdrtbPatientProgram() {
 		this.program = new PatientProgram();
 		this.program.setProgram(Context.getProgramWorkflowService().getProgramByName(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_PROGRAM_NAME)));
 	}
 	
 	public MdrtbPatientProgram(PatientProgram program) {
@@ -568,18 +569,14 @@ public class MdrtbPatientProgram implements Comparable<MdrtbPatientProgram>, Val
 	
 	public TB03uForm getTb03u() {
 		TB03uForm tb03u = null;
-		List<Encounter> encounters = null;
-		EncounterType intakeType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.mdrtbIntake_encounter_type"));
-		
-		encounters = getMdrtbEncountersDuringProgramObs();
+		List<Encounter> encounters = getMdrtbEncountersDuringProgramObs();
 		
 		if (encounters != null) {
 			for (Encounter encounter : encounters) {
 				// create a new status item for this encounter
 				
 				// now place the visit in the appropriate "bucket"
-				if (encounter.getEncounterType().equals(intakeType)) {
+				if (encounter.getEncounterType().equals(MdrtbConstants.ET_TB03U_MDRTB_INTAKE)) {
 					tb03u = new TB03uForm(encounter);
 					break;
 				}
@@ -591,17 +588,14 @@ public class MdrtbPatientProgram implements Comparable<MdrtbPatientProgram>, Val
 	
 	public TB03uXDRForm getTb03uXDR() {
 		TB03uXDRForm tb03ux = null;
-		List<Encounter> encounters = null;
-		EncounterType intakeType = Context.getEncounterService().getEncounterType("TB03u - XDR");
-		
-		encounters = getMdrtbEncountersDuringProgramObs();
+		List<Encounter> encounters = getMdrtbEncountersDuringProgramObs();
 		
 		if (encounters != null) {
 			for (Encounter encounter : encounters) {
 				// create a new status item for this encounter
 				
 				// now place the visit in the appropriate "bucket"
-				if (encounter.getEncounterType().equals(intakeType)) {
+				if (encounter.getEncounterType().equals(MdrtbConstants.ET_TB03U_XDRTB_INTAKE)) {
 					tb03ux = new TB03uXDRForm(encounter);
 					break;
 				}

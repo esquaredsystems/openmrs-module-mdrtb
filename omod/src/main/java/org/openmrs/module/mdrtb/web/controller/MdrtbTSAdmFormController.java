@@ -26,6 +26,7 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbTreatmentSupporter;
 import org.openmrs.module.mdrtb.propertyeditor.ObsEditor;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -141,8 +142,7 @@ public class MdrtbTSAdmFormController extends SimpleFormController {
 					
 					List<PersonAttribute> pas = p.getActiveAttributes();
 					boolean paTest = false;
-					String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(
-					    "mdrtb.treatment_supporter_person_attribute_type");
+					String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_TREATMENT_SUPPORTER_PERSON_ATTRIBUTE_TYPE);
 					PersonService ps = Context.getPersonService();
 					PersonAttributeType pat = ps.getPersonAttributeTypeByName(treatSupAttributeTypeString);
 					for (PersonAttribute pa : pas) {

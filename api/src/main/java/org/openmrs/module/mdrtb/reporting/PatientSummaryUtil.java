@@ -141,7 +141,7 @@ public class PatientSummaryUtil {
 		for (String s : DEMOGRAPHICS_KEYS) {
 			keys.put(s, MessageUtil.translate("mdrtb." + s));
 		}
-		String primaryIdType = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.MDRTB_IDENTIFIER_TYPE_GP);
+		String primaryIdType = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 		for (PatientIdentifierType pit : Context.getPatientService().getAllPatientIdentifierTypes()) {
 			keys.put("identifier." + pit.getName(), pit.getName());
 			if (pit.getName().equals(primaryIdType) || pit.getId().toString().equals(primaryIdType)) {
@@ -286,8 +286,7 @@ public class PatientSummaryUtil {
 			}
 			
 			if (ObjectUtil.containsAny(columns, PRIMARY_IDENTIFIER)) {
-				String primaryIdType = Context.getAdministrationService().getGlobalProperty(
-				    "mdrtb.primaryPatientIdentifierType");
+				String primaryIdType = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 				PatientIdentifier pi = p.getPatientIdentifier(primaryIdType);
 				map.put(PRIMARY_IDENTIFIER, (pi == null ? "" : pi.getIdentifier()));
 			}

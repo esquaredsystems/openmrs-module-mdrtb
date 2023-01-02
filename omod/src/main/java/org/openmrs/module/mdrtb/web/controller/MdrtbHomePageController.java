@@ -25,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleFactory;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.reporting.ReportSpecification;
 import org.openmrs.module.mdrtb.reporting.data.custom.DSTReportTJK;
 import org.openmrs.module.mdrtb.reporting.data.custom.TB07TJK;
@@ -40,8 +41,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class MdrtbHomePageController {
 	
-	private static final String MDRTB_BIRT_REPORT_LIST = "mdrtb.birt_report_list";
-	
 	protected final static Log log = LogFactory.getLog(MdrtbHomePageController.class);
 	
 	@RequestMapping("/module/mdrtb/mdrtbIndex")
@@ -53,7 +52,7 @@ public class MdrtbHomePageController {
 			
 			// Load any configured BIRT reports
 			if (ModuleFactory.getStartedModulesMap().containsKey("birt")) {
-				String str = Context.getAdministrationService().getGlobalProperty(MDRTB_BIRT_REPORT_LIST);
+				String str = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_BIRT_REPORT_LIST);
 				if (StringUtils.isNotEmpty(str)) {
 					String birtPrefix = "module/birt/generateReport.form?reportId=";
 					try {

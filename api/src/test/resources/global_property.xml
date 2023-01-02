@@ -335,33 +335,6 @@ path is used.The %Y and %M are replaced with 4 digit year and 2 digit month resp
     <global_property property="default_locale" property_value="ru" description="" uuid="e7e67536-6cb5-4613-b973-f3083e4ea1e6"/>
     <global_property property="default_location" property_value="Unknown Location" description="" uuid="ced4f644-4ea1-45da-a280-1ef549904073"/>
     <global_property property="default_theme" property_value="green" description="" uuid="e654a833-6a10-47eb-bb5d-52d8e70ae4cb"/>
-    <global_property property="dotsreports.afterDefault1.conceptId" property_value="14" description="" uuid="4f361126-628c-4590-b768-627d8d13d817"/>
-    <global_property property="dotsreports.afterDefault2.conceptId" property_value="431" description="" uuid="05af4471-c052-4d79-b257-3db25b7f7c9a"/>
-    <global_property property="dotsreports.afterFailure1.conceptId" property_value="17" description="" uuid="b8ecd15f-6326-4848-bcb3-e7e80d4586e9"/>
-    <global_property property="dotsreports.afterFailure2.conceptId" property_value="16" description="" uuid="f688acf8-265e-4445-b325-e448a3ae0ccd"/>
-    <global_property property="dotsreports.afterRelapse1.conceptId" property_value="20" description="" uuid="59fc4994-9339-4e73-9b9b-8ca2a1fcf79b"/>
-    <global_property property="dotsreports.afterRelapse2.conceptId" property_value="430" description="" uuid="60fbab03-69c8-481f-9927-b4694d7e16d7"/>
-    <global_property property="dotsreports.database_version" property_value="1.0.0" description="" uuid="4abfa2c9-ed3e-488a-bac7-7415f7f8a9a1"/>
-    <global_property property="dotsreports.defaultDstDrugs" property_value="ISONIAZID|RIFAMPICIN|ETHAMBUTOL|PYRAZINAMIDE|STREPTOMYCIN" description="" uuid="5d0cd67b-e70c-4d4c-8fa6-57e1c9153758"/>
-    <global_property property="dotsreports.formIdToAttachToBacteriologyEntry" description="" uuid="030e1884-e91f-4842-97b0-0bd714421341"/>
-    <global_property property="dotsreports.new.conceptId" property_value="18" description="" uuid="daaecb55-f392-43d2-bd8f-b5d73a141fbc"/>
-    <global_property property="dotsreports.other.conceptId" property_value="19" description="" uuid="721a80a8-1248-4081-9efc-11abcdbed64b"/>
-    <global_property property="dotsreports.outcome.canceled.conceptId" property_value="280" description="" uuid="5d878acd-4f8f-4b98-b001-545f9c567003"/>
-    <global_property property="dotsreports.outcome.cured.conceptId" property_value="26" description="" uuid="422c1a65-915d-4b74-977b-b15899371d6c"/>
-    <global_property property="dotsreports.outcome.died.conceptId" property_value="25" description="" uuid="ecbbc053-51ae-4f13-9fc3-69d26b5f11e0"/>
-    <global_property property="dotsreports.outcome.ltfu.conceptId" property_value="29" description="" uuid="eeab6746-eb81-49d1-9091-8fb05c8276ac"/>
-    <global_property property="dotsreports.outcome.sld2.conceptId" property_value="325" description="" uuid="7ab31447-9198-4e83-b862-64b0d6dc19cc"/>
-    <global_property property="dotsreports.outcome.transferout.conceptId" property_value="23" description="" uuid="ab5c378e-34fb-4719-8b2c-174a9ef10844"/>
-    <global_property property="dotsreports.outcome.txCompleted.conceptId" property_value="28" description="" uuid="804ba38a-531f-48ea-886a-66137151b714"/>
-    <global_property property="dotsreports.outcome.txFailure.conceptId" property_value="27" description="" uuid="3378f0ae-9d2f-45b5-bac3-445f72969dba"/>
-    <global_property property="dotsreports.patient_identifier_type_list" description="" uuid="b8731d9d-c693-468a-b5d5-685a069b6a52"/>
-    <global_property property="dotsreports.primaryPatientIdentifierType" property_value="Регистрационный номер Дотc" description="" uuid="243d7da0-1419-42f2-b160-a40ee1dc952b"/>
-    <global_property property="dotsreports.program_name" property_value="DOTS Program" description="" uuid="6fe9ec06-9b50-4a30-a5ab-96677a506fe4"/>
-    <global_property property="dotsreports.roles_to_redirect_from_openmrs_homepage" description="" uuid="ac135ce4-8aeb-4225-87d0-bd4e1fcb72f1"/>
-    <global_property property="dotsreports.specimenReports.daysSinceCulture" property_value="14" description="" uuid="cb60dff8-0101-43dd-868a-b81ec6aa9ea9"/>
-    <global_property property="dotsreports.specimenReports.daysSinceSmear" property_value="14" description="" uuid="4ec2029a-113c-41f6-a9e3-e69f34d07825"/>
-    <global_property property="dotsreports.specimenReports.defaultLabId" property_value="1" description="" uuid="0100507a-6bfc-48be-81ca-f2dd9637df3a"/>
-    <global_property property="dotsreports.transferIn.conceptId" property_value="15" description="" uuid="83358d9c-8934-43f2-9564-e941cee5735d"/>
     <global_property property="encounterForm.obsSortOrder" property_value="number" description="" uuid="2685fba1-1b67-4118-8531-c7ca938113f5"/>
     <global_property property="formentry.database_version" property_value="2.7" description="" uuid="81581981-3b38-48ea-894f-31174d3c8d29"/>
     <global_property property="FormEntry.enableDashboardTab" property_value="true" description="" uuid="e14ebbfa-2dd5-4f2f-8aad-c96a9bef7898"/>
@@ -442,7 +415,6 @@ path is used.The %Y and %M are replaced with 4 digit year and 2 digit month resp
     <global_property property="mdrtb.hain.formId" property_value="15" description="" uuid="c097da8b-b33c-11e7-9f2c-782bcb563a1c"/>
     <global_property property="mdrtb.intake_encounter_type" property_value="TB03" description="" uuid="509ccaec-5d71-4759-9ef8-4a3fdaf654bc"/>
     <global_property property="mdrtb.lab_entry_ids" property_value="355|356|357|358|359|360|361|362|363" description="" uuid="6a2b013c-a380-11e7-b650-782bcb563a1c"/>
-    <global_property property="mdrtb.mandatory" property_value="false" description="" uuid="a55a42bf-d158-4d91-b764-53beafa4c8ba"/>
     <global_property property="mdrtb.mdrIdentifierType" property_value="Регистрационный номер МЛУ" description="" uuid="57d5e3af-94df-4be4-ae56-65575bacac61"/>
     <global_property property="mdrtb.mdrtbIntake_encounter_type" property_value="TB03u - MDR" description="" uuid="734a76b8-0254-426f-bbfb-77f3ec580bbc"/>
     <global_property property="mdrtb.mdrtb_forms_list" description="" uuid="7664ecfc-9aac-4a7f-89a7-ec4ae7e52013"/>
@@ -473,19 +445,6 @@ path is used.The %Y and %M are replaced with 4 digit year and 2 digit month resp
     <global_property property="mdrtb.treatment_supporter_person_attribute_type" property_value="Treatment Supporter" description="" uuid="a9fe222c-6729-4d09-841d-c8c8296729fd"/>
     <global_property property="mdrtb.treatment_supporter_relationship_type" property_value="Treatment Supporter/Treatment Supportee" description="" uuid="07a01833-960f-4703-90b6-27c0555b8c15"/>
     <global_property property="mdrtb.xpert.formId" property_value="14" description="" uuid="c097d922-b33c-11e7-9f2c-782bcb563a1c"/>
-    <global_property property="mdrtbdrugforecast.database_version" property_value="1.0.0" description="" uuid="56ba3da6-93d4-4d53-8868-0a95f7e2728b"/>
-    <global_property property="mdrtbdrugforecast.fixedIdentifierLocation" description="" uuid="f22fae01-7550-4d08-9ff3-2a7adf59d109"/>
-    <global_property property="mdrtbdrugforecast.follow_up_encounter_type" property_value="MDR-TB Follow Up" description="" uuid="744f54b6-bcf0-46ab-b379-27cae160a275"/>
-    <global_property property="mdrtbdrugforecast.formIdToAttachToBacteriologyEntry" description="" uuid="f15083a9-d1b6-4f94-88a5-ff2fc026e78f"/>
-    <global_property property="mdrtbdrugforecast.intake_encounter_type" property_value="MDR-TB Intake" description="" uuid="0c281f56-60ba-4043-bc66-67c2e7e4bcda"/>
-    <global_property property="mdrtbdrugforecast.mdrtb_forms_list" description="" uuid="0e5fbaac-0633-4cbf-93cb-e23128cf3ed9"/>
-    <global_property property="mdrtbdrugforecast.patient_identifier_type_list" description="" uuid="f898dc3b-e151-4929-acfe-e1f4a9b82639"/>
-    <global_property property="mdrtbdrugforecast.primaryPatientIdentifierType" property_value="Регистрационный номер" description="" uuid="04673bf9-61ae-4133-a209-8468f56bde08"/>
-    <global_property property="mdrtbdrugforecast.program_name" property_value="MDR-TB PROGRAM" description="" uuid="ad131ca4-cc4d-42a6-abf3-c320398c6a9a"/>
-    <global_property property="mdrtbdrugforecast.roles_to_redirect_from_openmrs_homepage" description="" uuid="177948a7-d5f6-4e0e-96a0-e3a7021cf378"/>
-    <global_property property="mdrtbdrugforecast.specimen_collection_encounter_type" property_value="Specimen Collection" description="" uuid="dc38843b-9dac-47ce-a7af-41dfb1ece7b3"/>
-    <global_property property="mdrtbdrugforecast.test_result_encounter_type_bacteriology" description="" uuid="4fd7c903-11d4-4a57-a4cb-d279c818ec2b"/>
-    <global_property property="mdrtbdrugforecast.test_result_encounter_type_DST" description="" uuid="0f6748e3-8423-400e-bc68-bc89e3ea0e6a"/>
     <global_property property="mdrtbtajikistan.mandatory" property_value="false" description="" uuid="d59997d5-646a-44df-9df2-9e982aa3cc67"/>
     <global_property property="mdrtbtajikistan.started" property_value="true" description="" uuid="86479609-7b3e-41fe-9a5f-9b09b1cdcc90"/>
     <global_property property="metadatamapping.addLocalMappings" description="" uuid="658ed56f-640e-46b8-b2b2-5b005ac5cfe3"/>

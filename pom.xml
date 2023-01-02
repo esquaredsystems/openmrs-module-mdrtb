@@ -132,6 +132,18 @@
             <scope>provided</scope>
         </dependency>
 		<dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>webservices.rest-omod-common</artifactId>
+            <version>${openmrs.wsrest.version}</version>
+            <scope>provided</scope>
+        </dependency>
+		<dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>webservices.rest-omod</artifactId>
+            <version>${openmrs.wsrest.version}</version>
+            <scope>provided</scope>
+        </dependency>
+		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>serialization.xstream-api</artifactId>
 			<version>${openmrs.xstream-api.version}</version>

@@ -21,6 +21,7 @@ import org.openmrs.Person;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.mdrtb.specimen.custom.HAIN;
@@ -72,8 +73,7 @@ public class SpecimenImpl implements Specimen {
 		// set up the encounter for this specimen
 		encounter = new Encounter();
 		encounter.setPatient(patient);
-		encounter.setEncounterType(Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")));
+		encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		
 	}
 	

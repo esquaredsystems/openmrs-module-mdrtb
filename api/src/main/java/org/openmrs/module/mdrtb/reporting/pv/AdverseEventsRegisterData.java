@@ -12,7 +12,6 @@ import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 
-@SuppressWarnings("nls")
 public class AdverseEventsRegisterData implements Comparable<AdverseEventsRegisterData> {
 
 	// private Patient patient;

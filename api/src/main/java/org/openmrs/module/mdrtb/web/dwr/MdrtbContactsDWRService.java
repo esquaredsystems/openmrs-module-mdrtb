@@ -24,6 +24,7 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 
 @Deprecated
@@ -135,8 +136,7 @@ public class MdrtbContactsDWRService {
 			}
 			
 			//person attribute: String popupContactIdVal, 
-			String contactAttributType = Context.getAdministrationService().getGlobalProperty(
-			    "mdrtb.patient_contact_id_attribute_type");
+			String contactAttributType = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_PATIENT_CONTACT_ID_ATTRIBUTE_TYPE);
 			PersonAttributeType contactAttType = perS.getPersonAttributeTypeByName(contactAttributType);
 			if (contactAttType != null && popupContactIdVal != null && !popupContactIdVal.equals("")) {
 				boolean createNew = true;
@@ -352,8 +352,7 @@ public class MdrtbContactsDWRService {
 			Patient p = Context.getPatientService().getPatient(patientId);
 			PersonService ps = Context.getPersonService();
 			Person supporter = ps.getPerson(supporterId);
-			String relationshipTypeString = Context.getAdministrationService().getGlobalProperty(
-			    "mdrtb.treatment_supporter_relationship_type");
+			String relationshipTypeString = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_TX_SUPPORTER_RELATIONSHIP_TYPE);
 			RelationshipType rt = ps.getRelationshipTypeByName(relationshipTypeString);
 			
 			for (Relationship r : ps.getRelationshipsByPerson(supporter)) {

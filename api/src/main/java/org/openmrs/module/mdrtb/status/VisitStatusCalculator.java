@@ -42,12 +42,12 @@ public class VisitStatusCalculator {
 			status = new VisitStatus(dummyProgram);
 		}
 		
-		EncounterType intakeType = MdrtbConstants.TB03_INTAKE_ENCOUNTER_TYPE;
-		EncounterType followUpType = MdrtbConstants.TB03U_MDRTB_FOLLOWUP_ENCOUNTER_TYPE;
-		EncounterType specimenType = MdrtbConstants.SPECIMEN_COLLECTION_ENCOUNTER_TYPE;
-		EncounterType transferOutType = MdrtbConstants.TRANSFER_OUT_ENCOUNTER_TYPE;
-		EncounterType transferInType = MdrtbConstants.TRANSFER_IN_ENCOUNTER_TYPE;
-		EncounterType drdtType = MdrtbConstants.RESISTANCE_DURING_TREATMENT_ENCOUNTER_TYPE;
+		EncounterType intakeType = MdrtbConstants.ET_TB03_TB_INTAKE;
+		EncounterType followUpType = MdrtbConstants.ET_TB03U_XDRTB_INTAKE;
+		EncounterType specimenType = MdrtbConstants.ET_SPECIMEN_COLLECTION;
+		EncounterType transferOutType = MdrtbConstants.ET_TRANSFER_OUT;
+		EncounterType transferInType = MdrtbConstants.ET_TRANSFER_IN;
+		EncounterType drdtType = MdrtbConstants.ET_RESISTANCE_DURING_TREATMENT;
 		
 		// where we will store the various visits
 		List<StatusItem> intakeVisits = new LinkedList<StatusItem>();
@@ -173,14 +173,11 @@ public class VisitStatusCalculator {
 			status = new VisitStatus(dummyProgram);
 		}
 		
-		EncounterType intakeType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
-		EncounterType followUpType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type"));
-		EncounterType specimenType = Context.getEncounterService().getEncounterType(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type"));
-		EncounterType transferOutType = MdrtbConstants.TRANSFER_OUT_ENCOUNTER_TYPE;;
-		EncounterType transferInType = MdrtbConstants.TRANSFER_IN_ENCOUNTER_TYPE;
+		EncounterType intakeType = MdrtbConstants.ET_TB03_TB_INTAKE;
+		EncounterType followUpType = MdrtbConstants.ET_FORM89_TB_FOLLOWUP;
+		EncounterType specimenType = MdrtbConstants.ET_SPECIMEN_COLLECTION;
+		EncounterType transferOutType = MdrtbConstants.ET_TRANSFER_OUT;;
+		EncounterType transferInType = MdrtbConstants.ET_TRANSFER_IN;
 				
 		// where we will store the various visits
 		List<StatusItem> intakeVisits = new LinkedList<StatusItem>();

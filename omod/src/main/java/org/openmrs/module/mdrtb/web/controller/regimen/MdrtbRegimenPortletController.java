@@ -39,6 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MdrtbRegimenPortletController {
 	
+	private static final String MDRTB_ENABLE_RESISTANCE_PROBABILITY_WARNING_GP = "mdrtb.enableResistanceProbabilityWarning";
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@RequestMapping("/module/mdrtb/regimen/*.portlet")
@@ -120,10 +121,10 @@ public class MdrtbRegimenPortletController {
 					}
 				}
 				
-				// Resistance Probability: Experimental for Hamish
+				// Resistance Probability: Experimental
 				if (dstResults.isEmpty()) { // Only show this warning if no DSTs have been done
 					if ("true".equals(Context.getAdministrationService().getGlobalProperty(
-					    "mdrtb.enableResistanceProbabilityWarning"))) {
+					    MDRTB_ENABLE_RESISTANCE_PROBABILITY_WARNING_GP))) {
 						Map<PredictionModel.RiskFactor, Boolean> riskFactors = PredictionModel.getRiskFactors(patient);
 						map.addAttribute("resistanceRiskFactors", riskFactors);
 						double probability = PredictionModel.calculateRiskProbability(riskFactors, 1);

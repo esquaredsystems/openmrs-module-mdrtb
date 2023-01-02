@@ -65,7 +65,7 @@ public class MdrtbProgramLocationCohortDefinitionEvaluator implements CohortDefi
 		}
 		
 		Program mdrtbProgram = Context.getProgramWorkflowService().getProgramByName(
-		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.MDRTB_PROGRAM_NAME_GP));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_PROGRAM_NAME));
 		Cohort resultCohort = new Cohort();
 		
 		// first get all the possible patient programs, sorted by date enrolled

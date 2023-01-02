@@ -36,19 +36,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-/*import org.openmrs.module.mdrtbdrugforecast.DrugCount;
-import org.openmrs.module.mdrtbdrugforecast.MdrtbDrugStock;
-import org.openmrs.module.mdrtbdrugforecast.MdrtbUtil;
-import org.openmrs.module.mdrtbdrugforecast.MdrtbConcepts;
-import org.openmrs.module.mdrtbdrugforecast.drugneeds.DrugForecastUtil;
-import org.openmrs.module.mdrtbdrugforecast.program.MdrtbPatientProgram;
-import org.openmrs.module.mdrtbdrugforecast.regimen.Regimen;
-import org.openmrs.module.mdrtbdrugforecast.regimen.RegimenUtils;
-import org.openmrs.module.mdrtbdrugforecast.reporting.definition.MdrtbDrugForecastTreatmentStartedCohortDefinition;
-import org.openmrs.module.mdrtbdrugforecast.reporting.definition.MdrtbDrugForecastTreatmentStartedOnDrugCohortDefinition;
-import org.openmrs.module.mdrtbdrugforecast.service.MdrtbDrugForecastService;
-import org.openmrs.module.mdrtbdrugforecast.status.TreatmentStatusCalculator;
-import org.openmrs.module.mdrtbdrugforecast.web.controller.status.DashboardTreatmentStatusRenderer;*/
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller

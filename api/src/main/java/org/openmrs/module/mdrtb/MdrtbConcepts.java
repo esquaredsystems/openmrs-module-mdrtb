@@ -282,9 +282,9 @@ public class MdrtbConcepts {
 	
 	public final static String DEFAULT_AFTER_REGIMEN_2 = "DEFAULT AFTER REGIMEN 2";
 	
-	public final static String AFTER_FAILURE_REGIMEN_1 = "AFTER FAILURE REGIMEN 1";
+	public final static String FAILURE_AFTER_REGIMEN_1 = "AFTER FAILURE REGIMEN 1";
 	
-	public final static String AFTER_FAILURE_REGIMEN_2 = "AFTER FAILURE REGIMEN 2";
+	public final static String FAILURE_AFTER_REGIMEN_2 = "AFTER FAILURE REGIMEN 2";
 	
 	// TODO: are these still used?
 	public final static String MDR_TB = "MDR-TB";//"MULTI-DRUG RESISTANT TUBERCULOSIS";
@@ -316,7 +316,7 @@ public class MdrtbConcepts {
 	
 	public final static String TREATMENT_FAILED = "TREATMENT FAILED";
 	
-	public final static String TREATMENT_COMPLETED = "TREATMENT COMPLETED";
+	public final static String TREATMENT_COMPLETE = "TREATMENT COMPLETE";
 	
 	public final static String PATIENT_TRANSFERRED_OUT = "PATIENT TRANSFERRED OUT";
 	

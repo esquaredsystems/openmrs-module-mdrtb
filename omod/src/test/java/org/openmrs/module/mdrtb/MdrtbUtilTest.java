@@ -5,13 +5,10 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.Locale;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.api.ConceptNameType;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.service.MdrtbService;
 
 public class MdrtbUtilTest {
 	

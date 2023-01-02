@@ -16,19 +16,18 @@ import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 
-@SuppressWarnings("nls")
 public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<AdverseEventsForm> {
 	
 	private static final String VOID_REASON = "voided by Mdr-tb module specimen tracking UI";
 
 	public AdverseEventsForm() {
 		super();
-		this.encounter.setEncounterType(MdrtbConstants.ADVERSE_EVENT_ENCOUNTER_TYPE);
+		this.encounter.setEncounterType(MdrtbConstants.ET_ADVERSE_EVENT);
 	}
 	
 	public AdverseEventsForm(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(MdrtbConstants.ADVERSE_EVENT_ENCOUNTER_TYPE);
+		this.encounter.setEncounterType(MdrtbConstants.ET_ADVERSE_EVENT);
 	}
 	
 	public AdverseEventsForm(Encounter encounter) {

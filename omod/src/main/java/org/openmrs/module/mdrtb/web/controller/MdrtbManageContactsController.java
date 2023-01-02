@@ -36,6 +36,7 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbContactPerson;
 import org.openmrs.module.mdrtb.MdrtbPatient;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -280,7 +281,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 								if (newContactIdString != null && !newContactIdString.equals("")) {
 									
 									String contactAttributType = Context.getAdministrationService().getGlobalProperty(
-									    "mdrtb.patient_contact_id_attribute_type");
+									    MdrtbConstants.GP_PATIENT_CONTACT_ID_ATTRIBUTE_TYPE);
 									PersonAttributeType contactAttType = perS
 									        .getPersonAttributeTypeByName(contactAttributType);
 									PersonAttribute pa = new PersonAttribute();
@@ -366,7 +367,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			String patientIdString = request.getParameter("patientId");
 			mp.setPatient(Context.getPatientService().getPatient(Integer.valueOf(patientIdString)));
 			String rtString = Context.getAdministrationService().getGlobalProperty(
-			    "mdrtb.treatment_supporter_relationship_type");
+			    MdrtbConstants.GP_TX_SUPPORTER_RELATIONSHIP_TYPE);
 			RelationshipType rt = ps.getRelationshipTypeByName(rtString);
 			Program program = Context.getService(MdrtbService.class).getMdrtbProgram();
 			for (Relationship contact : ps.getRelationshipsByPerson(mp.getPatient())) {
@@ -427,7 +428,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 					}
 					//contact person attribute
 					String contactAttributType = Context.getAdministrationService().getGlobalProperty(
-					    "mdrtb.patient_contact_id_attribute_type");
+					    MdrtbConstants.GP_PATIENT_CONTACT_ID_ATTRIBUTE_TYPE);
 					PersonAttributeType contactAttType = ps.getPersonAttributeTypeByName(contactAttributType);
 					if (contactAttType != null) {
 						for (PersonAttribute patt : contactTmp.getActiveAttributes()) {
@@ -508,7 +509,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			 */
 			
 			//set patientId
-			String piList = Context.getAdministrationService().getGlobalProperty("mdrtb.patient_identifier_type");
+			String piList = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 			if (piList == null || piList.equals(""))
 				mp.setPatientIdentifier(mp.getPatient().getPatientIdentifier());
 			else {
@@ -558,7 +559,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			    (Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SIMPLE_TB_TEST_TYPE)).getAnswers());
 			String dateFormat = Context.getDateFormat().toPattern();
 			String relationshipTypesString = Context.getAdministrationService().getGlobalProperty(
-			    "mdrtb.patient_identifier_type_list");
+			    MdrtbConstants.GP_PATIENT_IDENTIFIER_TYPE_LIST);
 			
 			List<PatientIdentifierType> pitList = new ArrayList<PatientIdentifierType>();
 			for (StringTokenizer st = new StringTokenizer(relationshipTypesString, "|"); st.hasMoreTokens();) {

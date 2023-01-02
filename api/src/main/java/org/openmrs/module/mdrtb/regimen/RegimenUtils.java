@@ -24,6 +24,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.ConceptNameType;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.module.reporting.common.MessageUtil;
@@ -95,7 +96,7 @@ public class RegimenUtils {
 		xstream.alias("regimenSuggestion", RegimenSuggestion.class);
 		xstream.alias("drugSuggestion", DrugSuggestion.class);
 		
-		String xml = Context.getAdministrationService().getGlobalProperty("mdrtb.regimenTypeConfiguration");
+		String xml = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_REGIMEN_TYPE_CONFIGURATION);
 		if (ObjectUtil.isNull(xml)) {
 			InputStream is = null;
 			try {

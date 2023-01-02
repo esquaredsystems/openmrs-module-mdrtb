@@ -64,7 +64,7 @@ public class SpecimenMigrationGenericController {
 		// fetch the bac and dst encounter types
 		List<EncounterType> specimenEncounter = new LinkedList<EncounterType>();
 		specimenEncounter.add(MdrtbConstants.MDRTB_BACTERIOLOGY_RESULT_ENCOUNTER_TYPE);
-		specimenEncounter.add(MdrtbConstants.MDRTB_LAB_RESULT_ENCOUNTER_TYPE);
+		specimenEncounter.add(MdrtbConstants.ET_LAB_RESULT);
 		
 		// loop thru all the bac and dst encounters
 		for (Encounter encounter : Context.getService(MdrtbService.class).getEncounters(null, null, null, null,
@@ -253,7 +253,7 @@ public class SpecimenMigrationGenericController {
 		// fetch the bac and dst encounter types
 		List<EncounterType> specimenEncounter = new LinkedList<EncounterType>();
 		specimenEncounter.add(MdrtbConstants.MDRTB_BACTERIOLOGY_RESULT_ENCOUNTER_TYPE);
-		specimenEncounter.add(MdrtbConstants.MDRTB_LAB_RESULT_ENCOUNTER_TYPE);
+		specimenEncounter.add(MdrtbConstants.ET_LAB_RESULT);
 		
 		// now void all unused encounters
 		// loop thru all the bac and dst encounters
@@ -663,7 +663,7 @@ public class SpecimenMigrationGenericController {
 	
 	private Specimen createSpecimenFromEncounter(Encounter encounter) {
 		// change the encounter type to "specimen collection" encounter
-		encounter.setEncounterType(MdrtbConstants.SPECIMEN_COLLECTION_ENCOUNTER_TYPE);
+		encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		
 		// now instantiate a new specimen using this encounter
 		Specimen specimen = new SpecimenImpl(encounter);

@@ -6,6 +6,7 @@ import java.util.List;
 import org.openmrs.EncounterType;
 import org.openmrs.Form;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,12 +28,10 @@ public class SelectFormController {
 		List<Form> forms;
 		
 		if (formType.equals("intake")) {
-			EncounterType[] intake = { Context.getEncounterService().getEncounterType(
-			    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type")) };
+			EncounterType[] intake = { MdrtbConstants.ET_TB03_TB_INTAKE };
 			forms = Context.getFormService().getForms(null, true, Arrays.asList(intake), false, null, null, null);
 		} else if (formType.equals("followUp")) {
-			EncounterType[] followUp = { Context.getEncounterService().getEncounterType(
-			    Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type")) };
+			EncounterType[] followUp = { MdrtbConstants.ET_FORM89_TB_FOLLOWUP };
 			forms = Context.getFormService().getForms(null, true, Arrays.asList(followUp), false, null, null, null);
 		} else {
 			throw new MdrtbAPIException("Invalid formType. Must be intake or follow-up.");

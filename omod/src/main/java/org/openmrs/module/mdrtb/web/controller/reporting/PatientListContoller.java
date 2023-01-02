@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.jfree.util.Log;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Obs;
@@ -732,8 +731,8 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//AfterFailure
-		Concept failure1Concept = ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_1);
-		Concept failure2Concept = ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_2);
+		Concept failure1Concept = ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_1);
+		Concept failure2Concept = ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_2);
 		
 		report += "<h4>" + getMessage("mdrtb.tb03.failure") + "</h4>";
 		report += openTable();
@@ -1749,8 +1748,8 @@ public class PatientListContoller {
 		//Retreament - Negative
 		Concept default1Concept = ms.getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_1);
 		Concept default2Concept = ms.getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_2);
-		Concept failure1Concept = ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_1);
-		Concept failure2Concept = ms.getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_2);
+		Concept failure1Concept = ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_1);
+		Concept failure2Concept = ms.getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_2);
 		report += "<h4>" + getMessage("mdrtb.lists.retreatmentPulmonaryBacPositive") + "</h4>";
 		report += openTable();
 		report += openTR();
@@ -2151,7 +2150,7 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME);
 		Concept curedConcept = ms.getConcept(MdrtbConcepts.CURED);
-		Concept txCompleted = ms.getConcept(MdrtbConcepts.TREATMENT_COMPLETED);
+		Concept txCompleted = ms.getConcept(MdrtbConcepts.TREATMENT_COMPLETE);
 		
 		ArrayList<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter,
 		    month);
@@ -2634,7 +2633,7 @@ public class PatientListContoller {
 			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -4213,7 +4212,7 @@ public class PatientListContoller {
 			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -4940,7 +4939,7 @@ public class PatientListContoller {
 			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -5392,7 +5391,7 @@ public class PatientListContoller {
 			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -5612,7 +5611,7 @@ public class PatientListContoller {
 			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -5927,7 +5926,7 @@ public class PatientListContoller {
 			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				continue;
 			}
@@ -6286,7 +6285,7 @@ public class PatientListContoller {
 			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -6827,7 +6826,7 @@ public class PatientListContoller {
 			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -7411,7 +7410,7 @@ public class PatientListContoller {
 			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.NEW_CONCEPT_ID_GP))) {
+			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				
 				continue;
@@ -8820,7 +8819,7 @@ public class PatientListContoller {
 		
 		RegimenForm rf = null;
 		int curedId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED).getConceptId().intValue();
-		int txCompId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETED).getConceptId()
+		int txCompId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETE).getConceptId()
 		        .intValue();
 		int i = 0;
 		Person p = null;

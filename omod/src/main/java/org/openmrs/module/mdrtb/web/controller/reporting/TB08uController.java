@@ -12,6 +12,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.reporting.custom.TB08uData;
@@ -161,7 +162,7 @@ public class TB08uController {
 		        .intValue();
 		int outcome = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED).getId().intValue();
 		int neww = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEW).getId().intValue();
-		int txComplete = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETED).getId()
+		int txComplete = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETE).getId()
 		        .intValue();
 		int txFailure = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_FAILED).getId().intValue();
 		int died = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED).getId().intValue();
@@ -174,9 +175,9 @@ public class TB08uController {
 		        .intValue();
 		int relapse2 = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2).getId()
 		        .intValue();
-		int failure1 = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_1).getId()
+		int failure1 = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_1).getId()
 		        .intValue();
-		int failure2 = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AFTER_FAILURE_REGIMEN_2).getId()
+		int failure2 = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FAILURE_AFTER_REGIMEN_2).getId()
 		        .intValue();
 		int default1 = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEFAULT_AFTER_REGIMEN_1).getId()
 		        .intValue();
@@ -580,7 +581,7 @@ public class TB08uController {
 					
 					//OTHER
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.other.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID))) {
 						
 						table1.setOtherRegisteredShort(table1.getOtherRegisteredShort() + 1);
 						table1.setOtherTotalShort(table1.getOtherTotalShort() + 1);
@@ -716,7 +717,7 @@ public class TB08uController {
 					
 					//RELAPSE1
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterRelapse1.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) {
 						
 						table1.setRelapse1RegisteredIndiv(table1.getRelapse1RegisteredIndiv() + 1);
 						table1.setRelapse1TotalIndiv(table1.getRelapse1TotalIndiv() + 1);
@@ -761,7 +762,7 @@ public class TB08uController {
 					
 					//RELAPSE2
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterRelapse2.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID))) {
 						
 						table1.setRelapse2RegisteredIndiv(table1.getRelapse2RegisteredIndiv() + 1);
 						table1.setRelapse2TotalIndiv(table1.getRelapse2TotalIndiv() + 1);
@@ -806,7 +807,7 @@ public class TB08uController {
 					
 					//DEFAULT1
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterDefault1.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))) {
 						
 						table1.setDefault1RegisteredIndiv(table1.getDefault1RegisteredIndiv() + 1);
 						table1.setDefault1TotalIndiv(table1.getDefault1TotalIndiv() + 1);
@@ -851,7 +852,7 @@ public class TB08uController {
 					
 					//DEFAULT2
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterDefault2.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT2_CONCEPT_ID))) {
 						
 						table1.setDefault2RegisteredIndiv(table1.getDefault2RegisteredIndiv() + 1);
 						table1.setDefault2TotalIndiv(table1.getDefault2TotalIndiv() + 1);
@@ -896,7 +897,7 @@ public class TB08uController {
 					
 					//FAILURE1
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterFailure1.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) {
 						
 						table1.setFailure1RegisteredIndiv(table1.getFailure1RegisteredIndiv() + 1);
 						table1.setFailure1TotalIndiv(table1.getFailure1TotalIndiv() + 1);
@@ -941,7 +942,7 @@ public class TB08uController {
 					
 					//FAILURE2
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterFailure2.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE2_CONCEPT_ID))) {
 						
 						table1.setFailure2RegisteredIndiv(table1.getFailure2RegisteredIndiv() + 1);
 						table1.setFailure2TotalIndiv(table1.getFailure2TotalIndiv() + 1);
@@ -986,7 +987,7 @@ public class TB08uController {
 					
 					//OTHER
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.other.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID))) {
 						
 						table1.setOtherRegisteredIndiv(table1.getOtherRegisteredIndiv() + 1);
 						table1.setOtherTotalIndiv(table1.getOtherTotalIndiv() + 1);
@@ -1034,7 +1035,7 @@ public class TB08uController {
 					/*System.out.println (obsList.get(0).getValueCoded().getConceptId());*/
 					
 					if (q.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.transferIn.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_TRANSFER_IN_CONCEPT_ID))) {
 						
 						table1.setTotalRegisteredStandard(table1.getTotalRegisteredStandard() + 1);
 						
@@ -1078,7 +1079,7 @@ public class TB08uController {
 					
 					//NEW
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.new.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 						
 						table1.setNewRegisteredStandard(table1.getNewRegisteredStandard() + 1);
 						table1.setNewTotalStandard(table1.getNewTotalStandard() + 1);
@@ -1123,7 +1124,7 @@ public class TB08uController {
 					
 					//RELAPSE1
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterRelapse1.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) {
 						
 						table1.setRelapse1RegisteredStandard(table1.getRelapse1RegisteredStandard() + 1);
 						table1.setRelapse1TotalStandard(table1.getRelapse1TotalStandard() + 1);
@@ -1168,7 +1169,7 @@ public class TB08uController {
 					
 					//RELAPSE2
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterRelapse2.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID))) {
 						
 						table1.setRelapse2RegisteredStandard(table1.getRelapse2RegisteredStandard() + 1);
 						table1.setRelapse2TotalStandard(table1.getRelapse2TotalStandard() + 1);
@@ -1213,7 +1214,7 @@ public class TB08uController {
 					
 					//DEFAULT1
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterDefault1.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))) {
 						
 						table1.setDefault1RegisteredStandard(table1.getDefault1RegisteredStandard() + 1);
 						table1.setDefault1TotalStandard(table1.getDefault1TotalStandard() + 1);
@@ -1258,7 +1259,7 @@ public class TB08uController {
 					
 					//DEFAULT2
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterDefault2.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT2_CONCEPT_ID))) {
 						
 						table1.setDefault2RegisteredStandard(table1.getDefault2RegisteredStandard() + 1);
 						table1.setDefault2TotalStandard(table1.getDefault2TotalStandard() + 1);
@@ -1303,7 +1304,7 @@ public class TB08uController {
 					
 					//FAILURE1
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterFailure1.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) {
 						
 						table1.setFailure1RegisteredStandard(table1.getFailure1RegisteredStandard() + 1);
 						table1.setFailure1TotalStandard(table1.getFailure1TotalStandard() + 1);
@@ -1348,7 +1349,7 @@ public class TB08uController {
 					
 					//FAILURE2
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.afterFailure2.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE2_CONCEPT_ID))) {
 						
 						table1.setFailure2RegisteredStandard(table1.getFailure2RegisteredStandard() + 1);
 						table1.setFailure2TotalStandard(table1.getFailure2TotalStandard() + 1);
@@ -1393,7 +1394,7 @@ public class TB08uController {
 					
 					//OTHER
 					if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-					        .getGlobalProperty("mdrtb.other.conceptId"))) {
+					        .getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID))) {
 						
 						table1.setOtherRegisteredStandard(table1.getOtherRegisteredStandard() + 1);
 						table1.setOtherTotalStandard(table1.getOtherTotalStandard() + 1);

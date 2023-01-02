@@ -8,6 +8,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -20,13 +21,13 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	
 	public DSTForm() {
 		super();
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Specimen Collection"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		di = new DstImpl(this.encounter);
 	}
 	
 	public DSTForm(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(Context.getEncounterService().getEncounterType("Specimen Collection"));
+		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		di = new DstImpl(this.encounter);
 	}
 	

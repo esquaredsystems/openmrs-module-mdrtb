@@ -23,6 +23,7 @@ import org.openmrs.Location;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbConstants.TbClassification;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
@@ -143,7 +144,7 @@ public class Cohorts {
 	public static CohortDefinition getTreatmentCompletedDuringFilter(Date startDate, Date endDate) {
 		return getEnteredStateDuringFilter(
 		    Context.getService(MdrtbService.class).getProgramWorkflowState(
-		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETED)), startDate, endDate);
+		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_COMPLETE)), startDate, endDate);
 	}
 	
 	public static CohortDefinition getFailedDuringFilter(Date startDate, Date endDate) {
@@ -348,7 +349,7 @@ public class Cohorts {
 	public static CohortDefinition getInMdrProgramEverDuring(Date startDate, Date endDate) {
 		InProgramCohortDefinition cd = new InProgramCohortDefinition();
 		cd.setPrograms(Arrays.asList(Context.getProgramWorkflowService().getProgramByName(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"))));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_PROGRAM_NAME))));
 		cd.setOnOrAfter(startDate);
 		cd.setOnOrBefore(endDate);
 		return cd;
@@ -482,7 +483,7 @@ public class Cohorts {
 	public static CohortDefinition getEnrolledInMDRProgramDuring(Date startDate, Date endDate) {
 		ProgramEnrollmentCohortDefinition pd = new ProgramEnrollmentCohortDefinition();
 		pd.setPrograms(Arrays.asList(Context.getProgramWorkflowService().getProgramByName(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"))));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_PROGRAM_NAME))));
 		pd.setEnrolledOnOrAfter(startDate);
 		pd.setEnrolledOnOrBefore(endDate);
 		return pd;
@@ -520,7 +521,7 @@ public class Cohorts {
 		cd.setMinAge(minAge);
 		cd.setMaxAge(maxAge);
 		cd.setPrograms(Arrays.asList(Context.getProgramWorkflowService().getProgramByName(
-		    Context.getAdministrationService().getGlobalProperty("mdrtb.program_name"))));
+		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_PROGRAM_NAME))));
 		return cd;
 	}
 	
