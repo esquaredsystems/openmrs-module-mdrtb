@@ -45,7 +45,7 @@ public class MdrtbIntakeFormResourceController extends DelegatingCrudResource<Si
 	}
 
 	@Override
-	public void purge(SimpleTB03 labTestType, RequestContext requestContext) throws ResponseException {
+	public void purge(SimpleTB03 simpleTb03, RequestContext requestContext) throws ResponseException {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 
