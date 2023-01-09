@@ -59,7 +59,7 @@ public class SpecimenReportsOverviewController {
 			GlobalProperty daysSinceCulture = Context.getAdministrationService().getGlobalPropertyObject(
 			    MdrtbConstants.GP_SPECIMEN_REPORTS_DAYS_SINCE_CULTURE);
 			GlobalProperty defaultLabId = Context.getAdministrationService().getGlobalPropertyObject(
-			    MdrtbConstants.GP_SPECIMEN_REPORTS_DEFAULT_LAB_ID);
+			    MdrtbConstants.GP_SPECIMEN_REPORTS_DEFAULT_LAB);
 			
 			daysSinceSmear.setPropertyValue(query.getDaysSinceSmear().toString());
 			daysSinceCulture.setPropertyValue(query.getDaysSinceCulture().toString());
@@ -88,6 +88,7 @@ public class SpecimenReportsOverviewController {
 		query.setDaysSinceCulture(Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
 		    MdrtbConstants.GP_SPECIMEN_REPORTS_DAYS_SINCE_CULTURE)));
 		query.setLab(Context.getLocationService().getLocation(
-		    Integer.valueOf(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_SPECIMEN_REPORTS_DEFAULT_LAB_ID))));
+		    Integer.valueOf(Context.getAdministrationService().getGlobalProperty(
+		        MdrtbConstants.GP_SPECIMEN_REPORTS_DEFAULT_LAB))));
 	}
 }

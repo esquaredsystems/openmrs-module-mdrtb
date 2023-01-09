@@ -426,11 +426,9 @@ path is used.The %Y and %M are replaced with 4 digit year and 2 digit month resp
     <global_property property="mdrtb.outcome.transferout.conceptId" property_value="23" description="" uuid="92980594-bec9-43d2-a66b-b2d589803f44"/>
     <global_property property="mdrtb.outcome.txCompleted.conceptId" property_value="28" description="" uuid="e7297844-396e-4a7c-bdc5-999f60787a9f"/>
     <global_property property="mdrtb.outcome.txFailure.conceptId" property_value="27" description="" uuid="b4a65f42-4941-4cc3-8563-1cc277776118"/>
-    <global_property property="mdrtb.patient_contact_id_attribute_type" property_value="MDR-TB Patient Contact ID Number" description="" uuid="9eeb0362-9679-4b71-ac69-c8097cafd445"/>
     <global_property property="mdrtb.patient_identifier_type_list" description="" uuid="ba8be54a-d2c6-4a07-be3d-24959257c740"/>
     <global_property property="mdrtb.primaryPatientIdentifierType" property_value="Регистрационный номер Дотc" description="" uuid="9defea99-bf6e-42b2-9a6b-4b28da0ff08d"/>
     <global_property property="mdrtb.program_name" property_value="MDR-TB PROGRAM" description="" uuid="e0e8f641-6a4d-4e22-9e9c-7c1787da22d1"/>
-    <global_property property="mdrtb.roles_to_redirect_from_openmrs_homepage" description="" uuid="ab91c35d-026d-4a8d-ad6c-df3c0f4d35e2"/>
     <global_property property="mdrtb.smear.formId" property_value="8" description="" uuid="c097d78d-b33c-11e7-9f2c-782bcb563a1c"/>
     <global_property property="mdrtb.specimenReports.daysSinceCulture" property_value="14" description="" uuid="03fa58d5-47b2-46c5-b542-a6f5f087cb28"/>
     <global_property property="mdrtb.specimenReports.daysSinceSmear" property_value="14" description="" uuid="a3a0f066-caae-4880-86cf-ed3507b7dd4c"/>
@@ -442,8 +440,6 @@ path is used.The %Y and %M are replaced with 4 digit year and 2 digit month resp
     <global_property property="mdrtb.transferIn.conceptId" property_value="15" description="" uuid="c39ac124-05f8-4b35-a192-2c87bd619f76"/>
     <global_property property="mdrtb.transfer_in_encounter_type" property_value="Transfer In" description="" uuid="54e1a70b-3cf1-4f76-acd2-9a360b79cb99"/>
     <global_property property="mdrtb.transfer_out_encounter_type" property_value="Transfer Out" description="" uuid="777ba867-401b-4564-bad2-db9d27324883"/>
-    <global_property property="mdrtb.treatment_supporter_person_attribute_type" property_value="Treatment Supporter" description="" uuid="a9fe222c-6729-4d09-841d-c8c8296729fd"/>
-    <global_property property="mdrtb.treatment_supporter_relationship_type" property_value="Treatment Supporter/Treatment Supportee" description="" uuid="07a01833-960f-4703-90b6-27c0555b8c15"/>
     <global_property property="mdrtb.xpert.formId" property_value="14" description="" uuid="c097d922-b33c-11e7-9f2c-782bcb563a1c"/>
     <global_property property="mdrtbtajikistan.mandatory" property_value="false" description="" uuid="d59997d5-646a-44df-9df2-9e982aa3cc67"/>
     <global_property property="mdrtbtajikistan.started" property_value="true" description="" uuid="86479609-7b3e-41fe-9a5f-9b09b1cdcc90"/>

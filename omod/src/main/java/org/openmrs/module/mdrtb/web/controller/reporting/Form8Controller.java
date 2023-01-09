@@ -418,39 +418,33 @@ public class Form8Controller {
 				}
 				
 				if (regGroup != null
-				        && regGroup.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
+				        && regGroup.getConceptId().equals(
+				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				                MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
 					table4.setFirstNew(table4.getFirstNew() + 1);
 					if (age >= 0 && age < 15) {
 						table4.setFirstNew014(table4.getFirstNew014() + 1);
-					}
-					else if (age >= 15 && age < 18) {
+					} else if (age >= 15 && age < 18) {
 						table4.setFirstNew1517(table4.getFirstNew1517() + 1);
-					}
-					else if (age >= 18 && age < 19) {
+					} else if (age >= 18 && age < 19) {
 						table4.setFirstNew1819(table4.getFirstNew1819() + 1);
 					}
 					if (bacPositive) {
 						table4.setNewBac(table4.getNewBac() + 1);
 						if (age >= 0 && age < 15) {
 							table4.setNewBac014(table4.getNewBac014() + 1);
-						}
-						else if (age >= 15 && age < 18) {
+						} else if (age >= 15 && age < 18) {
 							table4.setNewBac1517(table4.getNewBac1517() + 1);
-						}
-						else if (age >= 18 && age < 19) {
+						} else if (age >= 18 && age < 19) {
 							table4.setNewBac1819(table4.getNewBac1819() + 1);
 						}
-					}
-					else {
+					} else {
 						table4.setNewOther(table4.getNewOther() + 1);
 						if (age >= 0 && age < 15) {
 							table4.setNewOther014(table4.getNewOther014() + 1);
-						}
-						else if (age >= 15 && age < 18) {
+						} else if (age >= 15 && age < 18) {
 							table4.setNewOther1517(table4.getNewOther1517() + 1);
-						}
-						else if (age >= 18 && age < 19) {
+						} else if (age >= 18 && age < 19) {
 							table4.setNewOther1819(table4.getNewOther1819() + 1);
 						}
 					}
@@ -488,16 +482,16 @@ public class Form8Controller {
 			if (bacPositive != null && bacPositive && pulmonary != null && pulmonary) {
 				System.out.println("REG:" + regGroup);
 				if (regGroup != null
-				        && regGroup.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
+				        && regGroup.getConceptId().equals(
+				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				                MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
 					System.out.println("5a - 1");
 					table5a.setRespBacNew(table5a.getRespBacNew() + 1);
 					
 					if (rural != null && rural) {
 						table5a.setRespBacNewVillager(table5a.getRespBacNewVillager() + 1);
 					}
-				}
-				else if (regGroup != null) {
+				} else if (regGroup != null) {
 					System.out.println("5a - 2");
 					table5a.setRespBacOther(table5a.getRespBacOther() + 1);
 					
@@ -508,14 +502,15 @@ public class Form8Controller {
 			}
 			
 			if (regGroup == null
-			        || !regGroup.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
+			        || !regGroup.getConceptId().equals(
+			            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+			                MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
 				
 				if (regGroup != null
 				        && ((regGroup.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) || (regGroup.getConceptId()
-				                .intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				                		MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))))) {
+				                .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) || (regGroup
+				                .getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
+				                .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))))) {
 					
 					table2.setRelapseCount(table2.getRelapseCount() + 1);
 					table3.setGroup2To1(table3.getGroup2To1() + 1);
@@ -524,9 +519,9 @@ public class Form8Controller {
 				
 				else if (regGroup != null
 				        && ((regGroup.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) || (regGroup.getConceptId()
-				                .intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				                		MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))))) {
+				                .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) || (regGroup
+				                .getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
+				                .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))))) {
 					
 					table2.setFailCount(table2.getFailCount() + 1);
 					table3.setGroup2To1(table3.getGroup2To1() + 1);
@@ -534,9 +529,9 @@ public class Form8Controller {
 				
 				else if (regGroup != null
 				        && ((regGroup.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))) || (regGroup.getConceptId()
-				                .equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				                		MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))))) {
+				                .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))) || (regGroup
+				                .getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
+				                .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))))) {
 					
 					table2.setLtfuCount(table2.getLtfuCount() + 1);
 					table3.setGroup2To1(table3.getGroup2To1() + 1);
@@ -2562,23 +2557,27 @@ public class Form8Controller {
 			
 			if (q != null) {
 				
-				if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_OUTCOME_CURED_CONCEPT_ID)))) {
+				if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_OUTCOME_CURED_CONCEPT_ID)))) {
 					cured = Boolean.TRUE;
 				}
 				
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_OUTCOME_TX_COMPLETED_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_OUTCOME_TX_COMPLETED_CONCEPT_ID)))) {
 					txCompleted = Boolean.TRUE;
 				}
 				
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_OUTCOME_TX_FAILURE_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_OUTCOME_TX_FAILURE_CONCEPT_ID)))) {
 					failed = Boolean.TRUE;
 				}
 				
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID)))) {
 					q = tf.getCauseOfDeath();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSE_OF_DEATH);
 					
 					if (q != null) {
@@ -2590,22 +2589,25 @@ public class Form8Controller {
 					}
 				}
 				
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_OUTCOME_LTFU_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_OUTCOME_LTFU_CONCEPT_ID)))) {
 					defaulted = Boolean.TRUE;
-				}
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_OUTCOME_CANCELED_CONCEPT_ID)))) {
+				} else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_OUTCOME_CANCELED_CONCEPT_ID)))) {
 					canceled = Boolean.TRUE;
 				}
 				
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_OUTCOME_TRANSFER_OUT_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_OUTCOME_TRANSFER_OUT_CONCEPT_ID)))) {
 					transferOut = Boolean.TRUE;
 				}
 				
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_OUTCOME_STARTED_SLD_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_OUTCOME_STARTED_SLD_CONCEPT_ID)))) {
 					sld = Boolean.TRUE;
 				}
 			}
@@ -2616,47 +2618,42 @@ public class Form8Controller {
 			
 			if (q != null) {
 				
-				if (!q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_TRANSFER_IN_CONCEPT_ID)))) {
+				if (!q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_TRANSFER_IN_CONCEPT_ID)))) {
 					
 					table6.setAllDetected(table6.getAllDetected() + 1);
 					if (cured != null && cured) {
 						table6.setAllCured(table6.getAllCured() + 1);
 						table6.setAllEligible(table6.getAllEligible() + 1);
-					}
-					else if (txCompleted != null && txCompleted) {
+					} else if (txCompleted != null && txCompleted) {
 						table6.setAllCompleted(table6.getAllCompleted() + 1);
 						table6.setAllEligible(table6.getAllEligible() + 1);
-					}
-					else if (diedTB != null && diedTB) {
+					} else if (diedTB != null && diedTB) {
 						table6.setAllDiedTB(table6.getAllDiedTB() + 1);
 						table6.setAllEligible(table6.getAllEligible() + 1);
-					}
-					else if (diedNotTB != null && diedNotTB) {
+					} else if (diedNotTB != null && diedNotTB) {
 						table6.setAllDiedNotTB(table6.getAllDiedNotTB() + 1);
 						table6.setAllEligible(table6.getAllEligible() + 1);
-					}
-					else if (failed != null && failed) {
+					} else if (failed != null && failed) {
 						table6.setAllFailed(table6.getAllFailed() + 1);
 						table6.setAllEligible(table6.getAllEligible() + 1);
-					}
-					else if (defaulted != null && defaulted) {
+					} else if (defaulted != null && defaulted) {
 						table6.setAllDefaulted(table6.getAllDefaulted() + 1);
 						table6.setAllEligible(table6.getAllEligible() + 1);
-					}
-					else if (transferOut != null && transferOut) {
+					} else if (transferOut != null && transferOut) {
 						table6.setAllTransferOut(table6.getAllTransferOut() + 1);
-					}
-					else if (canceled != null && canceled) {
+					} else if (canceled != null && canceled) {
 						table6.setAllCanceled(table6.getAllCanceled() + 1);
-					}
-					else if (sld != null && sld) {
+					} else if (sld != null && sld) {
 						table6.setAllSLD(table6.getAllSLD() + 1);
 					}
 				}
 				//NEW
-				if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
+				if (q.getId()
+				        .equals(
+				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				                MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
 					table6.setNewAllDetected(table6.getNewAllDetected() + 1);
 					//P
 					if (pulmonary != null && pulmonary) {
@@ -3584,10 +3581,12 @@ public class Form8Controller {
 				}
 				
 				//RELAPSE
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID)))
-				        || q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				        		MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID)))
+				        || q.getId().equals(
+				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				                MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID)))) {
 					
 					table6.setRelapseAllDetected(table6.getRelapseAllDetected() + 1);
 					
@@ -4517,10 +4516,12 @@ public class Form8Controller {
 				}
 				
 				//FAILURE
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))
-				        || q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				        		MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))
+				        || q.getId().equals(
+				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				                MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))) {
 					table6.setFailureAllDetected(table6.getFailureAllDetected() + 1);
 					
 					//P
@@ -4728,10 +4729,12 @@ public class Form8Controller {
 					}
 				}
 				
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-						MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
-				        || q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				        		MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
+				        || q.getId().equals(
+				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				                MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))) {
 					table6.setDefaultAllDetected(table6.getDefaultAllDetected() + 1);
 					
 					//P
@@ -4941,8 +4944,9 @@ public class Form8Controller {
 				}
 				
 				//OTHER
-				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				    MdrtbConstants.GP_OTHER_CONCEPT_ID)))) {
+				else if (q.getId().equals(
+				    Integer.parseInt(Context.getAdministrationService()
+				            .getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID)))) {
 					table6.setOtherAllDetected(table6.getOtherAllDetected() + 1);
 					
 					//P
