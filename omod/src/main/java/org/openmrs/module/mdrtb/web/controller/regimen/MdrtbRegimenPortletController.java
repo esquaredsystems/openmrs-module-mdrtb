@@ -40,6 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class MdrtbRegimenPortletController {
 	
 	private static final String MDRTB_ENABLE_RESISTANCE_PROBABILITY_WARNING_GP = "mdrtb.enableResistanceProbabilityWarning";
+	
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@RequestMapping("/module/mdrtb/regimen/*.portlet")

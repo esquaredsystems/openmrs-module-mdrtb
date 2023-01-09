@@ -604,15 +604,15 @@ public class MdrtbPatientProgram implements Comparable<MdrtbPatientProgram>, Val
 		
 		return tb03ux;
 	}
-
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return MdrtbPatientProgram.class.isAssignableFrom(clazz);
 	}
-
+	
 	@Override
 	public void validate(Object target, Errors errors) {
-MdrtbPatientProgram program = (MdrtbPatientProgram) target;
+		MdrtbPatientProgram program = (MdrtbPatientProgram) target;
 		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "dateEnrolled", "mdrtb.program.errors.noDateEnrolled",
 		    "Please specify an enrollment date.");

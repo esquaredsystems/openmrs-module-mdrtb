@@ -112,7 +112,8 @@ public class MdrtbEditPatientController {
 	// should show the location selector for identifiers
 	@ModelAttribute("showIdentifierLocationSelector")
 	public boolean getShowIdentifierLocationSelector() {
-		return StringUtils.isBlank(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_FIXED_IDENTIFIER_LOCATION));
+		return StringUtils.isBlank(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_FIXED_IDENTIFIER_LOCATION));
 	}
 	
 	@ModelAttribute("patientIdentifierMap")
@@ -259,7 +260,8 @@ public class MdrtbEditPatientController {
 			
 			Set<Person> similarPersons = Context.getPersonService().getSimilarPeople(addName, birthYear, addGender);
 			Set<PatientListItem> similarPatients = new HashSet<PatientListItem>();
-			String primaryIdentifier = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
+			String primaryIdentifier = Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 			
 			// we only want to pass on similar persons who are patients in this case
 			for (Person person : similarPersons) {
@@ -314,12 +316,13 @@ public class MdrtbEditPatientController {
 		
 		// if a fixed patient identifier location has been set, get it
 		Location fixedLocation = null;
-		String fixedLocationName = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_FIXED_IDENTIFIER_LOCATION);
+		String fixedLocationName = Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_FIXED_IDENTIFIER_LOCATION);
 		if (StringUtils.isNotBlank(fixedLocationName)) {
 			fixedLocation = Context.getLocationService().getLocation(fixedLocationName);
 			if (fixedLocation == null) {
-				throw new MdrtbAPIException(
-				        "Location referenced by global prop " + MdrtbConstants.GP_FIXED_IDENTIFIER_LOCATION + "does not exist.");
+				throw new MdrtbAPIException("Location referenced by global prop "
+				        + MdrtbConstants.GP_FIXED_IDENTIFIER_LOCATION + "does not exist.");
 			}
 		}
 		
@@ -356,7 +359,7 @@ public class MdrtbEditPatientController {
 					
 					// set this identifier as preferred if it is of the preferred tyoe
 					String preferredIdentifierTypeName = Context.getAdministrationService().getGlobalProperty(
-							MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
+					    MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 					if (StringUtils.isNotBlank(preferredIdentifierTypeName)) {
 						PatientIdentifierType preferredIdentifierType = Context.getPatientService()
 						        .getPatientIdentifierTypeByName(preferredIdentifierTypeName);

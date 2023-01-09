@@ -16,39 +16,38 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1
-		+ "/mdrtb/intake", supportedClass = SimpleTB03.class, supportedOpenmrsVersions = {"2.4.*"})
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/intake", supportedClass = SimpleTB03.class, supportedOpenmrsVersions = { "2.4.*" })
 public class MdrtbIntakeFormResourceController extends DelegatingCrudResource<SimpleTB03> {
-
+	
 	/**
 	 * Logger for this class
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
-
+	
 	private MdrtbService service = Context.getService(MdrtbService.class);
-
+	
 	@Override
 	public SimpleTB03 getByUniqueId(String s) {
 		//TODO: 
 		return null;
 	}
-
+	
 	@Override
 	public SimpleTB03 newDelegate() {
 		return new SimpleTB03();
 	}
-
+	
 	@Override
 	public SimpleTB03 save(SimpleTB03 simpleTb03) {
 		//TODO:
 		return null;
 	}
-
+	
 	@Override
 	public void purge(SimpleTB03 simpleTb03, RequestContext requestContext) throws ResponseException {
 		throw new ResourceDoesNotSupportOperationException();
 	}
-
+	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -71,14 +70,14 @@ public class MdrtbIntakeFormResourceController extends DelegatingCrudResource<Si
 		}
 		return description;
 	}
-
+	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
 		delegatingResourceDescription.addProperty("name");
 		return delegatingResourceDescription;
 	}
-
+	
 	@Override
 	protected void delete(SimpleTB03 delegate, String reason, RequestContext context) throws ResponseException {
 		throw new ResourceDoesNotSupportOperationException();

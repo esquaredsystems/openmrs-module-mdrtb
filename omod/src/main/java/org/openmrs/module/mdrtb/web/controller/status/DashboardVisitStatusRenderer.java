@@ -28,8 +28,7 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 		// now determine where to link to
 		// if there is a form linked to this encounter, assume it is an HTML Form Entry form
 		// (note, however, that we exclude specimen collection encounters--they can't have forms linked to them)
-		if (encounter.getForm() != null
-		        && !encounter.getEncounterType().equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {
+		if (encounter.getForm() != null && !encounter.getEncounterType().equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {
 			visit.setLink("/module/htmlformentry/htmlFormEntry.form?personId=" + encounter.getPatient().getPatientId()
 			        + "&formId=" + encounter.getForm().getId() + "&encounterId=" + encounter.getId() + "&mode=VIEW");
 		}
@@ -69,8 +68,7 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 				visit.setLink("/module/mdrtb/form/resistanceDuringTx.form?patientId="
 				        + status.getPatientProgram().getPatient().getPatientId() + "&patientProgramId="
 				        + status.getPatientProgram().getId() + "&encounterId=" + encounter.getId());
-			} else if (type.equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {
-			} else if (type
+			} else if (type.equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {} else if (type
 			        .equals(MdrtbConstants.ET_TRANSFER_OUT)) {
 				visit.setLink("/module/mdrtb/form/transferOut.form?patientId="
 				        + status.getPatientProgram().getPatient().getPatientId() + "&patientProgramId="

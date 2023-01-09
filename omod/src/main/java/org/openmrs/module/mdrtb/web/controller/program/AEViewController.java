@@ -53,8 +53,8 @@ public class AEViewController {
 		// add the patientId
 		map.put("patientId", program.getPatient().getId());
 		
-		ArrayList<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsForProgram(program.getPatient(),
-		    program.getId());
+		ArrayList<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsForProgram(
+		    program.getPatient(), program.getId());
 		
 		map.put("forms", forms);
 		

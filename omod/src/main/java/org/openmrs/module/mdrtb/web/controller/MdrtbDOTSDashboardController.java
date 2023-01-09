@@ -196,36 +196,41 @@ public class MdrtbDOTSDashboardController {
 		// add any flags
 		addFlags(statusMap, map);
 		
-		List<Encounter> tb03List = Context.getService(MdrtbService.class).getEncountersWithNoProgramId(MdrtbConstants.ET_TB03_TB_INTAKE,
-		    program.getPatient());
+		List<Encounter> tb03List = Context.getService(MdrtbService.class).getEncountersWithNoProgramId(
+		    MdrtbConstants.ET_TB03_TB_INTAKE, program.getPatient());
 		map.put("unlinkedtb03s", tb03List);
 		
-		List<Encounter> labList = Context.getService(MdrtbService.class).getEncountersWithNoProgramId(MdrtbConstants.ET_SPECIMEN_COLLECTION,
-		    program.getPatient());
+		List<Encounter> labList = Context.getService(MdrtbService.class).getEncountersWithNoProgramId(
+		    MdrtbConstants.ET_SPECIMEN_COLLECTION, program.getPatient());
 		map.put("unlinkedlabs", labList);
 		Integer xpertFormId = -1;
 		if (Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_XPERT_FORM_ID) != null) {
-			xpertFormId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_XPERT_FORM_ID));
+			xpertFormId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_XPERT_FORM_ID));
 		}
 		
 		Integer smearFormId = -1;
 		if (Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_SMEAR_FORM_ID) != null) {
-			smearFormId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_SMEAR_FORM_ID));
+			smearFormId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_SMEAR_FORM_ID));
 		}
 		
 		Integer cultureFormId = -1;
 		if (Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_CULTURE_FORM_ID) != null) {
-			cultureFormId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_CULTURE_FORM_ID));
+			cultureFormId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_CULTURE_FORM_ID));
 		}
 		
 		Integer hainFormId = -1;
 		if (Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_HAIN_FORM_ID) != null) {
-			hainFormId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_HAIN_FORM_ID));
+			hainFormId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_HAIN_FORM_ID));
 		}
 		
 		Integer dstFormId = -1;
 		if (Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DST_FORM_ID) != null) {
-			dstFormId = Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DST_FORM_ID));
+			dstFormId = Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DST_FORM_ID));
 		}
 		
 		map.put("xpertFormId", xpertFormId);

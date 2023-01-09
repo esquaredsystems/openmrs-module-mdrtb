@@ -106,8 +106,10 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 			@SuppressWarnings("unchecked")
 			List<MdrtbTreatmentSupporter> tss = (List<MdrtbTreatmentSupporter>) object;
 			String deleteStringRoot = "del_checkbox_";
-			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_TREATMENT_SUPPORTER_PERSON_ATTRIBUTE_TYPE);
-			String relationshipTypeString = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_TX_SUPPORTER_RELATIONSHIP_TYPE);
+			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_TREATMENT_SUPPORTER_PERSON_ATTRIBUTE_TYPE);
+			String relationshipTypeString = Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_TX_SUPPORTER_RELATIONSHIP_TYPE);
 			
 			PersonService ps = Context.getPersonService();
 			PersonAttributeType pat = ps.getPersonAttributeTypeByName(treatSupAttributeTypeString);
@@ -164,7 +166,8 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 			Concept tsActivityConcept = (Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.TREATMENT_SUPPORTER_CURRENTLY_ACTIVE));
 			
-			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_TREATMENT_SUPPORTER_PERSON_ATTRIBUTE_TYPE);
+			String treatSupAttributeTypeString = Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_TREATMENT_SUPPORTER_PERSON_ATTRIBUTE_TYPE);
 			PersonService ps = Context.getPersonService();
 			ObsService os = Context.getObsService();
 			PersonAttributeType pat = ps.getPersonAttributeTypeByName(treatSupAttributeTypeString);

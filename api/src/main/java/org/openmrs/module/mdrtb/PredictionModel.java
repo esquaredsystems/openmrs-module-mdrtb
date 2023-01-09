@@ -16,11 +16,8 @@ public class PredictionModel {
 	public static final double intercept = -4.56350;
 	
 	public enum RiskFactor {
-		Male("Male", 0.06011), 
-		HivPositive("HIV Positive", -0.27236), 
-		PreviousTreatment("Previous Treatment", 1.39232), 
-		SmearPositive("Smear Positive", 0.54125), 
-		KnownHouseholdContact("Known TB Contact", 0.23557);
+		Male("Male", 0.06011), HivPositive("HIV Positive", -0.27236), PreviousTreatment("Previous Treatment", 1.39232), SmearPositive(
+		        "Smear Positive", 0.54125), KnownHouseholdContact("Known TB Contact", 0.23557);
 		
 		private double coefficient;
 		

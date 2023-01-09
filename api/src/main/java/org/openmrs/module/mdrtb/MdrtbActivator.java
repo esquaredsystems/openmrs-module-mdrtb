@@ -15,17 +15,16 @@ package org.openmrs.module.mdrtb;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
@@ -35,6 +34,8 @@ import org.openmrs.module.BaseModuleActivator;
 import org.openmrs.module.ModuleActivator;
 import org.openmrs.module.mdrtb.service.MdrtbService;
 import org.openmrs.util.Reflect;
+
+import javassist.NotFoundException;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
@@ -254,7 +255,6 @@ public class MdrtbActivator extends BaseModuleActivator implements ModuleActivat
 	 */
 	private static void integrityCheck() {
 		
-		// All public static final String variables starting with GP_ represent Global properties
 		Field[] declaredFields = MdrtbConstants.class.getDeclaredFields();
 		for (Field field : declaredFields) {
 			field.setAccessible(true);
@@ -262,12 +262,30 @@ public class MdrtbActivator extends BaseModuleActivator implements ModuleActivat
 			boolean isStatic = Modifier.isStatic(field.getModifiers());
 			boolean isFinal = Modifier.isFinal(field.getModifiers());
 			boolean isString = field.getType() == String.class;
-			if (isPublic && isStatic && isFinal && isString && field.getName().startsWith("GP_")) {
-				try {
-					Context.getAdministrationService().getGlobalProperty(field.get(null).toString());
+			if (isPublic && isStatic && isFinal && isString) {
+				// All public static final String variables starting with GP_ represent Global properties
+				if (field.getName().startsWith("GP_")) {
+					try {
+						String property = Context.getAdministrationService().getGlobalProperty(field.get(null).toString());
+						if (property.isEmpty()) {
+							throw new NotFoundException("Value NULL or empty");
+						}
+					}
+					catch (Exception e) {
+						System.out.println("Global property not found for: " + field.getName() + "\n" + e.getMessage());
+					}
 				}
-				catch (Exception e) {
-					System.out.println("Global property not found for: " + field.getName() + "\n" + e.getMessage());
+				// All public static final String variables starting with GP_ represent Encounter Types
+				if (field.getName().startsWith("ET_")) {
+					try {
+						EncounterType encounterType = Context.getEncounterService().getEncounterType(field.get(null).toString());
+						if (encounterType == null) {
+							throw new NotFoundException("Value NULL or empty");
+						}
+					}
+					catch (Exception e) {
+						System.out.println("Encounter Type not found for: " + field.getName() + "\n" + e.getMessage());
+					}
 				}
 			}
 		}

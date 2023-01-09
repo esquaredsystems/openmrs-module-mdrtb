@@ -19,7 +19,7 @@ import org.openmrs.module.mdrtb.service.MdrtbService;
 public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<AdverseEventsForm> {
 	
 	private static final String VOID_REASON = "voided by Mdr-tb module specimen tracking UI";
-
+	
 	public AdverseEventsForm() {
 		super();
 		this.encounter.setEncounterType(MdrtbConstants.ET_ADVERSE_EVENT);

@@ -247,7 +247,8 @@ public class TB03Data implements Comparable<TB03Data> {
 	
 	public void setRegGroup(Integer regGroup) {
 		
-		if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID)))
+		if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_NEW_CONCEPT_ID)))
 			this.regGroup = 0;
 		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 		    MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID)))
@@ -256,21 +257,22 @@ public class TB03Data implements Comparable<TB03Data> {
 		    MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID)))
 			this.regGroup = 2;
 		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
+		    MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
 			this.regGroup = 3;
 		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
+		    MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
 			this.regGroup = 4;
 		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))
+		    MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))
 			this.regGroup = 5;
 		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				MdrtbConstants.GP_AFTER_FAILURE2_CONCEPT_ID)))
+		    MdrtbConstants.GP_AFTER_FAILURE2_CONCEPT_ID)))
 			this.regGroup = 6;
-		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID)))
+		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_OTHER_CONCEPT_ID)))
 			this.regGroup = 7;
 		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				MdrtbConstants.GP_TRANSFER_IN_CONCEPT_ID)))
+		    MdrtbConstants.GP_TRANSFER_IN_CONCEPT_ID)))
 			this.regGroup = 8;
 	}
 	
@@ -551,24 +553,32 @@ public class TB03Data implements Comparable<TB03Data> {
 	
 	public void setTb03TreatmentOutcome(Integer tb03TreatmentOutcome) {
 		//System.out.println("---->" + tb03TreatmentOutcome);
-		if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_OUTCOME_CURED_CONCEPT_ID)))
+		if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_OUTCOME_CURED_CONCEPT_ID)))
 			this.tb03TreatmentOutcome = 0;
-		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_OUTCOME_TX_COMPLETED_CONCEPT_ID)))
+		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_OUTCOME_TX_COMPLETED_CONCEPT_ID)))
 			this.tb03TreatmentOutcome = 1;
-		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_OUTCOME_TX_FAILURE_CONCEPT_ID)))
+		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_OUTCOME_TX_FAILURE_CONCEPT_ID)))
 			this.tb03TreatmentOutcome = 2;
-		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
+		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
 			if (diedOfTB)
 				this.tb03TreatmentOutcome = 3;
 			else
 				this.tb03TreatmentOutcome = 4;
-		} else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_OUTCOME_LTFU_CONCEPT_ID)))
+		} else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_OUTCOME_LTFU_CONCEPT_ID)))
 			this.tb03TreatmentOutcome = 5;
-		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_OUTCOME_CANCELED_CONCEPT_ID)))
+		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_OUTCOME_CANCELED_CONCEPT_ID)))
 			this.tb03TreatmentOutcome = 6;
-		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_OUTCOME_STARTED_SLD_CONCEPT_ID)))
+		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_OUTCOME_STARTED_SLD_CONCEPT_ID)))
 			this.tb03TreatmentOutcome = 7;
-		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_OUTCOME_TRANSFER_OUT_CONCEPT_ID)))
+		else if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_OUTCOME_TRANSFER_OUT_CONCEPT_ID)))
 			this.tb03TreatmentOutcome = 8;
 	}
 	

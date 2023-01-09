@@ -280,7 +280,7 @@ public class TB03uFormController {
 		//PATIENT DEATH AND CAUSE OF DEATH
 		if (outcome != null
 		        && outcome.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		        		MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
+		            MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
 			Patient patient = tpp.getPatient();
 			if (!patient.getDead()) {
 				patient.setDead(new Boolean(true));

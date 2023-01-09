@@ -108,7 +108,8 @@ public class CohortBuilderController implements Controller {
 				setMySearchHistory(request, history);
 			}
 			List<Shortcut> shortcuts = new ArrayList<Shortcut>();
-			String shortcutProperty = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_COHORT_COHORT_BUILDER_SHORTCUTS);
+			String shortcutProperty = Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_COHORT_COHORT_BUILDER_SHORTCUTS);
 			if (shortcutProperty != null && shortcutProperty.length() > 0) {
 				String[] shortcutSpecs = shortcutProperty.split(";");
 				for (int i = 0; i < shortcutSpecs.length; ++i) {
@@ -143,7 +144,8 @@ public class CohortBuilderController implements Controller {
 			
 			List<Concept> drugSets = new ArrayList<Concept>();
 			{
-				String temp = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_COHORT_BUILDER_DRUG_SETS);
+				String temp = Context.getAdministrationService().getGlobalProperty(
+				    MdrtbConstants.GP_COHORT_BUILDER_DRUG_SETS);
 				if (StringUtils.hasText(temp)) {
 					String[] drugSetNames = temp.split(",");
 					for (String setName : drugSetNames) {

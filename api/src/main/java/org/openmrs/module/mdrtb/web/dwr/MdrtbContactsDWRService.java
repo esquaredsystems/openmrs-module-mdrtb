@@ -136,7 +136,8 @@ public class MdrtbContactsDWRService {
 			}
 			
 			//person attribute: String popupContactIdVal, 
-			String contactAttributType = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_PATIENT_CONTACT_ID_ATTRIBUTE_TYPE);
+			String contactAttributType = Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_PATIENT_CONTACT_ID_ATTRIBUTE_TYPE);
 			PersonAttributeType contactAttType = perS.getPersonAttributeTypeByName(contactAttributType);
 			if (contactAttType != null && popupContactIdVal != null && !popupContactIdVal.equals("")) {
 				boolean createNew = true;
@@ -352,7 +353,8 @@ public class MdrtbContactsDWRService {
 			Patient p = Context.getPatientService().getPatient(patientId);
 			PersonService ps = Context.getPersonService();
 			Person supporter = ps.getPerson(supporterId);
-			String relationshipTypeString = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_TX_SUPPORTER_RELATIONSHIP_TYPE);
+			String relationshipTypeString = Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_TX_SUPPORTER_RELATIONSHIP_TYPE);
 			RelationshipType rt = ps.getRelationshipTypeByName(relationshipTypeString);
 			
 			for (Relationship r : ps.getRelationshipsByPerson(supporter)) {

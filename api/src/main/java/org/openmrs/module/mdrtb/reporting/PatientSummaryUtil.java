@@ -286,7 +286,8 @@ public class PatientSummaryUtil {
 			}
 			
 			if (ObjectUtil.containsAny(columns, PRIMARY_IDENTIFIER)) {
-				String primaryIdType = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
+				String primaryIdType = Context.getAdministrationService().getGlobalProperty(
+				    MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 				PatientIdentifier pi = p.getPatientIdentifier(primaryIdType);
 				map.put(PRIMARY_IDENTIFIER, (pi == null ? "" : pi.getIdentifier()));
 			}

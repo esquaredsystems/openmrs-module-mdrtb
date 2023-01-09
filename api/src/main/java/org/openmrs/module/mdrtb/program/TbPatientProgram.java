@@ -648,12 +648,12 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		
 		return ret;
 	}
-
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return TbPatientProgram.class.isAssignableFrom(clazz);
 	}
-
+	
 	@Override
 	public void validate(Object target, Errors errors) {
 		TbPatientProgram program = (TbPatientProgram) target;

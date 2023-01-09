@@ -176,9 +176,10 @@ public class VisitStatusCalculator {
 		EncounterType intakeType = MdrtbConstants.ET_TB03_TB_INTAKE;
 		EncounterType followUpType = MdrtbConstants.ET_FORM89_TB_FOLLOWUP;
 		EncounterType specimenType = MdrtbConstants.ET_SPECIMEN_COLLECTION;
-		EncounterType transferOutType = MdrtbConstants.ET_TRANSFER_OUT;;
+		EncounterType transferOutType = MdrtbConstants.ET_TRANSFER_OUT;
+		;
 		EncounterType transferInType = MdrtbConstants.ET_TRANSFER_IN;
-				
+		
 		// where we will store the various visits
 		List<StatusItem> intakeVisits = new LinkedList<StatusItem>();
 		List<StatusItem> followUpVisits = new LinkedList<StatusItem>();

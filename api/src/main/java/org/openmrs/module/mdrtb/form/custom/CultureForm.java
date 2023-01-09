@@ -15,7 +15,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	
 	public CultureForm() {
 		super();
-		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);		
+		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 	}
 	
 	public CultureForm(Patient patient) {

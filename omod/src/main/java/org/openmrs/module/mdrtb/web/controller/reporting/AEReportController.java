@@ -369,7 +369,8 @@ public class AEReportController {
 		Integer zId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PYRAZINAMIDE).getId();
 		Integer eId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ETHAMBUTOL).getId();
 		
-		ArrayList<AdverseEventsForm> aeForms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter, month);
+		ArrayList<AdverseEventsForm> aeForms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year,
+		    quarter, month);
 		System.out.println("SZ:" + aeForms.size());
 		
 		boolean isStandard = false;

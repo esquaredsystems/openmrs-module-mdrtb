@@ -148,7 +148,8 @@ public class AERegisterController {
 			}
 		}
 		
-		ArrayList<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter, month);
+		ArrayList<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter,
+		    month);
 		
 		ArrayList<AdverseEventsRegisterData> aeRegister = new ArrayList<AdverseEventsRegisterData>();
 		

@@ -35,8 +35,8 @@ public class MdrtbFindPatient {
 		List<Patient> patients;
 		patients = ps.getPatients(searchValue);
 		patientList = new Vector<Object>(patients.size());
-		String primaryIdentifier = Context.getAdministrationService()
-		        .getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
+		String primaryIdentifier = Context.getAdministrationService().getGlobalProperty(
+		    MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 		for (Patient p : patients) {
 			PatientListItem patientListItem = new PatientListItem(p);
 			// make sure the correct patient identifier is set on the patient list item

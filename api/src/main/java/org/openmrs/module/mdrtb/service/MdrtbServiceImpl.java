@@ -317,8 +317,7 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 	public Specimen getSpecimen(Encounter encounter) {
 		// return null if there is no encounter, or if the encounter if of the wrong
 		// type
-		if (encounter == null
-		        || !encounter.getEncounterType().equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {
+		if (encounter == null || !encounter.getEncounterType().equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {
 			log.error("Unable to fetch specimen obj: getSpecimen called with invalid encounter");
 			return null;
 		}
@@ -1241,8 +1240,8 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 	
 	//TODO: Write unit test to check if only the locations with enrollment tag are returned
 	public List<Location> getEnrollmentLocations() {
-		LocationTag enrollmentTag = Context.getLocationService()
-		        .getLocationTagByUuid(MdrtbConstants.ENROLLMENT_LOCATION_TAG_UUID);
+		LocationTag enrollmentTag = Context.getLocationService().getLocationTagByUuid(
+		    MdrtbConstants.ENROLLMENT_LOCATION_TAG_UUID);
 		List<Location> list = Context.getLocationService().getLocationsByTag(enrollmentTag);
 		return list;
 	}
@@ -2263,7 +2262,8 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 			return null;
 	}
 	
-	public ArrayList<AdverseEventsForm> getAEFormsFilled(ArrayList<Location> locList, Integer year, String quarter, String month) {
+	public ArrayList<AdverseEventsForm> getAEFormsFilled(ArrayList<Location> locList, Integer year, String quarter,
+	        String month) {
 		
 		ArrayList<AdverseEventsForm> forms = new ArrayList<AdverseEventsForm>();
 		

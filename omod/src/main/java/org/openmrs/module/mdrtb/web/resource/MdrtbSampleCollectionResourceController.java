@@ -16,71 +16,71 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1
-        + "/mdrtb/adverseevent", supportedClass = SimpleSpecimenCollection.class, supportedOpenmrsVersions = {"2.4.*"})
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/adverseevent", supportedClass = SimpleSpecimenCollection.class, supportedOpenmrsVersions = { "2.4.*" })
 public class MdrtbSampleCollectionResourceController extends DelegatingCrudResource<SimpleSpecimenCollection> {
-
-    /**
-     * Logger for this class
-     */
-    protected final Log log = LogFactory.getLog(getClass());
-
-    private MdrtbService service = Context.getService(MdrtbService.class);
-
-    @Override
-    public SimpleSpecimenCollection getByUniqueId(String s) {
-        //TODO: 
-        return null;
-    }
-
-    @Override
-    public SimpleSpecimenCollection newDelegate() {
-        return new SimpleSpecimenCollection();
-    }
-
-    @Override
-    public SimpleSpecimenCollection save(SimpleSpecimenCollection simpleSpecimenCollection) {
-        //TODO:
-        return null;
-    }
-
-    @Override
-    public void purge(SimpleSpecimenCollection simpleSpecimenCollection, RequestContext requestContext) throws ResponseException {
-        throw new ResourceDoesNotSupportOperationException();
-    }
-
-    @Override
-    public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
-        DelegatingResourceDescription description = new DelegatingResourceDescription();
-        description.addProperty("uuid");
-        description.addSelfLink();
-        description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
-        description.addProperty("display");
-        if (representation instanceof DefaultRepresentation) {
-            description.addProperty("name");
-            description.addProperty("description");
-            return description;
-        } else if (representation instanceof FullRepresentation) {
-            description.addProperty("name");
-            description.addProperty("description");
-            description.addProperty("auditInfo");
-            return description;
-        } else if (representation instanceof RefRepresentation) {
-            description.addProperty("name");
-            return description;
-        }
-        return description;
-    }
-
-    @Override
-    public DelegatingResourceDescription getCreatableProperties() {
-        DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
-        delegatingResourceDescription.addProperty("name");
-        return delegatingResourceDescription;
-    }
-
-    @Override
-    protected void delete(SimpleSpecimenCollection delegate, String reason, RequestContext context) throws ResponseException {
-        throw new ResourceDoesNotSupportOperationException();
-    }
+	
+	/**
+	 * Logger for this class
+	 */
+	protected final Log log = LogFactory.getLog(getClass());
+	
+	private MdrtbService service = Context.getService(MdrtbService.class);
+	
+	@Override
+	public SimpleSpecimenCollection getByUniqueId(String s) {
+		//TODO: 
+		return null;
+	}
+	
+	@Override
+	public SimpleSpecimenCollection newDelegate() {
+		return new SimpleSpecimenCollection();
+	}
+	
+	@Override
+	public SimpleSpecimenCollection save(SimpleSpecimenCollection simpleSpecimenCollection) {
+		//TODO:
+		return null;
+	}
+	
+	@Override
+	public void purge(SimpleSpecimenCollection simpleSpecimenCollection, RequestContext requestContext)
+	        throws ResponseException {
+		throw new ResourceDoesNotSupportOperationException();
+	}
+	
+	@Override
+	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addProperty("uuid");
+		description.addSelfLink();
+		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
+		description.addProperty("display");
+		if (representation instanceof DefaultRepresentation) {
+			description.addProperty("name");
+			description.addProperty("description");
+			return description;
+		} else if (representation instanceof FullRepresentation) {
+			description.addProperty("name");
+			description.addProperty("description");
+			description.addProperty("auditInfo");
+			return description;
+		} else if (representation instanceof RefRepresentation) {
+			description.addProperty("name");
+			return description;
+		}
+		return description;
+	}
+	
+	@Override
+	public DelegatingResourceDescription getCreatableProperties() {
+		DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
+		delegatingResourceDescription.addProperty("name");
+		return delegatingResourceDescription;
+	}
+	
+	@Override
+	protected void delete(SimpleSpecimenCollection delegate, String reason, RequestContext context) throws ResponseException {
+		throw new ResourceDoesNotSupportOperationException();
+	}
 }

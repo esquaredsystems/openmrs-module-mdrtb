@@ -9,10 +9,9 @@ import org.junit.Test;
 
 /**
  * @author owais
- *
  */
 public class MdrtbConceptsTest {
-
+	
 	/**
 	 * Test method for {@link org.openmrs.module.mdrtb.MdrtbConcepts#getAllConceptMappings()}.
 	 */
@@ -20,15 +19,17 @@ public class MdrtbConceptsTest {
 	public final void testGetAllConceptMappings() {
 		fail("Not yet implemented"); // TODO
 	}
-
+	
 	/**
-	 * Test method for {@link org.openmrs.module.mdrtb.MdrtbConcepts#initializeEverythingAboutConcept(org.openmrs.Concept)}.
+	 * Test method for
+	 * {@link org.openmrs.module.mdrtb.MdrtbConcepts#initializeEverythingAboutConcept(org.openmrs.Concept)}
+	 * .
 	 */
 	@Test
 	public final void testInitializeEverythingAboutConcept() {
 		fail("Not yet implemented"); // TODO
 	}
-
+	
 	/**
 	 * Test method for {@link org.openmrs.module.mdrtb.MdrtbConcepts#lookup(java.lang.String)}.
 	 */
@@ -36,7 +37,7 @@ public class MdrtbConceptsTest {
 	public final void testLookup() {
 		fail("Not yet implemented"); // TODO
 	}
-
+	
 	/**
 	 * Test method for {@link org.openmrs.module.mdrtb.MdrtbConcepts#resetCache()}.
 	 */
@@ -44,5 +45,5 @@ public class MdrtbConceptsTest {
 	public final void testResetCache() {
 		fail("Not yet implemented"); // TODO
 	}
-
+	
 }

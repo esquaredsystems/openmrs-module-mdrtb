@@ -258,25 +258,25 @@ public class TB07uController {
 			int groupId = q.getConceptId().intValue();
 			
 			if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			    MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				newCase = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) {
+			    MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) {
 				relapse1 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) {
+			    MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) {
 				relapse2 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))) {
+			    MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))) {
 				default1 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))) {
+			    MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))) {
 				default2 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) {
+			    MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) {
 				failure1 = Boolean.TRUE;
 			} else if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-					MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) {
+			    MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) {
 				failure2 = Boolean.TRUE;
 			} else {
 				other = Boolean.TRUE;
@@ -1408,8 +1408,7 @@ public class TB07uController {
 				if (regList != null) {
 					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId().intValue(), regList, locList, year,
 					    quarter, month);
-				}
-				else {
+				} else {
 					System.out.println("REG LIST NULL: " + tf.getPatient().getPatientId());
 				}
 				
@@ -1422,8 +1421,7 @@ public class TB07uController {
 						
 						else if (regimen.getConceptId().intValue() == indBdq) {
 							isIndBdq = Boolean.TRUE;
-						}
-						else {
+						} else {
 							System.out.println("REG NOT COUNTED: " + tf.getPatient().getPatientId());
 						}
 					}
