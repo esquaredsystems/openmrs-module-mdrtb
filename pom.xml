@@ -33,11 +33,13 @@
 		<openmrs.legacyui.version>1.8.4</openmrs.legacyui.version>
 		<openmrs.logic.version>0.5</openmrs.logic.version>
 		<openmrs.reporting.version>1.23.0</openmrs.reporting.version>
-		<openmrs.reportingcompatibility.version>2.0.0</openmrs.reportingcompatibility.version>
+		<openmrs.reportingrest.version>1.12.0</openmrs.reportingrest.version>
+		<openmrs.reportingcompatibility.version>2.0.8</openmrs.reportingcompatibility.version>
 		<openmrs.xstream-api.version>0.2.15</openmrs.xstream-api.version>
 		<openmrs.wsrest.version>2.32.0</openmrs.wsrest.version>		
 		
-		<groovy.version>2.4.21</groovy.version>		
+		<groovy.version>2.4.21</groovy.version>
+		<gson.version>2.8.9</gson.version>
 		<javax.servlet.version>2.5</javax.servlet.version>
 <!-- 		<jodatime.version>2.10.14</jodatime.version> -->
 		<poi.version>4.1.1</poi.version>
@@ -129,18 +131,6 @@
             <groupId>org.openmrs.module</groupId>
             <artifactId>reportingcompatibility-api</artifactId>
             <version>${openmrs.reportingcompatibility.version}</version>
-            <scope>provided</scope>
-        </dependency>
-		<dependency>
-            <groupId>org.openmrs.module</groupId>
-            <artifactId>webservices.rest-omod-common</artifactId>
-            <version>${openmrs.wsrest.version}</version>
-            <scope>provided</scope>
-        </dependency>
-		<dependency>
-            <groupId>org.openmrs.module</groupId>
-            <artifactId>webservices.rest-omod</artifactId>
-            <version>${openmrs.wsrest.version}</version>
             <scope>provided</scope>
         </dependency>
 		<dependency>

@@ -389,7 +389,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getPatientProgramIdentifier(org.openmrs.module.mdrtb.program.MdrtbPatientProgram)}
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getPatientMdrtbProgramIdentifier(org.openmrs.module.mdrtb.program.MdrtbPatientProgram)}
 	 * .
 	 */
 	@Test
@@ -400,7 +400,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getGenPatientProgramIdentifier(org.openmrs.PatientProgram)}
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getPatientProgramIdentifier(org.openmrs.PatientProgram)}
 	 * .
 	 */
 	@Test

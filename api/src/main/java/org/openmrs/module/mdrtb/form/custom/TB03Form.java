@@ -1072,7 +1072,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 			PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(ppid);
 			
 			if (pp != null) {
-				pi = Context.getService(MdrtbService.class).getGenPatientProgramIdentifier(pp);
+				pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
 				if (pi == null) {
 					val = null;
 				}

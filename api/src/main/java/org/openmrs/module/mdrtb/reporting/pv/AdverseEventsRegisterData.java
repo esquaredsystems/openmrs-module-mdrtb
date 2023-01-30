@@ -35,7 +35,7 @@ public class AdverseEventsRegisterData implements Comparable<AdverseEventsRegist
 		org.openmrs.PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patProgId);
 		String id = null;
 		if (pp != null) {
-			PatientIdentifier pi = Context.getService(MdrtbService.class).getGenPatientProgramIdentifier(pp);
+			PatientIdentifier pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
 			id = pi == null ? null : pi.getIdentifier();
 		}
 		return id;

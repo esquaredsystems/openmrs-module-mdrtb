@@ -9241,7 +9241,7 @@ public class PatientListContoller {
 			PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(ppid);
 			
 			if (pp != null) {
-				pi = Context.getService(MdrtbService.class).getGenPatientProgramIdentifier(pp);
+				pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
 				if (pi == null) {
 					val = null;
 				}

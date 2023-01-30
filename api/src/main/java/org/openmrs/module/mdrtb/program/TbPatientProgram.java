@@ -52,7 +52,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 	
 	public TbPatientProgram(PatientProgram program) {
 		this.program = (PatientProgram) program;
-		this.patientIdentifier = Context.getService(MdrtbService.class).getGenPatientProgramIdentifier(program);
+		this.patientIdentifier = Context.getService(MdrtbService.class).getPatientProgramIdentifier(program);
 	}
 	
 	public PatientProgram getPatientProgram() {

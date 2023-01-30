@@ -398,7 +398,7 @@ public class DOTSDQController {
 				TbPatientProgram program = Context.getService(MdrtbService.class).getTbPatientProgram(tf.getPatProgId());
 				if (program == null
 				        || Context.getService(MdrtbService.class)
-				                .getGenPatientProgramIdentifier(program.getPatientProgram()) == null) {
+				                .getPatientProgramIdentifier(program.getPatientProgram()) == null) {
 					noDOTSId.add(dqi);
 					errorFlag = Boolean.TRUE;
 				}

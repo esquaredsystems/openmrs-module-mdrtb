@@ -19,45 +19,45 @@ public interface MdrtbDAO {
 	/**
 	 * @return all Locations which have non-voided Patient Programs associated with them
 	 */
-	public List<Location> getLocationsWithAnyProgramEnrollments() throws DAOException;
+	List<Location> getLocationsWithAnyProgramEnrollments() throws DAOException;
 	
 	@Deprecated
-	public List<String> getAllRayonsTJK();
+	List<String> getAllRayonsTJK();
 	
-	public Map<Integer, List<DrugOrder>> getDrugOrders(Cohort patients, List<Concept> drugConcepts) throws DAOException;
+	Map<Integer, List<DrugOrder>> getDrugOrders(Cohort patients, List<Concept> drugConcepts) throws DAOException;
 	
-	public PatientIdentifier getPatientIdentifierById(Integer patientIdentifierId);
+	PatientIdentifier getPatientIdentifierById(Integer patientIdentifierId);
 	
-	public int countPDFRows();
+	int countPDFRows();
 	
-	public List<List<Integer>> getPDFData(String reportType);
+	List<List<Integer>> getPDFData(String reportType);
 	
-	public ArrayList<String> getPDFColumns();
+	ArrayList<String> getPDFColumns();
 	
-	public void doPDF(Integer oblast, Integer district, Integer facility, Integer year, String quarter, String month,
+	void doPDF(Integer oblast, Integer district, Integer facility, Integer year, String quarter, String month,
 	        String reportDate, String tableData, boolean reportStatus, String reportName, String reportType);
 	
-	public boolean readReportStatus(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
-	        String month, String name, String reportType);
+	boolean readReportStatus(Integer oblast, Integer district, Integer facility, Integer year, String quarter, String month,
+	        String name, String reportType);
 	
-	public List<String> readTableData(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
+	List<String> readTableData(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
 	        String month, String name, String date, String reportType);
 	
-	public void unlockReport(Integer oblast, Integer district, Integer facility, Integer year, String quarter, String month,
+	void unlockReport(Integer oblast, Integer district, Integer facility, Integer year, String quarter, String month,
 	        String name, String date, String reportType);
 	
-	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames);
+	List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames);
 	
-	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames, Date startDate, Date endDate,
+	List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames, Date startDate, Date endDate,
 	        Date closeDate);
 	
-	public void evict(Object obj);
+	void evict(Object obj);
 	
-	public BaseLocation getAddressHierarchyLocation(Integer locationId);
+	BaseLocation getAddressHierarchyLocation(Integer locationId);
 	
-	public List<BaseLocation> getAddressHierarchyLocationsByHierarchyLevel(Integer level);
+	List<BaseLocation> getAddressHierarchyLocationsByHierarchyLevel(Integer level);
 	
-	public BaseLocation getAddressHierarchyLocationParent(BaseLocation child);
+	BaseLocation getAddressHierarchyLocationParent(BaseLocation child);
 	
-	public List<BaseLocation> getAddressHierarchyLocationsByParent(BaseLocation parent);
+	List<BaseLocation> getAddressHierarchyLocationsByParent(BaseLocation parent);
 }

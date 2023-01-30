@@ -107,9 +107,8 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 	@Autowired
 	protected HibernateMdrtbDAO dao;
 	
-	private MdrtbConcepts conceptMap = new MdrtbConcepts(); // TODO: should this be a bean?
+	private MdrtbConcepts conceptMap = new MdrtbConcepts();
 	
-	// caches
 	private Map<Integer, String> colorMapCache = null;
 	
 	public void setDao(HibernateMdrtbDAO dao) {
@@ -378,7 +377,6 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 		catch (Exception ex) {
 			log.error("Invalid formId found in global property " + MdrtbConstants.GP_BACTERIOLOGY_ENTRY_FORM_ID);
 		}
-		
 		// otherwise, go ahead and do the save
 		Context.getEncounterService().saveEncounter(enc);
 	}
@@ -1246,12 +1244,13 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 		return list;
 	}
 	
-	public PatientIdentifier getPatientProgramIdentifier(MdrtbPatientProgram mpp) {
-		return getGenPatientProgramIdentifier(mpp.getPatientProgram());
+	public PatientIdentifier getPatientMdrtbProgramIdentifier(MdrtbPatientProgram mpp) {
+		return getPatientProgramIdentifier(mpp.getPatientProgram());
 	}
 	
-	public PatientIdentifier getGenPatientProgramIdentifier(PatientProgram pp) {
+	public PatientIdentifier getPatientProgramIdentifier(PatientProgram pp) {
 		Integer id = null;
+		//TODO: Change to criteria query
 		String query = "select patient_id from patient_program where patient_program_id = " + pp.getPatientProgramId();
 		List<List<Object>> result = Context.getAdministrationService().executeSQL(query, true);
 		for (List<Object> temp : result) {
@@ -1351,7 +1350,6 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 			dao.doPDF(oblast, district, facility, year, quarter, month, reportDate, tableData, reportStatus, reportName,
 			    reportType);
 		}
-		
 		catch (Exception e) {
 			log.debug("caught in impl: " + e.getMessage());
 			e.printStackTrace();
@@ -1908,7 +1906,6 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 	public Set<ProgramWorkflowState> getPossibleDOTSClassificationsAccordingToPreviousDrugUse() {
 		Set<ProgramWorkflowState> temp = getPossibleTbWorkflowStates(Context.getService(MdrtbService.class).getConcept(
 		    MdrtbConcepts.DOTS_CLASSIFICATION_ACCORDING_TO_PREVIOUS_DRUG_USE));
-		
 		return temp;
 	}
 	
@@ -2369,9 +2366,6 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 			List<Location> locs = Context.getLocationService().getAllLocations(false);
 			for (Location l : locs) {
 				// Committed after upgrade to v2.0
-				//				if (MdrtbUtil.areRussianStringsEqual(l.getName(), facName)) {
-				//					locList.add(l);
-				//				}
 				if (l.getName().equalsIgnoreCase(facName)) {
 					locList.add(l);
 				}
@@ -2479,7 +2473,7 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 		for (PatientProgram program : programs) {
 			// tbPrograms.add(new TbPatientProgram(program));
 			temp = new TbPatientProgram(program);
-			PatientIdentifier pid = getPatientProgramIdentifier(new MdrtbPatientProgram(temp.getPatientProgram()));
+			PatientIdentifier pid = getPatientMdrtbProgramIdentifier(new MdrtbPatientProgram(temp.getPatientProgram()));
 			
 			if (pid != null) {
 				temp.setPatientIdentifier(pid);
@@ -2508,7 +2502,7 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 		for (PatientProgram program : programs) {
 			// tbPrograms.add(new TbPatientProgram(program));
 			temp = new TbPatientProgram(program);
-			PatientIdentifier pid = getPatientProgramIdentifier(new MdrtbPatientProgram(temp.getPatientProgram()));
+			PatientIdentifier pid = getPatientMdrtbProgramIdentifier(new MdrtbPatientProgram(temp.getPatientProgram()));
 			
 			if (pid != null) {
 				temp.setPatientIdentifier(pid);
@@ -2636,7 +2630,6 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 		return null;
 	}
 	
-	@Override
 	public List<Patient> getPatients(Collection<Integer> patientIds) {
 		if (!patientIds.isEmpty()) {
 			List<Patient> list = patientIds.stream().map(id -> Context.getPatientService().getPatient(id)).collect(Collectors.toList());
@@ -2645,7 +2638,6 @@ public abstract class MdrtbServiceImpl extends BaseOpenmrsService implements Mdr
 		return null;
 	}
 	
-	@Override
 	public Map<Integer, List<DrugOrder>> getDrugOrders(Cohort cohort, Concept drugSet) {
 		
 		List<Concept> drugConcepts = null;

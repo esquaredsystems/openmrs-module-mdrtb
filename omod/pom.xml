@@ -72,6 +72,13 @@
             <version>${openmrs.wsrest.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>webservices.rest-omod-common</artifactId>
+            <version>${openmrs.wsrest.version}</version>
+            <type>tests</type>
+            <scope>test</scope>
+        </dependency>
 		<dependency>
             <groupId>org.openmrs.module</groupId>
             <artifactId>webservices.rest-omod</artifactId>
@@ -88,6 +95,11 @@
         	<groupId>com.itextpdf.tool</groupId>
         	<artifactId>xmlworker</artifactId>
         	<version>${xmlworker.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
         </dependency>
 		
 	</dependencies>

@@ -39,32 +39,24 @@ public class TB03Util {
 	
 	public static Culture getDiagnosticCulture(TB03Form tf) {
 		Culture c = null;
-		
 		for (CultureForm cf : tf.getCultures()) {//, startDateCollected, endDateCollected)) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0) {
-				
 				c = new CultureImpl(cf.getEncounter());
 				break;
 			}
-			
 		}
 		return c;
-		
 	}
 	
 	public static CultureForm getDiagnosticCultureForm(TB03Form tf) {
 		CultureForm c = null;
-		
 		for (CultureForm cf : tf.getCultures()) {//, startDateCollected, endDateCollected)) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0) {
-				
 				c = cf;
 				break;
 			}
-			
 		}
 		return c;
-		
 	}
 	
 	public static Xpert getFirstXpert(TB03Form tf) {
@@ -73,10 +65,8 @@ public class TB03Util {
 		{//, startDateCollected, endDateCollected)) {
 			if (xperts != null && xperts.size() > 0) {
 				c = new XpertImpl(xperts.get(0).getEncounter());
-				
 			}
 		}
-		
 		return c;
 	}
 	
@@ -86,138 +76,103 @@ public class TB03Util {
 		{//, startDateCollected, endDateCollected)) {
 			if (xperts != null && xperts.size() > 0) {
 				c = xperts.get(0);
-				
 			}
 		}
-		
 		return c;
 	}
 	
 	public static HAIN getFirstHAIN(TB03Form tf) {
 		HAIN c = null;
-		
 		List<HAINForm> hains = tf.getHains();
 		//, startDateCollected, endDateCollected)) {
 		if (hains != null && hains.size() > 0) {
 			c = new HAINImpl(hains.get(0).getEncounter());
-			
 		}
-		
 		return c;
 	}
 	
 	public static HAINForm getFirstHAINForm(TB03Form tf) {
 		HAINForm c = null;
-		
 		List<HAINForm> hains = tf.getHains();
 		//, startDateCollected, endDateCollected)) {
 		if (hains != null && hains.size() > 0) {
 			c = hains.get(0);// new HAINImpl(hains.get(0).getEncounter());
-			
 		}
-		
 		return c;
 	}
 	
 	public static HAIN2 getFirstHAIN2(TB03Form tf) {
 		HAIN2 c = null;
-		
 		List<HAIN2Form> hains = tf.getHain2s();
 		//, startDateCollected, endDateCollected)) {
 		if (hains != null && hains.size() > 0) {
 			c = new HAIN2Impl(hains.get(0).getEncounter());
-			
 		}
-		
 		return c;
 	}
 	
 	public static HAIN2Form getFirstHAIN2Form(TB03Form tf) {
 		HAIN2Form c = null;
-		
 		List<HAIN2Form> hains = tf.getHain2s();
 		//, startDateCollected, endDateCollected)) {
 		if (hains != null && hains.size() > 0) {
 			c = hains.get(0);// new HAINImpl(hains.get(0).getEncounter());
-			
 		}
-		
 		return c;
 	}
 	
-	//	
-	
 	public static Smear getDiagnosticSmear(TB03Form form) {
 		Smear c = null;
-		
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == 0) {
 				c = new SmearImpl(sf.getEncounter());
 				c.setResult(sf.getSmearResult());
 				c.setResultDate(sf.getEncounterDatetime());
-				
 				break;
 			}
-			
 		}
-		
 		return c;
-		
 	}
 	
 	public static SmearForm getDiagnosticSmearForm(TB03Form form) {
 		SmearForm c = null;
-		
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == 0) {
 				c = sf;
-				
 				break;
 			}
-			
 		}
-		
 		return c;
-		
 	}
 	
 	public static Smear getFollowupSmear(TB03Form form, Integer month) {
 		Smear c = null;
-		
 		for (SmearForm sf : form.getSmears()) {//, startDateCollected, endDateCollected)) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == month.intValue()) {
 				c = new SmearImpl(sf.getEncounter());
 				break;
 			}
-			
 		}
 		return c;
-		
 	}
 	
 	public static SmearForm getFollowupSmearForm(TB03Form form, Integer month) {
 		SmearForm c = null;
-		
 		for (SmearForm sf : form.getSmears()) {//, startDateCollected, endDateCollected)) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == month.intValue()) {
 				c = sf;// new SmearImpl(sf.getEncounter());
 				break;
 			}
-			
 		}
 		return c;
-		
 	}
 	
 	public static Dst getDiagnosticDST(TB03Form tf) {
 		Dst d = null;
-		
 		List<DSTForm> dsts = tf.getDsts();
-		
 		if (dsts != null && dsts.size() > 0) {
 			d = new DstImpl(dsts.get(0).getEncounter());
 		}
-		
 		return d;
 	}
 	
@@ -269,7 +224,6 @@ public class TB03Util {
 	}
 	
 	public static String getRegistrationNumber(TB03Form form) {
-		
 		if (form == null) {
 			return Context.getMessageSourceService().getMessage("mdrtb.unassigned");
 			
@@ -282,22 +236,19 @@ public class TB03Util {
 		if (idObs == null) {
 			val = null;
 		}
-		
 		else {
 			ppid = idObs.getValueNumeric().intValue();
 			PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(ppid);
 			
 			if (pp != null) {
-				pi = Context.getService(MdrtbService.class).getGenPatientProgramIdentifier(pp);
+				pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
 				if (pi == null) {
 					val = null;
 				}
-				
 				else {
 					val = pi.getIdentifier();
 				}
 			}
-			
 			else {
 				val = null;
 			}
@@ -305,7 +256,6 @@ public class TB03Util {
 		if (val == null || val.length() == 0) {
 			val = Context.getMessageSourceService().getMessage("mdrtb.unassigned");
 		}
-		
 		return val;
 	}
 	
@@ -322,18 +272,15 @@ public class TB03Util {
 		else {
 			ppid = idObs.getValueNumeric().intValue();
 			PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(ppid);
-			
 			if (pp != null) {
-				pi = Context.getService(MdrtbService.class).getGenPatientProgramIdentifier(pp);
+				pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
 				if (pi == null) {
 					val = null;
 				}
-				
 				else {
 					val = pi.getIdentifier();
 				}
 			}
-			
 			else {
 				val = null;
 			}
@@ -341,8 +288,6 @@ public class TB03Util {
 		if (val == null || val.length() == 0) {
 			val = Context.getMessageSourceService().getMessage("mdrtb.unassigned");
 		}
-		
 		return val;
 	}
-	
 }

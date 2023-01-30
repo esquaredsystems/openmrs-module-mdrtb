@@ -64,7 +64,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * @return all Locations which have non-voided Patient Programs associated with them
 	 */
-	@Transactional(readOnly = true)
 	public List<Location> getLocationsWithAnyProgramEnrollments();
 	
 	/**
@@ -81,56 +80,47 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Search for encounters by various parameters
 	 */
-	@Transactional(readOnly = true)
 	public List<Encounter> getEncounters(Patient patient, Location location, Date start, Date end,
 	        Collection<EncounterType> types);
 	
 	/**
 	 * Search for encounters by Patient and Encounter Types
 	 */
-	@Transactional(readOnly = true)
 	public List<Encounter> getEncountersByPatientAndTypes(Patient patient, Collection<EncounterType> types);
 	
 	/**
 	 * Gets all TB specific encounters for the given patient
 	 */
-	@Transactional(readOnly = true)
 	public List<Encounter> getTbEncounters(Patient patient);
 	
 	/**
 	 * Gets all MDR-TB specific encounters for the given patient
 	 */
-	@Transactional(readOnly = true)
 	public List<Encounter> getMdrtbEncounters(Patient patient);
 	
 	/**
 	 * Returns all the MDR-TB programs in the system
 	 */
-	@Transactional(readOnly = true)
 	public List<MdrtbPatientProgram> getAllMdrtbPatientPrograms();
 	
 	/**
-	 * Returns all the mdrtb programs in the system that were active during a specific date range
+	 * Returns all the MDR-TB programs in the system that were active during a specific date range
 	 */
-	@Transactional(readOnly = true)
 	public List<MdrtbPatientProgram> getAllMdrtbPatientProgramsInDateRange(Date startDate, Date endDate);
 	
 	/**
-	 * Returns all the mdrtb programs for a given patient
+	 * Returns all the MDR-TB programs for a given patient
 	 */
-	@Transactional(readOnly = true)
 	public List<MdrtbPatientProgram> getMdrtbPatientPrograms(Patient patient);
 	
 	/**
 	 * Returns the most recent mdrtb program for a given patient
 	 */
-	@Transactional(readOnly = true)
 	public MdrtbPatientProgram getMostRecentMdrtbPatientProgram(Patient patient);
 	
 	/**
 	 * Returns all the patient programs for a given patient that fall within a specific date range
 	 */
-	@Transactional(readOnly = true)
 	public List<MdrtbPatientProgram> getMdrtbPatientProgramsInDateRange(Patient patient, Date startDate, Date endDate);
 	
 	/**
@@ -140,13 +130,11 @@ public interface MdrtbService extends OpenmrsService {
 	 * is after all program enrollments, it returns the most recent program enrollment If the date
 	 * is between two program enrollments, it returns the later of the two
 	 */
-	@Transactional(readOnly = true)
 	public MdrtbPatientProgram getMdrtbPatientProgramOnDate(Patient patient, Date date);
 	
 	/**
 	 * Returns a specific MdrtbPatientProgram by id
 	 */
-	@Transactional(readOnly = true)
 	public MdrtbPatientProgram getMdrtbPatientProgram(Integer patientProgramId);
 	
 	/**
@@ -208,13 +196,11 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Saves or updates a specimen object
 	 */
-	@Transactional
 	public void saveSpecimen(Specimen specimen);
 	
 	/**
 	 * Deletes a smear, culture, or dst test
 	 */
-	@Transactional
 	public void deleteTest(Integer testId);
 	
 	/**
@@ -244,9 +230,8 @@ public interface MdrtbService extends OpenmrsService {
 	public Smear getSmear(Integer obsId);
 	
 	/**
-	 * Saves a smear in the approriate obs construct
+	 * Saves a smear in the appropriate obs construct
 	 */
-	@Transactional
 	public void saveSmear(Smear smear);
 	
 	/**
@@ -276,9 +261,8 @@ public interface MdrtbService extends OpenmrsService {
 	public Culture getCulture(Integer obsId);
 	
 	/**
-	 * Saves a culture in the approriate obs construct
+	 * Saves a culture in the appropriate obs construct
 	 */
-	@Transactional
 	public void saveCulture(Culture culture);
 	
 	/**
@@ -308,118 +292,100 @@ public interface MdrtbService extends OpenmrsService {
 	public Dst getDst(Integer obsId);
 	
 	/**
-	 * Saves a dst in the appropriate obs construct
+	 * Saves a DST in the appropriate obs construct
 	 */
-	@Transactional
 	public void saveDst(Dst dst);
 	
 	/**
-	 * Deletes a dst result
+	 * Deletes a DST result
 	 */
-	@Transactional
 	public void deleteDstResult(Integer dstResultId);
 	
 	/**
 	 * Saves a scanned lab report in the appropriate obs constructs
 	 */
-	@Transactional
 	public void saveScannedLabReport(ScannedLabReport report);
 	
 	/**
 	 * Deletes a scanned lab report
 	 */
-	@Transactional
 	public void deleteScannedLabReport(Integer reportId);
 	
 	/**
 	 * Handles exiting a patient from care
 	 */
-	@Transactional
 	public void processDeath(Patient patient, Date deathDate, Concept causeOfDeath);
 	
 	/**
 	 * Gets the MDR-TB program
 	 */
-	@Transactional(readOnly = true)
 	public Program getMdrtbProgram();
 	
 	/**
 	 * Gets the DOTS program
 	 */
-	@Transactional(readOnly = true)
 	public Program getTbProgram();
 	
 	/**
 	 * Gets the possible providers
 	 */
-	@Transactional(readOnly = true)
 	public Collection<Person> getProviders();
 	
 	/**
 	 * Returns all the concepts that are possible coded answers for the Tuberculosis Smear Test
 	 * Result
 	 */
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleSmearResults();
 	
 	/**
 	 * Returns all the concepts that are possible coded answers for the Tuberculosis Smear Method
 	 * concept
 	 */
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleSmearMethods();
 	
 	/**
 	 * Returns all the concepts that are possible coded answers for the Tuberculosis Culture Test
 	 * Result
 	 */
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleCultureResults();
 	
 	/**
 	 * Returns all the concepts that are possible coded answers for the Tuberculosis Culture Method
 	 * concept
 	 */
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleCultureMethods();
 	
 	/**
 	 * Returns all the concepts that are possible coded answers for the Tuberculosis Drug
 	 * Sensitivity Test Method concept
 	 */
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleDstMethods();
 	
 	/**
 	 * Returns all the concepts that are possible Dst results
 	 */
-	@Transactional(readOnly = true)
 	public Collection<Concept> getPossibleDstResults();
 	
 	/**
 	 * Returns all the concepts that are possible coded answered for Type of Organism concept
 	 */
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleOrganismTypes();
 	
 	/**
 	 * Returns all the concepts that are possible coded answer for the Tuberculosis Sample Source
 	 * concept
 	 */
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleSpecimenTypes();
 	
 	/**
 	 * Returns all the concepts that are possible coded answers for the appearance of a sputum
 	 * specimen
 	 */
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleSpecimenAppearances();
 	
 	/**
 	 * Returns all possible TB Anatomical sites
 	 */
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleAnatomicalSites();
 	
 	/**
@@ -473,13 +439,11 @@ public interface MdrtbService extends OpenmrsService {
 	 */
 	public void resetColorMapCache();
 	
-	@Transactional(readOnly = true)
 	public List<MdrtbPatientProgram> getAllMdrtbPatientProgramsEnrolledInDateRange(Date startDate, Date endDate);
 	
 	/**
 	 * Saves a xpert in the approriate obs construct
 	 */
-	@Transactional
 	public void saveXpert(Xpert xpert);
 	
 	/**
@@ -493,7 +457,6 @@ public interface MdrtbService extends OpenmrsService {
 	 * @param obs
 	 * @return
 	 */
-	@Deprecated
 	public Xpert getXpert(Obs obs);
 	
 	/**
@@ -508,7 +471,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Saves a hain in the approriate obs construct
 	 */
-	@Transactional
 	public void saveHAIN(HAIN hain);
 	
 	/**
@@ -535,27 +497,20 @@ public interface MdrtbService extends OpenmrsService {
 	
 	public HAIN2 createHAIN2(Specimen specimen);
 	
-	@Transactional
 	public void saveHAIN2(HAIN2 hain);
 	
 	public HAIN2 getHAIN2(Integer obsId);
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleMtbResults();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleRifResistanceResults();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleInhResistanceResults();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleFqResistanceResults();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleInjResistanceResults();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleXpertMtbBurdens();
 	
 	public List<Region> getRegions();
@@ -602,34 +557,26 @@ public interface MdrtbService extends OpenmrsService {
 	
 	public List<Location> getEnrollmentLocations();
 	
-	public PatientIdentifier getPatientProgramIdentifier(MdrtbPatientProgram mpp);
+	public PatientIdentifier getPatientMdrtbProgramIdentifier(MdrtbPatientProgram mpp);
 	
-	public PatientIdentifier getGenPatientProgramIdentifier(PatientProgram mpp);
+	public PatientIdentifier getPatientProgramIdentifier(PatientProgram mpp);
 	
-	@Transactional(readOnly = true)
 	public List<TbPatientProgram> getAllTbPatientProgramsEnrolledInDateRange(Date startDate, Date endDate);
 	
 	public void addIdentifierToProgram(Integer patientIdenifierId, Integer patientProgramId);
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleIPTreatmentSites();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleCPTreatmentSites();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleRegimens();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleHIVStatuses();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleResistanceTypes();
 	
-	@Transactional(readOnly = true)
 	public Collection<ConceptAnswer> getPossibleConceptAnswers(String conceptQuestion);
 	
-	// ADDED BY ZOHAIB
 	public int countPDFRows();
 	
 	public List<List<Integer>> getPDFRows(String reportType);
@@ -670,7 +617,6 @@ public interface MdrtbService extends OpenmrsService {
 	public List<Encounter> getEncountersByEncounterTypes(List<String> reportEncounterTypes, Date startDate, Date endDate,
 	        Date closeDate);
 	
-	///
 	public List<SmearForm> getSmearForms(Integer patientProgramId);
 	
 	public List<CultureForm> getCultureForms(Integer patientProgramId);
@@ -779,31 +725,26 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Returns all the DOTS programs in the system
 	 */
-	@Transactional(readOnly = true)
 	public List<TbPatientProgram> getAllTbPatientPrograms();
 	
 	/**
 	 * Returns all the dots programs in the system that were active during a specific date range
 	 */
-	@Transactional(readOnly = true)
 	public List<TbPatientProgram> getAllTbPatientProgramsInDateRange(Date startDate, Date endDate);
 	
 	/**
 	 * Returns all the dots programs for a given patient
 	 */
-	@Transactional(readOnly = true)
 	public List<TbPatientProgram> getTbPatientPrograms(Patient patient);
 	
 	/**
 	 * Returns the most recent mdrtb program for a given patient
 	 */
-	@Transactional(readOnly = true)
 	public TbPatientProgram getMostRecentTbPatientProgram(Patient patient);
 	
 	/**
 	 * Returns all the patient programs for a given patient that fall within a specific date range
 	 */
-	@Transactional(readOnly = true)
 	public List<TbPatientProgram> getTbPatientProgramsInDateRange(Patient patient, Date startDate, Date endDate);
 	
 	/**
@@ -813,13 +754,11 @@ public interface MdrtbService extends OpenmrsService {
 	 * is after all program enrollments, it returns the most recent program enrollment If the date
 	 * is between two program enrollments, it returns the later of the two
 	 */
-	@Transactional(readOnly = true)
 	public TbPatientProgram getTbPatientProgramOnDate(Patient patient, Date date);
 	
 	/**
 	 * Returns a specific MdrtbPatientProgram by id
 	 */
-	@Transactional(readOnly = true)
 	public TbPatientProgram getTbPatientProgram(Integer patientProgramId);
 	
 	/**
@@ -832,11 +771,26 @@ public interface MdrtbService extends OpenmrsService {
 	 */
 	public ProgramWorkflow getProgramWorkflow(Program program, Integer conceptId);
 	
+	/**
+	 * Replacing the deprecated method in {@link ProgramWorkflowService} to return
+	 * {@link ProgramWorkflowState} by {@link ProgramWorkflow} and {@link Concept}
+	 * 
+	 * @param programWorkflow
+	 * @param conceptId
+	 * @return
+	 * @throws APIException
+	 */
 	public ProgramWorkflowState getProgramWorkflowState(ProgramWorkflow programWorkflow, Integer conceptId)
 	        throws APIException;
 	
 	public List<DrugOrder> getDrugOrders(Patient patient);
 	
+	/**
+	 * Save {@link DrugOrder}
+	 * 
+	 * @param drugOrder
+	 * @return
+	 */
 	public DrugOrder saveDrugOrder(DrugOrder drugOrder);
 	
 	/**
@@ -882,5 +836,6 @@ public interface MdrtbService extends OpenmrsService {
 	 * @param toDate
 	 * @return
 	 */
-	Cohort getPatientsByProgramAndState(Program program, List<ProgramWorkflowState> stateList, Date fromDate, Date toDate);
+	public Cohort getPatientsByProgramAndState(Program program, List<ProgramWorkflowState> stateList, Date fromDate,
+	        Date toDate);
 }

@@ -853,7 +853,7 @@ public class ProgramController {
 		    pi.getPatient(), null, null, null, null, null, false);
 		PatientIdentifier temp = null;
 		for (org.openmrs.PatientProgram pp : ppList) {
-			temp = Context.getService(MdrtbService.class).getGenPatientProgramIdentifier(
+			temp = Context.getService(MdrtbService.class).getPatientProgramIdentifier(
 			    Context.getProgramWorkflowService().getPatientProgram(pp.getId()));
 			if (temp != null && temp.getId().intValue() == pi.getId().intValue())
 				return true;

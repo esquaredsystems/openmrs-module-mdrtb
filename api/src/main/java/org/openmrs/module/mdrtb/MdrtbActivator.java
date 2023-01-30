@@ -33,7 +33,6 @@ import org.openmrs.layout.address.AddressTemplate;
 import org.openmrs.module.BaseModuleActivator;
 import org.openmrs.module.ModuleActivator;
 import org.openmrs.module.mdrtb.service.MdrtbService;
-import org.openmrs.util.Reflect;
 
 import javassist.NotFoundException;
 
@@ -278,7 +277,8 @@ public class MdrtbActivator extends BaseModuleActivator implements ModuleActivat
 				// All public static final String variables starting with GP_ represent Encounter Types
 				if (field.getName().startsWith("ET_")) {
 					try {
-						EncounterType encounterType = Context.getEncounterService().getEncounterType(field.get(null).toString());
+						EncounterType encounterType = Context.getEncounterService().getEncounterType(
+						    field.get(null).toString());
 						if (encounterType == null) {
 							throw new NotFoundException("Value NULL or empty");
 						}

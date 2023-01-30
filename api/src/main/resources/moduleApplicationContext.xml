@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-           http://www.springframework.org/schema/context
-           http://www.springframework.org/schema/context/spring-context-2.5.xsd
-           http://www.springframework.org/schema/util
-           http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+<!-- Beans to add to the current Application context definition -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+  		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  		    http://www.springframework.org/schema/context
+  		    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 	<!-- Enable annotation-driven Spring MVC -->
-	<context:component-scan base-package="org.openmrs.module.mdrtb" />	
+	<context:component-scan base-package="org.openmrs.module.mdrtb" />
+
+	<!-- Wraps MdrtbService methods in DB transactions and interceptors, which set audit info like dateCreated, changedBy, etc. -->
 
 	<bean id="sessionFactory" class="org.openmrs.api.db.hibernate.HibernateSessionFactoryBean">
         <property name="configLocations">
@@ -22,9 +22,7 @@
         </property>
     </bean>
     
-    
-	<!-- Service -->
-	<bean parent="serviceContext">
+    <bean parent="serviceContext">
         <property name="moduleService">
             <list>
                 <value>org.openmrs.module.mdrtb.service.MdrtbService</value>
@@ -34,11 +32,6 @@
                     </property>
                     <property name="target">
                         <bean class="org.openmrs.module.mdrtb.service.MdrtbServiceImpl">
-<!-- 							<property name="dao"> -->
-<!-- 								<bean class="org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO"> -->
-<!-- 									<property name="sessionFactory"><ref bean="sessionFactory"/></property>	 -->
-<!-- 								</bean> -->
-<!-- 							</property>	 -->
                         </bean>
                     </property>
                     <property name="preInterceptors">

@@ -16,6 +16,7 @@ import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
+import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.custom.DQItem;
 import org.openmrs.module.mdrtb.reporting.custom.TB03uUtil;
 import org.openmrs.module.mdrtb.service.MdrtbService;
@@ -321,9 +322,8 @@ public class MDRDQController {
 			}*/
 			
 			if (tf.getPatProgId() != null) {
-				
-				if (Context.getService(MdrtbService.class).getPatientProgramIdentifier(
-				    Context.getService(MdrtbService.class).getMdrtbPatientProgram(tf.getPatProgId())) == null) {
+				MdrtbPatientProgram patientProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(tf.getPatProgId());
+				if (Context.getService(MdrtbService.class).getPatientProgramIdentifier(patientProgram.getPatientProgram()) == null) {
 					noMDRId.add(dqi);
 					errorFlag = Boolean.TRUE;
 				}
