@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<module configVersion="1.2">
+	
+	<!-- Base Module Properties -->
+	<id>${project.parent.artifactId}</id>
+	<name>${project.parent.name}</name>
+	<version>${project.parent.version}</version>
+	<package>org.openmrs.module.mdrtb</package>
+	<author>Esquared Systems</author>
+	<description>${project.parent.description}</description>
+
+	<activator>org.openmrs.module.mdrtb.MdrtbActivator</activator>
+	
+	<!-- <updateURL>https://modules.openmrs.org/modules/download/@MODULE_ID@/update.rdf</updateURL> -->
+	<!-- /Base Module Properties -->
+	
+	<require_version>2.2.0</require_version>
+	
+	<require_modules>
+		<require_module version="1.23.0">org.openmrs.module.reporting</require_module>
+		<require_module version="2.32.0">org.openmrs.module.webservices.rest</require_module>
+ 		<require_module version="2.14.0">org.openmrs.module.addresshierarchy</require_module>
+	</require_modules>
+	
+	<aware_of_modules>
+		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
+	</aware_of_modules>
+	
+	<!-- Extensions -->
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>org.openmrs.module.mdrtb.extension.html.AdminList</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.patientDashboardTab</point>
+		<class>org.openmrs.module.mdrtb.extension.html.MdrtbPatientDashboardTabExt</class>
+	</extension>
+	<extension>
+		<point>org.openmrs.gutter.tools</point>
+		<class>org.openmrs.module.mdrtb.extension.html.MdrtbGutterItem</class>
+	</extension>
+
+	<!-- Required Privileges  -->
+	<privilege>
+		<name>Edit DOTS-MDR Data</name>
+		<description>Allows user to access Form Entry pages/functions</description>
+	</privilege>
+
+	<!-- Required Global Properties
+	<globalProperty>
+		<property>mdrtb.encounterType.adverseEvent</property>
+		<defaultValue>Adverse Event</defaultValue>
+		<description>EXACT name of the encounter type for Adverse events</description>
+		
+	</globalProperty>
+	-->
+	
+	<!-- Internationalization -->
+	<!-- All message codes should start with @MODULE_ID@.* -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<messages>
+		<lang>fr</lang>
+		<file>messages_fr.properties</file>
+	</messages>
+	<messages>
+		<lang>es</lang>
+		<file>messages_es.properties</file>
+	</messages>
+	<!-- /Internationalization -->
+	
+</module>

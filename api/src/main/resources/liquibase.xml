@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+                  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+ 
+    <!--
+    	See http://wiki.openmrs.org/display/docs/Module+liquibase+File for 
+    	documentation on this file.
+    
+        See http://www.liquibase.org/manual/home#available_database_refactorings
+        for a list of supported elements and attributes
+    -->
+ 
+ 	<!-- Uncomment the changeset below if you want to make the Item class persistable, see also Item and MdrtbDaoTest -->
+	<changeSet id="mdrtb-20230125" author="owais.hussain">
+		<preConditions onFail="MARK_RAN">
+			<not><tableExists tableName="report_data"/></not>
+		</preConditions>
+		<comment>
+			Creating the report_data table
+		</comment>
+		<createTable tableName="report_data">
+			<column name="report_id" type="int" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="region_id" type="int" />
+			<column name="district_id" type="int" />
+			<column name="facility_id" type="int" />
+			<column name="report_name" type="varchar(255)" />
+			<column name="description" type="varchar(255)" />
+			<column name="year" type="int" />
+			<column name="quarter" type="int" />
+			<column name="month" type="int" />
+			<column name="report_date" type="datetime" />
+			<column name="report_type" type="varchar(50)" />
+			<column name="report_status" type="varchar(50)" />
+			<column name="table_data" type="longtext" />
+			<column name="uuid" type="char(38)">
+				<constraints nullable="false" unique="true"></constraints>
+			</column>
+		</createTable>
+		
+        <addForeignKeyConstraint constraintName="report_data_region_fk" baseTableName="report_data" 
+        	baseColumnNames="region_id"  referencedTableName="location" referencedColumnNames="location_id" />
+        <addForeignKeyConstraint constraintName="report_data_district_fk" baseTableName="report_data" 
+        	baseColumnNames="district_id"  referencedTableName="location" referencedColumnNames="location_id" />
+        <addForeignKeyConstraint constraintName="report_data_facility_fk" baseTableName="report_data" 
+        	baseColumnNames="facility_id"  referencedTableName="location" referencedColumnNames="location_id" />
+
+    </changeSet>
+ 
+</databaseChangeLog>

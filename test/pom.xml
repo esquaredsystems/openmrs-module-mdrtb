@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.openmrs.module</groupId>
+		<artifactId>mdrtb</artifactId>
+		<version>1.0.1</version>
+	</parent>
+	
+	<artifactId>mdrtb-test</artifactId>
+	<packaging>jar</packaging>
+	<name>MDRTB Test</name>
+	<description>Unit tests for MDRTB</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>mdrtb-api</artifactId>
+            <version>${project.parent.version}</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>mdrtb-omod</artifactId>
+            <version>${project.parent.version}</version>
+			<type>pom</type>
+		</dependency>
+        <dependency>
+			<groupId>org.openmrs.api</groupId>
+			<artifactId>openmrs-api</artifactId>
+            <scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openmrs.web</groupId>
+			<artifactId>openmrs-web</artifactId>
+            <scope>test</scope>
+		</dependency>
+		
+	</dependencies>
+</project>
