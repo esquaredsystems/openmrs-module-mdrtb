@@ -14,6 +14,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
+import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -39,8 +40,8 @@ import io.swagger.models.properties.IntegerProperty;
 import io.swagger.models.properties.RefProperty;
 import io.swagger.models.properties.StringProperty;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb03", supportedClass = SimpleTB03Form.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
-public class TB03FormResourceController extends DataDelegatingCrudResource<SimpleTB03Form> {
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb03u", supportedClass = SimpleTB03uForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+public class TB03uFormResourceController extends DataDelegatingCrudResource<SimpleTB03uForm> {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
@@ -52,29 +53,30 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 		description.addProperty("uuid");
 		description.addProperty("encounter", representation);
 		description.addProperty("patientProgramId");
-		description.addProperty("registrationNumber");
-		description.addProperty("ageAtTB03Registration");
-		description.addProperty("address");
+		description.addProperty("relapseMonth");
 		description.addProperty("clinicalNotes");
-		description.addProperty("nameOfIPFacility");
-		description.addProperty("nameOfCPFacility");
 		description.addProperty("otherCauseOfDeath");
-		description.addProperty("treatmentStartDate");
+		description.addProperty("nameOfTreatmentLocation");
+		description.addProperty("sldRegisterNumber");
+		description.addProperty("weight");
+		description.addProperty("mdrTreatmentStartDate");
 		description.addProperty("artStartDate");
 		description.addProperty("pctStartDate");
-		description.addProperty("xrayDate");
 		description.addProperty("hivTestDate");
 		description.addProperty("treatmentOutcomeDate");
 		description.addProperty("dateOfDeathAfterTreatmentOutcome");
+		description.addProperty("confirmationDate");
 		description.addProperty("anatomicalSite", representation);
-		description.addProperty("treatmentSiteIP", representation);
-		description.addProperty("treatmentSiteCP", representation);
 		description.addProperty("patientCategory", representation);
 		description.addProperty("registrationGroup", representation);
 		description.addProperty("hivStatus", representation);
-		description.addProperty("resistanceType", representation);
 		description.addProperty("causeOfDeath", representation);
 		description.addProperty("treatmentOutcome", representation);
+		description.addProperty("basisForDiagnosis", representation);
+		description.addProperty("mdrStatus", representation);
+		description.addProperty("registrationGroupByDrug", representation);
+		description.addProperty("relapsed", representation);
+		description.addProperty("treatmentLocation", representation);
 		return description;
 	}
 	
@@ -83,26 +85,28 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 		if (rep instanceof DefaultRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
 		        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-		        .property("patientProgramId", new StringProperty());
+		        .property("patientProgramId", new IntegerProperty());
 		} else if (rep instanceof FullRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
 		        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-		        .property("patientProgramId", new StringProperty()).property("registrationNumber", new StringProperty())
-		        .property("ageAtTB03Registration", new StringProperty()).property("address", new StringProperty())
-		        .property("clinicalNotes", new StringProperty()).property("nameOfIPFacility", new StringProperty())
-		        .property("nameOfCPFacility", new StringProperty()).property("otherCauseOfDeath", new StringProperty())
-		        .property("treatmentStartDate", new DateProperty()).property("artStartDate", new DateProperty())
-		        .property("pctStartDate", new DateProperty()).property("xrayDate", new DateProperty())
-		        .property("hivTestDate", new DateProperty()).property("treatmentOutcomeDate", new DateProperty())
+		        .property("patientProgramId", new IntegerProperty()).property("relapseMonth", new IntegerProperty())
+		        .property("clinicalNotes", new StringProperty()).property("otherCauseOfDeath", new StringProperty())
+		        .property("nameOfTreatmentLocation", new StringProperty())
+		        .property("sldRegisterNumber", new StringProperty()).property("weight", new StringProperty())
+		        .property("mdrTreatmentStartDate", new DateProperty()).property("artStartDate", new DateProperty())
+		        .property("pctStartDate", new DateProperty()).property("hivTestDate", new DateProperty())
+		        .property("treatmentOutcomeDate", new DateProperty())
 		        .property("dateOfDeathAfterTreatmentOutcome", new DateProperty())
 		        .property("anatomicalSite", new RefProperty("#/definitions/ConceptGet"))
-		        .property("treatmentSiteIP", new RefProperty("#/definitions/ConceptGet"))
-		        .property("treatmentSiteCP", new RefProperty("#/definitions/ConceptGet"))
 		        .property("patientCategory", new RefProperty("#/definitions/ConceptGet"))
 		        .property("registrationGroup", new RefProperty("#/definitions/ConceptGet"))
 		        .property("hivStatus", new RefProperty("#/definitions/ConceptGet"))
-		        .property("resistanceType", new RefProperty("#/definitions/ConceptGet"))
 		        .property("causeOfDeath", new RefProperty("#/definitions/ConceptGet"))
+		        .property("treatmentOutcome", new RefProperty("#/definitions/ConceptGet"))
+		        .property("basisForDiagnosis", new RefProperty("#/definitions/ConceptGet"))
+		        .property("mdrStatus", new RefProperty("#/definitions/ConceptGet"))
+		        .property("registrationGroupByDrug", new RefProperty("#/definitions/ConceptGet"))
+		        .property("relapsed", new RefProperty("#/definitions/ConceptGet"))
 		        .property("treatmentOutcome", new RefProperty("#/definitions/ConceptGet"));
 		}
 		return modelImpl;
@@ -128,8 +132,8 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 	}
 	
 	@Override
-	public SimpleTB03Form newDelegate() {
-		return new SimpleTB03Form();
+	public SimpleTB03uForm newDelegate() {
+		return new SimpleTB03uForm();
 	}
 	
 	@PropertyGetter("display")
@@ -152,7 +156,7 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		String patientUuid = context.getRequest().getParameter("patient");
-		List<SimpleTB03Form> simpleTB03Forms = new ArrayList<SimpleTB03Form>();
+		List<SimpleTB03uForm> simpleTB03uForms = new ArrayList<SimpleTB03uForm>();
 		if (patientUuid != null) {
 			Patient patient = ((PatientResource1_8) Context.getService(RestService.class).getResourceBySupportedClass(
 			    Patient.class)).getByUniqueId(patientUuid);
@@ -160,25 +164,25 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 				return new EmptySearchResult();
 			List<Encounter> encs = Context.getEncounterService().getEncountersByPatient(patient);
 			for (Encounter encounter : encs) {
-				if (encounter.getEncounterType().equals(MdrtbConstants.ET_TB03_TB_INTAKE)) {
-					TB03Form tb03 = new TB03Form(encounter);
-					simpleTB03Forms.add(new SimpleTB03Form(tb03));
+				if (encounter.getEncounterType().equals(MdrtbConstants.ET_TB03U_MDRTB_INTAKE)) {
+					TB03uForm tb03u = new TB03uForm(encounter);
+					simpleTB03uForms.add(new SimpleTB03uForm(tb03u));
 				}
 			}
-			return new NeedsPaging<SimpleTB03Form>(simpleTB03Forms, context);
+			return new NeedsPaging<SimpleTB03uForm>(simpleTB03uForms, context);
 		}
 		return null;
 	}
 	
 	@Override
-	public SimpleTB03Form getByUniqueId(String uuid) {
+	public SimpleTB03uForm getByUniqueId(String uuid) {
 		Encounter encounter = Context.getEncounterService().getEncounterByUuid(uuid);
-		SimpleTB03Form simpleTB03Form = new SimpleTB03Form(new TB03Form(encounter));
+		SimpleTB03uForm simpleTB03Form = new SimpleTB03uForm(new TB03uForm(encounter));
 		return simpleTB03Form;
 	}
 	
 	@Override
-	public SimpleTB03Form save(SimpleTB03Form delegate) throws ResponseException {
+	public SimpleTB03uForm save(SimpleTB03uForm delegate) throws ResponseException {
 		MdrtbFormServiceImpl formService = new MdrtbFormServiceImpl();
 		// If no provider is supplied, then fetch the provider from current user by matching Provider Identifier with Username
 		if (delegate.getEncounter().getEncounterProviders().isEmpty()) {
@@ -188,18 +192,18 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 				delegate.getEncounter().addProvider(Context.getEncounterService().getEncounterRole(1), provider);
 			}
 		}
-		TB03Form tb03 = new TB03Form(delegate.getEncounter());
-		tb03 = formService.processTB03Form(tb03, null);
-		return new SimpleTB03Form(tb03);
+		TB03uForm tb03u = new TB03uForm(delegate.getEncounter());
+		tb03u = formService.processTB03uForm(tb03u, null);
+		return new SimpleTB03uForm(tb03u);
 	}
 	
 	@Override
-	protected void delete(SimpleTB03Form delegate, String reason, RequestContext context) throws ResponseException {
+	protected void delete(SimpleTB03uForm delegate, String reason, RequestContext context) throws ResponseException {
 		Context.getEncounterService().voidEncounter(delegate.getEncounter(), reason);
 	}
 	
 	@Override
-	public void purge(SimpleTB03Form delegate, RequestContext context) throws ResponseException {
+	public void purge(SimpleTB03uForm delegate, RequestContext context) throws ResponseException {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 }

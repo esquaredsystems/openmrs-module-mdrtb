@@ -1,6 +1,7 @@
 package org.openmrs.module.mdrtb.form.custom;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -65,7 +66,7 @@ public class TB03uForm extends AbstractSimpleForm implements Comparable<TB03uFor
 		if (tb03 != null) {
 			GregorianCalendar gc = new GregorianCalendar();
 			gc.setTime(tb03.getEncounterDatetime());
-			return gc.get(GregorianCalendar.YEAR);
+			return gc.get(Calendar.YEAR);
 		}
 		return null;
 	}

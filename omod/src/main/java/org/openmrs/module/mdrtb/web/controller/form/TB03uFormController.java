@@ -26,6 +26,7 @@ import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
@@ -204,16 +205,6 @@ public class TB03uFormController {
 	        @RequestParam(required = false, value = "returnUrl") String returnUrl, SessionStatus status,
 	        HttpServletRequest request, ModelMap map) {
 		
-		// perform validation and check for errors
-		/*if (tb03 != null) {
-			new SimpleFormValidator().validate(tb03, errors);
-		}*/
-		
-		/*if (errors.hasErrors()) {
-			map.put("errors", errors);
-			return new ModelAndView("/module/mdrtb/form/intake", map);
-		}*/
-		
 		Location location = null;
 		if (StringUtils.isNotBlank(facilityId)) {
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
@@ -226,87 +217,16 @@ public class TB03uFormController {
 			throw new MdrtbAPIException("Invalid Hierarchy Set selected");
 		}
 		
-		if (tb03u.getLocation() == null || !location.equals(tb03u.getLocation())) {
-			tb03u.setLocation(location);
-		}
-		
-		// save the actual update
-		Context.getEncounterService().saveEncounter(tb03u.getEncounter());
-		
-		//handle changes in workflows
-		Concept outcome = tb03u.getTreatmentOutcome();
-		Concept group = tb03u.getRegistrationGroup();
-		Concept groupByDrug = tb03u.getRegistrationGroupByDrug();
-		
-		MdrtbPatientProgram tpp = getMdrtbPatientProgram(patientProgramId);
-		PatientProgram pp = tpp.getPatientProgram();
-		
-		if (outcome != null) {
-			ProgramWorkflow outcomeFlow = Context.getService(MdrtbService.class).getProgramWorkflow(
-			    tpp.getPatientProgram().getProgram(),
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME).getId());
-			ProgramWorkflowState outcomeState = Context.getService(MdrtbService.class).getProgramWorkflowState(outcomeFlow,
-			    outcome.getId());
-			tpp.setOutcome(outcomeState);
-			tpp.setDateCompleted(tb03u.getTreatmentOutcomeDate());
-		} else {
-			tpp.setDateCompleted(null);
-		}
-		if (group != null) {
-			ProgramWorkflow groupFlow = Context.getService(MdrtbService.class).getProgramWorkflow(
-			    tpp.getPatientProgram().getProgram(),
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT)
-			            .getId());
-			ProgramWorkflowState groupState = Context.getService(MdrtbService.class).getProgramWorkflowState(groupFlow,
-			    outcome.getId());
-			tpp.setClassificationAccordingToPreviousTreatment(groupState);
-		}
-		
-		if (groupByDrug != null) {
-			ProgramWorkflow groupByDrugFlow = Context.getService(MdrtbService.class).getProgramWorkflow(
-			    tpp.getPatientProgram().getProgram(),
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_DRUG_USE)
-			            .getId());
-			ProgramWorkflowState groupByDrugState = Context.getService(MdrtbService.class).getProgramWorkflowState(
-			    groupByDrugFlow, outcome.getId());
-			
-			tpp.setClassificationAccordingToPreviousDrugUse(groupByDrugState);
-		}
-		
-		Context.getProgramWorkflowService().savePatientProgram(tpp.getPatientProgram());
-		
-		//TX OUTCOME
-		//PATIENT GROUP
-		//PATIENT DEATH AND CAUSE OF DEATH
-		if (outcome != null
-		        && outcome.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		            MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
-			Patient patient = tpp.getPatient();
-			if (!patient.getDead()) {
-				patient.setDead(new Boolean(true));
-				patient.setCauseOfDeath(tb03u.getCauseOfDeath());
-			}
-			Context.getPatientService().savePatient(patient);
-		}
+		MdrtbFormServiceImpl formService = new MdrtbFormServiceImpl();
+		tb03u = formService.processTB03uForm(tb03u, location);
 		// clears the command object from the session
 		status.setComplete();
-		
-		/*if(programModified) {
-			System.out.println("saving program");
-			Context.getProgramWorkflowService().savePatientProgram(pp);
-		}*/
-		
 		map.clear();
-		
 		// if there is no return URL, default to the patient dashboard
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
 			returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form";
 		}
-		
-		returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-		    Context.getService(MdrtbService.class).getMdrtbPatientProgram(patientProgramId).getPatient().getId(),
-		    patientProgramId);
-		
+		returnUrl = MdrtbWebUtil.appendParameters(returnUrl, tb03u.getPatient().getPatientId(), tb03u.getPatientProgramId());
 		return new ModelAndView(new RedirectView(returnUrl));
 	}
 	
