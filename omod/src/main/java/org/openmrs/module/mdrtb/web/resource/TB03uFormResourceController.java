@@ -13,8 +13,9 @@ import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
-import org.openmrs.module.mdrtb.form.custom.TB03Form;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
+import org.openmrs.module.mdrtb.web.dto.SimpleTB03Form;
+import org.openmrs.module.mdrtb.web.dto.SimpleTB03uForm;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -84,30 +85,32 @@ public class TB03uFormResourceController extends DataDelegatingCrudResource<Simp
 		ModelImpl modelImpl = (ModelImpl) super.getGETModel(rep);
 		if (rep instanceof DefaultRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
-		        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-		        .property("patientProgramId", new IntegerProperty());
+			        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
+			        .property("patientProgramId", new IntegerProperty());
 		} else if (rep instanceof FullRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
-		        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-		        .property("patientProgramId", new IntegerProperty()).property("relapseMonth", new IntegerProperty())
-		        .property("clinicalNotes", new StringProperty()).property("otherCauseOfDeath", new StringProperty())
-		        .property("nameOfTreatmentLocation", new StringProperty())
-		        .property("sldRegisterNumber", new StringProperty()).property("weight", new StringProperty())
-		        .property("mdrTreatmentStartDate", new DateProperty()).property("artStartDate", new DateProperty())
-		        .property("pctStartDate", new DateProperty()).property("hivTestDate", new DateProperty())
-		        .property("treatmentOutcomeDate", new DateProperty())
-		        .property("dateOfDeathAfterTreatmentOutcome", new DateProperty())
-		        .property("anatomicalSite", new RefProperty("#/definitions/ConceptGet"))
-		        .property("patientCategory", new RefProperty("#/definitions/ConceptGet"))
-		        .property("registrationGroup", new RefProperty("#/definitions/ConceptGet"))
-		        .property("hivStatus", new RefProperty("#/definitions/ConceptGet"))
-		        .property("causeOfDeath", new RefProperty("#/definitions/ConceptGet"))
-		        .property("treatmentOutcome", new RefProperty("#/definitions/ConceptGet"))
-		        .property("basisForDiagnosis", new RefProperty("#/definitions/ConceptGet"))
-		        .property("mdrStatus", new RefProperty("#/definitions/ConceptGet"))
-		        .property("registrationGroupByDrug", new RefProperty("#/definitions/ConceptGet"))
-		        .property("relapsed", new RefProperty("#/definitions/ConceptGet"))
-		        .property("treatmentOutcome", new RefProperty("#/definitions/ConceptGet"));
+			        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
+			        .property("patientProgramId", new IntegerProperty())
+			        .property("ageAtTB03Registration", new IntegerProperty())
+			        .property("relapseMonth", new IntegerProperty()).property("clinicalNotes", new StringProperty())
+			        .property("otherCauseOfDeath", new StringProperty())
+			        .property("nameOfTreatmentLocation", new StringProperty())
+			        .property("sldRegisterNumber", new StringProperty()).property("weight", new StringProperty())
+			        .property("mdrTreatmentStartDate", new DateProperty()).property("artStartDate", new DateProperty())
+			        .property("pctStartDate", new DateProperty()).property("hivTestDate", new DateProperty())
+			        .property("treatmentOutcomeDate", new DateProperty())
+			        .property("dateOfDeathAfterTreatmentOutcome", new DateProperty())
+			        .property("anatomicalSite", new RefProperty("#/definitions/ConceptGet"))
+			        .property("patientCategory", new RefProperty("#/definitions/ConceptGet"))
+			        .property("registrationGroup", new RefProperty("#/definitions/ConceptGet"))
+			        .property("hivStatus", new RefProperty("#/definitions/ConceptGet"))
+			        .property("causeOfDeath", new RefProperty("#/definitions/ConceptGet"))
+			        .property("treatmentOutcome", new RefProperty("#/definitions/ConceptGet"))
+			        .property("basisForDiagnosis", new RefProperty("#/definitions/ConceptGet"))
+			        .property("mdrStatus", new RefProperty("#/definitions/ConceptGet"))
+			        .property("registrationGroupByDrug", new RefProperty("#/definitions/ConceptGet"))
+			        .property("relapsed", new RefProperty("#/definitions/ConceptGet"))
+			        .property("treatmentOutcome", new RefProperty("#/definitions/ConceptGet"));
 		}
 		return modelImpl;
 	}
@@ -177,8 +180,8 @@ public class TB03uFormResourceController extends DataDelegatingCrudResource<Simp
 	@Override
 	public SimpleTB03uForm getByUniqueId(String uuid) {
 		Encounter encounter = Context.getEncounterService().getEncounterByUuid(uuid);
-		SimpleTB03uForm simpleTB03Form = new SimpleTB03uForm(new TB03uForm(encounter));
-		return simpleTB03Form;
+		SimpleTB03uForm simpleTB03uForm = new SimpleTB03uForm(new TB03uForm(encounter));
+		return simpleTB03uForm;
 	}
 	
 	@Override

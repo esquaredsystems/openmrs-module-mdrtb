@@ -213,7 +213,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 		}
 		return tb03u;
 	}
-
+	
 	/**
 	 * Process the {@link Form89} for DOTS-TB patients
 	 * 
@@ -252,6 +252,6 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 		}
 		// Save the actual update
 		Context.getEncounterService().saveEncounter(form89.getEncounter());
-		return null;
+		return form89;
 	}
 }

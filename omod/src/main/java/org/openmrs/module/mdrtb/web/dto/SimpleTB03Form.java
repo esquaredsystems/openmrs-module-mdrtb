@@ -1,4 +1,4 @@
-package org.openmrs.module.mdrtb.web.resource;
+package org.openmrs.module.mdrtb.web.dto;
 
 import java.util.Date;
 
@@ -15,9 +15,9 @@ public class SimpleTB03Form extends BaseOpenmrsData {
 	
 	private Integer patientProgramId;
 	
-	private String registrationNumber;
-	
 	private Integer ageAtTB03Registration;
+	
+	private String registrationNumber;
 	
 	private String address;
 	
@@ -101,6 +101,7 @@ public class SimpleTB03Form extends BaseOpenmrsData {
 	 */
 	public TB03Form toForm() {
 		TB03Form tb03 = new TB03Form();
+		tb03.setEncounter(getEncounter());
 		tb03.setPatientProgramId(getPatientProgramId());
 		tb03.setClinicianNotes(getClinicalNotes());
 		tb03.setNameOfIPFacility(getNameOfIPFacility());

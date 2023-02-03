@@ -1,4 +1,4 @@
-package org.openmrs.module.mdrtb.web.resource;
+package org.openmrs.module.mdrtb.web.dto;
 
 import java.util.Date;
 
@@ -112,6 +112,7 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 		tb03u.setCliniciansNotes(getClinicalNotes());
 		tb03u.setConfirmationDate(getConfirmationDate());
 		tb03u.setDateOfDeathAfterOutcome(getDateOfDeathAfterTreatmentOutcome());
+		tb03u.setEncounter(getEncounter());
 		tb03u.setHivStatus(getHivStatus());
 		tb03u.setHivTestDate(getHivTestDate());
 		tb03u.setMdrStatus(getMdrStatus());

@@ -14,6 +14,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
+import org.openmrs.module.mdrtb.web.dto.SimpleTB03Form;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -82,28 +83,29 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 		ModelImpl modelImpl = (ModelImpl) super.getGETModel(rep);
 		if (rep instanceof DefaultRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
-		        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-		        .property("patientProgramId", new StringProperty());
+			        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
+			        .property("patientProgramId", new StringProperty());
 		} else if (rep instanceof FullRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
-		        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-		        .property("patientProgramId", new StringProperty()).property("registrationNumber", new StringProperty())
-		        .property("ageAtTB03Registration", new StringProperty()).property("address", new StringProperty())
-		        .property("clinicalNotes", new StringProperty()).property("nameOfIPFacility", new StringProperty())
-		        .property("nameOfCPFacility", new StringProperty()).property("otherCauseOfDeath", new StringProperty())
-		        .property("treatmentStartDate", new DateProperty()).property("artStartDate", new DateProperty())
-		        .property("pctStartDate", new DateProperty()).property("xrayDate", new DateProperty())
-		        .property("hivTestDate", new DateProperty()).property("treatmentOutcomeDate", new DateProperty())
-		        .property("dateOfDeathAfterTreatmentOutcome", new DateProperty())
-		        .property("anatomicalSite", new RefProperty("#/definitions/ConceptGet"))
-		        .property("treatmentSiteIP", new RefProperty("#/definitions/ConceptGet"))
-		        .property("treatmentSiteCP", new RefProperty("#/definitions/ConceptGet"))
-		        .property("patientCategory", new RefProperty("#/definitions/ConceptGet"))
-		        .property("registrationGroup", new RefProperty("#/definitions/ConceptGet"))
-		        .property("hivStatus", new RefProperty("#/definitions/ConceptGet"))
-		        .property("resistanceType", new RefProperty("#/definitions/ConceptGet"))
-		        .property("causeOfDeath", new RefProperty("#/definitions/ConceptGet"))
-		        .property("treatmentOutcome", new RefProperty("#/definitions/ConceptGet"));
+			        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
+			        .property("patientProgramId", new IntegerProperty())
+			        .property("ageAtTB03Registration", new IntegerProperty())
+			        .property("registrationNumber", new StringProperty()).property("address", new StringProperty())
+			        .property("clinicalNotes", new StringProperty()).property("nameOfIPFacility", new StringProperty())
+			        .property("nameOfCPFacility", new StringProperty()).property("otherCauseOfDeath", new StringProperty())
+			        .property("treatmentStartDate", new DateProperty()).property("artStartDate", new DateProperty())
+			        .property("pctStartDate", new DateProperty()).property("xrayDate", new DateProperty())
+			        .property("hivTestDate", new DateProperty()).property("treatmentOutcomeDate", new DateProperty())
+			        .property("dateOfDeathAfterTreatmentOutcome", new DateProperty())
+			        .property("anatomicalSite", new RefProperty("#/definitions/ConceptGet"))
+			        .property("treatmentSiteIP", new RefProperty("#/definitions/ConceptGet"))
+			        .property("treatmentSiteCP", new RefProperty("#/definitions/ConceptGet"))
+			        .property("patientCategory", new RefProperty("#/definitions/ConceptGet"))
+			        .property("registrationGroup", new RefProperty("#/definitions/ConceptGet"))
+			        .property("hivStatus", new RefProperty("#/definitions/ConceptGet"))
+			        .property("resistanceType", new RefProperty("#/definitions/ConceptGet"))
+			        .property("causeOfDeath", new RefProperty("#/definitions/ConceptGet"))
+			        .property("treatmentOutcome", new RefProperty("#/definitions/ConceptGet"));
 		}
 		return modelImpl;
 	}

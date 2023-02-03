@@ -21,6 +21,7 @@ import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.form.custom.Form89;
@@ -198,65 +199,28 @@ public class Form89Controller {
 	        HttpServletRequest request, ModelMap map) {
 		
 		Location location = null;
-		
-		System.out.println("PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId);
-		
-		if (facilityId != null && facilityId.length() != 0)
+		if (StringUtils.isNotBlank(facilityId)) {
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
-		else
+		} else if (StringUtils.isNotBlank(districtId)) {
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), null);
-		
-		if (location == null) { // && locations!=null && (locations.size()==0 || locations.size()>1)) {
+		}
+		if (location == null) {
 			throw new MdrtbAPIException("Invalid Hierarchy Set selected");
 		}
 		
-		if (form89.getLocation() == null || !location.equals(form89.getLocation())) {
-			System.out.println("setting loc");
-			form89.setLocation(location);
-		}
-		
-		if (form89.getPopulationCategory() != null
-		        && form89.getPopulationCategory().getId().intValue() != Context.getService(MdrtbService.class)
-		                .getConcept(MdrtbConcepts.FOREIGNER).getId().intValue()) {
-			
-			System.out.println("Setting null");
-			form89.setCountryOfOrigin(null);
-		}
-		
-		if (form89.getCircumstancesOfDetection() != null
-		        && form89.getCircumstancesOfDetection().getId().intValue() != Context.getService(MdrtbService.class)
-		                .getConcept(MdrtbConcepts.MIGRANT).getId().intValue()) {
-			
-			System.out.println("Setting null");
-			form89.setCityOfOrigin(null);
-			form89.setDateOfReturn(null);
-		}
-		
-		if (form89.getMethodOfDetection() != null
-		        && form89.getMethodOfDetection().getId().intValue() != Context.getService(MdrtbService.class)
-		                .getConcept(MdrtbConcepts.OTHER).getId().intValue()) {
-			
-			System.out.println("Setting null");
-			form89.setOtherMethodOfDetection(null);
-			
-		}
-		
-		// save the actual update
-		Context.getEncounterService().saveEncounter(form89.getEncounter());
-		
+		MdrtbFormServiceImpl formService = new MdrtbFormServiceImpl();
+		form89 = formService.processForm89(form89, location);
+		// clears the command object from the session
+		status.setComplete();
 		map.clear();
-		
 		// if there is no return URL, default to the patient dashboard
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
 			returnUrl = request.getContextPath() + "/module/mdrtb/dashboard/tbdashboard.form";
 		}
-		
-		returnUrl = MdrtbWebUtil.appendParameters(returnUrl,
-		    Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId).getPatient().getId(),
-		    patientProgramId);
-		
+		returnUrl = MdrtbWebUtil.appendParameters(returnUrl, form89.getPatient().getPatientId(),
+		    form89.getPatientProgramId());
 		return new ModelAndView(new RedirectView(returnUrl));
 	}
 	
