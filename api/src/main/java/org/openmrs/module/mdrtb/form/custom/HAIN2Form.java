@@ -271,7 +271,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 		}
 	}
 	
-	public Integer getPatProgId() {
+	public Integer getPatientProgramId() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -282,7 +282,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 		}
 	}
 	
-	public void setPatProgId(Integer id) {
+	public void setPatientProgramId(Integer id) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -360,6 +360,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 	}
 	
 	public String getLink() {
-		return "/module/mdrtb/form/hain.form?patientProgramId=" + getPatProgId() + "&encounterId=" + getEncounter().getId();
+		return "/module/mdrtb/form/hain.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
+		        + getEncounter().getId();
 	}
 }

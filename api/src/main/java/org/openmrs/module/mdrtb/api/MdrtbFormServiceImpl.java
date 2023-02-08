@@ -23,7 +23,9 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
+import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.form.custom.Form89;
+import org.openmrs.module.mdrtb.form.custom.RegimenForm;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
@@ -254,4 +256,50 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 		Context.getEncounterService().saveEncounter(form89.getEncounter());
 		return form89;
 	}
+	
+	public AdverseEventsForm processAdverseEventsForm(AdverseEventsForm aeForm) {
+		if (aeForm.getTypeOfEvent() != null) {
+			if (aeForm.getTypeOfEvent().equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SERIOUS))) {
+				aeForm.setTypeOfSpecialEvent(null);
+			} else if (aeForm.getTypeOfEvent().equals(
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_SPECIAL_INTEREST))) {
+				aeForm.setTypeOfSAE(null);
+			}
+		} else {
+			aeForm.setTypeOfSpecialEvent(null);
+			aeForm.setTypeOfSAE(null);
+		}
+		if (aeForm.getCausalityDrug1() == null) {
+			aeForm.setCausalityAssessmentResult1(null);
+		}
+		if (aeForm.getCausalityDrug2() == null) {
+			aeForm.setCausalityAssessmentResult2(null);
+		}
+		if (aeForm.getCausalityDrug3() == null) {
+			aeForm.setCausalityAssessmentResult3(null);
+		}
+		if (aeForm.getActionOutcome() != null) {
+			Concept notResolving = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_RESOLVED);
+			Concept resolving = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESOLVING);
+			if (aeForm.getActionOutcome().equals(resolving) || aeForm.getActionOutcome().equals(notResolving)) {
+				aeForm.setOutcomeDate(null);
+			}
+		}
+		// save the actual update
+		Context.getEncounterService().saveEncounter(aeForm.getEncounter());
+		return aeForm;
+	}
+	
+	public RegimenForm processRegimenForm(RegimenForm regimenForm) {
+		if (regimenForm.getSldRegimenType() != null
+		        && regimenForm.getSldRegimenType().getId().intValue() != Context.getService(MdrtbService.class)
+		                .getConcept(MdrtbConcepts.OTHER_MDRTB_REGIMEN).getId().intValue()) {
+			regimenForm.setOtherRegimen(null);
+		}
+		// save the actual update
+		Context.getEncounterService().saveEncounter(regimenForm.getEncounter());
+		return regimenForm;
+		
+	}
+	
 }

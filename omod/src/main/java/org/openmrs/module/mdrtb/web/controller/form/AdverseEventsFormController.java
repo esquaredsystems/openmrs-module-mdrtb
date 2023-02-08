@@ -18,6 +18,7 @@ import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.form.custom.RegimenForm;
@@ -42,7 +43,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping("/module/mdrtb/form/ae.form")
-public class AEFormController {
+public class AdverseEventsFormController {
 	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
@@ -60,7 +61,7 @@ public class AEFormController {
 	}
 	
 	@ModelAttribute("aeForm")
-	public AdverseEventsForm getAEForm(@RequestParam(required = true, value = "encounterId") Integer encounterId,
+	public AdverseEventsForm getAdverseEventsForm(@RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId/*,
 	                                                                                           @RequestParam(required = false, value = "previousProgramId") Integer previousProgramId*/)
 	        throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException,
@@ -75,7 +76,7 @@ public class AEFormController {
 			// prepopulate the intake form with any program information
 			//form.setEncounterDatetime(tbProgram.getDateEnrolled());
 			form.setLocation(tbProgram.getLocation());
-			form.setPatProgId(patientProgramId);
+			form.setPatientProgramId(patientProgramId);
 			return form;
 		} else {
 			return new AdverseEventsForm(Context.getEncounterService().getEncounter(encounterId));
@@ -100,7 +101,7 @@ public class AEFormController {
 			aeForm = new AdverseEventsForm(Context.getEncounterService().getEncounter(encounterId));
 		} else {
 			try {
-				aeForm = getAEForm(-1, patientProgramId);
+				aeForm = getAdverseEventsForm(-1, patientProgramId);
 				model.addAttribute("aeForm", aeForm);
 			}
 			catch (Exception e) {
@@ -126,43 +127,12 @@ public class AEFormController {
 		System.out.println(aeForm.getLocation());
 		System.out.println(aeForm.getProvider());
 		System.out.println(aeForm.getEncounterDatetime());
-		
-		if (aeForm.getTypeOfEvent() != null
-		        && aeForm.getTypeOfEvent().getId().intValue() == Context.getService(MdrtbService.class)
-		                .getConcept(MdrtbConcepts.SERIOUS).getId().intValue()) {
-			aeForm.setTypeOfSpecialEvent(null);
-		} else if (aeForm.getTypeOfEvent() != null
-		        && aeForm.getTypeOfEvent().getId().intValue() == Context.getService(MdrtbService.class)
-		                .getConcept(MdrtbConcepts.OF_SPECIAL_INTEREST).getId().intValue()) {
-			aeForm.setTypeOfSAE(null);
-		} else if (aeForm.getTypeOfEvent() == null) {
-			aeForm.setTypeOfSpecialEvent(null);
-			aeForm.setTypeOfSAE(null);
-		}
-		if (aeForm.getCausalityDrug1() == null) {
-			aeForm.setCausalityAssessmentResult1(null);
-		}
-		if (aeForm.getCausalityDrug2() == null) {
-			aeForm.setCausalityAssessmentResult2(null);
-		}
-		if (aeForm.getCausalityDrug3() == null) {
-			aeForm.setCausalityAssessmentResult3(null);
-		}
-		if (aeForm.getActionOutcome() != null
-		        && (aeForm.getActionOutcome().getId().intValue() == Context.getService(MdrtbService.class)
-		                .getConcept(MdrtbConcepts.NOT_RESOLVED).getId().intValue() || aeForm.getActionOutcome().getId()
-		                .intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESOLVING).getId()
-		                .intValue())) {
-			aeForm.setOutcomeDate(null);
-		}
-		// save the actual update
-		Context.getEncounterService().saveEncounter(aeForm.getEncounter());
+		MdrtbFormServiceImpl formService = new MdrtbFormServiceImpl();
+		aeForm = formService.processAdverseEventsForm(aeForm);
 		
 		//handle changes in workflows
 		status.setComplete();
-		
 		map.clear();
-		
 		// if there is no return URL, default to the patient dashboard
 		if (returnUrl == null || StringUtils.isEmpty(returnUrl)) {
 			return new ModelAndView(new RedirectView(request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form"));

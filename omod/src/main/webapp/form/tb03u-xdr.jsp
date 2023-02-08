@@ -509,7 +509,7 @@
 
 <form name="tb03u" action="tb03u-xdr.form?patientId=${patientId}&patientProgramId=${patientProgramId}&encounterId=${!empty tb03u.id ? tb03u.id : -1}" method="post" onSubmit="enable()">
 <input type="hidden" name="returnUrl" value="${returnUrl}" />
-<input type="hidden" name="patProgId" value="${patientProgramId}" />
+<input type="hidden" name="patientProgramId" value="${patientProgramId}" />
 <input type="hidden" name="provider" value="47" />
 <%-- <input type="hidden" name="previousProgramId" <c:choose><c:when test="${!empty tb03u.previousProgramId }">value="${tb03u.previousProgramId}"</c:when><c:otherwise>value="${previousProgramId}"</c:otherwise></c:choose>/> --%>
 

@@ -159,13 +159,13 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 		}
 	}
 	
-	public Integer getPatProgId() {
+	public Integer getPatientProgramId() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		return obs == null ? null : obs.getValueNumeric().intValue();
 	}
 	
-	public void setPatProgId(Integer id) {
+	public void setPatientProgramId(Integer id) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -204,7 +204,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	}
 	
 	public String getLink() {
-		return "/module/mdrtb/form/culture.form?patientProgramId=" + getPatProgId() + "&encounterId="
+		return "/module/mdrtb/form/culture.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
 		        + getEncounter().getId();
 	}
 }

@@ -840,8 +840,8 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 	}
 	
 	public Integer getPatientProgramId() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
+		Concept concept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
+		Obs obs = MdrtbUtil.getObsFromEncounter(concept, encounter);
 		return obs == null ? null : obs.getValueNumeric().intValue();
 	}
 	

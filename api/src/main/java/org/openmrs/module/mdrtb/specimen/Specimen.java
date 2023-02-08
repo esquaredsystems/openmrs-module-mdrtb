@@ -107,5 +107,5 @@ public interface Specimen extends Comparable<Specimen> {
 	
 	public Double getMonthOfTreatment();
 	
-	public Integer getPatProgId();
+	public Integer getPatientProgramId();
 }

@@ -143,8 +143,8 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	}
 	
 	public Concept getRegistrationGroup() {
-		if (getPatProgId() != null) {
-			MdrtbPatientProgram tp = Context.getService(MdrtbService.class).getMdrtbPatientProgram(getPatProgId());
+		if (getPatientProgramId() != null) {
+			MdrtbPatientProgram tp = Context.getService(MdrtbService.class).getMdrtbPatientProgram(getPatientProgramId());
 			ProgramWorkflowState pws = tp.getClassificationAccordingToPreviousTreatment();
 			if (pws != null)
 				return pws.getConcept();
@@ -189,8 +189,8 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	}
 	
 	public Concept getRegistrationGroupByDrug() {
-		if (getPatProgId() != null) {
-			MdrtbPatientProgram tp = Context.getService(MdrtbService.class).getMdrtbPatientProgram(getPatProgId());
+		if (getPatientProgramId() != null) {
+			MdrtbPatientProgram tp = Context.getService(MdrtbService.class).getMdrtbPatientProgram(getPatientProgramId());
 			ProgramWorkflowState pws = tp.getClassificationAccordingToPreviousDrugUse();
 			if (pws != null)
 				return pws.getConcept();
@@ -888,13 +888,13 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 		}
 	}
 	
-	public Integer getPatProgId() {
+	public Integer getPatientProgramId() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		return obs == null ? null : obs.getValueNumeric().intValue();
 	}
 	
-	public void setPatProgId(Integer id) {
+	public void setPatientProgramId(Integer id) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -924,39 +924,40 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	}
 	
 	public List<SmearForm> getSmears() {
-		if (getPatProgId() == null) {
+		if (getPatientProgramId() == null) {
 			return new ArrayList<SmearForm>();
 		}
-		return Context.getService(MdrtbService.class).getSmearForms(getPatProgId());
+		return Context.getService(MdrtbService.class).getSmearForms(getPatientProgramId());
 		
 	}
 	
 	public List<DrugResistanceDuringTreatmentForm> getDrdts() {
-		if (getPatProgId() == null) {
+		if (getPatientProgramId() == null) {
 			return new ArrayList<DrugResistanceDuringTreatmentForm>();
 		}
-		return Context.getService(MdrtbService.class).getDrdtForms(getPatProgId());
+		return Context.getService(MdrtbService.class).getDrdtForms(getPatientProgramId());
 		
 	}
 	
 	public List<CultureForm> getCultures() {
-		if (getPatProgId() == null) {
+		if (getPatientProgramId() == null) {
 			return new ArrayList<CultureForm>();
 		}
-		return Context.getService(MdrtbService.class).getCultureForms(getPatProgId());
+		return Context.getService(MdrtbService.class).getCultureForms(getPatientProgramId());
 		
 	}
 	
 	public List<DSTForm> getDsts() {
-		if (getPatProgId() == null) {
+		if (getPatientProgramId() == null) {
 			return new ArrayList<DSTForm>();
 		}
-		return Context.getService(MdrtbService.class).getDstForms(getPatProgId());
+		return Context.getService(MdrtbService.class).getDstForms(getPatientProgramId());
 		
 	}
 	
 	public String getLink() {
-		return "/module/mdrtb/form/tb03u.form?patientProgramId=" + getPatProgId() + "&encounterId=" + getEncounter().getId();
+		return "/module/mdrtb/form/tb03u.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
+		        + getEncounter().getId();
 	}
 	
 	public TB03Form getTb03() {
@@ -969,7 +970,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	
 	public TB03uForm getTb03u() {
 		TB03uForm form = null;
-		form = Context.getService(MdrtbService.class).getTB03uFormForProgram(getPatient(), getPatProgId());
+		form = Context.getService(MdrtbService.class).getTB03uFormForProgram(getPatient(), getPatientProgramId());
 		return form;
 	}
 	

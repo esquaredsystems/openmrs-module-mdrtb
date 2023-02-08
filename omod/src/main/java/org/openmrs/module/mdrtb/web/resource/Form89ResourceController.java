@@ -6,13 +6,17 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PatientProgram;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
+import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.Form89;
 import org.openmrs.module.mdrtb.web.dto.SimpleForm89;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -52,7 +56,7 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
 		description.addProperty("uuid");
 		description.addProperty("encounter", representation);
-		description.addProperty("patientProgramId");
+		description.addProperty("patientProgramUuid");
 		description.addProperty("ageAtTB03Registration");
 		description.addProperty("yearOfTB03Registration");
 		description.addProperty("isChildbearingAge");
@@ -106,11 +110,11 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 		if (rep instanceof DefaultRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
 			        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-			        .property("patientProgramId", new StringProperty());
+			        .property("patientProgramUuid", new StringProperty());
 		} else if (rep instanceof FullRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
 			        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-			        .property("patientProgramId", new IntegerProperty())
+			        .property("patientProgramUuid", new StringProperty())
 			        .property("ageAtTB03Registration", new IntegerProperty())
 			        .property("yearOfTB03Registration", new IntegerProperty())
 			        .property("isChildbearingAge", new StringProperty()).property("isPulmonary", new StringProperty())
@@ -153,7 +157,7 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 	@Override
 	public Model getCREATEModel(Representation rep) {
 		return new ModelImpl().property("encounter", new RefProperty("#/definitions/EncounterCreate"))
-		        .property("patientProgramId", new StringProperty()).required("encounter");
+		        .property("patientProgramUuid", new StringProperty()).required("encounter");
 	}
 	
 	@Override
@@ -164,7 +168,7 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("patientProgramId"); // optional
+		description.addProperty("patientProgramUuid"); // optional
 		description.addRequiredProperty("encounter");
 		return description;
 	}
@@ -179,7 +183,7 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 		StringBuilder sb = new StringBuilder();
 		sb.append(simpleForm89s.getEncounter().getUuid());
 		sb.append(" ");
-		sb.append(simpleForm89s.getPatientProgramId());
+		sb.append(simpleForm89s.getPatientProgramUuid());
 		return sb.toString();
 	}
 	
@@ -193,7 +197,7 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 	
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
-		String patientUuid = context.getRequest().getParameter("patient");
+		String patientUuid = context.getRequest().getParameter("q");
 		List<SimpleForm89> simpleForm89s = new ArrayList<SimpleForm89>();
 		if (patientUuid != null) {
 			Patient patient = ((PatientResource1_8) Context.getService(RestService.class).getResourceBySupportedClass(
@@ -228,6 +232,17 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 			    Context.getAuthenticatedUser().getUsername());
 			if (provider != null) {
 				delegate.getEncounter().addProvider(Context.getEncounterService().getEncounterRole(1), provider);
+			}
+		}
+		// If the Patient Program ID obs has null value, then fetch from Patient Program's UUID
+		Concept concept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
+		Set<Obs> obsAtTopLevel = delegate.getEncounter().getObsAtTopLevel(false);
+		for (Obs obs : obsAtTopLevel) {
+			if (obs.getConcept().equals(concept)) {
+				PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgramByUuid(
+				    delegate.getPatientProgramUuid());
+				obs.setValueNumeric(patientProgram.getPatientProgramId().doubleValue());
+				break;
 			}
 		}
 		Form89 form89 = new Form89(delegate.getEncounter());

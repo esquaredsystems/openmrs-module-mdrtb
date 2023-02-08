@@ -285,7 +285,7 @@ response.setDateHeader ("Expires", -1);
 				<c:forEach var="form" items="${forms}" varStatus="loop">
 					<tr>
 						<td><a
-							href="${pageContext.request.contextPath}/module/mdrtb/form/ae.form?encounterId=${form.AEForm.encounter.id}&patientProgramId=${form.AEForm.patProgId}"
+							href="${pageContext.request.contextPath}/module/mdrtb/form/ae.form?encounterId=${form.AEForm.encounter.id}&patientProgramId=${form.AEForm.patientProgramId}"
 							target="_blank">${loop.index+1}</a></td>
 						<td align="left">${form.identifier}</td>
 						<td align="left">${form.patientName}</td>

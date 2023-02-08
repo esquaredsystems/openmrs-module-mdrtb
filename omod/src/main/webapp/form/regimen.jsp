@@ -371,7 +371,7 @@
 
 <form name="regimenForm" name="regimenForm" action="regimen.form?patientId=${patientId}&patientProgramId=${patientProgramId}&encounterId=${!empty regimenForm.id ? regimenForm.id : -1}" method="post" onSubmit="return validate()">
 <input type="hidden" name="returnUrl" value="${returnUrl}" />
-<input type="hidden" name="patProgId" value="${patientProgramId}" />
+<input type="hidden" name="patientProgramId" value="${patientProgramId}" />
 <input type="hidden" name="provider" value="47" />
 <input type="hidden" name="location" value="${regimenForm.location.id }"/>
 

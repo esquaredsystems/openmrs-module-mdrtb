@@ -890,13 +890,13 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		return this.encounter.getEncounterDatetime().compareTo(form.encounter.getEncounterDatetime());
 	}
 	
-	public Integer getPatProgId() {
+	public Integer getPatientProgramId() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		return obs == null ? null : obs.getValueNumeric().intValue();
 	}
 	
-	public void setPatProgId(Integer id) {
+	public void setPatientProgramId(Integer id) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -938,7 +938,8 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 	}
 	
 	public String getLink() {
-		return "/module/mdrtb/form/ae.form?patientProgramId=" + getPatProgId() + "&encounterId=" + getEncounter().getId();
+		return "/module/mdrtb/form/ae.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
+		        + getEncounter().getId();
 	}
 	
 	public ArrayList<Concept> getSuspectedDrugs() {
@@ -1234,7 +1235,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		return obs == null ? null : obs.getValueCoded();
 	}
 	
-	public void setSerumCreatnineDone(Concept event) {
+	public void setSerumCreatinineDone(Concept event) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CREATNINE_DONE), encounter);
 		

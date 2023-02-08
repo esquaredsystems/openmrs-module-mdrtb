@@ -224,7 +224,7 @@
 
 <form name="xpert" action="xpert.form?patientId=${patientId}&patientProgramId=${patientProgramId}&encounterId=${!empty xpert.id ? xpert.id : -1}" method="post" onSubmit="return validate()">
 <input type="hidden" name="returnUrl" value="${returnUrl}" />
-<input type="hidden" name="patProgId" value="${patientProgramId}" />
+<input type="hidden" name="patientProgramId" value="${patientProgramId}" />
 <input type="hidden" name="provider" value="45" />
 
 <table>

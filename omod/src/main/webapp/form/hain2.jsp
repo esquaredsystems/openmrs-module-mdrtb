@@ -214,7 +214,7 @@ function resToggle () {
 
 <form name="hain2" action="hain2.form?patientId=${patientId}&patientProgramId=${patientProgramId}&encounterId=${!empty hain2.id ? hain2.id : -1}" method="post" onSubmit="return validate()">
 <input type="hidden" name="returnUrl" value="${returnUrl}" />
-<input type="hidden" name="patProgId" value="${patientProgramId}" />
+<input type="hidden" name="patientProgramId" value="${patientProgramId}" />
 <input type="hidden" name="provider" value="45" />
 
 <table>

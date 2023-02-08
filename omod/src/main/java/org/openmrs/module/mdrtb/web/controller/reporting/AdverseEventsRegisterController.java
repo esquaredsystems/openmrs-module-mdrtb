@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class AERegisterController {
+public class AdverseEventsRegisterController {
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {

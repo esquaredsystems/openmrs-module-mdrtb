@@ -137,7 +137,7 @@
 
 <form name="transferOut" action="transferOut.form?patientId=${patientId}&patientProgramId=${patientProgramId}&encounterId=${!empty transferOut.id ? transferOut.id : -1}" method="post">
 <input type="hidden" name="returnUrl" value="${returnUrl}" />
-<input type="hidden" name="patProgId" value="${patientProgramId}" />
+<input type="hidden" name="patientProgramId" value="${patientProgramId}" />
 <input type="hidden" name="provider" value="47" />
 
 

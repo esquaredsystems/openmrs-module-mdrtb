@@ -28,7 +28,7 @@ public class TransferInForm extends AbstractSimpleForm {
 		
 	}
 	
-	public Integer getPatProgId() {
+	public Integer getPatientProgramId() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -39,7 +39,7 @@ public class TransferInForm extends AbstractSimpleForm {
 		}
 	}
 	
-	public void setPatProgId(Integer id) {
+	public void setPatientProgramId(Integer id) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -69,7 +69,7 @@ public class TransferInForm extends AbstractSimpleForm {
 	}
 	
 	public String getLink() {
-		return "/module/mdrtb/form/transferIn.form?patientProgramId=" + getPatProgId() + "&encounterId="
+		return "/module/mdrtb/form/transferIn.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
 		        + getEncounter().getId();
 	}
 }

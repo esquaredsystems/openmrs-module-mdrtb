@@ -242,19 +242,20 @@ public class DOTSDQController {
 			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
 			
 			//DUPLICATE TB03
-			Integer patProgId = null;
+			Integer patientProgramId = null;
 			
-			patProgId = tf.getPatientProgramId();
+			patientProgramId = tf.getPatientProgramId();
 			Boolean found = Boolean.FALSE;
 			//   HashMap<Integer,Integer> pp = new HashMap<Integer,Integer>();
-			if (patProgId != null && !dupMap.containsKey(patProgId)) {
-				List<TB03Form> dupList = Context.getService(MdrtbService.class).getTB03FormsForProgram(patient, patProgId);
+			if (patientProgramId != null && !dupMap.containsKey(patientProgramId)) {
+				List<TB03Form> dupList = Context.getService(MdrtbService.class).getTB03FormsForProgram(patient,
+				    patientProgramId);
 				
 				if (dupList != null) {
 					
 					if (dupList.size() > 1) {
 						for (TB03Form form : dupList) {
-							if (form.getPatientProgramId().intValue() == patProgId.intValue()) {
+							if (form.getPatientProgramId().intValue() == patientProgramId.intValue()) {
 								dqi.addTb03Link(form.getLink());
 								found = Boolean.TRUE;
 								System.out.println("FOUND:" + tf.getPatientProgramId());
@@ -264,7 +265,7 @@ public class DOTSDQController {
 				}
 				
 				if (found) {
-					dupMap.put(patProgId, patProgId);
+					dupMap.put(patientProgramId, patientProgramId);
 					errorFlag = Boolean.TRUE;
 					duplicateTB03.add(dqi);
 				}
@@ -281,8 +282,9 @@ public class DOTSDQController {
 			
 			found = Boolean.FALSE;
 			//   HashMap<Integer,Integer> pp = new HashMap<Integer,Integer>();
-			if (patProgId != null && !f89DupMap.containsKey(patProgId)) {
-				List<Form89> formList = Context.getService(MdrtbService.class).getForm89FormsForProgram(patient, patProgId);
+			if (patientProgramId != null && !f89DupMap.containsKey(patientProgramId)) {
+				List<Form89> formList = Context.getService(MdrtbService.class).getForm89FormsForProgram(patient,
+				    patientProgramId);
 				
 				if (formList != null) {
 					
@@ -296,7 +298,7 @@ public class DOTSDQController {
 				}
 				
 				if (found) {
-					f89DupMap.put(patProgId, patProgId);
+					f89DupMap.put(patientProgramId, patientProgramId);
 					errorFlag = Boolean.TRUE;
 					duplicateForm89.add(dqi);
 				}
@@ -306,7 +308,7 @@ public class DOTSDQController {
 			if (tf.getRegistrationGroup() != null) {
 				if (tf.getRegistrationGroup().getConceptId().intValue() != neww) {
 					List<Form89> formList = Context.getService(MdrtbService.class).getForm89FormsForProgram(patient,
-					    patProgId);
+					    patientProgramId);
 					
 					if (formList != null && formList.size() != 0) {
 						errorFlag = Boolean.TRUE;

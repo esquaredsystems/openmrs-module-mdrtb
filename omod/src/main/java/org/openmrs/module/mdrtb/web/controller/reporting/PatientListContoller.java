@@ -9494,10 +9494,10 @@ public class PatientListContoller {
 		return ret;
 	}
 	
-	private static RegimenForm getFirstRegimenChangeForPatient(Patient p, Integer patProgId) {
+	private static RegimenForm getFirstRegimenChangeForPatient(Patient p, Integer patientProgramId) {
 		
 		p.getPatientId().intValue();
-		List<RegimenForm> forms = Context.getService(MdrtbService.class).getRegimenFormsForProgram(p, patProgId);
+		List<RegimenForm> forms = Context.getService(MdrtbService.class).getRegimenFormsForProgram(p, patientProgramId);
 		
 		if (forms == null)
 			return null;

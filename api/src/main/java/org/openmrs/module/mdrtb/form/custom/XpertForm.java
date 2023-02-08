@@ -202,7 +202,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		}
 	}
 	
-	public Integer getPatProgId() {
+	public Integer getPatientProgramId() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -213,7 +213,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		}
 	}
 	
-	public void setPatProgId(Integer id) {
+	public void setPatientProgramId(Integer id) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -337,6 +337,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 	}
 	
 	public String getLink() {
-		return "/module/mdrtb/form/xpert.form?patientProgramId=" + getPatProgId() + "&encounterId=" + getEncounter().getId();
+		return "/module/mdrtb/form/xpert.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
+		        + getEncounter().getId();
 	}
 }

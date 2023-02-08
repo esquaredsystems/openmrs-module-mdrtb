@@ -5,16 +5,18 @@ import java.util.Date;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.PatientProgram;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 
 public class SimpleTB03uForm extends BaseOpenmrsData {
 	
-	private static final long serialVersionUID = -5237169924611683546L;
+	private static final long serialVersionUID = 4124776097919408172L;
 	
 	private Encounter encounter;
 	
-	private Integer patientProgramId;
+	private String patientProgramUuid;
 	
 	private Integer relapseMonth;
 	
@@ -70,7 +72,8 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 	public SimpleTB03uForm(TB03uForm tb03u) {
 		setEncounter(tb03u.getEncounter());
 		setUuid(getEncounter().getUuid());
-		setPatientProgramId(tb03u.getPatientProgramId());
+		PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgram(tb03u.getPatientProgramId());
+		setPatientProgramUuid(patientProgram.getUuid());
 		setAnatomicalSite(tb03u.getAnatomicalSite());
 		setArtStartDate(tb03u.getArtStartDate());
 		setBasisForDiagnosis(tb03u.getBasisForDiagnosis());
@@ -104,7 +107,8 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 	 */
 	public TB03uForm toForm() {
 		TB03uForm tb03u = new TB03uForm();
-		tb03u.setPatientProgramId(getPatientProgramId());
+		PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgramByUuid(getPatientProgramUuid());
+		tb03u.setPatientProgramId(patientProgram.getPatientProgramId());
 		tb03u.setAnatomicalSite(getAnatomicalSite());
 		tb03u.setArtStartDate(getArtStartDate());
 		tb03u.setBasisForDiagnosis(getBasisForDiagnosis());
@@ -151,12 +155,12 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 		this.encounter = encounter;
 	}
 	
-	public Integer getPatientProgramId() {
-		return patientProgramId;
+	public String getPatientProgramUuid() {
+		return patientProgramUuid;
 	}
 	
-	public void setPatientProgramId(Integer patientProgramId) {
-		this.patientProgramId = patientProgramId;
+	public void setPatientProgramUuid(String patientProgramUuid) {
+		this.patientProgramUuid = patientProgramUuid;
 	}
 	
 	public Integer getRelapseMonth() {

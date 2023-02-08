@@ -660,7 +660,7 @@
 
 <form name="aeForm" name="aeForm" action="ae.form?patientId=${patientId}&patientProgramId=${patientProgramId}&encounterId=${!empty aeForm.id ? aeForm.id : -1}" method="post" onSubmit="return validate()">
 <input type="hidden" name="returnUrl" value="${returnUrl}" />
-<input type="hidden" name="patProgId" value="${patientProgramId}" />
+<input type="hidden" name="patientProgramId" value="${patientProgramId}" />
 <input type="hidden" name="provider" value="47" />
 <input type="hidden" name="location" value="${aeForm.location.id }"/>
 

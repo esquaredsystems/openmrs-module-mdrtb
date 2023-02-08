@@ -192,7 +192,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		}
 	}
 	
-	public Integer getPatProgId() {
+	public Integer getPatientProgramId() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -203,7 +203,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		}
 	}
 	
-	public void setPatProgId(Integer id) {
+	public void setPatientProgramId(Integer id) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -1459,7 +1459,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 	}
 	
 	public String getLink() {
-		return "/module/mdrtb/form/regimen.form?patientProgramId=" + getPatProgId() + "&encounterId="
+		return "/module/mdrtb/form/regimen.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
 		        + getEncounter().getId();
 	}
 }

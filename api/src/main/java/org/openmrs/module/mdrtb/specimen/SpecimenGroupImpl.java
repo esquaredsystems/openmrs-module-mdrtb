@@ -271,8 +271,8 @@ public class SpecimenGroupImpl implements Specimen {
 		return this.specimens.get(0).getMonthOfTreatment();
 	}
 	
-	public Integer getPatProgId() {
-		return this.specimens.get(0).getPatProgId();
+	public Integer getPatientProgramId() {
+		return this.specimens.get(0).getPatientProgramId();
 	}
 	
 	//TODO: Replace these error messages with an API Exception with constant message

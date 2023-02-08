@@ -121,9 +121,11 @@ public class MdrtbUtil {
 	 * concept matches the specified concept Returns null if obs not found
 	 */
 	public static Obs getObsFromEncounter(Concept concept, Encounter encounter) {
-		if (encounter.getObsAtTopLevel(false) != null) {
-			for (Obs obs : encounter.getObsAtTopLevel(false)) {
-				if (!obs.getVoided() && obs.getConcept().equals(concept)) {
+		Set<Obs> obsSet = encounter.getObsAtTopLevel(false);
+		if (obsSet != null) {
+			for (Obs obs : obsSet) {
+				boolean equals = obs.getConcept().getUuid().equals(concept.getUuid());
+				if (!obs.getVoided() && equals) {
 					return obs;
 				}
 			}

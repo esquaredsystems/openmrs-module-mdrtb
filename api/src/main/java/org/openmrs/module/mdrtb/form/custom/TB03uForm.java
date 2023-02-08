@@ -50,9 +50,9 @@ public class TB03uForm extends AbstractSimpleForm implements Comparable<TB03uFor
 		String ret = null;
 		TB03Form tb03 = getTb03();
 		if (tb03 != null) {
-			Integer patProgId = tb03.getPatientProgramId();
-			if (patProgId != null) {
-				TbPatientProgram tpp = Context.getService(MdrtbService.class).getTbPatientProgram(patProgId);
+			Integer patientProgramId = tb03.getPatientProgramId();
+			if (patientProgramId != null) {
+				TbPatientProgram tpp = Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId);
 				PatientIdentifier pi = tpp.getPatientIdentifier();
 				if (pi != null)
 					return pi.getIdentifier();

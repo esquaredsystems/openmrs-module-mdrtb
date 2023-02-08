@@ -159,7 +159,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 		}
 	}
 	
-	public Integer getPatProgId() {
+	public Integer getPatientProgramId() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -170,7 +170,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 		}
 	}
 	
-	public void setPatProgId(Integer id) {
+	public void setPatientProgramId(Integer id) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -209,7 +209,8 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 	}
 	
 	public String getLink() {
-		return "/module/mdrtb/form/smear.form?patientProgramId=" + getPatProgId() + "&encounterId=" + getEncounter().getId();
+		return "/module/mdrtb/form/smear.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
+		        + getEncounter().getId();
 	}
 	
 }

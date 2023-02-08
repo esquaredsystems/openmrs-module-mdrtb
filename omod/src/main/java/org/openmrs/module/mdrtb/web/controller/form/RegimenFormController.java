@@ -17,6 +17,7 @@ import org.openmrs.Location;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.RegimenForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
@@ -73,7 +74,7 @@ public class RegimenFormController {
 			// prepopulate the intake form with any program information
 			//form.setEncounterDatetime(tbProgram.getDateEnrolled());
 			form.setLocation(tbProgram.getLocation());
-			form.setPatProgId(patientProgramId);
+			form.setPatientProgramId(patientProgramId);
 			
 			return form;
 		} else {
@@ -120,20 +121,11 @@ public class RegimenFormController {
 		System.out.println(regimenForm.getLocation());
 		System.out.println(regimenForm.getProvider());
 		System.out.println(regimenForm.getEncounterDatetime());
-		
-		if (regimenForm.getSldRegimenType() != null
-		        && regimenForm.getSldRegimenType().getId().intValue() != Context.getService(MdrtbService.class)
-		                .getConcept(MdrtbConcepts.OTHER_MDRTB_REGIMEN).getId().intValue()) {
-			regimenForm.setOtherRegimen(null);
-		}
-		
-		// save the actual update
-		Context.getEncounterService().saveEncounter(regimenForm.getEncounter());
+		MdrtbFormServiceImpl formService = new MdrtbFormServiceImpl();
+		regimenForm = formService.processRegimenForm(regimenForm);
 		
 		//handle changes in workflows
-		
 		status.setComplete();
-		
 		map.clear();
 		
 		// if there is no return URL, default to the patient dashboard

@@ -5,15 +5,17 @@ import java.util.Date;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.PatientProgram;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
 
 public class SimpleTB03Form extends BaseOpenmrsData {
 	
-	private static final long serialVersionUID = -5237169924611683546L;
+	private static final long serialVersionUID = 2732274573256642676L;
 	
 	private Encounter encounter;
 	
-	private Integer patientProgramId;
+	private String patientProgramUuid;
 	
 	private Integer ageAtTB03Registration;
 	
@@ -67,7 +69,8 @@ public class SimpleTB03Form extends BaseOpenmrsData {
 	public SimpleTB03Form(TB03Form tb03) {
 		setEncounter(tb03.getEncounter());
 		setUuid(getEncounter().getUuid());
-		setPatientProgramId(tb03.getPatientProgramId());
+		PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgram(tb03.getPatientProgramId());
+		setPatientProgramUuid(patientProgram.getUuid());
 		setRegistrationNumber(tb03.getRegistrationNumber());
 		setAgeAtTB03Registration(tb03.getAgeAtTB03Registration());
 		setAddress(tb03.getAddress());
@@ -102,7 +105,8 @@ public class SimpleTB03Form extends BaseOpenmrsData {
 	public TB03Form toForm() {
 		TB03Form tb03 = new TB03Form();
 		tb03.setEncounter(getEncounter());
-		tb03.setPatientProgramId(getPatientProgramId());
+		PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgramByUuid(getPatientProgramUuid());
+		tb03.setPatientProgramId(patientProgram.getPatientProgramId());
 		tb03.setClinicianNotes(getClinicalNotes());
 		tb03.setNameOfIPFacility(getNameOfIPFacility());
 		tb03.setNameOfCPFacility(getNameOfCPFacility());
@@ -144,12 +148,12 @@ public class SimpleTB03Form extends BaseOpenmrsData {
 		this.encounter = encounter;
 	}
 	
-	public Integer getPatientProgramId() {
-		return patientProgramId;
+	public String getPatientProgramUuid() {
+		return patientProgramUuid;
 	}
 	
-	public void setPatientProgramId(Integer patientProgramId) {
-		this.patientProgramId = patientProgramId;
+	public void setPatientProgramUuid(String patientProgramUuid) {
+		this.patientProgramUuid = patientProgramUuid;
 	}
 	
 	public String getRegistrationNumber() {

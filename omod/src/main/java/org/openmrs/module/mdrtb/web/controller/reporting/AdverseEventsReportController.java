@@ -37,7 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @SuppressWarnings("unused")
 @Controller
-public class AEReportController {
+public class AdverseEventsReportController {
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {

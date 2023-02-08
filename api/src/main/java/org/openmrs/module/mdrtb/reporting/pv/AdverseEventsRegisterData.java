@@ -29,10 +29,10 @@ public class AdverseEventsRegisterData implements Comparable<AdverseEventsRegist
 	
 	public String getIdentifier() {
 		
-		Integer patProgId = aeForm.getPatProgId();
-		if (patProgId == null)
+		Integer patientProgramId = aeForm.getPatientProgramId();
+		if (patientProgramId == null)
 			return "";
-		org.openmrs.PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patProgId);
+		org.openmrs.PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		String id = null;
 		if (pp != null) {
 			PatientIdentifier pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
