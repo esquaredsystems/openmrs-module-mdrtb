@@ -6,13 +6,17 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.PatientProgram;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
+import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.web.dto.SimpleAdverseEventsForm;
 import org.openmrs.module.mdrtb.web.dto.SimpleForm89;
@@ -250,6 +254,17 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 			    Context.getAuthenticatedUser().getUsername());
 			if (provider != null) {
 				delegate.getEncounter().addProvider(Context.getEncounterService().getEncounterRole(1), provider);
+			}
+		}
+		// If the Patient Program ID obs has null value, then fetch from Patient Program's UUID
+		Concept concept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
+		Set<Obs> obsAtTopLevel = delegate.getEncounter().getObsAtTopLevel(false);
+		for (Obs obs : obsAtTopLevel) {
+			if (obs.getConcept().equals(concept)) {
+				PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgramByUuid(
+				    delegate.getPatientProgramUuid());
+				obs.setValueNumeric(patientProgram.getPatientProgramId().doubleValue());
+				break;
 			}
 		}
 		AdverseEventsForm aeForm = new AdverseEventsForm(delegate.getEncounter());

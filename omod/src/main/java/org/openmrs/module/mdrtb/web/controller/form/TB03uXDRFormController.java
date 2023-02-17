@@ -117,7 +117,6 @@ public class TB03uXDRFormController {
 				}
 			}
 			
-			//TB03Form tb03 = new TB03Form(Context.getEncounterService().getEncounter(encounterId));
 			Location location = tb03uxdr.getLocation();
 			System.out.println("show:" + location.getDisplayString());
 			oblasts = Context.getService(MdrtbService.class).getRegions();
@@ -191,7 +190,7 @@ public class TB03uXDRFormController {
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), null);
 		
-		if (location == null) { // && locations!=null && (locations.size()==0 || locations.size()>1)) {
+		if (location == null) {
 			throw new MdrtbAPIException("Invalid Hierarchy Set selected");
 		}
 		
@@ -245,9 +244,6 @@ public class TB03uXDRFormController {
 		
 		Context.getProgramWorkflowService().savePatientProgram(tpp.getPatientProgram());
 		
-		//TX OUTCOME
-		//PATIENT GROUP
-		//PATIENT DEATH AND CAUSE OF DEATH
 		if (outcome != null
 		        && outcome.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 		            MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
@@ -256,7 +252,6 @@ public class TB03uXDRFormController {
 				patient.setDead(new Boolean(true));
 			
 			Context.getPatientService().savePatient(patient);
-			//	patient.setC
 			
 		} // clears the command object from the session
 		status.setComplete();
@@ -343,7 +338,6 @@ public class TB03uXDRFormController {
 	
 	@ModelAttribute("groups")
 	public ArrayList<ProgramWorkflowState> getPossiblePatientGroups() {
-		//return Context.getService(MdrtbService.class).getPossibleClassificationsAccordingToPreviousTreatment();
 		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
 		for (int i = 0; i < 8; i++) {
 			stateArray.add(null);
@@ -385,7 +379,6 @@ public class TB03uXDRFormController {
 	
 	@ModelAttribute("bydrug")
 	public ArrayList<ProgramWorkflowState> getPossibleResultsByDrugs() {
-		/*return Context.getService(MdrtbService.class).getPossibleClassificationsAccordingToPreviousDrugUse();*/
 		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
 		for (int i = 0; i < 3; i++) {
 			stateArray.add(null);
@@ -423,18 +416,6 @@ public class TB03uXDRFormController {
 			typeArray.add(null);
 		}
 		for (ConceptAnswer c : ca) {
-			/*if(c.getAnswerConcept().getId().intValue()==Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONO).getId().intValue()) {
-				typeArray.set(0, c);
-			}
-			else if(c.getAnswerConcept().getId().intValue()==Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PDR_TB).getId().intValue()) {
-				typeArray.set(1, c);
-			}
-			else if(c.getAnswerConcept().getId().intValue()==Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RR_TB).getId().intValue()) {
-				typeArray.set(2, c);
-			}
-			else if(c.getAnswerConcept().getId().intValue()==Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB).getId().intValue()) {
-				typeArray.set(3, c);
-			}*/
 			if (c.getAnswerConcept().getId().intValue() == Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.PRE_XDR_TB).getId().intValue()) {
 				typeArray.set(0, c);
@@ -445,17 +426,9 @@ public class TB03uXDRFormController {
 			        .getConcept(MdrtbConcepts.TDR_TB).getId().intValue()) {
 				typeArray.set(2, c);
 			}
-			/*else if(c.getAnswerConcept().getId().intValue()==Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NO).getId().intValue()) {
-				typeArray.set(7, c);
-			}
-			else if(c.getAnswerConcept().getId().intValue()==Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.UNKNOWN).getId().intValue()) {
-				typeArray.set(8, c);
-			}*/
 		}
 		
 		return typeArray;
-		
-		/*return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RESISTANCE_TYPE);*/
 	}
 	
 	@ModelAttribute("outcomes")
@@ -523,7 +496,6 @@ public class TB03uXDRFormController {
 			}
 		}
 		return stateArray;
-		//return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.BASIS_FOR_TB_DIAGNOSIS);
 	}
 	
 	@ModelAttribute("hivstatuses")
@@ -540,5 +512,4 @@ public class TB03uXDRFormController {
 	public Collection<ConceptAnswer> getPossibleCausesOfDeath() {
 		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.CAUSE_OF_DEATH);
 	}
-	
 }

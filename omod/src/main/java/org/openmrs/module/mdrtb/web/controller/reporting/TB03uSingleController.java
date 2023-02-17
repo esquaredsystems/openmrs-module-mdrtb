@@ -128,21 +128,6 @@ public class TB03uSingleController {
 			model.addAttribute("quarterSelected", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarterSelected", "");
-		//"bb".get
-		/*
-		 * List<Location> locations =
-		 * Context.getLocationService().getAllLocations(false);//
-		 * Context.getLocationService().getAllLocations();//ms =
-		 * (MdrtbDrugForecastService)
-		 * Context.getService(MdrtbDrugForecastService.class); List<Region>
-		 * oblasts = Context.getService(MdrtbService.class).getOblasts();
-		 * //drugSets = ms.getMdrtbDrugs();
-		 * 
-		 * 
-		 * 
-		 * model.addAttribute("locations", locations);
-		 * model.addAttribute("oblasts", oblasts);
-		 */
 		return new ModelAndView("/module/mdrtb/reporting/tb03uSingle", model);
 		
 	}
@@ -174,35 +159,12 @@ public class TB03uSingleController {
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
 		        .getTB03uFormsFilled(locList, year, quarter, month);
 		
-		/*Cohort patients = new Cohort();// MdrtbUtil.getMdrPatientsTJK(null, null, location, oblast, null, null, null, null,year,quarter,month);
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
-		
-		Date startDate = (Date)(dateMap.get("startDate"));
-		Date endDate = (Date)(dateMap.get("endDate"));
-		
-		Form tb03uForm = Context.getFormService().getForm(MdrtbConstants.TB03U_FORM_ID);
-		ArrayList<Form> formList = new ArrayList<Form>();
-		formList.add(tb03uForm);
-		
-		Form tb03Form = Context.getFormService().getForm(MdrtbConstants.TB03_FORM_ID);
-		ArrayList<Form> oldformList = new ArrayList<Form>();
-		oldformList.add(tb03Form);
-		
-		
-		Set<Integer> idSet = patients.getMemberIds();*/
 		ArrayList<TB03uData> patientSet = new ArrayList<TB03uData>();
 		SimpleDateFormat sdf = new SimpleDateFormat();
 		
-		/*ArrayList<Person> patientList = new ArrayList<Person>();
-		ArrayList<Concept> conceptQuestionList = new ArrayList<Concept>();
-		ArrayList<Concept> conceptAnswerList = new ArrayList<Concept>();*/
 		Integer regimenConceptId = null;
 		Integer codId = null;
-		//List<Obs> obsList = null;
 		
-		/*Concept reg1New = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REGIMEN_1_NEW);
-		Concept reg1Rtx = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REGIMEN_1_RETREATMENT);
-		*/
 		sdf.applyPattern("dd.MM.yyyy");
 		SimpleDateFormat rdateSDF = new SimpleDateFormat();
 		rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
@@ -219,24 +181,6 @@ public class TB03uSingleController {
 			tb03uData.setPatient(patient);
 			
 			//PATIENT IDENTIFIER
-			/* List<PatientIdentifier> idList = patient.getActiveIdentifiers();
-			
-			for(PatientIdentifier pi : idList) {
-				
-				if(pi.getIdentifierType().getId()==2 && tb03Data.getIdentifierDOTS()==null) {
-					tb03Data.setIdentifierDOTS(pi.getIdentifier());
-					if(tb03Data.getIdentifierMDR()!=null)
-						break;
-				}
-				
-				if(pi.getIdentifierType().getId()==5 && tb03Data.getIdentifierMDR()==null) {
-					tb03Data.setIdentifierMDR(pi.getIdentifier());
-					if(tb03Data.getIdentifierDOTS()!=null)
-						break;
-				}
-				
-			}*/
-			
 			String identifier = TB03Util.getRegistrationNumber(tf);
 			tb03uData.setIdentifierMDR(identifier);
 			
@@ -248,38 +192,6 @@ public class TB03uSingleController {
 			tb03uData.setTb03uRegistrationDate(sdf.format(encDate));
 			tb03uData.setDotsYear(tf.getTb03RegistrationYear());
 			
-			//    	    //DATE OF TB03U REGISTRATION
-			//    	    List<Encounter> tb03uEncList = Context.getEncounterService().getEncounters(patient, null, startDate, endDate, formList, null, null, false);
-			//    	    Date encDate = null;
-			//    	    if(tb03uEncList.size() > 0 && tb03uEncList.get(0)!=null) {
-			//    	    	encDate = tb03uEncList.get(0).getEncounterDatetime();
-			//    	    	tb03Data.setTb03uRegistrationDate(sdf.format(encDate));
-			//    	    	
-			//    	    }
-			//    	    
-			//    	    else
-			//    	    	continue;
-			//    	    
-			//    	    List<Encounter> tb03EncList = Context.getEncounterService().getEncounters(patient, null, startDate, endDate, formList, null, null, false);
-			//    	    Date oldencDate = null;
-			//    	    if(tb03uEncList.size() > 0 && tb03uEncList.get(0)!=null) {
-			//    	    	oldencDate = tb03EncList.get(0).getEncounterDatetime();
-			//    	    	tb03Data.setDotsYear(oldencDate.getYear()+1900);
-			//    	    	
-			//    	    }
-			
-			/* //FORMATTED DATE OF BIRTH
-			tb03Data.setDateOfBirth(sdf.format(patient.getBirthdate()));
-			
-			//AGE AT TB03U Registration
-			Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AGE_AT_MDR_REGISTRATION);
-			
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, tb03uEncList, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setAgeAtTB03uRegistration(obsList.get(0).getValueNumeric().intValue());*/
-			
 			Integer ageAtReg = tf.getAgeAtMDRRegistration();
 			if (ageAtReg != null) {
 				tb03uData.setAgeAtTB03uRegistration(ageAtReg);
@@ -287,44 +199,18 @@ public class TB03uSingleController {
 			
 			if (patient.getBirthdate() != null)
 				tb03uData.setDateOfBirth(sdf.format(patient.getBirthdate()));
-			
-			/* //SITE OF DISEASE (P/EP)
-			q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setSiteOfDisease(obsList.get(0).getValueCoded().getShortNameInLocale(Context.getLocale()).getName());*/
-			
+			//SITE OF DISEASE (P/EP)
 			Concept q = tf.getAnatomicalSite();
 			
 			if (q != null)
 				tb03uData.setSiteOfDisease(q.getShortNameInLocale(Context.getLocale()).getName());
 			
-			/* //SLD Register Number
-			q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REGIMEN_2_REG_NUMBER);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setReg2Number(obsList.get(0).getValueText());*/
-			
+			//SLD Register Number
 			String reg2Number = tf.getSldRegisterNumber();
 			
 			tb03uData.setReg2Number(reg2Number);
 			
 			//REGISTRATION GROUP
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null) {
-				tb03Data.setRegGroup(obsList.get(0).getValueCoded().getConceptId());
-			}*/
-			
 			q = tf.getRegistrationGroup();
 			
 			if (q != null) {
@@ -332,14 +218,6 @@ public class TB03uSingleController {
 			}
 			
 			//MDR STATUS
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_STATUS);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setMdrtbStatus((obsList.get(0).getValueCoded().getName().getName()));*/
-			
 			q = tf.getMdrStatus();
 			
 			if (q != null) {
@@ -347,54 +225,22 @@ public class TB03uSingleController {
 			}
 			
 			//MDR CONF DATE
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_MDR_CONFIRMATION);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setMdrConfDate(sdf.format(obsList.get(0).getValueDatetime()));*/
-			
 			Date confDate = tf.getConfirmationDate();
 			if (confDate != null)
 				tb03uData.setMdrConfDate(sdf.format(confDate));
 			
 			//MDR TREATMENT REGIMEN
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOSIS_PATIENT_CATEGORY);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setTreatmentRegimen(obsList.get(0).getValueCoded().getName().getName());*/
-			
 			q = tf.getPatientCategory();
 			
 			if (q != null)
 				tb03uData.setTreatmentRegimen(q.getName().getName());
 			
 			//DATE OF MDR TREATMENT START
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setTb03uTreatmentStartDate(sdf.format(obsList.get(0).getValueDatetime()));*/
-			
 			Date txStartDate = tf.getMdrTreatmentStartDate();
 			if (txStartDate != null)
 				tb03uData.setTb03uTreatmentStartDate(sdf.format(txStartDate));
 			
 			//TREATMENT LOCATION
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_LOCATION);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setTreatmentLocation(obsList.get(0).getValueCoded().getName().getName());*/
-			
 			q = tf.getTxLocation();
 			
 			if (q != null) {
@@ -402,32 +248,6 @@ public class TB03uSingleController {
 			}
 			
 			//DST
-			/* Dst firstDst = TB03uUtil.getDiagnosticDST(tf);
-			
-			if(firstDst!=null) {
-				if(firstDst.getDateCollected()!=null)
-					tb03Data.setDstCollectionDate(sdf.format(firstDst.getDateCollected()));
-				if(firstDst.getResultDate()!=null)
-					tb03Data.setDstResultDate(sdf.format(firstDst.getResultDate()));
-				List<DstResult> resList = firstDst.getResults();
-				String drugName = null;
-				String result = null;
-				for(DstResult res : resList)
-				{
-					if(res.getDrug()!=null) {
-						drugName = res.getDrug().getShortestName(Context.getLocale(), false).toString();
-						result = res.getResult().getShortNameInLocale(Context.getLocale()).getName();
-						tb03Data.getDstResults().put(drugName,result);
-						//System.out.println(drugName + "-" + result + " | " + res.getResult());
-						
-					}
-				}
-				
-				
-				
-				System.out.println("-------");
-			}*/
-			
 			Dst firstDst = TB03uUtil.getDiagnosticDST(tf);
 			
 			if (firstDst != null) {
@@ -540,15 +360,6 @@ public class TB03uSingleController {
 			}
 			
 			//DRUG RESISTANCE
-			
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setDrugResistance(obsList.get(0).getValueCoded().getShortNameInLocale(Context.getLocale()).getName());*/
-			
 			q = tf.getResistanceType();
 			
 			if (q != null) {
@@ -556,71 +367,30 @@ public class TB03uSingleController {
 			}
 			
 			//DIAGNOSTIC METHOD
-			
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.METHOD_OF_DIAGNOSTIC);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setDiagnosticMethod(obsList.get(0).getValueCoded().getName().getName());*/
-			
 			q = tf.getBasisForDiagnosis();
 			
 			if (q != null) {
 				tb03uData.setDiagnosticMethod(q.getName().getName());
 			}
 			
-			/* //HIV TEST RESULT
-			q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESULT_OF_HIV_TEST);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setHivTestResult(obsList.get(0).getValueCoded().getName().getName());*/
-			
+			//HIV TEST RESULT
 			q = tf.getHivStatus();
 			
 			if (q != null) {
 				tb03uData.setHivTestResult(q.getName().getName());
 			}
 			
-			/*//DATE OF HIV TEST
-			q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_HIV_TEST);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setHivTestDate(sdf.format(obsList.get(0).getValueDatetime()));*/
-			
+			//DATE OF HIV TEST
 			Date hivTestDate = tf.getHivTestDate();
 			if (hivTestDate != null)
 				tb03uData.setHivTestDate(sdf.format(hivTestDate));
 			
 			//DATE OF ART START
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_ART_TREATMENT_START);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setArtStartDate(sdf.format(obsList.get(0).getValueDatetime()));*/
-			
 			Date artStartDate = tf.getArtStartDate();
 			if (artStartDate != null)
 				tb03uData.setArtStartDate(sdf.format(artStartDate));
 			
 			//DATE OF CP START
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_PCT_TREATMENT_START);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setCpStartDate(sdf.format(obsList.get(0).getValueDatetime()));  */
-			
 			Date pctStartDate = tf.getPctStartDate();
 			if (pctStartDate != null)
 				tb03uData.setCpStartDate(sdf.format(pctStartDate));
@@ -1007,27 +777,7 @@ public class TB03uSingleController {
 					tb03uData.setMonth36CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
 			
-			//TX OUTCOME
-			//CHECK CAUSE OF DEATH
-			
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSE_OF_DEATH);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-			{	
-				codId = obsList.get(0).getValueCoded().getConceptId();
-				if(codId.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH_BY_TB).getConceptId()))
-					tb03Data.setDiedOfTB(true);
-				else
-					tb03Data.setDiedOfTB(false);
-			}
-			
-			else
-				tb03Data.setDiedOfTB(false);*/
-			
-			q = tf.getCauseOfDeath();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSE_OF_DEATH);
+			q = tf.getCauseOfDeath();
 			
 			if (q != null) {
 				codId = q.getConceptId();
@@ -1040,56 +790,17 @@ public class TB03uSingleController {
 			
 			else
 				tb03uData.setDiedOfTB(false);
-			
-			//RELAPSED
-			//    	    q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSED);
-			//    	    conceptQuestionList.clear();
-			//    	    conceptQuestionList.add(q);
-			//    	    
-			//    	    obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			//    	    if(obsList.size()>0 && obsList.get(0)!=null)
-			//    	    	tb03Data.setRelapsed(obsList.get(0).getValueCoded().getName().getName());
-			
 			q = tf.getRelapsed();
 			
 			if (q != null) {
 				tb03uData.setRelapsed(q.getName().getName());
 			}
 			
-			//RELAPSED AT MONTH?
-			//RELAPSED
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSE_MONTH);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			    if(obsList.size()>0 && obsList.get(0)!=null)
-			    	tb03Data.setRelapseMonth(obsList.get(0).getValueNumeric().intValue());*/
-			
 			Integer relMonth = tf.getRelapseMonth();
 			
 			if (relMonth != null) {
 				tb03uData.setRelapseMonth(relMonth);
 			}
-			
-			//TX OUTCOME
-			
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null) {
-				tb03Data.setTb03uTreatmentOutcome(obsList.get(0).getValueCoded().getConceptId());
-				 q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_OUTCOME_DATE);
-			    conceptQuestionList.clear();
-			    conceptQuestionList.add(q);
-			    
-			    obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			    if(obsList.size()>0 && obsList.get(0)!=null) {
-			    	tb03Data.setTb03uTreatmentOutcomeDate(sdf.format(obsList.get(0).getValueDatetime()));
-			    }
-			}*/
 			
 			q = tf.getTreatmentOutcome();
 			if (q != null) {
@@ -1102,17 +813,6 @@ public class TB03uSingleController {
 			}
 			
 			//NOTES
-			
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CLINICIAN_NOTES);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList.size()>0 && obsList.get(0)!=null)
-				tb03Data.setNotes(obsList.get(0).getValueText());
-			
-			patientSet.add(tb03Data);*/
-			
 			String notes = tf.getClinicianNotes();
 			
 			if (notes != null)
@@ -1135,9 +835,6 @@ public class TB03uSingleController {
 		Integer report_oblast = null;
 		Integer report_quarter = null;
 		Integer report_month = null;
-		/*if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quartert)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
 		
 		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
 		    year, quarter, month, "TB-03u", "MDRTB");

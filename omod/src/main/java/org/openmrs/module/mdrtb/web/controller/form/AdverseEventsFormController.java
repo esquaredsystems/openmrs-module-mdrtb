@@ -74,7 +74,6 @@ public class AdverseEventsFormController {
 			AdverseEventsForm form = new AdverseEventsForm(tbProgram.getPatient());
 			
 			// prepopulate the intake form with any program information
-			//form.setEncounterDatetime(tbProgram.getDateEnrolled());
 			form.setLocation(tbProgram.getLocation());
 			form.setPatientProgramId(patientProgramId);
 			return form;
@@ -85,17 +84,9 @@ public class AdverseEventsFormController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showAEForm(@RequestParam(required = false, value = "returnUrl") String returnUrl,
-	/*@RequestParam(value="loc", required=false) String district,
-	@RequestParam(value="ob", required=false) String oblast,*/
-	@RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
+	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode, ModelMap model) {
-		/*List<Region> oblasts;
-		List<Facility> facilities;
-		List<District> districts;
-		
-		if(oblast==null)
-		*/
 		AdverseEventsForm aeForm = null;
 		if (encounterId != -1) { //we are editing an existing encounter
 			aeForm = new AdverseEventsForm(Context.getEncounterService().getEncounter(encounterId));
@@ -118,9 +109,6 @@ public class AdverseEventsFormController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView processAEForm(@ModelAttribute("aeForm") AdverseEventsForm aeForm, BindingResult errors,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
-	        /* @RequestParam(required = true, value = "oblast") String oblastId,
-	         @RequestParam(required = true, value = "district") String districtId,
-	         @RequestParam(required = false, value = "facility") String facilityId,*/
 	        @RequestParam(required = false, value = "returnUrl") String returnUrl, SessionStatus status,
 	        HttpServletRequest request, ModelMap map) {
 		

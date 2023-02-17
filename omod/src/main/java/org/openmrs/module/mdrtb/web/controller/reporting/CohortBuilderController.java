@@ -90,9 +90,6 @@ public class CohortBuilderController implements Controller {
 	}
 	
 	private CohortSearchHistory getMySearchHistory(HttpServletRequest request) {
-		// Removed after upgrade to v2.0
-		// return (CohortSearchHistory) Context.getVolatileUserData("CohortBuilderSearchHistory");
-		// Instead, return empty history
 		return new CohortSearchHistory();
 	}
 	
@@ -229,12 +226,6 @@ public class CohortBuilderController implements Controller {
 							if (v.length != 2) {
 								throw new IllegalArgumentException("shortcut arguments can have only one equal sign");
 							}
-							/*
-							String hidden = "<input type=hidden name=\"" + v[0] + "\" value=\"" + v[1] + "\"/>";
-							tempHidden.add(hidden);
-							tempHiddenNames.add(v[0]);
-							log.debug("hidden arg " + v[0] + " -> " + v[1]);
-							*/
 							temp.add(new ArgHolder(clz, v[0], v[1]));
 						} else {
 							String name = u[0];

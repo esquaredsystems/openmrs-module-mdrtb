@@ -73,7 +73,6 @@ public class SmearFormController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;
@@ -89,22 +88,14 @@ public class SmearFormController {
 			SmearForm form = null;
 			if (!mdr) {
 				TbPatientProgram tbProgram = Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId);
-				
 				form = new SmearForm(tbProgram.getPatient());
-				
-				// prepopulate the intake form with any program information
-				//form.setEncounterDatetime(tbProgram.getDateEnrolled());
 				form.setLocation(tbProgram.getLocation());
 			}
 			
 			else {
 				MdrtbPatientProgram mdrtbProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(
 				    patientProgramId);
-				
 				form = new SmearForm(mdrtbProgram.getPatient());
-				
-				// prepopulate the intake form with any program information
-				//form.setEncounterDatetime(mdrtbProgram.getDateEnrolled());
 				form.setLocation(mdrtbProgram.getLocation());
 			}
 			return form;
@@ -119,7 +110,6 @@ public class SmearFormController {
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = false, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode, ModelMap model) {
-		//ModelMap map = new ModelMap();
 		
 		List<Region> oblasts;
 		List<Facility> facilities;
@@ -206,7 +196,7 @@ public class SmearFormController {
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), null);
 		
-		if (location == null) { // && locations!=null && (locations.size()==0 || locations.size()>1)) {
+		if (location == null) {
 			throw new MdrtbAPIException("Invalid Hierarchy Set selected");
 		}
 		

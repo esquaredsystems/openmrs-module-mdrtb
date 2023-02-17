@@ -5,7 +5,7 @@ import org.openmrs.module.web.extension.LinkExt;
 
 public class MdrtbGutterItem extends LinkExt {
 	
-	String url = "module/mdrtb/mdrtb.form"; // "module/mdrtb/mdrtbIndex.form";
+	String url = "module/mdrtb/mdrtb.form";
 	
 	String label = "mdrtb.title";
 	

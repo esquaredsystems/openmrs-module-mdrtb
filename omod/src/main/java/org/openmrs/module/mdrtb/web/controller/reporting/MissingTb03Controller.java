@@ -82,9 +82,6 @@ public class MissingTb03Controller {
 		}
 		
 		else {
-			/*
-			* if oblast is dushanbe, return both districts and facilities
-			*/
 			if (Integer.parseInt(oblast) == 186) {
 				oblasts = Context.getService(MdrtbService.class).getRegions();
 				districts = Context.getService(MdrtbService.class).getDistrictsByParent(Integer.parseInt(oblast));
@@ -113,15 +110,6 @@ public class MissingTb03Controller {
 		model.addAttribute("yearSelected", year);
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
-		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/missingTb03", model);
 		
 	}
@@ -135,12 +123,6 @@ public class MissingTb03Controller {
 		
 		//	
 		SimpleDateFormat sdf = new SimpleDateFormat();
-		
-		/*ArrayList<Person> patientList = new ArrayList<Person>();
-		ArrayList<Concept> conceptQuestionList = new ArrayList<Concept>();
-		ArrayList<Concept> conceptAnswerList = new ArrayList<Concept>();
-		
-		List<Obs> obsList = null;*/
 		
 		List<DQItem> missingTB03 = new ArrayList<DQItem>();
 		
@@ -182,17 +164,14 @@ public class MissingTb03Controller {
 			timeDiff = 0;
 			diffInWeeks = 0;
 			
-			// patientList.clear();
 			errorFlag = Boolean.FALSE;
 			
 			dqi = new DQItem();
-			Patient patient = tf.getPatient();//Context.getPatientService().getPatient(i);
+			Patient patient = tf.getPatient();
 			
 			if (patient == null || patient.getVoided()) {
 				continue;
 			}
-			
-			// patientList.add(patient);
 			dqi.setPatient(patient);
 			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
 		}
@@ -201,14 +180,12 @@ public class MissingTb03Controller {
 		
 		List<TbPatientProgram> progList = Context.getService(MdrtbService.class)
 		        .getAllTbPatientProgramsEnrolledInDateRangeAndLocations(locList, startDate, endDate);
-		//Integer countNum = 0;
 		Boolean matched = Boolean.FALSE;
 		if (progList != null) {
 			for (TbPatientProgram p : progList) {
 				matched = Boolean.FALSE;
 				dqi = new DQItem();
-				Patient patient = p.getPatient();//Context.getPatientService().getPatient(i);
-				
+				Patient patient = p.getPatient();
 				if (patient == null || patient.getVoided()) {
 					continue;
 				}
@@ -226,14 +203,12 @@ public class MissingTb03Controller {
 				if (!matched)
 					countNum++;
 				
-				// patientList.add(patient);
 				dqi.setPatient(patient);
 				dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
 				
 				List<TB03Form> x = Context.getService(MdrtbService.class).getTB03FormsForProgram(patient, p.getId());
 				
 				if (x == null || x.size() == 0) {
-					//errorFlag = Boolean.TRUE;
 					missingTB03.add(dqi);
 					
 					if (!errList.contains(patient)) {
@@ -246,7 +221,7 @@ public class MissingTb03Controller {
 			
 		}
 		
-		Integer num = countNum;// + tofList.size();
+		Integer num = countNum;
 		
 		Integer errorPercentage = null;
 		if (num == 0)
@@ -285,11 +260,6 @@ public class MissingTb03Controller {
 		model.addAttribute("locale", Context.getLocale().toString());
 		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		/*Integer report_oblast = null; Integer report_quarter = null; Integer report_month = null;
-		if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
-		
 		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
 		    year, quarter, month, "DOTSDQ", "DOTSTB");
 		

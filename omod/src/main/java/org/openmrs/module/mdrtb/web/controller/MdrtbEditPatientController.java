@@ -105,7 +105,6 @@ public class MdrtbEditPatientController {
 		List<Location> list = new ArrayList<Location>();
 		list.add(Context.getLocationService().getLocation(1));
 		return list;
-		//return Context.getLocationService().getAllLocations(false);
 	}
 	
 	// checks to see if the "fixedIdentifierLocation" global prop has been specified, which is used to determine if we
@@ -398,10 +397,6 @@ public class MdrtbEditPatientController {
 			patient.addAddress(patientCommand.getAddress());
 		}
 		
-		// remove the address if it is blank
-		//		if (MdrtbUtil.isBlank(patient.getPersonAddress())) {
-		//			patient.removeAddress(patient.getPersonAddress());
-		//		}
 		// remove any attributes that are blank
 		for (PersonAttributeType attr : Context.getPersonService().getPersonAttributeTypes(PERSON_TYPE.PATIENT,
 		    ATTR_VIEW_TYPE.VIEWING)) {

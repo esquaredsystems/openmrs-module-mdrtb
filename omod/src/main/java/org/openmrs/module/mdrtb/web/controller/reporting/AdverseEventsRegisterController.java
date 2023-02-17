@@ -107,14 +107,6 @@ public class AdverseEventsRegisterController {
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
 		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/pv/aeRegister", model);
 		
 	}
@@ -169,23 +161,8 @@ public class AdverseEventsRegisterController {
 			Collections.sort(aeRegister);
 		}
 		
-		//table1.setTotalAll(table1.getTotalMale() + getTotalFemale());
-		
-		//fin.add(table1);
-		//}
-		
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		//Integer report_oblast = null; Integer report_quarter = null; Integer report_month = null;
-		/*if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
-		
-		boolean reportStatus;// = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB 07");
-		/*if(location!=null)
-			 reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB-07","DOTSTB");
-		else*/
-		reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId, year,
-		    quarter, month, "TB-07", "DOTSTB");
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		    year, quarter, month, "TB-07", "DOTSTB");
 		
 		System.out.println(reportStatus);
 		

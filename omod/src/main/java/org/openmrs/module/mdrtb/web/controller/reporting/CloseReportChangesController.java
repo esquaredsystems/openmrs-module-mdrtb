@@ -227,27 +227,6 @@ public class CloseReportChangesController {
 			iterator2.remove();
 		}
 		
-		/*System.out.println("\n\n\n");
-		System.out.println("oblast: " + oblast);
-		System.out.println("location: " + location);
-		System.out.println("year: " + year);
-		System.out.println("quarter: " + quarter);
-		System.out.println("month: " + month);
-		System.out.println("reportName: " + reportName);
-		System.out.println("reportDate: " + reportDate);
-		
-		System.out.println("modifiedObsSize: "+ modifiedObs.size());
-		System.out.println("modifiedPatientsSize: "+ modifiedPatients.size());
-		System.out.println("modifiedEncountersSize: "+ modifiedEncounters.size());
-		
-		System.out.println("modifiedObs: "+ modifiedObs);
-		System.out.println("modifiedPatients: "+ modifiedPatients);
-		System.out.println("modifiedEncounters: "+ modifiedEncounters);
-		
-		System.out.println("startDate: " + startDate);
-		System.out.println("endDate: " + endDate);
-		System.out.println("closeDate: " + closeDate);*/
-		
 		model.addAttribute("oblast", oblast);
 		model.addAttribute("district", district);
 		model.addAttribute("facility", facility);
@@ -278,20 +257,6 @@ public class CloseReportChangesController {
 		
 		model.addAttribute("obsData", obsData);
 		model.addAttribute("obsDataSize", obsData.size());
-		
-		/*
-		Map<Integer, Patient> testPatient = new HashMap<Integer, Patient>();
-		Encounter test1 = Context.getEncounterService().getEncounter(28634);
-		testPatient.put(test1.getId(), test1.getPatient());
-		model.addAttribute("testPatient", testPatient);
-		model.addAttribute("testPatientSize", testPatient.size());
-		
-		Map<Integer, Obs> testObs = new HashMap<Integer, Obs>();
-		Encounter test2 = Context.getEncounterService().getEncounter(28634);
-		Obs o = Context.getObsService().getObs(1);
-		testObs.put(test2.getId(), o);
-		model.addAttribute("testObs", testObs);
-		model.addAttribute("testObsSize", testObs.size());*/
 		
 		return new ModelAndView("/module/mdrtb/reporting/viewClosedReportChanges", model);
 	}

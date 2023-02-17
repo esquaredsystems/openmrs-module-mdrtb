@@ -113,14 +113,6 @@ public class AdverseEventsReportController {
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
 		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/pv/ae", model);
 		
 	}
@@ -349,14 +341,6 @@ public class AdverseEventsReportController {
 		Integer pancreatitisId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PANCREATITIS).getId();
 		Integer phospholipidosisId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PHOSPHOLIPIDOSIS)
 		        .getId();
-		
-		/*Integer car1ConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_1).getId();
-		Integer car2ConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_2).getId();
-		Integer car3ConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_3).getId();
-		
-		Integer cad1ConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_DRUG_1).getId();
-		Integer cad2ConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_DRUG_2).getId();
-		Integer cad3ConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_DRUG_3).getId();*/
 		
 		Integer bdqId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.BEDAQUILINE).getId();
 		Integer dlmId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DELAMANID).getId();

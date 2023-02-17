@@ -84,9 +84,7 @@ public class RegimenFormController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView showRegimenForm(@RequestParam(required = false, value = "returnUrl") String returnUrl,
-	/*@RequestParam(value="loc", required=false) String district,
-	@RequestParam(value="ob", required=false) String oblast,*/
-	@RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
+	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode, ModelMap model) {
 		RegimenForm regimenForm = null;
@@ -112,9 +110,6 @@ public class RegimenFormController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView processRegimenForm(@ModelAttribute("regimenForm") RegimenForm regimenForm, BindingResult errors,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
-	        /* @RequestParam(required = true, value = "oblast") String oblastId,
-	         @RequestParam(required = true, value = "district") String districtId,
-	         @RequestParam(required = false, value = "facility") String facilityId,*/
 	        @RequestParam(required = false, value = "returnUrl") String returnUrl, SessionStatus status,
 	        HttpServletRequest request, ModelMap map) {
 		
@@ -168,7 +163,6 @@ public class RegimenFormController {
 	
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
-		/*return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RESISTANCE_TYPE);*/
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
 		    MdrtbConcepts.RESISTANCE_TYPE);

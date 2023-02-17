@@ -66,7 +66,6 @@ public class DrugResistanceDuringFormController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 		
 		// if no form is specified, create a new one
 		if (encounterId == -1) {
@@ -76,9 +75,6 @@ public class DrugResistanceDuringFormController {
 			    patientProgramId);
 			
 			form = new DrugResistanceDuringTreatmentForm(mdrtbProgram.getPatient());
-			
-			// prepopulate the intake form with any program information
-			//form.setEncounterDatetime(mdrtbProgram.getDateEnrolled());
 			form.setLocation(mdrtbProgram.getLocation());
 			
 			return form;
@@ -92,7 +88,6 @@ public class DrugResistanceDuringFormController {
 	        @RequestParam(required = false, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode,
 	        @RequestParam(required = false, value = "returnUrl") String returnUrl, ModelMap model) {
-		//ModelMap map = new ModelMap();
 		
 		System.out.println("ret: " + returnUrl);
 		DrugResistanceDuringTreatmentForm drdt = null;

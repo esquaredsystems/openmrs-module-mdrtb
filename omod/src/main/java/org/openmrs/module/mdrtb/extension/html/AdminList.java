@@ -45,7 +45,6 @@ public class AdminList extends AdministrationSectionExt {
 	 */
 	public Map<String, String> getLinks() {
 		Map<String, String> map = new HashMap<String, String>();
-		//map.put("module/mdrtb/mdrtbIndex.form", "mdrtb.title.homepage");
 		map.put("module/mdrtb/mdrtb.form", "mdrtb.title.homepage");
 		return map;
 	}

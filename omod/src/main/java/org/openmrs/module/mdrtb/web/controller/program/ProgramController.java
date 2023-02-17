@@ -204,10 +204,6 @@ public class ProgramController {
 			throw new RuntimeException("Show enroll called with invalid patient id " + patientId);
 		}
 		
-		// we need to determine if this patient currently in active in an mdr-tb program to determine what fields to display
-		//MdrtbPatientProgram mostRecentMdrtbProgram = Context.getService(MdrtbService.class).getMostRecentMdrtbPatientProgram(patient);
-		//TbPatientProgram mostRecentTbProgram = Context.getService(MdrtbService.class).getMostRecentTbPatientProgram(patient);
-		//map.put("hasActiveProgram", ((mostRecentMdrtbProgram != null && mostRecentMdrtbProgram.getActive()) || (mostRecentTbProgram != null && mostRecentTbProgram.getActive())) ? true : false);
 		map.put("patientId", patientId);
 		
 		List<MdrtbPatientProgram> mdrtbPrograms = Context.getService(MdrtbService.class).getMdrtbPatientPrograms(patient);
@@ -261,7 +257,6 @@ public class ProgramController {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: hacky to have to create a whole new visit status here just to determine the proper link?
 		// TODO: modeling visit as a status probably wasn't the best way to go on my part
 		VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer())
 		        .calculate(program);
@@ -480,7 +475,6 @@ public class ProgramController {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: hacky to have to create a whole new visit status here just to determine the proper link?
 		// TODO: modeling visit as a status probably wasn't the best way to go on my part
 		/* VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer()).calculateTb(program);
 		
@@ -664,15 +658,6 @@ public class ProgramController {
 			map.put("ob", oblastId);
 			map.put("loc", districtId);
 			
-			//List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-			//List<District> districts= Context.getService(MdrtbService.class).getRegDistricts(Integer.parseInt(oblastId));
-			//List<Facility> facilities = Context.getService(MdrtbService.class).getRegFacilities(Integer.parseInt(districtId));
-			/*if(facilityId!=null) {
-				map.put("facility", facilityId);
-			}*/
-			//map.put("oblasts", oblasts);
-			//map.put("districts", districts);
-			//map.put("facilities", facilities);
 			map.put("idSelected", identifierValue);
 			map.put("dateEnrolled", program.getDateEnrolled());
 			if (program.getClassificationAccordingToPreviousDrugUse() != null) {
@@ -694,12 +679,7 @@ public class ProgramController {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: hacky to have to create a whole new visit status here just to determine the proper link?
 		// TODO: modeling visit as a status probably wasn't the best way to go on my part
-		/* VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer()).calculateTb(program);
-		
-		return new ModelAndView("redirect:" + visitStatus.getNewIntakeVisit().getLink() + "&returnUrl=" + request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form%3FpatientProgramId=" + program.getId());*/
-		
 		return new ModelAndView("redirect:/module/mdrtb/form/tb03u.form?patientProgramId=" + program.getId()
 		        + "&encounterId=-1");
 	}
@@ -799,12 +779,7 @@ public class ProgramController {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: hacky to have to create a whole new visit status here just to determine the proper link?
 		// TODO: modeling visit as a status probably wasn't the best way to go on my part
-		/* VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer()).calculateTb(program);
-		
-		return new ModelAndView("redirect:" + visitStatus.getNewIntakeVisit().getLink() + "&returnUrl=" + request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form%3FpatientProgramId=" + program.getId());*/
-		
 		return new ModelAndView("redirect:/module/mdrtb/form/tb03.form?patientProgramId=" + program.getId()
 		        + "&encounterId=-1");
 	}
@@ -916,13 +891,6 @@ public class ProgramController {
 			}
 		}
 		return new ModelAndView("redirect:/module/mdrtb/program/enrollment.form?patientId=" + tpp.getPatient().getId());
-		
-		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: hacky to have to create a whole new visit status here just to determine the proper link?
-		// TODO: modeling visit as a status probably wasn't the best way to go on my part
-		/* VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer()).calculateTb(program);
-		return new ModelAndView("redirect:" + visitStatus.getNewIntakeVisit().getLink() + "&returnUrl=" + request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form%3FpatientProgramId=" + program.getId());*/
-		
 	}
 	
 	@RequestMapping("/module/mdrtb/program/showEditEnroll.form")
@@ -980,12 +948,6 @@ public class ProgramController {
 			}
 		}
 		return new ModelAndView("redirect:/module/mdrtb/program/enrollment.form?patientId=" + tpp.getPatient().getId());
-		
-		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: hacky to have to create a whole new visit status here just to determine the proper link?
-		// TODO: modeling visit as a status probably wasn't the best way to go on my part
-		/* VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer()).calculateTb(program);
-		return new ModelAndView("redirect:" + visitStatus.getNewIntakeVisit().getLink() + "&returnUrl=" + request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form%3FpatientProgramId=" + program.getId());*/
 	}
 	
 }

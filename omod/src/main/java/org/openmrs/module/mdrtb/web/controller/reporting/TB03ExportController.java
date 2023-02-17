@@ -789,28 +789,8 @@ public class TB03ExportController {
 		model.addAttribute("patientSet", patientSet);
 		model.addAttribute("locale", Context.getLocale().toString());
 		
-		/*// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		Integer report_oblast = null, report_district = null, report_facility = null;
-		String report_quarter = null, report_month = null;*/
-		/*if(oblastId!=null)
-			report_oblast = oblastId;
-		if(districtId!=null)
-			report_district = districtId;
-		if(facilityId!=null)
-			report_facility = facilityId;*/
-		
-		/*if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
-		
-		boolean reportStatus;// = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB 03");
-		
-		/*if(location!=null)
-			 reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB-03", "DOTSTB");
-		else
-			reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, null, year, report_quarter, report_month, "TB-03", "DOTSTB");*/
-		
-		reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId, year,
-		    quarter, month, "TB-03", "DOTSTB");
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		    year, quarter, month, "TB-03", "DOTSTB");
 		
 		//System.out.println(reportStatus);
 		model.addAttribute("oblast", oblastId);

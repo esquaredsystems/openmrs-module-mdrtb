@@ -293,7 +293,6 @@ public class TB03FormController {
 	
 	@ModelAttribute("groups")
 	public ArrayList<ProgramWorkflowState> getPossiblePatientGroups() {
-		//return Context.getService(MdrtbService.class).getPossibleClassificationsAccordingToPatientGroups();
 		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPatientGroups();
@@ -348,7 +347,6 @@ public class TB03FormController {
 	
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
-		//return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RESISTANCE_TYPE);
 		ArrayList<ConceptAnswer> answerArray = new ArrayList<ConceptAnswer>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
 		    MdrtbConcepts.RESISTANCE_TYPE);
@@ -377,7 +375,6 @@ public class TB03FormController {
 	
 	@ModelAttribute("outcomes")
 	public ArrayList<ProgramWorkflowState> getPossibleTreatmentOutcomes() {
-		//Context.getService(MdrtbService.class).getPossibleTbProgramOutcomes();
 		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class).getPossibleTbProgramOutcomes();
 		if (states != null) {

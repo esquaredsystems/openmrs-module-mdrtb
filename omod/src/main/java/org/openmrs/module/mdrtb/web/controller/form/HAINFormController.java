@@ -68,7 +68,6 @@ public class HAINFormController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;
@@ -99,7 +98,6 @@ public class HAINFormController {
 				form = new HAINForm(mdrtbProgram.getPatient());
 				
 				// prepopulate the intake form with any program information
-				//form.setEncounterDatetime(mdrtbProgram.getDateEnrolled());
 				form.setLocation(mdrtbProgram.getLocation());
 			}
 			return form;
@@ -218,7 +216,6 @@ public class HAINFormController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;

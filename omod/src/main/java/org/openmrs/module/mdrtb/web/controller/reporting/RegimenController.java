@@ -101,9 +101,6 @@ public class RegimenController {
 				model.addAttribute("districts", districts);
 			}
 		} else {
-			/*
-			* if oblast is dushanbe, return both districts and facilities
-			*/
 			if (Integer.parseInt(oblast) == 186) {
 				oblasts = Context.getService(MdrtbService.class).getRegions();
 				districts = Context.getService(MdrtbService.class).getDistrictsByParent(Integer.parseInt(oblast));

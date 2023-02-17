@@ -69,7 +69,6 @@ public class DSTFormController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 		if (pp.getProgram().getConcept().getId()
 		        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId())) {
 			mdr = true;
@@ -82,9 +81,6 @@ public class DSTFormController {
 				TbPatientProgram tbProgram = Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId);
 				
 				form = new DSTForm(tbProgram.getPatient());
-				
-				// prepopulate the intake form with any program information
-				//form.setEncounterDatetime(tbProgram.getDateEnrolled());
 				form.setLocation(tbProgram.getLocation());
 			}
 			
@@ -93,9 +89,6 @@ public class DSTFormController {
 				    patientProgramId);
 				
 				form = new DSTForm(mdrtbProgram.getPatient());
-				
-				// prepopulate the intake form with any program information
-				//form.setEncounterDatetime(mdrtbProgram.getDateEnrolled());
 				form.setLocation(mdrtbProgram.getLocation());
 			}
 			return form;
@@ -120,7 +113,6 @@ public class DSTFormController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;
@@ -174,8 +166,6 @@ public class DSTFormController {
 			}
 			i++;
 		}
-		
-		//Context.getService(MdrtbService.class).saveDst(dst.getDi());
 		
 		Context.getService(MdrtbService.class).saveDst(dst.getDi());
 		status.setComplete();

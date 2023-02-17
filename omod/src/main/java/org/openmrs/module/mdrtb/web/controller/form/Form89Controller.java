@@ -95,7 +95,6 @@ public class Form89Controller {
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode, ModelMap model) {
-		//ModelMap map = new ModelMap();
 		List<Region> oblasts;
 		List<Facility> facilities;
 		List<District> districts;
@@ -113,7 +112,6 @@ public class Form89Controller {
 				}
 			}
 			
-			//TB03Form tb03 = new TB03Form(Context.getEncounterService().getEncounter(encounterId));
 			Location location = form89.getLocation();
 			String obName = location.getStateProvince();
 			String distName = location.getCountyDistrict();

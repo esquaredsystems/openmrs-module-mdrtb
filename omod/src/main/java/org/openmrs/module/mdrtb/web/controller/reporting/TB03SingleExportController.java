@@ -121,14 +121,6 @@ public class TB03SingleExportController {
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
 		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/tb03Single", model);
 		
 	}
@@ -401,7 +393,7 @@ public class TB03SingleExportController {
 			
 			//DRUG RESISTANCE
 			
-			q = tf.getResistanceType();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
+			q = tf.getResistanceType();
 			
 			if (q != null)
 				tb03Data.setDrugResistance(q.getShortNameInLocale(Context.getLocale()).getName());

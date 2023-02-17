@@ -109,14 +109,6 @@ public class Form8Controller {
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
 		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/form8", model);
 	}
 	
@@ -155,10 +147,6 @@ public class Form8Controller {
 		Concept extrapulmonaryConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB);
 		Concept positiveConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POSITIVE);
 		Concept negativeConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE);
-		//Concept contact = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONTACT);
-		//Concept migrant = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MIGRANT);
-		//Concept phcWorker = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PHC_WORKER);
-		//Concept privateSectorFacility = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_SERVICES_WORKER);
 		
 		String gender = null;
 		

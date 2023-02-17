@@ -36,26 +36,6 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 		else {
 			
 			EncounterType type = encounter.getEncounterType();
-			
-			/*
-			if (type.equals(Context.getEncounterService().getEncounterType(
-			    Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type")))) {
-				visit.setLink("/module/mdrtb/form/intake.form?patientId="
-				        + status.getPatientProgram().getPatient().getPatientId() + "&patientProgramId="
-				        + status.getPatientProgram().getId() + "&encounterId=" + encounter.getId());
-			} else if (type.equals(Context.getEncounterService().getEncounterType(
-			    Context.getAdministrationService().getGlobalProperty("mdrtb.follow_up_encounter_type")))) {
-				visit.setLink("/module/mdrtb/form/followup.form?patientId="
-				        + status.getPatientProgram().getPatient().getPatientId() + "&patientProgramId="
-				        + status.getPatientProgram().getId() + "&encounterId=" + encounter.getId());
-			} else if (type.equals(Context.getEncounterService().getEncounterType(
-			    Context.getAdministrationService().getGlobalProperty("mdrtb.specimen_collection_encounter_type")))) {
-				visit.setLink("/module/mdrtb/specimen/specimen.form?specimenId=" + encounter.getId() + "&patientProgramId="
-				        + status.getPatientProgram().getId());
-			} else {
-				throw new MdrtbAPIException("Invalid encounter type passed to Dashboard visit status renderer.");
-			}
-			*/
 			if (type.equals(MdrtbConstants.ET_TB03U_MDRTB_INTAKE)) {
 				visit.setLink("/module/mdrtb/form/tb03u.form?patientId="
 				        + status.getPatientProgram().getPatient().getPatientId() + "&patientProgramId="

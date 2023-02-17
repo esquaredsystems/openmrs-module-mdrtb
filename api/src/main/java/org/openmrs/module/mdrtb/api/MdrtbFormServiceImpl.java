@@ -286,7 +286,6 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 				aeForm.setOutcomeDate(null);
 			}
 		}
-		// save the actual update
 		Context.getEncounterService().saveEncounter(aeForm.getEncounter());
 		return aeForm;
 	}

@@ -126,14 +126,6 @@ public class DOTSDQController {
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
 		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/dotsdq", model);
 		
 	}
@@ -200,8 +192,8 @@ public class DOTSDQController {
 		    quarter, month);
 		List<TransferInForm> tifList = Context.getService(MdrtbService.class).getTransferInFormsFilled(locList, year,
 		    quarter, month);
-		List<TransferOutForm> allTofs = null;// Context.getService(MdrtbService.class).getTransferOutFormsFilled(locList, year, quarter, month);
-		List<TransferInForm> allTifs = null;// Context.getService(MdrtbService.class).getTransferInFormsFilled(locList, year, quarter, month);
+		List<TransferOutForm> allTofs = null;
+		List<TransferInForm> allTifs = null;
 		HashMap<Integer, Integer> dupMap = new HashMap<Integer, Integer>();
 		HashMap<Integer, Integer> f89DupMap = new HashMap<Integer, Integer>();
 		
@@ -231,13 +223,12 @@ public class DOTSDQController {
 			child = Boolean.FALSE;
 			
 			dqi = new DQItem();
-			Patient patient = tf.getPatient();//Context.getPatientService().getPatient(i);
+			Patient patient = tf.getPatient();
 			
 			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			
-			// patientList.add(patient);
 			dqi.setPatient(patient);
 			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
 			
@@ -246,7 +237,6 @@ public class DOTSDQController {
 			
 			patientProgramId = tf.getPatientProgramId();
 			Boolean found = Boolean.FALSE;
-			//   HashMap<Integer,Integer> pp = new HashMap<Integer,Integer>();
 			if (patientProgramId != null && !dupMap.containsKey(patientProgramId)) {
 				List<TB03Form> dupList = Context.getService(MdrtbService.class).getTB03FormsForProgram(patient,
 				    patientProgramId);
@@ -281,7 +271,6 @@ public class DOTSDQController {
 			//duplicate FORM89
 			
 			found = Boolean.FALSE;
-			//   HashMap<Integer,Integer> pp = new HashMap<Integer,Integer>();
 			if (patientProgramId != null && !f89DupMap.containsKey(patientProgramId)) {
 				List<Form89> formList = Context.getService(MdrtbService.class).getForm89FormsForProgram(patient,
 				    patientProgramId);
@@ -319,7 +308,7 @@ public class DOTSDQController {
 				
 			}
 			
-			if (tf.getAgeAtTB03Registration() == null) { //obsList==null || obsList.size()==0) {
+			if (tf.getAgeAtTB03Registration() == null) {
 				missingAge.add(dqi);
 				errorFlag = Boolean.TRUE;
 			}
@@ -551,11 +540,6 @@ public class DOTSDQController {
 		model.addAttribute("locale", Context.getLocale().toString());
 		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		/*Integer report_oblast = null; Integer report_quarter = null; Integer report_month = null;
-		if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
-		
 		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
 		    year, quarter, month, "DOTSDQ", "DOTSTB");
 		

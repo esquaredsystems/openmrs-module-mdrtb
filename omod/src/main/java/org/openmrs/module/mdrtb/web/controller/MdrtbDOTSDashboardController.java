@@ -148,8 +148,6 @@ public class MdrtbDOTSDashboardController {
 	        @RequestParam(required = false, value = "patientId") Integer patientId,
 	        @RequestParam(required = false, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = false, value = "idId") Integer idId, ModelMap map) {
-		/*System.out.println("MdrtbDashboard:showStatus");
-		System.out.println("program:" + program);*/
 		if (program == null) {
 			// if the patient has no program, redirect to the enroll-in-program
 			map.clear();

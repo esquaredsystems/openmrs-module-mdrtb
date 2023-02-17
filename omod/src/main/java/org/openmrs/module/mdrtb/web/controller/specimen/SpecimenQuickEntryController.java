@@ -78,8 +78,6 @@ public class SpecimenQuickEntryController extends AbstractSpecimenController {
 				String appearance = request.getParameter("appearance" + i);
 				String result = request.getParameter("result" + i);
 				String rifResult = request.getParameter("rifResult" + i);
-				/*String mtbBurden = request.getParameter("mtbBurden" + i);
-				String errorCode = request.getParameter("errorCode" + i);*/
 				String inhResult = request.getParameter("inhResult" + i);
 				
 				// create the new specimen
@@ -121,9 +119,6 @@ public class SpecimenQuickEntryController extends AbstractSpecimenController {
 				else if (testType.contains("hain")) {
 					hain = specimen.addHAIN();
 				}
-				//else {
-				//	throw new MdrtbAPIException("Invalid test type passed to quick entry controller.");
-				//}
 				
 				// now add the test-specific parameters
 				if (bac != null) {

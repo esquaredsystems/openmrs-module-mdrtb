@@ -69,7 +69,6 @@ public class TransferInController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;
@@ -101,7 +100,6 @@ public class TransferInController {
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = false, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode, ModelMap model) {
-		//ModelMap map = new ModelMap();
 		
 		List<Region> oblasts;
 		List<Facility> facilities;
@@ -209,7 +207,6 @@ public class TransferInController {
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
-			//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 			mdr = true;
 		}
 		// save the actual update

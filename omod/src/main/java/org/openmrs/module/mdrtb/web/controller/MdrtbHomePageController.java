@@ -43,7 +43,6 @@ public class MdrtbHomePageController {
 	
 	protected final static Log log = LogFactory.getLog(MdrtbHomePageController.class);
 	
-	//@RequestMapping("/module/mdrtb/mdrtbIndex")
 	@RequestMapping("/module/mdrtb/mdrtb")
 	public void viewHomePage(ModelMap model) {
 		

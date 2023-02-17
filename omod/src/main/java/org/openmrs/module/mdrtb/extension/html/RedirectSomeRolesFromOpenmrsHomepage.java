@@ -48,7 +48,6 @@ public class RedirectSomeRolesFromOpenmrsHomepage extends Extension {
 			Set<String> set = new HashSet<String>(Arrays.asList(temp));
 			for (Role role : Context.getAuthenticatedUser().getAllRoles()) {
 				if (set.contains(role.getRole())) {
-					//return "<script type=\"text/javascript\"> window.location = 'module/mdrtb/mdrtbIndex.form'; </script>";
 					return "<script type=\"text/javascript\"> window.location = 'module/mdrtb/mdrtb.form'; </script>";
 				}
 			}

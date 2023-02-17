@@ -84,9 +84,6 @@ public class MDRDQController {
 				model.addAttribute("districts", districts);
 			}
 		} else {
-			/*
-			* if oblast is dushanbe, return both districts and facilities
-			*/
 			if (Integer.parseInt(oblast) == 186) {
 				oblasts = Context.getService(MdrtbService.class).getRegions();
 				districts = Context.getService(MdrtbService.class).getDistrictsByParent(Integer.parseInt(oblast));
@@ -113,15 +110,6 @@ public class MDRDQController {
 		model.addAttribute("yearSelected", year);
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
-		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/dq", model);
 	}
 	
@@ -131,37 +119,7 @@ public class MDRDQController {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
-		//Cohort patients = MdrtbUtil.getMdrPatientsTJK(null, null, location, oblast, null, null, null, null,year,quarter,month);
-		/*Cohort patients = new Cohort();
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);*/
-		
-		//String oName = null;
-		
-		//    	Region o = null;
-		//		if(!oblast.equals("")) {
-		//			o =  Context.getService(MdrtbService.class).getOblast(Integer.parseInt(oblast));
-		//			oName = o.getName();
-		//			
-		//		}
-		
-		/*Date startDate = (Date)(dateMap.get("startDate"));
-		Date endDate = (Date)(dateMap.get("endDate"));
-		
-		Form tb03Form = Context.getFormService().getForm(MdrtbConstants.TB03_FORM_ID);
-		ArrayList<Form> formList = new ArrayList<Form>();
-		formList.add(tb03Form);
-		
-		
-		Set<Integer> idSet = patients.getMemberIds();*/
-		//ArrayList<TB03Data> patientSet  = new ArrayList<TB03Data>();
 		SimpleDateFormat sdf = new SimpleDateFormat();
-		
-		/*ArrayList<Person> patientList = new ArrayList<Person>();
-		ArrayList<Concept> conceptQuestionList = new ArrayList<Concept>();
-		ArrayList<Concept> conceptAnswerList = new ArrayList<Concept>();*/
-		
-		//List<Obs> obsList = null;
-		
 		List<DQItem> missingTB03 = new ArrayList<DQItem>();
 		List<DQItem> missingAge = new ArrayList<DQItem>();
 		List<DQItem> missingPatientGroup = new ArrayList<DQItem>();
@@ -190,8 +148,6 @@ public class MDRDQController {
 		
 		SimpleDateFormat rdateSDF = new SimpleDateFormat();
 		rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
-		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId, districtId, facilityId);
 		
 		List<Location> locList = null;
 		if (oblastId != null) {
@@ -234,44 +190,17 @@ public class MDRDQController {
 			dqi.setPatient(patient);
 			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
 			
-			/* //Missing TB03
-			List<Encounter> tb03EncList = Context.getEncounterService().getEncounters(patient, null, startDate, endDate, formList, null, null, false);
-			if(tb03EncList==null || tb03EncList.size() == 0) {
-				missingTB03.add(dqi);
-				errorFlag = Boolean.TRUE;
-			}*/
-			
-			//Missing Age at Registration
-			/* Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AGE_AT_MDR_REGISTRATION);
-			
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList==null || obsList.size()==0) {*/
-			
 			if (tf.getAgeAtMDRRegistration() == null) {
 				missingAge.add(dqi);
 				errorFlag = Boolean.TRUE;
 			}
 			//MISSING REGISTRATION GROUP
-			//Concept q = tf.getRegistrationGroup();// Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT);
-			/* conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList==null || obsList.size()==0) {*/
-			
 			if (tf.getRegistrationGroup() == null) {
 				missingPatientGroup.add(dqi);
 				errorFlag = Boolean.TRUE;
 			}
 			
 			//NOT STARTED TREATMENT
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);*/
 			if (tf.getMdrTreatmentStartDate() == null) {
 				notStartedTreatment.add(dqi);
 				errorFlag = Boolean.TRUE;
@@ -295,13 +224,6 @@ public class MDRDQController {
 			}
 			
 			//NO SITE
-			/* q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB);
-			conceptQuestionList.clear();
-			conceptQuestionList.add(q);
-			
-			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
-			if(obsList==null || obsList.size()==0) {*/
-			
 			if (tf.getAnatomicalSite() == null) {
 				noSite.add(dqi);
 				errorFlag = Boolean.TRUE;
@@ -312,17 +234,6 @@ public class MDRDQController {
 				missingDST.add(dqi);
 				errorFlag = Boolean.TRUE;
 			}
-			
-			/* //MISSING DOTS ID
-			List<PatientIdentifier> ids = patient.getActiveIdentifiers();
-			Boolean idFound = Boolean.FALSE;
-			for(PatientIdentifier pi : ids) {
-				if(pi.getIdentifierType().getId()==5) 
-				{
-					idFound = Boolean.TRUE;
-					break;
-				}
-			}*/
 			
 			if (tf.getPatientProgramId() != null) {
 				MdrtbPatientProgram patientProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(
@@ -372,7 +283,6 @@ public class MDRDQController {
 		}
 		
 		model.addAttribute("num", num);
-		//model.addAttribute("missingTB03", missingTB03);
 		model.addAttribute("missingAge", missingAge);
 		model.addAttribute("missingPatientGroup", missingPatientGroup);
 		model.addAttribute("missingDST", missingDST);

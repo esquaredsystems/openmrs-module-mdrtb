@@ -46,7 +46,6 @@ public class ExportReportController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	//, value="/module/mdrtb/reporting/exportReport"
 	public String exportReportPost(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("district") Integer districtId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,
@@ -60,27 +59,9 @@ public class ExportReportController {
 		Integer location = null;
 		ByteArrayOutputStream baos = null;
 		
-		Location tb08u_location = null;
-		//    	String tb08u_oblast = oblastId;
 		String date = reportDate;
-		//        Integer tb08u_year = year;
-		//        String tb08u_quarter = "";
-		//        String tb08u_month = "";
 		
 		try {
-			/*if(new PDFHelper().isString(quarter)) { 
-				tb08u_quarter = Integer.toString(quarter); 
-			}
-			if(new PDFHelper().isString(month)) { 
-				tb08u_month = Integer.toString(month); 
-			}
-			if(new PDFHelper().isInt(locationId)) { 
-				tb08u_location = Context.getLocationService().getLocation(Integer.parseInt(locationId));
-				location = tb08u_location.getId(); 
-			}
-			if(new PDFHelper().isInt(oblastId)) { 
-				oblast = (Context.getService(MdrtbService.class).getOblast(Integer.parseInt(oblastId))).getId(); 
-			}*/
 			if (!(reportDate.equals(""))) {
 				date = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new SimpleDateFormat("dd.MM.yyyy")
 				        .parse(reportDate));

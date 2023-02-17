@@ -64,7 +64,6 @@ public class CultureFormController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;
@@ -82,9 +81,6 @@ public class CultureFormController {
 				TbPatientProgram tbProgram = Context.getService(MdrtbService.class).getTbPatientProgram(patientProgramId);
 				
 				form = new CultureForm(tbProgram.getPatient());
-				
-				// prepopulate the intake form with any program information
-				//form.setEncounterDatetime(tbProgram.getDateEnrolled());
 				form.setLocation(tbProgram.getLocation());
 			}
 			
@@ -93,9 +89,6 @@ public class CultureFormController {
 				    patientProgramId);
 				
 				form = new CultureForm(mdrtbProgram.getPatient());
-				
-				// prepopulate the intake form with any program information
-				//form.setEncounterDatetime(mdrtbProgram.getDateEnrolled());
 				form.setLocation(mdrtbProgram.getLocation());
 			}
 			return form;
@@ -119,7 +112,6 @@ public class CultureFormController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		//if(pp.getProgram().getConcept().getId().intValue() == Context.getConceptService().getConceptByName(Context.getAdministrationService().getGlobalProperty("mdrtb.program_name")).getId().intValue()) {
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;
@@ -177,7 +169,6 @@ public class CultureFormController {
 	
 	@ModelAttribute("cultureresults")
 	public Collection<ConceptAnswer> getCultureResults() {
-		//return Context.getService(MdrtbService.class).getPossibleCultureResults();
 		ArrayList<ConceptAnswer> resultArray = new ArrayList<ConceptAnswer>();
 		for (int i = 0; i < 6; i++) {
 			resultArray.add(null);

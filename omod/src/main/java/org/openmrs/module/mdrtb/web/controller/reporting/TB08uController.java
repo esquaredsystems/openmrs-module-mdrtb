@@ -149,11 +149,6 @@ public class TB08uController {
 		Boolean sld = null;
 		Boolean txStarted = null;
 		
-		//Concept regimenType = null;
-		/*Concept shortCnc = null;
-		Concept indivCnc = null;
-		Concept stdCnc = null;*/
-		
 		Concept regimen = null;
 		
 		int shrt = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REGIMEN_2_SHORT).getConceptId()
@@ -203,8 +198,6 @@ public class TB08uController {
 			if (patient == null || patient.getVoided()) {
 				continue;
 			}
-			
-			//patientList.add(patient);
 			
 			//DATE OF MDR TREATMENT START
 			Date txStartDate = tf.getMdrTreatmentStartDate();
@@ -629,7 +622,6 @@ public class TB08uController {
 			
 			else if (regId == ind) {
 				if (q != null) {
-					/*System.out.println (obsList.get(0).getValueCoded().getConceptId());*/
 					
 					if (q.getConceptId().intValue() != transferredIn) {
 						
@@ -1034,8 +1026,6 @@ public class TB08uController {
 			
 			else if (regId == standard) {
 				if (q != null) {
-					/*System.out.println (obsList.get(0).getValueCoded().getConceptId());*/
-					
 					if (q.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
 					        .getGlobalProperty(MdrtbConstants.GP_TRANSFER_IN_CONCEPT_ID))) {
 						
@@ -1442,12 +1432,6 @@ public class TB08uController {
 		}
 		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		/*Integer report_oblast = null;
-		Integer report_quarter = null;
-		Integer report_month = null;
-		if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
 		model.addAttribute("table1", table1);
 		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
 		    year, quarter, month, "TB-08u", "MDRTB");
@@ -1498,6 +1482,5 @@ public class TB08uController {
 		model.addAttribute("reportDate", rdateSDF.format(new Date()));
 		model.addAttribute("reportStatus", reportStatus);
 		return "/module/mdrtb/reporting/tb08uResults";
-		//+ "_" + Context.getLocale().toString().substring(0, 2);
 	}
 }

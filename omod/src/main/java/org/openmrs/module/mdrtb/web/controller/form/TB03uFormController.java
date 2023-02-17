@@ -121,7 +121,6 @@ public class TB03uFormController {
 				}
 			}
 			
-			//TB03Form tb03 = new TB03Form(Context.getEncounterService().getEncounter(encounterId));
 			Location location = tb03u.getLocation();
 			String obName = location.getStateProvince();
 			String distName = location.getCountyDistrict();
@@ -273,7 +272,6 @@ public class TB03uFormController {
 	
 	@ModelAttribute("categories")
 	public Collection<ConceptAnswer> getPossiblePatientCategories() {
-		//return Context.getService(MdrtbService.class).getPossibleRegimens();
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleRegimens();
 		if (bases != null) {
@@ -295,7 +293,6 @@ public class TB03uFormController {
 	
 	@ModelAttribute("groups")
 	public ArrayList<ProgramWorkflowState> getPossiblePatientGroups() {
-		//return Context.getService(MdrtbService.class).getPossibleClassificationsAccordingToPreviousTreatment();
 		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPreviousTreatment();
@@ -323,7 +320,6 @@ public class TB03uFormController {
 	
 	@ModelAttribute("bydrug")
 	public ArrayList<ProgramWorkflowState> getPossibleResultsByDrugs() {
-		/*return Context.getService(MdrtbService.class).getPossibleClassificationsAccordingToPreviousDrugUse();*/
 		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPreviousDrugUse();
@@ -351,7 +347,6 @@ public class TB03uFormController {
 	
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
-		//return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RESISTANCE_TYPE);
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
 		    MdrtbConcepts.RESISTANCE_TYPE);
@@ -415,7 +410,6 @@ public class TB03uFormController {
 	
 	@ModelAttribute("basesfordiagnosis")
 	public Collection<ConceptAnswer> getPossibleBasesForDiagnosis() {
-		//return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.BASIS_FOR_TB_DIAGNOSIS);
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
 		    MdrtbConcepts.METHOD_OF_DETECTION);

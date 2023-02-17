@@ -105,15 +105,6 @@ public class TB08ReportController {
 		model.addAttribute("yearSelected", year);
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
-		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/tb08", model);
 	}
 	
@@ -179,7 +170,6 @@ public class TB08ReportController {
 			//get disease site
 			Concept q = tf.getAnatomicalSite();// Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB);
 			
-			// obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
 			if (q != null) {
 				if (q.getConceptId().intValue() == pulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.TRUE;
@@ -2838,17 +2828,8 @@ public class TB08ReportController {
 			//TOTALS
 		}
 		
-		/*Integer report_oblast = null; Integer report_quarter = null; Integer report_month = null;
-		//if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
-		
-		boolean reportStatus;
-		/*if(location!=null)
-			 reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB-08","DOTSTB");
-		else*/
-		reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId, year,
-		    quarter, month, "TB-08", "DOTSTB");
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		    year, quarter, month, "TB-08", "DOTSTB");
 		System.out.println(reportStatus);
 		
 		String oName = null;
