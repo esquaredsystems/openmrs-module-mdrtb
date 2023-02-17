@@ -30,23 +30,18 @@ public class PersonByNameComparator implements Comparator<Person> {
 		if (ret == 0) {
 			ret = OpenmrsUtil.compareWithNullAsGreatest(name1.getFamilyName2(), name2.getFamilyName2());
 		}
-		
 		if (ret == 0) {
 			ret = OpenmrsUtil.compareWithNullAsGreatest(name1.getGivenName(), name2.getGivenName());
 		}
-		
 		if (ret == 0) {
 			ret = OpenmrsUtil.compareWithNullAsGreatest(name1.getMiddleName(), name2.getMiddleName());
 		}
-		
 		if (ret == 0) {
 			ret = OpenmrsUtil.compareWithNullAsGreatest(name1.getFamilyNamePrefix(), name2.getFamilyNamePrefix());
 		}
-		
 		if (ret == 0) {
 			ret = OpenmrsUtil.compareWithNullAsGreatest(name1.getFamilyNameSuffix(), name2.getFamilyNameSuffix());
 		}
-		
 		return ret;
 	}
 }

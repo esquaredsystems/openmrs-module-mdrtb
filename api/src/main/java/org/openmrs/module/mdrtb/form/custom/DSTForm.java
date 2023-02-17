@@ -175,10 +175,6 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 		}
 	}
 	
-	/*public int compareTo(DSTForm form) {
-		return this.di.getDateCollected().compareTo(form.di.getDateCollected());
-	}*/
-	
 	public int compareTo(DSTForm form) {
 		if (this.getMonthOfTreatment() == null)
 			return 1;

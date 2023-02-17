@@ -60,7 +60,6 @@ public class MdrtbTJKPatientDistrictCohortDefinitionEvaluator implements CohortD
 			return new EvaluatedCohort(treatmentStartCohort, cohortDefinition, context);
 		
 		Collection<CohortMembership> tscIdSet = treatmentStartCohort.getMemberships();
-		System.out.println("SET SIZE:" + tscIdSet.size());
 		Iterator<CohortMembership> itr = tscIdSet.iterator();
 		Integer idCheck = null;
 		Patient patient = null;

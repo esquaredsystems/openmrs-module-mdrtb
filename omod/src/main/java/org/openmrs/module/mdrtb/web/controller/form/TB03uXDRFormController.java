@@ -135,7 +135,6 @@ public class TB03uXDRFormController {
 								model.addAttribute("facilities", facilities);
 								for (Facility f : facilities) {
 									if (f.getName().equals(location.getAddress6())) {
-										System.out.println("setting");
 										model.addAttribute("facilitySelected", f.getId());
 										break;
 									}
@@ -195,7 +194,6 @@ public class TB03uXDRFormController {
 		}
 		
 		if (tb03uxdr.getLocation() == null || !location.equals(tb03uxdr.getLocation())) {
-			System.out.println("setting loc");
 			tb03uxdr.setLocation(location);
 		}
 		

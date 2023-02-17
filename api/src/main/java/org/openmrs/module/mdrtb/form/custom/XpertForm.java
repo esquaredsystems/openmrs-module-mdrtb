@@ -77,7 +77,6 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT),
 			    obsgroup);
 		if (obs == null) {
-			System.out.println("Null result");
 			return null;
 		} else {
 			return obs.getValueCoded();
@@ -85,7 +84,6 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 	}
 	
 	public void setMtbResult(Concept result) {
-		//System.out.println("result" + result);
 		Obs obsgroup = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), encounter);
 		Obs obs = null;
@@ -98,28 +96,21 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			    MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
 		}
 		
-		// if this obs have not been created, and there is no data to add, do nothing
-		System.out.println("OG:" + obsgroup);
-		System.out.println("O:" + obs);
 		if (obs == null && result == null) {
-			System.out.println("no xpert result hcange");
 			return;
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(result)) {
-			System.out.println("new obs or value change");
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
-				System.out.println("not null obs");
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (result != null) {
-				System.out.println("creating new obs");
 				//obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.MTB_RESULT), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -143,16 +134,13 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE), obsgroup);
 		
 		if (obs == null) {
-			System.out.println("Null result");
 			return null;
 		} else {
-			//	System.out.println("ValCo: " + obs.getValueCoded() );
 			return obs.getValueCoded();
 		}
 	}
 	
 	public void setRifResult(Concept result) {
-		System.out.println(">>>>>> result:" + result);
 		Obs obsgroup = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), encounter);
 		Obs obs = null;
@@ -166,29 +154,21 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		}
 		
 		// if this obs have not been created, and there is no data to add, do nothing
-		System.out.println("OG:" + obsgroup);
-		System.out.println("O:" + obs);
 		if (obs == null && result == null) {
-			System.out.println("no xpert result hcange");
 			return;
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(result)) {
-			System.out.println("new obs or value change");
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
-				System.out.println("not null obs");
-				//				obsgroup.setVoided(true);
-				//				obsgroup.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
 			// now create the new Obs and add it to the encounter	
 			if (result != null) {
-				System.out.println("creating new obs");
 				//obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.RIFAMPICIN_RESISTANCE), encounter.getEncounterDatetime(), encounter.getLocation());

@@ -132,8 +132,8 @@ public class DrugForecastUtil {
 		double dosesPerDay = 0;
 		try {
 			//TODO: Write test and remove this
-			//			String s = o.getFrequency();
-			//			dosesPerDay = Integer.valueOf(s.substring(0, s.indexOf('/')));
+			// String s = o.getFrequency();
+			// dosesPerDay = Integer.valueOf(s.substring(0, s.indexOf('/')));
 			dosesPerDay = o.getFrequency().getFrequencyPerDay();
 		}
 		catch (Exception ex) {}

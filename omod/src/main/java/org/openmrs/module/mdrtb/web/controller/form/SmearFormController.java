@@ -76,12 +76,6 @@ public class SmearFormController {
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;
-			System.out.println("mdr");
-		}
-		
-		else {
-			mdr = false;
-			System.out.println("not mdr");
 		}
 		// if no form is specified, create a new one
 		if (encounterId == -1) {

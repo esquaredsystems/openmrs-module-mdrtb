@@ -132,7 +132,6 @@ public class XpertFormController {
 									model.addAttribute("facilities", facilities);
 									for (Facility f : facilities) {
 										if (f.getName().equals(location.getAddress4())) {
-											System.out.println("setting");
 											model.addAttribute("facilitySelected", f.getId());
 											break;
 										}
@@ -187,8 +186,6 @@ public class XpertFormController {
 	        HttpServletRequest request, ModelMap map) {
 		Location location = null;
 		
-		System.out.println("PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId);
-		
 		if (facilityId != null && facilityId.length() != 0)
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
@@ -201,7 +198,6 @@ public class XpertFormController {
 		}
 		
 		if (xpert.getLocation() == null || !location.equals(xpert.getLocation())) {
-			System.out.println("setting loc");
 			xpert.setLocation(location);
 		}
 		
@@ -215,7 +211,6 @@ public class XpertFormController {
 		        && xpert.getMtbResult().getId().intValue() != Context.getService(MdrtbService.class)
 		                .getConcept(MdrtbConcepts.MTB_POSITIVE).getId().intValue()) {
 			
-			System.out.println("Setting null");
 			xpert.setRifResult(null);
 		}
 		

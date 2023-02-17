@@ -211,8 +211,6 @@ public class ProgramController {
 		
 		map.put("hasPrograms", ((mdrtbPrograms != null && mdrtbPrograms.size() != 0) || (tbPrograms != null && tbPrograms
 		        .size() != 0)) ? true : false);
-		System.out.println("Prog:" + map.get("hasPrograms"));
-		
 		map.put("mdrtbPrograms", mdrtbPrograms);
 		map.put("tbPrograms", tbPrograms);
 		
@@ -225,7 +223,6 @@ public class ProgramController {
 	        @RequestParam(required = true, value = "patientId") Integer patientId, SessionStatus status,
 	        HttpServletRequest request, ModelMap map) throws SecurityException, IllegalArgumentException,
 	        NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		System.out.println("ProgramCont:processEnroll");
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		
 		if (patient == null) {
@@ -417,7 +414,6 @@ public class ProgramController {
 	        
 	        SessionStatus status, HttpServletRequest request, ModelMap map) throws SecurityException,
 	        IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		System.out.println("ProgramCont:processEnroll");
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		
 		if (patient == null) {
@@ -425,8 +421,6 @@ public class ProgramController {
 		}
 		
 		Location location = null;
-		
-		System.out.println("PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId);
 		
 		if (facilityId != null && facilityId.length() != 0)
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
@@ -440,7 +434,6 @@ public class ProgramController {
 		}
 		
 		if (program.getLocation() == null || !location.equals(program.getLocation())) {
-			System.out.println("setting loc");
 			program.setLocation(location);
 		}
 		
@@ -556,10 +549,6 @@ public class ProgramController {
 		map.addAttribute("patientGroup", patGroup);
 		map.addAttribute("previousDrugUse", drugGroup);
 		map.addAttribute("idSelected", idSelected);
-		System.out.println("IDS:" + idSelected);
-		/* if(previousProgramId!=null) {
-			map.put("previousProgramId", previousProgramId);
-		}*/
 		return new ModelAndView("/module/mdrtb/program/otherEnrollment", map);
 		
 	}
@@ -579,9 +568,6 @@ public class ProgramController {
 		}
 		
 		Location location = null;
-		System.out.println("PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId + "\nID: "
-		        + identifierValue);
-		
 		if (facilityId != null && facilityId.length() != 0)
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
@@ -598,7 +584,6 @@ public class ProgramController {
 		MdrtbUtil.validateIdentifierString(identifierValue, errors);
 		
 		if (errors.hasErrors()) {
-			System.out.println("errors");
 			MdrtbPatientProgram mostRecentProgram = Context.getService(MdrtbService.class).getMostRecentMdrtbPatientProgram(
 			    patient);
 			map.put("hasActiveProgram", mostRecentProgram != null && mostRecentProgram.getActive() ? true : false);
@@ -698,7 +683,6 @@ public class ProgramController {
 			throw new RuntimeException("Process enroll called with invalid patient id " + patientId);
 		}
 		Location location = null;
-		System.out.println("PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId);
 		if (facilityId != null && facilityId.length() != 0)
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
@@ -760,7 +744,6 @@ public class ProgramController {
 			map.put("facilitySelected", facilityId);
 			map.put("identifierValue", identifierValue);
 			//map.put("patientProgramId", -1);
-			System.out.println("ERRORS");
 			return new ModelAndView("/module/mdrtb/program/otherEnrollment", map);
 		}
 		
@@ -856,7 +839,6 @@ public class ProgramController {
 	        @RequestParam(required = true, value = "classificationAccordingToPreviousDrugUse") Integer classificationAccordingToPreviousDrugUse,
 	        SessionStatus status, HttpServletRequest request, ModelMap map) throws SecurityException,
 	        IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		System.out.println("ProgramCont:processEditProgramTB");
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		TbPatientProgram tpp = ms.getTbPatientProgram(programId);
 		
@@ -919,7 +901,6 @@ public class ProgramController {
 	        @RequestParam(required = true, value = "classificationAccordingToPreviousDrugUse") Integer classificationAccordingToPreviousDrugUse,
 	        SessionStatus status, HttpServletRequest request, ModelMap map) throws SecurityException,
 	        IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		System.out.println("ProgramCont:processEditProgramTB");
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		MdrtbPatientProgram tpp = ms.getMdrtbPatientProgram(programId);
 		

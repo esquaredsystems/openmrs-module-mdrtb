@@ -89,7 +89,6 @@ public class DrugResistanceDuringFormController {
 	        @RequestParam(required = false, value = "mode") String mode,
 	        @RequestParam(required = false, value = "returnUrl") String returnUrl, ModelMap model) {
 		
-		System.out.println("ret: " + returnUrl);
 		DrugResistanceDuringTreatmentForm drdt = null;
 		if (encounterId != -1) { //we are editing an existing encounter
 			drdt = new DrugResistanceDuringTreatmentForm(Context.getEncounterService().getEncounter(encounterId));

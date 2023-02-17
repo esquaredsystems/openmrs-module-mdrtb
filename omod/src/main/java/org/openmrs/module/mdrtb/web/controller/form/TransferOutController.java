@@ -183,9 +183,6 @@ public class TransferOutController {
 		
 		Location location = null;
 		
-		System.out.println("TOF ID:" + tof.getId());
-		System.out.println("PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId);
-		
 		if (facilityId != null && facilityId.length() != 0)
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));

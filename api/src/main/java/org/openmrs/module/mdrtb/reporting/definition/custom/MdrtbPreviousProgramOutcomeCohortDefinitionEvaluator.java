@@ -6,6 +6,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Cohort;
 import org.openmrs.CohortMembership;
 import org.openmrs.annotation.Handler;
@@ -25,6 +27,8 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
 @Handler(supports = { MdrtbPreviousProgramOutcomeCohortDefinition.class }, order = 20)
 public class MdrtbPreviousProgramOutcomeCohortDefinitionEvaluator implements CohortDefinitionEvaluator {
 	
+	protected final Log log = LogFactory.getLog(getClass());
+
 	/**
 	 * Default Constructor
 	 */
@@ -77,14 +81,7 @@ public class MdrtbPreviousProgramOutcomeCohortDefinitionEvaluator implements Coh
 					
 				}
 				catch (Exception e) {
-					if (program.getOutcome() == null) {
-						System.out.println("NULL PROGRAM OUTCOME");
-					}
-					
-					else if (cd.getOutcome() == null) {
-						System.out.println("NULL CD OUTCOME");
-					}
-					e.printStackTrace();
+					log.debug(e.getMessage());
 				}
 				
 			}

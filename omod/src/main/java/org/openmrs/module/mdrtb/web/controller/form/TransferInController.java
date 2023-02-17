@@ -184,9 +184,6 @@ public class TransferInController {
 		
 		Location location = null;
 		
-		System.out.println("TiF ID:" + tif.getId());
-		System.out.println("PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId);
-		
 		if (facilityId != null && facilityId.length() != 0)
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
@@ -199,7 +196,6 @@ public class TransferInController {
 		}
 		
 		if (tif.getLocation() == null || !location.equals(tif.getLocation())) {
-			System.out.println("setting loc");
 			tif.setLocation(location);
 		}
 		

@@ -49,15 +49,6 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		
 		//EncounterType intakeType = Context.getEncounterService().getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
 		if (encounters != null && encounters.size() != 0) {
-			/*for (Encounter encounter : encounters) {
-				// create a new status item for this encounter
-				
-				// now place the visit in the appropriate "bucket"
-				if (encounter.getEncounterType().equals(intakeType)) {
-					tb03 = new TB03Form(encounter);
-					break;
-				}
-			}*/
 			tb03 = new TB03Form(encounters.get(0));
 		}
 		

@@ -107,11 +107,8 @@ public class MdrtbDOTSDashboardController {
 		System.out.println("MdrtbEditPatient:getMdrtbPatientProgram");
 		// if there is no patient program selected, we want to show the most recent program
 		if (patientId == null || patientId == -1) {
-			System.out.println("returning null");
 			return null;
-			
 		}
-		
 		if (patientProgramId == null || patientProgramId == -1) {
 			Patient patient = Context.getPatientService().getPatient(patientId);
 			
@@ -151,7 +148,6 @@ public class MdrtbDOTSDashboardController {
 		if (program == null) {
 			// if the patient has no program, redirect to the enroll-in-program
 			map.clear();
-			System.out.println("null program");
 			return new ModelAndView("redirect:/module/mdrtb/program/enrollment.form?patientId=" + patientId
 			        + (idId != null ? "&idId=" + idId : ""));
 		}

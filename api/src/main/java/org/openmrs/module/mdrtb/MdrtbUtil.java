@@ -700,26 +700,6 @@ public class MdrtbUtil {
 		return cohort;
 	}
 	
-	// Removed after upgarde to v2.0
-	//	public static boolean areRussianStringsEqual(String s1, String s2) {
-	//		boolean result = false;
-	//		
-	//		if (s1 == null || s2 == null)
-	//			return false;
-	//		
-	//		if (s1.length() == 0 || s2.length() == 0)
-	//			return false;
-	//		
-	//		java.text.Collator collator = java.text.Collator.getInstance();
-	//		collator.setStrength(Collator.SECONDARY);
-	//		
-	//		int compResult = collator.compare(s1, s2);
-	//		if (compResult == 0)
-	//			return true;
-	//		
-	//		return result;
-	//	}
-	
 	public static Cohort getMdrPatientsTJKFacility(String identifier, String name, String districtId, String oblastId,
 	        String facilityId, List<ProgramWorkflowState> states, Integer minage, Integer maxage, String gender,
 	        Integer year, String quarter, String month) {

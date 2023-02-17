@@ -552,7 +552,6 @@ public class TB03Data implements Comparable<TB03Data> {
 	}
 	
 	public void setTb03TreatmentOutcome(Integer tb03TreatmentOutcome) {
-		//System.out.println("---->" + tb03TreatmentOutcome);
 		if (tb03TreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 		    MdrtbConstants.GP_OUTCOME_CURED_CONCEPT_ID)))
 			this.tb03TreatmentOutcome = 0;

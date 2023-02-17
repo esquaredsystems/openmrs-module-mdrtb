@@ -71,12 +71,6 @@ public class HAINFormController {
 		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
 			mdr = true;
-			System.out.println("mdr");
-		}
-		
-		else {
-			mdr = false;
-			System.out.println("not mdr");
 		}
 		// if no form is specified, create a new one
 		if (encounterId == -1) {
@@ -196,8 +190,6 @@ public class HAINFormController {
 		
 		Location location = null;
 		
-		System.out.println("PARAMS:\nob: " + oblastId + "\ndist: " + districtId + "\nfac: " + facilityId);
-		
 		if (facilityId != null && facilityId.length() != 0)
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
@@ -210,7 +202,6 @@ public class HAINFormController {
 		}
 		
 		if (hain.getLocation() == null || !location.equals(hain.getLocation())) {
-			System.out.println("setting loc");
 			hain.setLocation(location);
 		}
 		
@@ -221,14 +212,10 @@ public class HAINFormController {
 			mdr = true;
 		}
 		
-		System.out.println("PROC RIF:" + hain.getRifResult());
-		System.out.println("PROF MTB:" + hain.getMtbResult());
-		
 		if (hain.getMtbResult() != null
 		        && hain.getMtbResult().getId().intValue() != Context.getService(MdrtbService.class)
 		                .getConcept(MdrtbConcepts.MTB_POSITIVE).getId().intValue()) {
 			
-			System.out.println("Setting null");
 			hain.setRifResult(null);
 			hain.setInhResult(null);
 		}

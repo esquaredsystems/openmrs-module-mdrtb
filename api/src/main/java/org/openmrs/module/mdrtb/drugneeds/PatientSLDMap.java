@@ -209,20 +209,4 @@ public class PatientSLDMap {
 		this.onOther5 = onOther5;
 	}
 	
-	/*public HashMap<String, Boolean> getMap() {
-		return map;
-	}
-
-	public void setMap(HashMap<String, Boolean> map) {
-		this.map = map;
-	}
-	
-	public void put(String key, Boolean value) {
-		map.put(key, value);
-	}
-	
-	public Boolean get(String key) {
-		return map.get(key);
-	}*/
-	
 }
