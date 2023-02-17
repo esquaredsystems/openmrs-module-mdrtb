@@ -120,9 +120,8 @@ public class SimpleRegimenForm extends BaseOpenmrsData {
 	}
 	
 	/**
-	 * Provide {@link SimpleRegimenForm} representation of {@link TB03Form}
+	 * Provide {@link SimpleRegimenForm} representation of {@link RegimenForm}
 	 * 
-	 * @param tb03
 	 * @return
 	 */
 	public RegimenForm toForm() {

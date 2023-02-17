@@ -99,7 +99,6 @@ public class SimpleTB03Form extends BaseOpenmrsData {
 	/**
 	 * Provide {@link SimpleTB03Form} representation of {@link TB03Form}
 	 * 
-	 * @param tb03
 	 * @return
 	 */
 	public TB03Form toForm() {

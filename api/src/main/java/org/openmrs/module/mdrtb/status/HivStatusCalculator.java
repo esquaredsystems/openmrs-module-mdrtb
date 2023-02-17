@@ -69,9 +69,9 @@ public class HivStatusCalculator {
 			coinfected = coninfectedObs.get(0);
 		}
 		
-		// determine if this patient is currently HIV positive
-		// TODO: right now we consider a patient positive if either the most recent test result is positive, or
-		// the most recent "coinfected and on arvs" obs is true; is this correct?
+		/* Determine if this patient is currently HIV positive
+		A patient is positive if either the most recent test result is positive, 
+		or the most recent "coinfected and on arvs" obs is true */
 		StatusItem hivStatus = new StatusItem();
 		Concept positive = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POSITIVE);
 		
@@ -129,8 +129,7 @@ public class HivStatusCalculator {
 		renderer.renderCurrentRegimen(currentRegimen);
 		status.addItem("currentRegimen", currentRegimen);
 		
-		// TODO: right now we are just calling the ART treatment start date the start of the first antiretroviral regimen, 
-		// but this might not be entirely accurate
+		// TODO: we are calling ART treatment start date the start of the first antiretroviral regimen; this might be inaccurate
 		StatusItem artTreatment = new StatusItem(regimenList);
 		renderer.renderArtTreatment(artTreatment);
 		status.addItem("artTreatment", artTreatment);

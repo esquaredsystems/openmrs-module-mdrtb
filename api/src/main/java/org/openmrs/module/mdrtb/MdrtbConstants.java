@@ -25,13 +25,9 @@ public class MdrtbConstants {
 		NOT_ON_TREATMENT, ON_TREATMENT
 	}
 	
-	//TODO: Replace with tag name
-	@Deprecated
-	public static final String ENROLLMENT_LOCATION_TAG_UUID = "xxxxxxxxxx";
+	public static final String ENROLLMENT_LOCATION_TAG_NAME = "Admission Location";
 	
-	//TODO: Replace with tag name
-	@Deprecated
-	public static final String CULTURE_LOCATION_TAG_UUID = "xxxxxxxxxx";
+	public static final String CULTURE_LOCATION_TAG_NAME = "Culture Lab";
 	
 	// The Concept Map name-space
 	public static final String MDRTB_CONCEPT_MAPPING_CODE = "org.openmrs.module.mdrtb";
@@ -211,7 +207,7 @@ public class MdrtbConstants {
 	public static EncounterType ET_LAB_RESULT = Context.getEncounterService().getEncounterType(
 	    Context.getAdministrationService().getGlobalProperty(GP_ENCOUNTER_TYPE_LAB_RESULT));
 	
-	public static EncounterType ET_RESISTANCE_DURING_TREATMENT = Context.getEncounterService().getEncounterType(
+	public static EncounterType ET_DRUG_RESISTANCE_DURING_TREATMENT = Context.getEncounterService().getEncounterType(
 	    Context.getAdministrationService().getGlobalProperty(GP_ENCOUNTER_TYPE_RESISTANCE_DURING_TREATMENT));
 	
 	public static EncounterType ET_PV_REGIMEN = Context.getEncounterService().getEncounterType(

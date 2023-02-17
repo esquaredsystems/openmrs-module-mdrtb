@@ -526,13 +526,11 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Deletes a smear, culture, or DST test
 	 */
-	//TODO: Change to Object
 	public void deleteTest(Integer testId);
 	
 	/**
 	 * Deletes a specimen, referenced by specimen Id
 	 */
-	//TODO: Change to Object
 	public void deleteSpecimen(Integer patientId);
 	
 	/**
@@ -1098,10 +1096,9 @@ public interface MdrtbService extends OpenmrsService {
 	@Transactional(readOnly = true)
 	public List<TransferOutForm> getTransferOutFormsFilledForPatient(Patient patient);
 	
-	//TODO: Acha sa naam rakho is ka
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<TB03uForm> getTB03uFormsFilledWithTxStartDateDuring(List<Location> locations, Integer year, String quarter,
+	public List<TB03uForm> getTB03uFormsWithTreatmentStartedDuring(List<Location> locations, Integer year, String quarter,
 	        String month);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)

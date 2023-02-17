@@ -9,6 +9,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -17,6 +18,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
@@ -183,7 +185,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void shouldNOTDeleteTest() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -231,7 +233,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetAllMdrtbPatientProgramsEnrolledInDateRange() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -240,8 +242,9 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testGetGetXpert() {
-		Integer obsId = -1; //TODO: Save an obs with Xpert concept ID
-		service.getXpert(obsId);
+		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.XPERT_CONSTRUCT), new Date(), hogwarts);
+		Context.getObsService().saveObs(obs, null);
+		assertNotNull(service.getXpert(obs.getObsId()));
 	}
 	
 	/**
@@ -263,8 +266,9 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testGetHAIN() {
-		Integer obsId = -1; //TODO: Save an obs with HAIN concept ID
-		service.getHAIN(obsId);
+		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.HAIN_CONSTRUCT), new Date(), hogwarts);
+		Context.getObsService().saveObs(obs, null);
+		assertNotNull(service.getHAIN(obs.getObsId()));
 	}
 	
 	/**
@@ -285,8 +289,9 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testGetHAIN2() {
-		Integer obsId = -1; //TODO: Save an obs with HAIN2 concept ID
-		service.getHAIN(obsId);
+		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.HAIN2_CONSTRUCT), new Date(), hogwarts);
+		Context.getObsService().saveObs(obs, null);
+		assertNotNull(service.getHAIN2(obs.getObsId()));
 	}
 	
 	/**
@@ -309,7 +314,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testSaveXpert() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -320,7 +325,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testCreateXpert() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -331,7 +336,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testSaveHAIN() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -342,7 +347,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testCreateHAIN() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -353,7 +358,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testCreateHAIN2() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -364,7 +369,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testSaveHAIN2() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -374,7 +379,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetEnrollmentLocations() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -385,7 +390,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPatientProgramIdentifier() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -396,7 +401,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetGenPatientProgramIdentifier() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -407,7 +412,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetAllTbPatientProgramsEnrolledInDateRange() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -418,7 +423,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testAddIdentifierToProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -428,7 +433,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPossibleIPTreatmentSites() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -438,7 +443,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPossibleCPTreatmentSites() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -448,7 +453,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPossibleRegimens() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -458,7 +463,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPossibleHIVStatuses() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -468,7 +473,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPossibleResistanceTypes() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -479,7 +484,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPossibleConceptAnswers() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -488,7 +493,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testCountPDFRows() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -497,7 +502,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testCountPDFColumns() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -507,7 +512,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testPDFRows() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -517,7 +522,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testPDFColumns() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -528,7 +533,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testUnlockReport() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -539,7 +544,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testDoPDF() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -550,7 +555,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testReadReportStatus() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -561,7 +566,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testReadTableData() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -572,7 +577,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetEncountersByEncounterTypesListOfString() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -583,7 +588,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetEncountersByEncounterTypesListOfStringDateDateDate() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -593,7 +598,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetSmearForms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -604,7 +609,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetCultureForms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -614,7 +619,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetXpertForms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -624,7 +629,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetHAINForms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -634,7 +639,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetHAIN2Forms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -644,7 +649,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetDstForms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -654,7 +659,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetDrdtForms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -665,7 +670,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetEncountersWithNoProgramId() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -676,7 +681,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testAddProgramIdToEncounter() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -687,7 +692,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTB03FormsFilledLocationStringIntegerStringString() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -698,7 +703,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTB03FormsFilledArrayListOfLocationIntegerStringString() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -709,7 +714,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTB03uFormsFilledLocationStringIntegerStringString() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -720,7 +725,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTB03uFormsFilledArrayListOfLocationIntegerStringString() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -731,7 +736,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetForm89FormsFilledLocationStringIntegerStringString() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -742,7 +747,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetForm89FormsFilledArrayListOfLocationIntegerStringString() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -753,7 +758,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetForm89FormsFilledForPatientProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -764,7 +769,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTransferOutFormsFilled() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -775,7 +780,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTransferInFormsFilled() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -786,7 +791,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTransferOutFormsFilledForPatient() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -797,7 +802,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTransferInFormsFilledForPatient() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -808,7 +813,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPossibleDOTSClassificationsAccordingToPreviousDrugUse() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -819,7 +824,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetClosestTB03Form() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -829,7 +834,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetCultureLocations() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -840,7 +845,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetLocationList() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -851,18 +856,18 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPatientIdentifierById() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getTB03uFormsFilledWithTxStartDateDuring(java.util.ArrayList, java.lang.Integer, java.lang.String, java.lang.String)}
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getTB03uFormsWithTreatmentStartedDuring(java.util.ArrayList, java.lang.Integer, java.lang.String, java.lang.String)}
 	 * .
 	 */
 	@Test
 	@Ignore
 	public final void testGetTB03uFormsFilledWithTxStartDateDuring() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -873,7 +878,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTB03FormsForProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -884,7 +889,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetForm89FormsForProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -894,7 +899,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testEvict() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -905,7 +910,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTB03uFormForProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -916,7 +921,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetRegimenFormsForProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -927,7 +932,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetRegimenFormsFilled() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -937,7 +942,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetAllPatientsWithRegimenForms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -948,7 +953,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetPreviousRegimenFormForPatient() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -959,7 +964,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetCurrentRegimenFormForPatient() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -970,7 +975,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetAEFormsFilled() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -981,7 +986,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetAEFormsForProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -992,7 +997,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetAllTbPatientProgramsEnrolledInDateRangeAndLocations() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1003,7 +1008,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetAllMdrtbPatientProgramsEnrolledInDateRangeAndLocations() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1014,7 +1019,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTB03uFormsForProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1025,7 +1030,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTbEncounters() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1035,7 +1040,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetAllTbPatientPrograms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1046,7 +1051,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetAllTbPatientProgramsInDateRange() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1057,7 +1062,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTbPatientPrograms() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1068,7 +1073,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetMostRecentTbPatientProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1079,7 +1084,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTbPatientProgramsInDateRange() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1090,7 +1095,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTbPatientProgramOnDate() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -1101,6 +1106,6 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetTbPatientProgram() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 }

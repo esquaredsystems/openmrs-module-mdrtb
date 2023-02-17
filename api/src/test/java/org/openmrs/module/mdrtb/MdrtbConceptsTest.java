@@ -17,7 +17,7 @@ public class MdrtbConceptsTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testGetAllConceptMappings() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class MdrtbConceptsTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testInitializeEverythingAboutConcept() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -35,7 +35,7 @@ public class MdrtbConceptsTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testLookup() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class MdrtbConceptsTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testResetCache() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 }

@@ -156,7 +156,7 @@ public class MdrtbUtil {
 		types.add(MdrtbConstants.ET_TRANSFER_OUT);
 		types.add(MdrtbConstants.ET_TRANSFER_IN);
 		types.add(MdrtbConstants.ET_TB03U_XDRTB_INTAKE);
-		types.add(MdrtbConstants.ET_RESISTANCE_DURING_TREATMENT);
+		types.add(MdrtbConstants.ET_DRUG_RESISTANCE_DURING_TREATMENT);
 		return types;
 	}
 	

@@ -1356,15 +1356,15 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	//TODO: Write unit test to check if only the locations with enrollment tag are returned
 	public List<Location> getEnrollmentLocations() {
-		LocationTag enrollmentTag = Context.getLocationService().getLocationTagByUuid(
-		    MdrtbConstants.ENROLLMENT_LOCATION_TAG_UUID);
+		LocationTag enrollmentTag = Context.getLocationService().getLocationTagByName(
+		    MdrtbConstants.ENROLLMENT_LOCATION_TAG_NAME);
 		List<Location> list = Context.getLocationService().getLocationsByTag(enrollmentTag);
 		return list;
 	}
 	
 	public List<Location> getCultureLocations() {
-		LocationTag enrollmentTag = Context.getLocationService().getLocationTagByUuid(
-		    MdrtbConstants.CULTURE_LOCATION_TAG_UUID);
+		LocationTag enrollmentTag = Context.getLocationService().getLocationTagByName(
+			MdrtbConstants.CULTURE_LOCATION_TAG_NAME);
 		List<Location> list = Context.getLocationService().getLocationsByTag(enrollmentTag);
 		return list;
 	}
@@ -1597,7 +1597,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<DrugResistanceDuringTreatmentForm> drdts = new ArrayList<DrugResistanceDuringTreatmentForm>();
 		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
-		et.add(MdrtbConstants.ET_RESISTANCE_DURING_TREATMENT);
+		et.add(MdrtbConstants.ET_DRUG_RESISTANCE_DURING_TREATMENT);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
 			// if(MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.HAIN2_CONSTRUCT),
@@ -1936,7 +1936,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<TB03uForm> getTB03uFormsFilledWithTxStartDateDuring(List<Location> locations, Integer year, String quarter,
+	public List<TB03uForm> getTB03uFormsWithTreatmentStartedDuring(List<Location> locations, Integer year, String quarter,
 	        String month) {
 		ArrayList<TB03uForm> forms = new ArrayList<TB03uForm>();
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);

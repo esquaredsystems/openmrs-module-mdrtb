@@ -64,7 +64,7 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 				visit.setLink("/module/mdrtb/form/tb03u-xdr.form?patientId="
 				        + status.getPatientProgram().getPatient().getPatientId() + "&patientProgramId="
 				        + status.getPatientProgram().getId() + "&encounterId=" + encounter.getId());
-			} else if (type.equals(MdrtbConstants.ET_RESISTANCE_DURING_TREATMENT)) {
+			} else if (type.equals(MdrtbConstants.ET_DRUG_RESISTANCE_DURING_TREATMENT)) {
 				visit.setLink("/module/mdrtb/form/resistanceDuringTx.form?patientId="
 				        + status.getPatientProgram().getPatient().getPatientId() + "&patientProgramId="
 				        + status.getPatientProgram().getId() + "&encounterId=" + encounter.getId());

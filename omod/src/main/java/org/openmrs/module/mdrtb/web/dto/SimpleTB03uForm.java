@@ -64,6 +64,8 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 	
 	private Concept relapsed;
 	
+	private Concept resistanceType;
+	
 	private Concept treatmentLocation;
 	
 	public SimpleTB03uForm() {
@@ -92,6 +94,7 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 		setRegistrationGroupByDrug(tb03u.getRegistrationGroupByDrug());
 		setRelapsed(tb03u.getRelapsed());
 		setRelapseMonth(tb03u.getRelapseMonth());
+		setResistanceType(tb03u.getResistanceType());
 		setSldRegisterNumber(tb03u.getSldRegisterNumber());
 		setTreatmentOutcome(tb03u.getTreatmentOutcome());
 		setTreatmentOutcomeDate(tb03u.getTreatmentOutcomeDate());
@@ -100,9 +103,8 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 	}
 	
 	/**
-	 * Provide {@link SimpleTB03uForm} representation of {@link TB03Form}
+	 * Provide {@link SimpleTB03uForm} representation of {@link TB03uForm}
 	 * 
-	 * @param tb03
 	 * @return
 	 */
 	public TB03uForm toForm() {
@@ -129,6 +131,7 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 		tb03u.setRegistrationGroupByDrug(getRegistrationGroupByDrug());
 		tb03u.setRelapsed(getRelapsed());
 		tb03u.setRelapseMonth(getRelapseMonth());
+		tb03u.setResistanceType(getResistanceType());
 		tb03u.setSldRegisterNumber(getSldRegisterNumber());
 		tb03u.setTreatmentOutcome(getTreatmentOutcome());
 		tb03u.setTreatmentOutcomeDate(getTreatmentOutcomeDate());
@@ -345,6 +348,14 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 	
 	public void setRelapsed(Concept relapsed) {
 		this.relapsed = relapsed;
+	}
+	
+	public Concept getResistanceType() {
+		return resistanceType;
+	}
+	
+	public void setResistanceType(Concept resistanceType) {
+		this.resistanceType = resistanceType;
 	}
 	
 	public Concept getTreatmentLocation() {

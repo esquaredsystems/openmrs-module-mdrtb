@@ -52,8 +52,6 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				item.setLink("/module/mdrtb/form/smear.form?encounterId=" + smear.getSpecimenId() + "&patientProgramId="
 				        + status.getPatientTbProgram().getId());
 			}
-			//TODO: See if this can be used instead of the if-else above
-			// item.setLink("/module/mdrtb/specimen/specimen.form?specimenId=" + smear.getSpecimenId() + "&testId=" + smear.getId() + "&patientProgramId=" + status.getPatientProgram().getId());
 			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.smearFormatter", params,
 			    "{0} on {1}, tested at {2}", Context.getLocale()));
 			
@@ -80,8 +78,6 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				item.setLink("/module/mdrtb/form/culture.form?encounterId=" + culture.getSpecimenId() + "&patientProgramId="
 				        + status.getPatientTbProgram().getId());
 			}
-			//TODO: See if this can be used instead of the if-else above
-			// item.setLink("/module/mdrtb/specimen/specimen.form?specimenId=" + culture.getSpecimenId() + "&testId=" + culture.getId() + "&patientProgramId=" + status.getPatientProgram().getId());
 			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.cultureFormatter", params,
 			    "{0} on {1}, tested at {2}", Context.getLocale()));
 		} else {

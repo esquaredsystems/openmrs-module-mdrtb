@@ -186,7 +186,7 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetLocationsFromRegion() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -195,7 +195,7 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetRegDistricts() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -205,7 +205,7 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetRegDistrictsInt() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -215,7 +215,7 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetRegFacilities() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 	
 	/**
@@ -225,6 +225,6 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetRegFacilitiesInt() {
-		fail("Not yet implemented"); // TODO
+		fail("Not yet implemented");
 	}
 }

@@ -63,7 +63,7 @@ public class TbUtil {
 	 * Iterates through all the obs in the test obs group and returns the first one that who concept
 	 * matches the specified concept Returns null if obs not found
 	 * 
-	 * @param group TODO
+	 * @param group
 	 */
 	public static Obs getObsFromObsGroup(Concept concept, Obs group) {
 		if (group.getGroupMembers() != null) {

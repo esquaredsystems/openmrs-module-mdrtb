@@ -286,7 +286,6 @@ public class MdrtbConcepts {
 	
 	public final static String FAILURE_AFTER_REGIMEN_2 = "AFTER FAILURE REGIMEN 2";
 	
-	// TODO: are these still used?
 	public final static String MDR_TB = "MDR-TB";//"MULTI-DRUG RESISTANT TUBERCULOSIS";
 	
 	public final static String XDR_TB = "XDR TB";// "EXTENSIVE DRUG RESISTANT TUBERCULOSIS";

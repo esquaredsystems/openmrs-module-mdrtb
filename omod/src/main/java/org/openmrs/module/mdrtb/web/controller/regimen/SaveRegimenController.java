@@ -82,41 +82,6 @@ public class SaveRegimenController {
 			}
 		}
 		
-		// Modify which orders which were ended on this date, if needed.  //TODO: Should we void and re-create?
-		//		User user = Context.getAuthenticatedUser();
-		//		Set<DrugOrder> existingOrdersEnded = (change == null ? new HashSet<DrugOrder>() : change.getOrdersEnded());
-		//		Regimen regimenAtStart = history.getRegimenOnDate(startingChangeDate, false);
-		//		for (DrugOrder order : regimenAtStart.getDrugOrders()) {
-		//			String oId = order.getOrderId().toString();
-		//			// Previously stopped, now continued
-		//			if (ordersToContinue.contains(oId) && existingOrdersEnded.contains(order)) {
-		//				order.setDiscontinued(false);
-		//				order.setDiscontinuedDate(null);
-		//				order.setDiscontinuedBy(null);
-		//				order.setDiscontinuedReason(null);
-		//			}
-		//			if (ordersToStop.contains(oId)) {
-		//				String changeReason = request.getParameter("reason." + order.getOrderId());
-		//				if (existingOrdersEnded.contains(order)) { // Still stopped, check if date or reason have changed
-		//					if (!order.getDiscontinuedDate().equals(changeDate)) {
-		//						order.setDiscontinuedDate(changeDate);
-		//						log.info("Order " + order.getOrderId() + " stop date changed from " + startingChangeDate + " to "
-		//						        + changeDate);
-		//					}
-		//					if (order.getDiscontinuedReason() == null
-		//					        || !order.getDiscontinuedReason().getConceptId().toString().equals(changeReason)) {
-		//						order.setDiscontinuedReason(Context.getConceptService().getConcept(changeReason));
-		//						log.info("Order " + order.getOrderId() + " stop reason changed to " + changeReason);
-		//					}
-		//				} else {
-		//					// New stoppage on this Date
-		//					order.setDiscontinued(true);
-		//					order.setDiscontinuedDate(changeDate);
-		//					order.setDiscontinuedBy(user);
-		//					order.setDiscontinuedReason(Context.getConceptService().getConcept(changeReason));
-		//				}
-		//			}
-		//		}
 		Context.getPatientService().savePatient(patient);
 		
 		// Modify which orders which were started on this date, if needed.

@@ -15,12 +15,12 @@ public class DrugResistanceDuringTreatmentForm extends AbstractSimpleForm implem
 	
 	public DrugResistanceDuringTreatmentForm() {
 		super();
-		this.encounter.setEncounterType(MdrtbConstants.ET_RESISTANCE_DURING_TREATMENT);
+		this.encounter.setEncounterType(MdrtbConstants.ET_DRUG_RESISTANCE_DURING_TREATMENT);
 	}
 	
 	public DrugResistanceDuringTreatmentForm(Patient patient) {
 		super(patient);
-		this.encounter.setEncounterType(MdrtbConstants.ET_RESISTANCE_DURING_TREATMENT);
+		this.encounter.setEncounterType(MdrtbConstants.ET_DRUG_RESISTANCE_DURING_TREATMENT);
 	}
 	
 	public DrugResistanceDuringTreatmentForm(Encounter encounter) {
