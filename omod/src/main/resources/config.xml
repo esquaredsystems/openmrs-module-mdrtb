@@ -27,7 +27,7 @@
 		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
 	</aware_of_modules>
 	
-	<!-- Extensions -->
+	<!-- Extensions
 	<extension>
 		<point>org.openmrs.admin.list</point>
 		<class>org.openmrs.module.mdrtb.extension.html.AdminList</class>
@@ -35,12 +35,12 @@
 	<extension>
 		<point>org.openmrs.patientDashboardTab</point>
 		<class>org.openmrs.module.mdrtb.extension.html.MdrtbPatientDashboardTabExt</class>
-	</extension>
+	</extension> -->
 	<extension>
 		<point>org.openmrs.gutter.tools</point>
 		<class>org.openmrs.module.mdrtb.extension.html.MdrtbGutterItem</class>
 	</extension>
-
+	
 	<!-- Required Privileges  -->
 	<privilege>
 		<name>Edit DOTS-MDR Data</name>

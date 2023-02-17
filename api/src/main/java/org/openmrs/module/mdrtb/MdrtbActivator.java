@@ -14,7 +14,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
@@ -23,7 +26,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
+import org.openmrs.EncounterType;
 import org.openmrs.GlobalProperty;
+import org.openmrs.LocationTag;
 import org.openmrs.api.APIException;
 import org.openmrs.api.AdministrationService;
 import org.openmrs.api.ConceptService;
@@ -45,7 +50,7 @@ public class MdrtbActivator extends BaseModuleActivator {
 	public void started() {
 		log.info("Starting up MDR-TB module.");
 		//registerAddressTemplates();
-		//performCustomMigrations();
+		performCustomMigrations();
 	}
 	
 	/**
@@ -103,7 +108,6 @@ public class MdrtbActivator extends BaseModuleActivator {
 	private void configureGlobalProperties() {
 		
 		//TODO: ONLY for Tajikistan implementation. Once in production, delete these lines
-		deleteGlobalProperty("mdrtb.");
 		deleteGlobalProperty("dotsreports.");
 		deleteGlobalProperty("mdrtbdrugforecast.");
 		
@@ -119,7 +123,7 @@ public class MdrtbActivator extends BaseModuleActivator {
 		    "EXACT name of the encounter type for Transfer Out of Patients", null);
 		setGlobalProperty(MdrtbConstants.GP_ENCOUNTER_TYPE_SPECIMEN_COLLECTION, "Specimen Collection",
 		    "EXACT name of the encounter type for lab Specimen Collection", null);
-		setGlobalProperty(MdrtbConstants.GP_ENCOUNTER_TYPE_FORM_89, "From 89",
+		setGlobalProperty(MdrtbConstants.GP_ENCOUNTER_TYPE_FORM_89, "Form 89",
 		    "EXACT name of the encounter type for TB-DOTS Follow-up (Form 89)", null);
 		setGlobalProperty(MdrtbConstants.GP_ENCOUNTER_TYPE_TB03, "TB03",
 		    "EXACT name of the encounter type for TB Intake (TB03)", null);
@@ -202,6 +206,12 @@ public class MdrtbActivator extends BaseModuleActivator {
 		setGlobalProperty(MdrtbConstants.GP_PATIENT_IDENTIFIER_TYPE_LIST, "", "", null);
 		setGlobalProperty(MdrtbConstants.GP_SPECIMEN_REPORTS_DEFAULT_LAB, "Бохтар (38)",
 		    "Stores the default location name for the specimen reports. This must be replaced with a better way", null);
+		
+		setGlobalProperty(
+		    "mdrtb.performCustomMigrations",
+		    "false",
+		    "Caution! This is specific to ETB-Tajikistan implementation. When True, the custom migration scripts executes and turns this value back to false on success. It should run only once",
+		    null);
 	}
 	
 	private void setGlobalProperty(String prop, String val) {
@@ -275,11 +285,51 @@ public class MdrtbActivator extends BaseModuleActivator {
 	 * Perform any custom migrations required due to changes in the data model
 	 */
 	private void performCustomMigrations() {
-		// commenting this out--only want it for the few cases where it was working properly
+		GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject("mdrtb.performCustomMigrations");
+		try {
+			if (!gp.getValue().toString().equalsIgnoreCase("true")) {
+				return;
+			}
+		}
+		catch (Exception e) {
+			return;
+		}
+		
+		// Create location tags (if they don't already exist)
+		List<LocationTag> locationTags = new LinkedList<>();
+		locationTags.add(new LocationTag("DOTS Facility", "Location allows DOTS patient enrollment"));
+		locationTags.add(new LocationTag("MDRTB Facility", "Location allows MDR-TB patient enrollment"));
+		locationTags.add(new LocationTag("Login Location", "Allow user to Login from this location"));
+		locationTags.add(new LocationTag("Admission Location", "Patients may only be admitted to inpatient care"));
+		locationTags.add(new LocationTag("Transfer Location", "Patients can be transferred into this location"));
+		locationTags.add(new LocationTag("Laboratory", "If this is a Laboratory"));
+		locationTags.add(new LocationTag("Culture Lab", "This is a Laboratory providing Culture tests"));
+		locationTags.add(new LocationTag("Prison", "This location represents a Prison or Jail"));
+		for (LocationTag tag : locationTags) {
+			LocationTag exists = Context.getLocationService().getLocationTagByName(tag.getName());
+			if (exists == null) {
+				Context.getLocationService().saveLocationTag(tag);
+			}
+		}
+		
+		// Retire unwanted Encounter types
+		String[] types = {"ADULTINITIAL", "ADULTRETURN", "PEDSINITIAL", "PEDSRETURN", "MDR-TB Follow Up", "MDR-TB Intake", "MDRTB DOT", "CONTACT SCREENING"};
+		for (String type : types) {
+			try {
+				EncounterType encounterType = Context.getEncounterService().getEncounterType(type);
+				if (encounterType != null) {
+					Context.getEncounterService().retireEncounterType(encounterType, "No longer in use");
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		//TODO: Convert Lab results to Common Lab module schema; Enc-Obs to LabTest-Attributes
-		
-		//TODO: Retire Encounters: ADULTINITIAL, ADULTRETURN, PEDSINITIAL, PEDSRETURN, MDR-TB Follow Up, MDR-TB Intake, MDRTB DOT, CONTACT SCREENING
-		
+
+		// After completion, turn the global property back to false
+		gp.setPropertyValue("false");
+		Context.getAdministrationService().saveGlobalProperty(gp);
 	}
 }
