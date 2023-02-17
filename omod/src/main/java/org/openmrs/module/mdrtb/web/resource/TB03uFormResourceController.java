@@ -81,6 +81,7 @@ public class TB03uFormResourceController extends DataDelegatingCrudResource<Simp
 		description.addProperty("mdrStatus", representation);
 		description.addProperty("registrationGroupByDrug", representation);
 		description.addProperty("relapsed", representation);
+		description.addProperty("resistanceType", representation);
 		description.addProperty("treatmentLocation", representation);
 		return description;
 	}
@@ -114,6 +115,7 @@ public class TB03uFormResourceController extends DataDelegatingCrudResource<Simp
 			        .property("mdrStatus", new RefProperty("#/definitions/ConceptGet"))
 			        .property("registrationGroupByDrug", new RefProperty("#/definitions/ConceptGet"))
 			        .property("relapsed", new RefProperty("#/definitions/ConceptGet"))
+			        .property("resistanceType", new RefProperty("#/definitions/ConceptGet"))
 			        .property("treatmentOutcome", new RefProperty("#/definitions/ConceptGet"));
 		}
 		return modelImpl;

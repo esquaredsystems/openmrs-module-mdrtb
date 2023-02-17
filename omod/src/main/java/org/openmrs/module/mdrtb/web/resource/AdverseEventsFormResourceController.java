@@ -37,11 +37,10 @@ import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.PatientR
 import io.swagger.models.Model;
 import io.swagger.models.ModelImpl;
 import io.swagger.models.properties.DateProperty;
-import io.swagger.models.properties.IntegerProperty;
 import io.swagger.models.properties.RefProperty;
 import io.swagger.models.properties.StringProperty;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/adverseeventsform", supportedClass = SimpleAdverseEventsForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/adverseevents", supportedClass = SimpleAdverseEventsForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class AdverseEventsFormResourceController extends DataDelegatingCrudResource<SimpleAdverseEventsForm> {
 	
 	protected final Log log = LogFactory.getLog(getClass());
@@ -53,7 +52,7 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
 		description.addProperty("uuid");
 		description.addProperty("encounter", representation);
-		description.addProperty("patientProgramId");
+		description.addProperty("patientProgramUuid");
 		description.addProperty("actionTakenSummary", representation);
 		description.addProperty("clinicianNotes", representation);
 		description.addProperty("comments", representation);
@@ -115,11 +114,11 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 		if (rep instanceof DefaultRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
 			        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-			        .property("patientProgramId", new StringProperty());
+			        .property("patientProgramUuid", new StringProperty());
 		} else if (rep instanceof FullRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
 			        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-			        .property("patientProgramId", new IntegerProperty())
+			        .property("patientProgramUuid", new StringProperty())
 			        .property("actionTakenSummary", new StringProperty()).property("clinicianNotes", new StringProperty())
 			        .property("comments", new StringProperty()).property("diagnosticSummary", new StringProperty())
 			        .property("facility", new StringProperty()).property("link", new StringProperty())
@@ -176,7 +175,7 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 	@Override
 	public Model getCREATEModel(Representation rep) {
 		return new ModelImpl().property("encounter", new RefProperty("#/definitions/EncounterCreate"))
-		        .property("patientProgramId", new StringProperty()).required("encounter");
+		        .property("patientProgramUuid", new StringProperty()).required("encounter");
 	}
 	
 	@Override
@@ -187,7 +186,7 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("patientProgramId"); // optional
+		description.addProperty("patientProgramUuid"); // optional
 		description.addRequiredProperty("encounter");
 		return description;
 	}
