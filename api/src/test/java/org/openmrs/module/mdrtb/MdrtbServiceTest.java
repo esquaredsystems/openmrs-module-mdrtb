@@ -242,7 +242,8 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testGetGetXpert() {
-		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.XPERT_CONSTRUCT), new Date(), hogwarts);
+		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.XPERT_CONSTRUCT),
+		        new Date(), hogwarts);
 		Context.getObsService().saveObs(obs, null);
 		assertNotNull(service.getXpert(obs.getObsId()));
 	}
@@ -266,7 +267,8 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testGetHAIN() {
-		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.HAIN_CONSTRUCT), new Date(), hogwarts);
+		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.HAIN_CONSTRUCT),
+		        new Date(), hogwarts);
 		Context.getObsService().saveObs(obs, null);
 		assertNotNull(service.getHAIN(obs.getObsId()));
 	}
@@ -289,7 +291,8 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	 */
 	@Test
 	public final void testGetHAIN2() {
-		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.HAIN2_CONSTRUCT), new Date(), hogwarts);
+		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.HAIN2_CONSTRUCT),
+		        new Date(), hogwarts);
 		Context.getObsService().saveObs(obs, null);
 		assertNotNull(service.getHAIN2(obs.getObsId()));
 	}

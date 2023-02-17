@@ -1364,7 +1364,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<Location> getCultureLocations() {
 		LocationTag enrollmentTag = Context.getLocationService().getLocationTagByName(
-			MdrtbConstants.CULTURE_LOCATION_TAG_NAME);
+		    MdrtbConstants.CULTURE_LOCATION_TAG_NAME);
 		List<Location> list = Context.getLocationService().getLocationsByTag(enrollmentTag);
 		return list;
 	}
