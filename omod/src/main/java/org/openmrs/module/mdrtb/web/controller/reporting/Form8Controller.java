@@ -133,7 +133,10 @@ public class Form8Controller {
 			}
 		}
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		System.out.println("list size:" + tb03List.size());
 		
 		SimpleDateFormat sdf = new SimpleDateFormat();
@@ -2491,7 +2494,9 @@ public class Form8Controller {
 		}
 		
 		//Table 6
-		tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year - 1, quarter, month);
+		quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		monthInt = month == null ? null : Integer.parseInt(month);
+		tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year - 1, quarterInt, monthInt);
 		
 		for (TB03Form tf : tb03List) {//for (Integer i : idSet) {
 		

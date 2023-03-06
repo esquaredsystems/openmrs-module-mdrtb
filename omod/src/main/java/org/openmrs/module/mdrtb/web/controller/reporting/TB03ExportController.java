@@ -133,48 +133,8 @@ public class TB03ExportController {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
-		System.out.println("---POST-----");
 		System.out.println("PARAMS:" + oblastId + " " + districtId + " " + facilityId + " " + year + " " + quarter + " "
 		        + month);
-		/*Region o = null;
-		if(oblast!=null && !oblast.equals("") && location == null)
-			o =  Context.getService(MdrtbService.class).getOblast(Integer.parseInt(oblast));
-		
-		List<Location> locList = new ArrayList<Location>();
-		if(o != null && location == null)
-			locList = Context.getService(MdrtbService.class).getLocationsFromOblastName(o);
-		else if (location != null)
-			locList.add(location);
-		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
-		
-		Date startDate = (Date)(dateMap.get("startDate"));
-		Date endDate = (Date)(dateMap.get("endDate"));
-		
-		CohortDefinition baseCohort = null;
-		
-		//OBLAST
-		if (!locList.isEmpty()){
-			List<CohortDefinition> cohortDefinitions = new ArrayList<CohortDefinition>();
-			for(Location loc : locList)
-				cohortDefinitions.add(Cohorts.getTB03ByDatesAndLocation(startDate, endDate, loc));
-				
-			if(!cohortDefinitions.isEmpty()){
-				baseCohort = ReportUtil.getCompositionCohort("OR", cohortDefinitions);
-			}
-		}
-		
-		else
-			baseCohort = Cohorts.getTB03ByDatesAndLocation(startDate, endDate, null);
-		
-		Cohort patients = Context.getService(CohortDefinitionService.class).evaluate(baseCohort, new EvaluationContext());
-		//Cohort patients = TbUtil.getDOTSPatientsTJK(null, null, location, oblast, null, null, null, null,year,quarter,month);
-		
-		
-		Form tb03Form = Context.getFormService().getForm(MdrtbConstants.TB03_FORM_ID);
-		ArrayList<Form> formList = new ArrayList<Form>();
-		formList.add(tb03Form);
-		Set<Integer> idSet = patients.getMemberIds();*/
 		
 		List<Location> locList = null;
 		if (oblastId != null) {
@@ -188,17 +148,43 @@ public class TB03ExportController {
 				locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
 			}
 		}
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		ArrayList<TB03Data> patientSet = getTB03PatientSet(year, quarterInt, monthInt, locList);
+		
+		Integer num = patientSet.size();
+		model.addAttribute("num", num);
+		model.addAttribute("patientSet", patientSet);
+		model.addAttribute("locale", Context.getLocale().toString());
+		
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		    year, quarter, month, "TB-03", "DOTSTB");
+		
+		//System.out.println(reportStatus);
+		model.addAttribute("oblast", oblastId);
+		model.addAttribute("district", districtId);
+		model.addAttribute("facility", facilityId);
+		model.addAttribute("year", year);
+		if (month != null && month.length() != 0)
+			model.addAttribute("month", month.replace("\"", ""));
+		else
+			model.addAttribute("month", "");
+		
+		if (quarter != null && quarter.length() != 0)
+			model.addAttribute("quarter", quarter.replace("\"", "'"));
+		else
+			model.addAttribute("quarter", "");
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
+		model.addAttribute("reportStatus", reportStatus);
+		return "/module/mdrtb/reporting/tb03Results";
+	}
+	
+	public static ArrayList<TB03Data> getTB03PatientSet(Integer year, Integer quarter, Integer month, List<Location> locList) {
 		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		
 		ArrayList<TB03Data> patientSet = new ArrayList<TB03Data>();
 		SimpleDateFormat sdf = Context.getDateFormat();
-		//sdf.applyPattern("dd.MM.yyyy");
-		SimpleDateFormat rdateSDF = Context.getDateTimeFormat();
-		//rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
 		
-		/*ArrayList<Person> patientList = new ArrayList<Person>();
-		ArrayList<Concept> conceptQuestionList = new ArrayList<Concept>();
-		ArrayList<Concept> conceptAnswerList = new ArrayList<Concept>();*/
 		Integer regimenConceptId = null;
 		Integer codId = null;
 		//List<Obs> obsList = null;
@@ -211,7 +197,7 @@ public class TB03ExportController {
 			tb03Data.setReg1New(Boolean.FALSE);
 			tb03Data.setReg1Rtx(Boolean.FALSE);
 			Patient patient = tf.getPatient();
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 				
 			}
@@ -309,18 +295,14 @@ public class TB03ExportController {
 			
 			SmearForm diagnosticSmear = TB03Util.getDiagnosticSmearForm(tf);
 			if (diagnosticSmear != null) {
-				System.out.println("SMEAR ID:" + diagnosticSmear.getId());
 				if (diagnosticSmear.getSmearResult() != null) {
 					tb03Data.setDiagnosticSmearResult(diagnosticSmear.getSmearResult().getName().getName());
-					//System.out.println("RESULT:" + diagnosticSmear.getResult());
 				}
 				if (diagnosticSmear.getEncounterDatetime() != null) {
 					tb03Data.setDiagnosticSmearDate(sdf.format(diagnosticSmear.getEncounterDatetime()));
-					//System.out.println("DATE:" + diagnosticSmear.getResultDate());
 				}
 				
 				tb03Data.setDiagnosticSmearTestNumber(diagnosticSmear.getSpecimenId());
-				//System.out.println("SPEC ID:" + diagnosticSmear.getRealSpecimenId());
 				
 				Location loc = diagnosticSmear.getLocation();
 				if (loc != null) {
@@ -337,48 +319,7 @@ public class TB03ExportController {
 				        + tb03Data.getDiagnosticSmearTestNumber());
 			}
 			
-			else {
-				System.out.println("NULL DIAG SMEAR");
-			}
-			
-			/* Smear diagnosticSmear = TB03Util.getDiagnosticSmear(tf);
-			if(diagnosticSmear!=null) {
-				System.out.println("SMEAR ID:" + diagnosticSmear.getId());
-					if(diagnosticSmear.getResult()!=null) {
-						tb03Data.setDiagnosticSmearResult(diagnosticSmear.getResult().getName().getName());
-						System.out.println("RESULT:" + diagnosticSmear.getResult());
-					}
-					if(diagnosticSmear.getResultDate()!=null) {
-						tb03Data.setDiagnosticSmearDate(sdf.format(diagnosticSmear.getResultDate()));
-						System.out.println("DATE:" + diagnosticSmear.getResultDate());
-					}
-					
-					tb03Data.setDiagnosticSmearTestNumber(diagnosticSmear.getRealSpecimenId());
-					System.out.println("SPEC ID:" + diagnosticSmear.getRealSpecimenId());
-					
-					System.out.println(tb03Data.getDiagnosticSmearResult() + "," + tb03Data.getDiagnosticSmearDate() + "," + tb03Data.getDiagnosticSmearTestNumber());
-			}
-			
-			else {
-				System.out.println("NULL DIAG SMEAR");
-			}*/
-			
 			//DIAGNOSTIC XPERT
-			/*Xpert firstXpert = TB03Util.getFirstXpert(tf);
-			if(firstXpert!=null) {
-				if(firstXpert.getResult()!=null)
-					tb03Data.setXpertMTBResult(firstXpert.getResult().getName().getName());
-				if(firstXpert.getRifResistance()!=null)
-					tb03Data.setXpertRIFResult(firstXpert.getRifResistance().getName().getName());
-				if(firstXpert.getResultDate()!=null)
-					tb03Data.setXpertTestDate(sdf.format(firstXpert.getResultDate()));
-				
-				tb03Data.setXpertTestNumber(firstXpert.getRealSpecimenId());
-			}
-			
-			else {
-				System.out.println("NULL DIAG XPERT");
-			}*/
 			
 			XpertForm firstXpert = TB03Util.getFirstXpertForm(tf);
 			if (firstXpert != null) {
@@ -403,29 +344,7 @@ public class TB03ExportController {
 				}
 			}
 			
-			else {
-				System.out.println("NULL DIAG XPERT");
-			}
-			
 			//DIAGNOSTIC HAIN
-			/* HAIN firstHAIN = TB03Util.getFirstHAIN(tf);
-			if(firstHAIN!=null) {
-				if(firstHAIN.getResult()!=null)
-					tb03Data.setHainMTBResult(firstHAIN.getResult().getName().getName());
-				if(firstHAIN.getRifResistance()!=null)
-					tb03Data.setHainRIFResult(firstHAIN.getRifResistance().getName().getName());
-				if(firstHAIN.getInhResistance()!=null)
-					tb03Data.setHainINHResult(firstHAIN.getInhResistance().getName().getName());
-				if(firstHAIN.getResultDate()!=null)
-					tb03Data.setHainTestDate(sdf.format(firstHAIN.getResultDate()));
-				
-				tb03Data.setHainTestNumber(firstHAIN.getRealSpecimenId());
-			}
-			
-			else {
-				System.out.println("NULL DIAG HAIN");
-			}*/
-			
 			HAINForm firstHAIN = TB03Util.getFirstHAINForm(tf);
 			if (firstHAIN != null) {
 				if (firstHAIN.getMtbResult() != null)
@@ -449,10 +368,6 @@ public class TB03ExportController {
 						tb03Data.setHainLab(loc.getCountyDistrict());
 					}
 				}
-			}
-			
-			else {
-				System.out.println("NULL DIAG HAIN");
 			}
 			
 			//HAIN2
@@ -481,24 +396,7 @@ public class TB03ExportController {
 				}
 			}
 			
-			else {
-				System.out.println("NULL DIAG HAIN2");
-			}
-			
 			//DIAGNOSTIC CULTURE
-			/* Culture diagnosticCulture  = TB03Util.getDiagnosticCulture(tf);
-			if(diagnosticCulture!=null) {
-				if(diagnosticCulture.getResult()!=null)
-					tb03Data.setCultureResult(diagnosticCulture.getResult().getName().getName());
-				if(diagnosticCulture.getResultDate()!=null)
-					tb03Data.setCultureTestDate(sdf.format(diagnosticCulture.getResultDate()));
-				tb03Data.setCultureTestNumber(diagnosticCulture.getRealSpecimenId());
-			}
-			
-			else {
-				System.out.println("NULL DIAG CULTURE");
-			}*/
-			
 			CultureForm diagnosticCulture = TB03Util.getDiagnosticCultureForm(tf);
 			if (diagnosticCulture != null) {
 				if (diagnosticCulture.getCultureResult() != null)
@@ -519,10 +417,6 @@ public class TB03ExportController {
 				}
 			}
 			
-			else {
-				System.out.println("NULL DIAG CULTURE");
-			}
-			
 			//DST
 			Dst firstDst = TB03Util.getDiagnosticDST(tf);
 			
@@ -539,8 +433,6 @@ public class TB03ExportController {
 						drugName = res.getDrug().getShortestName(Context.getLocale(), false).getName();
 						result = res.getResult().getName().getName();
 						tb03Data.getDstResults().put(drugName, result);
-						//System.out.println(drugName + "-" + result + " | " + res.getResult());
-						
 					}
 				}
 				
@@ -777,38 +669,7 @@ public class TB03ExportController {
 		}
 		
 		Collections.sort(patientSet);
-		
-		int i = 1;
-		for (TB03Data tt : patientSet) {
-			System.out.println(i + " : " + tt.getPatient().getId());
-			i++;
-		}
-		
-		Integer num = patientSet.size();
-		model.addAttribute("num", num);
-		model.addAttribute("patientSet", patientSet);
-		model.addAttribute("locale", Context.getLocale().toString());
-		
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-03", "DOTSTB");
-		
-		//System.out.println(reportStatus);
-		model.addAttribute("oblast", oblastId);
-		model.addAttribute("district", districtId);
-		model.addAttribute("facility", facilityId);
-		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
-			model.addAttribute("month", month.replace("\"", ""));
-		else
-			model.addAttribute("month", "");
-		
-		if (quarter != null && quarter.length() != 0)
-			model.addAttribute("quarter", quarter.replace("\"", "'"));
-		else
-			model.addAttribute("quarter", "");
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
-		model.addAttribute("reportStatus", reportStatus);
-		return "/module/mdrtb/reporting/tb03Results";
+		return patientSet;
 	}
 	
 }

@@ -168,7 +168,10 @@ public class PatientListContoller {
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
 		
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
+		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		Collections.sort(tb03s);
 		
 		model.addAttribute("listName", getMessage("mdrtb.allCasesEnrolled"));
@@ -593,7 +596,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.PATIENT_GROUP);
 		
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
+		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Collections.sort(tb03s);
 		
@@ -921,7 +927,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB);
 		
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
+		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		Collections.sort(tb03s);
 		/*Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
@@ -1074,7 +1083,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.RESISTANCE_TYPE);
 		
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
+		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Collections.sort(tb03s);
 		/*
@@ -1553,7 +1565,10 @@ public class PatientListContoller {
 		Concept siteConcept = ms.getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB);
 		Concept pulConcept = ms.getConcept(MdrtbConcepts.PULMONARY_TB);
 		
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
+		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		Collections.sort(tb03s);
 		
 		/*Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
@@ -2021,7 +2036,10 @@ public class PatientListContoller {
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.RESISTANCE_TYPE);
 		Concept treatmentStartDate = ms.getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE);
 		
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		//NEW CASES 
 		Concept mdr = ms.getConcept(MdrtbConcepts.MDR_TB);
@@ -2163,7 +2181,10 @@ public class PatientListContoller {
 		Concept curedConcept = ms.getConcept(MdrtbConcepts.CURED);
 		Concept txCompleted = ms.getConcept(MdrtbConcepts.TREATMENT_COMPLETE);
 		
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		//NEW CASES 
 		
@@ -2260,7 +2281,11 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.RESISTANCE_TYPE);
 		
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
+		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
 		dateMap.get("startDate");
@@ -2401,7 +2426,10 @@ public class PatientListContoller {
 		
 		ms.getConcept(MdrtbConcepts.AGE_AT_FORM89_REGISTRATION);
 		
-		List<TB03Form> forms = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> forms = Context.getService(MdrtbService.class)
+		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Collections.sort(forms);
 		
@@ -2511,8 +2539,11 @@ public class PatientListContoller {
 		
 		ms.getConcept(MdrtbConcepts.AGE_AT_FORM89_REGISTRATION);
 		
-		List<TB03Form> forms = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
-		Collections.sort(forms);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
+		Collections.sort(tb03List);
 		
 		//NEW CASES 
 		
@@ -2531,7 +2562,7 @@ public class PatientListContoller {
 		//Obs temp = null;
 		Person p = null;
 		int i = 0;
-		for (TB03Form tf : forms) {
+		for (TB03Form tf : tb03List) {
 			
 			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
@@ -2617,7 +2648,10 @@ public class PatientListContoller {
 		
 		ArrayList<Form89> forms = new ArrayList<Form89>();//Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		Collections.sort(tb03List);
 		Concept regGroup = null;
 		Form89 f89 = null;
@@ -4180,7 +4214,10 @@ public class PatientListContoller {
 		
 		System.out.println("GETTING FORM89 LIST");
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		Concept status = null;
 		
@@ -4920,7 +4957,10 @@ public class PatientListContoller {
 		
 		System.out.println("GETTING FORM89 LIST");
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		Concept category = null;
 		
@@ -5382,7 +5422,10 @@ public class PatientListContoller {
 		
 		System.out.println("GETTING FORM89 LIST");
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		Collections.sort(tb03List);
 		
 		Concept type = null;
@@ -5598,7 +5641,10 @@ public class PatientListContoller {
 		
 		System.out.println("GETTING FORM89 LIST");
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		Collections.sort(tb03List);
 		
 		Concept circSite = null;
@@ -5911,7 +5957,10 @@ public class PatientListContoller {
 		
 		System.out.println("GETTING FORM89 LIST");
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		Collections.sort(tb03List);
 		
 		Concept circSite = null;
@@ -6269,7 +6318,10 @@ public class PatientListContoller {
 		
 		System.out.println("GETTING FORM89 LIST");
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		Concept method = null;
 		
@@ -6807,7 +6859,10 @@ public class PatientListContoller {
 		
 		System.out.println("GETTING FORM89 LIST");
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		Concept pulSite = null;
 		
@@ -7393,7 +7448,10 @@ public class PatientListContoller {
 		
 		System.out.println("GETTING FORM89 LIST");
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		Concept pulSite = null;
 		
@@ -7965,7 +8023,11 @@ public class PatientListContoller {
 			locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
 		}
 		
-		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
+		
 		Collections.sort(tb03us);
 		
 		model.addAttribute("listName", getMessage("mdrtb.drTbPatients"));
@@ -8374,7 +8436,10 @@ public class PatientListContoller {
 			locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
 		}
 		
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
+		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		Collections.sort(tb03s);
 		
 		model.addAttribute("listName", getMessage("mdrtb.drTbPatientsNoTreatment"));
@@ -8786,7 +8851,10 @@ public class PatientListContoller {
 			locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
 		}
 		
-		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
 		Collections.sort(tb03us);
 		
 		model.addAttribute("listName", getMessage("mdrtb.drTbPatientsSuccessfulTreatment"));

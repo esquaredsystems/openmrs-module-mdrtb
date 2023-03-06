@@ -132,8 +132,11 @@ public class TB08uController {
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
-		        .getTB03uFormsFilled(locList, year, quarter, month);
+		
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		TB08uData table1 = new TB08uData();
 		Concept q = null;

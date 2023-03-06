@@ -9,6 +9,7 @@
  */
 package org.openmrs.module.mdrtb.api;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -903,6 +904,10 @@ public interface MdrtbService extends OpenmrsService {
 	@Transactional(readOnly = true)
 	public List<Location> getCultureLocations();
 	
+	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
+	@Transactional(readOnly = true)
+	public List<Location> getLocationsInHierarchy(Location parent);
+	
 	/**
 	 * Should return the list of child locations based on the parameters. If only the region is
 	 * supplied, then the list of all its children as well as grand children should be returned.
@@ -1069,7 +1074,7 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<TB03uForm> getTB03uFormsFilled(List<Location> locations, Integer year, String quarter, String month);
+	public List<TB03uForm> getTB03uFormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -1077,7 +1082,7 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<TB03Form> getTB03FormsFilled(List<Location> locations, Integer year, String quarter, String month);
+	public List<TB03Form> getTB03FormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)

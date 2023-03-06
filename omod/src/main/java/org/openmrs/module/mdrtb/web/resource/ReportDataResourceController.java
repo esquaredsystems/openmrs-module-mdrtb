@@ -11,9 +11,6 @@ import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.representation.DefaultRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
-import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.api.Searchable;
@@ -23,7 +20,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1 + "mdrtb/reportdata", supportedClass = ReportData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/reportdata", supportedClass = ReportData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class ReportDataResourceController extends DelegatingCrudResource<ReportData> implements Searchable {
 	
 	/**
@@ -79,7 +76,7 @@ public class ReportDataResourceController extends DelegatingCrudResource<ReportD
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		//TODO: Implement search for item
-		String query = context.getParameter("q");
+		// String query = context.getParameter("q");
 		List<T> results = null;
 		return new NeedsPaging<T>(results, context);
 	}

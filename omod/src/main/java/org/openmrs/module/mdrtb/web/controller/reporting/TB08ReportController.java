@@ -120,7 +120,10 @@ public class TB08ReportController {
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		System.out.println("list size:" + tb03List.size());
 		
 		SimpleDateFormat rdateSDF = Context.getDateTimeFormat();
@@ -2877,7 +2880,6 @@ public class TB08ReportController {
 		model.addAttribute("reportDate", rdateSDF.format(new Date()));
 		model.addAttribute("reportStatus", reportStatus);
 		return "/module/mdrtb/reporting/tb08Results";
-		//_" + Context.getLocale().toString().substring(0, 2);
 	}
 	
 }

@@ -162,8 +162,10 @@ public class MDRDQController {
 			}
 		}
 		
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
-		        .getTB03uFormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		for (TB03uForm tf : tb03uList) {
 			

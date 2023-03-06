@@ -1369,6 +1369,32 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return list;
 	}
 	
+	/**
+	 * This should ideally be a recursive function. But for Tajikistan, we're limiting only to 3
+	 * levels
+	 */
+	public List<Location> getLocationsInHierarchy(Location parent) {
+		List<Location> locList = new ArrayList<>();
+		if (parent.getChildLocations().isEmpty()) {
+			locList.add(parent);
+		} 
+		// If there are child locations, fetch their list
+		else {
+			Set<Location> children = parent.getChildLocations();
+			for (Location child : children) {
+				locList.add(child);
+				// If there are grand children, fetch them too
+				if (!child.getChildLocations().isEmpty()) {
+					Set<Location> grandChildren = child.getChildLocations();
+					for (Location grandChild : grandChildren) {
+						locList.add(grandChild);
+					}
+				}
+			}
+		}
+		return locList;
+	}
+	
 	/*****************/
 	/** ANSWER SETS **/
 	/*****************/
@@ -1747,7 +1773,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			return null;
 	}
 	
-	public List<TB03uForm> getTB03uFormsFilled(List<Location> locations, Integer year, String quarter, String month) {
+	public List<TB03uForm> getTB03uFormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month) {
 		ArrayList<TB03uForm> forms = new ArrayList<TB03uForm>();
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		Date startDate = (Date) (dateMap.get("startDate"));
@@ -1795,7 +1821,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<TB03Form> getTB03FormsFilled(List<Location> locations, Integer year, String quarter, String month) {
+	public List<TB03Form> getTB03FormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month) {
 		ArrayList<TB03Form> forms = new ArrayList<TB03Form>();
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		Date startDate = (Date) (dateMap.get("startDate"));

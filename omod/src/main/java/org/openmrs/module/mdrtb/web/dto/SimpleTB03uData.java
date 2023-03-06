@@ -1,14 +1,15 @@
-package org.openmrs.module.mdrtb.reporting.custom;
+package org.openmrs.module.mdrtb.web.dto;
 
-import java.util.HashMap;
+import java.util.Map;
 
-import org.openmrs.Patient;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.MdrtbConstants;
+import org.openmrs.BaseOpenmrsData;
+import org.openmrs.module.mdrtb.reporting.custom.TB03uData;
 
-public class TB03uData implements Comparable<TB03uData> {
+public class SimpleTB03uData extends BaseOpenmrsData {
 	
-	private Patient patient;
+	private static final long serialVersionUID = 1L;
+	
+	private String patientUuid;
 	
 	private String identifierDOTS;
 	
@@ -268,235 +269,157 @@ public class TB03uData implements Comparable<TB03uData> {
 	
 	private String notes;
 	
-	private HashMap<String, String> dstResults;
+	private Map<String, String> dstResults;
 	
-	public TB03uData() {
-		dstResults = new HashMap<String, String>();
+	public SimpleTB03uData(TB03uData tb03uData) {
+		patientUuid = tb03uData.getPatient().getUuid();
+		identifierDOTS = tb03uData.getIdentifierDOTS();
+		dotsYear = tb03uData.getDotsYear();
+		identifierMDR = null;
+		tb03uRegistrationDate = null;
+		ageAtTB03uRegistration = null;
+		dateOfBirth = null;
+		reg2Number = null;
+		siteOfDisease = null;
+		regGroup = null;
+		mdrtbStatus = null;
+		mdrConfDate = null;
+		treatmentRegimen = null;
+		tb03uTreatmentStartDate = null;
+		treatmentLocation = null;
+		dstCollectionDate = null;
+		dstResultDate = null;
+		drugResistance = null;
+		diagnosticMethod = null;
+		hivTestResult = null;
+		hivTestDate = null;
+		artStartDate = null;
+		cpStartDate = null;
+		month0SmearResult = null;
+		month1SmearResult = null;
+		month2SmearResult = null;
+		month3SmearResult = null;
+		month4SmearResult = null;
+		month5SmearResult = null;
+		month6SmearResult = null;
+		month7SmearResult = null;
+		month8SmearResult = null;
+		month9SmearResult = null;
+		month10SmearResult = null;
+		month11SmearResult = null;
+		month12SmearResult = null;
+		month15SmearResult = null;
+		month18SmearResult = null;
+		month21SmearResult = null;
+		month24SmearResult = null;
+		month27SmearResult = null;
+		month30SmearResult = null;
+		month33SmearResult = null;
+		month36SmearResult = null;
+		month0SmearResultDate = null;
+		month1SmearResultDate = null;
+		month2SmearResultDate = null;
+		month3SmearResultDate = null;
+		month4SmearResultDate = null;
+		month5SmearResultDate = null;
+		month6SmearResultDate = null;
+		month7SmearResultDate = null;
+		month8SmearResultDate = null;
+		month9SmearResultDate = null;
+		month10SmearResultDate = null;
+		month11SmearResultDate = null;
+		month12SmearResultDate = null;
+		month15SmearResultDate = null;
+		month18SmearResultDate = null;
+		month21SmearResultDate = null;
+		month24SmearResultDate = null;
+		month27SmearResultDate = null;
+		month30SmearResultDate = null;
+		month33SmearResultDate = null;
+		month36SmearResultDate = null;
+		month0CultureResult = null;
+		month1CultureResult = null;
+		month2CultureResult = null;
+		month3CultureResult = null;
+		month4CultureResult = null;
+		month5CultureResult = null;
+		month6CultureResult = null;
+		month7CultureResult = null;
+		month8CultureResult = null;
+		month9CultureResult = null;
+		month10CultureResult = null;
+		month11CultureResult = null;
+		month12CultureResult = null;
+		month15CultureResult = null;
+		month18CultureResult = null;
+		month21CultureResult = null;
+		month24CultureResult = null;
+		month27CultureResult = null;
+		month30CultureResult = null;
+		month33CultureResult = null;
+		month36CultureResult = null;
+		month0CultureResultDate = null;
+		month1CultureResultDate = null;
+		month2CultureResultDate = null;
+		month3CultureResultDate = null;
+		month4CultureResultDate = null;
+		month5CultureResultDate = null;
+		month6CultureResultDate = null;
+		month7CultureResultDate = null;
+		month8CultureResultDate = null;
+		month9CultureResultDate = null;
+		month10CultureResultDate = null;
+		month11CultureResultDate = null;
+		month12CultureResultDate = null;
+		month15CultureResultDate = null;
+		month18CultureResultDate = null;
+		month21CultureResultDate = null;
+		month24CultureResultDate = null;
+		month27CultureResultDate = null;
+		month30CultureResultDate = null;
+		month33CultureResultDate = null;
+		month36CultureResultDate = null;
+		tb03uTreatmentOutcome = null;
+		tb03uTreatmentOutcomeDate = null;
+		diedOfTB = null;
+		xpertMTBResult = null;
+		xpertRIFResult = null;
+		xpertTestDate = null;
+		xpertTestNumber = null;
+		xpertLab = null;
+		hainMTBResult = null;
+		hainINHResult = null;
+		hainRIFResult = null;
+		hainTestDate = null;
+		hainTestNumber = null;
+		hainLab = null;
+		hain2MTBResult = null;
+		hain2InjResult = null;
+		hain2FqResult = null;
+		hain2TestDate = null;
+		hain2TestNumber = null;
+		hain2Lab = null;
+		relapsed = null;
+		relapseMonth = null;
+		notes = null;
+		dstResults = null;
 	}
 	
-	public void setRegGroup(Integer regGroup) {
-		
-		if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_NEW_CONCEPT_ID)))
-			this.regGroup = 0;
-		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID)))
-			this.regGroup = 1;
-		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID)))
-			this.regGroup = 2;
-		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
-			this.regGroup = 3;
-		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
-			this.regGroup = 4;
-		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))
-			this.regGroup = 5;
-		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_AFTER_FAILURE2_CONCEPT_ID)))
-			this.regGroup = 6;
-		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_OTHER_CONCEPT_ID)))
-			this.regGroup = 7;
-		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_TRANSFER_IN_CONCEPT_ID)))
-			this.regGroup = 8;
+	@Override
+	public Integer getId() {
+		return -1;
 	}
 	
-	public void setTb03uTreatmentOutcome(Integer tb03uTreatmentOutcome) {
-		if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_OUTCOME_CURED_CONCEPT_ID)))
-			this.tb03uTreatmentOutcome = 0;
-		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_OUTCOME_TX_COMPLETED_CONCEPT_ID)))
-			this.tb03uTreatmentOutcome = 1;
-		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_OUTCOME_TX_FAILURE_CONCEPT_ID)))
-			this.tb03uTreatmentOutcome = 4;
-		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
-			if (diedOfTB)
-				this.tb03uTreatmentOutcome = 2;
-			else
-				this.tb03uTreatmentOutcome = 3;
-		}
-		
-		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_OUTCOME_LTFU_CONCEPT_ID)))
-			this.tb03uTreatmentOutcome = 5;
-		/*else if(tb03uTreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.OUTCOME_CANCELED_CONCEPT_ID_GP)))
-			this.tb03uTreatmentOutcome = 6;
-		else if(tb03uTreatmentOutcome == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.OUTCOME_SLD2_CONCEPT_ID_GP)))
-			this.tb03uTreatmentOutcome = 7;*/
-		else if (tb03uTreatmentOutcome.intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_OUTCOME_TRANSFER_OUT_CONCEPT_ID)))
-			this.tb03uTreatmentOutcome = 8;
+	@Override
+	public void setId(Integer id) {
 	}
 	
-	public HashMap<String, String> getDstResults() {
-		return dstResults;
+	public String getPatientUuid() {
+		return patientUuid;
 	}
 	
-	public String getDstCollectionDate() {
-		return dstCollectionDate;
-	}
-	
-	public void setDstCollectionDate(String dstCollectionDate) {
-		this.dstCollectionDate = dstCollectionDate;
-	}
-	
-	public String getDstResultDate() {
-		return dstResultDate;
-	}
-	
-	public void setDstResultDate(String dstResultDate) {
-		this.dstResultDate = dstResultDate;
-	}
-	
-	public String getDstR() {
-		return dstResults.get("R");
-	}
-	
-	public void setDstR(String dstR) {
-	}
-	
-	public String getDstH() {
-		return dstResults.get("H");
-	}
-	
-	public void setDstH(String dstH) {
-	}
-	
-	public String getDstZ() {
-		return dstResults.get("Z");
-	}
-	
-	public void setDstZ(String dstZ) {
-	}
-	
-	public String getDstE() {
-		return dstResults.get("E");
-	}
-	
-	public void setDstE(String dstE) {
-	}
-	
-	public String getDstS() {
-		return dstResults.get("S");
-	}
-	
-	public void setDstS(String dstS) {
-	}
-	
-	public String getDstKm() {
-		return dstResults.get("KM");
-	}
-	
-	public void setDstKm(String dstKm) {
-	}
-	
-	public String getDstAm() {
-		return dstResults.get("AM");
-	}
-	
-	public void setDstAm(String dstAm) {
-	}
-	
-	public String getDstCm() {
-		return dstResults.get("CM");
-	}
-	
-	public void setDstCm(String dstCm) {
-	}
-	
-	public String getDstOfx() {
-		String ofx = null;
-		String lfx = null;
-		
-		String ret = null;
-		ofx = dstResults.get("OFX");
-		lfx = dstResults.get("LFX");
-		
-		if (ofx == null)
-			return lfx;
-		
-		if (lfx == null)
-			return ofx;
-		
-		return ret;
-	}
-	
-	public void setDstOfx(String dstOfx) {
-	}
-	
-	public String getDstMfx() {
-		return dstResults.get("Moxi");
-	}
-	
-	public void setDstMfx(String dstMfx) {
-	}
-	
-	public String getDstPto() {
-		return dstResults.get("Pto");
-	}
-	
-	public void setDstPto(String dstPto) {
-	}
-	
-	public String getDstCs() {
-		return dstResults.get("CS");
-	}
-	
-	public void setDstCs(String dstCs) {
-	}
-	
-	public String getDstPAS() {
-		return dstResults.get("PAS");
-	}
-	
-	public void setDstPAS(String dstPAS) {
-	}
-	
-	public String getDstLzd() {
-		return dstResults.get("LZD");
-	}
-	
-	public void setDstLzd(String lzd) {
-	}
-	
-	public String getDstCfz() {
-		return dstResults.get("CFZ");
-	}
-	
-	public void setDstCfz(String cfz) {
-	}
-	
-	public String getDstBdq() {
-		return dstResults.get("BDQ");
-	}
-	
-	public void setDstBdq(String bdq) {
-	}
-	
-	public String getDstDlm() {
-		return dstResults.get("DLM");
-	}
-	
-	public void setDstDlm(String dlm) {
-	}
-	
-	public void setDstResults(HashMap<String, String> dstResults) {
-		this.dstResults = dstResults;
-	}
-	
-	public Patient getPatient() {
-		return patient;
-	}
-	
-	public void setPatient(Patient patient) {
-		this.patient = patient;
+	public void setPatientUuid(String patientUuid) {
+		this.patientUuid = patientUuid;
 	}
 	
 	public String getIdentifierDOTS() {
@@ -505,6 +428,14 @@ public class TB03uData implements Comparable<TB03uData> {
 	
 	public void setIdentifierDOTS(String identifierDOTS) {
 		this.identifierDOTS = identifierDOTS;
+	}
+	
+	public Integer getDotsYear() {
+		return dotsYear;
+	}
+	
+	public void setDotsYear(Integer dotsYear) {
+		this.dotsYear = dotsYear;
 	}
 	
 	public String getIdentifierMDR() {
@@ -555,6 +486,14 @@ public class TB03uData implements Comparable<TB03uData> {
 		this.siteOfDisease = siteOfDisease;
 	}
 	
+	public Integer getRegGroup() {
+		return regGroup;
+	}
+	
+	public void setRegGroup(Integer regGroup) {
+		this.regGroup = regGroup;
+	}
+	
 	public String getMdrtbStatus() {
 		return mdrtbStatus;
 	}
@@ -593,6 +532,22 @@ public class TB03uData implements Comparable<TB03uData> {
 	
 	public void setTreatmentLocation(String treatmentLocation) {
 		this.treatmentLocation = treatmentLocation;
+	}
+	
+	public String getDstCollectionDate() {
+		return dstCollectionDate;
+	}
+	
+	public void setDstCollectionDate(String dstCollectionDate) {
+		this.dstCollectionDate = dstCollectionDate;
+	}
+	
+	public String getDstResultDate() {
+		return dstResultDate;
+	}
+	
+	public void setDstResultDate(String dstResultDate) {
+		this.dstResultDate = dstResultDate;
 	}
 	
 	public String getDrugResistance() {
@@ -1315,6 +1270,14 @@ public class TB03uData implements Comparable<TB03uData> {
 		this.month36CultureResultDate = month36CultureResultDate;
 	}
 	
+	public Integer getTb03uTreatmentOutcome() {
+		return tb03uTreatmentOutcome;
+	}
+	
+	public void setTb03uTreatmentOutcome(Integer tb03uTreatmentOutcome) {
+		this.tb03uTreatmentOutcome = tb03uTreatmentOutcome;
+	}
+	
 	public String getTb03uTreatmentOutcomeDate() {
 		return tb03uTreatmentOutcomeDate;
 	}
@@ -1331,68 +1294,6 @@ public class TB03uData implements Comparable<TB03uData> {
 		this.diedOfTB = diedOfTB;
 	}
 	
-	public String getRelapsed() {
-		return relapsed;
-	}
-	
-	public void setRelapsed(String relapsed) {
-		this.relapsed = relapsed;
-	}
-	
-	public Integer getRelapseMonth() {
-		return relapseMonth;
-	}
-	
-	public void setRelapseMonth(Integer relapseMonth) {
-		this.relapseMonth = relapseMonth;
-	}
-	
-	public String getNotes() {
-		return notes;
-	}
-	
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
-	
-	public Integer getRegGroup() {
-		return regGroup;
-	}
-	
-	public Integer getTb03uTreatmentOutcome() {
-		return tb03uTreatmentOutcome;
-	}
-	
-	public Integer getDotsYear() {
-		return dotsYear;
-	}
-	
-	public void setDotsYear(Integer dotsYear) {
-		this.dotsYear = dotsYear;
-	}
-	
-	public int compareTo(TB03uData o) {
-		// TODO Auto-generated method stub
-		
-		if (o.getIdentifierMDR() == null || getIdentifierMDR() == null)
-			return 0;
-		
-		return identifierMDR.compareTo(o.getIdentifierMDR());
-		
-	}
-	
-	public String getGender() {
-		if (patient.getGender().equals("M"))
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.male");
-		else if (patient.getGender().equals("F"))
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.female");
-		
-		return "";
-	}
-	
-	public void setGender(String gender) {
-	}
-	
 	public String getXpertMTBResult() {
 		return xpertMTBResult;
 	}
@@ -1402,17 +1303,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getXpertRIFResult() {
-		if (xpertRIFResult != null) {
-			if (xpertRIFResult.equals("+"))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifPosShort");
-			else if (xpertRIFResult.equals("-"))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifNegShort");
-			else if (xpertRIFResult.equals("U"))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifIndShort");
-			else
-				return "/" + xpertRIFResult;
-		}
-		
 		return xpertRIFResult;
 	}
 	
@@ -1453,17 +1343,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getHainINHResult() {
-		if (hainINHResult != null) {
-			if (hainINHResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hainINHResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hainINHResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hainINHResult;
-		}
-		
 		return hainINHResult;
 	}
 	
@@ -1472,17 +1351,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getHainRIFResult() {
-		if (hainRIFResult != null) {
-			if (hainRIFResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hainRIFResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hainRIFResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hainRIFResult;
-		}
-		
 		return hainRIFResult;
 	}
 	
@@ -1523,17 +1391,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getHain2InjResult() {
-		if (hain2InjResult != null) {
-			if (hain2InjResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hain2InjResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hain2InjResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hain2InjResult;
-		}
-		
 		return hain2InjResult;
 	}
 	
@@ -1542,17 +1399,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getHain2FqResult() {
-		if (hain2FqResult != null) {
-			if (hain2FqResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hain2FqResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hain2FqResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hain2FqResult;
-		}
-		
 		return hain2FqResult;
 	}
 	
@@ -1582,6 +1428,38 @@ public class TB03uData implements Comparable<TB03uData> {
 	
 	public void setHain2Lab(String hain2Lab) {
 		this.hain2Lab = hain2Lab;
+	}
+	
+	public String getRelapsed() {
+		return relapsed;
+	}
+	
+	public void setRelapsed(String relapsed) {
+		this.relapsed = relapsed;
+	}
+	
+	public Integer getRelapseMonth() {
+		return relapseMonth;
+	}
+	
+	public void setRelapseMonth(Integer relapseMonth) {
+		this.relapseMonth = relapseMonth;
+	}
+	
+	public String getNotes() {
+		return notes;
+	}
+	
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+	
+	public Map<String, String> getDstResults() {
+		return dstResults;
+	}
+	
+	public void setDstResults(Map<String, String> dstResults) {
+		this.dstResults = dstResults;
 	}
 	
 }

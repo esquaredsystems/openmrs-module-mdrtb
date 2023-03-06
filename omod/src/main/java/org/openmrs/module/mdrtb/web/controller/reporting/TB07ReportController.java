@@ -146,7 +146,10 @@ public class TB07ReportController {
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
 		System.out.println("list size:" + tb03List.size());
 		//CohortDefinition baseCohort = null;
 		

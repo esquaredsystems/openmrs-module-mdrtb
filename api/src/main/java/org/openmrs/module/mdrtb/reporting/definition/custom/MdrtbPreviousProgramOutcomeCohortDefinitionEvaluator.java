@@ -28,7 +28,7 @@ import org.openmrs.module.reporting.evaluation.EvaluationContext;
 public class MdrtbPreviousProgramOutcomeCohortDefinitionEvaluator implements CohortDefinitionEvaluator {
 	
 	protected final Log log = LogFactory.getLog(getClass());
-
+	
 	/**
 	 * Default Constructor
 	 */

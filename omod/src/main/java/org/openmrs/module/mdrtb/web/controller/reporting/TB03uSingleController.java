@@ -156,8 +156,10 @@ public class TB03uSingleController {
 			}
 		}
 		
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
-		        .getTB03uFormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		ArrayList<TB03uData> patientSet = new ArrayList<TB03uData>();
 		SimpleDateFormat sdf = new SimpleDateFormat();

@@ -148,8 +148,12 @@ public class TB07uController {
 		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
-		        .getTB03uFormsFilled(locList, year, quarter, month);
+		
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
+		
 		List<RegimenForm> regList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year, quarter,
 		    month);
 		if (regList != null) {

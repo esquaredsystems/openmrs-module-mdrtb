@@ -135,8 +135,12 @@ public class MissingTb03uController {
 		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
-		        .getTB03uFormsFilled(locList, year, quarter, month);
+		
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
+		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
 		Date startDate = (Date) (dateMap.get("startDate"));
