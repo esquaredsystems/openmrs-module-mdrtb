@@ -5,10 +5,10 @@ import org.openmrs.module.mdrtb.reporting.custom.Form89Data;
 
 public class SimpleForm89Data extends BaseOpenmrsData {
 
-    private String patientUuid;
+    	private String patientUuid;
 	private Form89 form89;
 	private String identifier;
-    private String tb03RegistrationDate;
+    	private String tb03RegistrationDate;
 	private Integer ageAtTB03Registration;
 	private String dateOfBirth;
 	private String siteOfDisease;
@@ -81,7 +81,7 @@ public class SimpleForm89Data extends BaseOpenmrsData {
         return patientUuid;
     }
 
-    public void setPatient(String patientUuid) {
+    public void setPatientUuid(String patientUuid) {
         this.patientUuid = patientUuid;
     }
 
