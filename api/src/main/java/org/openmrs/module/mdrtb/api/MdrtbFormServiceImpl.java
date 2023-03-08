@@ -29,6 +29,7 @@ import org.openmrs.module.mdrtb.form.custom.Form89;
 import org.openmrs.module.mdrtb.form.custom.RegimenForm;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
+import org.openmrs.module.mdrtb.form.custom.TransferOutForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
 
@@ -306,5 +307,10 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 	        DrugResistanceDuringTreatmentForm drugResistanceForm) {
 		Context.getEncounterService().saveEncounter(drugResistanceForm.getEncounter());
 		return drugResistanceForm;
+	}
+	
+	public TransferOutForm processTransferOutForm(TransferOutForm transferOutForm) {
+		Context.getEncounterService().saveEncounter(transferOutForm.getEncounter());
+		return transferOutForm;
 	}
 }

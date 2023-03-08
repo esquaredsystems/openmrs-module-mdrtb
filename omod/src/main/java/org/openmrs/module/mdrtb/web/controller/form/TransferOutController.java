@@ -18,6 +18,7 @@ import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.form.custom.TransferOutForm;
@@ -182,20 +183,17 @@ public class TransferOutController {
 	        HttpServletRequest request, ModelMap map) {
 		
 		Location location = null;
-		
-		if (facilityId != null && facilityId.length() != 0)
+		if (StringUtils.isNotBlank(facilityId)) {
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
-		else
+		} else if (StringUtils.isNotBlank(districtId)) {
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), null);
-		
+		}
 		if (location == null) {
 			throw new MdrtbAPIException("Invalid Hierarchy Set selected");
 		}
-		
 		if (tof.getLocation() == null || !location.equals(tof.getLocation())) {
-			System.out.println("setting loc");
 			tof.setLocation(location);
 		}
 		
@@ -206,12 +204,11 @@ public class TransferOutController {
 			mdr = true;
 		}
 		
-		// save the actual update
-		Context.getEncounterService().saveEncounter(tof.getEncounter());
+		MdrtbFormServiceImpl formService = new MdrtbFormServiceImpl();
+		tof = formService.processTransferOutForm(tof);
 		
 		// clears the command object from the session
 		status.setComplete();
-		
 		map.clear();
 		
 		// if there is no return URL, default to the patient dashboard
