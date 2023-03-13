@@ -1797,7 +1797,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<Form89> getForm89FormsFilled(List<Location> locations, Integer year, String quarter, String month) {
+	public List<Form89> getForm89FormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month) {
 		ArrayList<Form89> forms = new ArrayList<Form89>();
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		Date startDate = (Date) (dateMap.get("startDate"));

@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.reporting;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -122,11 +121,62 @@ public class TB08ReportController {
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		System.out.println("list size:" + tb03List.size());
+		TB08Data table1 = getTB08PatientSet(year, quarterInt, monthInt, locList);
 		
-		SimpleDateFormat rdateSDF = Context.getDateTimeFormat();
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		    year, quarter, month, "TB-08", "DOTSTB");
+		System.out.println(reportStatus);
+		
+		String oName = null;
+		String dName = null;
+		String fName = null;
+		
+		if (oblastId != null) {
+			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
+			if (o != null) {
+				oName = o.getName();
+			}
+		}
+		
+		if (districtId != null) {
+			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
+			if (d != null) {
+				dName = d.getName();
+			}
+		}
+		
+		if (facilityId != null) {
+			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
+			if (f != null) {
+				fName = f.getName();
+			}
+		}
+		
+		model.addAttribute("table1", table1);
+		model.addAttribute("oblast", oblastId);
+		model.addAttribute("district", districtId);
+		model.addAttribute("facility", facilityId);
+		model.addAttribute("year", year);
+		if (month != null && month.length() != 0)
+			model.addAttribute("month", month.replace("\"", ""));
+		else
+			model.addAttribute("month", "");
+		
+		if (quarter != null && quarter.length() != 0)
+			model.addAttribute("quarter", quarter.replace("\"", "'"));
+		else
+			model.addAttribute("quarter", "");
+		model.addAttribute("oName", oName);
+		model.addAttribute("dName", dName);
+		model.addAttribute("fName", fName);
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
+		model.addAttribute("reportStatus", reportStatus);
+		return "/module/mdrtb/reporting/tb08Results";
+	}
+	
+	public static TB08Data getTB08PatientSet(Integer year, Integer quarter, Integer month, List<Location> locList) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		System.out.println("list size:" + tb03List.size());
 		
 		Integer ageAtRegistration = 0;
 		
@@ -147,8 +197,8 @@ public class TB08ReportController {
 		
 		TB08Data table1 = new TB08Data();
 		
-		for (TB03Form tf : tb03List) {//for (Integer i : idSet) {
-		
+		for (TB03Form tf : tb03List) {
+			
 			ageAtRegistration = -1;
 			pulmonary = null;
 			bacPositive = null;
@@ -176,22 +226,14 @@ public class TB08ReportController {
 			if (q != null) {
 				if (q.getConceptId().intValue() == pulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.TRUE;
-					System.out.println("PULMONARY");
 				}
-				
 				else if (q.getConceptId().intValue() == extrapulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.FALSE;
-					System.out.println("EXTRAPULMONARY");
 				}
-				
 				else {
-					
-					System.out.println("PULMONARY NULL");
 					pulmonary = null;
 				}
-				
 			}
-			
 			else {
 				System.out.println("NO SITE");
 				continue;
@@ -207,25 +249,20 @@ public class TB08ReportController {
 				if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_CURED_CONCEPT_ID))) {
 					cured = Boolean.TRUE;
-					System.out.println("CURED");
-					
 				}
 				
 				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_TX_COMPLETED_CONCEPT_ID))) {
 					txCompleted = Boolean.TRUE;
-					System.out.println("TxC");
 				}
 				
 				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_TX_FAILURE_CONCEPT_ID))) {
 					failed = Boolean.TRUE;
-					System.out.println("FAIL");
 				}
 				
 				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
-					System.out.println("DIED");
 					q = tf.getCauseOfDeath();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSE_OF_DEATH);
 					
 					if (q != null) {
@@ -240,30 +277,22 @@ public class TB08ReportController {
 				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_LTFU_CONCEPT_ID))) {
 					defaulted = Boolean.TRUE;
-					System.out.println("DEF");
 				}
 				
 				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_CANCELED_CONCEPT_ID))) {
 					canceled = Boolean.TRUE;
-					System.out.println("CANCEL");
 				}
 				
 				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_TRANSFER_OUT_CONCEPT_ID))) {
 					transferOut = Boolean.TRUE;
-					System.out.println("TOUT");
 				}
 				
 				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_STARTED_SLD_CONCEPT_ID))) {
 					sld = Boolean.TRUE;
-					System.out.println("SLD2");
 				}
-			}
-			
-			else {
-				System.out.println("NO OUTCOME");
 			}
 			
 			//get registration group
@@ -2824,62 +2853,8 @@ public class TB08ReportController {
 					}
 				}
 			}
-			//}
-			
-			//fin.add(table1);
-			
-			//TOTALS
 		}
-		
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-08", "DOTSTB");
-		System.out.println(reportStatus);
-		
-		String oName = null;
-		String dName = null;
-		String fName = null;
-		
-		if (oblastId != null) {
-			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
-			if (o != null) {
-				oName = o.getName();
-			}
-		}
-		
-		if (districtId != null) {
-			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
-			if (d != null) {
-				dName = d.getName();
-			}
-		}
-		
-		if (facilityId != null) {
-			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
-			if (f != null) {
-				fName = f.getName();
-			}
-		}
-		
-		model.addAttribute("table1", table1);
-		model.addAttribute("oblast", oblastId);
-		model.addAttribute("district", districtId);
-		model.addAttribute("facility", facilityId);
-		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
-			model.addAttribute("month", month.replace("\"", ""));
-		else
-			model.addAttribute("month", "");
-		
-		if (quarter != null && quarter.length() != 0)
-			model.addAttribute("quarter", quarter.replace("\"", "'"));
-		else
-			model.addAttribute("quarter", "");
-		model.addAttribute("oName", oName);
-		model.addAttribute("dName", dName);
-		model.addAttribute("fName", fName);
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
-		model.addAttribute("reportStatus", reportStatus);
-		return "/module/mdrtb/reporting/tb08Results";
+		return table1;
 	}
 	
 }

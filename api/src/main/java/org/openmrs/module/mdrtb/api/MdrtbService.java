@@ -9,7 +9,6 @@
  */
 package org.openmrs.module.mdrtb.api;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -1078,7 +1077,7 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<Form89> getForm89FormsFilled(List<Location> locations, Integer year, String quarter, String month);
+	public List<Form89> getForm89FormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)

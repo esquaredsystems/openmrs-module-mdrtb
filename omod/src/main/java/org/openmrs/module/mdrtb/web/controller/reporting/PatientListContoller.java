@@ -3195,7 +3195,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.CANCER);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		Concept yes = ms.getConcept(MdrtbConcepts.YES);
 		
 		report += "<h4>" + getMessage("mdrtb.withCancer") + "</h4>";
@@ -3297,7 +3300,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		Collections.sort(forms);
 		Concept fromContact = ms.getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
 		
@@ -3398,7 +3404,10 @@ public class PatientListContoller {
 		String report = "";
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.CNSDL);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		Concept yes = ms.getConcept(MdrtbConcepts.YES);
 		
 		report += "<h4>" + getMessage("mdrtb.withCOPD") + "</h4>";
@@ -3499,7 +3508,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Concept yes = ms.getConcept(MdrtbConcepts.YES);
 		
@@ -3602,7 +3614,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.ULCER);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Concept yes = ms.getConcept(MdrtbConcepts.YES);
 		
@@ -3701,7 +3716,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.MENTAL_DISORDER);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Concept yes = ms.getConcept(MdrtbConcepts.YES);
 		
@@ -3799,7 +3817,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.ICD20);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Concept yes = ms.getConcept(MdrtbConcepts.YES);
 		
@@ -3899,7 +3920,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.COMORBID_HEPATITIS);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Concept yes = ms.getConcept(MdrtbConcepts.YES);
 		
@@ -3997,7 +4021,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.KIDNEY_DISEASE);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Concept yes = ms.getConcept(MdrtbConcepts.YES);
 		
@@ -4098,7 +4125,10 @@ public class PatientListContoller {
 		
 		Concept groupConcept = ms.getConcept(MdrtbConcepts.OTHER_DISEASE);
 		
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<Form89> forms = Context.getService(MdrtbService.class)
+		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Concept yes = ms.getConcept(MdrtbConcepts.YES);
 		

@@ -205,7 +205,7 @@ public class TB03uSingleController {
 			Concept q = tf.getAnatomicalSite();
 			
 			if (q != null)
-				tb03uData.setSiteOfDisease(q.getShortNameInLocale(Context.getLocale()).getName());
+				tb03uData.setSiteOfDisease(q.getName(Context.getLocale()).getName());
 			
 			//SLD Register Number
 			String reg2Number = tf.getSldRegisterNumber();
@@ -263,7 +263,7 @@ public class TB03uSingleController {
 				for (DstResult res : resList) {
 					if (res.getDrug() != null) {
 						drugName = res.getDrug().getShortestName(Context.getLocale(), false).toString();
-						result = res.getResult().getShortNameInLocale(Context.getLocale()).getName();
+						result = res.getResult().getName(Context.getLocale()).getName();
 						tb03uData.getDstResults().put(drugName, result);
 						//System.out.println(drugName + "-" + result + " | " + res.getResult());
 						
@@ -304,11 +304,11 @@ public class TB03uSingleController {
 			HAINForm firstHAIN = TB03uUtil.getFirstHAINForm(tf);
 			if (firstHAIN != null) {
 				if (firstHAIN.getMtbResult() != null)
-					tb03uData.setHainMTBResult(firstHAIN.getMtbResult().getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setHainMTBResult(firstHAIN.getMtbResult().getName(Context.getLocale()).getName());
 				if (firstHAIN.getRifResult() != null)
-					tb03uData.setHainRIFResult(firstHAIN.getRifResult().getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setHainRIFResult(firstHAIN.getRifResult().getName(Context.getLocale()).getName());
 				if (firstHAIN.getInhResult() != null)
-					tb03uData.setHainINHResult(firstHAIN.getInhResult().getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setHainINHResult(firstHAIN.getInhResult().getName(Context.getLocale()).getName());
 				if (firstHAIN.getEncounterDatetime() != null)
 					tb03uData.setHainTestDate(sdf.format(firstHAIN.getEncounterDatetime()));
 				
@@ -339,7 +339,7 @@ public class TB03uSingleController {
 					tb03uData.setHain2InjResult(firstHAIN2.getInjResult().getShortNameInLocale(Context.getLocale())
 					        .getName());
 				if (firstHAIN2.getFqResult() != null)
-					tb03uData.setHain2FqResult(firstHAIN2.getFqResult().getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setHain2FqResult(firstHAIN2.getFqResult().getName(Context.getLocale()).getName());
 				if (firstHAIN2.getEncounterDatetime() != null)
 					tb03uData.setHain2TestDate(sdf.format(firstHAIN2.getEncounterDatetime()));
 				
@@ -593,8 +593,8 @@ public class TB03uSingleController {
 			CultureForm followupCulture = TB03uUtil.getFollowupCultureForm(tf, 0);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth0CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth0CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth0CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -602,8 +602,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 1);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth1CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth1CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth1CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -611,8 +611,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 2);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth2CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth2CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth2CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -620,8 +620,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 3);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth3CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth3CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth3CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -629,8 +629,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 4);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth4CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth4CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth4CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -638,8 +638,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 5);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth5CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth5CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth5CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -647,8 +647,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 6);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth6CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth6CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth6CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -656,8 +656,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 7);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth7CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth7CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth7CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -665,8 +665,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 8);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth8CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth8CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth8CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -674,8 +674,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 9);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth9CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth9CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth9CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -683,8 +683,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 10);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth10CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth10CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth10CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -692,8 +692,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 11);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth11CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth11CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth11CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -701,8 +701,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 12);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth12CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth12CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth12CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -710,8 +710,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 15);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth15CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth15CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth15CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -719,8 +719,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 18);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth18CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth18CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth18CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -728,8 +728,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 21);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth21CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth21CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth21CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -737,8 +737,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 24);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth24CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth24CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth24CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -746,8 +746,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 27);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth27CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth27CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth27CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -755,8 +755,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 30);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth30CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth30CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth30CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -764,8 +764,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 33);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth33CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth33CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth33CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
@@ -773,8 +773,8 @@ public class TB03uSingleController {
 			followupCulture = TB03uUtil.getFollowupCultureForm(tf, 36);
 			if (followupCulture != null) {
 				if (followupCulture.getCultureResult() != null)
-					tb03uData.setMonth36CultureResult(followupCulture.getCultureResult()
-					        .getShortNameInLocale(Context.getLocale()).getName());
+					tb03uData.setMonth36CultureResult(followupCulture.getCultureResult().getName(Context.getLocale())
+					        .getName());
 				if (followupCulture.getEncounterDatetime() != null)
 					tb03uData.setMonth36CultureResultDate(sdf.format(followupCulture.getEncounterDatetime()));
 			}
