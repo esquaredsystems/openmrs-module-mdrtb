@@ -260,7 +260,7 @@ public class TB03Data implements Comparable<TB03Data> {
 		    MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
 			this.regGroup = 3;
 		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-		    MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
+		    MdrtbConstants.GP_AFTER_DEFAULT2_CONCEPT_ID)))
 			this.regGroup = 4;
 		else if (regGroup == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 		    MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))

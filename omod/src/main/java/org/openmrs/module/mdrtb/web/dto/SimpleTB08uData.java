@@ -5,6 +5,8 @@ import org.openmrs.module.mdrtb.reporting.custom.TB08uData;
 
 public class SimpleTB08uData extends BaseOpenmrsData {
 	
+	private static final long serialVersionUID = 1L;
+
 	private Integer newRegisteredShort;
 	
 	private Integer newCuredShort;
@@ -548,7 +550,6 @@ public class SimpleTB08uData extends BaseOpenmrsData {
 	private Integer totalTotalStandard;
 	
 	public SimpleTB08uData(TB08uData tb08uData) {
-		
 		this.newRegisteredShort = tb08uData.getNewRegisteredShort();
 		this.newCuredShort = tb08uData.getNewCuredShort();
 		this.newCompletedShort = tb08uData.getNewCompletedShort();

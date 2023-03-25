@@ -124,9 +124,6 @@ public class TB08uController {
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		System.out.println("---POST-----");
 		
-		SimpleDateFormat sdf = Context.getDateFormat();
-		SimpleDateFormat rdateSDF = Context.getDateTimeFormat();
-		
 		Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
 		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
@@ -135,6 +132,62 @@ public class TB08uController {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		TB08uData table1 = getTB08uPatientSet(locList, year, quarterInt, monthInt);
+		
+		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		    year, quarter, month, "TB-08u", "MDRTB");
+		System.out.println(reportStatus);
+		
+		String oName = null;
+		String dName = null;
+		String fName = null;
+		
+		if (oblastId != null) {
+			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
+			if (o != null) {
+				oName = o.getName();
+			}
+		}
+		
+		if (districtId != null) {
+			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
+			if (d != null) {
+				dName = d.getName();
+			}
+		}
+		
+		if (facilityId != null) {
+			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
+			if (f != null) {
+				fName = f.getName();
+			}
+		}
+		
+		model.addAttribute("table1", table1);
+		model.addAttribute("oblast", oblastId);
+		model.addAttribute("facility", facilityId);
+		model.addAttribute("district", districtId);
+		model.addAttribute("year", year);
+		if (month != null && month.length() != 0)
+			model.addAttribute("month", month.replace("\"", ""));
+		else
+			model.addAttribute("month", "");
+		
+		if (quarter != null && quarter.length() != 0)
+			model.addAttribute("quarter", quarter.replace("\"", ""));
+		else
+			model.addAttribute("quarter", "");
+		
+		model.addAttribute("oName", oName);
+		model.addAttribute("dName", dName);
+		model.addAttribute("fName", fName);
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
+		model.addAttribute("reportStatus", reportStatus);
+		return "/module/mdrtb/reporting/tb08uResults";
+	}
+
+	public static TB08uData getTB08uPatientSet(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
 		    monthInt);
 		
@@ -1433,57 +1486,6 @@ public class TB08uController {
 				
 			}
 		}
-		
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		model.addAttribute("table1", table1);
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-08u", "MDRTB");
-		System.out.println(reportStatus);
-		
-		String oName = null;
-		String dName = null;
-		String fName = null;
-		
-		if (oblastId != null) {
-			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
-			if (o != null) {
-				oName = o.getName();
-			}
-		}
-		
-		if (districtId != null) {
-			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
-			if (d != null) {
-				dName = d.getName();
-			}
-		}
-		
-		if (facilityId != null) {
-			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
-			if (f != null) {
-				fName = f.getName();
-			}
-		}
-		
-		model.addAttribute("oblast", oblastId);
-		model.addAttribute("facility", facilityId);
-		model.addAttribute("district", districtId);
-		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
-			model.addAttribute("month", month.replace("\"", ""));
-		else
-			model.addAttribute("month", "");
-		
-		if (quarter != null && quarter.length() != 0)
-			model.addAttribute("quarter", quarter.replace("\"", ""));
-		else
-			model.addAttribute("quarter", "");
-		
-		model.addAttribute("oName", oName);
-		model.addAttribute("dName", dName);
-		model.addAttribute("fName", fName);
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
-		model.addAttribute("reportStatus", reportStatus);
-		return "/module/mdrtb/reporting/tb08uResults";
+		return table1;
 	}
 }
