@@ -226,15 +226,12 @@ public class TB08ReportController {
 			if (q != null) {
 				if (q.getConceptId().intValue() == pulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.TRUE;
-				}
-				else if (q.getConceptId().intValue() == extrapulmonaryConcept.getConceptId().intValue()) {
+				} else if (q.getConceptId().intValue() == extrapulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.FALSE;
-				}
-				else {
+				} else {
 					pulmonary = null;
 				}
-			}
-			else {
+			} else {
 				System.out.println("NO SITE");
 				continue;
 			}

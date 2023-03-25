@@ -141,9 +141,6 @@ public class TB07uController {
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		System.out.println("---POST-----");
 		
-		SimpleDateFormat sdf = Context.getDateFormat();
-		SimpleDateFormat rdateSDF = Context.getDateTimeFormat();
-		
 		Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
 		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
@@ -151,15 +148,80 @@ public class TB07uController {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
+		TB07uData table1 = getTB07uPatientSet(locList, year, quarterInt, monthInt);
+		
+		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
+		/*
+		 * Integer report_oblast = null;
+		 * Integer report_quarter = null;
+		 * Integer report_month = null;
+		 * if(new PDFHelper().isInt(oblast)) { report_oblast =
+		 * Integer.parseInt(oblast); } if(new PDFHelper().isInt(quarter)) {
+		 * report_quarter = Integer.parseInt(quarter); } if(new
+		 * PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }
+		 */
+		model.addAttribute("table1", table1);
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		    year, quarter, month, "TB-08u", "MDRTB");
+		System.out.println(reportStatus);
+		
+		String oName = null;
+		String dName = null;
+		String fName = null;
+		
+		if (oblastId != null) {
+			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
+			if (o != null) {
+				oName = o.getName();
+			}
+		}
+		
+		if (districtId != null) {
+			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
+			if (d != null) {
+				dName = d.getName();
+			}
+		}
+		
+		if (facilityId != null) {
+			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
+			if (f != null) {
+				fName = f.getName();
+			}
+		}
+		
+		model.addAttribute("oblast", oblastId);
+		model.addAttribute("facility", facilityId);
+		model.addAttribute("district", districtId);
+		model.addAttribute("year", year);
+		if (month != null && month.length() != 0)
+			model.addAttribute("month", month.replace("\"", ""));
+		else
+			model.addAttribute("month", "");
+		
+		if (quarter != null && quarter.length() != 0)
+			model.addAttribute("quarter", quarter.replace("\"", ""));
+		else
+			model.addAttribute("quarter", "");
+		
+		model.addAttribute("oName", oName);
+		model.addAttribute("dName", dName);
+		model.addAttribute("fName", fName);
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
+		model.addAttribute("reportStatus", reportStatus);
+		return "/module/mdrtb/reporting/tb07uResults";
+		// + "_" + Context.getLocale().toString().substring(0, 2);
+		
+	}
+	
+	public static TB07uData getTB07uPatientSet(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
+		        .getTB03uFormsFilled(locList, year, quarter, month);
 		
 		List<RegimenForm> regList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year, quarter,
 		    month);
 		if (regList != null) {
 			System.out.println("REG LIST: " + regList.size());
-		} else {
-			System.out.println("REG LIST NULL");
 		}
 		TB07uData table1 = new TB07uData();
 		Concept q = null;
@@ -173,12 +235,6 @@ public class TB07uController {
 		Boolean failure2 = null;
 		Boolean other = null;
 		Boolean txStarted = null;
-		
-		// Concept regimenType = null;
-		/*
-		 * Concept shortCnc = null; Concept indivCnc = null; Concept stdCnc =
-		 * null;
-		 */
 		
 		Concept regimen = null;
 		
@@ -472,9 +528,7 @@ public class TB07uController {
 				if (regList != null) {
 					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId().intValue(), regList, locList, year,
 					    quarter, month);
-				}
-				
-				else {
+				} else {
 					System.out.println("REG LIST NULL: " + tf.getPatient().getPatientId().intValue());
 				}
 				
@@ -493,13 +547,7 @@ public class TB07uController {
 							System.out.println("REG OTHER: " + tf.getPatient().getPatientId().intValue());
 						}
 					}
-					
-					else {
-						System.out.println("REG NULL: " + tf.getPatient().getPatientId().intValue());
-					}
-				}
-				
-				else {
+				} else {
 					System.out.println("RF NULL: " + tf.getPatient().getPatientId().intValue());
 				}
 				
@@ -1343,13 +1391,7 @@ public class TB07uController {
 							System.out.println("REG NOT COUNTED: " + tf.getPatient().getPatientId());
 						}
 					}
-					
-					else {
-						System.out.println("REG NULL: " + tf.getPatient().getPatientId());
-					}
-				}
-				
-				else {
+				} else {
 					System.out.println("RF LIST NULL: " + tf.getPatient().getPatientId().intValue());
 				}
 				
@@ -2202,14 +2244,10 @@ public class TB07uController {
 						
 						else if (regimen.getConceptId().intValue() == indBdq) {
 							isIndBdq = Boolean.TRUE;
-						}
-						
-						else {
+						} else {
 							System.out.println("REG OTHER: " + tf.getPatient().getPatientId().intValue());
 						}
-					}
-					
-					else {
+					} else {
 						System.out.println("REG NULL: " + tf.getPatient().getPatientId().intValue());
 					}
 				}
@@ -3044,81 +3082,13 @@ public class TB07uController {
 			else
 				continue;
 			
-			/*regimen = tf.getPatientCategory();
-			
-			if (regimen == null)
-				continue;
-			
-			int regId = regimen.getConceptId().intValue();*/
-			
 		}
 		
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		Integer report_oblast = null;
-		Integer report_quarter = null;
-		Integer report_month = null;
-		/*
-		 * if(new PDFHelper().isInt(oblast)) { report_oblast =
-		 * Integer.parseInt(oblast); } if(new PDFHelper().isInt(quarter)) {
-		 * report_quarter = Integer.parseInt(quarter); } if(new
-		 * PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }
-		 */
-		model.addAttribute("table1", table1);
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-08u", "MDRTB");
-		System.out.println(reportStatus);
-		
-		String oName = null;
-		String dName = null;
-		String fName = null;
-		
-		if (oblastId != null) {
-			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
-			if (o != null) {
-				oName = o.getName();
-			}
-		}
-		
-		if (districtId != null) {
-			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
-			if (d != null) {
-				dName = d.getName();
-			}
-		}
-		
-		if (facilityId != null) {
-			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
-			if (f != null) {
-				fName = f.getName();
-			}
-		}
-		
-		model.addAttribute("oblast", oblastId);
-		model.addAttribute("facility", facilityId);
-		model.addAttribute("district", districtId);
-		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
-			model.addAttribute("month", month.replace("\"", ""));
-		else
-			model.addAttribute("month", "");
-		
-		if (quarter != null && quarter.length() != 0)
-			model.addAttribute("quarter", quarter.replace("\"", ""));
-		else
-			model.addAttribute("quarter", "");
-		
-		model.addAttribute("oName", oName);
-		model.addAttribute("dName", dName);
-		model.addAttribute("fName", fName);
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
-		model.addAttribute("reportStatus", reportStatus);
-		return "/module/mdrtb/reporting/tb07uResults";
-		// + "_" + Context.getLocale().toString().substring(0, 2);
-		
+		return table1;
 	}
 	
 	private static RegimenForm getLatestRegimenForPatient(int patientId, List<RegimenForm> forms, List<Location> locList,
-	        Integer year, String quarter, String month) {
+	        Integer year, Integer quarter, Integer month) {
 		RegimenForm latest = null;
 		Date latDate = null;
 		

@@ -10,7 +10,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>mdrtb</artifactId>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 	<packaging>pom</packaging>
 	<name>MDRTB</name>
 	<description>MDRTB Module</description>
@@ -188,10 +188,9 @@
 						<source>1.8</source>
 					</configuration>
 				</plugin>
-                <plugin>
+                <!-- <plugin>
 					<groupId>net.revelc.code.formatter</groupId>
 					<artifactId>formatter-maven-plugin</artifactId>
-					<version>2.7.1</version>
 					<configuration>
 						<directories>
 							<directory>.</directory>
@@ -210,7 +209,7 @@
 							</goals>
 						</execution>
 					</executions>
-				</plugin>
+				</plugin> -->
 			</plugins>
 		</pluginManagement>
 	</build>

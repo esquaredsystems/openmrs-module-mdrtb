@@ -149,8 +149,10 @@ public class AdverseEventsReportController {
 			}
 		}
 		
-		List<RegimenForm> regimenList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year, quarter,
-		    month);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		List<RegimenForm> regimenList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year,
+		    quarterInt, monthInt);
 		ArrayList<Patient> countedPatients = new ArrayList<Patient>();
 		
 		System.out.println("list size:" + regimenList.size());

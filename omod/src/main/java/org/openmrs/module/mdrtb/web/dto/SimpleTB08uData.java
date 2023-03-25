@@ -6,7 +6,7 @@ import org.openmrs.module.mdrtb.reporting.custom.TB08uData;
 public class SimpleTB08uData extends BaseOpenmrsData {
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	private Integer newRegisteredShort;
 	
 	private Integer newCuredShort;

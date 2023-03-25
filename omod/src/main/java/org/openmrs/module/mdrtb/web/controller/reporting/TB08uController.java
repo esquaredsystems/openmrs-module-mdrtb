@@ -186,7 +186,7 @@ public class TB08uController {
 		model.addAttribute("reportStatus", reportStatus);
 		return "/module/mdrtb/reporting/tb08uResults";
 	}
-
+	
 	public static TB08uData getTB08uPatientSet(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
 		    monthInt);

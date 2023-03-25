@@ -1,5 +1,6 @@
 package org.openmrs.module.mdrtb.web.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -9,6 +10,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.reporting.custom.TB03uData;
 import org.openmrs.module.mdrtb.web.controller.reporting.TB03uController;
+import org.openmrs.module.mdrtb.web.dto.SimpleTB03uData;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -22,8 +24,8 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb03ureport", supportedClass = TB03uData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
-public class TB03uDataResourceController extends DelegatingCrudResource<TB03uData> implements Searchable {
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb03ureport", supportedClass = SimpleTB03uData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+public class TB03uDataResourceController extends DelegatingCrudResource<SimpleTB03uData> implements Searchable {
 	
 	/**
 	 * Logger for this class
@@ -176,27 +178,27 @@ public class TB03uDataResourceController extends DelegatingCrudResource<TB03uDat
 	}
 	
 	@Override
-	public TB03uData newDelegate() {
+	public SimpleTB03uData newDelegate() {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override
-	public TB03uData save(TB03uData delegate) {
+	public SimpleTB03uData save(SimpleTB03uData delegate) {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override
-	public TB03uData getByUniqueId(String uniqueId) {
+	public SimpleTB03uData getByUniqueId(String uniqueId) {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override
-	protected void delete(TB03uData delegate, String reason, RequestContext context) throws ResponseException {
+	protected void delete(SimpleTB03uData delegate, String reason, RequestContext context) throws ResponseException {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override
-	public void purge(TB03uData delegate, RequestContext context) throws ResponseException {
+	public void purge(SimpleTB03uData delegate, RequestContext context) throws ResponseException {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
@@ -218,6 +220,10 @@ public class TB03uDataResourceController extends DelegatingCrudResource<TB03uDat
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
 		List<TB03uData> patientSet = TB03uController.getTB03uPatientSet(year, quarter, month, locList);
-		return new NeedsPaging<TB03uData>(patientSet, context);
+		List<SimpleTB03uData> list = new ArrayList<SimpleTB03uData>();
+		for (TB03uData SimpleTB03uData : patientSet) {
+			list.add(new SimpleTB03uData(SimpleTB03uData));
+		}
+		return new NeedsPaging<SimpleTB03uData>(list, context);
 	}
 }
