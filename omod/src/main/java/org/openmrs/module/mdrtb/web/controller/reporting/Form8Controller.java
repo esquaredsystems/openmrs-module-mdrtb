@@ -2,7 +2,10 @@ package org.openmrs.module.mdrtb.web.controller.reporting;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.openmrs.Concept;
 import org.openmrs.Location;
@@ -118,8 +121,6 @@ public class Form8Controller {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
-		System.out.println("---POST-----");
-		
 		List<Location> locList = null;
 		if (oblastId != null) {
 			if (oblastId.intValue() == 186) {
@@ -135,15 +136,62 @@ public class Form8Controller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		System.out.println("list size:" + tb03List.size());
+		Map<String, Object> tableMap = getForm8TableMap(locList, year, quarterInt, monthInt);
 		
-		SimpleDateFormat sdf = new SimpleDateFormat();
-		sdf.applyPattern("dd.MM.yyyy");
-		SimpleDateFormat rdateSDF = new SimpleDateFormat();
-		rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
+		for (Entry<String, Object> table : tableMap.entrySet()) {
+			model.addAttribute(table.getKey(), table.getValue());
+		}
 		
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		    year, quarter, month, "TB-08", "DOTSTB");
+		
+		String oName = null;
+		String dName = null;
+		String fName = null;
+		
+		if (oblastId != null) {
+			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
+			if (o != null) {
+				oName = o.getName();
+			}
+		}
+		
+		if (districtId != null) {
+			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
+			if (d != null) {
+				dName = d.getName();
+			}
+		}
+		
+		if (facilityId != null) {
+			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
+			if (f != null) {
+				fName = f.getName();
+			}
+		}
+		model.addAttribute("oblast", oblastId);
+		model.addAttribute("district", districtId);
+		model.addAttribute("facility", facilityId);
+		model.addAttribute("year", year);
+		if (month != null && month.length() != 0)
+			model.addAttribute("month", month.replace("\"", ""));
+		else
+			model.addAttribute("month", "");
+		
+		if (quarter != null && quarter.length() != 0)
+			model.addAttribute("quarter", quarter.replace("\"", "'"));
+		else
+			model.addAttribute("quarter", "");
+		model.addAttribute("oName", oName);
+		model.addAttribute("dName", dName);
+		model.addAttribute("fName", fName);
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
+		model.addAttribute("reportStatus", reportStatus);
+		return "/module/mdrtb/reporting/form8Results";
+	}
+	
+	public static Map<String, Object> getForm8TableMap(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		Integer ageAtRegistration = 0;
 		
 		Concept pulmonaryConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB);
@@ -175,7 +223,7 @@ public class Form8Controller {
 		Form8Table3Data table3 = new Form8Table3Data();
 		Form8Table4Data table4 = new Form8Table4Data();
 		Form8Table5aData table5a = new Form8Table5aData();
-		TB08Data table6 = new TB08Data();
+		TB08Data tb08TableData = new TB08Data();
 		
 		Concept regGroup = null;
 		Form89 f89 = null;
@@ -2494,9 +2542,7 @@ public class Form8Controller {
 		}
 		
 		//Table 6
-		quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		monthInt = month == null ? null : Integer.parseInt(month);
-		tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year - 1, quarterInt, monthInt);
+		tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year - 1, quarter, month);
 		
 		for (TB03Form tf : tb03List) {//for (Integer i : idSet) {
 		
@@ -2616,31 +2662,31 @@ public class Form8Controller {
 				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				        MdrtbConstants.GP_TRANSFER_IN_CONCEPT_ID)))) {
 					
-					table6.setAllDetected(table6.getAllDetected() + 1);
+					tb08TableData.setAllDetected(tb08TableData.getAllDetected() + 1);
 					if (cured != null && cured) {
-						table6.setAllCured(table6.getAllCured() + 1);
-						table6.setAllEligible(table6.getAllEligible() + 1);
+						tb08TableData.setAllCured(tb08TableData.getAllCured() + 1);
+						tb08TableData.setAllEligible(tb08TableData.getAllEligible() + 1);
 					} else if (txCompleted != null && txCompleted) {
-						table6.setAllCompleted(table6.getAllCompleted() + 1);
-						table6.setAllEligible(table6.getAllEligible() + 1);
+						tb08TableData.setAllCompleted(tb08TableData.getAllCompleted() + 1);
+						tb08TableData.setAllEligible(tb08TableData.getAllEligible() + 1);
 					} else if (diedTB != null && diedTB) {
-						table6.setAllDiedTB(table6.getAllDiedTB() + 1);
-						table6.setAllEligible(table6.getAllEligible() + 1);
+						tb08TableData.setAllDiedTB(tb08TableData.getAllDiedTB() + 1);
+						tb08TableData.setAllEligible(tb08TableData.getAllEligible() + 1);
 					} else if (diedNotTB != null && diedNotTB) {
-						table6.setAllDiedNotTB(table6.getAllDiedNotTB() + 1);
-						table6.setAllEligible(table6.getAllEligible() + 1);
+						tb08TableData.setAllDiedNotTB(tb08TableData.getAllDiedNotTB() + 1);
+						tb08TableData.setAllEligible(tb08TableData.getAllEligible() + 1);
 					} else if (failed != null && failed) {
-						table6.setAllFailed(table6.getAllFailed() + 1);
-						table6.setAllEligible(table6.getAllEligible() + 1);
+						tb08TableData.setAllFailed(tb08TableData.getAllFailed() + 1);
+						tb08TableData.setAllEligible(tb08TableData.getAllEligible() + 1);
 					} else if (defaulted != null && defaulted) {
-						table6.setAllDefaulted(table6.getAllDefaulted() + 1);
-						table6.setAllEligible(table6.getAllEligible() + 1);
+						tb08TableData.setAllDefaulted(tb08TableData.getAllDefaulted() + 1);
+						tb08TableData.setAllEligible(tb08TableData.getAllEligible() + 1);
 					} else if (transferOut != null && transferOut) {
-						table6.setAllTransferOut(table6.getAllTransferOut() + 1);
+						tb08TableData.setAllTransferOut(tb08TableData.getAllTransferOut() + 1);
 					} else if (canceled != null && canceled) {
-						table6.setAllCanceled(table6.getAllCanceled() + 1);
+						tb08TableData.setAllCanceled(tb08TableData.getAllCanceled() + 1);
 					} else if (sld != null && sld) {
-						table6.setAllSLD(table6.getAllSLD() + 1);
+						tb08TableData.setAllSLD(tb08TableData.getAllSLD() + 1);
 					}
 				}
 				//NEW
@@ -2648,245 +2694,245 @@ public class Form8Controller {
 				        .equals(
 				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				                MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
-					table6.setNewAllDetected(table6.getNewAllDetected() + 1);
+					tb08TableData.setNewAllDetected(tb08TableData.getNewAllDetected() + 1);
 					//P
 					if (pulmonary != null && pulmonary) {
 						//BC
 						if (bacPositive) {
-							table6.setNewPulmonaryBCDetected(table6.getNewPulmonaryBCDetected() + 1);
+							tb08TableData.setNewPulmonaryBCDetected(tb08TableData.getNewPulmonaryBCDetected() + 1);
 							if (ageAtRegistration >= 0 && ageAtRegistration < 5) {
-								table6.setNewPulmonaryBCDetected04(table6.getNewPulmonaryBCDetected04() + 1);
+								tb08TableData.setNewPulmonaryBCDetected04(tb08TableData.getNewPulmonaryBCDetected04() + 1);
 								
 								if (cured != null && cured) {
-									table6.setNewAllCured(table6.getNewAllCured() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCCured04(table6.getNewPulmonaryBCCured04() + 1);
-									table6.setNewPulmonaryBCEligible04(table6.getNewPulmonaryBCEligible04() + 1);
-									table6.setNewPulmonaryBCCured(table6.getNewPulmonaryBCCured() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCCured04(tb08TableData.getNewPulmonaryBCCured04() + 1);
+									tb08TableData.setNewPulmonaryBCEligible04(tb08TableData.getNewPulmonaryBCEligible04() + 1);
+									tb08TableData.setNewPulmonaryBCCured(tb08TableData.getNewPulmonaryBCCured() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 									
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCCompleted04(table6.getNewPulmonaryBCCompleted04() + 1);
-									table6.setNewPulmonaryBCEligible04(table6.getNewPulmonaryBCEligible04() + 1);
-									table6.setNewPulmonaryBCCompleted(table6.getNewPulmonaryBCCompleted() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCCompleted04(tb08TableData.getNewPulmonaryBCCompleted04() + 1);
+									tb08TableData.setNewPulmonaryBCEligible04(tb08TableData.getNewPulmonaryBCEligible04() + 1);
+									tb08TableData.setNewPulmonaryBCCompleted(tb08TableData.getNewPulmonaryBCCompleted() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDiedTB04(table6.getNewPulmonaryBCDiedTB04() + 1);
-									table6.setNewPulmonaryBCEligible04(table6.getNewPulmonaryBCEligible04() + 1);
-									table6.setNewPulmonaryBCDiedTB(table6.getNewPulmonaryBCDiedTB() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDiedTB04(tb08TableData.getNewPulmonaryBCDiedTB04() + 1);
+									tb08TableData.setNewPulmonaryBCEligible04(tb08TableData.getNewPulmonaryBCEligible04() + 1);
+									tb08TableData.setNewPulmonaryBCDiedTB(tb08TableData.getNewPulmonaryBCDiedTB() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDiedNotTB04(table6.getNewPulmonaryBCDiedNotTB04() + 1);
-									table6.setNewPulmonaryBCEligible04(table6.getNewPulmonaryBCEligible04() + 1);
-									table6.setNewPulmonaryBCDiedNotTB(table6.getNewPulmonaryBCDiedNotTB() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDiedNotTB04(tb08TableData.getNewPulmonaryBCDiedNotTB04() + 1);
+									tb08TableData.setNewPulmonaryBCEligible04(tb08TableData.getNewPulmonaryBCEligible04() + 1);
+									tb08TableData.setNewPulmonaryBCDiedNotTB(tb08TableData.getNewPulmonaryBCDiedNotTB() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCFailed04(table6.getNewPulmonaryBCFailed04() + 1);
-									table6.setNewPulmonaryBCEligible04(table6.getNewPulmonaryBCEligible04() + 1);
-									table6.setNewPulmonaryBCFailed(table6.getNewPulmonaryBCFailed() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCFailed04(tb08TableData.getNewPulmonaryBCFailed04() + 1);
+									tb08TableData.setNewPulmonaryBCEligible04(tb08TableData.getNewPulmonaryBCEligible04() + 1);
+									tb08TableData.setNewPulmonaryBCFailed(tb08TableData.getNewPulmonaryBCFailed() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDefaulted04(table6.getNewPulmonaryBCDefaulted04() + 1);
-									table6.setNewPulmonaryBCEligible04(table6.getNewPulmonaryBCEligible04() + 1);
-									table6.setNewPulmonaryBCDefaulted(table6.getNewPulmonaryBCDefaulted() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDefaulted04(tb08TableData.getNewPulmonaryBCDefaulted04() + 1);
+									tb08TableData.setNewPulmonaryBCEligible04(tb08TableData.getNewPulmonaryBCEligible04() + 1);
+									tb08TableData.setNewPulmonaryBCDefaulted(tb08TableData.getNewPulmonaryBCDefaulted() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-									table6.setNewPulmonaryBCTransferOut04(table6.getNewPulmonaryBCTransferOut04() + 1);
-									table6.setNewPulmonaryBCTransferOut(table6.getNewPulmonaryBCTransferOut() + 1);
+									tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+									tb08TableData.setNewPulmonaryBCTransferOut04(tb08TableData.getNewPulmonaryBCTransferOut04() + 1);
+									tb08TableData.setNewPulmonaryBCTransferOut(tb08TableData.getNewPulmonaryBCTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-									table6.setNewPulmonaryBCCanceled04(table6.getNewPulmonaryBCCanceled04() + 1);
-									table6.setNewPulmonaryBCCanceled(table6.getNewPulmonaryBCCanceled() + 1);
+									tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+									tb08TableData.setNewPulmonaryBCCanceled04(tb08TableData.getNewPulmonaryBCCanceled04() + 1);
+									tb08TableData.setNewPulmonaryBCCanceled(tb08TableData.getNewPulmonaryBCCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-									table6.setNewPulmonaryBCSLD04(table6.getNewPulmonaryBCSLD04() + 1);
-									table6.setNewPulmonaryBCSLD(table6.getNewPulmonaryBCSLD() + 1);
+									tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+									tb08TableData.setNewPulmonaryBCSLD04(tb08TableData.getNewPulmonaryBCSLD04() + 1);
+									tb08TableData.setNewPulmonaryBCSLD(tb08TableData.getNewPulmonaryBCSLD() + 1);
 								}
 								
 							}
 							
 							else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 								
-								table6.setNewPulmonaryBCDetected0514(table6.getNewPulmonaryBCDetected0514() + 1);
+								tb08TableData.setNewPulmonaryBCDetected0514(tb08TableData.getNewPulmonaryBCDetected0514() + 1);
 								
 								if (cured != null && cured) {
-									table6.setNewAllCured(table6.getNewAllCured() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCCured0514(table6.getNewPulmonaryBCCured0514() + 1);
-									table6.setNewPulmonaryBCEligible0514(table6.getNewPulmonaryBCEligible0514() + 1);
-									table6.setNewPulmonaryBCCured(table6.getNewPulmonaryBCCured() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCCured0514(tb08TableData.getNewPulmonaryBCCured0514() + 1);
+									tb08TableData.setNewPulmonaryBCEligible0514(tb08TableData.getNewPulmonaryBCEligible0514() + 1);
+									tb08TableData.setNewPulmonaryBCCured(tb08TableData.getNewPulmonaryBCCured() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCCompleted0514(table6.getNewPulmonaryBCCompleted0514() + 1);
-									table6.setNewPulmonaryBCEligible0514(table6.getNewPulmonaryBCEligible0514() + 1);
-									table6.setNewPulmonaryBCCompleted(table6.getNewPulmonaryBCCompleted() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCCompleted0514(tb08TableData.getNewPulmonaryBCCompleted0514() + 1);
+									tb08TableData.setNewPulmonaryBCEligible0514(tb08TableData.getNewPulmonaryBCEligible0514() + 1);
+									tb08TableData.setNewPulmonaryBCCompleted(tb08TableData.getNewPulmonaryBCCompleted() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDiedTB0514(table6.getNewPulmonaryBCDiedTB0514() + 1);
-									table6.setNewPulmonaryBCEligible0514(table6.getNewPulmonaryBCEligible0514() + 1);
-									table6.setNewPulmonaryBCDiedTB(table6.getNewPulmonaryBCDiedTB() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDiedTB0514(tb08TableData.getNewPulmonaryBCDiedTB0514() + 1);
+									tb08TableData.setNewPulmonaryBCEligible0514(tb08TableData.getNewPulmonaryBCEligible0514() + 1);
+									tb08TableData.setNewPulmonaryBCDiedTB(tb08TableData.getNewPulmonaryBCDiedTB() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDiedNotTB0514(table6.getNewPulmonaryBCDiedNotTB0514() + 1);
-									table6.setNewPulmonaryBCEligible0514(table6.getNewPulmonaryBCEligible0514() + 1);
-									table6.setNewPulmonaryBCDiedNotTB(table6.getNewPulmonaryBCDiedNotTB() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDiedNotTB0514(tb08TableData.getNewPulmonaryBCDiedNotTB0514() + 1);
+									tb08TableData.setNewPulmonaryBCEligible0514(tb08TableData.getNewPulmonaryBCEligible0514() + 1);
+									tb08TableData.setNewPulmonaryBCDiedNotTB(tb08TableData.getNewPulmonaryBCDiedNotTB() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCFailed0514(table6.getNewPulmonaryBCFailed0514() + 1);
-									table6.setNewPulmonaryBCEligible0514(table6.getNewPulmonaryBCEligible0514() + 1);
-									table6.setNewPulmonaryBCFailed(table6.getNewPulmonaryBCFailed() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCFailed0514(tb08TableData.getNewPulmonaryBCFailed0514() + 1);
+									tb08TableData.setNewPulmonaryBCEligible0514(tb08TableData.getNewPulmonaryBCEligible0514() + 1);
+									tb08TableData.setNewPulmonaryBCFailed(tb08TableData.getNewPulmonaryBCFailed() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDefaulted0514(table6.getNewPulmonaryBCDefaulted0514() + 1);
-									table6.setNewPulmonaryBCEligible0514(table6.getNewPulmonaryBCEligible0514() + 1);
-									table6.setNewPulmonaryBCDefaulted(table6.getNewPulmonaryBCDefaulted() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDefaulted0514(tb08TableData.getNewPulmonaryBCDefaulted0514() + 1);
+									tb08TableData.setNewPulmonaryBCEligible0514(tb08TableData.getNewPulmonaryBCEligible0514() + 1);
+									tb08TableData.setNewPulmonaryBCDefaulted(tb08TableData.getNewPulmonaryBCDefaulted() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-									table6.setNewPulmonaryBCTransferOut0514(table6.getNewPulmonaryBCTransferOut0514() + 1);
-									table6.setNewPulmonaryBCTransferOut(table6.getNewPulmonaryBCTransferOut() + 1);
+									tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+									tb08TableData.setNewPulmonaryBCTransferOut0514(tb08TableData.getNewPulmonaryBCTransferOut0514() + 1);
+									tb08TableData.setNewPulmonaryBCTransferOut(tb08TableData.getNewPulmonaryBCTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-									table6.setNewPulmonaryBCCanceled0514(table6.getNewPulmonaryBCCanceled0514() + 1);
-									table6.setNewPulmonaryBCCanceled(table6.getNewPulmonaryBCCanceled() + 1);
+									tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+									tb08TableData.setNewPulmonaryBCCanceled0514(tb08TableData.getNewPulmonaryBCCanceled0514() + 1);
+									tb08TableData.setNewPulmonaryBCCanceled(tb08TableData.getNewPulmonaryBCCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-									table6.setNewPulmonaryBCSLD0514(table6.getNewPulmonaryBCSLD0514() + 1);
-									table6.setNewPulmonaryBCSLD(table6.getNewPulmonaryBCSLD() + 1);
+									tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+									tb08TableData.setNewPulmonaryBCSLD0514(tb08TableData.getNewPulmonaryBCSLD0514() + 1);
+									tb08TableData.setNewPulmonaryBCSLD(tb08TableData.getNewPulmonaryBCSLD() + 1);
 								}
 								
 							}
 							
 							else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 								
-								table6.setNewPulmonaryBCDetected1517(table6.getNewPulmonaryBCDetected1517() + 1);
+								tb08TableData.setNewPulmonaryBCDetected1517(tb08TableData.getNewPulmonaryBCDetected1517() + 1);
 								
 								if (cured != null && cured) {
-									table6.setNewAllCured(table6.getNewAllCured() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCCured1517(table6.getNewPulmonaryBCCured1517() + 1);
-									table6.setNewPulmonaryBCEligible1517(table6.getNewPulmonaryBCEligible1517() + 1);
-									table6.setNewPulmonaryBCCured(table6.getNewPulmonaryBCCured() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCCured1517(tb08TableData.getNewPulmonaryBCCured1517() + 1);
+									tb08TableData.setNewPulmonaryBCEligible1517(tb08TableData.getNewPulmonaryBCEligible1517() + 1);
+									tb08TableData.setNewPulmonaryBCCured(tb08TableData.getNewPulmonaryBCCured() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCCompleted1517(table6.getNewPulmonaryBCCompleted1517() + 1);
-									table6.setNewPulmonaryBCEligible1517(table6.getNewPulmonaryBCEligible1517() + 1);
-									table6.setNewPulmonaryBCCompleted(table6.getNewPulmonaryBCCompleted() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCCompleted1517(tb08TableData.getNewPulmonaryBCCompleted1517() + 1);
+									tb08TableData.setNewPulmonaryBCEligible1517(tb08TableData.getNewPulmonaryBCEligible1517() + 1);
+									tb08TableData.setNewPulmonaryBCCompleted(tb08TableData.getNewPulmonaryBCCompleted() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDiedTB1517(table6.getNewPulmonaryBCDiedTB1517() + 1);
-									table6.setNewPulmonaryBCEligible1517(table6.getNewPulmonaryBCEligible1517() + 1);
-									table6.setNewPulmonaryBCDiedTB(table6.getNewPulmonaryBCDiedTB() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDiedTB1517(tb08TableData.getNewPulmonaryBCDiedTB1517() + 1);
+									tb08TableData.setNewPulmonaryBCEligible1517(tb08TableData.getNewPulmonaryBCEligible1517() + 1);
+									tb08TableData.setNewPulmonaryBCDiedTB(tb08TableData.getNewPulmonaryBCDiedTB() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDiedNotTB1517(table6.getNewPulmonaryBCDiedNotTB1517() + 1);
-									table6.setNewPulmonaryBCEligible1517(table6.getNewPulmonaryBCEligible1517() + 1);
-									table6.setNewPulmonaryBCDiedNotTB(table6.getNewPulmonaryBCDiedNotTB() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDiedNotTB1517(tb08TableData.getNewPulmonaryBCDiedNotTB1517() + 1);
+									tb08TableData.setNewPulmonaryBCEligible1517(tb08TableData.getNewPulmonaryBCEligible1517() + 1);
+									tb08TableData.setNewPulmonaryBCDiedNotTB(tb08TableData.getNewPulmonaryBCDiedNotTB() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCFailed1517(table6.getNewPulmonaryBCFailed1517() + 1);
-									table6.setNewPulmonaryBCEligible1517(table6.getNewPulmonaryBCEligible1517() + 1);
-									table6.setNewPulmonaryBCFailed(table6.getNewPulmonaryBCFailed() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCFailed1517(tb08TableData.getNewPulmonaryBCFailed1517() + 1);
+									tb08TableData.setNewPulmonaryBCEligible1517(tb08TableData.getNewPulmonaryBCEligible1517() + 1);
+									tb08TableData.setNewPulmonaryBCFailed(tb08TableData.getNewPulmonaryBCFailed() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDefaulted1517(table6.getNewPulmonaryBCDefaulted1517() + 1);
-									table6.setNewPulmonaryBCEligible1517(table6.getNewPulmonaryBCEligible1517() + 1);
-									table6.setNewPulmonaryBCDefaulted(table6.getNewPulmonaryBCDefaulted() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDefaulted1517(tb08TableData.getNewPulmonaryBCDefaulted1517() + 1);
+									tb08TableData.setNewPulmonaryBCEligible1517(tb08TableData.getNewPulmonaryBCEligible1517() + 1);
+									tb08TableData.setNewPulmonaryBCDefaulted(tb08TableData.getNewPulmonaryBCDefaulted() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-									table6.setNewPulmonaryBCTransferOut1517(table6.getNewPulmonaryBCTransferOut1517() + 1);
-									table6.setNewPulmonaryBCTransferOut(table6.getNewPulmonaryBCTransferOut() + 1);
+									tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+									tb08TableData.setNewPulmonaryBCTransferOut1517(tb08TableData.getNewPulmonaryBCTransferOut1517() + 1);
+									tb08TableData.setNewPulmonaryBCTransferOut(tb08TableData.getNewPulmonaryBCTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-									table6.setNewPulmonaryBCCanceled1517(table6.getNewPulmonaryBCCanceled1517() + 1);
-									table6.setNewPulmonaryBCCanceled(table6.getNewPulmonaryBCCanceled() + 1);
+									tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+									tb08TableData.setNewPulmonaryBCCanceled1517(tb08TableData.getNewPulmonaryBCCanceled1517() + 1);
+									tb08TableData.setNewPulmonaryBCCanceled(tb08TableData.getNewPulmonaryBCCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-									table6.setNewPulmonaryBCSLD1517(table6.getNewPulmonaryBCSLD1517() + 1);
-									table6.setNewPulmonaryBCSLD(table6.getNewPulmonaryBCSLD() + 1);
+									tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+									tb08TableData.setNewPulmonaryBCSLD1517(tb08TableData.getNewPulmonaryBCSLD1517() + 1);
+									tb08TableData.setNewPulmonaryBCSLD(tb08TableData.getNewPulmonaryBCSLD() + 1);
 								}
 								
 							}
@@ -2894,62 +2940,62 @@ public class Form8Controller {
 							else {
 								
 								if (cured != null && cured) {
-									table6.setNewAllCured(table6.getNewAllCured() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCCured(table6.getNewPulmonaryBCCured() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCCured(tb08TableData.getNewPulmonaryBCCured() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCCompleted(table6.getNewPulmonaryBCCompleted() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCCompleted(tb08TableData.getNewPulmonaryBCCompleted() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDiedTB(table6.getNewPulmonaryBCDiedTB() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDiedTB(tb08TableData.getNewPulmonaryBCDiedTB() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDiedNotTB(table6.getNewPulmonaryBCDiedNotTB() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDiedNotTB(tb08TableData.getNewPulmonaryBCDiedNotTB() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCFailed(table6.getNewPulmonaryBCFailed() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCFailed(tb08TableData.getNewPulmonaryBCFailed() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryBCDefaulted(table6.getNewPulmonaryBCDefaulted() + 1);
-									table6.setNewPulmonaryBCEligible(table6.getNewPulmonaryBCEligible() + 1);
+									tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryBCDefaulted(tb08TableData.getNewPulmonaryBCDefaulted() + 1);
+									tb08TableData.setNewPulmonaryBCEligible(tb08TableData.getNewPulmonaryBCEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-									table6.setNewPulmonaryBCTransferOut(table6.getNewPulmonaryBCTransferOut() + 1);
+									tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+									tb08TableData.setNewPulmonaryBCTransferOut(tb08TableData.getNewPulmonaryBCTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-									table6.setNewPulmonaryBCCanceled(table6.getNewPulmonaryBCCanceled() + 1);
+									tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+									tb08TableData.setNewPulmonaryBCCanceled(tb08TableData.getNewPulmonaryBCCanceled() + 1);
 									
 								}
 								
 								else if (sld != null && sld) {
-									table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-									table6.setNewPulmonaryBCSLD(table6.getNewPulmonaryBCSLD() + 1);
+									tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+									tb08TableData.setNewPulmonaryBCSLD(tb08TableData.getNewPulmonaryBCSLD() + 1);
 									
 								}
 							}
@@ -2959,84 +3005,84 @@ public class Form8Controller {
 						//CD
 						else {
 							
-							table6.setNewPulmonaryCDDetected(table6.getNewPulmonaryCDDetected() + 1);
+							tb08TableData.setNewPulmonaryCDDetected(tb08TableData.getNewPulmonaryCDDetected() + 1);
 							
 							if (ageAtRegistration >= 0 && ageAtRegistration < 5) {
 								
-								table6.setNewPulmonaryCDDetected04(table6.getNewPulmonaryCDDetected04() + 1);
+								tb08TableData.setNewPulmonaryCDDetected04(tb08TableData.getNewPulmonaryCDDetected04() + 1);
 								
 								if (cured != null && cured) {
-									table6.setNewAllCured(table6.getNewAllCured() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDCured04(table6.getNewPulmonaryCDCured04() + 1);
-									table6.setNewPulmonaryCDEligible04(table6.getNewPulmonaryCDEligible04() + 1);
-									table6.setNewPulmonaryCDCured(table6.getNewPulmonaryCDCured() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDCured04(tb08TableData.getNewPulmonaryCDCured04() + 1);
+									tb08TableData.setNewPulmonaryCDEligible04(tb08TableData.getNewPulmonaryCDEligible04() + 1);
+									tb08TableData.setNewPulmonaryCDCured(tb08TableData.getNewPulmonaryCDCured() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDCompleted04(table6.getNewPulmonaryCDCompleted04() + 1);
-									table6.setNewPulmonaryCDEligible04(table6.getNewPulmonaryCDEligible04() + 1);
-									table6.setNewPulmonaryCDCompleted(table6.getNewPulmonaryCDCompleted() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDCompleted04(tb08TableData.getNewPulmonaryCDCompleted04() + 1);
+									tb08TableData.setNewPulmonaryCDEligible04(tb08TableData.getNewPulmonaryCDEligible04() + 1);
+									tb08TableData.setNewPulmonaryCDCompleted(tb08TableData.getNewPulmonaryCDCompleted() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDiedTB04(table6.getNewPulmonaryCDDiedTB04() + 1);
-									table6.setNewPulmonaryCDEligible04(table6.getNewPulmonaryCDEligible04() + 1);
-									table6.setNewPulmonaryCDDiedTB(table6.getNewPulmonaryCDDiedTB() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDiedTB04(tb08TableData.getNewPulmonaryCDDiedTB04() + 1);
+									tb08TableData.setNewPulmonaryCDEligible04(tb08TableData.getNewPulmonaryCDEligible04() + 1);
+									tb08TableData.setNewPulmonaryCDDiedTB(tb08TableData.getNewPulmonaryCDDiedTB() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDiedNotTB04(table6.getNewPulmonaryCDDiedNotTB04() + 1);
-									table6.setNewPulmonaryCDEligible04(table6.getNewPulmonaryCDEligible04() + 1);
-									table6.setNewPulmonaryCDDiedNotTB(table6.getNewPulmonaryCDDiedNotTB() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDiedNotTB04(tb08TableData.getNewPulmonaryCDDiedNotTB04() + 1);
+									tb08TableData.setNewPulmonaryCDEligible04(tb08TableData.getNewPulmonaryCDEligible04() + 1);
+									tb08TableData.setNewPulmonaryCDDiedNotTB(tb08TableData.getNewPulmonaryCDDiedNotTB() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDFailed04(table6.getNewPulmonaryCDFailed04() + 1);
-									table6.setNewPulmonaryCDEligible04(table6.getNewPulmonaryCDEligible04() + 1);
-									table6.setNewPulmonaryCDFailed(table6.getNewPulmonaryCDFailed() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDFailed04(tb08TableData.getNewPulmonaryCDFailed04() + 1);
+									tb08TableData.setNewPulmonaryCDEligible04(tb08TableData.getNewPulmonaryCDEligible04() + 1);
+									tb08TableData.setNewPulmonaryCDFailed(tb08TableData.getNewPulmonaryCDFailed() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDefaulted04(table6.getNewPulmonaryCDDefaulted04() + 1);
-									table6.setNewPulmonaryCDEligible04(table6.getNewPulmonaryCDEligible04() + 1);
-									table6.setNewPulmonaryCDDefaulted(table6.getNewPulmonaryCDDefaulted() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDefaulted04(tb08TableData.getNewPulmonaryCDDefaulted04() + 1);
+									tb08TableData.setNewPulmonaryCDEligible04(tb08TableData.getNewPulmonaryCDEligible04() + 1);
+									tb08TableData.setNewPulmonaryCDDefaulted(tb08TableData.getNewPulmonaryCDDefaulted() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-									table6.setNewPulmonaryCDTransferOut04(table6.getNewPulmonaryCDTransferOut04() + 1);
-									table6.setNewPulmonaryCDTransferOut(table6.getNewPulmonaryCDTransferOut() + 1);
+									tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+									tb08TableData.setNewPulmonaryCDTransferOut04(tb08TableData.getNewPulmonaryCDTransferOut04() + 1);
+									tb08TableData.setNewPulmonaryCDTransferOut(tb08TableData.getNewPulmonaryCDTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-									table6.setNewPulmonaryCDCanceled04(table6.getNewPulmonaryCDCanceled04() + 1);
-									table6.setNewPulmonaryCDCanceled(table6.getNewPulmonaryCDCanceled() + 1);
+									tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+									tb08TableData.setNewPulmonaryCDCanceled04(tb08TableData.getNewPulmonaryCDCanceled04() + 1);
+									tb08TableData.setNewPulmonaryCDCanceled(tb08TableData.getNewPulmonaryCDCanceled() + 1);
 									
 								}
 								
 								else if (sld != null && sld) {
-									table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-									table6.setNewPulmonaryCDSLD04(table6.getNewPulmonaryCDSLD04() + 1);
-									table6.setNewPulmonaryCDSLD(table6.getNewPulmonaryCDSLD() + 1);
+									tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+									tb08TableData.setNewPulmonaryCDSLD04(tb08TableData.getNewPulmonaryCDSLD04() + 1);
+									tb08TableData.setNewPulmonaryCDSLD(tb08TableData.getNewPulmonaryCDSLD() + 1);
 									
 								}
 								
@@ -3044,80 +3090,80 @@ public class Form8Controller {
 							
 							else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 								
-								table6.setNewPulmonaryCDDetected0514(table6.getNewPulmonaryCDDetected0514() + 1);
+								tb08TableData.setNewPulmonaryCDDetected0514(tb08TableData.getNewPulmonaryCDDetected0514() + 1);
 								
 								if (cured != null && cured) {
-									table6.setNewAllCured(table6.getNewAllCured() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDCured0514(table6.getNewPulmonaryCDCured0514() + 1);
-									table6.setNewPulmonaryCDEligible0514(table6.getNewPulmonaryCDEligible0514() + 1);
-									table6.setNewPulmonaryCDCured(table6.getNewPulmonaryCDCured() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDCured0514(tb08TableData.getNewPulmonaryCDCured0514() + 1);
+									tb08TableData.setNewPulmonaryCDEligible0514(tb08TableData.getNewPulmonaryCDEligible0514() + 1);
+									tb08TableData.setNewPulmonaryCDCured(tb08TableData.getNewPulmonaryCDCured() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDCompleted0514(table6.getNewPulmonaryCDCompleted0514() + 1);
-									table6.setNewPulmonaryCDEligible0514(table6.getNewPulmonaryCDEligible0514() + 1);
-									table6.setNewPulmonaryCDCompleted(table6.getNewPulmonaryCDCompleted() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDCompleted0514(tb08TableData.getNewPulmonaryCDCompleted0514() + 1);
+									tb08TableData.setNewPulmonaryCDEligible0514(tb08TableData.getNewPulmonaryCDEligible0514() + 1);
+									tb08TableData.setNewPulmonaryCDCompleted(tb08TableData.getNewPulmonaryCDCompleted() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDiedTB0514(table6.getNewPulmonaryCDDiedTB0514() + 1);
-									table6.setNewPulmonaryCDEligible0514(table6.getNewPulmonaryCDEligible0514() + 1);
-									table6.setNewPulmonaryCDDiedTB(table6.getNewPulmonaryCDDiedTB() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDiedTB0514(tb08TableData.getNewPulmonaryCDDiedTB0514() + 1);
+									tb08TableData.setNewPulmonaryCDEligible0514(tb08TableData.getNewPulmonaryCDEligible0514() + 1);
+									tb08TableData.setNewPulmonaryCDDiedTB(tb08TableData.getNewPulmonaryCDDiedTB() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDiedNotTB0514(table6.getNewPulmonaryCDDiedNotTB0514() + 1);
-									table6.setNewPulmonaryCDEligible0514(table6.getNewPulmonaryCDEligible0514() + 1);
-									table6.setNewPulmonaryCDDiedNotTB(table6.getNewPulmonaryCDDiedNotTB() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDiedNotTB0514(tb08TableData.getNewPulmonaryCDDiedNotTB0514() + 1);
+									tb08TableData.setNewPulmonaryCDEligible0514(tb08TableData.getNewPulmonaryCDEligible0514() + 1);
+									tb08TableData.setNewPulmonaryCDDiedNotTB(tb08TableData.getNewPulmonaryCDDiedNotTB() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDFailed0514(table6.getNewPulmonaryCDFailed0514() + 1);
-									table6.setNewPulmonaryCDEligible0514(table6.getNewPulmonaryCDEligible0514() + 1);
-									table6.setNewPulmonaryCDFailed(table6.getNewPulmonaryCDFailed() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDFailed0514(tb08TableData.getNewPulmonaryCDFailed0514() + 1);
+									tb08TableData.setNewPulmonaryCDEligible0514(tb08TableData.getNewPulmonaryCDEligible0514() + 1);
+									tb08TableData.setNewPulmonaryCDFailed(tb08TableData.getNewPulmonaryCDFailed() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDefaulted0514(table6.getNewPulmonaryCDDefaulted0514() + 1);
-									table6.setNewPulmonaryCDEligible0514(table6.getNewPulmonaryCDEligible0514() + 1);
-									table6.setNewPulmonaryCDDefaulted(table6.getNewPulmonaryCDDefaulted() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDefaulted0514(tb08TableData.getNewPulmonaryCDDefaulted0514() + 1);
+									tb08TableData.setNewPulmonaryCDEligible0514(tb08TableData.getNewPulmonaryCDEligible0514() + 1);
+									tb08TableData.setNewPulmonaryCDDefaulted(tb08TableData.getNewPulmonaryCDDefaulted() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-									table6.setNewPulmonaryCDTransferOut0514(table6.getNewPulmonaryCDTransferOut0514() + 1);
-									table6.setNewPulmonaryCDTransferOut(table6.getNewPulmonaryCDTransferOut() + 1);
+									tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+									tb08TableData.setNewPulmonaryCDTransferOut0514(tb08TableData.getNewPulmonaryCDTransferOut0514() + 1);
+									tb08TableData.setNewPulmonaryCDTransferOut(tb08TableData.getNewPulmonaryCDTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-									table6.setNewPulmonaryCDCanceled0514(table6.getNewPulmonaryCDCanceled0514() + 1);
-									table6.setNewPulmonaryCDCanceled(table6.getNewPulmonaryCDCanceled() + 1);
+									tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+									tb08TableData.setNewPulmonaryCDCanceled0514(tb08TableData.getNewPulmonaryCDCanceled0514() + 1);
+									tb08TableData.setNewPulmonaryCDCanceled(tb08TableData.getNewPulmonaryCDCanceled() + 1);
 									
 								}
 								
 								else if (sld != null && sld) {
-									table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-									table6.setNewPulmonaryCDSLD0514(table6.getNewPulmonaryCDSLD0514() + 1);
-									table6.setNewPulmonaryCDSLD(table6.getNewPulmonaryCDSLD() + 1);
+									tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+									tb08TableData.setNewPulmonaryCDSLD0514(tb08TableData.getNewPulmonaryCDSLD0514() + 1);
+									tb08TableData.setNewPulmonaryCDSLD(tb08TableData.getNewPulmonaryCDSLD() + 1);
 									
 								}
 								
@@ -3125,79 +3171,79 @@ public class Form8Controller {
 							
 							else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 								
-								table6.setNewPulmonaryCDDetected1517(table6.getNewPulmonaryCDDetected1517() + 1);
+								tb08TableData.setNewPulmonaryCDDetected1517(tb08TableData.getNewPulmonaryCDDetected1517() + 1);
 								
 								if (cured != null && cured) {
-									table6.setNewAllCured(table6.getNewAllCured() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDCured1517(table6.getNewPulmonaryCDCured1517() + 1);
-									table6.setNewPulmonaryCDEligible1517(table6.getNewPulmonaryCDEligible1517() + 1);
-									table6.setNewPulmonaryCDCured(table6.getNewPulmonaryCDCured() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDCured1517(tb08TableData.getNewPulmonaryCDCured1517() + 1);
+									tb08TableData.setNewPulmonaryCDEligible1517(tb08TableData.getNewPulmonaryCDEligible1517() + 1);
+									tb08TableData.setNewPulmonaryCDCured(tb08TableData.getNewPulmonaryCDCured() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDCompleted1517(table6.getNewPulmonaryCDCompleted1517() + 1);
-									table6.setNewPulmonaryCDEligible1517(table6.getNewPulmonaryCDEligible1517() + 1);
-									table6.setNewPulmonaryCDCompleted(table6.getNewPulmonaryCDCompleted() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDCompleted1517(tb08TableData.getNewPulmonaryCDCompleted1517() + 1);
+									tb08TableData.setNewPulmonaryCDEligible1517(tb08TableData.getNewPulmonaryCDEligible1517() + 1);
+									tb08TableData.setNewPulmonaryCDCompleted(tb08TableData.getNewPulmonaryCDCompleted() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDiedTB1517(table6.getNewPulmonaryCDDiedTB1517() + 1);
-									table6.setNewPulmonaryCDEligible1517(table6.getNewPulmonaryCDEligible1517() + 1);
-									table6.setNewPulmonaryCDDiedTB(table6.getNewPulmonaryCDDiedTB() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDiedTB1517(tb08TableData.getNewPulmonaryCDDiedTB1517() + 1);
+									tb08TableData.setNewPulmonaryCDEligible1517(tb08TableData.getNewPulmonaryCDEligible1517() + 1);
+									tb08TableData.setNewPulmonaryCDDiedTB(tb08TableData.getNewPulmonaryCDDiedTB() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDiedNotTB1517(table6.getNewPulmonaryCDDiedNotTB1517() + 1);
-									table6.setNewPulmonaryCDEligible1517(table6.getNewPulmonaryCDEligible1517() + 1);
-									table6.setNewPulmonaryCDDiedNotTB(table6.getNewPulmonaryCDDiedNotTB() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDiedNotTB1517(tb08TableData.getNewPulmonaryCDDiedNotTB1517() + 1);
+									tb08TableData.setNewPulmonaryCDEligible1517(tb08TableData.getNewPulmonaryCDEligible1517() + 1);
+									tb08TableData.setNewPulmonaryCDDiedNotTB(tb08TableData.getNewPulmonaryCDDiedNotTB() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDFailed1517(table6.getNewPulmonaryCDFailed1517() + 1);
-									table6.setNewPulmonaryCDEligible1517(table6.getNewPulmonaryCDEligible1517() + 1);
-									table6.setNewPulmonaryCDFailed(table6.getNewPulmonaryCDFailed() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDFailed1517(tb08TableData.getNewPulmonaryCDFailed1517() + 1);
+									tb08TableData.setNewPulmonaryCDEligible1517(tb08TableData.getNewPulmonaryCDEligible1517() + 1);
+									tb08TableData.setNewPulmonaryCDFailed(tb08TableData.getNewPulmonaryCDFailed() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDefaulted1517(table6.getNewPulmonaryCDDefaulted1517() + 1);
-									table6.setNewPulmonaryCDEligible1517(table6.getNewPulmonaryCDEligible1517() + 1);
-									table6.setNewPulmonaryCDDefaulted(table6.getNewPulmonaryCDDefaulted() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDefaulted1517(tb08TableData.getNewPulmonaryCDDefaulted1517() + 1);
+									tb08TableData.setNewPulmonaryCDEligible1517(tb08TableData.getNewPulmonaryCDEligible1517() + 1);
+									tb08TableData.setNewPulmonaryCDDefaulted(tb08TableData.getNewPulmonaryCDDefaulted() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-									table6.setNewPulmonaryCDTransferOut1517(table6.getNewPulmonaryCDTransferOut1517() + 1);
-									table6.setNewPulmonaryCDTransferOut(table6.getNewPulmonaryCDTransferOut() + 1);
+									tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+									tb08TableData.setNewPulmonaryCDTransferOut1517(tb08TableData.getNewPulmonaryCDTransferOut1517() + 1);
+									tb08TableData.setNewPulmonaryCDTransferOut(tb08TableData.getNewPulmonaryCDTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-									table6.setNewPulmonaryCDCanceled1517(table6.getNewPulmonaryCDCanceled1517() + 1);
-									table6.setNewPulmonaryCDCanceled(table6.getNewPulmonaryCDCanceled() + 1);
+									tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+									tb08TableData.setNewPulmonaryCDCanceled1517(tb08TableData.getNewPulmonaryCDCanceled1517() + 1);
+									tb08TableData.setNewPulmonaryCDCanceled(tb08TableData.getNewPulmonaryCDCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-									table6.setNewPulmonaryCDSLD1517(table6.getNewPulmonaryCDSLD1517() + 1);
-									table6.setNewPulmonaryCDSLD(table6.getNewPulmonaryCDSLD() + 1);
+									tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+									tb08TableData.setNewPulmonaryCDSLD1517(tb08TableData.getNewPulmonaryCDSLD1517() + 1);
+									tb08TableData.setNewPulmonaryCDSLD(tb08TableData.getNewPulmonaryCDSLD() + 1);
 								}
 								
 							}
@@ -3205,62 +3251,62 @@ public class Form8Controller {
 							else {
 								
 								if (cured != null && cured) {
-									table6.setNewAllCured(table6.getNewAllCured() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDCured(table6.getNewPulmonaryCDCured() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDCured(tb08TableData.getNewPulmonaryCDCured() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDCompleted(table6.getNewPulmonaryCDCompleted() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDCompleted(tb08TableData.getNewPulmonaryCDCompleted() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDiedTB(table6.getNewPulmonaryCDDiedTB() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDiedTB(tb08TableData.getNewPulmonaryCDDiedTB() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDiedNotTB(table6.getNewPulmonaryCDDiedNotTB() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDiedNotTB(tb08TableData.getNewPulmonaryCDDiedNotTB() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDFailed(table6.getNewPulmonaryCDFailed() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDFailed(tb08TableData.getNewPulmonaryCDFailed() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-									table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-									table6.setNewPulmonaryCDDefaulted(table6.getNewPulmonaryCDDefaulted() + 1);
-									table6.setNewPulmonaryCDEligible(table6.getNewPulmonaryCDEligible() + 1);
+									tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+									tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+									tb08TableData.setNewPulmonaryCDDefaulted(tb08TableData.getNewPulmonaryCDDefaulted() + 1);
+									tb08TableData.setNewPulmonaryCDEligible(tb08TableData.getNewPulmonaryCDEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-									table6.setNewPulmonaryCDTransferOut(table6.getNewPulmonaryCDTransferOut() + 1);
+									tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+									tb08TableData.setNewPulmonaryCDTransferOut(tb08TableData.getNewPulmonaryCDTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-									table6.setNewPulmonaryCDCanceled(table6.getNewPulmonaryCDCanceled() + 1);
+									tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+									tb08TableData.setNewPulmonaryCDCanceled(tb08TableData.getNewPulmonaryCDCanceled() + 1);
 									
 								}
 								
 								else if (sld != null && sld) {
-									table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-									table6.setNewPulmonaryCDSLD(table6.getNewPulmonaryCDSLD() + 1);
+									tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+									tb08TableData.setNewPulmonaryCDSLD(tb08TableData.getNewPulmonaryCDSLD() + 1);
 									
 								}
 							}
@@ -3270,239 +3316,239 @@ public class Form8Controller {
 					//EP
 					else if (pulmonary != null && !pulmonary) {
 						
-						table6.setNewExtrapulmonaryDetected(table6.getNewExtrapulmonaryDetected() + 1);
+						tb08TableData.setNewExtrapulmonaryDetected(tb08TableData.getNewExtrapulmonaryDetected() + 1);
 						
 						if (ageAtRegistration >= 0 && ageAtRegistration < 5) {
 							
-							table6.setNewExtrapulmonaryDetected04(table6.getNewExtrapulmonaryDetected04() + 1);
+							tb08TableData.setNewExtrapulmonaryDetected04(tb08TableData.getNewExtrapulmonaryDetected04() + 1);
 							
 							if (cured != null && cured) {
-								table6.setNewAllCured(table6.getNewAllCured() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryCured04(table6.getNewExtrapulmonaryCured04() + 1);
-								table6.setNewExtrapulmonaryEligible04(table6.getNewExtrapulmonaryEligible04() + 1);
-								table6.setNewExtrapulmonaryCured(table6.getNewExtrapulmonaryCured() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryCured04(tb08TableData.getNewExtrapulmonaryCured04() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible04(tb08TableData.getNewExtrapulmonaryEligible04() + 1);
+								tb08TableData.setNewExtrapulmonaryCured(tb08TableData.getNewExtrapulmonaryCured() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryCompleted04(table6.getNewExtrapulmonaryCompleted04() + 1);
-								table6.setNewExtrapulmonaryEligible04(table6.getNewExtrapulmonaryEligible04() + 1);
-								table6.setNewExtrapulmonaryCompleted(table6.getNewExtrapulmonaryCompleted() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryCompleted04(tb08TableData.getNewExtrapulmonaryCompleted04() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible04(tb08TableData.getNewExtrapulmonaryEligible04() + 1);
+								tb08TableData.setNewExtrapulmonaryCompleted(tb08TableData.getNewExtrapulmonaryCompleted() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDiedTB04(table6.getNewExtrapulmonaryDiedTB04() + 1);
-								table6.setNewExtrapulmonaryEligible04(table6.getNewExtrapulmonaryEligible04() + 1);
-								table6.setNewExtrapulmonaryDiedTB(table6.getNewExtrapulmonaryDiedTB() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedTB04(tb08TableData.getNewExtrapulmonaryDiedTB04() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible04(tb08TableData.getNewExtrapulmonaryEligible04() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedTB(tb08TableData.getNewExtrapulmonaryDiedTB() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDiedNotTB04(table6.getNewExtrapulmonaryDiedNotTB04() + 1);
-								table6.setNewExtrapulmonaryEligible04(table6.getNewExtrapulmonaryEligible04() + 1);
-								table6.setNewExtrapulmonaryDiedNotTB(table6.getNewExtrapulmonaryDiedNotTB() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedNotTB04(tb08TableData.getNewExtrapulmonaryDiedNotTB04() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible04(tb08TableData.getNewExtrapulmonaryEligible04() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedNotTB(tb08TableData.getNewExtrapulmonaryDiedNotTB() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryFailed04(table6.getNewExtrapulmonaryFailed04() + 1);
-								table6.setNewExtrapulmonaryEligible04(table6.getNewExtrapulmonaryEligible04() + 1);
-								table6.setNewExtrapulmonaryFailed(table6.getNewExtrapulmonaryFailed() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryFailed04(tb08TableData.getNewExtrapulmonaryFailed04() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible04(tb08TableData.getNewExtrapulmonaryEligible04() + 1);
+								tb08TableData.setNewExtrapulmonaryFailed(tb08TableData.getNewExtrapulmonaryFailed() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDefaulted04(table6.getNewExtrapulmonaryDefaulted04() + 1);
-								table6.setNewExtrapulmonaryEligible04(table6.getNewExtrapulmonaryEligible04() + 1);
-								table6.setNewExtrapulmonaryDefaulted(table6.getNewExtrapulmonaryDefaulted() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDefaulted04(tb08TableData.getNewExtrapulmonaryDefaulted04() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible04(tb08TableData.getNewExtrapulmonaryEligible04() + 1);
+								tb08TableData.setNewExtrapulmonaryDefaulted(tb08TableData.getNewExtrapulmonaryDefaulted() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-								table6.setNewExtrapulmonaryTransferOut04(table6.getNewExtrapulmonaryTransferOut04() + 1);
-								table6.setNewExtrapulmonaryTransferOut(table6.getNewExtrapulmonaryTransferOut() + 1);
+								tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+								tb08TableData.setNewExtrapulmonaryTransferOut04(tb08TableData.getNewExtrapulmonaryTransferOut04() + 1);
+								tb08TableData.setNewExtrapulmonaryTransferOut(tb08TableData.getNewExtrapulmonaryTransferOut() + 1);
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-								table6.setNewExtrapulmonaryCanceled04(table6.getNewExtrapulmonaryCanceled04() + 1);
-								table6.setNewExtrapulmonaryCanceled(table6.getNewExtrapulmonaryCanceled() + 1);
+								tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+								tb08TableData.setNewExtrapulmonaryCanceled04(tb08TableData.getNewExtrapulmonaryCanceled04() + 1);
+								tb08TableData.setNewExtrapulmonaryCanceled(tb08TableData.getNewExtrapulmonaryCanceled() + 1);
 							}
 							
 							else if (sld != null && sld) {
-								table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-								table6.setNewExtrapulmonarySLD04(table6.getNewExtrapulmonarySLD04() + 1);
-								table6.setNewExtrapulmonarySLD(table6.getNewExtrapulmonarySLD() + 1);
+								tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+								tb08TableData.setNewExtrapulmonarySLD04(tb08TableData.getNewExtrapulmonarySLD04() + 1);
+								tb08TableData.setNewExtrapulmonarySLD(tb08TableData.getNewExtrapulmonarySLD() + 1);
 							}
 							
 						}
 						
 						else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 							
-							table6.setNewExtrapulmonaryDetected0514(table6.getNewExtrapulmonaryDetected0514() + 1);
+							tb08TableData.setNewExtrapulmonaryDetected0514(tb08TableData.getNewExtrapulmonaryDetected0514() + 1);
 							
 							if (cured != null && cured) {
-								table6.setNewAllCured(table6.getNewAllCured() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryCured0514(table6.getNewExtrapulmonaryCured0514() + 1);
-								table6.setNewExtrapulmonaryEligible0514(table6.getNewExtrapulmonaryEligible0514() + 1);
-								table6.setNewExtrapulmonaryCured(table6.getNewExtrapulmonaryCured() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryCured0514(tb08TableData.getNewExtrapulmonaryCured0514() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible0514(tb08TableData.getNewExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setNewExtrapulmonaryCured(tb08TableData.getNewExtrapulmonaryCured() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryCompleted0514(table6.getNewExtrapulmonaryCompleted0514() + 1);
-								table6.setNewExtrapulmonaryEligible0514(table6.getNewExtrapulmonaryEligible0514() + 1);
-								table6.setNewExtrapulmonaryCompleted(table6.getNewExtrapulmonaryCompleted() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryCompleted0514(tb08TableData.getNewExtrapulmonaryCompleted0514() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible0514(tb08TableData.getNewExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setNewExtrapulmonaryCompleted(tb08TableData.getNewExtrapulmonaryCompleted() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDiedTB0514(table6.getNewExtrapulmonaryDiedTB0514() + 1);
-								table6.setNewExtrapulmonaryEligible0514(table6.getNewExtrapulmonaryEligible0514() + 1);
-								table6.setNewExtrapulmonaryDiedTB(table6.getNewExtrapulmonaryDiedTB() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedTB0514(tb08TableData.getNewExtrapulmonaryDiedTB0514() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible0514(tb08TableData.getNewExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedTB(tb08TableData.getNewExtrapulmonaryDiedTB() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDiedNotTB0514(table6.getNewExtrapulmonaryDiedNotTB0514() + 1);
-								table6.setNewExtrapulmonaryEligible0514(table6.getNewExtrapulmonaryEligible0514() + 1);
-								table6.setNewExtrapulmonaryDiedNotTB(table6.getNewExtrapulmonaryDiedNotTB() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedNotTB0514(tb08TableData.getNewExtrapulmonaryDiedNotTB0514() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible0514(tb08TableData.getNewExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedNotTB(tb08TableData.getNewExtrapulmonaryDiedNotTB() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryFailed0514(table6.getNewExtrapulmonaryFailed0514() + 1);
-								table6.setNewExtrapulmonaryEligible0514(table6.getNewExtrapulmonaryEligible0514() + 1);
-								table6.setNewExtrapulmonaryFailed(table6.getNewExtrapulmonaryFailed() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryFailed0514(tb08TableData.getNewExtrapulmonaryFailed0514() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible0514(tb08TableData.getNewExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setNewExtrapulmonaryFailed(tb08TableData.getNewExtrapulmonaryFailed() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDefaulted0514(table6.getNewExtrapulmonaryDefaulted0514() + 1);
-								table6.setNewExtrapulmonaryEligible0514(table6.getNewExtrapulmonaryEligible0514() + 1);
-								table6.setNewExtrapulmonaryDefaulted(table6.getNewExtrapulmonaryDefaulted() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDefaulted0514(tb08TableData.getNewExtrapulmonaryDefaulted0514() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible0514(tb08TableData.getNewExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setNewExtrapulmonaryDefaulted(tb08TableData.getNewExtrapulmonaryDefaulted() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-								table6.setNewExtrapulmonaryTransferOut0514(table6.getNewExtrapulmonaryTransferOut0514() + 1);
-								table6.setNewExtrapulmonaryTransferOut(table6.getNewExtrapulmonaryTransferOut() + 1);
+								tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+								tb08TableData.setNewExtrapulmonaryTransferOut0514(tb08TableData.getNewExtrapulmonaryTransferOut0514() + 1);
+								tb08TableData.setNewExtrapulmonaryTransferOut(tb08TableData.getNewExtrapulmonaryTransferOut() + 1);
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-								table6.setNewExtrapulmonaryCanceled0514(table6.getNewExtrapulmonaryCanceled0514() + 1);
-								table6.setNewExtrapulmonaryCanceled(table6.getNewExtrapulmonaryCanceled() + 1);
+								tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+								tb08TableData.setNewExtrapulmonaryCanceled0514(tb08TableData.getNewExtrapulmonaryCanceled0514() + 1);
+								tb08TableData.setNewExtrapulmonaryCanceled(tb08TableData.getNewExtrapulmonaryCanceled() + 1);
 							}
 							
 							else if (sld != null && sld) {
-								table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-								table6.setNewExtrapulmonarySLD0514(table6.getNewExtrapulmonarySLD0514() + 1);
-								table6.setNewExtrapulmonarySLD(table6.getNewExtrapulmonarySLD() + 1);
+								tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+								tb08TableData.setNewExtrapulmonarySLD0514(tb08TableData.getNewExtrapulmonarySLD0514() + 1);
+								tb08TableData.setNewExtrapulmonarySLD(tb08TableData.getNewExtrapulmonarySLD() + 1);
 							}
 							
 						}
 						
 						else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 							
-							table6.setNewExtrapulmonaryDetected1517(table6.getNewExtrapulmonaryDetected1517() + 1);
+							tb08TableData.setNewExtrapulmonaryDetected1517(tb08TableData.getNewExtrapulmonaryDetected1517() + 1);
 							
 							if (cured != null && cured) {
-								table6.setNewAllCured(table6.getNewAllCured() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryCured1517(table6.getNewExtrapulmonaryCured1517() + 1);
-								table6.setNewExtrapulmonaryEligible1517(table6.getNewExtrapulmonaryEligible1517() + 1);
-								table6.setNewExtrapulmonaryCured(table6.getNewExtrapulmonaryCured() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryCured1517(tb08TableData.getNewExtrapulmonaryCured1517() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible1517(tb08TableData.getNewExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setNewExtrapulmonaryCured(tb08TableData.getNewExtrapulmonaryCured() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryCompleted1517(table6.getNewExtrapulmonaryCompleted1517() + 1);
-								table6.setNewExtrapulmonaryEligible1517(table6.getNewExtrapulmonaryEligible1517() + 1);
-								table6.setNewExtrapulmonaryCompleted(table6.getNewExtrapulmonaryCompleted() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryCompleted1517(tb08TableData.getNewExtrapulmonaryCompleted1517() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible1517(tb08TableData.getNewExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setNewExtrapulmonaryCompleted(tb08TableData.getNewExtrapulmonaryCompleted() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDiedTB1517(table6.getNewExtrapulmonaryDiedTB1517() + 1);
-								table6.setNewExtrapulmonaryEligible1517(table6.getNewExtrapulmonaryEligible1517() + 1);
-								table6.setNewExtrapulmonaryDiedTB(table6.getNewExtrapulmonaryDiedTB() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedTB1517(tb08TableData.getNewExtrapulmonaryDiedTB1517() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible1517(tb08TableData.getNewExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedTB(tb08TableData.getNewExtrapulmonaryDiedTB() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDiedNotTB1517(table6.getNewExtrapulmonaryDiedNotTB1517() + 1);
-								table6.setNewExtrapulmonaryEligible1517(table6.getNewExtrapulmonaryEligible1517() + 1);
-								table6.setNewExtrapulmonaryDiedNotTB(table6.getNewExtrapulmonaryDiedNotTB() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedNotTB1517(tb08TableData.getNewExtrapulmonaryDiedNotTB1517() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible1517(tb08TableData.getNewExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedNotTB(tb08TableData.getNewExtrapulmonaryDiedNotTB() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryFailed1517(table6.getNewExtrapulmonaryFailed1517() + 1);
-								table6.setNewExtrapulmonaryEligible1517(table6.getNewExtrapulmonaryEligible1517() + 1);
-								table6.setNewExtrapulmonaryFailed(table6.getNewExtrapulmonaryFailed() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryFailed1517(tb08TableData.getNewExtrapulmonaryFailed1517() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible1517(tb08TableData.getNewExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setNewExtrapulmonaryFailed(tb08TableData.getNewExtrapulmonaryFailed() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDefaulted1517(table6.getNewExtrapulmonaryDefaulted1517() + 1);
-								table6.setNewExtrapulmonaryEligible1517(table6.getNewExtrapulmonaryEligible1517() + 1);
-								table6.setNewExtrapulmonaryDefaulted(table6.getNewExtrapulmonaryDefaulted() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDefaulted1517(tb08TableData.getNewExtrapulmonaryDefaulted1517() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible1517(tb08TableData.getNewExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setNewExtrapulmonaryDefaulted(tb08TableData.getNewExtrapulmonaryDefaulted() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-								table6.setNewExtrapulmonaryTransferOut1517(table6.getNewExtrapulmonaryTransferOut1517() + 1);
-								table6.setNewExtrapulmonaryTransferOut(table6.getNewExtrapulmonaryTransferOut() + 1);
+								tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+								tb08TableData.setNewExtrapulmonaryTransferOut1517(tb08TableData.getNewExtrapulmonaryTransferOut1517() + 1);
+								tb08TableData.setNewExtrapulmonaryTransferOut(tb08TableData.getNewExtrapulmonaryTransferOut() + 1);
 								
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-								table6.setNewExtrapulmonaryCanceled1517(table6.getNewExtrapulmonaryCanceled1517() + 1);
-								table6.setNewExtrapulmonaryCanceled(table6.getNewExtrapulmonaryCanceled() + 1);
+								tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+								tb08TableData.setNewExtrapulmonaryCanceled1517(tb08TableData.getNewExtrapulmonaryCanceled1517() + 1);
+								tb08TableData.setNewExtrapulmonaryCanceled(tb08TableData.getNewExtrapulmonaryCanceled() + 1);
 							}
 							
 							else if (sld != null && sld) {
-								table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-								table6.setNewExtrapulmonarySLD1517(table6.getNewExtrapulmonarySLD1517() + 1);
-								table6.setNewExtrapulmonarySLD(table6.getNewExtrapulmonarySLD() + 1);
+								tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+								tb08TableData.setNewExtrapulmonarySLD1517(tb08TableData.getNewExtrapulmonarySLD1517() + 1);
+								tb08TableData.setNewExtrapulmonarySLD(tb08TableData.getNewExtrapulmonarySLD() + 1);
 							}
 							
 						}
@@ -3510,62 +3556,62 @@ public class Form8Controller {
 						else {
 							
 							if (cured != null && cured) {
-								table6.setNewAllCured(table6.getNewAllCured() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryCured(table6.getNewExtrapulmonaryCured() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllCured(tb08TableData.getNewAllCured() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryCured(tb08TableData.getNewExtrapulmonaryCured() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setNewAllCompleted(table6.getNewAllCompleted() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryCompleted(table6.getNewExtrapulmonaryCompleted() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllCompleted(tb08TableData.getNewAllCompleted() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryCompleted(tb08TableData.getNewExtrapulmonaryCompleted() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setNewAllDiedTB(table6.getNewAllDiedTB() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDiedTB(table6.getNewExtrapulmonaryDiedTB() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDiedTB(tb08TableData.getNewAllDiedTB() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedTB(tb08TableData.getNewExtrapulmonaryDiedTB() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setNewAllDiedNotTB(table6.getNewAllDiedNotTB() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDiedNotTB(table6.getNewExtrapulmonaryDiedNotTB() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDiedNotTB(tb08TableData.getNewAllDiedNotTB() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDiedNotTB(tb08TableData.getNewExtrapulmonaryDiedNotTB() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setNewAllFailed(table6.getNewAllFailed() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryFailed(table6.getNewExtrapulmonaryFailed() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllFailed(tb08TableData.getNewAllFailed() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryFailed(tb08TableData.getNewExtrapulmonaryFailed() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setNewAllDefaulted(table6.getNewAllDefaulted() + 1);
-								table6.setNewAllEligible(table6.getNewAllEligible() + 1);
-								table6.setNewExtrapulmonaryDefaulted(table6.getNewExtrapulmonaryDefaulted() + 1);
-								table6.setNewExtrapulmonaryEligible(table6.getNewExtrapulmonaryEligible() + 1);
+								tb08TableData.setNewAllDefaulted(tb08TableData.getNewAllDefaulted() + 1);
+								tb08TableData.setNewAllEligible(tb08TableData.getNewAllEligible() + 1);
+								tb08TableData.setNewExtrapulmonaryDefaulted(tb08TableData.getNewExtrapulmonaryDefaulted() + 1);
+								tb08TableData.setNewExtrapulmonaryEligible(tb08TableData.getNewExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setNewAllTransferOut(table6.getNewAllTransferOut() + 1);
-								table6.setNewExtrapulmonaryTransferOut(table6.getNewExtrapulmonaryTransferOut() + 1);
+								tb08TableData.setNewAllTransferOut(tb08TableData.getNewAllTransferOut() + 1);
+								tb08TableData.setNewExtrapulmonaryTransferOut(tb08TableData.getNewExtrapulmonaryTransferOut() + 1);
 								
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setNewAllCanceled(table6.getNewAllCanceled() + 1);
-								table6.setNewExtrapulmonaryCanceled(table6.getNewExtrapulmonaryCanceled() + 1);
+								tb08TableData.setNewAllCanceled(tb08TableData.getNewAllCanceled() + 1);
+								tb08TableData.setNewExtrapulmonaryCanceled(tb08TableData.getNewExtrapulmonaryCanceled() + 1);
 								
 							}
 							
 							else if (sld != null && sld) {
-								table6.setNewAllSLD(table6.getNewAllSLD() + 1);
-								table6.setNewExtrapulmonarySLD(table6.getNewExtrapulmonarySLD() + 1);
+								tb08TableData.setNewAllSLD(tb08TableData.getNewAllSLD() + 1);
+								tb08TableData.setNewExtrapulmonarySLD(tb08TableData.getNewExtrapulmonarySLD() + 1);
 								
 							}
 						}
@@ -3582,7 +3628,7 @@ public class Form8Controller {
 				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				                MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID)))) {
 					
-					table6.setRelapseAllDetected(table6.getRelapseAllDetected() + 1);
+					tb08TableData.setRelapseAllDetected(tb08TableData.getRelapseAllDetected() + 1);
 					
 					//P
 					if (pulmonary != null && pulmonary) {
@@ -3590,242 +3636,242 @@ public class Form8Controller {
 						//BC
 						if (bacPositive) {
 							
-							table6.setRelapsePulmonaryBCDetected(table6.getRelapsePulmonaryBCDetected() + 1);
+							tb08TableData.setRelapsePulmonaryBCDetected(tb08TableData.getRelapsePulmonaryBCDetected() + 1);
 							
 							if (ageAtRegistration >= 0 && ageAtRegistration < 5) {
 								
-								table6.setRelapsePulmonaryBCDetected04(table6.getRelapsePulmonaryBCDetected04() + 1);
+								tb08TableData.setRelapsePulmonaryBCDetected04(tb08TableData.getRelapsePulmonaryBCDetected04() + 1);
 								
 								if (cured != null && cured) {
-									table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCCured04(table6.getRelapsePulmonaryBCCured04() + 1);
-									table6.setRelapsePulmonaryBCEligible04(table6.getRelapsePulmonaryBCEligible04() + 1);
-									table6.setRelapsePulmonaryBCCured(table6.getRelapsePulmonaryBCCured() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCCured04(tb08TableData.getRelapsePulmonaryBCCured04() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible04(tb08TableData.getRelapsePulmonaryBCEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryBCCured(tb08TableData.getRelapsePulmonaryBCCured() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 									
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCCompleted04(table6.getRelapsePulmonaryBCCompleted04() + 1);
-									table6.setRelapsePulmonaryBCEligible04(table6.getRelapsePulmonaryBCEligible04() + 1);
-									table6.setRelapsePulmonaryBCCompleted(table6.getRelapsePulmonaryBCCompleted() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCCompleted04(tb08TableData.getRelapsePulmonaryBCCompleted04() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible04(tb08TableData.getRelapsePulmonaryBCEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryBCCompleted(tb08TableData.getRelapsePulmonaryBCCompleted() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDiedTB04(table6.getRelapsePulmonaryBCDiedTB04() + 1);
-									table6.setRelapsePulmonaryBCEligible04(table6.getRelapsePulmonaryBCEligible04() + 1);
-									table6.setRelapsePulmonaryBCDiedTB(table6.getRelapsePulmonaryBCDiedTB() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedTB04(tb08TableData.getRelapsePulmonaryBCDiedTB04() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible04(tb08TableData.getRelapsePulmonaryBCEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedTB(tb08TableData.getRelapsePulmonaryBCDiedTB() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDiedNotTB04(table6.getRelapsePulmonaryBCDiedNotTB04() + 1);
-									table6.setRelapsePulmonaryBCEligible04(table6.getRelapsePulmonaryBCEligible04() + 1);
-									table6.setRelapsePulmonaryBCDiedNotTB(table6.getRelapsePulmonaryBCDiedNotTB() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedNotTB04(tb08TableData.getRelapsePulmonaryBCDiedNotTB04() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible04(tb08TableData.getRelapsePulmonaryBCEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedNotTB(tb08TableData.getRelapsePulmonaryBCDiedNotTB() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCFailed04(table6.getRelapsePulmonaryBCFailed04() + 1);
-									table6.setRelapsePulmonaryBCEligible04(table6.getRelapsePulmonaryBCEligible04() + 1);
-									table6.setRelapsePulmonaryBCFailed(table6.getRelapsePulmonaryBCFailed() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCFailed04(tb08TableData.getRelapsePulmonaryBCFailed04() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible04(tb08TableData.getRelapsePulmonaryBCEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryBCFailed(tb08TableData.getRelapsePulmonaryBCFailed() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDefaulted04(table6.getRelapsePulmonaryBCDefaulted04() + 1);
-									table6.setRelapsePulmonaryBCEligible04(table6.getRelapsePulmonaryBCEligible04() + 1);
-									table6.setRelapsePulmonaryBCDefaulted(table6.getRelapsePulmonaryBCDefaulted() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDefaulted04(tb08TableData.getRelapsePulmonaryBCDefaulted04() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible04(tb08TableData.getRelapsePulmonaryBCEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryBCDefaulted(tb08TableData.getRelapsePulmonaryBCDefaulted() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-									table6.setRelapsePulmonaryBCTransferOut04(table6.getRelapsePulmonaryBCTransferOut04() + 1);
-									table6.setRelapsePulmonaryBCTransferOut(table6.getRelapsePulmonaryBCTransferOut() + 1);
+									tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryBCTransferOut04(tb08TableData.getRelapsePulmonaryBCTransferOut04() + 1);
+									tb08TableData.setRelapsePulmonaryBCTransferOut(tb08TableData.getRelapsePulmonaryBCTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-									table6.setRelapsePulmonaryBCCanceled04(table6.getRelapsePulmonaryBCCanceled04() + 1);
-									table6.setRelapsePulmonaryBCCanceled(table6.getRelapsePulmonaryBCCanceled() + 1);
+									tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+									tb08TableData.setRelapsePulmonaryBCCanceled04(tb08TableData.getRelapsePulmonaryBCCanceled04() + 1);
+									tb08TableData.setRelapsePulmonaryBCCanceled(tb08TableData.getRelapsePulmonaryBCCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-									table6.setRelapsePulmonaryBCSLD04(table6.getRelapsePulmonaryBCSLD04() + 1);
-									table6.setRelapsePulmonaryBCSLD(table6.getRelapsePulmonaryBCSLD() + 1);
+									tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+									tb08TableData.setRelapsePulmonaryBCSLD04(tb08TableData.getRelapsePulmonaryBCSLD04() + 1);
+									tb08TableData.setRelapsePulmonaryBCSLD(tb08TableData.getRelapsePulmonaryBCSLD() + 1);
 								}
 								
 							}
 							
 							else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 								
-								table6.setRelapsePulmonaryBCDetected0514(table6.getRelapsePulmonaryBCDetected0514() + 1);
+								tb08TableData.setRelapsePulmonaryBCDetected0514(tb08TableData.getRelapsePulmonaryBCDetected0514() + 1);
 								
 								if (cured != null && cured) {
-									table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCCured0514(table6.getRelapsePulmonaryBCCured0514() + 1);
-									table6.setRelapsePulmonaryBCEligible0514(table6.getRelapsePulmonaryBCEligible0514() + 1);
-									table6.setRelapsePulmonaryBCCured(table6.getRelapsePulmonaryBCCured() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCCured0514(tb08TableData.getRelapsePulmonaryBCCured0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible0514(tb08TableData.getRelapsePulmonaryBCEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCCured(tb08TableData.getRelapsePulmonaryBCCured() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCCompleted0514(table6.getRelapsePulmonaryBCCompleted0514() + 1);
-									table6.setRelapsePulmonaryBCEligible0514(table6.getRelapsePulmonaryBCEligible0514() + 1);
-									table6.setRelapsePulmonaryBCCompleted(table6.getRelapsePulmonaryBCCompleted() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCCompleted0514(tb08TableData.getRelapsePulmonaryBCCompleted0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible0514(tb08TableData.getRelapsePulmonaryBCEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCCompleted(tb08TableData.getRelapsePulmonaryBCCompleted() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDiedTB0514(table6.getRelapsePulmonaryBCDiedTB0514() + 1);
-									table6.setRelapsePulmonaryBCEligible0514(table6.getRelapsePulmonaryBCEligible0514() + 1);
-									table6.setRelapsePulmonaryBCDiedTB(table6.getRelapsePulmonaryBCDiedTB() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedTB0514(tb08TableData.getRelapsePulmonaryBCDiedTB0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible0514(tb08TableData.getRelapsePulmonaryBCEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedTB(tb08TableData.getRelapsePulmonaryBCDiedTB() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDiedNotTB0514(table6.getRelapsePulmonaryBCDiedNotTB0514() + 1);
-									table6.setRelapsePulmonaryBCEligible0514(table6.getRelapsePulmonaryBCEligible0514() + 1);
-									table6.setRelapsePulmonaryBCDiedNotTB(table6.getRelapsePulmonaryBCDiedNotTB() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedNotTB0514(tb08TableData.getRelapsePulmonaryBCDiedNotTB0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible0514(tb08TableData.getRelapsePulmonaryBCEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedNotTB(tb08TableData.getRelapsePulmonaryBCDiedNotTB() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCFailed0514(table6.getRelapsePulmonaryBCFailed0514() + 1);
-									table6.setRelapsePulmonaryBCEligible0514(table6.getRelapsePulmonaryBCEligible0514() + 1);
-									table6.setRelapsePulmonaryBCFailed(table6.getRelapsePulmonaryBCFailed() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCFailed0514(tb08TableData.getRelapsePulmonaryBCFailed0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible0514(tb08TableData.getRelapsePulmonaryBCEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCFailed(tb08TableData.getRelapsePulmonaryBCFailed() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDefaulted0514(table6.getRelapsePulmonaryBCDefaulted0514() + 1);
-									table6.setRelapsePulmonaryBCEligible0514(table6.getRelapsePulmonaryBCEligible0514() + 1);
-									table6.setRelapsePulmonaryBCDefaulted(table6.getRelapsePulmonaryBCDefaulted() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDefaulted0514(tb08TableData.getRelapsePulmonaryBCDefaulted0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible0514(tb08TableData.getRelapsePulmonaryBCEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCDefaulted(tb08TableData.getRelapsePulmonaryBCDefaulted() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-									table6.setRelapsePulmonaryBCTransferOut0514(table6
+									tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryBCTransferOut0514(tb08TableData
 									        .getRelapsePulmonaryBCTransferOut0514() + 1);
-									table6.setRelapsePulmonaryBCTransferOut(table6.getRelapsePulmonaryBCTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryBCTransferOut(tb08TableData.getRelapsePulmonaryBCTransferOut() + 1);
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-									table6.setRelapsePulmonaryBCCanceled0514(table6.getRelapsePulmonaryBCCanceled0514() + 1);
-									table6.setRelapsePulmonaryBCCanceled(table6.getRelapsePulmonaryBCCanceled() + 1);
+									tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+									tb08TableData.setRelapsePulmonaryBCCanceled0514(tb08TableData.getRelapsePulmonaryBCCanceled0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCCanceled(tb08TableData.getRelapsePulmonaryBCCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-									table6.setRelapsePulmonaryBCSLD0514(table6.getRelapsePulmonaryBCSLD0514() + 1);
-									table6.setRelapsePulmonaryBCSLD(table6.getRelapsePulmonaryBCSLD() + 1);
+									tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+									tb08TableData.setRelapsePulmonaryBCSLD0514(tb08TableData.getRelapsePulmonaryBCSLD0514() + 1);
+									tb08TableData.setRelapsePulmonaryBCSLD(tb08TableData.getRelapsePulmonaryBCSLD() + 1);
 								}
 								
 							}
 							
 							else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 								
-								table6.setRelapsePulmonaryBCDetected1517(table6.getRelapsePulmonaryBCDetected1517() + 1);
+								tb08TableData.setRelapsePulmonaryBCDetected1517(tb08TableData.getRelapsePulmonaryBCDetected1517() + 1);
 								
 								if (cured != null && cured) {
-									table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCCured1517(table6.getRelapsePulmonaryBCCured1517() + 1);
-									table6.setRelapsePulmonaryBCEligible1517(table6.getRelapsePulmonaryBCEligible1517() + 1);
-									table6.setRelapsePulmonaryBCCured(table6.getRelapsePulmonaryBCCured() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCCured1517(tb08TableData.getRelapsePulmonaryBCCured1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible1517(tb08TableData.getRelapsePulmonaryBCEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCCured(tb08TableData.getRelapsePulmonaryBCCured() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCCompleted1517(table6.getRelapsePulmonaryBCCompleted1517() + 1);
-									table6.setRelapsePulmonaryBCEligible1517(table6.getRelapsePulmonaryBCEligible1517() + 1);
-									table6.setRelapsePulmonaryBCCompleted(table6.getRelapsePulmonaryBCCompleted() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCCompleted1517(tb08TableData.getRelapsePulmonaryBCCompleted1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible1517(tb08TableData.getRelapsePulmonaryBCEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCCompleted(tb08TableData.getRelapsePulmonaryBCCompleted() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDiedTB1517(table6.getRelapsePulmonaryBCDiedTB1517() + 1);
-									table6.setRelapsePulmonaryBCEligible1517(table6.getRelapsePulmonaryBCEligible1517() + 1);
-									table6.setRelapsePulmonaryBCDiedTB(table6.getRelapsePulmonaryBCDiedTB() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedTB1517(tb08TableData.getRelapsePulmonaryBCDiedTB1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible1517(tb08TableData.getRelapsePulmonaryBCEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedTB(tb08TableData.getRelapsePulmonaryBCDiedTB() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDiedNotTB1517(table6.getRelapsePulmonaryBCDiedNotTB1517() + 1);
-									table6.setRelapsePulmonaryBCEligible1517(table6.getRelapsePulmonaryBCEligible1517() + 1);
-									table6.setRelapsePulmonaryBCDiedNotTB(table6.getRelapsePulmonaryBCDiedNotTB() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedNotTB1517(tb08TableData.getRelapsePulmonaryBCDiedNotTB1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible1517(tb08TableData.getRelapsePulmonaryBCEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedNotTB(tb08TableData.getRelapsePulmonaryBCDiedNotTB() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCFailed1517(table6.getRelapsePulmonaryBCFailed1517() + 1);
-									table6.setRelapsePulmonaryBCEligible1517(table6.getRelapsePulmonaryBCEligible1517() + 1);
-									table6.setRelapsePulmonaryBCFailed(table6.getRelapsePulmonaryBCFailed() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCFailed1517(tb08TableData.getRelapsePulmonaryBCFailed1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible1517(tb08TableData.getRelapsePulmonaryBCEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCFailed(tb08TableData.getRelapsePulmonaryBCFailed() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDefaulted1517(table6.getRelapsePulmonaryBCDefaulted1517() + 1);
-									table6.setRelapsePulmonaryBCEligible1517(table6.getRelapsePulmonaryBCEligible1517() + 1);
-									table6.setRelapsePulmonaryBCDefaulted(table6.getRelapsePulmonaryBCDefaulted() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDefaulted1517(tb08TableData.getRelapsePulmonaryBCDefaulted1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible1517(tb08TableData.getRelapsePulmonaryBCEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCDefaulted(tb08TableData.getRelapsePulmonaryBCDefaulted() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-									table6.setRelapsePulmonaryBCTransferOut1517(table6
+									tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryBCTransferOut1517(tb08TableData
 									        .getRelapsePulmonaryBCTransferOut1517() + 1);
-									table6.setRelapsePulmonaryBCTransferOut(table6.getRelapsePulmonaryBCTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryBCTransferOut(tb08TableData.getRelapsePulmonaryBCTransferOut() + 1);
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-									table6.setRelapsePulmonaryBCCanceled1517(table6.getRelapsePulmonaryBCCanceled1517() + 1);
-									table6.setRelapsePulmonaryBCCanceled(table6.getRelapsePulmonaryBCCanceled() + 1);
+									tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+									tb08TableData.setRelapsePulmonaryBCCanceled1517(tb08TableData.getRelapsePulmonaryBCCanceled1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCCanceled(tb08TableData.getRelapsePulmonaryBCCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-									table6.setRelapsePulmonaryBCSLD1517(table6.getRelapsePulmonaryBCSLD1517() + 1);
-									table6.setRelapsePulmonaryBCSLD(table6.getRelapsePulmonaryBCSLD() + 1);
+									tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+									tb08TableData.setRelapsePulmonaryBCSLD1517(tb08TableData.getRelapsePulmonaryBCSLD1517() + 1);
+									tb08TableData.setRelapsePulmonaryBCSLD(tb08TableData.getRelapsePulmonaryBCSLD() + 1);
 								}
 								
 							}
@@ -3833,62 +3879,62 @@ public class Form8Controller {
 							else {
 								
 								if (cured != null && cured) {
-									table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCCured(table6.getRelapsePulmonaryBCCured() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCCured(tb08TableData.getRelapsePulmonaryBCCured() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCCompleted(table6.getRelapsePulmonaryBCCompleted() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCCompleted(tb08TableData.getRelapsePulmonaryBCCompleted() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDiedTB(table6.getRelapsePulmonaryBCDiedTB() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedTB(tb08TableData.getRelapsePulmonaryBCDiedTB() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDiedNotTB(table6.getRelapsePulmonaryBCDiedNotTB() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDiedNotTB(tb08TableData.getRelapsePulmonaryBCDiedNotTB() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCFailed(table6.getRelapsePulmonaryBCFailed() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCFailed(tb08TableData.getRelapsePulmonaryBCFailed() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryBCDefaulted(table6.getRelapsePulmonaryBCDefaulted() + 1);
-									table6.setRelapsePulmonaryBCEligible(table6.getRelapsePulmonaryBCEligible() + 1);
+									tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryBCDefaulted(tb08TableData.getRelapsePulmonaryBCDefaulted() + 1);
+									tb08TableData.setRelapsePulmonaryBCEligible(tb08TableData.getRelapsePulmonaryBCEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-									table6.setRelapsePulmonaryBCTransferOut(table6.getRelapsePulmonaryBCTransferOut() + 1);
+									tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryBCTransferOut(tb08TableData.getRelapsePulmonaryBCTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-									table6.setRelapsePulmonaryBCCanceled(table6.getRelapsePulmonaryBCCanceled() + 1);
+									tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+									tb08TableData.setRelapsePulmonaryBCCanceled(tb08TableData.getRelapsePulmonaryBCCanceled() + 1);
 									
 								}
 								
 								else if (sld != null && sld) {
-									table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-									table6.setRelapsePulmonaryBCSLD(table6.getRelapsePulmonaryBCSLD() + 1);
+									tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+									tb08TableData.setRelapsePulmonaryBCSLD(tb08TableData.getRelapsePulmonaryBCSLD() + 1);
 									
 								}
 							}
@@ -3897,242 +3943,242 @@ public class Form8Controller {
 						//CD
 						else {
 							
-							table6.setRelapsePulmonaryCDDetected(table6.getRelapsePulmonaryCDDetected() + 1);
+							tb08TableData.setRelapsePulmonaryCDDetected(tb08TableData.getRelapsePulmonaryCDDetected() + 1);
 							
 							if (ageAtRegistration >= 0 && ageAtRegistration < 5) {
 								
-								table6.setRelapsePulmonaryCDDetected04(table6.getRelapsePulmonaryCDDetected04() + 1);
+								tb08TableData.setRelapsePulmonaryCDDetected04(tb08TableData.getRelapsePulmonaryCDDetected04() + 1);
 								
 								if (cured != null && cured) {
-									table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDCured04(table6.getRelapsePulmonaryCDCured04() + 1);
-									table6.setRelapsePulmonaryCDEligible04(table6.getRelapsePulmonaryCDEligible04() + 1);
-									table6.setRelapsePulmonaryCDCured(table6.getRelapsePulmonaryCDCured() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDCured04(tb08TableData.getRelapsePulmonaryCDCured04() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible04(tb08TableData.getRelapsePulmonaryCDEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryCDCured(tb08TableData.getRelapsePulmonaryCDCured() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDCompleted04(table6.getRelapsePulmonaryCDCompleted04() + 1);
-									table6.setRelapsePulmonaryCDEligible04(table6.getRelapsePulmonaryCDEligible04() + 1);
-									table6.setRelapsePulmonaryCDCompleted(table6.getRelapsePulmonaryCDCompleted() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDCompleted04(tb08TableData.getRelapsePulmonaryCDCompleted04() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible04(tb08TableData.getRelapsePulmonaryCDEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryCDCompleted(tb08TableData.getRelapsePulmonaryCDCompleted() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDiedTB04(table6.getRelapsePulmonaryCDDiedTB04() + 1);
-									table6.setRelapsePulmonaryCDEligible04(table6.getRelapsePulmonaryCDEligible04() + 1);
-									table6.setRelapsePulmonaryCDDiedTB(table6.getRelapsePulmonaryCDDiedTB() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedTB04(tb08TableData.getRelapsePulmonaryCDDiedTB04() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible04(tb08TableData.getRelapsePulmonaryCDEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedTB(tb08TableData.getRelapsePulmonaryCDDiedTB() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDiedNotTB04(table6.getRelapsePulmonaryCDDiedNotTB04() + 1);
-									table6.setRelapsePulmonaryCDEligible04(table6.getRelapsePulmonaryCDEligible04() + 1);
-									table6.setRelapsePulmonaryCDDiedNotTB(table6.getRelapsePulmonaryCDDiedNotTB() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedNotTB04(tb08TableData.getRelapsePulmonaryCDDiedNotTB04() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible04(tb08TableData.getRelapsePulmonaryCDEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedNotTB(tb08TableData.getRelapsePulmonaryCDDiedNotTB() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDFailed04(table6.getRelapsePulmonaryCDFailed04() + 1);
-									table6.setRelapsePulmonaryCDEligible04(table6.getRelapsePulmonaryCDEligible04() + 1);
-									table6.setRelapsePulmonaryCDFailed(table6.getRelapsePulmonaryCDFailed() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDFailed04(tb08TableData.getRelapsePulmonaryCDFailed04() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible04(tb08TableData.getRelapsePulmonaryCDEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryCDFailed(tb08TableData.getRelapsePulmonaryCDFailed() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDefaulted04(table6.getRelapsePulmonaryCDDefaulted04() + 1);
-									table6.setRelapsePulmonaryCDEligible04(table6.getRelapsePulmonaryCDEligible04() + 1);
-									table6.setRelapsePulmonaryCDDefaulted(table6.getRelapsePulmonaryCDDefaulted() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDefaulted04(tb08TableData.getRelapsePulmonaryCDDefaulted04() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible04(tb08TableData.getRelapsePulmonaryCDEligible04() + 1);
+									tb08TableData.setRelapsePulmonaryCDDefaulted(tb08TableData.getRelapsePulmonaryCDDefaulted() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-									table6.setRelapsePulmonaryCDTransferOut04(table6.getRelapsePulmonaryCDTransferOut04() + 1);
-									table6.setRelapsePulmonaryCDTransferOut(table6.getRelapsePulmonaryCDTransferOut() + 1);
+									tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryCDTransferOut04(tb08TableData.getRelapsePulmonaryCDTransferOut04() + 1);
+									tb08TableData.setRelapsePulmonaryCDTransferOut(tb08TableData.getRelapsePulmonaryCDTransferOut() + 1);
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-									table6.setRelapsePulmonaryCDCanceled04(table6.getRelapsePulmonaryCDCanceled04() + 1);
-									table6.setRelapsePulmonaryCDCanceled(table6.getRelapsePulmonaryCDCanceled() + 1);
+									tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+									tb08TableData.setRelapsePulmonaryCDCanceled04(tb08TableData.getRelapsePulmonaryCDCanceled04() + 1);
+									tb08TableData.setRelapsePulmonaryCDCanceled(tb08TableData.getRelapsePulmonaryCDCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-									table6.setRelapsePulmonaryCDSLD04(table6.getRelapsePulmonaryCDSLD04() + 1);
-									table6.setRelapsePulmonaryCDSLD(table6.getRelapsePulmonaryCDSLD() + 1);
+									tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+									tb08TableData.setRelapsePulmonaryCDSLD04(tb08TableData.getRelapsePulmonaryCDSLD04() + 1);
+									tb08TableData.setRelapsePulmonaryCDSLD(tb08TableData.getRelapsePulmonaryCDSLD() + 1);
 								}
 								
 							}
 							
 							else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 								
-								table6.setRelapsePulmonaryCDDetected0514(table6.getRelapsePulmonaryCDDetected0514() + 1);
+								tb08TableData.setRelapsePulmonaryCDDetected0514(tb08TableData.getRelapsePulmonaryCDDetected0514() + 1);
 								
 								if (cured != null && cured) {
-									table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDCured0514(table6.getRelapsePulmonaryCDCured0514() + 1);
-									table6.setRelapsePulmonaryCDEligible0514(table6.getRelapsePulmonaryCDEligible0514() + 1);
-									table6.setRelapsePulmonaryCDCured(table6.getRelapsePulmonaryCDCured() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDCured0514(tb08TableData.getRelapsePulmonaryCDCured0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible0514(tb08TableData.getRelapsePulmonaryCDEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDCured(tb08TableData.getRelapsePulmonaryCDCured() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDCompleted0514(table6.getRelapsePulmonaryCDCompleted0514() + 1);
-									table6.setRelapsePulmonaryCDEligible0514(table6.getRelapsePulmonaryCDEligible0514() + 1);
-									table6.setRelapsePulmonaryCDCompleted(table6.getRelapsePulmonaryCDCompleted() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDCompleted0514(tb08TableData.getRelapsePulmonaryCDCompleted0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible0514(tb08TableData.getRelapsePulmonaryCDEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDCompleted(tb08TableData.getRelapsePulmonaryCDCompleted() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDiedTB0514(table6.getRelapsePulmonaryCDDiedTB0514() + 1);
-									table6.setRelapsePulmonaryCDEligible0514(table6.getRelapsePulmonaryCDEligible0514() + 1);
-									table6.setRelapsePulmonaryCDDiedTB(table6.getRelapsePulmonaryCDDiedTB() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedTB0514(tb08TableData.getRelapsePulmonaryCDDiedTB0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible0514(tb08TableData.getRelapsePulmonaryCDEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedTB(tb08TableData.getRelapsePulmonaryCDDiedTB() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDiedNotTB0514(table6.getRelapsePulmonaryCDDiedNotTB0514() + 1);
-									table6.setRelapsePulmonaryCDEligible0514(table6.getRelapsePulmonaryCDEligible0514() + 1);
-									table6.setRelapsePulmonaryCDDiedNotTB(table6.getRelapsePulmonaryCDDiedNotTB() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedNotTB0514(tb08TableData.getRelapsePulmonaryCDDiedNotTB0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible0514(tb08TableData.getRelapsePulmonaryCDEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedNotTB(tb08TableData.getRelapsePulmonaryCDDiedNotTB() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDFailed0514(table6.getRelapsePulmonaryCDFailed0514() + 1);
-									table6.setRelapsePulmonaryCDEligible0514(table6.getRelapsePulmonaryCDEligible0514() + 1);
-									table6.setRelapsePulmonaryCDFailed(table6.getRelapsePulmonaryCDFailed() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDFailed0514(tb08TableData.getRelapsePulmonaryCDFailed0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible0514(tb08TableData.getRelapsePulmonaryCDEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDFailed(tb08TableData.getRelapsePulmonaryCDFailed() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDefaulted0514(table6.getRelapsePulmonaryCDDefaulted0514() + 1);
-									table6.setRelapsePulmonaryCDEligible0514(table6.getRelapsePulmonaryCDEligible0514() + 1);
-									table6.setRelapsePulmonaryCDDefaulted(table6.getRelapsePulmonaryCDDefaulted() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDefaulted0514(tb08TableData.getRelapsePulmonaryCDDefaulted0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible0514(tb08TableData.getRelapsePulmonaryCDEligible0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDDefaulted(tb08TableData.getRelapsePulmonaryCDDefaulted() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-									table6.setRelapsePulmonaryCDTransferOut0514(table6
+									tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryCDTransferOut0514(tb08TableData
 									        .getRelapsePulmonaryCDTransferOut0514() + 1);
-									table6.setRelapsePulmonaryCDTransferOut(table6.getRelapsePulmonaryCDTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryCDTransferOut(tb08TableData.getRelapsePulmonaryCDTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-									table6.setRelapsePulmonaryCDCanceled0514(table6.getRelapsePulmonaryCDCanceled0514() + 1);
-									table6.setRelapsePulmonaryCDCanceled(table6.getRelapsePulmonaryCDCanceled() + 1);
+									tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+									tb08TableData.setRelapsePulmonaryCDCanceled0514(tb08TableData.getRelapsePulmonaryCDCanceled0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDCanceled(tb08TableData.getRelapsePulmonaryCDCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-									table6.setRelapsePulmonaryCDSLD0514(table6.getRelapsePulmonaryCDSLD0514() + 1);
-									table6.setRelapsePulmonaryCDSLD(table6.getRelapsePulmonaryCDSLD() + 1);
+									tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+									tb08TableData.setRelapsePulmonaryCDSLD0514(tb08TableData.getRelapsePulmonaryCDSLD0514() + 1);
+									tb08TableData.setRelapsePulmonaryCDSLD(tb08TableData.getRelapsePulmonaryCDSLD() + 1);
 								}
 								
 							}
 							
 							else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 								
-								table6.setRelapsePulmonaryCDDetected1517(table6.getRelapsePulmonaryCDDetected1517() + 1);
+								tb08TableData.setRelapsePulmonaryCDDetected1517(tb08TableData.getRelapsePulmonaryCDDetected1517() + 1);
 								
 								if (cured != null && cured) {
-									table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDCured1517(table6.getRelapsePulmonaryCDCured1517() + 1);
-									table6.setRelapsePulmonaryCDEligible1517(table6.getRelapsePulmonaryCDEligible1517() + 1);
-									table6.setRelapsePulmonaryCDCured(table6.getRelapsePulmonaryCDCured() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDCured1517(tb08TableData.getRelapsePulmonaryCDCured1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible1517(tb08TableData.getRelapsePulmonaryCDEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDCured(tb08TableData.getRelapsePulmonaryCDCured() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDCompleted1517(table6.getRelapsePulmonaryCDCompleted1517() + 1);
-									table6.setRelapsePulmonaryCDEligible1517(table6.getRelapsePulmonaryCDEligible1517() + 1);
-									table6.setRelapsePulmonaryCDCompleted(table6.getRelapsePulmonaryCDCompleted() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDCompleted1517(tb08TableData.getRelapsePulmonaryCDCompleted1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible1517(tb08TableData.getRelapsePulmonaryCDEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDCompleted(tb08TableData.getRelapsePulmonaryCDCompleted() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDiedTB1517(table6.getRelapsePulmonaryCDDiedTB1517() + 1);
-									table6.setRelapsePulmonaryCDEligible1517(table6.getRelapsePulmonaryCDEligible1517() + 1);
-									table6.setRelapsePulmonaryCDDiedTB(table6.getRelapsePulmonaryCDDiedTB() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedTB1517(tb08TableData.getRelapsePulmonaryCDDiedTB1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible1517(tb08TableData.getRelapsePulmonaryCDEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedTB(tb08TableData.getRelapsePulmonaryCDDiedTB() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDiedNotTB1517(table6.getRelapsePulmonaryCDDiedNotTB1517() + 1);
-									table6.setRelapsePulmonaryCDEligible1517(table6.getRelapsePulmonaryCDEligible1517() + 1);
-									table6.setRelapsePulmonaryCDDiedNotTB(table6.getRelapsePulmonaryCDDiedNotTB() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedNotTB1517(tb08TableData.getRelapsePulmonaryCDDiedNotTB1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible1517(tb08TableData.getRelapsePulmonaryCDEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedNotTB(tb08TableData.getRelapsePulmonaryCDDiedNotTB() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDFailed1517(table6.getRelapsePulmonaryCDFailed1517() + 1);
-									table6.setRelapsePulmonaryCDEligible1517(table6.getRelapsePulmonaryCDEligible1517() + 1);
-									table6.setRelapsePulmonaryCDFailed(table6.getRelapsePulmonaryCDFailed() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDFailed1517(tb08TableData.getRelapsePulmonaryCDFailed1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible1517(tb08TableData.getRelapsePulmonaryCDEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDFailed(tb08TableData.getRelapsePulmonaryCDFailed() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDefaulted1517(table6.getRelapsePulmonaryCDDefaulted1517() + 1);
-									table6.setRelapsePulmonaryCDEligible1517(table6.getRelapsePulmonaryCDEligible1517() + 1);
-									table6.setRelapsePulmonaryCDDefaulted(table6.getRelapsePulmonaryCDDefaulted() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDefaulted1517(tb08TableData.getRelapsePulmonaryCDDefaulted1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible1517(tb08TableData.getRelapsePulmonaryCDEligible1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDDefaulted(tb08TableData.getRelapsePulmonaryCDDefaulted() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-									table6.setRelapsePulmonaryCDTransferOut1517(table6
+									tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryCDTransferOut1517(tb08TableData
 									        .getRelapsePulmonaryCDTransferOut1517() + 1);
-									table6.setRelapsePulmonaryCDTransferOut(table6.getRelapsePulmonaryCDTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryCDTransferOut(tb08TableData.getRelapsePulmonaryCDTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-									table6.setRelapsePulmonaryCDCanceled1517(table6.getRelapsePulmonaryCDCanceled1517() + 1);
-									table6.setRelapsePulmonaryCDCanceled(table6.getRelapsePulmonaryCDCanceled() + 1);
+									tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+									tb08TableData.setRelapsePulmonaryCDCanceled1517(tb08TableData.getRelapsePulmonaryCDCanceled1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDCanceled(tb08TableData.getRelapsePulmonaryCDCanceled() + 1);
 								}
 								
 								else if (sld != null && sld) {
-									table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-									table6.setRelapsePulmonaryCDSLD1517(table6.getRelapsePulmonaryCDSLD1517() + 1);
-									table6.setRelapsePulmonaryCDSLD(table6.getRelapsePulmonaryCDSLD() + 1);
+									tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+									tb08TableData.setRelapsePulmonaryCDSLD1517(tb08TableData.getRelapsePulmonaryCDSLD1517() + 1);
+									tb08TableData.setRelapsePulmonaryCDSLD(tb08TableData.getRelapsePulmonaryCDSLD() + 1);
 								}
 								
 							}
@@ -4140,62 +4186,62 @@ public class Form8Controller {
 							else {
 								
 								if (cured != null && cured) {
-									table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDCured(table6.getRelapsePulmonaryCDCured() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDCured(tb08TableData.getRelapsePulmonaryCDCured() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (txCompleted != null && txCompleted) {
-									table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDCompleted(table6.getRelapsePulmonaryCDCompleted() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDCompleted(tb08TableData.getRelapsePulmonaryCDCompleted() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedTB != null && diedTB) {
-									table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDiedTB(table6.getRelapsePulmonaryCDDiedTB() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedTB(tb08TableData.getRelapsePulmonaryCDDiedTB() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (diedNotTB != null && diedNotTB) {
-									table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDiedNotTB(table6.getRelapsePulmonaryCDDiedNotTB() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDiedNotTB(tb08TableData.getRelapsePulmonaryCDDiedNotTB() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (failed != null && failed) {
-									table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDFailed(table6.getRelapsePulmonaryCDFailed() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDFailed(tb08TableData.getRelapsePulmonaryCDFailed() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (defaulted != null && defaulted) {
-									table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-									table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-									table6.setRelapsePulmonaryCDDefaulted(table6.getRelapsePulmonaryCDDefaulted() + 1);
-									table6.setRelapsePulmonaryCDEligible(table6.getRelapsePulmonaryCDEligible() + 1);
+									tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+									tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+									tb08TableData.setRelapsePulmonaryCDDefaulted(tb08TableData.getRelapsePulmonaryCDDefaulted() + 1);
+									tb08TableData.setRelapsePulmonaryCDEligible(tb08TableData.getRelapsePulmonaryCDEligible() + 1);
 								}
 								
 								else if (transferOut != null && transferOut) {
-									table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-									table6.setRelapsePulmonaryCDTransferOut(table6.getRelapsePulmonaryCDTransferOut() + 1);
+									tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+									tb08TableData.setRelapsePulmonaryCDTransferOut(tb08TableData.getRelapsePulmonaryCDTransferOut() + 1);
 									
 								}
 								
 								else if (canceled != null && canceled) {
-									table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-									table6.setRelapsePulmonaryCDCanceled(table6.getRelapsePulmonaryCDCanceled() + 1);
+									tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+									tb08TableData.setRelapsePulmonaryCDCanceled(tb08TableData.getRelapsePulmonaryCDCanceled() + 1);
 									
 								}
 								
 								else if (sld != null && sld) {
-									table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-									table6.setRelapsePulmonaryCDSLD(table6.getRelapsePulmonaryCDSLD() + 1);
+									tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+									tb08TableData.setRelapsePulmonaryCDSLD(tb08TableData.getRelapsePulmonaryCDSLD() + 1);
 									
 								}
 							}
@@ -4205,240 +4251,240 @@ public class Form8Controller {
 					//EP
 					else if (pulmonary != null && !pulmonary) {
 						
-						table6.setRelapseExtrapulmonaryDetected(table6.getRelapseExtrapulmonaryDetected() + 1);
+						tb08TableData.setRelapseExtrapulmonaryDetected(tb08TableData.getRelapseExtrapulmonaryDetected() + 1);
 						
 						if (ageAtRegistration >= 0 && ageAtRegistration < 5) {
 							
-							table6.setRelapseExtrapulmonaryDetected04(table6.getRelapseExtrapulmonaryDetected04() + 1);
+							tb08TableData.setRelapseExtrapulmonaryDetected04(tb08TableData.getRelapseExtrapulmonaryDetected04() + 1);
 							
 							if (cured != null && cured) {
-								table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryCured04(table6.getRelapseExtrapulmonaryCured04() + 1);
-								table6.setRelapseExtrapulmonaryEligible04(table6.getRelapseExtrapulmonaryEligible04() + 1);
-								table6.setRelapseExtrapulmonaryCured(table6.getRelapseExtrapulmonaryCured() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCured04(tb08TableData.getRelapseExtrapulmonaryCured04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible04(tb08TableData.getRelapseExtrapulmonaryEligible04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCured(tb08TableData.getRelapseExtrapulmonaryCured() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryCompleted04(table6.getRelapseExtrapulmonaryCompleted04() + 1);
-								table6.setRelapseExtrapulmonaryEligible04(table6.getRelapseExtrapulmonaryEligible04() + 1);
-								table6.setRelapseExtrapulmonaryCompleted(table6.getRelapseExtrapulmonaryCompleted() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCompleted04(tb08TableData.getRelapseExtrapulmonaryCompleted04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible04(tb08TableData.getRelapseExtrapulmonaryEligible04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCompleted(tb08TableData.getRelapseExtrapulmonaryCompleted() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDiedTB04(table6.getRelapseExtrapulmonaryDiedTB04() + 1);
-								table6.setRelapseExtrapulmonaryEligible04(table6.getRelapseExtrapulmonaryEligible04() + 1);
-								table6.setRelapseExtrapulmonaryDiedTB(table6.getRelapseExtrapulmonaryDiedTB() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedTB04(tb08TableData.getRelapseExtrapulmonaryDiedTB04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible04(tb08TableData.getRelapseExtrapulmonaryEligible04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedTB(tb08TableData.getRelapseExtrapulmonaryDiedTB() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDiedNotTB04(table6.getRelapseExtrapulmonaryDiedNotTB04() + 1);
-								table6.setRelapseExtrapulmonaryEligible04(table6.getRelapseExtrapulmonaryEligible04() + 1);
-								table6.setRelapseExtrapulmonaryDiedNotTB(table6.getRelapseExtrapulmonaryDiedNotTB() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedNotTB04(tb08TableData.getRelapseExtrapulmonaryDiedNotTB04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible04(tb08TableData.getRelapseExtrapulmonaryEligible04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedNotTB(tb08TableData.getRelapseExtrapulmonaryDiedNotTB() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryFailed04(table6.getRelapseExtrapulmonaryFailed04() + 1);
-								table6.setRelapseExtrapulmonaryEligible04(table6.getRelapseExtrapulmonaryEligible04() + 1);
-								table6.setRelapseExtrapulmonaryFailed(table6.getRelapseExtrapulmonaryFailed() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryFailed04(tb08TableData.getRelapseExtrapulmonaryFailed04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible04(tb08TableData.getRelapseExtrapulmonaryEligible04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryFailed(tb08TableData.getRelapseExtrapulmonaryFailed() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDefaulted04(table6.getRelapseExtrapulmonaryDefaulted04() + 1);
-								table6.setRelapseExtrapulmonaryEligible04(table6.getRelapseExtrapulmonaryEligible04() + 1);
-								table6.setRelapseExtrapulmonaryDefaulted(table6.getRelapseExtrapulmonaryDefaulted() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDefaulted04(tb08TableData.getRelapseExtrapulmonaryDefaulted04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible04(tb08TableData.getRelapseExtrapulmonaryEligible04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDefaulted(tb08TableData.getRelapseExtrapulmonaryDefaulted() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-								table6.setRelapseExtrapulmonaryTransferOut04(table6.getRelapseExtrapulmonaryTransferOut04() + 1);
-								table6.setRelapseExtrapulmonaryTransferOut(table6.getRelapseExtrapulmonaryTransferOut() + 1);
+								tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+								tb08TableData.setRelapseExtrapulmonaryTransferOut04(tb08TableData.getRelapseExtrapulmonaryTransferOut04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryTransferOut(tb08TableData.getRelapseExtrapulmonaryTransferOut() + 1);
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-								table6.setRelapseExtrapulmonaryCanceled04(table6.getRelapseExtrapulmonaryCanceled04() + 1);
-								table6.setRelapseExtrapulmonaryCanceled(table6.getRelapseExtrapulmonaryCanceled() + 1);
+								tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCanceled04(tb08TableData.getRelapseExtrapulmonaryCanceled04() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCanceled(tb08TableData.getRelapseExtrapulmonaryCanceled() + 1);
 							}
 							
 							else if (sld != null && sld) {
-								table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-								table6.setRelapseExtrapulmonarySLD04(table6.getRelapseExtrapulmonarySLD04() + 1);
-								table6.setRelapseExtrapulmonarySLD(table6.getRelapseExtrapulmonarySLD() + 1);
+								tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+								tb08TableData.setRelapseExtrapulmonarySLD04(tb08TableData.getRelapseExtrapulmonarySLD04() + 1);
+								tb08TableData.setRelapseExtrapulmonarySLD(tb08TableData.getRelapseExtrapulmonarySLD() + 1);
 							}
 							
 						}
 						
 						else if (ageAtRegistration >= 5 && ageAtRegistration < 15) {
 							
-							table6.setRelapseExtrapulmonaryDetected0514(table6.getRelapseExtrapulmonaryDetected0514() + 1);
+							tb08TableData.setRelapseExtrapulmonaryDetected0514(tb08TableData.getRelapseExtrapulmonaryDetected0514() + 1);
 							
 							if (cured != null && cured) {
-								table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryCured0514(table6.getRelapseExtrapulmonaryCured0514() + 1);
-								table6.setRelapseExtrapulmonaryEligible0514(table6.getRelapseExtrapulmonaryEligible0514() + 1);
-								table6.setRelapseExtrapulmonaryCured(table6.getRelapseExtrapulmonaryCured() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCured0514(tb08TableData.getRelapseExtrapulmonaryCured0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible0514(tb08TableData.getRelapseExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCured(tb08TableData.getRelapseExtrapulmonaryCured() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryCompleted0514(table6.getRelapseExtrapulmonaryCompleted0514() + 1);
-								table6.setRelapseExtrapulmonaryEligible0514(table6.getRelapseExtrapulmonaryEligible0514() + 1);
-								table6.setRelapseExtrapulmonaryCompleted(table6.getRelapseExtrapulmonaryCompleted() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCompleted0514(tb08TableData.getRelapseExtrapulmonaryCompleted0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible0514(tb08TableData.getRelapseExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCompleted(tb08TableData.getRelapseExtrapulmonaryCompleted() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDiedTB0514(table6.getRelapseExtrapulmonaryDiedTB0514() + 1);
-								table6.setRelapseExtrapulmonaryEligible0514(table6.getRelapseExtrapulmonaryEligible0514() + 1);
-								table6.setRelapseExtrapulmonaryDiedTB(table6.getRelapseExtrapulmonaryDiedTB() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedTB0514(tb08TableData.getRelapseExtrapulmonaryDiedTB0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible0514(tb08TableData.getRelapseExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedTB(tb08TableData.getRelapseExtrapulmonaryDiedTB() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDiedNotTB0514(table6.getRelapseExtrapulmonaryDiedNotTB0514() + 1);
-								table6.setRelapseExtrapulmonaryEligible0514(table6.getRelapseExtrapulmonaryEligible0514() + 1);
-								table6.setRelapseExtrapulmonaryDiedNotTB(table6.getRelapseExtrapulmonaryDiedNotTB() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedNotTB0514(tb08TableData.getRelapseExtrapulmonaryDiedNotTB0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible0514(tb08TableData.getRelapseExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedNotTB(tb08TableData.getRelapseExtrapulmonaryDiedNotTB() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryFailed0514(table6.getRelapseExtrapulmonaryFailed0514() + 1);
-								table6.setRelapseExtrapulmonaryEligible0514(table6.getRelapseExtrapulmonaryEligible0514() + 1);
-								table6.setRelapseExtrapulmonaryFailed(table6.getRelapseExtrapulmonaryFailed() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryFailed0514(tb08TableData.getRelapseExtrapulmonaryFailed0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible0514(tb08TableData.getRelapseExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryFailed(tb08TableData.getRelapseExtrapulmonaryFailed() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDefaulted0514(table6.getRelapseExtrapulmonaryDefaulted0514() + 1);
-								table6.setRelapseExtrapulmonaryEligible0514(table6.getRelapseExtrapulmonaryEligible0514() + 1);
-								table6.setRelapseExtrapulmonaryDefaulted(table6.getRelapseExtrapulmonaryDefaulted() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDefaulted0514(tb08TableData.getRelapseExtrapulmonaryDefaulted0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible0514(tb08TableData.getRelapseExtrapulmonaryEligible0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDefaulted(tb08TableData.getRelapseExtrapulmonaryDefaulted() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-								table6.setRelapseExtrapulmonaryTransferOut0514(table6
+								tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+								tb08TableData.setRelapseExtrapulmonaryTransferOut0514(tb08TableData
 								        .getRelapseExtrapulmonaryTransferOut0514() + 1);
-								table6.setRelapseExtrapulmonaryTransferOut(table6.getRelapseExtrapulmonaryTransferOut() + 1);
+								tb08TableData.setRelapseExtrapulmonaryTransferOut(tb08TableData.getRelapseExtrapulmonaryTransferOut() + 1);
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-								table6.setRelapseExtrapulmonaryCanceled0514(table6.getRelapseExtrapulmonaryCanceled0514() + 1);
-								table6.setRelapseExtrapulmonaryCanceled(table6.getRelapseExtrapulmonaryCanceled() + 1);
+								tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCanceled0514(tb08TableData.getRelapseExtrapulmonaryCanceled0514() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCanceled(tb08TableData.getRelapseExtrapulmonaryCanceled() + 1);
 							}
 							
 							else if (sld != null && sld) {
-								table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-								table6.setRelapseExtrapulmonarySLD0514(table6.getRelapseExtrapulmonarySLD0514() + 1);
-								table6.setRelapseExtrapulmonarySLD(table6.getRelapseExtrapulmonarySLD() + 1);
+								tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+								tb08TableData.setRelapseExtrapulmonarySLD0514(tb08TableData.getRelapseExtrapulmonarySLD0514() + 1);
+								tb08TableData.setRelapseExtrapulmonarySLD(tb08TableData.getRelapseExtrapulmonarySLD() + 1);
 							}
 							
 						}
 						
 						else if (ageAtRegistration >= 15 && ageAtRegistration < 18) {
 							
-							table6.setRelapseExtrapulmonaryDetected1517(table6.getRelapseExtrapulmonaryDetected1517() + 1);
+							tb08TableData.setRelapseExtrapulmonaryDetected1517(tb08TableData.getRelapseExtrapulmonaryDetected1517() + 1);
 							
 							if (cured != null && cured) {
-								table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryCured1517(table6.getRelapseExtrapulmonaryCured1517() + 1);
-								table6.setRelapseExtrapulmonaryEligible1517(table6.getRelapseExtrapulmonaryEligible1517() + 1);
-								table6.setRelapseExtrapulmonaryCured(table6.getRelapseExtrapulmonaryCured() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCured1517(tb08TableData.getRelapseExtrapulmonaryCured1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible1517(tb08TableData.getRelapseExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCured(tb08TableData.getRelapseExtrapulmonaryCured() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryCompleted1517(table6.getRelapseExtrapulmonaryCompleted1517() + 1);
-								table6.setRelapseExtrapulmonaryEligible1517(table6.getRelapseExtrapulmonaryEligible1517() + 1);
-								table6.setRelapseExtrapulmonaryCompleted(table6.getRelapseExtrapulmonaryCompleted() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCompleted1517(tb08TableData.getRelapseExtrapulmonaryCompleted1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible1517(tb08TableData.getRelapseExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCompleted(tb08TableData.getRelapseExtrapulmonaryCompleted() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDiedTB1517(table6.getRelapseExtrapulmonaryDiedTB1517() + 1);
-								table6.setRelapseExtrapulmonaryEligible1517(table6.getRelapseExtrapulmonaryEligible1517() + 1);
-								table6.setRelapseExtrapulmonaryDiedTB(table6.getRelapseExtrapulmonaryDiedTB() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedTB1517(tb08TableData.getRelapseExtrapulmonaryDiedTB1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible1517(tb08TableData.getRelapseExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedTB(tb08TableData.getRelapseExtrapulmonaryDiedTB() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDiedNotTB1517(table6.getRelapseExtrapulmonaryDiedNotTB1517() + 1);
-								table6.setRelapseExtrapulmonaryEligible1517(table6.getRelapseExtrapulmonaryEligible1517() + 1);
-								table6.setRelapseExtrapulmonaryDiedNotTB(table6.getRelapseExtrapulmonaryDiedNotTB() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedNotTB1517(tb08TableData.getRelapseExtrapulmonaryDiedNotTB1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible1517(tb08TableData.getRelapseExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedNotTB(tb08TableData.getRelapseExtrapulmonaryDiedNotTB() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryFailed1517(table6.getRelapseExtrapulmonaryFailed1517() + 1);
-								table6.setRelapseExtrapulmonaryEligible1517(table6.getRelapseExtrapulmonaryEligible1517() + 1);
-								table6.setRelapseExtrapulmonaryFailed(table6.getRelapseExtrapulmonaryFailed() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryFailed1517(tb08TableData.getRelapseExtrapulmonaryFailed1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible1517(tb08TableData.getRelapseExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryFailed(tb08TableData.getRelapseExtrapulmonaryFailed() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDefaulted1517(table6.getRelapseExtrapulmonaryDefaulted1517() + 1);
-								table6.setRelapseExtrapulmonaryEligible1517(table6.getRelapseExtrapulmonaryEligible1517() + 1);
-								table6.setRelapseExtrapulmonaryDefaulted(table6.getRelapseExtrapulmonaryDefaulted() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDefaulted1517(tb08TableData.getRelapseExtrapulmonaryDefaulted1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible1517(tb08TableData.getRelapseExtrapulmonaryEligible1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDefaulted(tb08TableData.getRelapseExtrapulmonaryDefaulted() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-								table6.setRelapseExtrapulmonaryTransferOut1517(table6
+								tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+								tb08TableData.setRelapseExtrapulmonaryTransferOut1517(tb08TableData
 								        .getRelapseExtrapulmonaryTransferOut1517() + 1);
-								table6.setRelapseExtrapulmonaryTransferOut(table6.getRelapseExtrapulmonaryTransferOut() + 1);
+								tb08TableData.setRelapseExtrapulmonaryTransferOut(tb08TableData.getRelapseExtrapulmonaryTransferOut() + 1);
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-								table6.setRelapseExtrapulmonaryCanceled1517(table6.getRelapseExtrapulmonaryCanceled1517() + 1);
-								table6.setRelapseExtrapulmonaryCanceled(table6.getRelapseExtrapulmonaryCanceled() + 1);
+								tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCanceled1517(tb08TableData.getRelapseExtrapulmonaryCanceled1517() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCanceled(tb08TableData.getRelapseExtrapulmonaryCanceled() + 1);
 							}
 							
 							else if (sld != null && sld) {
-								table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-								table6.setRelapseExtrapulmonarySLD1517(table6.getRelapseExtrapulmonarySLD1517() + 1);
-								table6.setRelapseExtrapulmonarySLD(table6.getRelapseExtrapulmonarySLD() + 1);
+								tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+								tb08TableData.setRelapseExtrapulmonarySLD1517(tb08TableData.getRelapseExtrapulmonarySLD1517() + 1);
+								tb08TableData.setRelapseExtrapulmonarySLD(tb08TableData.getRelapseExtrapulmonarySLD() + 1);
 							}
 							
 						}
@@ -4446,62 +4492,62 @@ public class Form8Controller {
 						else {
 							
 							if (cured != null && cured) {
-								table6.setRelapseAllCured(table6.getRelapseAllCured() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryCured(table6.getRelapseExtrapulmonaryCured() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllCured(tb08TableData.getRelapseAllCured() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCured(tb08TableData.getRelapseExtrapulmonaryCured() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setRelapseAllCompleted(table6.getRelapseAllCompleted() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryCompleted(table6.getRelapseExtrapulmonaryCompleted() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllCompleted(tb08TableData.getRelapseAllCompleted() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCompleted(tb08TableData.getRelapseExtrapulmonaryCompleted() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setRelapseAllDiedTB(table6.getRelapseAllDiedTB() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDiedTB(table6.getRelapseExtrapulmonaryDiedTB() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDiedTB(tb08TableData.getRelapseAllDiedTB() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedTB(tb08TableData.getRelapseExtrapulmonaryDiedTB() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setRelapseAllDiedNotTB(table6.getRelapseAllDiedNotTB() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDiedNotTB(table6.getRelapseExtrapulmonaryDiedNotTB() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDiedNotTB(tb08TableData.getRelapseAllDiedNotTB() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDiedNotTB(tb08TableData.getRelapseExtrapulmonaryDiedNotTB() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setRelapseAllFailed(table6.getRelapseAllFailed() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryFailed(table6.getRelapseExtrapulmonaryFailed() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllFailed(tb08TableData.getRelapseAllFailed() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryFailed(tb08TableData.getRelapseExtrapulmonaryFailed() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setRelapseAllDefaulted(table6.getRelapseAllDefaulted() + 1);
-								table6.setRelapseAllEligible(table6.getRelapseAllEligible() + 1);
-								table6.setRelapseExtrapulmonaryDefaulted(table6.getRelapseExtrapulmonaryDefaulted() + 1);
-								table6.setRelapseExtrapulmonaryEligible(table6.getRelapseExtrapulmonaryEligible() + 1);
+								tb08TableData.setRelapseAllDefaulted(tb08TableData.getRelapseAllDefaulted() + 1);
+								tb08TableData.setRelapseAllEligible(tb08TableData.getRelapseAllEligible() + 1);
+								tb08TableData.setRelapseExtrapulmonaryDefaulted(tb08TableData.getRelapseExtrapulmonaryDefaulted() + 1);
+								tb08TableData.setRelapseExtrapulmonaryEligible(tb08TableData.getRelapseExtrapulmonaryEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setRelapseAllTransferOut(table6.getRelapseAllTransferOut() + 1);
-								table6.setRelapseExtrapulmonaryTransferOut(table6.getRelapseExtrapulmonaryTransferOut() + 1);
+								tb08TableData.setRelapseAllTransferOut(tb08TableData.getRelapseAllTransferOut() + 1);
+								tb08TableData.setRelapseExtrapulmonaryTransferOut(tb08TableData.getRelapseExtrapulmonaryTransferOut() + 1);
 								
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setRelapseAllCanceled(table6.getRelapseAllCanceled() + 1);
-								table6.setRelapseExtrapulmonaryCanceled(table6.getRelapseExtrapulmonaryCanceled() + 1);
+								tb08TableData.setRelapseAllCanceled(tb08TableData.getRelapseAllCanceled() + 1);
+								tb08TableData.setRelapseExtrapulmonaryCanceled(tb08TableData.getRelapseExtrapulmonaryCanceled() + 1);
 								
 							}
 							
 							else if (sld != null && sld) {
-								table6.setRelapseAllSLD(table6.getRelapseAllSLD() + 1);
-								table6.setRelapseExtrapulmonarySLD(table6.getRelapseExtrapulmonarySLD() + 1);
+								tb08TableData.setRelapseAllSLD(tb08TableData.getRelapseAllSLD() + 1);
+								tb08TableData.setRelapseExtrapulmonarySLD(tb08TableData.getRelapseExtrapulmonarySLD() + 1);
 								
 							}
 						}
@@ -4516,7 +4562,7 @@ public class Form8Controller {
 				        || q.getId().equals(
 				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				                MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))) {
-					table6.setFailureAllDetected(table6.getFailureAllDetected() + 1);
+					tb08TableData.setFailureAllDetected(tb08TableData.getFailureAllDetected() + 1);
 					
 					//P
 					if (pulmonary != null && pulmonary) {
@@ -4524,65 +4570,65 @@ public class Form8Controller {
 						//BC
 						if (bacPositive) {
 							
-							table6.setFailurePulmonaryBCDetected(table6.getFailurePulmonaryBCDetected() + 1);
+							tb08TableData.setFailurePulmonaryBCDetected(tb08TableData.getFailurePulmonaryBCDetected() + 1);
 							
 							if (cured != null && cured) {
-								table6.setFailureAllCured(table6.getFailureAllCured() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryBCCured(table6.getFailurePulmonaryBCCured() + 1);
-								table6.setFailurePulmonaryBCEligible(table6.getFailurePulmonaryBCEligible() + 1);
+								tb08TableData.setFailureAllCured(tb08TableData.getFailureAllCured() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryBCCured(tb08TableData.getFailurePulmonaryBCCured() + 1);
+								tb08TableData.setFailurePulmonaryBCEligible(tb08TableData.getFailurePulmonaryBCEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setFailureAllCompleted(table6.getFailureAllCompleted() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryBCCompleted(table6.getFailurePulmonaryBCCompleted() + 1);
-								table6.setFailurePulmonaryBCEligible(table6.getFailurePulmonaryBCEligible() + 1);
+								tb08TableData.setFailureAllCompleted(tb08TableData.getFailureAllCompleted() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryBCCompleted(tb08TableData.getFailurePulmonaryBCCompleted() + 1);
+								tb08TableData.setFailurePulmonaryBCEligible(tb08TableData.getFailurePulmonaryBCEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setFailureAllDiedTB(table6.getFailureAllDiedTB() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryBCDiedTB(table6.getFailurePulmonaryBCDiedTB() + 1);
-								table6.setFailurePulmonaryBCEligible(table6.getFailurePulmonaryBCEligible() + 1);
+								tb08TableData.setFailureAllDiedTB(tb08TableData.getFailureAllDiedTB() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryBCDiedTB(tb08TableData.getFailurePulmonaryBCDiedTB() + 1);
+								tb08TableData.setFailurePulmonaryBCEligible(tb08TableData.getFailurePulmonaryBCEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setFailureAllDiedNotTB(table6.getFailureAllDiedNotTB() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryBCDiedNotTB(table6.getFailurePulmonaryBCDiedNotTB() + 1);
-								table6.setFailurePulmonaryBCEligible(table6.getFailurePulmonaryBCEligible() + 1);
+								tb08TableData.setFailureAllDiedNotTB(tb08TableData.getFailureAllDiedNotTB() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryBCDiedNotTB(tb08TableData.getFailurePulmonaryBCDiedNotTB() + 1);
+								tb08TableData.setFailurePulmonaryBCEligible(tb08TableData.getFailurePulmonaryBCEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setFailureAllFailed(table6.getFailureAllFailed() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryBCFailed(table6.getFailurePulmonaryBCFailed() + 1);
-								table6.setFailurePulmonaryBCEligible(table6.getFailurePulmonaryBCEligible() + 1);
+								tb08TableData.setFailureAllFailed(tb08TableData.getFailureAllFailed() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryBCFailed(tb08TableData.getFailurePulmonaryBCFailed() + 1);
+								tb08TableData.setFailurePulmonaryBCEligible(tb08TableData.getFailurePulmonaryBCEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setFailureAllDefaulted(table6.getFailureAllDefaulted() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryBCDefaulted(table6.getFailurePulmonaryBCDefaulted() + 1);
-								table6.setFailurePulmonaryBCEligible(table6.getFailurePulmonaryBCEligible() + 1);
+								tb08TableData.setFailureAllDefaulted(tb08TableData.getFailureAllDefaulted() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryBCDefaulted(tb08TableData.getFailurePulmonaryBCDefaulted() + 1);
+								tb08TableData.setFailurePulmonaryBCEligible(tb08TableData.getFailurePulmonaryBCEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setFailureAllTransferOut(table6.getFailureAllTransferOut() + 1);
-								table6.setFailurePulmonaryBCTransferOut(table6.getFailurePulmonaryBCTransferOut() + 1);
+								tb08TableData.setFailureAllTransferOut(tb08TableData.getFailureAllTransferOut() + 1);
+								tb08TableData.setFailurePulmonaryBCTransferOut(tb08TableData.getFailurePulmonaryBCTransferOut() + 1);
 								
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setFailureAllCanceled(table6.getFailureAllCanceled() + 1);
-								table6.setFailurePulmonaryBCCanceled(table6.getFailurePulmonaryBCCanceled() + 1);
+								tb08TableData.setFailureAllCanceled(tb08TableData.getFailureAllCanceled() + 1);
+								tb08TableData.setFailurePulmonaryBCCanceled(tb08TableData.getFailurePulmonaryBCCanceled() + 1);
 								
 							}
 							
 							else if (sld != null && sld) {
-								table6.setFailureAllSLD(table6.getFailureAllSLD() + 1);
-								table6.setFailurePulmonaryBCSLD(table6.getFailurePulmonaryBCSLD() + 1);
+								tb08TableData.setFailureAllSLD(tb08TableData.getFailureAllSLD() + 1);
+								tb08TableData.setFailurePulmonaryBCSLD(tb08TableData.getFailurePulmonaryBCSLD() + 1);
 								
 							}
 						}
@@ -4590,65 +4636,65 @@ public class Form8Controller {
 						//CD
 						else {
 							
-							table6.setFailurePulmonaryCDDetected(table6.getFailurePulmonaryCDDetected() + 1);
+							tb08TableData.setFailurePulmonaryCDDetected(tb08TableData.getFailurePulmonaryCDDetected() + 1);
 							
 							if (cured != null && cured) {
-								table6.setFailureAllCured(table6.getFailureAllCured() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryCDCured(table6.getFailurePulmonaryCDCured() + 1);
-								table6.setFailurePulmonaryCDEligible(table6.getFailurePulmonaryCDEligible() + 1);
+								tb08TableData.setFailureAllCured(tb08TableData.getFailureAllCured() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryCDCured(tb08TableData.getFailurePulmonaryCDCured() + 1);
+								tb08TableData.setFailurePulmonaryCDEligible(tb08TableData.getFailurePulmonaryCDEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setFailureAllCompleted(table6.getFailureAllCompleted() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryCDCompleted(table6.getFailurePulmonaryCDCompleted() + 1);
-								table6.setFailurePulmonaryCDEligible(table6.getFailurePulmonaryCDEligible() + 1);
+								tb08TableData.setFailureAllCompleted(tb08TableData.getFailureAllCompleted() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryCDCompleted(tb08TableData.getFailurePulmonaryCDCompleted() + 1);
+								tb08TableData.setFailurePulmonaryCDEligible(tb08TableData.getFailurePulmonaryCDEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setFailureAllDiedTB(table6.getFailureAllDiedTB() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryCDDiedTB(table6.getFailurePulmonaryCDDiedTB() + 1);
-								table6.setFailurePulmonaryCDEligible(table6.getFailurePulmonaryCDEligible() + 1);
+								tb08TableData.setFailureAllDiedTB(tb08TableData.getFailureAllDiedTB() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryCDDiedTB(tb08TableData.getFailurePulmonaryCDDiedTB() + 1);
+								tb08TableData.setFailurePulmonaryCDEligible(tb08TableData.getFailurePulmonaryCDEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setFailureAllDiedNotTB(table6.getFailureAllDiedNotTB() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryCDDiedNotTB(table6.getFailurePulmonaryCDDiedNotTB() + 1);
-								table6.setFailurePulmonaryCDEligible(table6.getFailurePulmonaryCDEligible() + 1);
+								tb08TableData.setFailureAllDiedNotTB(tb08TableData.getFailureAllDiedNotTB() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryCDDiedNotTB(tb08TableData.getFailurePulmonaryCDDiedNotTB() + 1);
+								tb08TableData.setFailurePulmonaryCDEligible(tb08TableData.getFailurePulmonaryCDEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setFailureAllFailed(table6.getFailureAllFailed() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryCDFailed(table6.getFailurePulmonaryCDFailed() + 1);
-								table6.setFailurePulmonaryCDEligible(table6.getFailurePulmonaryCDEligible() + 1);
+								tb08TableData.setFailureAllFailed(tb08TableData.getFailureAllFailed() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryCDFailed(tb08TableData.getFailurePulmonaryCDFailed() + 1);
+								tb08TableData.setFailurePulmonaryCDEligible(tb08TableData.getFailurePulmonaryCDEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setFailureAllDefaulted(table6.getFailureAllDefaulted() + 1);
-								table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-								table6.setFailurePulmonaryCDDefaulted(table6.getFailurePulmonaryCDDefaulted() + 1);
-								table6.setFailurePulmonaryCDEligible(table6.getFailurePulmonaryCDEligible() + 1);
+								tb08TableData.setFailureAllDefaulted(tb08TableData.getFailureAllDefaulted() + 1);
+								tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+								tb08TableData.setFailurePulmonaryCDDefaulted(tb08TableData.getFailurePulmonaryCDDefaulted() + 1);
+								tb08TableData.setFailurePulmonaryCDEligible(tb08TableData.getFailurePulmonaryCDEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setFailureAllTransferOut(table6.getFailureAllTransferOut() + 1);
-								table6.setFailurePulmonaryCDTransferOut(table6.getFailurePulmonaryCDTransferOut() + 1);
+								tb08TableData.setFailureAllTransferOut(tb08TableData.getFailureAllTransferOut() + 1);
+								tb08TableData.setFailurePulmonaryCDTransferOut(tb08TableData.getFailurePulmonaryCDTransferOut() + 1);
 								
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setFailureAllCanceled(table6.getFailureAllCanceled() + 1);
-								table6.setFailurePulmonaryCDCanceled(table6.getFailurePulmonaryCDCanceled() + 1);
+								tb08TableData.setFailureAllCanceled(tb08TableData.getFailureAllCanceled() + 1);
+								tb08TableData.setFailurePulmonaryCDCanceled(tb08TableData.getFailurePulmonaryCDCanceled() + 1);
 								
 							}
 							
 							else if (sld != null && sld) {
-								table6.setFailureAllSLD(table6.getFailureAllSLD() + 1);
-								table6.setFailurePulmonaryCDSLD(table6.getFailurePulmonaryCDSLD() + 1);
+								tb08TableData.setFailureAllSLD(tb08TableData.getFailureAllSLD() + 1);
+								tb08TableData.setFailurePulmonaryCDSLD(tb08TableData.getFailurePulmonaryCDSLD() + 1);
 								
 							}
 							
@@ -4658,65 +4704,65 @@ public class Form8Controller {
 					//EP
 					else if (pulmonary != null && !pulmonary) {
 						
-						table6.setFailureExtrapulmonaryDetected(table6.getFailureExtrapulmonaryDetected() + 1);
+						tb08TableData.setFailureExtrapulmonaryDetected(tb08TableData.getFailureExtrapulmonaryDetected() + 1);
 						
 						if (cured != null && cured) {
-							table6.setFailureAllCured(table6.getFailureAllCured() + 1);
-							table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-							table6.setFailureExtrapulmonaryCured(table6.getFailureExtrapulmonaryCured() + 1);
-							table6.setFailureExtrapulmonaryEligible(table6.getFailureExtrapulmonaryEligible() + 1);
+							tb08TableData.setFailureAllCured(tb08TableData.getFailureAllCured() + 1);
+							tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+							tb08TableData.setFailureExtrapulmonaryCured(tb08TableData.getFailureExtrapulmonaryCured() + 1);
+							tb08TableData.setFailureExtrapulmonaryEligible(tb08TableData.getFailureExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (txCompleted != null && txCompleted) {
-							table6.setFailureAllCompleted(table6.getFailureAllCompleted() + 1);
-							table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-							table6.setFailureExtrapulmonaryCompleted(table6.getFailureExtrapulmonaryCompleted() + 1);
-							table6.setFailureExtrapulmonaryEligible(table6.getFailureExtrapulmonaryEligible() + 1);
+							tb08TableData.setFailureAllCompleted(tb08TableData.getFailureAllCompleted() + 1);
+							tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+							tb08TableData.setFailureExtrapulmonaryCompleted(tb08TableData.getFailureExtrapulmonaryCompleted() + 1);
+							tb08TableData.setFailureExtrapulmonaryEligible(tb08TableData.getFailureExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (diedTB != null && diedTB) {
-							table6.setFailureAllDiedTB(table6.getFailureAllDiedTB() + 1);
-							table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-							table6.setFailureExtrapulmonaryDiedTB(table6.getFailureExtrapulmonaryDiedTB() + 1);
-							table6.setFailureExtrapulmonaryEligible(table6.getFailureExtrapulmonaryEligible() + 1);
+							tb08TableData.setFailureAllDiedTB(tb08TableData.getFailureAllDiedTB() + 1);
+							tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+							tb08TableData.setFailureExtrapulmonaryDiedTB(tb08TableData.getFailureExtrapulmonaryDiedTB() + 1);
+							tb08TableData.setFailureExtrapulmonaryEligible(tb08TableData.getFailureExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (diedNotTB != null && diedNotTB) {
-							table6.setFailureAllDiedNotTB(table6.getFailureAllDiedNotTB() + 1);
-							table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-							table6.setFailureExtrapulmonaryDiedNotTB(table6.getFailureExtrapulmonaryDiedNotTB() + 1);
-							table6.setFailureExtrapulmonaryEligible(table6.getFailureExtrapulmonaryEligible() + 1);
+							tb08TableData.setFailureAllDiedNotTB(tb08TableData.getFailureAllDiedNotTB() + 1);
+							tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+							tb08TableData.setFailureExtrapulmonaryDiedNotTB(tb08TableData.getFailureExtrapulmonaryDiedNotTB() + 1);
+							tb08TableData.setFailureExtrapulmonaryEligible(tb08TableData.getFailureExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (failed != null && failed) {
-							table6.setFailureAllFailed(table6.getFailureAllFailed() + 1);
-							table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-							table6.setFailureExtrapulmonaryFailed(table6.getFailureExtrapulmonaryFailed() + 1);
-							table6.setFailureExtrapulmonaryEligible(table6.getFailureExtrapulmonaryEligible() + 1);
+							tb08TableData.setFailureAllFailed(tb08TableData.getFailureAllFailed() + 1);
+							tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+							tb08TableData.setFailureExtrapulmonaryFailed(tb08TableData.getFailureExtrapulmonaryFailed() + 1);
+							tb08TableData.setFailureExtrapulmonaryEligible(tb08TableData.getFailureExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (defaulted != null && defaulted) {
-							table6.setFailureAllDefaulted(table6.getFailureAllDefaulted() + 1);
-							table6.setFailureAllEligible(table6.getFailureAllEligible() + 1);
-							table6.setFailureExtrapulmonaryDefaulted(table6.getFailureExtrapulmonaryDefaulted() + 1);
-							table6.setFailureExtrapulmonaryEligible(table6.getFailureExtrapulmonaryEligible() + 1);
+							tb08TableData.setFailureAllDefaulted(tb08TableData.getFailureAllDefaulted() + 1);
+							tb08TableData.setFailureAllEligible(tb08TableData.getFailureAllEligible() + 1);
+							tb08TableData.setFailureExtrapulmonaryDefaulted(tb08TableData.getFailureExtrapulmonaryDefaulted() + 1);
+							tb08TableData.setFailureExtrapulmonaryEligible(tb08TableData.getFailureExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (transferOut != null && transferOut) {
-							table6.setFailureAllTransferOut(table6.getFailureAllTransferOut() + 1);
-							table6.setFailureExtrapulmonaryTransferOut(table6.getFailureExtrapulmonaryTransferOut() + 1);
+							tb08TableData.setFailureAllTransferOut(tb08TableData.getFailureAllTransferOut() + 1);
+							tb08TableData.setFailureExtrapulmonaryTransferOut(tb08TableData.getFailureExtrapulmonaryTransferOut() + 1);
 							
 						}
 						
 						else if (canceled != null && canceled) {
-							table6.setFailureAllCanceled(table6.getFailureAllCanceled() + 1);
-							table6.setFailureExtrapulmonaryCanceled(table6.getFailureExtrapulmonaryCanceled() + 1);
+							tb08TableData.setFailureAllCanceled(tb08TableData.getFailureAllCanceled() + 1);
+							tb08TableData.setFailureExtrapulmonaryCanceled(tb08TableData.getFailureExtrapulmonaryCanceled() + 1);
 							
 						}
 						
 						else if (sld != null && sld) {
-							table6.setFailureAllSLD(table6.getFailureAllSLD() + 1);
-							table6.setFailureExtrapulmonarySLD(table6.getFailureExtrapulmonarySLD() + 1);
+							tb08TableData.setFailureAllSLD(tb08TableData.getFailureAllSLD() + 1);
+							tb08TableData.setFailureExtrapulmonarySLD(tb08TableData.getFailureExtrapulmonarySLD() + 1);
 							
 						}
 						
@@ -4729,7 +4775,7 @@ public class Form8Controller {
 				        || q.getId().equals(
 				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				                MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))) {
-					table6.setDefaultAllDetected(table6.getDefaultAllDetected() + 1);
+					tb08TableData.setDefaultAllDetected(tb08TableData.getDefaultAllDetected() + 1);
 					
 					//P
 					if (pulmonary != null && pulmonary) {
@@ -4737,65 +4783,65 @@ public class Form8Controller {
 						//BC
 						if (bacPositive) {
 							
-							table6.setDefaultPulmonaryBCDetected(table6.getDefaultPulmonaryBCDetected() + 1);
+							tb08TableData.setDefaultPulmonaryBCDetected(tb08TableData.getDefaultPulmonaryBCDetected() + 1);
 							
 							if (cured != null && cured) {
-								table6.setDefaultAllCured(table6.getDefaultAllCured() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryBCCured(table6.getDefaultPulmonaryBCCured() + 1);
-								table6.setDefaultPulmonaryBCEligible(table6.getDefaultPulmonaryBCEligible() + 1);
+								tb08TableData.setDefaultAllCured(tb08TableData.getDefaultAllCured() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryBCCured(tb08TableData.getDefaultPulmonaryBCCured() + 1);
+								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setDefaultAllCompleted(table6.getDefaultAllCompleted() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryBCCompleted(table6.getDefaultPulmonaryBCCompleted() + 1);
-								table6.setDefaultPulmonaryBCEligible(table6.getDefaultPulmonaryBCEligible() + 1);
+								tb08TableData.setDefaultAllCompleted(tb08TableData.getDefaultAllCompleted() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryBCCompleted(tb08TableData.getDefaultPulmonaryBCCompleted() + 1);
+								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setDefaultAllDiedTB(table6.getDefaultAllDiedTB() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryBCDiedTB(table6.getDefaultPulmonaryBCDiedTB() + 1);
-								table6.setDefaultPulmonaryBCEligible(table6.getDefaultPulmonaryBCEligible() + 1);
+								tb08TableData.setDefaultAllDiedTB(tb08TableData.getDefaultAllDiedTB() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryBCDiedTB(tb08TableData.getDefaultPulmonaryBCDiedTB() + 1);
+								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setDefaultAllDiedNotTB(table6.getDefaultAllDiedNotTB() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryBCDiedNotTB(table6.getDefaultPulmonaryBCDiedNotTB() + 1);
-								table6.setDefaultPulmonaryBCEligible(table6.getDefaultPulmonaryBCEligible() + 1);
+								tb08TableData.setDefaultAllDiedNotTB(tb08TableData.getDefaultAllDiedNotTB() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryBCDiedNotTB(tb08TableData.getDefaultPulmonaryBCDiedNotTB() + 1);
+								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setDefaultAllFailed(table6.getDefaultAllFailed() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryBCFailed(table6.getDefaultPulmonaryBCFailed() + 1);
-								table6.setDefaultPulmonaryBCEligible(table6.getDefaultPulmonaryBCEligible() + 1);
+								tb08TableData.setDefaultAllFailed(tb08TableData.getDefaultAllFailed() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryBCFailed(tb08TableData.getDefaultPulmonaryBCFailed() + 1);
+								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setDefaultAllDefaulted(table6.getDefaultAllDefaulted() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryBCDefaulted(table6.getDefaultPulmonaryBCDefaulted() + 1);
-								table6.setDefaultPulmonaryBCEligible(table6.getDefaultPulmonaryBCEligible() + 1);
+								tb08TableData.setDefaultAllDefaulted(tb08TableData.getDefaultAllDefaulted() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryBCDefaulted(tb08TableData.getDefaultPulmonaryBCDefaulted() + 1);
+								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setDefaultAllTransferOut(table6.getDefaultAllTransferOut() + 1);
-								table6.setDefaultPulmonaryBCTransferOut(table6.getDefaultPulmonaryBCTransferOut() + 1);
+								tb08TableData.setDefaultAllTransferOut(tb08TableData.getDefaultAllTransferOut() + 1);
+								tb08TableData.setDefaultPulmonaryBCTransferOut(tb08TableData.getDefaultPulmonaryBCTransferOut() + 1);
 								
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setDefaultAllCanceled(table6.getDefaultAllCanceled() + 1);
-								table6.setDefaultPulmonaryBCCanceled(table6.getDefaultPulmonaryBCCanceled() + 1);
+								tb08TableData.setDefaultAllCanceled(tb08TableData.getDefaultAllCanceled() + 1);
+								tb08TableData.setDefaultPulmonaryBCCanceled(tb08TableData.getDefaultPulmonaryBCCanceled() + 1);
 								
 							}
 							
 							else if (sld != null && sld) {
-								table6.setDefaultAllSLD(table6.getDefaultAllSLD() + 1);
-								table6.setDefaultPulmonaryBCSLD(table6.getDefaultPulmonaryBCSLD() + 1);
+								tb08TableData.setDefaultAllSLD(tb08TableData.getDefaultAllSLD() + 1);
+								tb08TableData.setDefaultPulmonaryBCSLD(tb08TableData.getDefaultPulmonaryBCSLD() + 1);
 								
 							}
 						}
@@ -4803,65 +4849,65 @@ public class Form8Controller {
 						//CD
 						else {
 							
-							table6.setDefaultPulmonaryCDDetected(table6.getDefaultPulmonaryCDDetected() + 1);
+							tb08TableData.setDefaultPulmonaryCDDetected(tb08TableData.getDefaultPulmonaryCDDetected() + 1);
 							
 							if (cured != null && cured) {
-								table6.setDefaultAllCured(table6.getDefaultAllCured() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryCDCured(table6.getDefaultPulmonaryCDCured() + 1);
-								table6.setDefaultPulmonaryCDEligible(table6.getDefaultPulmonaryCDEligible() + 1);
+								tb08TableData.setDefaultAllCured(tb08TableData.getDefaultAllCured() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryCDCured(tb08TableData.getDefaultPulmonaryCDCured() + 1);
+								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setDefaultAllCompleted(table6.getDefaultAllCompleted() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryCDCompleted(table6.getDefaultPulmonaryCDCompleted() + 1);
-								table6.setDefaultPulmonaryCDEligible(table6.getDefaultPulmonaryCDEligible() + 1);
+								tb08TableData.setDefaultAllCompleted(tb08TableData.getDefaultAllCompleted() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryCDCompleted(tb08TableData.getDefaultPulmonaryCDCompleted() + 1);
+								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setDefaultAllDiedTB(table6.getDefaultAllDiedTB() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryCDDiedTB(table6.getDefaultPulmonaryCDDiedTB() + 1);
-								table6.setDefaultPulmonaryCDEligible(table6.getDefaultPulmonaryCDEligible() + 1);
+								tb08TableData.setDefaultAllDiedTB(tb08TableData.getDefaultAllDiedTB() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryCDDiedTB(tb08TableData.getDefaultPulmonaryCDDiedTB() + 1);
+								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setDefaultAllDiedNotTB(table6.getDefaultAllDiedNotTB() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryCDDiedNotTB(table6.getDefaultPulmonaryCDDiedNotTB() + 1);
-								table6.setDefaultPulmonaryCDEligible(table6.getDefaultPulmonaryCDEligible() + 1);
+								tb08TableData.setDefaultAllDiedNotTB(tb08TableData.getDefaultAllDiedNotTB() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryCDDiedNotTB(tb08TableData.getDefaultPulmonaryCDDiedNotTB() + 1);
+								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setDefaultAllFailed(table6.getDefaultAllFailed() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryCDFailed(table6.getDefaultPulmonaryCDFailed() + 1);
-								table6.setDefaultPulmonaryCDEligible(table6.getDefaultPulmonaryCDEligible() + 1);
+								tb08TableData.setDefaultAllFailed(tb08TableData.getDefaultAllFailed() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryCDFailed(tb08TableData.getDefaultPulmonaryCDFailed() + 1);
+								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setDefaultAllDefaulted(table6.getDefaultAllDefaulted() + 1);
-								table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-								table6.setDefaultPulmonaryCDDefaulted(table6.getDefaultPulmonaryCDDefaulted() + 1);
-								table6.setDefaultPulmonaryCDEligible(table6.getDefaultPulmonaryCDEligible() + 1);
+								tb08TableData.setDefaultAllDefaulted(tb08TableData.getDefaultAllDefaulted() + 1);
+								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+								tb08TableData.setDefaultPulmonaryCDDefaulted(tb08TableData.getDefaultPulmonaryCDDefaulted() + 1);
+								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setDefaultAllTransferOut(table6.getDefaultAllTransferOut() + 1);
-								table6.setDefaultPulmonaryCDTransferOut(table6.getDefaultPulmonaryCDTransferOut() + 1);
+								tb08TableData.setDefaultAllTransferOut(tb08TableData.getDefaultAllTransferOut() + 1);
+								tb08TableData.setDefaultPulmonaryCDTransferOut(tb08TableData.getDefaultPulmonaryCDTransferOut() + 1);
 								
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setDefaultAllCanceled(table6.getDefaultAllCanceled() + 1);
-								table6.setDefaultPulmonaryCDCanceled(table6.getDefaultPulmonaryCDCanceled() + 1);
+								tb08TableData.setDefaultAllCanceled(tb08TableData.getDefaultAllCanceled() + 1);
+								tb08TableData.setDefaultPulmonaryCDCanceled(tb08TableData.getDefaultPulmonaryCDCanceled() + 1);
 								
 							}
 							
 							else if (sld != null && sld) {
-								table6.setDefaultAllSLD(table6.getDefaultAllSLD() + 1);
-								table6.setDefaultPulmonaryCDSLD(table6.getDefaultPulmonaryCDSLD() + 1);
+								tb08TableData.setDefaultAllSLD(tb08TableData.getDefaultAllSLD() + 1);
+								tb08TableData.setDefaultPulmonaryCDSLD(tb08TableData.getDefaultPulmonaryCDSLD() + 1);
 								
 							}
 							
@@ -4871,65 +4917,65 @@ public class Form8Controller {
 					//EP
 					else if (pulmonary != null && !pulmonary) {
 						
-						table6.setDefaultExtrapulmonaryDetected(table6.getDefaultExtrapulmonaryDetected() + 1);
+						tb08TableData.setDefaultExtrapulmonaryDetected(tb08TableData.getDefaultExtrapulmonaryDetected() + 1);
 						
 						if (cured != null && cured) {
-							table6.setDefaultAllCured(table6.getDefaultAllCured() + 1);
-							table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-							table6.setDefaultExtrapulmonaryCured(table6.getDefaultExtrapulmonaryCured() + 1);
-							table6.setDefaultExtrapulmonaryEligible(table6.getDefaultExtrapulmonaryEligible() + 1);
+							tb08TableData.setDefaultAllCured(tb08TableData.getDefaultAllCured() + 1);
+							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+							tb08TableData.setDefaultExtrapulmonaryCured(tb08TableData.getDefaultExtrapulmonaryCured() + 1);
+							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (txCompleted != null && txCompleted) {
-							table6.setDefaultAllCompleted(table6.getDefaultAllCompleted() + 1);
-							table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-							table6.setDefaultExtrapulmonaryCompleted(table6.getDefaultExtrapulmonaryCompleted() + 1);
-							table6.setDefaultExtrapulmonaryEligible(table6.getDefaultExtrapulmonaryEligible() + 1);
+							tb08TableData.setDefaultAllCompleted(tb08TableData.getDefaultAllCompleted() + 1);
+							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+							tb08TableData.setDefaultExtrapulmonaryCompleted(tb08TableData.getDefaultExtrapulmonaryCompleted() + 1);
+							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (diedTB != null && diedTB) {
-							table6.setDefaultAllDiedTB(table6.getDefaultAllDiedTB() + 1);
-							table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-							table6.setDefaultExtrapulmonaryDiedTB(table6.getDefaultExtrapulmonaryDiedTB() + 1);
-							table6.setDefaultExtrapulmonaryEligible(table6.getDefaultExtrapulmonaryEligible() + 1);
+							tb08TableData.setDefaultAllDiedTB(tb08TableData.getDefaultAllDiedTB() + 1);
+							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+							tb08TableData.setDefaultExtrapulmonaryDiedTB(tb08TableData.getDefaultExtrapulmonaryDiedTB() + 1);
+							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (diedNotTB != null && diedNotTB) {
-							table6.setDefaultAllDiedNotTB(table6.getDefaultAllDiedNotTB() + 1);
-							table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-							table6.setDefaultExtrapulmonaryDiedNotTB(table6.getDefaultExtrapulmonaryDiedNotTB() + 1);
-							table6.setDefaultExtrapulmonaryEligible(table6.getDefaultExtrapulmonaryEligible() + 1);
+							tb08TableData.setDefaultAllDiedNotTB(tb08TableData.getDefaultAllDiedNotTB() + 1);
+							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+							tb08TableData.setDefaultExtrapulmonaryDiedNotTB(tb08TableData.getDefaultExtrapulmonaryDiedNotTB() + 1);
+							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (failed != null && failed) {
-							table6.setDefaultAllFailed(table6.getDefaultAllFailed() + 1);
-							table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-							table6.setDefaultExtrapulmonaryFailed(table6.getDefaultExtrapulmonaryFailed() + 1);
-							table6.setDefaultExtrapulmonaryEligible(table6.getDefaultExtrapulmonaryEligible() + 1);
+							tb08TableData.setDefaultAllFailed(tb08TableData.getDefaultAllFailed() + 1);
+							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+							tb08TableData.setDefaultExtrapulmonaryFailed(tb08TableData.getDefaultExtrapulmonaryFailed() + 1);
+							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (defaulted != null && defaulted) {
-							table6.setDefaultAllDefaulted(table6.getDefaultAllDefaulted() + 1);
-							table6.setDefaultAllEligible(table6.getDefaultAllEligible() + 1);
-							table6.setDefaultExtrapulmonaryDefaulted(table6.getDefaultExtrapulmonaryDefaulted() + 1);
-							table6.setDefaultExtrapulmonaryEligible(table6.getDefaultExtrapulmonaryEligible() + 1);
+							tb08TableData.setDefaultAllDefaulted(tb08TableData.getDefaultAllDefaulted() + 1);
+							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
+							tb08TableData.setDefaultExtrapulmonaryDefaulted(tb08TableData.getDefaultExtrapulmonaryDefaulted() + 1);
+							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (transferOut != null && transferOut) {
-							table6.setDefaultAllTransferOut(table6.getDefaultAllTransferOut() + 1);
-							table6.setDefaultExtrapulmonaryTransferOut(table6.getDefaultExtrapulmonaryTransferOut() + 1);
+							tb08TableData.setDefaultAllTransferOut(tb08TableData.getDefaultAllTransferOut() + 1);
+							tb08TableData.setDefaultExtrapulmonaryTransferOut(tb08TableData.getDefaultExtrapulmonaryTransferOut() + 1);
 							
 						}
 						
 						else if (canceled != null && canceled) {
-							table6.setDefaultAllCanceled(table6.getDefaultAllCanceled() + 1);
-							table6.setDefaultExtrapulmonaryCanceled(table6.getDefaultExtrapulmonaryCanceled() + 1);
+							tb08TableData.setDefaultAllCanceled(tb08TableData.getDefaultAllCanceled() + 1);
+							tb08TableData.setDefaultExtrapulmonaryCanceled(tb08TableData.getDefaultExtrapulmonaryCanceled() + 1);
 							
 						}
 						
 						else if (sld != null && sld) {
-							table6.setDefaultAllSLD(table6.getDefaultAllSLD() + 1);
-							table6.setDefaultExtrapulmonarySLD(table6.getDefaultExtrapulmonarySLD() + 1);
+							tb08TableData.setDefaultAllSLD(tb08TableData.getDefaultAllSLD() + 1);
+							tb08TableData.setDefaultExtrapulmonarySLD(tb08TableData.getDefaultExtrapulmonarySLD() + 1);
 							
 						}
 						
@@ -4941,7 +4987,7 @@ public class Form8Controller {
 				else if (q.getId().equals(
 				    Integer.parseInt(Context.getAdministrationService()
 				            .getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID)))) {
-					table6.setOtherAllDetected(table6.getOtherAllDetected() + 1);
+					tb08TableData.setOtherAllDetected(tb08TableData.getOtherAllDetected() + 1);
 					
 					//P
 					if (pulmonary != null && pulmonary) {
@@ -4949,65 +4995,65 @@ public class Form8Controller {
 						//BC
 						if (bacPositive) {
 							
-							table6.setOtherPulmonaryBCDetected(table6.getOtherPulmonaryBCDetected() + 1);
+							tb08TableData.setOtherPulmonaryBCDetected(tb08TableData.getOtherPulmonaryBCDetected() + 1);
 							
 							if (cured != null && cured) {
-								table6.setOtherAllCured(table6.getOtherAllCured() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryBCCured(table6.getOtherPulmonaryBCCured() + 1);
-								table6.setOtherPulmonaryBCEligible(table6.getOtherPulmonaryBCEligible() + 1);
+								tb08TableData.setOtherAllCured(tb08TableData.getOtherAllCured() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryBCCured(tb08TableData.getOtherPulmonaryBCCured() + 1);
+								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setOtherAllCompleted(table6.getOtherAllCompleted() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryBCCompleted(table6.getOtherPulmonaryBCCompleted() + 1);
-								table6.setOtherPulmonaryBCEligible(table6.getOtherPulmonaryBCEligible() + 1);
+								tb08TableData.setOtherAllCompleted(tb08TableData.getOtherAllCompleted() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryBCCompleted(tb08TableData.getOtherPulmonaryBCCompleted() + 1);
+								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setOtherAllDiedTB(table6.getOtherAllDiedTB() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryBCDiedTB(table6.getOtherPulmonaryBCDiedTB() + 1);
-								table6.setOtherPulmonaryBCEligible(table6.getOtherPulmonaryBCEligible() + 1);
+								tb08TableData.setOtherAllDiedTB(tb08TableData.getOtherAllDiedTB() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryBCDiedTB(tb08TableData.getOtherPulmonaryBCDiedTB() + 1);
+								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setOtherAllDiedNotTB(table6.getOtherAllDiedNotTB() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryBCDiedNotTB(table6.getOtherPulmonaryBCDiedNotTB() + 1);
-								table6.setOtherPulmonaryBCEligible(table6.getOtherPulmonaryBCEligible() + 1);
+								tb08TableData.setOtherAllDiedNotTB(tb08TableData.getOtherAllDiedNotTB() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryBCDiedNotTB(tb08TableData.getOtherPulmonaryBCDiedNotTB() + 1);
+								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setOtherAllFailed(table6.getOtherAllFailed() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryBCFailed(table6.getOtherPulmonaryBCFailed() + 1);
-								table6.setOtherPulmonaryBCEligible(table6.getOtherPulmonaryBCEligible() + 1);
+								tb08TableData.setOtherAllFailed(tb08TableData.getOtherAllFailed() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryBCFailed(tb08TableData.getOtherPulmonaryBCFailed() + 1);
+								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setOtherAllDefaulted(table6.getOtherAllDefaulted() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryBCDefaulted(table6.getOtherPulmonaryBCDefaulted() + 1);
-								table6.setOtherPulmonaryBCEligible(table6.getOtherPulmonaryBCEligible() + 1);
+								tb08TableData.setOtherAllDefaulted(tb08TableData.getOtherAllDefaulted() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryBCDefaulted(tb08TableData.getOtherPulmonaryBCDefaulted() + 1);
+								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setOtherAllTransferOut(table6.getOtherAllTransferOut() + 1);
-								table6.setOtherPulmonaryBCTransferOut(table6.getOtherPulmonaryBCTransferOut() + 1);
+								tb08TableData.setOtherAllTransferOut(tb08TableData.getOtherAllTransferOut() + 1);
+								tb08TableData.setOtherPulmonaryBCTransferOut(tb08TableData.getOtherPulmonaryBCTransferOut() + 1);
 								
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setOtherAllCanceled(table6.getOtherAllCanceled() + 1);
-								table6.setOtherPulmonaryBCCanceled(table6.getOtherPulmonaryBCCanceled() + 1);
+								tb08TableData.setOtherAllCanceled(tb08TableData.getOtherAllCanceled() + 1);
+								tb08TableData.setOtherPulmonaryBCCanceled(tb08TableData.getOtherPulmonaryBCCanceled() + 1);
 								
 							}
 							
 							else if (sld != null && sld) {
-								table6.setOtherAllSLD(table6.getOtherAllSLD() + 1);
-								table6.setOtherPulmonaryBCSLD(table6.getOtherPulmonaryBCSLD() + 1);
+								tb08TableData.setOtherAllSLD(tb08TableData.getOtherAllSLD() + 1);
+								tb08TableData.setOtherPulmonaryBCSLD(tb08TableData.getOtherPulmonaryBCSLD() + 1);
 								
 							}
 						}
@@ -5015,65 +5061,65 @@ public class Form8Controller {
 						//CD
 						else {
 							
-							table6.setOtherPulmonaryCDDetected(table6.getOtherPulmonaryCDDetected() + 1);
+							tb08TableData.setOtherPulmonaryCDDetected(tb08TableData.getOtherPulmonaryCDDetected() + 1);
 							
 							if (cured != null && cured) {
-								table6.setOtherAllCured(table6.getOtherAllCured() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryCDCured(table6.getOtherPulmonaryCDCured() + 1);
-								table6.setOtherPulmonaryCDEligible(table6.getOtherPulmonaryCDEligible() + 1);
+								tb08TableData.setOtherAllCured(tb08TableData.getOtherAllCured() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryCDCured(tb08TableData.getOtherPulmonaryCDCured() + 1);
+								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
 							
 							else if (txCompleted != null && txCompleted) {
-								table6.setOtherAllCompleted(table6.getOtherAllCompleted() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryCDCompleted(table6.getOtherPulmonaryCDCompleted() + 1);
-								table6.setOtherPulmonaryCDEligible(table6.getOtherPulmonaryCDEligible() + 1);
+								tb08TableData.setOtherAllCompleted(tb08TableData.getOtherAllCompleted() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryCDCompleted(tb08TableData.getOtherPulmonaryCDCompleted() + 1);
+								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
 							
 							else if (diedTB != null && diedTB) {
-								table6.setOtherAllDiedTB(table6.getOtherAllDiedTB() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryCDDiedTB(table6.getOtherPulmonaryCDDiedTB() + 1);
-								table6.setOtherPulmonaryCDEligible(table6.getOtherPulmonaryCDEligible() + 1);
+								tb08TableData.setOtherAllDiedTB(tb08TableData.getOtherAllDiedTB() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryCDDiedTB(tb08TableData.getOtherPulmonaryCDDiedTB() + 1);
+								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
 							
 							else if (diedNotTB != null && diedNotTB) {
-								table6.setOtherAllDiedNotTB(table6.getOtherAllDiedNotTB() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryCDDiedNotTB(table6.getOtherPulmonaryCDDiedNotTB() + 1);
-								table6.setOtherPulmonaryCDEligible(table6.getOtherPulmonaryCDEligible() + 1);
+								tb08TableData.setOtherAllDiedNotTB(tb08TableData.getOtherAllDiedNotTB() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryCDDiedNotTB(tb08TableData.getOtherPulmonaryCDDiedNotTB() + 1);
+								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
 							
 							else if (failed != null && failed) {
-								table6.setOtherAllFailed(table6.getOtherAllFailed() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryCDFailed(table6.getOtherPulmonaryCDFailed() + 1);
-								table6.setOtherPulmonaryCDEligible(table6.getOtherPulmonaryCDEligible() + 1);
+								tb08TableData.setOtherAllFailed(tb08TableData.getOtherAllFailed() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryCDFailed(tb08TableData.getOtherPulmonaryCDFailed() + 1);
+								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
 							
 							else if (defaulted != null && defaulted) {
-								table6.setOtherAllDefaulted(table6.getOtherAllDefaulted() + 1);
-								table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-								table6.setOtherPulmonaryCDDefaulted(table6.getOtherPulmonaryCDDefaulted() + 1);
-								table6.setOtherPulmonaryCDEligible(table6.getOtherPulmonaryCDEligible() + 1);
+								tb08TableData.setOtherAllDefaulted(tb08TableData.getOtherAllDefaulted() + 1);
+								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+								tb08TableData.setOtherPulmonaryCDDefaulted(tb08TableData.getOtherPulmonaryCDDefaulted() + 1);
+								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
 							
 							else if (transferOut != null && transferOut) {
-								table6.setOtherAllTransferOut(table6.getOtherAllTransferOut() + 1);
-								table6.setOtherPulmonaryCDTransferOut(table6.getOtherPulmonaryCDTransferOut() + 1);
+								tb08TableData.setOtherAllTransferOut(tb08TableData.getOtherAllTransferOut() + 1);
+								tb08TableData.setOtherPulmonaryCDTransferOut(tb08TableData.getOtherPulmonaryCDTransferOut() + 1);
 								
 							}
 							
 							else if (canceled != null && canceled) {
-								table6.setOtherAllCanceled(table6.getOtherAllCanceled() + 1);
-								table6.setOtherPulmonaryCDCanceled(table6.getOtherPulmonaryCDCanceled() + 1);
+								tb08TableData.setOtherAllCanceled(tb08TableData.getOtherAllCanceled() + 1);
+								tb08TableData.setOtherPulmonaryCDCanceled(tb08TableData.getOtherPulmonaryCDCanceled() + 1);
 								
 							}
 							
 							else if (sld != null && sld) {
-								table6.setOtherAllSLD(table6.getOtherAllSLD() + 1);
-								table6.setOtherPulmonaryCDSLD(table6.getOtherPulmonaryCDSLD() + 1);
+								tb08TableData.setOtherAllSLD(tb08TableData.getOtherAllSLD() + 1);
+								tb08TableData.setOtherPulmonaryCDSLD(tb08TableData.getOtherPulmonaryCDSLD() + 1);
 								
 							}
 							
@@ -5083,65 +5129,65 @@ public class Form8Controller {
 					//EP
 					else if (pulmonary != null && !pulmonary) {
 						
-						table6.setOtherExtrapulmonaryDetected(table6.getOtherExtrapulmonaryDetected() + 1);
+						tb08TableData.setOtherExtrapulmonaryDetected(tb08TableData.getOtherExtrapulmonaryDetected() + 1);
 						
 						if (cured != null && cured) {
-							table6.setOtherAllCured(table6.getOtherAllCured() + 1);
-							table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-							table6.setOtherExtrapulmonaryCured(table6.getOtherExtrapulmonaryCured() + 1);
-							table6.setOtherExtrapulmonaryEligible(table6.getOtherExtrapulmonaryEligible() + 1);
+							tb08TableData.setOtherAllCured(tb08TableData.getOtherAllCured() + 1);
+							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+							tb08TableData.setOtherExtrapulmonaryCured(tb08TableData.getOtherExtrapulmonaryCured() + 1);
+							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (txCompleted != null && txCompleted) {
-							table6.setOtherAllCompleted(table6.getOtherAllCompleted() + 1);
-							table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-							table6.setOtherExtrapulmonaryCompleted(table6.getOtherExtrapulmonaryCompleted() + 1);
-							table6.setOtherExtrapulmonaryEligible(table6.getOtherExtrapulmonaryEligible() + 1);
+							tb08TableData.setOtherAllCompleted(tb08TableData.getOtherAllCompleted() + 1);
+							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+							tb08TableData.setOtherExtrapulmonaryCompleted(tb08TableData.getOtherExtrapulmonaryCompleted() + 1);
+							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (diedTB != null && diedTB) {
-							table6.setOtherAllDiedTB(table6.getOtherAllDiedTB() + 1);
-							table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-							table6.setOtherExtrapulmonaryDiedTB(table6.getOtherExtrapulmonaryDiedTB() + 1);
-							table6.setOtherExtrapulmonaryEligible(table6.getOtherExtrapulmonaryEligible() + 1);
+							tb08TableData.setOtherAllDiedTB(tb08TableData.getOtherAllDiedTB() + 1);
+							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+							tb08TableData.setOtherExtrapulmonaryDiedTB(tb08TableData.getOtherExtrapulmonaryDiedTB() + 1);
+							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (diedNotTB != null && diedNotTB) {
-							table6.setOtherAllDiedNotTB(table6.getOtherAllDiedNotTB() + 1);
-							table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-							table6.setOtherExtrapulmonaryDiedNotTB(table6.getOtherExtrapulmonaryDiedNotTB() + 1);
-							table6.setOtherExtrapulmonaryEligible(table6.getOtherExtrapulmonaryEligible() + 1);
+							tb08TableData.setOtherAllDiedNotTB(tb08TableData.getOtherAllDiedNotTB() + 1);
+							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+							tb08TableData.setOtherExtrapulmonaryDiedNotTB(tb08TableData.getOtherExtrapulmonaryDiedNotTB() + 1);
+							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (failed != null && failed) {
-							table6.setOtherAllFailed(table6.getOtherAllFailed() + 1);
-							table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-							table6.setOtherExtrapulmonaryFailed(table6.getOtherExtrapulmonaryFailed() + 1);
-							table6.setOtherExtrapulmonaryEligible(table6.getOtherExtrapulmonaryEligible() + 1);
+							tb08TableData.setOtherAllFailed(tb08TableData.getOtherAllFailed() + 1);
+							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+							tb08TableData.setOtherExtrapulmonaryFailed(tb08TableData.getOtherExtrapulmonaryFailed() + 1);
+							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (defaulted != null && defaulted) {
-							table6.setOtherAllDefaulted(table6.getOtherAllDefaulted() + 1);
-							table6.setOtherAllEligible(table6.getOtherAllEligible() + 1);
-							table6.setOtherExtrapulmonaryDefaulted(table6.getOtherExtrapulmonaryDefaulted() + 1);
-							table6.setOtherExtrapulmonaryEligible(table6.getOtherExtrapulmonaryEligible() + 1);
+							tb08TableData.setOtherAllDefaulted(tb08TableData.getOtherAllDefaulted() + 1);
+							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
+							tb08TableData.setOtherExtrapulmonaryDefaulted(tb08TableData.getOtherExtrapulmonaryDefaulted() + 1);
+							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
 						
 						else if (transferOut != null && transferOut) {
-							table6.setOtherAllTransferOut(table6.getOtherAllTransferOut() + 1);
-							table6.setOtherExtrapulmonaryTransferOut(table6.getOtherExtrapulmonaryTransferOut() + 1);
+							tb08TableData.setOtherAllTransferOut(tb08TableData.getOtherAllTransferOut() + 1);
+							tb08TableData.setOtherExtrapulmonaryTransferOut(tb08TableData.getOtherExtrapulmonaryTransferOut() + 1);
 							
 						}
 						
 						else if (canceled != null && canceled) {
-							table6.setOtherAllCanceled(table6.getOtherAllCanceled() + 1);
-							table6.setOtherExtrapulmonaryCanceled(table6.getOtherExtrapulmonaryCanceled() + 1);
+							tb08TableData.setOtherAllCanceled(tb08TableData.getOtherAllCanceled() + 1);
+							tb08TableData.setOtherExtrapulmonaryCanceled(tb08TableData.getOtherExtrapulmonaryCanceled() + 1);
 							
 						}
 						
 						else if (sld != null && sld) {
-							table6.setOtherAllSLD(table6.getOtherAllSLD() + 1);
-							table6.setOtherExtrapulmonarySLD(table6.getOtherExtrapulmonarySLD() + 1);
+							tb08TableData.setOtherAllSLD(tb08TableData.getOtherAllSLD() + 1);
+							tb08TableData.setOtherExtrapulmonarySLD(tb08TableData.getOtherExtrapulmonarySLD() + 1);
 							
 						}
 					}
@@ -5154,69 +5200,14 @@ public class Form8Controller {
 			//TOTALS
 		}
 		
-		/*Integer report_oblast = null; Integer report_quarter = null; Integer report_month = null;
-		//if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
 		
-		boolean reportStatus;
-		/*if(location!=null)
-			 reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB-08","DOTSTB");
-		else*/
-		reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId, year,
-		    quarter, month, "TB-08", "DOTSTB");
-		System.out.println(reportStatus);
-		
-		String oName = null;
-		String dName = null;
-		String fName = null;
-		
-		if (oblastId != null) {
-			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
-			if (o != null) {
-				oName = o.getName();
-			}
-		}
-		
-		if (districtId != null) {
-			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
-			if (d != null) {
-				dName = d.getName();
-			}
-		}
-		
-		if (facilityId != null) {
-			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
-			if (f != null) {
-				fName = f.getName();
-			}
-		}
-		model.addAttribute("table1", table1);
-		model.addAttribute("table2", table2);
-		model.addAttribute("table3", table3);
-		model.addAttribute("table4", table4);
-		model.addAttribute("table5a", table5a);
-		model.addAttribute("table6", table6);
-		model.addAttribute("oblast", oblastId);
-		model.addAttribute("district", districtId);
-		model.addAttribute("facility", facilityId);
-		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
-			model.addAttribute("month", month.replace("\"", ""));
-		else
-			model.addAttribute("month", "");
-		
-		if (quarter != null && quarter.length() != 0)
-			model.addAttribute("quarter", quarter.replace("\"", "'"));
-		else
-			model.addAttribute("quarter", "");
-		model.addAttribute("oName", oName);
-		model.addAttribute("dName", dName);
-		model.addAttribute("fName", fName);
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
-		model.addAttribute("reportStatus", reportStatus);
-		return "/module/mdrtb/reporting/form8Results";
-		//_" + Context.getLocale().toString().substring(0, 2);
+		Map<String, Object> tables = new HashMap<>();
+		tables.put("table1", table1);
+		tables.put("table2", table2);
+		tables.put("table3", table3);
+		tables.put("table4", table4);
+		tables.put("table5a", table5a);
+		tables.put("table6", tb08TableData);
+		return tables;
 	}
-	
 }

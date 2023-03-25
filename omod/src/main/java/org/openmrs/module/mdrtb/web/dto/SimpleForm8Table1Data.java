@@ -5,6 +5,8 @@ import org.openmrs.module.mdrtb.reporting.custom.Form8Table1Data;
 
 public class SimpleForm8Table1Data extends BaseOpenmrsData {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private Integer activeTBTotalMale;
 	
 	private Integer activeTB04Male;
