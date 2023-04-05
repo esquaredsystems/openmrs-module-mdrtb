@@ -159,7 +159,7 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		model.addAttribute("listName", getMessage("mdrtb.allCasesEnrolled"));
-
+		
 		Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
 		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
@@ -172,7 +172,7 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
+	
 	public static String getAllCasesEnrolledTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
 		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
 		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
@@ -307,8 +307,8 @@ public class PatientListContoller {
 				
 				if (ds.getSmearResult() != null) {
 					
-					if (ds.getSmearResult().getConceptId().intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE)
-					        .getConceptId().intValue()) {
+					if (ds.getSmearResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
 					}
 					
@@ -347,20 +347,23 @@ public class PatientListContoller {
 				}
 				
 				else {
-					if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POSITIVE).getConceptId().intValue()
-					        || mtb.getConceptId().intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_POSITIVE).getConceptId()
-					                .intValue()) {
+					if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.POSITIVE).getConceptId().intValue()
+					        || mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					                .getConcept(MdrtbConcepts.MTB_POSITIVE).getConceptId().intValue()) {
 						String xr = getMessage("mdrtb.positiveShort");
 						
 						if (res != null) {
 							int resId = res.getConceptId().intValue();
 							
-							if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DETECTED).getConceptId().intValue()) {
+							if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DETECTED)
+							        .getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.resistantShort");
 								report += "<td align=\"left\">" + xr + "</td>";
 							}
 							
-							else if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_DETECTED).getConceptId().intValue()) {
+							else if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_DETECTED)
+							        .getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.sensitiveShort");
 								report += "<td align=\"left\">" + xr + "</td>";
 							}
@@ -375,8 +378,8 @@ public class PatientListContoller {
 						}
 					}
 					
-					else if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_NEGATIVE).getConceptId()
-					        .intValue()) {
+					else if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.MTB_NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
 					}
 					
@@ -468,13 +471,13 @@ public class PatientListContoller {
 				
 				if (dc.getCultureResult() != null) {
 					
-					if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE)
-					        .getConceptId().intValue()) {
+					if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
 					}
 					
-					else if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_GROWTH)
-					        .getConceptId().intValue()) {
+					else if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.CULTURE_GROWTH).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.lists.growth") + "</td>";
 					}
 					
@@ -547,9 +550,9 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		return report;
 	}
-
+	
 	/* DOTS Cases by Registration Group */
-
+	
 	@RequestMapping("/module/mdrtb/reporting/dotsCasesByRegistrationGroup")
 	public String dotsCasesByRegistrationGroup(@RequestParam("district") Integer districtId,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("facility") Integer facilityId,
@@ -604,9 +607,11 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
-	public static String getDotsCasesByRegistrationGroupTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt, monthInt);
+	
+	public static String getDotsCasesByRegistrationGroupTable(List<Location> locList, Integer year, Integer quarterInt,
+	        Integer monthInt) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
+		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Collections.sort(tb03s);
 		
@@ -930,7 +935,6 @@ public class PatientListContoller {
 		
 		model.addAttribute("listName", getMessage("mdrtb.dotsCasesByAnatomicalSite"));
 		
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getDotsCasesByAnatomicalSiteTable(locList, year, quarterInt, monthInt);
@@ -939,8 +943,9 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
-	public static String getDotsCasesByAnatomicalSiteTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
+	
+	public static String getDotsCasesByAnatomicalSiteTable(List<Location> locList, Integer year, Integer quarterInt,
+	        Integer monthInt) {
 		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
 		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		Collections.sort(tb03s);
@@ -1092,13 +1097,14 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
-	public static String getDotsCasesByDrugResistanceTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
+	
+	public static String getDotsCasesByDrugResistanceTable(List<Location> locList, Integer year, Integer quarterInt,
+	        Integer monthInt) {
 		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
 		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		
 		Collections.sort(tb03s);
-
+		
 		String report = "";
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
 		Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONO);
@@ -1564,13 +1570,15 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getDotsPulmonaryCasesByRegisrationGroupAndBacteriologicalStatusTable(locList, year, quarterInt, monthInt);
+		String report = getDotsPulmonaryCasesByRegisrationGroupAndBacteriologicalStatusTable(locList, year, quarterInt,
+		    monthInt);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
-	public static String getDotsPulmonaryCasesByRegisrationGroupAndBacteriologicalStatusTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
+	
+	public static String getDotsPulmonaryCasesByRegisrationGroupAndBacteriologicalStatusTable(List<Location> locList,
+	        Integer year, Integer quarterInt, Integer monthInt) {
 		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
 		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		Collections.sort(tb03s);
@@ -1989,7 +1997,7 @@ public class PatientListContoller {
 	}
 	
 	/* MDR-XDR Patients with no Treatment */
-
+	
 	@RequestMapping("/module/mdrtb/reporting/mdrXdrPatientsNoTreatment")
 	public String mdrXdrPatientsNoTreatment(@RequestParam("district") Integer districtId,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("facility") Integer facilityId,
@@ -2039,13 +2047,16 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
-	public static String getMdrXdrPatientsWithNoTreatmentTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt, monthInt);
+	
+	public static String getMdrXdrPatientsWithNoTreatmentTable(List<Location> locList, Integer year, Integer quarterInt,
+	        Integer monthInt) {
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		//NEW CASES 
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
-		Concept treatmentStartDate = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE);
+		Concept treatmentStartDate = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.MDR_TREATMENT_START_DATE);
 		Concept mdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB);
 		String report = "";
 		report += "<h4>" + getMessage("mdrtb.mdrtb") + "</h4>";
@@ -2186,9 +2197,11 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
-	public static String getMdrSuccessfulTreatmentOutcomeTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt, monthInt);
+	
+	public static String getMdrSuccessfulTreatmentOutcomeTable(List<Location> locList, Integer year, Integer quarterInt,
+	        Integer monthInt) {
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
+		    monthInt);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME);
 		Concept curedConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED);
@@ -2238,7 +2251,7 @@ public class PatientListContoller {
 	}
 	
 	/* MDR-XDR Patients */
-
+	
 	@RequestMapping("/module/mdrtb/reporting/mdrXdrPatients")
 	public String mdrXdrPatients(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
@@ -2289,9 +2302,8 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
-	public static String getMdrXdrPatientsTable(List<Location> locList, Integer year, Integer quarterInt,
-	        Integer monthInt) {
+	
+	public static String getMdrXdrPatientsTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
 		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
 		    monthInt);
 		
@@ -2301,7 +2313,7 @@ public class PatientListContoller {
 		dateMap.get("endDate");
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
 		Concept mdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB);
-
+		
 		//NEW CASES 
 		String report = "";
 		report += "<h4>" + getMessage("mdrtb.mdrtb") + "</h4>";
@@ -2438,8 +2450,9 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
-	public static String getWomenOfChildbearingAgeTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
+	
+	public static String getWomenOfChildbearingAgeTable(List<Location> locList, Integer year, Integer quarterInt,
+	        Integer monthInt) {
 		List<TB03Form> forms = Context.getService(MdrtbService.class)
 		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
 		
@@ -2497,7 +2510,7 @@ public class PatientListContoller {
 		return report;
 	}
 	
-	/* Women of Child-bearing Age */
+	/* Men of Conscript Age */
 	
 	@RequestMapping("/module/mdrtb/reporting/menOfConscriptAge")
 	public String menOfConscriptAge(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -2550,8 +2563,8 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
-
-	private String getMenOfConscriptAgeTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
+	
+	public static String getMenOfConscriptAgeTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
 		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
 		    monthInt);
 		Collections.sort(tb03List);
@@ -9245,7 +9258,8 @@ public class PatientListContoller {
 		ret += "<td align=\"left\">" + p.getFamilyName() + "," + p.getGivenName() + "</td>";
 		
 		if (gender) {
-			String g = p.getGender().equals("M") ? Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.male") : Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.female");
+			String g = p.getGender().equals("M") ? Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.male")
+			        : Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.female");
 			ret += "<td align=\"left\">" + g + "</td>";
 		}
 		
@@ -9417,8 +9431,7 @@ public class PatientListContoller {
 		List<DSTForm> dsts = tf.getDsts();
 		if (dsts == null || dsts.size() == 0) {
 			drugs = "";
-		}
-		else {
+		} else {
 			DSTForm latest = dsts.get(dsts.size() - 1);
 			DstImpl dst = latest.getDi();
 			return dst.getResistantDrugs();
