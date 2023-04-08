@@ -46,6 +46,50 @@ public class PatientListResourceController extends DelegatingCrudResource<Simple
 	
 	private static final String MEN_OF_CONSCRIPT_AGE = "menofconscriptage";
 	
+	private static final String WITH_CONCOMITANT_DISEASE = "withconcomitantdisease";
+	
+	private static final String WITH_CANCER = "withcancer";
+	
+	private static final String DETECTED_FROM_CONTACT = "detectedfromcontact";
+	
+	private static final String WITH_COPD = "withcopd";
+	
+	private static final String WITH_HYPERTENSION = "withhypertension";
+	
+	private static final String WITH_ULCER = "withulcer";
+	
+	private static final String WITH_MENTAL_DISORDER = "withmentaldisorder";
+	
+	private static final String WITH_HIV = "withhiv";
+	
+	private static final String WITH_HEPATITIS = "withhepatitis";
+	
+	private static final String WITH_KIDNEY_DISEASE = "withkidneydisease";
+	
+	private static final String WITH_OTHER_DISEASE = "withotherdisease";
+	
+	private static final String BY_SOC_PROF_STATUS = "bysocprofstatus";
+	
+	private static final String BY_POPULATION_CATEGORY = "bypopulationcategory";
+	
+	private static final String BY_DWELLING = "bydwelling";
+	
+	private static final String BY_PLACES_OF_DETECTION = "byplacesofdetection";
+	
+	private static final String BY_CIRCUMSTANCES_OF_DETECTION = "bycircumstancesofdetection";
+	
+	private static final String BY_METHOD_OF_DETECTION = "bymethodofdetection";
+	
+	private static final String BY_PULMONARY_LOCATION = "bypulmonarylocation";
+	
+	private static final String BY_EXTRA_PULMONARY_LOCATION = "byextrapulmonarylocation";
+	
+	private static final String DRTB_CASES = "drtbcases";
+	
+	private static final String DRTB_PATIENTS_WITHOUT_TREATMENT = "drtbpatientswithouttreatment";
+	
+	private static final String DRTB_PATIENTS_WITH_SUCCESSFUL_TREATMENT = "drtbpatientswithsuccessfultreatment";
+	
 	/**
 	 * Logger for this class
 	 */
@@ -145,6 +189,73 @@ public class PatientListResourceController extends DelegatingCrudResource<Simple
 			case MEN_OF_CONSCRIPT_AGE:
 				htmlTable = PatientListContoller.getMenOfConscriptAgeTable(locList, year, quarter, month);
 				break;
+			case WITH_CONCOMITANT_DISEASE:
+				htmlTable = PatientListContoller.getCasesWithConcamitantDiseasesTable(locList, year, quarter, month);
+				break;
+			case WITH_CANCER:
+				htmlTable = PatientListContoller.getCasesWithCancerTable(locList, year, quarter, month);
+				break;
+			case DETECTED_FROM_CONTACT:
+				htmlTable = PatientListContoller.getCasesDetectedFromContactTable(locList, year, quarter, month);
+				break;
+			case WITH_COPD:
+				htmlTable = PatientListContoller.getCasesWithCopdTable(locList, year, quarter, month);
+				break;
+			case WITH_HYPERTENSION:
+				htmlTable = PatientListContoller.getCasesWithHypertensionTable(locList, year, quarter, month);
+				break;
+			case WITH_ULCER:
+				htmlTable = PatientListContoller.getCasesWithUlcerTable(locList, year, quarter, month);
+				break;
+			case WITH_MENTAL_DISORDER:
+				htmlTable = PatientListContoller.getCasesWithMentalDisorderTable(locList, year, quarter, month);
+				break;
+			case WITH_HIV:
+				htmlTable = PatientListContoller.getCasesWithHivTable(locList, year, quarter, month);
+				break;
+			case WITH_HEPATITIS:
+				htmlTable = PatientListContoller.getCasesWithHepatitisTable(locList, year, quarter, month);
+				break;
+			case WITH_KIDNEY_DISEASE:
+				htmlTable = PatientListContoller.getCasesWithKidneyDiseaseTable(locList, year, quarter, month);
+				break;
+			case WITH_OTHER_DISEASE:
+				htmlTable = PatientListContoller.getCasesWithOtherDiseaseTable(locList, year, quarter, month);
+				break;
+			case BY_SOC_PROF_STATUS:
+				htmlTable = PatientListContoller.getCasesBySocProfStatusTable(locList, year, quarter, month);
+				break;
+			case BY_POPULATION_CATEGORY:
+				htmlTable = PatientListContoller.getCasesByPopulationCategoryTable(locList, year, quarter, month);
+				break;
+			case BY_DWELLING:
+				htmlTable = PatientListContoller.getCasesByDwellingTable(locList, year, quarter, month);
+				break;
+			case BY_PLACES_OF_DETECTION:
+				htmlTable = PatientListContoller.getCasesByPlaceOfDetectionTable(locList, year, quarter, month);
+				break;
+			case BY_CIRCUMSTANCES_OF_DETECTION:
+				htmlTable = PatientListContoller.getCasesByCircumstancesOfDetectionTable(locList, year, quarter, month);
+				break;
+			case BY_METHOD_OF_DETECTION:
+				htmlTable = PatientListContoller.getCasesByMethodOfDetectionTable(locList, year, quarter, month);
+				break;
+			case BY_PULMONARY_LOCATION:
+				htmlTable = PatientListContoller.getCasesByPulmonaryLocationTable(locList, year, quarter, month);
+				break;
+			case BY_EXTRA_PULMONARY_LOCATION:
+				htmlTable = PatientListContoller.getCasesByExtraPulmonaryLocationTable(locList, year, quarter, month);
+				break;
+			case DRTB_CASES:
+				htmlTable = PatientListContoller.getDrtbCasesTable(locList, year, quarter, month);
+				break;
+			case DRTB_PATIENTS_WITHOUT_TREATMENT:
+				htmlTable = PatientListContoller.getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarter, month);
+				break;
+			case DRTB_PATIENTS_WITH_SUCCESSFUL_TREATMENT:
+				htmlTable = PatientListContoller.getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarter, month);
+				break;
+		
 		}
 		tableData.add(new SimpleDataObject(htmlTable, null, null));
 		return new NeedsPaging<SimpleDataObject>(tableData, context);

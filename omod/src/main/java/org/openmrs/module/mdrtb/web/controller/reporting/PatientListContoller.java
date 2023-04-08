@@ -173,9 +173,8 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getAllCasesEnrolledTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
-		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
+	public static String getAllCasesEnrolledTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		Collections.sort(tb03s);
 		
 		String report = "";
@@ -209,38 +208,38 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.outcome") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.endOfTreatmentDate") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.reregisrationNumber") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		report += "<tr>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.result") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.inhShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.rifShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.result") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.injectablesShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.quinShort") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
 		
 		report += "</tr>";
 		
@@ -258,14 +257,14 @@ public class PatientListContoller {
 			if (tf.getTreatmentStartDate() != null)
 				report += "<td align=\"left\">" + Context.getDateFormat().format(tf.getTreatmentStartDate()) + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			if (tf.getTreatmentSiteIP() != null) {
 				report += "<td align=\"left\">" + tf.getTreatmentSiteIP().getName().getName() + "</td>";
 			}
 			
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			report += "<td align=\"left\">" + p.getFamilyName() + "," + p.getGivenName() + "</td>";
 			report += "<td align=\"left\">" + getGender(p) + "</td>";
@@ -285,18 +284,18 @@ public class PatientListContoller {
 				}
 				
 				else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				//report += "<td align=\"left\">" + tf.getAnatomicalSite().getName().getName().charAt(0) + "</td>";
 			}
 			
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			if (tf.getRegistrationGroup() != null)
 				report += "<td align=\"left\">" + tf.getRegistrationGroup().getName().getName() + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			//SMEAR
 			List<SmearForm> smears = tf.getSmears();
@@ -325,12 +324,12 @@ public class PatientListContoller {
 				}
 				
 				else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//XPERT
@@ -343,7 +342,7 @@ public class PatientListContoller {
 				Concept res = dx.getRifResult();
 				
 				if (mtb == null) {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				else {
@@ -384,14 +383,14 @@ public class PatientListContoller {
 					}
 					
 					else {
-						report += "<td align=\"left\">" + "" + "</td>";
+						report += "<td></td>";
 					}
 				}
 				
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//HAIN 1	
@@ -408,24 +407,24 @@ public class PatientListContoller {
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (rh != null) {
 					report += "<td align=\"left\">" + rh.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 			} else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			//HAIN 2
@@ -442,24 +441,24 @@ public class PatientListContoller {
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (fq != null) {
 					report += "<td align=\"left\">" + fq.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 			} else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			//CULTURE
@@ -494,12 +493,12 @@ public class PatientListContoller {
 				}
 				
 				else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//Drug Resistance
@@ -508,7 +507,7 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			report += "<td align=\"left\">" + getResistantDrugs(tf) + "</td>";
@@ -519,7 +518,7 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			if (tf.getTreatmentOutcome() != null) {
@@ -527,7 +526,7 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			if (tf.getTreatmentOutcomeDate() != null) {
@@ -535,7 +534,7 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//OTHER NUMBER
@@ -608,17 +607,17 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getDotsCasesByRegistrationGroupTable(List<Location> locList, Integer year, Integer quarterInt,
-	        Integer monthInt) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
-		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
+	public static String getDotsCasesByRegistrationGroupTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		
 		Collections.sort(tb03s);
 		
 		//NEW CASES 
 		Concept newConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEW);
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_GROUP);
-		String report = "<h4>" + getMessage("mdrtb.lists.new") + "</h4>";
+		String report = "";
+		report += "<h4>" + getMessage("mdrtb.lists.new") + "</h4>";
 		report += "<table border=\"1\">";
 		
 		report += "<tr>";
@@ -628,7 +627,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -671,7 +670,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -716,7 +715,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -764,7 +763,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -813,7 +812,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.transferFrom") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.dateOfTransfer") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		temp = null;
 		i = 0;
@@ -855,7 +854,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -944,10 +943,9 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getDotsCasesByAnatomicalSiteTable(List<Location> locList, Integer year, Integer quarterInt,
-	        Integer monthInt) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
-		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
+	public static String getDotsCasesByAnatomicalSiteTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		Collections.sort(tb03s);
 		
 		//NEW CASES 
@@ -964,7 +962,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.caseDefinition") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -1009,7 +1007,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.caseDefinition") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1098,10 +1096,9 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getDotsCasesByDrugResistanceTable(List<Location> locList, Integer year, Integer quarterInt,
-	        Integer monthInt) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
-		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
+	public static String getDotsCasesByDrugResistanceTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		
 		Collections.sort(tb03s);
 		
@@ -1119,7 +1116,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.localization") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.drugNames") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -1165,7 +1162,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.localization") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.drugNames") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1211,7 +1208,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.localization") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.drugNames") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1257,7 +1254,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.localization") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.drugNames") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1303,7 +1300,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.localization") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.drugNames") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1349,7 +1346,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.localization") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.drugNames") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1395,7 +1392,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.localization") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.drugNames") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1441,7 +1438,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.localization") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.drugNames") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1486,7 +1483,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.localization") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.drugNames") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1508,7 +1505,7 @@ public class PatientListContoller {
 				report += renderPerson(p, true);
 				report += "<td align=\"left\">" + tf.getAgeAtTB03Registration() + "</td>";
 				report += "<td align=\"left\">" + getSiteOfDisease(tf) + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 				
@@ -1578,9 +1575,8 @@ public class PatientListContoller {
 	}
 	
 	public static String getDotsPulmonaryCasesByRegisrationGroupAndBacteriologicalStatusTable(List<Location> locList,
-	        Integer year, Integer quarterInt, Integer monthInt) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
-		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
+	        Integer year, Integer quarter, Integer month) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		Collections.sort(tb03s);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_GROUP);
@@ -1599,7 +1595,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -1647,7 +1643,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1695,7 +1691,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1743,7 +1739,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1798,7 +1794,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.caseDefinition") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1852,7 +1848,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.caseDefinition") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -1908,7 +1904,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		temp = null;
 		
@@ -1957,7 +1953,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		temp = null;
 		
@@ -2048,10 +2044,9 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getMdrXdrPatientsWithNoTreatmentTable(List<Location> locList, Integer year, Integer quarterInt,
-	        Integer monthInt) {
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
+	public static String getMdrXdrPatientsWithNoTreatmentTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
 		
 		//NEW CASES 
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
@@ -2067,7 +2062,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -2109,7 +2104,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		temp = null;
 		
@@ -2198,10 +2193,9 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getMdrSuccessfulTreatmentOutcomeTable(List<Location> locList, Integer year, Integer quarterInt,
-	        Integer monthInt) {
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
+	public static String getMdrSuccessfulTreatmentOutcomeTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME);
 		Concept curedConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED);
@@ -2217,7 +2211,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -2303,11 +2297,10 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getMdrXdrPatientsTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
+	public static String getMdrXdrPatientsTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarterInt, monthInt);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
 		dateMap.get("startDate");
 		dateMap.get("endDate");
@@ -2324,7 +2317,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -2364,7 +2357,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		temp = null;
 		
@@ -2451,10 +2444,8 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getWomenOfChildbearingAgeTable(List<Location> locList, Integer year, Integer quarterInt,
-	        Integer monthInt) {
-		List<TB03Form> forms = Context.getService(MdrtbService.class)
-		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
+	public static String getWomenOfChildbearingAgeTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<TB03Form> forms = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		
 		Collections.sort(forms);
 		
@@ -2468,7 +2459,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.caseDefinition") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		//Obs temp = null;
@@ -2496,7 +2487,7 @@ public class PatientListContoller {
 						if (tf.getRegistrationGroup() != null)
 							report += "<td align=\"left\">" + tf.getRegistrationGroup().getName().getName() + "</td>";
 						else
-							report += "<td align=\"left\">" + "" + "</td>";
+							report += "<td></td>";
 						report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 						report += "</tr>";
 					}
@@ -2564,9 +2555,8 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getMenOfConscriptAgeTable(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
+	public static String getMenOfConscriptAgeTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		Collections.sort(tb03List);
 		
 		//NEW CASES 
@@ -2579,7 +2569,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.caseDefinition") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		//Obs temp = null;
@@ -2605,7 +2595,7 @@ public class PatientListContoller {
 					if (tf.getRegistrationGroup() != null)
 						report += "<td align=\"left\">" + tf.getRegistrationGroup().getName().getName() + "</td>";
 					else
-						report += "<td align=\"left\">" + "" + "</td>";
+						report += "<td></td>";
 					
 					report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 					report += "</tr>";
@@ -2618,6 +2608,8 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		return report;
 	}
+	
+	/* Cases with Concomitant Disease */
 	
 	@RequestMapping("/module/mdrtb/reporting/withConcomitantDisease")
 	public String withConcomitantDisease(@RequestParam("district") Integer districtId,
@@ -2664,25 +2656,28 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withConcomitantDisease"));
 		
-		String report = "";
-		
-		ArrayList<Form89> forms = new ArrayList<Form89>();//Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
+		String report = getCasesWithConcamitantDiseasesTable(locList, year, quarterInt, monthInt);
+		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getCasesWithConcamitantDiseasesTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		Collections.sort(tb03List);
+		ArrayList<Form89> forms = new ArrayList<Form89>();
 		Concept regGroup = null;
 		Form89 f89 = null;
+		String report = "";
 		for (TB03Form tb03 : tb03List) {
-			
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
 			}
-			
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
@@ -2709,8 +2704,8 @@ public class PatientListContoller {
 			forms.add(f89);
 		}
 		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.DIABETES);
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIABETES);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
 		
 		report += "<h4>" + getMessage("mdrtb.withDiabetes") + "</h4>";
 		report += "<table border=\"1\">";
@@ -2721,7 +2716,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -2756,7 +2751,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		report += "<br/>";
 		
-		groupConcept = ms.getConcept(MdrtbConcepts.CANCER);
+		groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CANCER);
 		report += "<h4>" + getMessage("mdrtb.withCancer") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -2766,7 +2761,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -2801,7 +2796,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		report += "<br/>";
 		
-		groupConcept = ms.getConcept(MdrtbConcepts.CNSDL);
+		groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CNSDL);
 		report += "<h4>" + getMessage("mdrtb.withCOPD") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -2811,7 +2806,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -2846,7 +2841,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		report += "<br/>";
 		
-		groupConcept = ms.getConcept(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE);
+		groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE);
 		report += "<h4>" + getMessage("mdrtb.withHypertension") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -2856,7 +2851,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -2891,7 +2886,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		report += "<br/>";
 		
-		groupConcept = ms.getConcept(MdrtbConcepts.ULCER);
+		groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ULCER);
 		report += "<h4>" + getMessage("mdrtb.withUlcer") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -2901,7 +2896,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -2936,7 +2931,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		report += "<br/>";
 		
-		groupConcept = ms.getConcept(MdrtbConcepts.MENTAL_DISORDER);
+		groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MENTAL_DISORDER);
 		report += "<h4>" + getMessage("mdrtb.withMentalDisorder") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -2946,7 +2941,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -2981,7 +2976,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		report += "<br/>";
 		
-		groupConcept = ms.getConcept(MdrtbConcepts.ICD20);
+		groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ICD20);
 		report += "<h4>" + getMessage("mdrtb.withHIV") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -2991,7 +2986,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -3028,7 +3023,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		report += "<br/>";
 		
-		groupConcept = ms.getConcept(MdrtbConcepts.COMORBID_HEPATITIS);
+		groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COMORBID_HEPATITIS);
 		report += "<h4>" + getMessage("mdrtb.withHepatitis") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3038,7 +3033,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -3073,7 +3068,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		report += "<br/>";
 		
-		groupConcept = ms.getConcept(MdrtbConcepts.KIDNEY_DISEASE);
+		groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.KIDNEY_DISEASE);
 		report += "<h4>" + getMessage("mdrtb.withKidneyDisease") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3083,7 +3078,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -3118,7 +3113,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
 		report += "<br/>";
 		
-		groupConcept = ms.getConcept(MdrtbConcepts.OTHER_DISEASE);
+		groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_DISEASE);
 		report += "<h4>" + getMessage("mdrtb.withOtherDisease") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3128,7 +3123,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		temp = null;
@@ -3162,11 +3157,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases with Cancer */
 	
 	@RequestMapping("/module/mdrtb/reporting/withCancer")
 	public String withCancer(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -3180,19 +3174,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -3211,16 +3200,21 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withCancer"));
 		
-		String report = "";
-		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.CANCER);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+		String report = getCasesWithCancerTable(locList, year, quarterInt, monthInt);
 		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getCasesWithCancerTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CANCER);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.withCancer") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3229,17 +3223,15 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
 		Person p = null;
 		int i = 0;
 		for (Form89 tf : forms) {
-			
 			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
-			
 			TB03Form tb03 = null;
 			tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
@@ -3260,16 +3252,13 @@ public class PatientListContoller {
 					report += "</tr>";
 				}
 			}
-			
 		}
-		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases detected from Contact Tracing */
 	
 	@RequestMapping("/module/mdrtb/reporting/detectedFromContact")
 	public String detectedFromContact(@RequestParam("district") Integer districtId,
@@ -3284,17 +3273,13 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
 		
 		model.addAttribute("oblast", oName);
@@ -3304,7 +3289,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -3316,17 +3300,24 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.detectedFromContact"));
 		
-		String report = "";
-		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
-		Collections.sort(forms);
-		Concept fromContact = ms.getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
+		String report = getCasesDetectedFromContactTable(locList, year, quarterInt, monthInt);
 		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getCasesDetectedFromContactTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		
+		Collections.sort(forms);
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION);
+		Concept fromContact = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.detectedFromContact") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3335,7 +3326,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -3371,11 +3362,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases with COPD */
 	
 	@RequestMapping("/module/mdrtb/reporting/withCOPD")
 	public String withCOPD(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -3389,19 +3379,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -3409,7 +3394,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -3421,15 +3405,21 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withCOPD"));
 		
-		String report = "";
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.CNSDL);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+		String report = getCasesWithCopdTable(locList, year, quarterInt, monthInt);
 		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getCasesWithCopdTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CNSDL);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.withCOPD") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3438,7 +3428,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -3455,7 +3445,6 @@ public class PatientListContoller {
 			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
-				
 				temp = MdrtbUtil.getObsFromEncounter(groupConcept, tf.getEncounter());
 				if (temp != null && (temp.getValueCoded().getId().intValue() == yes.getId().intValue())) {
 					p = Context.getPersonService().getPerson(tf.getPatient().getId());
@@ -3469,16 +3458,13 @@ public class PatientListContoller {
 					report += "</tr>";
 				}
 			}
-			
 		}
-		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases with Hypertension */
 	
 	@RequestMapping("/module/mdrtb/reporting/withHypertension")
 	public String withHypertension(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -3492,17 +3478,13 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
 		
 		model.addAttribute("oblast", oName);
@@ -3512,7 +3494,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -3524,17 +3505,23 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withHypertension"));
 		
-		String report = "";
-		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
+		String report = getCasesWithHypertensionTable(locList, year, quarterInt, monthInt);
 		
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
 		
+	}
+	
+	public static String getCasesWithHypertensionTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		
+		Concept groupConcept = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.withHypertension") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3543,7 +3530,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -3579,11 +3566,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases with Ulcer */
 	
 	@RequestMapping("/module/mdrtb/reporting/withUlcer")
 	public String withUlcer(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -3597,17 +3583,13 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
 		
 		model.addAttribute("oblast", oName);
@@ -3617,8 +3599,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		/*ArrayList<Location> locList = Context.getService(MdrtbService.class)
-				.getLocationList(oblastId, districtId, facilityId);*/
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -3630,17 +3610,22 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withUlcer"));
 		
-		String report = "";
-		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.ULCER);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
+		String report = getCasesWithUlcerTable(locList, year, quarterInt, monthInt);
 		
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
 		
+	}
+	
+	public static String getCasesWithUlcerTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ULCER);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.withUlcer") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3648,7 +3633,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -3684,10 +3669,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases with Mental Disorder */
 	
 	@RequestMapping("/module/mdrtb/reporting/withMentalDisorder")
 	public String withMentalDisorder(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -3696,24 +3681,18 @@ public class PatientListContoller {
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
-		
 		String oName = "";
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -3732,17 +3711,21 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withMentalDisorder"));
 		
-		String report = "";
-		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.MENTAL_DISORDER);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
+		String report = getCasesWithMentalDisorderTable(locList, year, quarterInt, monthInt);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
 		
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+	}
+	
+	public static String getCasesWithMentalDisorderTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
 		
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MENTAL_DISORDER);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.withMentalDisorder") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3750,7 +3733,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -3785,10 +3768,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases with HIV */
 	
 	@RequestMapping("/module/mdrtb/reporting/withHIV")
 	public String withHIV(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -3802,19 +3785,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -3833,17 +3811,21 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withHIV"));
 		
-		String report = "";
-		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.ICD20);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
+		String report = getCasesWithHivTable(locList, year, quarterInt, monthInt);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
 		
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+	}
+	
+	public static String getCasesWithHivTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
 		
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ICD20);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.withHIV") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3851,7 +3833,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -3886,10 +3868,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases with Hepatitis */
 	
 	@RequestMapping("/module/mdrtb/reporting/withHepatitis")
 	public String withHepatitis(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -3903,19 +3885,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -3923,8 +3900,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		/*ArrayList<Location> locList = Context.getService(MdrtbService.class)
-				.getLocationList(oblastId, districtId, facilityId);*/
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -3936,17 +3911,21 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withHepatitis"));
 		
-		String report = "";
-		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.COMORBID_HEPATITIS);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
+		String report = getCasesWithHepatitisTable(locList, year, quarterInt, monthInt);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
 		
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+	}
+	
+	public static String getCasesWithHepatitisTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
 		
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COMORBID_HEPATITIS);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.withHepatitis") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -3954,7 +3933,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -3984,15 +3963,14 @@ public class PatientListContoller {
 					report += "</tr>";
 				}
 			}
-			
 		}
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases with Kidney Disease */
 	
 	@RequestMapping("/module/mdrtb/reporting/withKidneyDisease")
 	public String withKidneyDisease(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -4006,19 +3984,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -4037,17 +4010,21 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withKidneyDisease"));
 		
-		String report = "";
-		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.KIDNEY_DISEASE);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
+		String report = getCasesWithKidneyDiseaseTable(locList, year, quarterInt, monthInt);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
 		
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+	}
+	
+	public static String getCasesWithKidneyDiseaseTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
 		
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.KIDNEY_DISEASE);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.withKidneyDisease") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4055,7 +4032,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -4090,10 +4067,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases with Other Disease */
 	
 	@RequestMapping("/module/mdrtb/reporting/withOtherDisease")
 	public String withOtherDisease(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -4107,28 +4084,20 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
-		
-		/*ArrayList<Location> locList = Context.getService(MdrtbService.class)
-				.getLocationList(oblastId, districtId, facilityId);*/
 		
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
@@ -4141,17 +4110,21 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.withOtherDisease"));
 		
-		String report = "";
-		
-		Concept groupConcept = ms.getConcept(MdrtbConcepts.OTHER_DISEASE);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<Form89> forms = Context.getService(MdrtbService.class)
-		        .getForm89FormsFilled(locList, year, quarterInt, monthInt);
+		String report = getCasesWithOtherDiseaseTable(locList, year, quarterInt, monthInt);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
 		
-		Concept yes = ms.getConcept(MdrtbConcepts.YES);
+	}
+	
+	public static String getCasesWithOtherDiseaseTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
 		
+		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_DISEASE);
+		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
+		
+		String report = "";
 		report += "<h4>" + getMessage("mdrtb.withOtherDisease") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4159,7 +4132,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.name") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Obs temp = null;
@@ -4195,10 +4168,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases by Soc Prof. Status */
 	
 	@RequestMapping("/module/mdrtb/reporting/bySocProfStatus")
 	public String bySocProfStatus(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
@@ -4212,19 +4185,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -4232,7 +4200,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -4244,10 +4211,22 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.bySocProfStatus"));
 		
+		System.out.println("GETTING FORM89 LIST");
+		
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		String report = getCasesBySocProfStatusTable(locList, year, quarterInt, monthInt);
+		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+	}
+	
+	public static String getCasesBySocProfStatusTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		
 		String report = "";
-		
-		ms.getConcept(MdrtbConcepts.PROFESSION);
-		
+		Concept status = null;
+		Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PROFESSION);
 		ArrayList<Form89> workerList = new ArrayList<Form89>();
 		ArrayList<Form89> govtList = new ArrayList<Form89>();
 		ArrayList<Form89> studentList = new ArrayList<Form89>();
@@ -4261,15 +4240,6 @@ public class PatientListContoller {
 		ArrayList<Form89> housewifeList = new ArrayList<Form89>();
 		ArrayList<Form89> preschoolList = new ArrayList<Form89>();
 		ArrayList<Form89> pensionerList = new ArrayList<Form89>();
-		
-		System.out.println("GETTING FORM89 LIST");
-		
-		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		
-		Concept status = null;
 		
 		//category
 		Concept workerConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.WORKER);
@@ -4305,10 +4275,8 @@ public class PatientListContoller {
 		Collections.sort(tb03List);
 		
 		for (TB03Form tb03 : tb03List) {
-			
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
 			}
 			
@@ -4319,9 +4287,7 @@ public class PatientListContoller {
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
 			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
-				
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
@@ -4343,62 +4309,36 @@ public class PatientListContoller {
 			
 			statusId = status.getConceptId().intValue();
 			
-			if (statusId == workerId) {
+			if (statusId == workerId)
 				workerList.add(f89);
-			}
-			
-			else if (statusId == govtId) {
+			else if (statusId == govtId)
 				govtList.add(f89);
-			}
-			
-			else if (statusId == studentId) {
+			else if (statusId == studentId)
 				studentList.add(f89);
-			}
-			
-			else if (statusId == disabledId) {
+			else if (statusId == disabledId)
 				disabledList.add(f89);
-			}
-			
-			else if (statusId == unemployedId) {
+			else if (statusId == unemployedId)
 				unemployedList.add(f89);
-			}
-			
-			else if (statusId == phcId) {
+			else if (statusId == phcId)
 				phcList.add(f89);
-			}
-			
-			else if (statusId == militaryId) {
+			else if (statusId == militaryId)
 				militaryList.add(f89);
-			}
-			
-			else if (statusId == schoolId) {
+			else if (statusId == schoolId)
 				schoolList.add(f89);
-			}
-			
-			else if (statusId == tbWorkerId) {
+			else if (statusId == tbWorkerId)
 				tbWorkerList.add(f89);
-			}
-			
-			else if (statusId == privateId) {
+			else if (statusId == privateId)
 				privateList.add(f89);
-			}
-			
-			else if (statusId == housewifeId) {
+			else if (statusId == housewifeId)
 				housewifeList.add(f89);
-			}
-			
-			else if (statusId == preschoolId) {
+			else if (statusId == preschoolId)
 				preschoolList.add(f89);
-			}
-			
-			else if (statusId == pensionerId) {
+			else if (statusId == pensionerId)
 				pensionerList.add(f89);
-			}
-			
 		}
 		
 		//WORKER
-		Concept q = ms.getConcept(MdrtbConcepts.WORKER);
+		Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.WORKER);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4408,7 +4348,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Person p = null;
@@ -4440,7 +4380,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//GOVT SERVANT
-		q = ms.getConcept(MdrtbConcepts.GOVT_SERVANT);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GOVT_SERVANT);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4450,7 +4390,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4482,7 +4422,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//STUDENT
-		q = ms.getConcept(MdrtbConcepts.STUDENT);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.STUDENT);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4492,7 +4432,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4524,7 +4464,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//DISABLED
-		q = ms.getConcept(MdrtbConcepts.DISABLED);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DISABLED);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4534,7 +4474,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4566,7 +4506,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//UNEMPLOYED
-		q = ms.getConcept(MdrtbConcepts.UNEMPLOYED);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.UNEMPLOYED);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4576,7 +4516,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4608,7 +4548,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//PHC WORKER
-		q = ms.getConcept(MdrtbConcepts.PHC_WORKER);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PHC_WORKER);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4618,7 +4558,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4650,7 +4590,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//MILITARY SERVANT
-		q = ms.getConcept(MdrtbConcepts.MILITARY_SERVANT);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MILITARY_SERVANT);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4660,7 +4600,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4692,7 +4632,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//SCHOOLCHILD
-		q = ms.getConcept(MdrtbConcepts.SCHOOLCHILD);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SCHOOLCHILD);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4702,7 +4642,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4734,7 +4674,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//TB SERVICES WORKER
-		q = ms.getConcept(MdrtbConcepts.TB_SERVICES_WORKER);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_SERVICES_WORKER);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4744,7 +4684,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4775,7 +4715,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//PRIVATE SECTOR WORKER
-		q = ms.getConcept(MdrtbConcepts.PRIVATE_SECTOR);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRIVATE_SECTOR);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4785,7 +4725,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4817,7 +4757,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//HOUSEWIFE
-		q = ms.getConcept(MdrtbConcepts.HOUSEWIFE);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOUSEWIFE);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4827,7 +4767,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4859,7 +4799,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//PRE-SCHOOL CHILD
-		q = ms.getConcept(MdrtbConcepts.PRESCHOOL_CHILD);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRESCHOOL_CHILD);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4869,7 +4809,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4901,7 +4841,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//PENSIONER
-		q = ms.getConcept(MdrtbConcepts.PENSIONER);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PENSIONER);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -4911,7 +4851,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -4941,13 +4881,11 @@ public class PatientListContoller {
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + pensionerList.size();
 		report += "<br/>";
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
 	
-	////////////////////////////////////
+	/* Cases by Population Category */
+	
 	@RequestMapping("/module/mdrtb/reporting/byPopCategory")
 	public String byPopulationCategory(@RequestParam("district") Integer districtId,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("facility") Integer facilityId,
@@ -4961,17 +4899,13 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
 		
 		model.addAttribute("oblast", oName);
@@ -4981,7 +4915,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -4993,9 +4926,23 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.byPopCategory"));
 		
-		String report = "";
+		System.out.println("GETTING FORM89 LIST");
 		
-		ms.getConcept(MdrtbConcepts.POPULATION_CATEGORY);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		String report = getCasesByPopulationCategoryTable(locList, year, quarterInt, monthInt);
+		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getCasesByPopulationCategoryTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		
+		String report = "";
+		Concept category = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POPULATION_CATEGORY);
 		
 		ArrayList<Form89> thisList = new ArrayList<Form89>();
 		ArrayList<Form89> otherList = new ArrayList<Form89>();
@@ -5004,15 +4951,6 @@ public class PatientListContoller {
 		ArrayList<Form89> homelessList = new ArrayList<Form89>();
 		ArrayList<Form89> prisonerList = new ArrayList<Form89>();
 		ArrayList<Form89> investigationList = new ArrayList<Form89>();
-		
-		System.out.println("GETTING FORM89 LIST");
-		
-		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		
-		Concept category = null;
 		
 		//CATEGORY
 		Concept thisConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESIDENT_OF_TERRITORY);
@@ -5040,10 +4978,8 @@ public class PatientListContoller {
 			
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
 			}
-			
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
@@ -5051,9 +4987,7 @@ public class PatientListContoller {
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
 			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
-				
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
@@ -5072,41 +5006,26 @@ public class PatientListContoller {
 				continue;
 			
 			f89.setTB03(tb03);
-			
 			catId = category.getConceptId().intValue();
 			
-			if (catId == thisId) {
+			if (catId == thisId)
 				thisList.add(f89);
-			}
-			
-			else if (catId == otherId) {
+			else if (catId == otherId)
 				otherList.add(f89);
-			}
-			
-			else if (catId == foreignerId) {
+			else if (catId == foreignerId)
 				foreignerList.add(f89);
-			}
-			
-			else if (catId == welfareId) {
+			else if (catId == welfareId)
 				welfareList.add(f89);
-			}
-			
-			else if (catId == homelessId) {
+			else if (catId == homelessId)
 				homelessList.add(f89);
-			}
-			
-			else if (catId == prisonerId) {
+			else if (catId == prisonerId)
 				prisonerList.add(f89);
-			}
-			
-			else if (catId == investigationId) {
+			else if (catId == investigationId)
 				investigationList.add(f89);
-			}
-			
 		}
 		
 		//RESIDENT_OF_TERRITORY
-		Concept q = ms.getConcept(MdrtbConcepts.RESIDENT_OF_TERRITORY);
+		Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESIDENT_OF_TERRITORY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5116,7 +5035,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Person p = null;
@@ -5148,7 +5067,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//RESIDENT_OTHER_TERRITORY
-		q = ms.getConcept(MdrtbConcepts.RESIDENT_OTHER_TERRITORY);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESIDENT_OTHER_TERRITORY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5158,7 +5077,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5190,7 +5109,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//FOREIGNER
-		q = ms.getConcept(MdrtbConcepts.FOREIGNER);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FOREIGNER);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5202,7 +5121,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.form89.countryOfOrigin") + "</td>";
 		
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5235,7 +5154,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//RESIDENT_SOCIAL_SECURITY_FACILITY
-		q = ms.getConcept(MdrtbConcepts.RESIDENT_SOCIAL_SECURITY_FACILITY);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESIDENT_SOCIAL_SECURITY_FACILITY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5245,7 +5164,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5277,7 +5196,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//HOMELESS
-		q = ms.getConcept(MdrtbConcepts.HOMELESS);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOMELESS);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5287,7 +5206,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5319,7 +5238,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//CONVICTED
-		q = ms.getConcept(MdrtbConcepts.CONVICTED);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONVICTED);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5329,7 +5248,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5362,7 +5281,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//ON_REMAND
-		q = ms.getConcept(MdrtbConcepts.ON_REMAND);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ON_REMAND);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5372,7 +5291,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5396,22 +5315,14 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
-		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + investigationList.size();
-		/*report += "<br/>";
-		
-		
-		report += "</table>";*/
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
 	
-	////////////////////////////////////
+	/* Cases by Dwelling */
+	
 	@RequestMapping("/module/mdrtb/reporting/byDwelling")
 	public String byDwelling(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
@@ -5424,17 +5335,13 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
 		
 		model.addAttribute("oblast", oName);
@@ -5444,7 +5351,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -5456,30 +5362,27 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.byDwelling"));
 		
-		String report = "";
-		
-		ms.getConcept(MdrtbConcepts.LOCATION_TYPE);
-		
-		/*ArrayList<Form89> tb03s = Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);
-		Collections.sort(tb03s);*/
-		/*Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
-		
-		Date startDate = (Date)(dateMap.get("startDate"));
-		Date endDate = (Date)(dateMap.get("endDate"));*/
-		
-		ArrayList<Form89> cityList = new ArrayList<Form89>();
-		ArrayList<Form89> villageList = new ArrayList<Form89>();
-		
 		System.out.println("GETTING FORM89 LIST");
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
+		String report = getCasesByDwellingTable(locList, year, quarterInt, monthInt);
+		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getCasesByDwellingTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		Collections.sort(tb03List);
 		
+		Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_TYPE);
 		Concept type = null;
+		String report = "";
 		
+		ArrayList<Form89> cityList = new ArrayList<Form89>();
+		ArrayList<Form89> villageList = new ArrayList<Form89>();
 		//PLACE
 		Concept cityConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CITY);
 		int cityId = cityConcept.getConceptId().intValue();
@@ -5489,18 +5392,11 @@ public class PatientListContoller {
 		int typeId = 0;
 		Form89 f89 = null;
 		Concept regGroup = null;
-		/*Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
-		
-		Date startDate = (Date)(dateMap.get("startDate"));
-		Date endDate = (Date)(dateMap.get("endDate"));*/
-		
 		for (TB03Form tb03 : tb03List) {
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
 			}
-			
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
@@ -5508,9 +5404,7 @@ public class PatientListContoller {
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
 			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
-				
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
@@ -5542,7 +5436,7 @@ public class PatientListContoller {
 			
 		}
 		
-		ms.getConcept(MdrtbConcepts.CITY);
+		Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CITY);
 		report += "<h4>" + getMessage("mdrtb.lists.city") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5552,17 +5446,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Person p = null;
 		int i = 0;
 		for (Form89 tf : cityList) {
-			
 			TB03Form tb03 = null;
-			
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
 				
@@ -5583,7 +5474,7 @@ public class PatientListContoller {
 		report += getMessage("mdrtb.numberOfRecords") + ": " + cityList.size();
 		report += "<br/>";
 		
-		ms.getConcept(MdrtbConcepts.VILLAGE);
+		Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.VILLAGE);
 		report += "<h4>" + getMessage("mdrtb.lists.village") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5593,7 +5484,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5622,13 +5513,11 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + villageList.size();
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
 	
-	////////////////////////////////////
+	/* Cases by Places of Detection */
+	
 	@RequestMapping("/module/mdrtb/reporting/byPlaceOfDetection")
 	public String byPlaceOfDetection(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
@@ -5641,19 +5530,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -5661,7 +5545,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -5673,32 +5556,30 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.byPlaceOfDetection"));
 		
-		String report = "";
+		System.out.println("GETTING FORM89 LIST");
 		
-		ms.getConcept(MdrtbConcepts.PLACE_OF_DETECTION);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		String report = getCasesByPlaceOfDetectionTable(locList, year, quarterInt, monthInt);
 		
-		/*ArrayList<Form89> tb03s = Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);
-		Collections.sort(tb03s);*/
-		/*Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
 		
-		Date startDate = (Date)(dateMap.get("startDate"));
-		Date endDate = (Date)(dateMap.get("endDate"));*/
+	}
+	
+	public static String getCasesByPlaceOfDetectionTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		
+		Collections.sort(tb03List);
 		
 		ArrayList<Form89> tbList = new ArrayList<Form89>();
 		ArrayList<Form89> privateList = new ArrayList<Form89>();
 		ArrayList<Form89> phcList = new ArrayList<Form89>();
 		ArrayList<Form89> otherList = new ArrayList<Form89>();
 		
-		System.out.println("GETTING FORM89 LIST");
-		
-		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		Collections.sort(tb03List);
-		
 		Concept circSite = null;
 		
+		String report = "";
 		//PLACE
 		Concept tbConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_FACILITY);
 		int tbId = tbConcept.getConceptId().intValue();
@@ -5712,15 +5593,10 @@ public class PatientListContoller {
 		int circId = 0;
 		Form89 f89 = null;
 		Concept regGroup = null;
-		/*Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
-		
-		Date startDate = (Date)(dateMap.get("startDate"));
-		Date endDate = (Date)(dateMap.get("endDate"));*/
 		
 		for (TB03Form tb03 : tb03List) {
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
 			}
 			
@@ -5731,9 +5607,7 @@ public class PatientListContoller {
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
 			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
-				
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
@@ -5755,26 +5629,18 @@ public class PatientListContoller {
 			
 			circId = circSite.getConceptId().intValue();
 			
-			if (circId == tbId) {
+			if (circId == tbId)
 				tbList.add(f89);
-			}
-			
-			else if (circId == privateId) {
+			else if (circId == privateId)
 				privateList.add(f89);
-			}
-			
-			else if (circId == phcId) {
+			else if (circId == phcId)
 				phcList.add(f89);
-			}
-			
-			else if (circId == otherId) {
+			else if (circId == otherId)
 				otherList.add(f89);
-			}
-			
 		}
 		
 		//TB FACILITY
-		Concept q = ms.getConcept(MdrtbConcepts.TB_FACILITY);
+		Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_FACILITY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5784,7 +5650,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Person p = null;
@@ -5816,7 +5682,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//PHC
-		q = ms.getConcept(MdrtbConcepts.PHC_FACILITY);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PHC_FACILITY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5826,7 +5692,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5861,7 +5727,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//Private Sector
-		q = ms.getConcept(MdrtbConcepts.PRIVATE_SECTOR_FACILITY);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRIVATE_SECTOR_FACILITY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5871,7 +5737,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5903,7 +5769,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//OTHER MED FAC
-		q = ms.getConcept(MdrtbConcepts.OTHER_MEDICAL_FACILITY);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_MEDICAL_FACILITY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -5913,7 +5779,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -5937,18 +5803,13 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
-		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + otherList.size();
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
 	
-	////////////////////////////////////////////////
+	/* Cases by Circumstances of Detection */
 	
 	@RequestMapping("/module/mdrtb/reporting/byCircumstancesOfDetection")
 	public String byCircumstancesOfDetection(@RequestParam("district") Integer districtId,
@@ -5963,19 +5824,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -5994,27 +5850,31 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.byCircumstancesOfDetection"));
 		
-		String report = "";
+		System.out.println("GETTING FORM89 LIST");
 		
-		ms.getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION);
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		String report = getCasesByCircumstancesOfDetectionTable(locList, year, quarterInt, monthInt);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
 		
-		//ArrayList<Form89> tb03s = Context.getService(MdrtbService.class).getForm89FormsFilled(locList,year,quarter,month);
+	}
+	
+	public static String getCasesByCircumstancesOfDetectionTable(List<Location> locList, Integer year, Integer quarterInt,
+	        Integer monthInt) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
+		    monthInt);
+		Collections.sort(tb03List);
+		
 		ArrayList<Form89> selfRefList = new ArrayList<Form89>();
 		ArrayList<Form89> baselineExamList = new ArrayList<Form89>();
 		ArrayList<Form89> postmortemList = new ArrayList<Form89>();
 		ArrayList<Form89> contactList = new ArrayList<Form89>();
 		ArrayList<Form89> migrantList = new ArrayList<Form89>();
 		
-		System.out.println("GETTING FORM89 LIST");
+		Concept circSite = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION);
 		
-		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		Collections.sort(tb03List);
-		
-		Concept circSite = null;
-		
+		String report = "";
 		//CIRCUMSTANCES
 		Concept selfRefConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SELF_REFERRAL);
 		int selfRefId = selfRefConcept.getConceptId().intValue();
@@ -6095,7 +5955,7 @@ public class PatientListContoller {
 		}
 		
 		//SELF_REFERRAL
-		Concept q = ms.getConcept(MdrtbConcepts.SELF_REFERRAL);
+		Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SELF_REFERRAL);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6105,7 +5965,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Person p = null;
@@ -6135,7 +5995,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//BASELINE_EXAM
-		q = ms.getConcept(MdrtbConcepts.BASELINE_EXAM);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.BASELINE_EXAM);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6145,7 +6005,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -6175,7 +6035,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//POSTMORTERM_IDENTIFICATION
-		q = ms.getConcept(MdrtbConcepts.POSTMORTERM_IDENTIFICATION);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POSTMORTERM_IDENTIFICATION);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6185,7 +6045,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -6214,7 +6074,7 @@ public class PatientListContoller {
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + postmortemList.size();
 		//CONTACT
-		q = ms.getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6224,7 +6084,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -6256,7 +6116,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//MIGRANT
-		q = ms.getConcept(MdrtbConcepts.MIGRANT);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MIGRANT);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6268,7 +6128,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.form89.cityOfOrigin") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.form89.dateOfReturn") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -6300,12 +6160,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + migrantList.size();
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
 	
-	////////////////////////////////////////////////
+	/* Cases by Method of Detection */
 	
 	@RequestMapping("/module/mdrtb/reporting/byMethodOfDetection")
 	public String byMethodOfDetection(@RequestParam("district") Integer districtId,
@@ -6320,19 +6178,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -6340,7 +6193,6 @@ public class PatientListContoller {
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
 		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
 			locList = Context.getService(MdrtbService.class).getLocationListForDushanbe(oblastId, districtId, facilityId);
@@ -6352,9 +6204,18 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.byMethodOfDetection"));
 		
-		String report = "";
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		String report = getCasesByMethodOfDetectionTable(locList, year, quarterInt, monthInt);
 		
-		ms.getConcept(MdrtbConcepts.METHOD_OF_DETECTION);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getCasesByMethodOfDetectionTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		
 		ArrayList<Form89> fluorographyList = new ArrayList<Form89>();
 		ArrayList<Form89> genexpertList = new ArrayList<Form89>();
@@ -6366,15 +6227,9 @@ public class PatientListContoller {
 		ArrayList<Form89> cxrList = new ArrayList<Form89>();
 		ArrayList<Form89> otherList = new ArrayList<Form89>();
 		
-		System.out.println("GETTING FORM89 LIST");
+		Concept method = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.METHOD_OF_DETECTION);
 		
-		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		
-		Concept method = null;
-		
+		String report = "";
 		//METHOD
 		Concept fluorographyConcept = Context.getService(MdrtbService.class).getConcept(
 		    MdrtbConcepts.FLURORESCENT_MICROSCOPY);
@@ -6400,80 +6255,50 @@ public class PatientListContoller {
 		Collections.sort(tb03List);
 		
 		for (TB03Form tb03 : tb03List) {
-			
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
 			}
-			
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
-			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
 			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
-				
 			}
-			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
 			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
-			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
 				continue;
 			}
-			
 			f89 = fList.get(0);
-			
 			method = f89.getMethodOfDetection();
-			
 			if (method == null)
 				continue;
-			
 			f89.setTB03(tb03);
-			
 			methodId = method.getConceptId().intValue();
-			
-			if (methodId == fluorographyId) {
+			if (methodId == fluorographyId)
 				fluorographyList.add(f89);
-			}
-			
-			else if (methodId == genexpertId) {
+			else if (methodId == genexpertId)
 				genexpertList.add(f89);
-			}
-			
-			else if (methodId == tuberculinId) {
+			else if (methodId == tuberculinId)
 				tuberculinList.add(f89);
-			}
-			
-			else if (methodId == hainId) {
+			else if (methodId == hainId)
 				hainList.add(f89);
-			}
-			
-			else if (methodId == cultureId) {
+			else if (methodId == cultureId)
 				cultureList.add(f89);
-			}
-			
-			else if (methodId == histologyId) {
+			else if (methodId == histologyId)
 				histologyList.add(f89);
-			}
-			
-			else if (methodId == cxrId) {
+			else if (methodId == cxrId)
 				cxrList.add(f89);
-			}
-			
-			else if (methodId == otherId) {
+			else if (methodId == otherId)
 				otherList.add(f89);
-			}
-			
 		}
 		
 		//FLUOROGRAPHY
-		Concept q = ms.getConcept(MdrtbConcepts.FLURORESCENT_MICROSCOPY);
+		Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FLURORESCENT_MICROSCOPY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6483,17 +6308,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		Person p = null;
 		int i = 0;
 		for (Form89 tf : fluorographyList) {
-			
 			TB03Form tb03 = null;
-			
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
 				
@@ -6507,7 +6329,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
 		
 		report += "</table>";
@@ -6515,7 +6336,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//GENEXPERT
-		q = ms.getConcept(MdrtbConcepts.GENEXPERT);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENEXPERT);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6525,20 +6346,16 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : genexpertList) {
-			
 			TB03Form tb03 = null;
-			
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
-				
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
 				i++;
 				report += "<tr>";
@@ -6549,7 +6366,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
 		
 		report += "</table>";
@@ -6557,7 +6373,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//FLURORESCENT_MICROSCOPY
-		q = ms.getConcept(MdrtbConcepts.FLURORESCENT_MICROSCOPY);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FLURORESCENT_MICROSCOPY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6567,20 +6383,16 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : microscopyList) {
-			
 			TB03Form tb03 = null;
-			
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
-				
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
 				i++;
 				report += "<tr>";
@@ -6591,7 +6403,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
 		
 		report += "</table>";
@@ -6599,7 +6410,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//TUBERCULIN_TEST
-		q = ms.getConcept(MdrtbConcepts.TUBERCULIN_TEST);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULIN_TEST);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6609,17 +6420,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : tuberculinList) {
-			
 			TB03Form tb03 = null;
-			
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
@@ -6632,7 +6440,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
 		
 		report += "</table>";
@@ -6640,7 +6447,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//HAIN_TEST
-		q = ms.getConcept(MdrtbConcepts.HAIN_TEST);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_TEST);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6650,20 +6457,16 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : hainList) {
-			
 			TB03Form tb03 = null;
-			
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
-				
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
 				i++;
 				report += "<tr>";
@@ -6681,7 +6484,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//CULTURE_TEST
-		q = ms.getConcept(MdrtbConcepts.CULTURE_TEST);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_TEST);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6691,20 +6494,16 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : cultureList) {
-			
 			TB03Form tb03 = null;
-			
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
-				
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
 				i++;
 				report += "<tr>";
@@ -6715,7 +6514,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
 		
 		report += "</table>";
@@ -6723,7 +6521,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//HISTOLOGY
-		q = ms.getConcept(MdrtbConcepts.HISTOLOGY);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HISTOLOGY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6733,20 +6531,16 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : histologyList) {
-			
 			TB03Form tb03 = null;
-			
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
-				
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
 				i++;
 				report += "<tr>";
@@ -6757,7 +6551,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
 		
 		report += "</table>";
@@ -6765,7 +6558,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//CXR_RESULT
-		q = ms.getConcept(MdrtbConcepts.CXR_RESULT);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CXR_RESULT);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6775,20 +6568,16 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
-		
 		for (Form89 tf : cxrList) {
-			
 			TB03Form tb03 = null;
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
-				
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
 				i++;
 				report += "<tr>";
@@ -6799,7 +6588,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
 		
 		report += "</table>";
@@ -6807,7 +6595,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		//OTHER
-		q = ms.getConcept(MdrtbConcepts.OTHER);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -6817,20 +6605,17 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		
 		for (Form89 tf : otherList) {
-			
 			TB03Form tb03 = null;
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				Integer age = tb03.getAgeAtTB03Registration();
-				
 				p = Context.getPersonService().getPerson(tf.getPatient().getId());
 				i++;
 				report += "<tr>";
@@ -6841,16 +6626,14 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
 			}
-			
 		}
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + otherList.size();
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* Cases by Pulmonary Location */
 	
 	@RequestMapping("/module/mdrtb/reporting/byPulmonaryLocation")
 	public String byPulmonaryLocation(@RequestParam("district") Integer districtId,
@@ -6865,17 +6648,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -6894,7 +6674,18 @@ public class PatientListContoller {
 		}
 		model.addAttribute("listName", getMessage("mdrtb.byPulmonaryLocation"));
 		
-		String report = "";
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		String report = getCasesByPulmonaryLocationTable(locList, year, quarterInt, monthInt);
+		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getCasesByPulmonaryLocationTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		
 		ArrayList<Form89> focalList = new ArrayList<Form89>();
 		ArrayList<Form89> infilList = new ArrayList<Form89>();
@@ -6906,16 +6697,9 @@ public class PatientListContoller {
 		ArrayList<Form89> miliaryList = new ArrayList<Form89>();
 		ArrayList<Form89> tuberculomaList = new ArrayList<Form89>();
 		ArrayList<Form89> bronchiList = new ArrayList<Form89>();
-		
-		System.out.println("GETTING FORM89 LIST");
-		
-		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		
 		Concept pulSite = null;
 		
+		String report = "";
 		//PULMONARY
 		Concept fibroCavConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FIBROUS_CAVERNOUS);
 		int fibroCavId = fibroCavConcept.getConceptId().intValue();
@@ -6944,13 +6728,10 @@ public class PatientListContoller {
 		Collections.sort(tb03List);
 		
 		for (TB03Form tb03 : tb03List) {
-			
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
 			}
-			
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
 			
@@ -6958,9 +6739,7 @@ public class PatientListContoller {
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
 			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
-				
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
@@ -6982,50 +6761,30 @@ public class PatientListContoller {
 			
 			pulId = pulSite.getConceptId().intValue();
 			
-			if (pulId == focalId) {
+			if (pulId == focalId)
 				focalList.add(f89);
-			}
-			
-			else if (pulId == infiltrativeId) {
+			else if (pulId == infiltrativeId)
 				infilList.add(f89);
-			}
-			
-			else if (pulId == disseminatedId) {
+			else if (pulId == disseminatedId)
 				disList.add(f89);
-			}
-			
-			else if (pulId == cavernousId) {
+			else if (pulId == cavernousId)
 				cavList.add(f89);
-			}
-			
-			else if (pulId == fibroCavId) {
+			else if (pulId == fibroCavId)
 				fibCavList.add(f89);
-			}
-			
-			else if (pulId == cirrhoticId) {
+			else if (pulId == cirrhoticId)
 				cirrList.add(f89);
-			}
-			
-			else if (pulId == primaryComplexId) {
+			else if (pulId == primaryComplexId)
 				priCompList.add(f89);
-			}
-			
-			else if (pulId == miliaryId) {
+			else if (pulId == miliaryId)
 				miliaryList.add(f89);
-			}
-			
-			else if (pulId == tuberculomaId) {
+			else if (pulId == tuberculomaId)
 				tuberculomaList.add(f89);
-			}
-			
-			else if (pulId == bronchiId) {
+			else if (pulId == bronchiId)
 				bronchiList.add(f89);
-			}
-			
 		}
 		
 		// FOCAL
-		Concept q = ms.getConcept(MdrtbConcepts.FOCAL);
+		Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FOCAL);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7035,7 +6794,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		Person p = null;
 		int i = 0;
@@ -7065,7 +6824,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// INFILTRATIVE
-		q = ms.getConcept(MdrtbConcepts.INFILTRATIVE);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.INFILTRATIVE);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7075,7 +6834,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -7106,7 +6865,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// DISSEMINATED
-		q = ms.getConcept(MdrtbConcepts.DISSEMINATED);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DISSEMINATED);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7116,7 +6875,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -7147,7 +6906,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// CAVERNOUS
-		q = ms.getConcept(MdrtbConcepts.CAVERNOUS);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAVERNOUS);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7157,7 +6916,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -7188,7 +6947,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// FIBROUS_CAVERNOUS
-		q = ms.getConcept(MdrtbConcepts.FIBROUS_CAVERNOUS);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FIBROUS_CAVERNOUS);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7198,7 +6957,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -7229,7 +6988,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// CIRRHOTIC
-		q = ms.getConcept(MdrtbConcepts.CIRRHOTIC);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CIRRHOTIC);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7239,7 +6998,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -7270,7 +7029,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// TB_PRIMARY_COMPLEX
-		q = ms.getConcept(MdrtbConcepts.TB_PRIMARY_COMPLEX);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_PRIMARY_COMPLEX);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7280,7 +7039,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -7311,7 +7070,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// MILITARY
-		q = ms.getConcept(MdrtbConcepts.MILITARY_SERVANT);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MILITARY_SERVANT);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7321,7 +7080,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -7352,7 +7111,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// TUBERCULOMA
-		q = ms.getConcept(MdrtbConcepts.TUBERCULOMA);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOMA);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7362,7 +7121,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -7393,7 +7152,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// BRONCHUS
-		q = ms.getConcept(MdrtbConcepts.BRONCHUS);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.BRONCHUS);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7403,7 +7162,7 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
@@ -7432,13 +7191,10 @@ public class PatientListContoller {
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + bronchiList.size();
 		report += "<br/>";
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
 	
-	// //////////////////////////////////////////////
+	/* Cases by Extra-Pulmonary Location */
 	
 	@RequestMapping("/module/mdrtb/reporting/byExtraPulmonaryLocation")
 	public String byExtraPulmonaryLocation(@RequestParam("district") Integer districtId,
@@ -7453,17 +7209,14 @@ public class PatientListContoller {
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
@@ -7483,7 +7236,18 @@ public class PatientListContoller {
 		
 		model.addAttribute("listName", getMessage("mdrtb.byExtraPulmonaryLocation"));
 		
-		String report = "";
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		String report = getCasesByExtraPulmonaryLocationTable(locList, year, quarterInt, monthInt);
+		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getCasesByExtraPulmonaryLocationTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		
 		ArrayList<Form89> plevlList = new ArrayList<Form89>();
 		ArrayList<Form89> ofLymphList = new ArrayList<Form89>();
@@ -7496,15 +7260,9 @@ public class PatientListContoller {
 		ArrayList<Form89> cnsList = new ArrayList<Form89>();
 		ArrayList<Form89> liverList = new ArrayList<Form89>();
 		
-		System.out.println("GETTING FORM89 LIST");
-		
-		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		
 		Concept pulSite = null;
 		
+		String report = "";
 		//PULMONARY
 		Concept plevConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLEVRITIS);
 		int plevId = plevConcept.getConceptId().intValue();
@@ -7533,88 +7291,54 @@ public class PatientListContoller {
 		Collections.sort(tb03List);
 		
 		for (TB03Form tb03 : tb03List) {
-			
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				System.out.println("patient void - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
 			}
-			
 			regGroup = null;
 			regGroup = tb03.getRegistrationGroup();
-			
 			if (regGroup == null
 			        || regGroup.getConceptId().intValue() != Integer.parseInt(Context.getAdministrationService()
 			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
-				
 				continue;
-				
 			}
-			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
 			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
-			
 			if (fList == null || fList.size() != 1) {
 				System.out.println("no f89 - skipping " + tb03.getPatient().getPatientId());
 				continue;
 			}
-			
 			f89 = fList.get(0);
-			
 			pulSite = f89.getEpLocation();
-			
 			if (pulSite == null)
 				continue;
-			
 			f89.setTB03(tb03);
-			
 			pulId = pulSite.getConceptId().intValue();
-			
-			if (pulId == plevId) {
+			if (pulId == plevId)
 				plevlList.add(f89);
-			}
-			
-			else if (pulId == ofLymphId) {
+			else if (pulId == ofLymphId)
 				ofLymphList.add(f89);
-			}
-			
-			else if (pulId == osteoId) {
+			else if (pulId == osteoId)
 				osteoList.add(f89);
-			}
-			
-			else if (pulId == uroId) {
+			else if (pulId == uroId)
 				uroList.add(f89);
-			}
-			
-			else if (pulId == periLymphId) {
+			else if (pulId == periLymphId)
 				periLymphList.add(f89);
-			}
-			
-			else if (pulId == abdId) {
+			else if (pulId == abdId)
 				abdList.add(f89);
-			}
-			
-			else if (pulId == skinId) {
+			else if (pulId == skinId)
 				skinList.add(f89);
-			}
-			
-			else if (pulId == eyeId) {
+			else if (pulId == eyeId)
 				eyeList.add(f89);
-			}
-			
-			else if (pulId == cnsId) {
+			else if (pulId == cnsId)
 				cnsList.add(f89);
-			}
-			
-			else if (pulId == liverId) {
+			else if (pulId == liverId)
 				liverList.add(f89);
-			}
-			
 		}
 		
 		// FOCAL
-		Concept q = ms.getConcept(MdrtbConcepts.PLEVRITIS);
+		Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLEVRITIS);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7624,16 +7348,13 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		Person p = null;
 		int i = 0;
 		for (Form89 tf : plevlList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -7645,7 +7366,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
@@ -7654,7 +7374,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// INFILTRATIVE
-		q = ms.getConcept(MdrtbConcepts.OF_LYMPH_NODES);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_LYMPH_NODES);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7664,17 +7384,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : ofLymphList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -7686,7 +7403,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
@@ -7695,7 +7411,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// DISSEMINATED
-		q = ms.getConcept(MdrtbConcepts.OSTEOARTICULAR);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OSTEOARTICULAR);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7705,17 +7421,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : osteoList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -7727,7 +7440,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
@@ -7736,7 +7448,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// CAVERNOUS
-		q = ms.getConcept(MdrtbConcepts.GENITOURINARY);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENITOURINARY);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7746,17 +7458,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : uroList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -7768,7 +7477,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
@@ -7777,7 +7485,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// FIBROUS_CAVERNOUS
-		q = ms.getConcept(MdrtbConcepts.OF_LYMPH_NODES);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_LYMPH_NODES);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7787,17 +7495,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : periLymphList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -7809,7 +7514,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
@@ -7818,7 +7522,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// CIRRHOTIC
-		q = ms.getConcept(MdrtbConcepts.ABDOMINAL);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ABDOMINAL);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7828,17 +7532,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : abdList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -7850,7 +7551,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
@@ -7859,7 +7559,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// TB_PRIMARY_COMPLEX
-		q = ms.getConcept(MdrtbConcepts.TUBERCULODERMA);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULODERMA);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7869,17 +7569,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : skinList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -7891,7 +7588,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
@@ -7900,7 +7596,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// MILITARY
-		q = ms.getConcept(MdrtbConcepts.OCULAR);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OCULAR);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7910,17 +7606,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : eyeList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -7932,7 +7625,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
@@ -7941,7 +7633,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// TUBERCULOMA
-		q = ms.getConcept(MdrtbConcepts.OF_CNS);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_CNS);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7951,17 +7643,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : cnsList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -7973,7 +7662,6 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
@@ -7982,7 +7670,7 @@ public class PatientListContoller {
 		report += "<br/>";
 		
 		// BRONCHUS
-		q = ms.getConcept(MdrtbConcepts.OF_LIVER);
+		q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_LIVER);
 		report += "<h4>" + q.getName().getName() + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -7992,17 +7680,14 @@ public class PatientListContoller {
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.gender") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.dateOfBirth") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.tb03.ageAtRegistration") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
 		report += "</tr>";
 		
 		p = null;
 		i = 0;
 		for (Form89 tf : liverList) {
-			
 			TB03Form tb03 = null;
-			//tf.initTB03(tf.getPatientProgramId());
 			tb03 = tf.getTB03();
-			
 			if (tb03 != null) {
 				i++;
 				Integer age = tb03.getAgeAtTB03Registration();
@@ -8014,54 +7699,43 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + age + "</td>";
 				report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 				report += "</tr>";
-				
 			}
 		}
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + liverList.size();
 		report += "<br/>";
-		
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
 	
-	/////// PATIENTS WITH DR-TB
+	/* DR-TB Patients */
+	
 	@RequestMapping("/module/mdrtb/reporting/drTbPatients")
 	public String drTbPatients(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
-		SimpleDateFormat sdf = Context.getDateFormat();
-		sdf.setLenient(false);
-		
 		MdrtbService ms = Context.getService(MdrtbService.class);
-		
 		String oName = "";
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
+		model.addAttribute("listName", getMessage("mdrtb.drTbPatients"));
 		
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
@@ -8075,17 +7749,26 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
+		String report = getDrtbCasesTable(locList, year, quarterInt, monthInt);
+		
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getDrtbCasesTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
+		
+		SimpleDateFormat sdf = Context.getDateFormat();
+		sdf.setLenient(false);
+		
+		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
 		
 		Collections.sort(tb03us);
 		
-		model.addAttribute("listName", getMessage("mdrtb.drTbPatients"));
 		String report = "";
 		
 		//NEW CASES 
 		
-		//report += "<h4>" + getMessage("mdrtb.pulmonary") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.serialNumber") + "</td>";
@@ -8115,34 +7798,34 @@ public class PatientListContoller {
 		report += "</tr>";
 		
 		report += "<tr>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.result") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.inhShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.rifShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.result") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.injectablesShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.quinShort") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
 		
 		report += "</tr>";
 		TB03Form tf = null;
@@ -8154,8 +7837,6 @@ public class PatientListContoller {
 			rf = null;
 			if (tuf.getPatient() == null || tuf.getPatient().getVoided())
 				continue;
-			
-			//tuf = Context.getService(MdrtbService.class).getTB03uFormForProgram(tf.getPatient(), tf.getPatientProgramId());
 			
 			tf = tuf.getTb03();
 			
@@ -8182,52 +7863,44 @@ public class PatientListContoller {
 				Concept res = dx.getRifResult();
 				
 				if (mtb == null) {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				else {
-					if (mtb.getConceptId().intValue() == ms.getConcept(MdrtbConcepts.POSITIVE).getConceptId().intValue()
-					        || mtb.getConceptId().intValue() == ms.getConcept(MdrtbConcepts.MTB_POSITIVE).getConceptId()
-					                .intValue()) {
+					if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.POSITIVE).getConceptId().intValue()
+					        || mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					                .getConcept(MdrtbConcepts.MTB_POSITIVE).getConceptId().intValue()) {
 						String xr = getMessage("mdrtb.positiveShort");
 						
 						if (res != null) {
 							int resId = res.getConceptId().intValue();
 							
-							if (resId == ms.getConcept(MdrtbConcepts.DETECTED).getConceptId().intValue()) {
+							if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DETECTED)
+							        .getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.resistantShort");
 								report += "<td align=\"left\">" + xr + "</td>";
 							}
 							
-							else if (resId == ms.getConcept(MdrtbConcepts.NOT_DETECTED).getConceptId().intValue()) {
+							else if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_DETECTED)
+							        .getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.sensitiveShort");
 								report += "<td align=\"left\">" + xr + "</td>";
-							}
-							
-							else {
+							} else {
 								report += "<td align=\"left\">" + xr + "</td>";
 							}
-						}
-						
-						else {
+						} else {
 							report += "<td align=\"left\">" + xr + "</td>";
 						}
-					}
-					
-					else if (mtb.getConceptId().intValue() == ms.getConcept(MdrtbConcepts.MTB_NEGATIVE).getConceptId()
-					        .intValue()) {
+					} else if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.MTB_NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
-					}
-					
-					else {
-						report += "<td align=\"left\">" + "" + "</td>";
+					} else {
+						report += "<td></td>";
 					}
 				}
-				
-			}
-			
-			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+			} else {
+				report += "<td></td>";
 			}
 			
 			//HAIN 1	
@@ -8236,7 +7909,6 @@ public class PatientListContoller {
 				Collections.sort(hains);
 				
 				HAINForm h = hains.get(0);
-				
 				Concept ih = h.getInhResult();
 				Concept rh = h.getRifResult();
 				Concept res = h.getMtbResult();
@@ -8244,27 +7916,26 @@ public class PatientListContoller {
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (rh != null) {
 					report += "<td align=\"left\">" + rh.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
-				
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			//HAIN 2
@@ -8281,27 +7952,27 @@ public class PatientListContoller {
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (fq != null) {
 					report += "<td align=\"left\">" + fq.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			//CULTURE
@@ -8313,13 +7984,13 @@ public class PatientListContoller {
 				
 				if (dc.getCultureResult() != null) {
 					
-					if (dc.getCultureResult().getConceptId().intValue() == ms.getConcept(MdrtbConcepts.NEGATIVE)
-					        .getConceptId().intValue()) {
+					if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
 					}
 					
-					else if (dc.getCultureResult().getConceptId().intValue() == ms.getConcept(MdrtbConcepts.CULTURE_GROWTH)
-					        .getConceptId().intValue()) {
+					else if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.CULTURE_GROWTH).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.lists.growth") + "</td>";
 					}
 					
@@ -8330,55 +8001,42 @@ public class PatientListContoller {
 								report += "<td align=\"left\">" + getMessage("mdrtb.positiveShort") + "</td>";
 								break;
 							}
-							
 						}
 					}
 				}
 				
 				else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//Drug Resistance
-			if (tf.getResistanceType() != null) {
+			if (tf.getResistanceType() != null)
 				report += "<td align=\"left\">" + tf.getResistanceType().getName().getName() + "</td>";
-			}
-			
-			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-			}
+			else
+				report += "<td></td>";
 			
 			report += "<td align=\"left\">" + getResistantDrugs(tf) + "</td>";
 			report += "<td align=\"left\">" + getSensitiveDrugs(tf) + "</td>";
 			
-			if (tf.getHivStatus() != null) {
+			if (tf.getHivStatus() != null)
 				report += "<td align=\"left\">" + tf.getHivStatus().getName().getName() + "</td>";
-			}
+			else
+				report += "<td></td>";
 			
-			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-			}
-			
-			if (tf.getTreatmentOutcome() != null) {
+			if (tf.getTreatmentOutcome() != null)
 				report += "<td align=\"left\">" + tf.getTreatmentOutcome().getName().getName() + "</td>";
-			}
+			else
+				report += "<td></td>";
 			
-			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-			}
-			
-			if (tf.getTreatmentOutcomeDate() != null) {
+			if (tf.getTreatmentOutcomeDate() != null)
 				report += "<td align=\"left\">" + sdf.format(tf.getTreatmentOutcomeDate()) + "</td>";
-			}
-			
-			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-			}
+			else
+				report += "<td></td>";
 			
 			report += "<td align=\"left\">" + TB03Util.getRegistrationNumber(tuf) + "</td>";
 			report += "<td align=\"left\">" + sdf.format(tuf.getEncounterDatetime()) + "</td>";
@@ -8386,47 +8044,40 @@ public class PatientListContoller {
 			if (tuf.getPatientCategory() != null)
 				report += "<td align=\"left\">" + tuf.getPatientCategory().getName().getName() + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			if (tuf.getMdrTreatmentStartDate() != null)
 				report += "<td align=\"left\">" + sdf.format(tuf.getMdrTreatmentStartDate()) + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			rf = getFirstRegimenChangeForPatient(tuf.getPatient(), tuf.getPatientProgramId());
 			
 			if (rf != null) {
-				if (rf.getSldRegimenType() != null) {
+				if (rf.getSldRegimenType() != null)
 					report += "<td align=\"left\">" + rf.getSldRegimenType().getName().getName() + "</td>";
-				}
-				
-				else {
-					report += "<td align=\"left\">" + "" + "</td>";
-				}
-				
-				if (rf.getCouncilDate() != null) {
+				else
+					report += "<td></td>";
+				if (rf.getCouncilDate() != null)
 					report += "<td align=\"left\">" + sdf.format(rf.getCouncilDate()) + "</td>";
-				}
-				
-				else {
-					report += "<td align=\"left\">" + "" + "</td>";
-				}
+				else
+					report += "<td></td>";
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			if (tuf.getTreatmentOutcome() != null)
 				report += "<td align=\"left\">" + tuf.getTreatmentOutcome().getName().getName() + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			if (tuf.getTreatmentOutcomeDate() != null)
 				report += "<td align=\"left\">" + sdf.format(tuf.getTreatmentOutcomeDate()) + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 			report += "</tr>";
@@ -8435,10 +8086,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* DR-TB Patients without Treatment */
 	
 	@RequestMapping("/module/mdrtb/reporting/drTbPatientsNoTreatment")
 	public String drTbPatientsNoTreatment(@RequestParam("district") Integer districtId,
@@ -8447,34 +8098,27 @@ public class PatientListContoller {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
-		SimpleDateFormat sdf = Context.getDateFormat();
-		sdf.setLenient(false);
-		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
 		String oName = "";
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
+		model.addAttribute("listName", getMessage("mdrtb.drTbPatientsNoTreatment"));
 		
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
@@ -8485,18 +8129,24 @@ public class PatientListContoller {
 			Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 			locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
 		}
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class)
-		        .getTB03FormsFilled(locList, year, quarterInt, monthInt);
+		
+		String report = getDrTbPatientsWithoutTreatmentTable(locList, year, quarterInt, monthInt);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getDrTbPatientsWithoutTreatmentTable(List<Location> locList, Integer year, Integer quarter,
+	        Integer month) {
+		SimpleDateFormat sdf = Context.getDateFormat();
+		sdf.setLenient(false);
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		Collections.sort(tb03s);
 		
-		model.addAttribute("listName", getMessage("mdrtb.drTbPatientsNoTreatment"));
 		String report = "";
-		
 		//NEW CASES 
-		
 		//report += "<h4>" + getMessage("mdrtb.pulmonary") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -8528,34 +8178,34 @@ public class PatientListContoller {
 		report += "</tr>";
 		
 		report += "<tr>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.result") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.inhShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.rifShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.result") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.injectablesShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.quinShort") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		/*report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";*/
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		/*report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";*/
 		
 		report += "</tr>";
 		
@@ -8641,24 +8291,27 @@ public class PatientListContoller {
 				Concept res = dx.getRifResult();
 				
 				if (mtb == null) {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				else {
-					if (mtb.getConceptId().intValue() == ms.getConcept(MdrtbConcepts.POSITIVE).getConceptId().intValue()
-					        || mtb.getConceptId().intValue() == ms.getConcept(MdrtbConcepts.MTB_POSITIVE).getConceptId()
-					                .intValue()) {
+					if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.POSITIVE).getConceptId().intValue()
+					        || mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					                .getConcept(MdrtbConcepts.MTB_POSITIVE).getConceptId().intValue()) {
 						String xr = getMessage("mdrtb.positiveShort");
 						
 						if (res != null) {
 							int resId = res.getConceptId().intValue();
 							
-							if (resId == ms.getConcept(MdrtbConcepts.DETECTED).getConceptId().intValue()) {
+							if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DETECTED)
+							        .getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.resistantShort");
 								report += "<td align=\"left\">" + xr + "</td>";
 							}
 							
-							else if (resId == ms.getConcept(MdrtbConcepts.NOT_DETECTED).getConceptId().intValue()) {
+							else if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_DETECTED)
+							        .getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.sensitiveShort");
 								report += "<td align=\"left\">" + xr + "</td>";
 							}
@@ -8673,20 +8326,20 @@ public class PatientListContoller {
 						}
 					}
 					
-					else if (mtb.getConceptId().intValue() == ms.getConcept(MdrtbConcepts.MTB_NEGATIVE).getConceptId()
-					        .intValue()) {
+					else if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.MTB_NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
 					}
 					
 					else {
-						report += "<td align=\"left\">" + "" + "</td>";
+						report += "<td></td>";
 					}
 				}
 				
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//HAIN 1	
@@ -8703,27 +8356,27 @@ public class PatientListContoller {
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (rh != null) {
 					report += "<td align=\"left\">" + rh.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			//HAIN 2
@@ -8740,27 +8393,27 @@ public class PatientListContoller {
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (fq != null) {
 					report += "<td align=\"left\">" + fq.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			//CULTURE
@@ -8772,13 +8425,13 @@ public class PatientListContoller {
 				
 				if (dc.getCultureResult() != null) {
 					
-					if (dc.getCultureResult().getConceptId().intValue() == ms.getConcept(MdrtbConcepts.NEGATIVE)
-					        .getConceptId().intValue()) {
+					if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
 					}
 					
-					else if (dc.getCultureResult().getConceptId().intValue() == ms.getConcept(MdrtbConcepts.CULTURE_GROWTH)
-					        .getConceptId().intValue()) {
+					else if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.CULTURE_GROWTH).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.lists.growth") + "</td>";
 					}
 					
@@ -8795,12 +8448,12 @@ public class PatientListContoller {
 				}
 				
 				else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//Drug Resistance
@@ -8809,7 +8462,7 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			report += "<td align=\"left\">" + getResistantDrugs(tf) + "</td>";
@@ -8820,7 +8473,7 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			if (tf.getTreatmentOutcome() != null) {
@@ -8828,7 +8481,7 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			if (tf.getTreatmentOutcomeDate() != null) {
@@ -8836,12 +8489,12 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//////////////////////////////////////
 			
-			report += "<td align=\"left\">" + "" + "</td>";
+			report += "<td></td>";
 			
 			report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 			report += "</tr>";
@@ -8850,10 +8503,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
+	
+	/* DR-TB Patients with Successful Treatment */
 	
 	@RequestMapping("/module/mdrtb/reporting/drTbPatientsSuccessfulTreatment")
 	public String drTbPatientsSuccessfulTreatment(@RequestParam("district") Integer districtId,
@@ -8862,34 +8515,27 @@ public class PatientListContoller {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
-		SimpleDateFormat sdf = Context.getDateFormat();
-		sdf.setLenient(false);
-		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
 		String oName = "";
 		if (oblastId != null) {
 			oName = ms.getRegion(oblastId).getName();
 		}
-		
 		String dName = "";
 		if (districtId != null) {
 			dName = ms.getDistrict(districtId).getName();
-			
 		}
-		
 		String fName = "";
 		if (facilityId != null) {
 			fName = ms.getFacility(facilityId).getName();
-			
 		}
-		
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
 		model.addAttribute("facility", fName);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);
 		model.addAttribute("quarter", quarter);
+		model.addAttribute("listName", getMessage("mdrtb.drTbPatientsSuccessfulTreatment"));
 		
 		List<Location> locList = null;
 		if (oblastId.intValue() == 186) {
@@ -8903,13 +8549,21 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		String report = getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarterInt, monthInt);
+		model.addAttribute("report", report);
+		return "/module/mdrtb/reporting/patientListsResults";
+		
+	}
+	
+	public static String getDrTbCasesWithSuccessfulTreatmentTable(List<Location> locList, Integer year, Integer quarterInt,
+	        Integer monthInt) {
 		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
 		    monthInt);
+		SimpleDateFormat sdf = Context.getDateFormat();
+		sdf.setLenient(false);
 		Collections.sort(tb03us);
 		
-		model.addAttribute("listName", getMessage("mdrtb.drTbPatientsSuccessfulTreatment"));
 		String report = "";
-		
 		//report += "<h4>" + getMessage("mdrtb.pulmonary") + "</h4>";
 		report += "<table border=\"1\">";
 		report += "<tr>";
@@ -8938,31 +8592,31 @@ public class PatientListContoller {
 		report += "</tr>";
 		
 		report += "<tr>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.result") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.inhShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.rifShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.result") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.injectablesShort") + "</td>";
 		report += "<td align=\"left\">" + getMessage("mdrtb.lists.quinShort") + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
-		report += "<td align=\"left\">" + "" + "</td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
+		report += "<td></td>";
 		
 		report += "</tr>";
 		
@@ -9006,24 +8660,27 @@ public class PatientListContoller {
 				Concept res = dx.getRifResult();
 				
 				if (mtb == null) {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				else {
-					if (mtb.getConceptId().intValue() == ms.getConcept(MdrtbConcepts.POSITIVE).getConceptId().intValue()
-					        || mtb.getConceptId().intValue() == ms.getConcept(MdrtbConcepts.MTB_POSITIVE).getConceptId()
-					                .intValue()) {
+					if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.POSITIVE).getConceptId().intValue()
+					        || mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					                .getConcept(MdrtbConcepts.MTB_POSITIVE).getConceptId().intValue()) {
 						String xr = getMessage("mdrtb.positiveShort");
 						
 						if (res != null) {
 							int resId = res.getConceptId().intValue();
 							
-							if (resId == ms.getConcept(MdrtbConcepts.DETECTED).getConceptId().intValue()) {
+							if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DETECTED)
+							        .getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.resistantShort");
 								report += "<td align=\"left\">" + xr + "</td>";
 							}
 							
-							else if (resId == ms.getConcept(MdrtbConcepts.NOT_DETECTED).getConceptId().intValue()) {
+							else if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_DETECTED)
+							        .getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.sensitiveShort");
 								report += "<td align=\"left\">" + xr + "</td>";
 							}
@@ -9038,20 +8695,20 @@ public class PatientListContoller {
 						}
 					}
 					
-					else if (mtb.getConceptId().intValue() == ms.getConcept(MdrtbConcepts.MTB_NEGATIVE).getConceptId()
-					        .intValue()) {
+					else if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.MTB_NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
 					}
 					
 					else {
-						report += "<td align=\"left\">" + "" + "</td>";
+						report += "<td></td>";
 					}
 				}
 				
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//HAIN 1	
@@ -9068,27 +8725,27 @@ public class PatientListContoller {
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (rh != null) {
 					report += "<td align=\"left\">" + rh.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			//HAIN 2
@@ -9105,27 +8762,27 @@ public class PatientListContoller {
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (fq != null) {
 					report += "<td align=\"left\">" + fq.getName().getName() + "</td>";
 				} else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			//CULTURE
@@ -9137,13 +8794,13 @@ public class PatientListContoller {
 				
 				if (dc.getCultureResult() != null) {
 					
-					if (dc.getCultureResult().getConceptId().intValue() == ms.getConcept(MdrtbConcepts.NEGATIVE)
-					        .getConceptId().intValue()) {
+					if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
 					}
 					
-					else if (dc.getCultureResult().getConceptId().intValue() == ms.getConcept(MdrtbConcepts.CULTURE_GROWTH)
-					        .getConceptId().intValue()) {
+					else if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					        .getConcept(MdrtbConcepts.CULTURE_GROWTH).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.lists.growth") + "</td>";
 					}
 					
@@ -9160,12 +8817,12 @@ public class PatientListContoller {
 				}
 				
 				else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			//Drug Resistance
@@ -9174,7 +8831,7 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			report += "<td align=\"left\">" + getResistantDrugs(tuf) + "</td>";
@@ -9185,18 +8842,18 @@ public class PatientListContoller {
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			}
 			
 			if (tuf.getPatientCategory() != null)
 				report += "<td align=\"left\">" + tuf.getPatientCategory().getName().getName() + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			if (tuf.getMdrTreatmentStartDate() != null)
 				report += "<td align=\"left\">" + sdf.format(tuf.getMdrTreatmentStartDate()) + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			rf = getFirstRegimenChangeForPatient(tuf.getPatient(), tuf.getPatientProgramId());
 			
@@ -9206,7 +8863,7 @@ public class PatientListContoller {
 				}
 				
 				else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 				
 				if (rf.getCouncilDate() != null) {
@@ -9214,24 +8871,24 @@ public class PatientListContoller {
 				}
 				
 				else {
-					report += "<td align=\"left\">" + "" + "</td>";
+					report += "<td></td>";
 				}
 			}
 			
 			else {
-				report += "<td align=\"left\">" + "" + "</td>";
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
+				report += "<td></td>";
 			}
 			
 			if (tuf.getTreatmentOutcome() != null)
 				report += "<td align=\"left\">" + tuf.getTreatmentOutcome().getName().getName() + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			if (tuf.getTreatmentOutcomeDate() != null)
 				report += "<td align=\"left\">" + sdf.format(tuf.getTreatmentOutcomeDate()) + "</td>";
 			else
-				report += "<td align=\"left\">" + "" + "</td>";
+				report += "<td></td>";
 			
 			report += "<td align=\"left\">" + getPatientLink(tuf) + "</td>";
 			report += "</tr>";
@@ -9240,15 +8897,10 @@ public class PatientListContoller {
 		
 		report += "</table>";
 		report += getMessage("mdrtb.numberOfRecords") + ": " + i;
-		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
-		
+		return report;
 	}
 	
-	////////////////////// UTILITY FUNCTIONS???????????????????????????????????????
-	private static String getMessage(String code) {
-		return Context.getMessageSourceService().getMessage(code);
-	}
+	////////////////////// UTILITY FUNCTIONS //////////////////////////
 	
 	private static String renderPerson(Person p, boolean gender) {
 		SimpleDateFormat dateFormat = Context.getDateFormat();
@@ -9457,7 +9109,7 @@ public class PatientListContoller {
 		return drugs;
 	}
 	
-	public String getResistantDrugs(TB03uForm tf) {
+	public static String getResistantDrugs(TB03uForm tf) {
 		String drugs = "";
 		List<DSTForm> dsts = tf.getDsts();
 		
@@ -9475,7 +9127,7 @@ public class PatientListContoller {
 		return drugs;
 	}
 	
-	public String getSensitiveDrugs(TB03uForm tf) {
+	public static String getSensitiveDrugs(TB03uForm tf) {
 		String drugs = "";
 		List<DSTForm> dsts = tf.getDsts();
 		
@@ -9538,5 +9190,9 @@ public class PatientListContoller {
 			return forms.get(1);
 		}
 		return null;
+	}
+	
+	private static String getMessage(String code) {
+		return Context.getMessageSourceService().getMessage(code);
 	}
 }
