@@ -939,11 +939,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return getSmear(Context.getObsService().getObs(obsId));
 	}
 	
-	@Deprecated
-	public Xpert getXpert(Obs obs) {
-		return new XpertImpl(obs);
-	}
-	
 	public Xpert createXpert(Specimen specimen) {
 		if (specimen == null) {
 			log.error("Unable to create xpert: specimen is null.");

@@ -325,8 +325,6 @@ public class MdrtbActivator extends BaseModuleActivator {
 			}
 		}
 		
-		//TODO: Convert Lab results to Common Lab module schema; Enc-Obs to LabTest-Attributes
-
 		// After completion, turn the global property back to false
 		gp.setPropertyValue("false");
 		Context.getAdministrationService().saveGlobalProperty(gp);

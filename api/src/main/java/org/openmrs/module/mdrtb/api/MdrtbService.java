@@ -35,6 +35,7 @@ import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.api.ProgramWorkflowService;
+import org.openmrs.module.commonlabtest.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConfig;
@@ -606,17 +607,6 @@ public interface MdrtbService extends OpenmrsService {
 	public Xpert getXpert(Integer obsId);
 	
 	/**
-	 * Fetches an GeneXpert test against the given {@link Obs}
-	 * 
-	 * @param obs
-	 * @return
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	@Transactional(readOnly = true)
-	@Deprecated
-	public Xpert getXpert(Obs obs);
-	
-	/**
 	 * Creates a new GeneXpert test, associated with the given encounter
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
@@ -732,7 +722,7 @@ public interface MdrtbService extends OpenmrsService {
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void saveCulture(Culture culture);
-	
+
 	/**
 	 * Creates a new dst, associated with the given specimen
 	 */

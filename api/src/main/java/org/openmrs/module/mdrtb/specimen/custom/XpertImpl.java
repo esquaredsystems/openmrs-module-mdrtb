@@ -5,6 +5,7 @@ import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
@@ -15,6 +16,8 @@ import org.openmrs.module.mdrtb.specimen.TestImpl;
  * the obsgroup.
  */
 public class XpertImpl extends TestImpl implements Xpert {
+	
+	LabTest labTest;
 	
 	public XpertImpl() {
 	}

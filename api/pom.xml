@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>mdrtb</artifactId>
-		<version>1.2.2</version>
+		<version>1.3.1</version>
 	</parent>
 
 	<artifactId>mdrtb-api</artifactId>
@@ -81,6 +81,11 @@
   			<type>pom</type>
 			<scope>provided</scope>
         </dependency>
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>commonlabtest-api</artifactId>
+			<version>${openmrs.commonlabtest.version}</version>
+		</dependency>
 	</dependencies>
 	
 </project>
