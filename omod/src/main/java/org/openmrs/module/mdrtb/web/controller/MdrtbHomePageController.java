@@ -22,6 +22,7 @@ import java.util.StringTokenizer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.GlobalProperty;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.ModuleFactory;
@@ -95,6 +96,12 @@ public class MdrtbHomePageController {
 			// Load patient lists
 			List<Location> patientLocations = Context.getService(MdrtbService.class).getEnrollmentLocations();
 			model.addAttribute("patientLocations", patientLocations);
+			
+			// Attach the URL to launched external Web app
+			GlobalProperty gp = Context.getAdministrationService().getGlobalPropertyObject("mdrtb.webappUrl");
+			if (gp != null) {
+				model.addAttribute("webappUrl", gp.getPropertyValue());
+			}
 		}
 	}
 }
