@@ -211,6 +211,11 @@ public class MdrtbActivator extends BaseModuleActivator {
 		    "false",
 		    "Caution! This is specific to ETB-Tajikistan implementation. When True, the custom migration scripts executes and turns this value back to false on success. It should run only once",
 		    null);
+		setGlobalProperty(
+		    "mdrtb.webappUrl",
+		    "http://localhost:8000",
+		    "Caution! This is specific to ETB-Tajikistan implementation. The given URL is displayed on the launching page of MDR-TB module.",
+		    null);
 	}
 	
 	private void setGlobalProperty(String prop, String val) {

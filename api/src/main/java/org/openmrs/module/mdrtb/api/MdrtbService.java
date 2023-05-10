@@ -35,7 +35,6 @@ import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.api.ProgramWorkflowService;
-import org.openmrs.module.commonlabtest.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConfig;
@@ -722,7 +721,7 @@ public interface MdrtbService extends OpenmrsService {
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void saveCulture(Culture culture);
-
+	
 	/**
 	 * Creates a new dst, associated with the given specimen
 	 */
