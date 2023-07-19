@@ -1406,11 +1406,11 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public Collection<ConceptAnswer> getPossibleFqResistanceResults() {
-		return this.getConcept(MdrtbConcepts.FQ_RESISTANCE).getAnswers();
+		return this.getConcept(MdrtbConcepts.FLUOROQUINOLONE_RESISTANCE).getAnswers();
 	}
 	
 	public Collection<ConceptAnswer> getPossibleInjResistanceResults() {
-		return this.getConcept(MdrtbConcepts.INJ_RESISTANCE).getAnswers();
+		return this.getConcept(MdrtbConcepts.INJECTABLE_RESISTANCE).getAnswers();
 	}
 	
 	public Collection<ConceptAnswer> getPossibleXpertMtbBurdens() {

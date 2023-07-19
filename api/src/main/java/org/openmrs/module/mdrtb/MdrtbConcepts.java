@@ -227,9 +227,9 @@ public class MdrtbConcepts {
 	
 	public final static String ISONIAZID_RESISTANCE = "ISONIAZID RESISTANCE";
 	
-	public final static String FQ_RESISTANCE = "FQ RESISTANCE";
+	public final static String FLUOROQUINOLONE_RESISTANCE = "FLUOROQUINOLONE RESISTANCE";
 	
-	public final static String INJ_RESISTANCE = "INJ RESISTANCE";
+	public final static String INJECTABLE_RESISTANCE = "INJECTABLE RESISTANCE";
 	
 	// Lab Results
 	public final static String STRONGLY_POSITIVE = "STRONGLY POSITIVE";
@@ -450,7 +450,7 @@ public class MdrtbConcepts {
 	
 	public final static String Z_DOSE = "PYRAZINAMIDE DOSE";
 	
-	public final static String E_DOSE = "ETHAMNBUTOL DOSE";
+	public final static String E_DOSE = "ETHAMBUTOL DOSE";
 	
 	public final static String H_DOSE = "ISONIAZID DOSE";
 	
@@ -555,7 +555,7 @@ public class MdrtbConcepts {
 	
 	public final static String AUDIOGRAM = "AUDIOGRAM";
 	
-	public final static String NEURO_INVESTIGATION = "NEURO INVESTIGATION";
+	public final static String NEURO_AND_PSYCHIATRIC_INVESTIGATION = "NEURO AND PSYCHIATRIC INVESTIGATION";
 	
 	public final static String CREATININE = "CREATININE";
 	
