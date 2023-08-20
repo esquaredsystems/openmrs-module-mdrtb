@@ -137,7 +137,6 @@ public class MdrtbActivator extends BaseModuleActivator {
 		setGlobalProperty(MdrtbConstants.GP_ENCOUNTER_TYPE_PV_REGIMEN, "PV Regimen",
 		    "EXACT name of the encounter type for PV Regimen", null);
 		
-		//TODO: CRITICALLY IMPORTANT TO TEST THIS THOROUGHLY
 		/** Concepts **/
 		ConceptService conceptService = Context.getConceptService();
 		Map<String, String> globalPropertyConceptMap = new HashMap<String, String>();
@@ -215,6 +214,11 @@ public class MdrtbActivator extends BaseModuleActivator {
 		    "mdrtb.webappUrl",
 		    "http://localhost:8000",
 		    "Caution! This is specific to ETB-Tajikistan implementation. The given URL is displayed on the launching page of MDR-TB module.",
+		    null);
+		setGlobalProperty(
+		    MdrtbConstants.GP_MDRTB_TEST_TYPE_UUID,
+		    "4e81d04f-bdc0-11ed-9c1c-00155d694c4d",
+		    "Caution! This is specific to ETB-Tajikistan implementation. The UUID of common lab test type used to represent MDRTB Lab Test which combines all other test groups.",
 		    null);
 	}
 	

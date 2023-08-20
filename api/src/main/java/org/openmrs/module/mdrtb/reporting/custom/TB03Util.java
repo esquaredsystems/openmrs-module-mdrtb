@@ -10,7 +10,12 @@ import org.openmrs.Obs;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientProgram;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestType;
+import org.openmrs.module.commonlabtest.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
@@ -41,7 +46,10 @@ public class TB03Util {
 		Culture c = null;
 		for (CultureForm cf : tf.getCultures()) {//, startDateCollected, endDateCollected)) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0) {
-				c = new CultureImpl(cf.getEncounter());
+				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+				LabTest culture = CommonLabUtil.getService().createLabTestOrder(cf.getEncounter(), labTestType);
+				c = new CultureImpl(culture);
+				// c = new CultureImpl(cf.getEncounter());
 				break;
 			}
 		}
@@ -62,10 +70,11 @@ public class TB03Util {
 	public static Xpert getFirstXpert(TB03Form tf) {
 		Xpert c = null;
 		List<XpertForm> xperts = tf.getXperts();
-		{//, startDateCollected, endDateCollected)) {
-			if (xperts != null && xperts.size() > 0) {
-				c = new XpertImpl(xperts.get(0).getEncounter());
-			}
+		if (xperts != null && xperts.size() > 0) {
+			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTest xpert = CommonLabUtil.getService().createLabTestOrder(xperts.get(0).getEncounter(), labTestType);
+			c = new XpertImpl(xpert);
+			// c = new XpertImpl(xperts.get(0).getEncounter());
 		}
 		return c;
 	}
@@ -73,10 +82,8 @@ public class TB03Util {
 	public static XpertForm getFirstXpertForm(TB03Form tf) {
 		XpertForm c = null;
 		List<XpertForm> xperts = tf.getXperts();
-		{//, startDateCollected, endDateCollected)) {
-			if (xperts != null && xperts.size() > 0) {
-				c = xperts.get(0);
-			}
+		if (xperts != null && xperts.size() > 0) {
+			c = xperts.get(0);
 		}
 		return c;
 	}
@@ -84,9 +91,11 @@ public class TB03Util {
 	public static HAIN getFirstHAIN(TB03Form tf) {
 		HAIN c = null;
 		List<HAINForm> hains = tf.getHains();
-		//, startDateCollected, endDateCollected)) {
 		if (hains != null && hains.size() > 0) {
-			c = new HAINImpl(hains.get(0).getEncounter());
+			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTest hain = CommonLabUtil.getService().createLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			c = new HAINImpl(hain);
+			//c = new HAINImpl(hains.get(0).getEncounter());
 		}
 		return c;
 	}
@@ -94,7 +103,6 @@ public class TB03Util {
 	public static HAINForm getFirstHAINForm(TB03Form tf) {
 		HAINForm c = null;
 		List<HAINForm> hains = tf.getHains();
-		//, startDateCollected, endDateCollected)) {
 		if (hains != null && hains.size() > 0) {
 			c = hains.get(0);// new HAINImpl(hains.get(0).getEncounter());
 		}
@@ -104,9 +112,11 @@ public class TB03Util {
 	public static HAIN2 getFirstHAIN2(TB03Form tf) {
 		HAIN2 c = null;
 		List<HAIN2Form> hains = tf.getHain2s();
-		//, startDateCollected, endDateCollected)) {
 		if (hains != null && hains.size() > 0) {
-			c = new HAIN2Impl(hains.get(0).getEncounter());
+			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTest hain = CommonLabUtil.getService().createLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			c = new HAIN2Impl(hain);
+			// c = new HAIN2Impl(hains.get(0).getEncounter());
 		}
 		return c;
 	}
@@ -125,7 +135,10 @@ public class TB03Util {
 		Smear c = null;
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == 0) {
-				c = new SmearImpl(sf.getEncounter());
+				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+				LabTest smear = CommonLabUtil.getService().createLabTestOrder(sf.getEncounter(), labTestType);
+				c = new SmearImpl(smear);
+				//c = new SmearImpl(sf.getEncounter());
 				c.setResult(sf.getSmearResult());
 				c.setResultDate(sf.getEncounterDatetime());
 				break;
@@ -147,9 +160,12 @@ public class TB03Util {
 	
 	public static Smear getFollowupSmear(TB03Form form, Integer month) {
 		Smear c = null;
-		for (SmearForm sf : form.getSmears()) {//, startDateCollected, endDateCollected)) {
+		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == month.intValue()) {
-				c = new SmearImpl(sf.getEncounter());
+				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+				LabTest smear = CommonLabUtil.getService().createLabTestOrder(sf.getEncounter(), labTestType);
+				c = new SmearImpl(smear);
+				// c = new SmearImpl(sf.getEncounter());
 				break;
 			}
 		}
@@ -158,9 +174,9 @@ public class TB03Util {
 	
 	public static SmearForm getFollowupSmearForm(TB03Form form, Integer month) {
 		SmearForm c = null;
-		for (SmearForm sf : form.getSmears()) {//, startDateCollected, endDateCollected)) {
+		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == month.intValue()) {
-				c = sf;// new SmearImpl(sf.getEncounter());
+				c = sf;
 				break;
 			}
 		}
@@ -171,7 +187,10 @@ public class TB03Util {
 		Dst d = null;
 		List<DSTForm> dsts = tf.getDsts();
 		if (dsts != null && dsts.size() > 0) {
-			d = new DstImpl(dsts.get(0).getEncounter());
+			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTest dst = CommonLabUtil.getService().createLabTestOrder(dsts.get(0).getEncounter(), labTestType);
+			d = new DstImpl(dst);
+			// d = new DstImpl(dsts.get(0).getEncounter());
 		}
 		return d;
 	}

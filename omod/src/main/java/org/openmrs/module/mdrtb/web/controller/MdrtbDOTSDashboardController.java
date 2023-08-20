@@ -188,11 +188,11 @@ public class MdrtbDOTSDashboardController {
 		// add any flags
 		addFlags(statusMap, map);
 		
-		List<Encounter> tb03List = Context.getService(MdrtbService.class).getEncountersWithNoProgramId(
+		List<Encounter> tb03List = Context.getService(MdrtbService.class).getEncountersWithNoProgram(
 		    MdrtbConstants.ET_TB03_TB_INTAKE, program.getPatient());
 		map.put("unlinkedtb03s", tb03List);
 		
-		List<Encounter> labList = Context.getService(MdrtbService.class).getEncountersWithNoProgramId(
+		List<Encounter> labList = Context.getService(MdrtbService.class).getEncountersWithNoProgram(
 		    MdrtbConstants.ET_SPECIMEN_COLLECTION, program.getPatient());
 		map.put("unlinkedlabs", labList);
 		Integer xpertFormId = -1;

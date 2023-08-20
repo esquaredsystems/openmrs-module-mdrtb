@@ -1372,8 +1372,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public int compareTo(TB03uData o) {
-		// TODO Auto-generated method stub
-		
 		if (o.getIdentifierMDR() == null || getIdentifierMDR() == null)
 			return 0;
 		

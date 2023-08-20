@@ -7,6 +7,10 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestType;
+import org.openmrs.module.commonlabtest.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
@@ -19,21 +23,21 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	
 	public DstImpl di;
 	
-	public DSTForm() {
-		super();
-		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
-		di = new DstImpl(this.encounter);
-	}
-	
 	public DSTForm(Patient patient) {
 		super(patient);
 		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
-		di = new DstImpl(this.encounter);
+		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTest dst = CommonLabUtil.getService().createLabTestOrder(this.encounter, labTestType);
+		di = new DstImpl(dst);
+		// di = new DstImpl(this.encounter);
 	}
 	
 	public DSTForm(Encounter encounter) {
 		super(encounter);
-		di = new DstImpl(this.encounter);
+		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTest dst = CommonLabUtil.getService().createLabTestOrder(this.encounter, labTestType);
+		di = new DstImpl(dst);
+		// di = new DstImpl(this.encounter);
 	}
 	
 	public DstResult addResult() {

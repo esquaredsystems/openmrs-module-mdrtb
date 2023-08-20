@@ -58,7 +58,11 @@ import org.openmrs.api.OrderContext;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestType;
+import org.openmrs.module.commonlabtest.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.BaseLocation;
+import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.LocationHierarchy;
@@ -92,7 +96,6 @@ import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.specimen.Culture;
 import org.openmrs.module.mdrtb.specimen.CultureImpl;
 import org.openmrs.module.mdrtb.specimen.Dst;
-import org.openmrs.module.mdrtb.specimen.DstImpl;
 import org.openmrs.module.mdrtb.specimen.ScannedLabReport;
 import org.openmrs.module.mdrtb.specimen.Smear;
 import org.openmrs.module.mdrtb.specimen.SmearImpl;
@@ -252,7 +255,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				map.put(conceptId, mappingFields[1]);
 			}
 		} else {
-			// TODO: make this error catching a little more elegant?
 			throw new RuntimeException("Unable to load cache, cache string is null. Is required global property missing?");
 		}
 		
@@ -450,7 +452,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		} else {
 			PatientProgram program = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 			if (program == null || !program.getProgram().equals(getTbProgram())) {
-				// TODO: Figure out why this was throwing an exception before
 				throw new MdrtbAPIException(patientProgramId + " does not reference a TB patient program.");
 			} else {
 				return new TbPatientProgram(program);
@@ -594,7 +595,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			
 			if (program == null || !program.getProgram().equals(getMdrtbProgram())) {
 				return null;
-				// TODO: Figure out why this was throwing an exception before
 				// throw new MdrtbAPIException(patientProgramId + " does not reference a TB patient program");
 			} else {
 				return new MdrtbPatientProgram(program);
@@ -655,8 +655,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public PatientIdentifier getPatientProgramIdentifier(PatientProgram pp) {
+		//FIXME: Why aren't we just doing the following?
+		// return pp.getPatient().getPatientIdentifier();
 		Integer id = null;
-		//TODO: Change to criteria query
+		Context.getProgramWorkflowService().getPatientProgram(pp.getPatientProgramId());
 		String query = "select patient_id from patient_program where patient_program_id = " + pp.getPatientProgramId();
 		List<List<Object>> result = Context.getAdministrationService().executeSQL(query, true);
 		for (List<Object> temp : result) {
@@ -707,29 +709,14 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return getPossibleTbWorkflowStates(getConcept(MdrtbConcepts.DOTS_CLASSIFICATION_ACCORDING_TO_PREVIOUS_DRUG_USE));
 	}
 	
-	public Culture getCulture(Obs obs) {
-		// don't need to do much error checking here because the constructor will handle
-		// it
-		return new CultureImpl(obs);
-	}
-	
-	public Culture getCulture(Integer obsId) {
-		return getCulture(Context.getObsService().getObs(obsId));
-	}
-	
-	public Culture createCulture(Specimen specimen) {
-		if (specimen == null) {
-			log.error("Unable to create culture: specimen is null.");
-			return null;
-		}
-		// add the culture to the specimen
-		return specimen.addCulture();
-	}
-	
+	// TODO: Urgent! No new cultures are being created without this method. How to create new cultures after upgrading to Lab module?
 	public Culture createCulture(Specimen specimen, Culture culture) {
+		/*
 		Culture newCulture = specimen.addCulture();
 		newCulture.copyMembersFrom(culture);
 		return newCulture;
+		*/
+		return null;
 	}
 	
 	public void saveCulture(Culture culture) {
@@ -884,7 +871,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return dao.getEncountersByEncounterTypes(encounterTypeNames, startDate, endDate, closeDate);
 	}
 	
-	public List<Encounter> getEncountersWithNoProgramId(EncounterType encounterType, Patient patient) {
+	public List<Encounter> getEncountersWithNoProgram(EncounterType encounterType, Patient patient) {
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(encounterType);
 		ArrayList<Encounter> encs = new ArrayList<Encounter>();
@@ -928,25 +915,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public Xpert getXpert(Integer obsId) {
-		return new XpertImpl(Context.getObsService().getObs(obsId));
+		Obs obs = Context.getObsService().getObs(obsId);
+		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTest xpert = CommonLabUtil.getService().createLabTestOrder(obs.getEncounter(), labTestType);
+		return new XpertImpl(xpert);
+		// return new XpertImpl(Context.getObsService().getObs(obsId));
 	}
 	
 	public Smear getSmear(Obs obs) {
-		return new SmearImpl(obs);
-	}
-	
-	public Smear getSmear(Integer obsId) {
-		return getSmear(Context.getObsService().getObs(obsId));
-	}
-	
-	public Xpert createXpert(Specimen specimen) {
-		if (specimen == null) {
-			log.error("Unable to create xpert: specimen is null.");
-			return null;
-		}
-		
-		// add the smear to the specimen
-		return specimen.addXpert();
+		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTest smear = CommonLabUtil.getService().createLabTestOrder(obs.getEncounter(), labTestType);
+		return new SmearImpl(smear);
+		// return new SmearImpl(obs);
 	}
 	
 	public void saveXpert(Xpert xpert) {
@@ -964,22 +944,11 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Context.getObsService().saveObs((Obs) xpert.getTest(), "voided by Mdr-tb module specimen tracking UI");
 	}
 	
-	public HAIN getHAIN(Integer obsId) {
-		return getHAIN(Context.getObsService().getObs(obsId));
-	}
-	
-	@Deprecated
 	public HAIN getHAIN(Obs obs) {
-		return new HAINImpl(obs);
-	}
-	
-	public HAIN createHAIN(Specimen specimen) {
-		if (specimen == null) {
-			log.error("Unable to create xpert: specimen is null.");
-			return null;
-		}
-		// add the smear to the specimen
-		return specimen.addHAIN();
+		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTest hain = CommonLabUtil.getService().createLabTestOrder(obs.getEncounter(), labTestType);
+		return new HAINImpl(hain);
+		// return new HAINImpl(obs);
 	}
 	
 	public void saveHAIN(HAIN hain) {
@@ -997,22 +966,11 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Context.getObsService().saveObs((Obs) hain.getTest(), "voided by Mdr-tb module specimen tracking UI");
 	}
 	
-	public HAIN2 getHAIN2(Integer obsId) {
-		return getHAIN2(Context.getObsService().getObs(obsId));
-	}
-	
-	@Deprecated
 	public HAIN2 getHAIN2(Obs obs) {
-		return new HAIN2Impl(obs);
-	}
-	
-	public HAIN2 createHAIN2(Specimen specimen) {
-		if (specimen == null) {
-			log.error("Unable to create xpert: specimen is null.");
-			return null;
-		}
-		// add the smear to the specimen
-		return specimen.addHAIN2();
+		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTest hain = CommonLabUtil.getService().createLabTestOrder(obs.getEncounter(), labTestType);
+		return new HAIN2Impl(hain);
+		// return new HAIN2Impl(obs);
 	}
 	
 	public void saveHAIN2(HAIN2 hain2) {
@@ -1031,28 +989,14 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Context.getObsService().saveObs((Obs) hain2.getTest(), "voided by Mdr-tb module specimen tracking UI");
 	}
 	
-	@Deprecated
-	public Dst getDst(Obs obs) {
-		return new DstImpl(obs);
-	}
-	
-	public Dst getDst(Integer obsId) {
-		return getDst(Context.getObsService().getObs(obsId));
-	}
-	
-	public Dst createDst(Specimen specimen) {
-		if (specimen == null) {
-			log.error("Unable to create dst: specimen is null.");
-			return null;
-		}
-		// add the culture to the specimen
-		return specimen.addDst();
-	}
-	
+	// TODO: Urgent! No new DSTs are being created without this method. How to create new cultures after upgrading to Lab module?
 	public Dst createDst(Specimen specimen, Dst dst) {
+		/*
 		Dst newDst = specimen.addDst();
 		newDst.copyMembersFrom(dst);
 		return newDst;
+		*/
+		return null;
 	}
 	
 	public void saveDst(Dst dst) {
@@ -1349,7 +1293,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return locationList;
 	}
 	
-	//TODO: Write unit test to check if only the locations with enrollment tag are returned
 	public List<Location> getEnrollmentLocations() {
 		LocationTag enrollmentTag = Context.getLocationService().getLocationTagByName(
 		    MdrtbConstants.ENROLLMENT_LOCATION_TAG_NAME);
@@ -1398,15 +1341,15 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public Collection<ConceptAnswer> getPossibleRifResistanceResults() {
-		return this.getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE).getAnswers();
+		return this.getConcept(MdrtbConcepts.RIFAMPICIN_RESULT).getAnswers();
 	}
 	
 	public Collection<ConceptAnswer> getPossibleInhResistanceResults() {
-		return this.getConcept(MdrtbConcepts.ISONIAZID_RESISTANCE).getAnswers();
+		return this.getConcept(MdrtbConcepts.ISONIAZID_RESULT).getAnswers();
 	}
 	
 	public Collection<ConceptAnswer> getPossibleFqResistanceResults() {
-		return this.getConcept(MdrtbConcepts.FLUOROQUINOLONE_RESISTANCE).getAnswers();
+		return this.getConcept(MdrtbConcepts.FLUOROQUINOLONE_RESULT).getAnswers();
 	}
 	
 	public Collection<ConceptAnswer> getPossibleInjResistanceResults() {
@@ -1474,7 +1417,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public Collection<Concept> getPossibleDstResults() {
-		//TODO: Enable the line below and change the return type to ConceptAnswer
+		// Enable the line below and change the return type to ConceptAnswer
 		// return this.getConcept(MdrtbConcepts.DST_RESULT).getAnswers();
 		List<Concept> results = new LinkedList<Concept>();
 		results.add(this.getConcept(MdrtbConcepts.SUSCEPTIBLE_TO_TB_DRUG));
@@ -1593,14 +1536,28 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return hains;
 	}
 	
+	/**
+	 * Looks for an Encounter in the given program against which a Specimen sample should exist, and returns all such encounters.
+	 */
 	public List<DSTForm> getDstForms(Integer patientProgramId) {
 		// TbPatientProgram tpp = getTbPatientProgram(patientProgramId);
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<DSTForm> dsts = new ArrayList<DSTForm>();
-		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
-		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
+		ArrayList<EncounterType> et = new ArrayList<EncounterType>();		
+		et.add(MdrtbConstants.ET_TB03_TB_INTAKE);
+		et.add(MdrtbConstants.ET_TB03U_MDRTB_INTAKE);
+		et.add(MdrtbConstants.ET_TB03U_XDRTB_INTAKE);
+		// Remove after upgrading to Common lab module
+		//TODO: et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
+			Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
+			if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
+				DSTForm sf = new DSTForm(e);
+				sf.setPatient(tpp.getPatient());
+				dsts.add(sf);
+			}
+			/*
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.DST_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
 				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
@@ -1608,7 +1565,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 					sf.setPatient(tpp.getPatient());
 					dsts.add(sf);
 				}
-			}
+			}*/
 		}
 		Collections.sort(dsts);
 		return dsts;
@@ -1719,7 +1676,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public RegimenForm getPreviousRegimenFormForPatient(Patient patient, List<Location> locactions, Date beforeDate) {
+	public RegimenForm getPreviousRegimenForm(Patient patient, List<Location> locactions, Date beforeDate) {
 		EncounterType eType = MdrtbConstants.ET_PV_REGIMEN;
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
 		typeList.add(eType);
@@ -1745,7 +1702,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			return null;
 	}
 	
-	public RegimenForm getCurrentRegimenFormForPatient(Patient patient, Date beforeDate) {
+	public RegimenForm getCurrentRegimenForm(Patient patient, Date beforeDate) {
 		// RegimenForm form = null;
 		EncounterType eType = MdrtbConstants.ET_PV_REGIMEN;
 		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();

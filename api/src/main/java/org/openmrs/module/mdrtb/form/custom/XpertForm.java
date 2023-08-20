@@ -131,7 +131,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		
 		if (obsgroup != null)
 			obs = MdrtbUtil.getObsFromObsGroup(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE), obsgroup);
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESULT), obsgroup);
 		
 		if (obs == null) {
 			return null;
@@ -147,7 +147,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		
 		if (obsgroup != null) {
 			obs = MdrtbUtil.getObsFromObsGroup(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE), obsgroup);
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESULT), obsgroup);
 		} else {
 			obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 			    MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -171,7 +171,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			if (result != null) {
 				//obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
-				    MdrtbConcepts.RIFAMPICIN_RESISTANCE), encounter.getEncounterDatetime(), encounter.getLocation());
+				    MdrtbConcepts.RIFAMPICIN_RESULT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				obs.setObsGroup(obsgroup);
 				obsgroup.addGroupMember(obs);

@@ -501,7 +501,7 @@ public class CohortBuilderController implements Controller {
 	
 	public ModelAndView saveHistory(HttpServletRequest request, HttpServletResponse response) throws ServletException,
 	        IOException {
-		// TODO: fix this!
+		// FIXME: fix this!
 		if (Context.isAuthenticated()) {
 			String name = request.getParameter("name");
 			String description = request.getParameter("description");

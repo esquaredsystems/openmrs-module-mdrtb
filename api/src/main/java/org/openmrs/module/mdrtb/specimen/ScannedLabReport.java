@@ -12,8 +12,7 @@ public interface ScannedLabReport {
 	 * implementation, the scanned lab report obs) id: the id used to reference the scanned lab
 	 * report (i.e., in our current implementation, the obs_id of the scanned lab report obs)
 	 * filename: the name of the scanned lab report filename Data this interface provides set access
-	 * to: file: the file that contains scanned lab report TODO: provide get access to the
-	 * underlying file
+	 * to: file: the file that contains scanned lab report
 	 */
 	
 	public Object getScannedLabReport();

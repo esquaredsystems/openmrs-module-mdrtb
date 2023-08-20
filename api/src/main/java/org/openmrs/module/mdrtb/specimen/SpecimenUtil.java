@@ -6,9 +6,6 @@ import java.util.ListIterator;
 
 public class SpecimenUtil {
 	
-	// TODO: comfirm how specimens handle "Date"--can this be a Date/Time or just a Date?  Because Date/Time would fail
-	// TODO: if we ever need to abstract this out, we should change this method to "groupSpecimens" and have it take as a 
-	// second parameter a implementation of a new SpecimenGroupComparator interface, which would make the date comparison
 	public static void groupSpecimensByDay(List<Specimen> specimens) {
 		
 		if (specimens == null || specimens.isEmpty()) {

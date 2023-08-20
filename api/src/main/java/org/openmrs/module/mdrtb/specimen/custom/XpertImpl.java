@@ -1,14 +1,10 @@
 package org.openmrs.module.mdrtb.specimen.custom;
 
-import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
-import org.openmrs.Encounter;
-import org.openmrs.Obs;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestAttribute;
+import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
-import org.openmrs.module.mdrtb.MdrtbUtil;
-import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.specimen.TestImpl;
 
 /**
@@ -20,9 +16,11 @@ public class XpertImpl extends TestImpl implements Xpert {
 	LabTest labTest;
 	
 	public XpertImpl() {
+		// test = new Obs(null, Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), null, null);
 	}
 	
 	// set up a xpert object, given an existing obs
+	/*
 	public XpertImpl(Obs xpert) {
 		if (xpert == null
 		        || !(xpert.getConcept().equals(Context.getService(MdrtbService.class).getConcept(
@@ -31,17 +29,25 @@ public class XpertImpl extends TestImpl implements Xpert {
 		}
 		test = xpert;
 	}
+	*/
 	
 	// create a new smear object, given an existing patient
+	/*
 	public XpertImpl(Encounter encounter) {
-		
 		if (encounter == null) {
 			throw new RuntimeException("Cannot create xpert: encounter can not be null.");
 		}
-		
 		// note that we are setting the location null--tests don't immediately inherit the location of the parent encounter
 		test = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 		    MdrtbConcepts.XPERT_CONSTRUCT), encounter.getEncounterDatetime(), null);
+	}
+	*/
+	
+	public XpertImpl(LabTest xpert) {
+		if (xpert == null) {
+			throw new RuntimeException("Cannot initialize test: Parameter is null.");
+		}
+		test = xpert;
 	}
 	
 	@Override
@@ -50,234 +56,189 @@ public class XpertImpl extends TestImpl implements Xpert {
 	}
 	
 	public String getComments() {
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT),
-		    test);
-		
-		if (obs == null) {
-			return null;
-		} else {
-			return obs.getComment();
-		}
+		return test.getResultComments();
+		/*
+		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT), test);
+		return (obs == null) ? null : obs.getComment();
+		*/
 	}
 	
 	public void setComments(String comments) {
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT),
-		    test);
-		
-		// if this obs has not been created, and there is no data to add, do nothing
+		test.setResultComments(comments);
+		/*
+		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT), test);
 		if (obs == null && StringUtils.isBlank(comments)) {
 			return;
 		}
-		
-		// we don't need to test for comments == null here like the other obs because
-		// the comments are stored on the results obs
-		
-		// initialize the obs if needed
 		if (obs == null) {
 			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT),
-			        test.getObsDatetime(), test.getLocation());
-			obs.setEncounter(test.getEncounter());
+			        test.getObsDatetime(), test.getOrder().getEncounter().getLocation());
+			obs.setEncounter(test.getOrder().getEncounter());
 			test.addGroupMember(obs);
 		}
-		
 		obs.setComment(comments);
+		*/
 	}
 	
 	public Concept getResult() {
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT),
-		    test);
-		
-		if (obs == null) {
-			return null;
-		} else {
-			return obs.getValueCoded();
-		}
+		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
+		    MdrtbConcepts.MTB_RESULT);
+		return (Concept) attribute.getValue();
+		/*
+		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT), test);
+		return (obs == null) ? null : obs.getValueCoded();
+		*/
 	}
 	
 	public void setResult(Concept mtbResult) {
-		
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT),
-		    test);
-		
+		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
+		    MdrtbConcepts.MTB_RESULT);
+		attribute.setValue(mtbResult);
+		test.setAttribute(attribute);
+		/*
+		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT), test);
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && mtbResult == null) {
 			return;
 		}
-		
 		// if we are trying to set the obs to null, simply void the obs
 		if (mtbResult == null) {
 			obs.setVoided(true);
 			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			return;
 		}
-		
 		// initialize the obs if needed
 		if (obs == null) {
 			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT),
-			        test.getObsDatetime(), test.getLocation());
-			obs.setEncounter(test.getEncounter());
+			        test.getObsDatetime(), test.getOrder().getEncounter().getLocation());
+			obs.setEncounter(test.getOrder().getEncounter());
 			test.addGroupMember(obs);
 		}
-		
 		// now save the value
 		obs.setValueCoded(mtbResult);
+		*/
 	}
 	
 	public Concept getRifResistance() {
+		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
+		    MdrtbConcepts.RIFAMPICIN_RESULT);
+		return (Concept) attribute.getValue();
+		/*
 		Obs obs = MdrtbUtil.getObsFromObsGroup(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE), test);
-		
-		if (obs == null) {
-			return null;
-		} else {
-			return obs.getValueCoded();
-		}
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESULT), test);
+		return (obs == null) ? null : obs.getValueCoded();
+		*/
 	}
 	
 	public void setRifResistance(Concept rifResistance) {
+		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
+		    MdrtbConcepts.RIFAMPICIN_RESULT);
+		attribute.setValue(rifResistance);
+		test.setAttribute(attribute);
+		/*
 		Obs obs = MdrtbUtil.getObsFromObsGroup(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE), test);
-		
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESULT), test);
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && rifResistance == null) {
 			return;
 		}
-		
 		// if we are trying to set the obs to null, simply void the obs
 		if (rifResistance == null) {
 			obs.setVoided(true);
 			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			return;
 		}
-		
 		// initialize the obs if needed
 		if (obs == null) {
 			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(
-			    MdrtbConcepts.RIFAMPICIN_RESISTANCE), test.getObsDatetime(), test.getLocation());
-			obs.setEncounter(test.getEncounter());
+			    MdrtbConcepts.RIFAMPICIN_RESULT), test.getObsDatetime(), test.getOrder().getEncounter().getLocation());
+			obs.setEncounter(test.getOrder().getEncounter());
 			test.addGroupMember(obs);
 		}
-		
 		// now save the value
 		obs.setValueCoded(rifResistance);
-		
-	}
-	
-	public String getErrorCode() {
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ERROR_CODE),
-		    test);
-		
-		if (obs == null || obs.getValueText() == null) {
-			return null;
-		} else {
-			return obs.getValueText();
-		}
-	}
-	
-	public void setErrorCode(String code) {
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ERROR_CODE),
-		    test);
-		
-		// if this obs have not been created, and there is no data to add, do nothing
-		if (obs == null && code == null) {
-			return;
-		}
-		
-		// if we are trying to set the obs to null, simply void the obs
-		if (code == null) {
-			obs.setVoided(true);
-			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
-			return;
-		}
-		
-		// initialize the obs if needed
-		if (obs == null) {
-			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ERROR_CODE),
-			        test.getObsDatetime(), test.getLocation());
-			obs.setEncounter(test.getEncounter());
-			test.addGroupMember(obs);
-		}
-		
-		// now set the value
-		obs.setValueText(code);
-		
+		*/
 	}
 	
 	public Concept getMtbBurden() {
+		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
+		    MdrtbConcepts.XPERT_MTB_BURDEN);
+		return (Concept) attribute.getValue();
+		/*
 		Obs obs = MdrtbUtil.getObsFromObsGroup(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
-		
-		if (obs == null) {
-			return null;
-		} else {
-			return obs.getValueCoded();
-		}
+		return (obs == null) ? null : obs.getValueCoded();
+		*/
 	}
 	
 	public void setMtbBurden(Concept mtbBurden) {
+		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
+		    MdrtbConcepts.XPERT_MTB_BURDEN);
+		attribute.setValue(mtbBurden);
+		test.setAttribute(attribute);
+		/*
 		Obs obs = MdrtbUtil.getObsFromObsGroup(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test);
-		
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && mtbBurden == null) {
 			return;
 		}
-		
 		// if we are trying to set the obs to null, simply void the obs
 		if (mtbBurden == null) {
 			obs.setVoided(true);
 			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			return;
 		}
-		
 		// initialize the obs if needed
 		if (obs == null) {
 			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class)
-			        .getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test.getObsDatetime(), test.getLocation());
-			obs.setEncounter(test.getEncounter());
+			        .getConcept(MdrtbConcepts.XPERT_MTB_BURDEN), test.getObsDatetime(), test.getOrder().getEncounter().getLocation());
+			obs.setEncounter(test.getOrder().getEncounter());
 			test.addGroupMember(obs);
 		}
-		
 		// now save the value
 		obs.setValueCoded(mtbBurden);
+		*/
 	}
 	
 	public Concept getMethod() {
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENEXPERT),
-		    test);
-		
-		if (obs == null) {
-			return null;
-		} else {
-			return obs.getValueCoded();
-		}
+		LabTestAttribute attribute = CommonLabUtil.getService()
+		        .getXpertAttributeByTestAndName(test, MdrtbConcepts.GENEXPERT);
+		return (Concept) attribute.getValue();
+		/*
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENEXPERT), test);
+		return (obs == null) ? null : obs.getValueCoded();
+		*/
 	}
 	
 	public void setMethod(Concept method) {
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENEXPERT),
-		    test);
-		
+		LabTestAttribute attribute = CommonLabUtil.getService()
+		        .getXpertAttributeByTestAndName(test, MdrtbConcepts.GENEXPERT);
+		attribute.setValue(method);
+		test.setAttribute(attribute);
+		/*
+		Obs obs = MdrtbUtil.getObsFromObsGroup(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENEXPERT), test);
 		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && method == null) {
 			return;
 		}
-		
 		// if we are trying to set the obs to null, simply void the obs
 		if (method == null) {
 			obs.setVoided(true);
 			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			return;
 		}
-		
 		// initialize the obs if needed
 		if (obs == null) {
-			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENEXPERT),
-			        test.getObsDatetime(), test.getLocation());
-			obs.setEncounter(test.getEncounter());
+			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT),
+			        test.getObsDatetime(), test.getOrder().getEncounter().getLocation());
+			obs.setEncounter(test.getOrder().getEncounter());
 			test.addGroupMember(obs);
 		}
-		
 		// now save the value
 		obs.setValueCoded(method);
+		*/
 	}
 }

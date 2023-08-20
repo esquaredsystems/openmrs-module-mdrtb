@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.reporting;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -3113,8 +3112,7 @@ public class TB07uController {
 		
 		if (latest == null) {
 			Patient p = Context.getPatientService().getPatient(new Integer(patientId));
-			RegimenForm previous = Context.getService(MdrtbService.class).getPreviousRegimenFormForPatient(p, locList,
-			    endDate);
+			RegimenForm previous = Context.getService(MdrtbService.class).getPreviousRegimenForm(p, locList, endDate);
 			if (previous != null) {
 				latest = previous;
 			}

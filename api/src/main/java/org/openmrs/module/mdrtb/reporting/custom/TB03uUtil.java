@@ -5,6 +5,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestType;
+import org.openmrs.module.commonlabtest.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.CommonLabUtil;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
 import org.openmrs.module.mdrtb.form.custom.DSTForm;
 import org.openmrs.module.mdrtb.form.custom.HAIN2Form;
@@ -58,7 +64,10 @@ public class TB03uUtil {
 		List<DSTForm> dsts = tf.getDsts();
 		
 		if (dsts != null && dsts.size() > 0) {
-			d = new DstImpl(dsts.get(0).getEncounter());
+			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTest dstTest = CommonLabUtil.getService().createLabTestOrder(dsts.get(0).getEncounter(), labTestType);
+			d = new DstImpl(dstTest);
+			// d = new DstImpl(dsts.get(0).getEncounter());
 		}
 		
 		return d;
@@ -115,8 +124,10 @@ public class TB03uUtil {
 		Xpert c = null;
 		List<XpertForm> xperts = tf.getXperts();
 		if (xperts != null && xperts.size() > 0) {
-			c = new XpertImpl(xperts.get(0).getEncounter());
-			
+			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTest xpert = CommonLabUtil.getService().createLabTestOrder(xperts.get(0).getEncounter(), labTestType);
+			c = new XpertImpl(xpert);
+			// c = new XpertImpl(xperts.get(0).getEncounter());
 		}
 		
 		return c;
@@ -138,7 +149,10 @@ public class TB03uUtil {
 		
 		List<HAINForm> hains = tf.getHains();
 		if (hains != null && hains.size() > 0) {
-			c = new HAINImpl(hains.get(0).getEncounter());
+			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTest hain = CommonLabUtil.getService().createLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			c = new HAINImpl(hain);
+			// c = new HAINImpl(hains.get(0).getEncounter());
 		}
 		
 		return c;
@@ -160,8 +174,10 @@ public class TB03uUtil {
 		
 		List<HAIN2Form> hains = tf.getHain2s();
 		if (hains != null && hains.size() > 0) {
-			c = new HAIN2Impl(hains.get(0).getEncounter());
-			
+			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTest hain = CommonLabUtil.getService().createLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			c = new HAIN2Impl(hain);
+			// c = new HAIN2Impl(hains.get(0).getEncounter());
 		}
 		
 		return c;

@@ -6,7 +6,7 @@ import org.openmrs.Concept;
  * Interface that defines how to interaction with a culture An implementation of this interface will
  * help us encapsulate the the messiness of storing the smear data in obsgroups
  */
-public interface Culture extends Bacteriology {
+public interface Culture extends Test {
 	
 	/**
 	 * Data points this interface provides access to: colonies: the # of colonies present method:

@@ -134,7 +134,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 		
 		if (obsgroup != null)
 			obs = MdrtbUtil.getObsFromObsGroup(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE), obsgroup);
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESULT), obsgroup);
 		return obs == null ? null : obs.getValueCoded();
 	}
 	
@@ -146,7 +146,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 		
 		if (obsgroup != null) {
 			obs = MdrtbUtil.getObsFromObsGroup(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE), obsgroup);
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RIFAMPICIN_RESULT), obsgroup);
 		} else {
 			obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 			    MdrtbConcepts.HAIN_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -176,7 +176,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 				log.debug("creating new obs");
 				//obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
-				    MdrtbConcepts.RIFAMPICIN_RESISTANCE), encounter.getEncounterDatetime(), encounter.getLocation());
+				    MdrtbConcepts.RIFAMPICIN_RESULT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				obs.setObsGroup(obsgroup);
 				obsgroup.addGroupMember(obs);
@@ -194,7 +194,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 		
 		if (obsgroup != null)
 			obs = MdrtbUtil.getObsFromObsGroup(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ISONIAZID_RESISTANCE), obsgroup);
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ISONIAZID_RESULT), obsgroup);
 		return obs == null ? null : obs.getValueCoded();
 	}
 	
@@ -206,7 +206,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 		
 		if (obsgroup != null) {
 			obs = MdrtbUtil.getObsFromObsGroup(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ISONIAZID_RESISTANCE), obsgroup);
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ISONIAZID_RESULT), obsgroup);
 			
 		}
 		
@@ -239,7 +239,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 				log.debug("creating new obs");
 				//obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
-				    MdrtbConcepts.ISONIAZID_RESISTANCE), encounter.getEncounterDatetime(), encounter.getLocation());
+				    MdrtbConcepts.ISONIAZID_RESULT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				obs.setObsGroup(obsgroup);
 				obsgroup.addGroupMember(obs);

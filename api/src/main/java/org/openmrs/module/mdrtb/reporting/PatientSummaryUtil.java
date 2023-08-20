@@ -62,7 +62,6 @@ public class PatientSummaryUtil {
 	
 	protected static Log log = LogFactory.getLog(PatientSummaryUtil.class);
 	
-	//TODO: Move these to MdrtbConstants
 	public static final String PATIENT_ID = "patientId";
 	
 	public static final String FULL_NAME = "fullName";
@@ -107,22 +106,6 @@ public class PatientSummaryUtil {
 	
 	public static final String RESISTANCE_LIST = "resistanceProfile";
 	
-	public static final String HIV_TEST_RESULT = MdrtbConcepts.RESULT_OF_HIV_TEST;
-	
-	public static final String SMEAR_RESULT = MdrtbConcepts.SMEAR_RESULT;
-	
-	public static final String CULTURE_RESULT = MdrtbConcepts.CULTURE_RESULT;
-	
-	public static final String WEIGHT_RESULT = MdrtbConcepts.WEIGHT;
-	
-	public static final String PULSE_RESULT = MdrtbConcepts.PULSE;
-	
-	public static final String TEMPERATURE_RESULT = MdrtbConcepts.TEMPERATURE;
-	
-	public static final String RESPIRATORY_RATE_RESULT = MdrtbConcepts.RESPIRATORY_RATE;
-	
-	public static final String SYSTOLIC_BLOOD_PRESSURE_RESULT = MdrtbConcepts.SYSTOLIC_BLOOD_PRESSURE;
-	
 	public static final String[] DEMOGRAPHICS_KEYS = { PATIENT_ID, FULL_NAME, FIRST_NAME, LAST_NAME, GENDER, AGE, BIRTHDATE,
 	        DEAD, DEATH_DATE, CAUSE_OF_DEATH, ADDRESS_1, CITY_VILLAGE, FULL_ADDRESS };
 	
@@ -131,8 +114,9 @@ public class PatientSummaryUtil {
 	
 	public static final String[] HIV_REGIMEN_KEYS = { CURRENT_HIV_REGIMEN };
 	
-	public static final String[] OBS_KEYS = { HIV_TEST_RESULT, SMEAR_RESULT, CULTURE_RESULT, WEIGHT_RESULT, PULSE_RESULT,
-	        TEMPERATURE_RESULT, RESPIRATORY_RATE_RESULT, SYSTOLIC_BLOOD_PRESSURE_RESULT };
+	public static final String[] OBS_KEYS = { MdrtbConcepts.RESULT_OF_HIV_TEST, MdrtbConcepts.SMEAR_RESULT,
+	        MdrtbConcepts.CULTURE_RESULT, MdrtbConcepts.WEIGHT, MdrtbConcepts.PULSE, MdrtbConcepts.TEMPERATURE,
+	        MdrtbConcepts.RESPIRATORY_RATE, MdrtbConcepts.SYSTOLIC_BLOOD_PRESSURE };
 	
 	public static final String[] TEST_KEYS = { RESISTANCE_LIST };
 	

@@ -233,8 +233,7 @@ public class AdverseEventsReportController {
 		
 		for (Patient p : allPatients) {
 			if (!countedPatients.contains(p)) {
-				RegimenForm rfp = Context.getService(MdrtbService.class).getPreviousRegimenFormForPatient(p, locList,
-				    endDate);
+				RegimenForm rfp = Context.getService(MdrtbService.class).getPreviousRegimenForm(p, locList, endDate);
 				
 				if (rfp != null) {
 					Concept q = rfp.getSldRegimenType();
@@ -422,7 +421,7 @@ public class AdverseEventsReportController {
 				//Table 2 setup
 				
 				Patient p = ae.getPatient();
-				RegimenForm currentRegimenForm = Context.getService(MdrtbService.class).getCurrentRegimenFormForPatient(p,
+				RegimenForm currentRegimenForm = Context.getService(MdrtbService.class).getCurrentRegimenForm(p,
 				    ae.getEncounterDatetime());
 				Integer regimenTypeConceptId = null;
 				if (currentRegimenForm != null) {

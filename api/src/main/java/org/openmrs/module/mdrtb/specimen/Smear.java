@@ -6,7 +6,7 @@ import org.openmrs.Concept;
  * Interface that defines how to interaction with a smear An implementation of this interface will
  * help us encapsulate the the messiness of storing the smear data in obsgroups
  */
-public interface Smear extends Bacteriology {
+public interface Smear extends Test {
 	
 	/**
 	 * Data points this interface provides access to: bacilli: the bacilli count method: the Concept

@@ -1,8 +1,10 @@
 package org.openmrs.module.mdrtb;
 
 import java.lang.reflect.Method;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -729,7 +731,6 @@ public class MdrtbUtil {
 		Date now = new Date();
 		Context.getService(MdrtbService.class).getMdrtbProgram();
 		
-		//TODO: Change the quarter and month parameters to Integer
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month));
 		
 		Date startDate = (Date) (dateMap.get("startDate"));
@@ -986,11 +987,10 @@ public class MdrtbUtil {
 		fromCal.setTimeInMillis(fromDate.getTime());
 		GregorianCalendar toCal = new GregorianCalendar();
 		toCal.setTimeInMillis(toDate.getTime());
-		//TODO: Replace Joda time with Java time
-		LocalDate fromLocalDate = new LocalDate(fromCal.get(GregorianCalendar.YEAR),
-		        fromCal.get(GregorianCalendar.MONTH) + 1, fromCal.get(GregorianCalendar.DATE));
-		LocalDate toLocalDate = new LocalDate(toCal.get(GregorianCalendar.YEAR), toCal.get(GregorianCalendar.MONTH) + 1,
-		        toCal.get(GregorianCalendar.DATE));
+		LocalDate fromLocalDate = new LocalDate(fromCal.get(Calendar.YEAR), fromCal.get(Calendar.MONTH) + 1,
+		        fromCal.get(Calendar.DATE));
+		LocalDate toLocalDate = new LocalDate(toCal.get(Calendar.YEAR), toCal.get(Calendar.MONTH) + 1,
+		        toCal.get(Calendar.DATE));
 		Years age = Years.yearsBetween(fromLocalDate, toLocalDate);
 		ret = age.getYears();
 		
@@ -1015,7 +1015,7 @@ public class MdrtbUtil {
 				String id = pi.getIdentifier();
 				log.debug("Validating Identifier:" + id);
 				GregorianCalendar now = new GregorianCalendar();
-				int year = now.get(GregorianCalendar.YEAR);
+				int year = now.get(Calendar.YEAR);
 				String yearString = "" + year;
 				String firstTwoDigits = yearString.substring(0, 2);
 				int centuryYear = Integer.parseInt(firstTwoDigits) * 100;
@@ -1041,7 +1041,7 @@ public class MdrtbUtil {
 		else {
 			// Check is already in use by another patient
 			GregorianCalendar now = new GregorianCalendar();
-			int year = now.get(GregorianCalendar.YEAR);
+			int year = now.get(Calendar.YEAR);
 			String yearString = "" + year;
 			String firstTwoDigits = yearString.substring(0, 2);
 			int centuryYear = Integer.parseInt(firstTwoDigits) * 100;

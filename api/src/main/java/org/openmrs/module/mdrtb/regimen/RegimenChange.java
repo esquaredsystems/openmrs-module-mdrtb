@@ -72,7 +72,7 @@ public class RegimenChange implements Comparable<RegimenChange> {
 	public Set<Concept> getReasonsDrugsEnded() {
 		Set<Concept> s = new HashSet<Concept>();
 		for (DrugOrder d : getOrdersEnded()) {
-			//TODO: d.getDiscontinuedReason() was replaced with d.getOrderReason(). Write unit test
+			// d.getDiscontinuedReason() was replaced with d.getOrderReason()
 			if (d.getOrderReason() != null) {
 				s.add(d.getOrderReason());
 			}

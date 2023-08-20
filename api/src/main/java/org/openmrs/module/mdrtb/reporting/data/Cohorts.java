@@ -22,20 +22,19 @@ import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.reporting.cohort.definition.BaseObsCohortDefinition.TimeModifier;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
-import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.MdrtbConstants.TbClassification;
+import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.reporting.definition.DstResultCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.MdrtbBacResultAfterTreatmentStartedCohortDefinition;
+import org.openmrs.module.mdrtb.reporting.definition.MdrtbBacResultAfterTreatmentStartedCohortDefinition.Result;
 import org.openmrs.module.mdrtb.reporting.definition.MdrtbPatientProgramStateCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.MdrtbProgramClosedAfterTreatmentStartedCohortDefintion;
 import org.openmrs.module.mdrtb.reporting.definition.MdrtbProgramLocationCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.MdrtbTreatmentStartedCohortDefinition;
-import org.openmrs.module.mdrtb.reporting.definition.MdrtbBacResultAfterTreatmentStartedCohortDefinition.Result;
 import org.openmrs.module.mdrtb.reporting.definition.custom.AgeAtMDRRegistrationCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.custom.AgetAtMdrtbProgramEnrollmentTJKCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.custom.MdrtbAfterTreatmentStartedCohortDefinition;
@@ -45,6 +44,7 @@ import org.openmrs.module.mdrtb.reporting.definition.custom.ResistanceTypeCohort
 import org.openmrs.module.mdrtb.reporting.definition.custom.SLDRegimenTypeCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.custom.TB03UCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.custom.TestReferralCohortDefinition;
+import org.openmrs.module.reporting.cohort.definition.BaseObsCohortDefinition.TimeModifier;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.GenderCohortDefinition;
@@ -264,13 +264,11 @@ public class Cohorts {
 		        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_HOSPITALIZED)), startDate, endDate);
 	}
 	
-	// TODO: figure out what obs to look for here--see ticket HATB-358
 	public static CohortDefinition getHivPositiveDuring(Date startDate, Date endDate) {
 		return ReportUtil.getCodedObsCohort(TimeModifier.ANY, 3753, startDate, endDate, SetComparator.IN, Context
 		        .getService(MdrtbService.class).getConcept(MdrtbConcepts.POSITIVE).getId());
 	}
 	
-	// TODO: figure out what obs to look for here--see ticket HATB-358
 	public static CohortDefinition getNewlyHivPositive(Date startDate, Date endDate) {
 		CohortDefinition byStart = getHivPositiveDuring(null, startDate);
 		CohortDefinition byEnd = getHivPositiveDuring(null, endDate);

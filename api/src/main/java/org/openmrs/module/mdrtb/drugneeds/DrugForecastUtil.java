@@ -126,12 +126,10 @@ public class DrugForecastUtil {
 		if (pillsPerDose == 0)
 			return 0;
 		if (drug != null && drug.getStrength() != null) {
-			//TODO: convert the old Dose Strength (Tip! Explore drug.getMaximumDailyDose()) and write test
 			// pillsPerDose = pillsPerDose / drug.getDoseStrength();
 		}
 		double dosesPerDay = 0;
 		try {
-			//TODO: Write test and remove this
 			// String s = o.getFrequency();
 			// dosesPerDay = Integer.valueOf(s.substring(0, s.indexOf('/')));
 			dosesPerDay = o.getFrequency().getFrequencyPerDay();

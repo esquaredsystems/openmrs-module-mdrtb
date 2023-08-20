@@ -117,7 +117,6 @@ public class MdrtbDashboardController {
 	public MdrtbPatientProgram getMdrtbPatientProgram(
 	        @RequestParam(required = false, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = false, value = "patientId") Integer patientId) {
-		//TODO: Ideally, the request shouldn't have been made with null Patient ID
 		if (patientId == null || patientId == -1) {
 			return null;
 		}
@@ -192,11 +191,11 @@ public class MdrtbDashboardController {
 		// add any flags
 		addFlags(statusMap, map);
 		
-		List<Encounter> tb03uList = Context.getService(MdrtbService.class).getEncountersWithNoProgramId(
+		List<Encounter> tb03uList = Context.getService(MdrtbService.class).getEncountersWithNoProgram(
 		    MdrtbConstants.ET_TB03U_MDRTB_INTAKE, program.getPatient());
 		map.put("unlinkedtb03us", tb03uList);
 		
-		List<Encounter> labList = Context.getService(MdrtbService.class).getEncountersWithNoProgramId(
+		List<Encounter> labList = Context.getService(MdrtbService.class).getEncountersWithNoProgram(
 		    MdrtbConstants.ET_SPECIMEN_COLLECTION, program.getPatient());
 		map.put("unlinkedlabs", labList);
 		

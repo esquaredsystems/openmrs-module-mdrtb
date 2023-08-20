@@ -75,7 +75,6 @@ public class ReportDataResourceController extends DelegatingCrudResource<ReportD
 	
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
-		//TODO: Implement search for item
 		// String query = context.getParameter("q");
 		List<T> results = null;
 		return new NeedsPaging<T>(results, context);

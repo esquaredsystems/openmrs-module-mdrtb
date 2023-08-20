@@ -20,6 +20,10 @@ import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestAttribute;
+import org.openmrs.module.commonlabtest.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
@@ -35,6 +39,7 @@ import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
  * An implementation of the MdrtbSpecimen. This wraps an Encounter and provides access to the
  * various specimen-related data in Encounter
  */
+/// TODO: Replace with LabTestSample
 public class SpecimenImpl implements Specimen {
 	
 	// TODO: could potentially cache all the get/set variables in private instance variables here...
@@ -50,8 +55,6 @@ public class SpecimenImpl implements Specimen {
 	
 	private Encounter encounter; // the encounter where information about the specimen is stored
 	
-	// TODO: we cache the result map; do we need to worry about resetting the cache ?
-	// (right now it isn't much of an issue because in the web model a new specimen is instantiated during each request)
 	private Map<Integer, List<DstResult>> dstResultsMap = null;
 	
 	public SpecimenImpl() {
@@ -89,6 +92,7 @@ public class SpecimenImpl implements Specimen {
 		}
 	}
 	
+	/*
 	public Culture addCulture() {
 		// cast to an Impl so we can access protected methods from within the specimen impl
 		CultureImpl culture = new CultureImpl(this.encounter);
@@ -102,7 +106,9 @@ public class SpecimenImpl implements Specimen {
 		
 		return culture;
 	}
+	*/
 	
+	/*
 	public Dst addDst() {
 		// cast to an Impl so we can access protected methods from within the specimen impl
 		DstImpl dst = new DstImpl(this.encounter);
@@ -116,6 +122,71 @@ public class SpecimenImpl implements Specimen {
 		
 		return dst;
 	}
+	*/
+	
+	/*
+	public Smear addSmear() {
+		// cast to an Impl so we can access protected methods from within the specimen impl
+		SmearImpl smear = new SmearImpl(this.encounter);
+		
+		// add the smear to the master encounter
+		this.encounter.addObs(smear.getObs());
+		
+		// we need to set the location back to null, since it will be set to the encounter location
+		// when it is added to the encounter
+		smear.setLab(null);
+		
+		return smear;
+	}
+	*/
+	
+	/*
+	public Xpert addXpert() {
+		// cast to an Impl so we can access protected methods from within the specimen impl
+		XpertImpl xpert = new XpertImpl(this.encounter);
+		
+		// add the smear to the master encounter
+		this.encounter.addObs(xpert.getObs());
+		
+		// we need to set the location back to null, since it will be set to the encounter location
+		// when it is added to the location
+		xpert.setLab(null);
+		
+		return xpert;
+	}
+	*/
+	
+	/*
+	public HAIN addHAIN() {
+		// cast to an Impl so we can access protected methods from within the specimen impl
+		HAINImpl hain = new HAINImpl(this.encounter);
+		
+		// add the smear to the master encounter
+		this.encounter.addObs(hain.getObs());
+		
+		// we need to set the location back to null, since it will be set to the encounter location
+		// when it is added to the location
+		hain.setLab(null);
+		
+		return hain;
+	}
+	*/
+	
+	/*
+	public HAIN2 addHAIN2() {
+		// cast to an Impl so we can access protected methods from within the specimen impl
+		HAIN2Impl hain2 = new HAIN2Impl(this.encounter);
+		
+		// add the smear to the master encounter
+		this.encounter.addObs(hain2.getObs());
+		
+		// we need to set the location back to null, since it will be set to the encounter location
+		// when it is added to the location
+		hain2.setLab(null);
+		
+		return hain2;
+	}
+	*/
 	
 	public ScannedLabReport addScannedLabReport() {
 		// cast to an Impl so that we can access protected methods from within the specimen impl
@@ -129,20 +200,6 @@ public class SpecimenImpl implements Specimen {
 		report.setLab(null);
 		
 		return report;
-	}
-	
-	public Smear addSmear() {
-		// cast to an Impl so we can access protected methods from within the specimen impl
-		SmearImpl smear = new SmearImpl(this.encounter);
-		
-		// add the smear to the master encounter
-		this.encounter.addObs(smear.getObs());
-		
-		// we need to set the location back to null, since it will be set to the encounter location
-		// when it is added to the encounter
-		smear.setLab(null);
-		
-		return smear;
 	}
 	
 	public Concept getAppearance() {
@@ -166,39 +223,8 @@ public class SpecimenImpl implements Specimen {
 		}
 	}
 	
-	public List<Culture> getCultures() {
-		List<Culture> cultures = new LinkedList<Culture>();
-		
-		// iterate through all the obs groups, create smears from them, and add them to the list
-		if (encounter.getObsAtTopLevel(false) != null) {
-			for (Obs obs : encounter.getObsAtTopLevel(false)) {
-				if (obs.getConcept().equals(
-				    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_CONSTRUCT))) {
-					cultures.add(new CultureImpl(obs));
-				}
-			}
-		}
-		Collections.sort(cultures);
-		return cultures;
-	}
-	
 	public Date getDateCollected() {
 		return encounter.getEncounterDatetime();
-	}
-	
-	public List<Dst> getDsts() {
-		List<Dst> dsts = new LinkedList<Dst>();
-		
-		// iterate through all the obs groups, create dsts from them, and add them to the list
-		if (encounter.getObsAtTopLevel(false) != null) {
-			for (Obs obs : encounter.getObsAtTopLevel(false)) {
-				if (obs.getConcept().equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_CONSTRUCT))) {
-					dsts.add(new DstImpl(obs));
-				}
-			}
-		}
-		Collections.sort(dsts);
-		return dsts;
 	}
 	
 	public Map<Integer, List<DstResult>> getDstResultsMap() {
@@ -273,21 +299,6 @@ public class SpecimenImpl implements Specimen {
 			}
 		}
 		return reports;
-	}
-	
-	public List<Smear> getSmears() {
-		List<Smear> smears = new LinkedList<Smear>();
-		// iterate through all the obs groups, create smears from them, and add them to the list
-		if (encounter.getObsAtTopLevel(false) != null) {
-			for (Obs obs : encounter.getObsAtTopLevel(false)) {
-				if (obs.getConcept()
-				        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_CONSTRUCT))) {
-					smears.add(new SmearImpl(obs));
-				}
-			}
-		}
-		Collections.sort(smears);
-		return smears;
 	}
 	
 	public List<Test> getTests() {
@@ -520,22 +531,105 @@ public class SpecimenImpl implements Specimen {
 		}
 	}
 	
-	public Xpert addXpert() {
-		// cast to an Impl so we can access protected methods from within the specimen impl
-		XpertImpl xpert = new XpertImpl(this.encounter);
-		
-		// add the smear to the master encounter
-		this.encounter.addObs(xpert.getObs());
-		
-		// we need to set the location back to null, since it will be set to the encounter location
-		// when it is added to the location
-		xpert.setLab(null);
-		
-		return xpert;
+	public List<Culture> getCultures() {
+		List<Culture> cultures = new LinkedList<Culture>();
+		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		for (LabTest labTest : labTests) {
+			// Add only if the culture results are present
+			LabTestAttribute cultureResult = CommonLabUtil.getService().getCultureAttributeByTestAndName(labTest,
+			    MdrtbConcepts.CULTURE_RESULT);
+			if (cultureResult != null) {
+				cultures.add(new CultureImpl(labTest));
+			}
+		}
+		/*
+		// iterate through all the obs groups, create smears from them, and add them to the list
+		if (encounter.getObsAtTopLevel(false) != null) {
+			for (Obs obs : encounter.getObsAtTopLevel(false)) {
+				if (obs.getConcept().equals(
+				    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_CONSTRUCT))) {
+					cultures.add(new CultureImpl(obs));
+				}
+			}
+		}
+		*/
+		Collections.sort(cultures);
+		return cultures;
+	}
+	
+	public List<Dst> getDsts() {
+		List<Dst> dsts = new LinkedList<Dst>();
+		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		for (LabTest labTest : labTests) {
+			// Add only if any of the DST results is present
+			LabTestAttribute dst = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
+			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST1);
+			LabTestAttribute dstLj = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
+			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST1_LJ);
+			LabTestAttribute dstMgit = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
+			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST1_MGIT);
+			LabTestAttribute dst2 = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
+			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST2);
+			LabTestAttribute dst2Lj = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
+			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST2_LJ);
+			LabTestAttribute dst2Mgit = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
+			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST2_MGIT);
+			if (dst != null || dstLj != null || dstMgit != null || dst2 != null || dst2Lj != null || dst2Mgit != null) {
+				dsts.add(new DstImpl(labTest));
+			}
+		}
+		/*
+		// iterate through all the obs groups, create dsts from them, and add them to the list
+		if (encounter.getObsAtTopLevel(false) != null) {
+			for (Obs obs : encounter.getObsAtTopLevel(false)) {
+				if (obs.getConcept().equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_CONSTRUCT))) {
+					dsts.add(new DstImpl(obs));
+				}
+			}
+		}
+		*/
+		Collections.sort(dsts);
+		return dsts;
+	}
+	
+	public List<Smear> getSmears() {
+		List<Smear> smears = new LinkedList<Smear>();
+		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		for (LabTest labTest : labTests) {
+			// Add only if the culture results are present
+			LabTestAttribute smearResult = CommonLabUtil.getService().getSmearAttributeByTestAndName(labTest,
+			    MdrtbConcepts.SMEAR_RESULT);
+			if (smearResult != null) {
+				smears.add(new SmearImpl(labTest));
+			}
+		}
+		/*
+		// iterate through all the obs groups, create smears from them, and add them to the list
+		if (encounter.getObsAtTopLevel(false) != null) {
+			for (Obs obs : encounter.getObsAtTopLevel(false)) {
+				if (obs.getConcept()
+				        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_CONSTRUCT))) {
+					smears.add(new SmearImpl(obs));
+				}
+			}
+		}
+		*/
+		Collections.sort(smears);
+		return smears;
 	}
 	
 	public List<Xpert> getXperts() {
 		List<Xpert> xperts = new LinkedList<Xpert>();
+		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		for (LabTest labTest : labTests) {
+			// Add only if the culture results are present
+			LabTestAttribute xpertResult = CommonLabUtil.getService().getXpertAttributeByTestAndName(labTest,
+			    MdrtbConcepts.MTB_RESULT);
+			if (xpertResult != null) {
+				xperts.add(new XpertImpl(labTest));
+			}
+		}
+		/*
 		// iterate through all the obs groups, create xperts from them, and add them to the list
 		if (encounter.getObsAtTopLevel(false) != null) {
 			for (Obs obs : encounter.getObsAtTopLevel(false)) {
@@ -545,26 +639,23 @@ public class SpecimenImpl implements Specimen {
 				}
 			}
 		}
+		*/
 		Collections.sort(xperts);
 		return xperts;
 	}
 	
-	public HAIN addHAIN() {
-		// cast to an Impl so we can access protected methods from within the specimen impl
-		HAINImpl hain = new HAINImpl(this.encounter);
-		
-		// add the smear to the master encounter
-		this.encounter.addObs(hain.getObs());
-		
-		// we need to set the location back to null, since it will be set to the encounter location
-		// when it is added to the location
-		hain.setLab(null);
-		
-		return hain;
-	}
-	
 	public List<HAIN> getHAINs() {
 		List<HAIN> hains = new LinkedList<HAIN>();
+		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		for (LabTest labTest : labTests) {
+			// Add only if the culture results are present
+			LabTestAttribute hainResult = CommonLabUtil.getService().getHainAttributeByTestAndName(labTest,
+			    MdrtbConcepts.MTB_RESULT);
+			if (hainResult != null) {
+				hains.add(new HAINImpl(labTest));
+			}
+		}
+		/*
 		// iterate through all the obs groups, create hains from them, and add them to the list
 		if (encounter.getObsAtTopLevel(false) != null) {
 			for (Obs obs : encounter.getObsAtTopLevel(false)) {
@@ -573,26 +664,23 @@ public class SpecimenImpl implements Specimen {
 				}
 			}
 		}
+		*/
 		Collections.sort(hains);
 		return hains;
 	}
 	
-	public HAIN2 addHAIN2() {
-		// cast to an Impl so we can access protected methods from within the specimen impl
-		HAIN2Impl hain2 = new HAIN2Impl(this.encounter);
-		
-		// add the smear to the master encounter
-		this.encounter.addObs(hain2.getObs());
-		
-		// we need to set the location back to null, since it will be set to the encounter location
-		// when it is added to the location
-		hain2.setLab(null);
-		
-		return hain2;
-	}
-	
 	public List<HAIN2> getHAIN2s() {
 		List<HAIN2> hains = new LinkedList<HAIN2>();
+		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		for (LabTest labTest : labTests) {
+			// Add only if the culture results are present
+			LabTestAttribute hain2Result = CommonLabUtil.getService().getHain2AttributeByTestAndName(labTest,
+			    MdrtbConcepts.MTB_RESULT);
+			if (hain2Result != null) {
+				hains.add(new HAIN2Impl(labTest));
+			}
+		}
+		/*
 		// iterate through all the obs groups, create hains from them, and add them to the list
 		if (encounter.getObsAtTopLevel(false) != null) {
 			for (Obs obs : encounter.getObsAtTopLevel(false)) {
@@ -602,6 +690,7 @@ public class SpecimenImpl implements Specimen {
 				}
 			}
 		}
+		*/
 		Collections.sort(hains);
 		return hains;
 	}

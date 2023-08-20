@@ -100,7 +100,7 @@ public class VisitStatusCalculator {
 			}
 		}
 		
-		//TODO: Investigate why this line was entered
+		// Why was this line entered?
 		Collections.reverse(drdtVisits);
 		
 		// add all the lists to the main status 

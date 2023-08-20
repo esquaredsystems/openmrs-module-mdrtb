@@ -240,7 +240,6 @@ public class RegimenController {
 			out = new FileOutputStream(System.getProperty("user.home") + File.separator + "regimenReport.xls");
 		}
 		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -550,7 +549,6 @@ public class RegimenController {
 			out.close();
 		}
 		catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		finally {

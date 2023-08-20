@@ -7,7 +7,6 @@ import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.PatientProgram;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.form.custom.TB03Form;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 
 public class SimpleTB03uForm extends BaseOpenmrsData {

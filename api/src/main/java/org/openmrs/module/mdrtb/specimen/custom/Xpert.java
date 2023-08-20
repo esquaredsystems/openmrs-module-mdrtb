@@ -1,13 +1,13 @@
 package org.openmrs.module.mdrtb.specimen.custom;
 
 import org.openmrs.Concept;
-import org.openmrs.module.mdrtb.specimen.Bacteriology;
+import org.openmrs.module.mdrtb.specimen.Test;
 
 /**
  * Interface that defines how to interaction with a smear An implementation of this interface will
  * help us encapsulate the the messiness of storing the smear data in obsgroups
  */
-public interface Xpert extends Bacteriology {
+public interface Xpert extends Test {
 	
 	/**
 	 * Data points this interface provides access to: bacilli: the bacilli count method: the Concept
@@ -21,10 +21,6 @@ public interface Xpert extends Bacteriology {
 	public Concept getRifResistance();
 	
 	public void setRifResistance(Concept rifResistance);
-	
-	public String getErrorCode();
-	
-	public void setErrorCode(String code);
 	
 	public Concept getMtbBurden();
 	

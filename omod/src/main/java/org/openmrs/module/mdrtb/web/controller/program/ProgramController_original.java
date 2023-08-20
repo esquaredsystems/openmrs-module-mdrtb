@@ -120,7 +120,6 @@ public class ProgramController_original {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: modeling visit as a status probably wasn't the best way to go on my part
 		VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer())
 		        .calculate(program);
 		

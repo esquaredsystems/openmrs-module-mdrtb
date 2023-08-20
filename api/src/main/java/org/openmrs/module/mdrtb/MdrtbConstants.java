@@ -13,6 +13,10 @@ public class MdrtbConstants {
 	
 	public static final String RUSSIAN_DATE_FORMAT = "yyyy.MM.dd";
 	
+	public static final String SQL_DATE_FORMAT = "yyyy-MM-dd";
+	
+	public static final String SQL_DATETIME_FORMAT = "yyyy-MM-dd hh:mm:ss";
+	
 	public static final String PATIENT_CHART_REGIMEN_CELL_COLOR = "lightblue";
 	
 	public static final String ROLES_TO_REDIRECT_GLOBAL_PROPERTY = moduleName + ".roles_to_redirect_from_openmrs_homepage";
@@ -219,4 +223,15 @@ public class MdrtbConstants {
 	
 	/** END - Encounter Types **/
 	/***************************/
+	
+	/*******************************/
+	/** START - Common Lab Module **/
+	
+	public static final String GP_MDRTB_TEST_TYPE_UUID = "commonlabtest.mdrtbTestTypeUuid";
+	
+	public static final String MDRTB_TEST_TYPE_UUID = Context.getAdministrationService().getGlobalProperty(
+	    GP_MDRTB_TEST_TYPE_UUID);
+	
+	/** END - Common Lab Module **/
+	/*****************************/
 }

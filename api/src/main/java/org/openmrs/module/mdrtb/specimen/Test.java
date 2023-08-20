@@ -82,4 +82,15 @@ public interface Test extends Comparable<Test> {
 	
 	public void setMethod(Concept method);
 	
+	/**
+	 * The Concept that represents the smear result
+	 */
+	public Concept getResult();
+	
+	public void setResult(Concept result);
+	
+	public String getErrorCode();
+	
+	public void setErrorCode(String code);
+	
 }

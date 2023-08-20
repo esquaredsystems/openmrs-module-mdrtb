@@ -39,8 +39,7 @@ public class MdrtbTreatmentStartedCohortDefinitionEvaluator implements CohortDef
 	 */
 	public EvaluatedCohort evaluate(CohortDefinition cohortDefinition, EvaluationContext context) {
 		MdrtbTreatmentStartedCohortDefinition cd = (MdrtbTreatmentStartedCohortDefinition) cohortDefinition;
-		//TODO: Figure out why getTreatmentStarted() was used instead of getPatientsFirstStartingDrugs()
-		//    	Cohort c = MdrtbQueryService.getPatientsFirstStartingDrugs(context, cd.getFromDate(), cd.getToDate(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOSIS_DRUGS));
+		// Cohort c = MdrtbQueryService.getPatientsFirstStartingDrugs(context, cd.getFromDate(), cd.getToDate(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOSIS_DRUGS));
 		Cohort c = MdrtbQueryService.getTreatmentStarted(context, cd.getFromDate(), cd.getToDate());
 		return new EvaluatedCohort(c, cohortDefinition, context);
 		

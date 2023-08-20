@@ -20,7 +20,7 @@ public interface Specimen extends Comparable<Specimen> {
 	
 	/**
 	 * Data points this interface provides access to id: the id code of the specimen (primary key in
-	 * the database) identifier: an idenifier that has been assigned to the sample for trackin
+	 * the database) identifier: an identifier that has been assigned to the sample for tracking
 	 * purposes type: the concept that represents the type of the specimen (sputum, etc...) patient:
 	 * the patient associated with the specimen location: the location where the specimen was
 	 * collected provider: who collected the specimen dateCollected: the date the specimen was
@@ -75,27 +75,33 @@ public interface Specimen extends Comparable<Specimen> {
 	
 	public List<Smear> getSmears();
 	
-	public Smear addSmear();
+	// Removed after upgrading to Common lab module
+	//public Smear addSmear();
 	
 	public List<Culture> getCultures();
 	
-	public Culture addCulture();
+	// Removed after upgrading to Common lab module
+	//public Culture addCulture();
 	
 	public List<Dst> getDsts();
 	
-	public Dst addDst();
+	// Removed after upgrading to Common lab module
+	//public Dst addDst();
 	
 	public List<Xpert> getXperts();
 	
-	public Xpert addXpert();
+	// Removed after upgrading to Common lab module
+	//public Xpert addXpert();
 	
 	public List<HAIN> getHAINs();
 	
-	public HAIN addHAIN();
+	// Removed after upgrading to Common lab module
+	//public HAIN addHAIN();
 	
 	public List<HAIN2> getHAIN2s();
 	
-	public HAIN2 addHAIN2();
+	// Removed after upgrading to Common lab module
+	//public HAIN2 addHAIN2();
 	
 	public List<Test> getTests();
 	

@@ -17,7 +17,12 @@ import org.openmrs.Location;
 import org.openmrs.PatientProgram;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestType;
+import org.openmrs.module.commonlabtest.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.DSTForm;
@@ -123,8 +128,10 @@ public class DSTFormController {
 		}
 		
 		Context.getEncounterService().saveEncounter(dst.getEncounter());
-		
-		dst.setDi(new DstImpl(dst.getEncounter()));
+		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTest dstTest = CommonLabUtil.getService().createLabTestOrder(dst.getEncounter(), labTestType);
+		dst.setDi(new DstImpl(dstTest));
+		//dst.setDi(new DstImpl(dst.getEncounter()));
 		
 		Context.getService(MdrtbService.class).evict(dst.di.getTest());
 		Context.getService(MdrtbService.class).evict(dst.getEncounter());

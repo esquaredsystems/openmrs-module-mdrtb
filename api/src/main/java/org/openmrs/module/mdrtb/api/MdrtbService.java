@@ -548,7 +548,6 @@ public interface MdrtbService extends OpenmrsService {
 	@Transactional(readOnly = true)
 	public List<Encounter> getEncountersByPatientAndTypes(Patient patient, Collection<EncounterType> types);
 	
-	//TODO: Get rid of this
 	@Deprecated
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -559,10 +558,9 @@ public interface MdrtbService extends OpenmrsService {
 	 * Search for encounters of given {@link EncounterType} and {@link Patient} having no program
 	 * attached
 	 */
-	//TODO: Rename to getEncountersWithNoProgram
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<Encounter> getEncountersWithNoProgramId(EncounterType encounterType, Patient patient);
+	public List<Encounter> getEncountersWithNoProgram(EncounterType encounterType, Patient patient);
 	
 	/**
 	 * Attach given program Id to an encounter Id
@@ -606,26 +604,10 @@ public interface MdrtbService extends OpenmrsService {
 	public Xpert getXpert(Integer obsId);
 	
 	/**
-	 * Creates a new GeneXpert test, associated with the given encounter
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	public Xpert createXpert(Specimen specimen);
-	
-	/**
 	 * Saves a GeneXpert test in the approriate obs construct
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void saveXpert(Xpert xpert);
-	
-	/**
-	 * Fetches a HAIN test against given obsId
-	 * 
-	 * @param obsId
-	 * @return
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	@Transactional(readOnly = true)
-	public HAIN getHAIN(Integer obsId);
 	
 	/**
 	 * Fetches a HAIN test against given {@link Obs}
@@ -635,14 +617,7 @@ public interface MdrtbService extends OpenmrsService {
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	@Deprecated
 	public HAIN getHAIN(Obs obs);
-	
-	/**
-	 * Creates a new HAIN, associated with the given encounter
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	public HAIN createHAIN(Specimen specimen);
 	
 	/**
 	 * Saves a HAIN in the approriate obs construct
@@ -654,60 +629,18 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Fetches a HAIN2 test against given obsId
 	 * 
-	 * @param obsId
-	 * @return
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	@Transactional(readOnly = true)
-	public HAIN2 getHAIN2(Integer obsId);
-	
-	/**
-	 * Fetches a HAIN2 test against given obsId
-	 * 
 	 * @param obs
 	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	@Deprecated
 	public HAIN2 getHAIN2(Obs obs);
-	
-	/**
-	 * Creates a new HAIN2, associated with the given encounter
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	public HAIN2 createHAIN2(Specimen specimen);
 	
 	/**
 	 * Saves a HAIN2 in the approriate obs construct
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void saveHAIN2(HAIN2 hain);
-	
-	/**
-	 * Fetches a culture given the obs of a Tuberculosis Smear Test Construct
-	 * 
-	 * @param obs
-	 * @return
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	@Transactional(readOnly = true)
-	public Culture getCulture(Obs obs);
-	
-	/**
-	 * Fetches a culture given the obs_id of a Tuberculosis Smear Test Construct
-	 * 
-	 * @param obsId
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	@Transactional(readOnly = true)
-	public Culture getCulture(Integer obsId);
-	
-	/**
-	 * Creates a new culture, associated with the given specimen
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	public Culture createCulture(Specimen specimen);
 	
 	/**
 	 * Creates a new culture, associated with the given specimen, by copying the member properties
@@ -723,12 +656,6 @@ public interface MdrtbService extends OpenmrsService {
 	public void saveCulture(Culture culture);
 	
 	/**
-	 * Creates a new dst, associated with the given specimen
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	public Dst createDst(Specimen specimen);
-	
-	/**
 	 * Creates a new dst, associated with the given specimen, by copying the member properties of
 	 * the given dst
 	 */
@@ -742,34 +669,7 @@ public interface MdrtbService extends OpenmrsService {
 	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	@Deprecated
 	public Smear getSmear(Obs obs);
-	
-	/**
-	 * Fetches a smear given the obs_id of a Tuberculosis Smear Test Construct
-	 * 
-	 * @param obsId
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	public Smear getSmear(Integer obsId);
-	
-	/**
-	 * Fetches a dst given the obs of a Tuberculosis Smear Test Construct
-	 * 
-	 * @param obs
-	 * @return
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	@Deprecated
-	public Dst getDst(Obs obs);
-	
-	/**
-	 * Fetches a dst given the obs_id of a Tuberculosis Smear Test Construct
-	 * 
-	 * @param obsId
-	 */
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	public Dst getDst(Integer obsId);
 	
 	/**
 	 * Saves a DST in the appropriate obs construct
@@ -1050,15 +950,13 @@ public interface MdrtbService extends OpenmrsService {
 	public List<Form89> getForm89FormsFilledForPatientProgram(Patient patient, Location location, Integer patientProgramId,
 	        Integer year, String quarter, String month);
 	
-	//TODO: Rename to getPreviousRegimenForm
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public RegimenForm getPreviousRegimenFormForPatient(Patient patient, List<Location> locactions, Date beforeDate);
+	public RegimenForm getPreviousRegimenForm(Patient patient, List<Location> locactions, Date beforeDate);
 	
-	//TODO: Rename to getPreviousRegimenForm
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public RegimenForm getCurrentRegimenFormForPatient(Patient patient, Date beforeDate);
+	public RegimenForm getCurrentRegimenForm(Patient patient, Date beforeDate);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -1141,7 +1039,6 @@ public interface MdrtbService extends OpenmrsService {
 	public void unlockReport(Integer oblastId, Integer districtId, Integer facilityId, Integer year, String quarter,
 	        String month, String name, String date, String type);
 	
-	//TODO: Change the integers to objects
 	public boolean readReportStatus(Integer oblastId, Integer districtId, Integer facilityId, Integer year, String quarter,
 	        String month, String name, String type);
 	

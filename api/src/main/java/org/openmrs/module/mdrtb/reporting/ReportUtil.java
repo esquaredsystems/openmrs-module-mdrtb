@@ -26,7 +26,6 @@ import org.apache.commons.io.IOUtils;
 import org.openmrs.Concept;
 import org.openmrs.OpenmrsMetadata;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.reporting.cohort.definition.BaseObsCohortDefinition.TimeModifier;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
@@ -34,6 +33,7 @@ import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.data.Cohorts;
 import org.openmrs.module.mdrtb.reporting.definition.DstResultCohortDefinition;
 import org.openmrs.module.mdrtb.reporting.definition.custom.DstResultExistsCohortDefinition;
+import org.openmrs.module.reporting.cohort.definition.BaseObsCohortDefinition.TimeModifier;
 import org.openmrs.module.reporting.cohort.definition.CodedObsCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.CompositionCohortDefinition;
@@ -374,7 +374,7 @@ public class ReportUtil {
 		CohortDefinition unknown = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, new ArrayList<Concept>(),
 		    startDate, endDate);
 		
-		//TODO: Thoroughly investigate this usage. MUST write unit tests for all of these cases
+		//TODO: Thoroughly investigate this usage
 		map.put("New", newPatient);
 		map.put("Relapse", relapseI);
 		map.put("RelapseII", relapseII);

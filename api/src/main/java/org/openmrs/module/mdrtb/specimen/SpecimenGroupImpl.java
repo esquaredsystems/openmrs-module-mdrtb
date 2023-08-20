@@ -28,8 +28,6 @@ public class SpecimenGroupImpl implements Specimen {
 	
 	List<Specimen> specimens;
 	
-	// TODO: we cache the result map; do we need to worry about resetting the cache ?
-	// (right now it isn't much of an issue because in the web model a new specimen is instantiated during each request)
 	Map<Integer, List<DstResult>> dstResultsMap = null;
 	
 	public SpecimenGroupImpl() {
@@ -275,7 +273,6 @@ public class SpecimenGroupImpl implements Specimen {
 		return this.specimens.get(0).getPatientProgramId();
 	}
 	
-	//TODO: Replace these error messages with an API Exception with constant message
 	public void removeScannedLabReport(ScannedLabReport report) {
 		throw new RuntimeException(
 		        "Illegal attempt to access removeScannedLabReport method of SpecimenGroupImpl. SpecimenGroupImpl should be used for get access only.");

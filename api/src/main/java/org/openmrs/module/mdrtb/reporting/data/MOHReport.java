@@ -111,7 +111,6 @@ public class MOHReport implements ReportSpecification {
 		CohortDefinition abandoned = Cohorts.getDefaultedDuringFilter(startDate, endDate);
 		CohortDefinition died = Cohorts.getDiedDuringFilter(startDate, endDate);
 		
-		// TODO: figure out what obs to look for here--see ticket HATB-358
 		CohortDefinition newlyHivPositive = Cohorts.getNewlyHivPositive(startDate, endDate);
 		CohortDefinition everHivPositive = Cohorts.getHivPositiveDuring(null, endDate);
 		

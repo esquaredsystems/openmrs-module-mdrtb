@@ -254,7 +254,6 @@ public class ProgramController {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: modeling visit as a status probably wasn't the best way to go on my part
 		VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer())
 		        .calculate(program);
 		
@@ -468,7 +467,6 @@ public class ProgramController {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: modeling visit as a status probably wasn't the best way to go on my part
 		/* VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer()).calculateTb(program);
 		
 		return new ModelAndView("redirect:" + visitStatus.getNewIntakeVisit().getLink() + "&returnUrl=" + request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form%3FpatientProgramId=" + program.getId());*/
@@ -664,7 +662,6 @@ public class ProgramController {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: modeling visit as a status probably wasn't the best way to go on my part
 		return new ModelAndView("redirect:/module/mdrtb/form/tb03u.form?patientProgramId=" + program.getId()
 		        + "&encounterId=-1");
 	}
@@ -762,7 +759,6 @@ public class ProgramController {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		// TODO: modeling visit as a status probably wasn't the best way to go on my part
 		return new ModelAndView("redirect:/module/mdrtb/form/tb03.form?patientProgramId=" + program.getId()
 		        + "&encounterId=-1");
 	}
@@ -843,7 +839,6 @@ public class ProgramController {
 		TbPatientProgram tpp = ms.getTbPatientProgram(programId);
 		
 		tpp.setDateEnrolled(enrollmentDate);
-		//TODO: Write unit test to see if the right workflow state is returned
 		ProgramWorkflowState programWorkflowStateAccordingToPatientGroups = Context.getService(MdrtbService.class)
 		        .getProgramWorkflowState(Context.getConceptService().getConcept(classificationAccordingToPatientGroups));
 		tpp.setClassificationAccordingToPatientGroups(programWorkflowStateAccordingToPatientGroups);
@@ -906,7 +901,6 @@ public class ProgramController {
 		
 		tpp.setDateEnrolled(enrollmentDate);
 		
-		//TODO: Write unit test to see if the right workflow state is returned
 		ProgramWorkflowState stateAccordingToPreviousTreatment = Context.getService(MdrtbService.class)
 		        .getProgramWorkflowState(Context.getConceptService().getConcept(classificationAccordingToPreviousTreatment));
 		tpp.setClassificationAccordingToPreviousTreatment(stateAccordingToPreviousTreatment);

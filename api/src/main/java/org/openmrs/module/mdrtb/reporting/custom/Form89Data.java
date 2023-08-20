@@ -254,7 +254,6 @@ public class Form89Data implements Comparable<Form89Data> {
 	}
 	
 	public int compareTo(Form89Data o) {
-		// TODO Auto-generated method stub
 		if (o.getIdentifier() == null || getIdentifier() == null)
 			return 0;
 		

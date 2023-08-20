@@ -13,20 +13,19 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptSet;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
-import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.MdrtbConstants.TbClassification;
+import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
-import org.openmrs.module.mdrtb.specimen.Bacteriology;
 import org.openmrs.module.mdrtb.specimen.Culture;
 import org.openmrs.module.mdrtb.specimen.Dst;
 import org.openmrs.module.mdrtb.specimen.DstResult;
 import org.openmrs.module.mdrtb.specimen.Smear;
 import org.openmrs.module.mdrtb.specimen.Specimen;
-import org.openmrs.module.mdrtb.specimen.Test;
 import org.openmrs.module.mdrtb.specimen.SpecimenConstants.TestStatus;
+import org.openmrs.module.mdrtb.specimen.Test;
 import org.openmrs.module.mdrtb.specimen.custom.HAIN;
 import org.openmrs.module.mdrtb.specimen.custom.HAIN2;
 import org.openmrs.module.mdrtb.specimen.custom.Xpert;
@@ -36,10 +35,7 @@ public class LabResultsStatusCalculator {
 	protected static final Log log = LogFactory.getLog(LabResultsStatusCalculator.class);
 	
 	// TODO: if there are performance issues, we can combine some of the calculation
-	// methods,
-	// to avoid iterating over specimens multiple times
-	// however, for now, I opted for cleaner code
-	
+	// methods, to avoid iterating over specimens multiple times	
 	private LabResultsStatusRenderer renderer;
 	
 	public LabResultsStatusCalculator(LabResultsStatusRenderer renderer) {
@@ -185,8 +181,6 @@ public class LabResultsStatusCalculator {
 			}
 		}
 		
-		// TODO: handle the determine/rendering of classification date
-		
 		tbClassification.setValue(classification);
 		tbClassification.setDisplayString(renderer.renderTbClassification(classification));
 		
@@ -322,8 +316,7 @@ public class LabResultsStatusCalculator {
 					if (test.getStatus() != TestStatus.COMPLETED) {
 						// if a test does not have a status of complete, also verify that there are no
 						// results before we decide to display it as "pending"
-						if (test instanceof Bacteriology && ((Bacteriology) test).getResult() == null || test instanceof Dst
-						        && ((Dst) test).getResults().size() == 0) {
+						if (test.getResult() == null || test instanceof Dst && ((Dst) test).getResults().size() == 0) {
 							tests.add(new StatusItem(test));
 						}
 					}

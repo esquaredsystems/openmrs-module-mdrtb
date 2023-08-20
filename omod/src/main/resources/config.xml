@@ -21,6 +21,7 @@
 		<require_module version="1.23.0">org.openmrs.module.reporting</require_module>
 		<require_module version="2.32.0">org.openmrs.module.webservices.rest</require_module>
  		<require_module version="2.14.0">org.openmrs.module.addresshierarchy</require_module>
+ 		<require_module>org.openmrs.module.commonlabtest</require_module>
 	</require_modules>
 	
 	<aware_of_modules>

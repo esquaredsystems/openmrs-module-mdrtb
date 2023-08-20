@@ -179,10 +179,10 @@ public class RegimenUtils {
 	
 	/**
 	 * @param patient
-	 * @return the SLD Regimens for a Patient
+	 * @return the SLD Regimen for a Patient
 	 */
 	public static RegimenHistory getSLDRegimenHistory(Patient patient) {
-		try { //TODO: Rename to Second Line Drug
+		try {
 			return getRegimenHistory(patient).get("sld");
 		}
 		

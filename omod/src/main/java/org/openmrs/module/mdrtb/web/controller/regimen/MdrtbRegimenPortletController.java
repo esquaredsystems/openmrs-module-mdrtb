@@ -109,7 +109,7 @@ public class MdrtbRegimenPortletController {
 				
 				Regimen activeTbRegimen = historyGroups.get("tb").getActiveRegimen();
 				
-				// Show warnings for any drug orders which are active and have resistances.  TODO: Limit by date?
+				// Show warnings for any drug orders which are active and have resistances.
 				Concept resistantQuestion = getMdrtbService().getConcept(MdrtbConcepts.RESISTANT_TO_TB_DRUG);
 				List<Obs> dstResults = Context.getObsService().getObservationsByPersonAndConcept(patient, resistantQuestion);
 				Set<Concept> resistances = new HashSet<Concept>();

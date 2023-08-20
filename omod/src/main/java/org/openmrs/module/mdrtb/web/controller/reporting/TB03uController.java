@@ -195,6 +195,7 @@ public class TB03uController {
 		for (TB03uForm tf : tb03uList) {
 			
 			TB03uData tb03uData = new TB03uData();
+			System.out.println("Processing: " + tf.getPatient().toString());
 			
 			Patient patient = tf.getPatient();
 			if (patient == null || patient.isVoided()) {

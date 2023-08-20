@@ -15,6 +15,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.specimen.Culture;
@@ -75,7 +77,7 @@ public class SpecimenController extends AbstractSpecimenController {
 		if (smearId != null) {
 			// smearId != -1 is means "this is a new smear"
 			if (smearId != -1) {
-				smear = Context.getService(MdrtbService.class).getSmear(smearId);
+				smear = Context.getService(MdrtbService.class).getSmear(Context.getObsService().getObs(smearId));
 			}
 			
 			// create the new smear if needed
@@ -104,7 +106,10 @@ public class SpecimenController extends AbstractSpecimenController {
 		if (cultureId != null) {
 			// cultureId != -1 is means "this is a new culture"
 			if (cultureId != -1) {
-				culture = Context.getService(MdrtbService.class).getCulture(cultureId);
+				// Expect a LabTest against this Id
+				LabTest labTest = Context.getService(CommonLabTestService.class).getLabTest(cultureId);
+				culture = new CultureImpl(labTest);
+				// culture = Context.getService(MdrtbService.class).getCulture(cultureId);
 			}
 			
 			// create the new culture if needed
@@ -133,7 +138,10 @@ public class SpecimenController extends AbstractSpecimenController {
 		if (dstId != null) {
 			// dstId != -1 is means "this is a new dst"
 			if (dstId != -1) {
-				dst = Context.getService(MdrtbService.class).getDst(dstId);
+				// Expect a LabTest against this Id
+				LabTest labTest = Context.getService(CommonLabTestService.class).getLabTest(dstId);
+				dst = new DstImpl(labTest);
+				// culture = Context.getService(MdrtbService.class).getCulture(cultureId);
 			}
 			
 			// create the new dst if needed
@@ -191,7 +199,7 @@ public class SpecimenController extends AbstractSpecimenController {
 		if (hainId != null) {
 			// hainId != -1 is means "this is a new hain"
 			if (hainId != -1) {
-				hain = Context.getService(MdrtbService.class).getHAIN(hainId);
+				hain = Context.getService(MdrtbService.class).getHAIN(Context.getObsService().getObs(hainId));
 			}
 			
 			// create the new hain if needed

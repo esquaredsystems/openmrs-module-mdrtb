@@ -17,9 +17,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
-import org.openmrs.module.mdrtb.specimen.Bacteriology;
 import org.openmrs.module.mdrtb.specimen.Culture;
 import org.openmrs.module.mdrtb.specimen.Smear;
+import org.openmrs.module.mdrtb.specimen.Test;
 import org.openmrs.module.mdrtb.web.util.TestStatusRenderer;
 
 public abstract class AbstractBacteriologyCellTag extends TagSupport {
@@ -36,7 +36,7 @@ public abstract class AbstractBacteriologyCellTag extends TagSupport {
 	
 	private String showTooltip;
 	
-	protected void renderCell(List<Bacteriology> bacs) {
+	protected void renderCell(List<Test> bacs) {
 		
 		String titleString = "";
 		
@@ -58,7 +58,7 @@ public abstract class AbstractBacteriologyCellTag extends TagSupport {
 			Concept overallResult = null;
 			
 			// loop through all the bacteriologies in this set and fetch the result for each of them
-			for (Bacteriology bac : bacs) {
+			for (Test bac : bacs) {
 				if (bac != null) {
 					
 					// if there's a valid result....
@@ -115,7 +115,6 @@ public abstract class AbstractBacteriologyCellTag extends TagSupport {
 			}
 			
 			// now create the actual string to render
-			// TODO: using the ../ is a little sketchy because it relies on directory structure not changing?
 			// TODO: this is operating on the assumption that all the bacs are from the same specimen
 			ret = "<td onmouseover=\"document.body.style.cursor = \'pointer\'\" onmouseout=\"document.body.style.cursor = \'default\'\" "
 			        + "onclick=\"window.location = \'../specimen/specimen.form?specimenId="
@@ -209,7 +208,7 @@ public abstract class AbstractBacteriologyCellTag extends TagSupport {
 		return resultRankings;
 	}
 	
-	private static String getScantyResult(Bacteriology bac) {
+	private static String getScantyResult(Test bac) {
 		// if this is a scanty result, we need to report the number of bacilli or colonies found with the result
 		String scanty = "";
 		if (bac.getResult().equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SCANTY))) {

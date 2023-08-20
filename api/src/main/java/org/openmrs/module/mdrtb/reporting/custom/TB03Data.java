@@ -157,7 +157,6 @@ public class TB03Data implements Comparable<TB03Data> {
 	private String dstResultDate;
 	
 	public TB03Data() {
-		// TODO Auto-generated constructor stub
 		dstResults = new HashMap<String, String>();
 	}
 	
@@ -842,7 +841,6 @@ public class TB03Data implements Comparable<TB03Data> {
 	}
 	
 	public int compareTo(TB03Data o) {
-		// TODO Auto-generated method stub
 		if (o.getIdentifier() == null || getIdentifier() == null)
 			return 0;
 		return identifier.compareTo(o.getIdentifier());

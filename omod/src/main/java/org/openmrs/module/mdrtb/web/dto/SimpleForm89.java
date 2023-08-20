@@ -8,7 +8,6 @@ import org.openmrs.Encounter;
 import org.openmrs.PatientProgram;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.form.custom.Form89;
-import org.openmrs.module.mdrtb.form.custom.TB03Form;
 
 public class SimpleForm89 extends BaseOpenmrsData {
 	

@@ -12,10 +12,14 @@ import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.api.MdrtbService;
-import org.openmrs.module.mdrtb.specimen.Bacteriology;
+import org.openmrs.module.mdrtb.specimen.CultureImpl;
+import org.openmrs.module.mdrtb.specimen.SmearImpl;
 import org.openmrs.module.mdrtb.specimen.Specimen;
+import org.openmrs.module.mdrtb.specimen.Test;
 import org.openmrs.module.mdrtb.specimen.custom.HAIN;
+import org.openmrs.module.mdrtb.specimen.custom.HAINImpl;
 import org.openmrs.module.mdrtb.specimen.custom.Xpert;
+import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -103,21 +107,22 @@ public class SpecimenQuickEntryController extends AbstractSpecimenController {
 				}
 				
 				// now add the appropriate test
-				Bacteriology bac = null;
+				Test bac = null;
 				Xpert xpert = null;
 				HAIN hain = null;
+				// FIXME: Changed with the code that follows after upgrading to common lab module
 				if (testType.contains("smear")) {
-					bac = specimen.addSmear();
+					bac = new SmearImpl();
+					// bac = specimen.addSmear();
 				} else if (testType.contains("culture")) {
-					bac = specimen.addCulture();
-				}
-				
-				else if (testType.contains("xpert")) {
-					xpert = specimen.addXpert();
-				}
-				
-				else if (testType.contains("hain")) {
-					hain = specimen.addHAIN();
+					bac = new CultureImpl();
+					// bac = specimen.addCulture();
+				} else if (testType.contains("xpert")) {
+					xpert = new XpertImpl();
+					// xpert = specimen.addXpert();
+				} else if (testType.contains("hain")) {
+					hain = new HAINImpl();
+					// hain = specimen.addHAIN();
 				}
 				
 				// now add the test-specific parameters

@@ -151,7 +151,6 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetLocationListForDushanbe() {
-		//TODO:
 	}
 	
 	/**

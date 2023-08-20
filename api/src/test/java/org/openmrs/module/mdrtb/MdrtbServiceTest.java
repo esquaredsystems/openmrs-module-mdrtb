@@ -258,7 +258,6 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 		// Throw exception when obs doesn't exist
 		service.getXpert(obsId);
 		// Throw exception when obs concept is incorrect
-		//TODO: 
 	}
 	
 	/**
@@ -270,7 +269,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.HAIN_CONSTRUCT),
 		        new Date(), hogwarts);
 		Context.getObsService().saveObs(obs, null);
-		assertNotNull(service.getHAIN(obs.getObsId()));
+		assertNotNull(service.getHAIN(obs));
 	}
 	
 	/**
@@ -279,9 +278,8 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	 */
 	@Test(expected = RuntimeException.class)
 	public final void testThrowExceptionGetHAIN() {
-		Integer obsId = -1;
 		// Throw exception when obs doesn't exist
-		service.getHAIN(obsId);
+		service.getHAIN(null);
 		// Throw exception when obs concept is incorrect
 	}
 	
@@ -294,7 +292,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 		Obs obs = new Obs(harry.getPerson(), Context.getConceptService().getConcept(MdrtbConcepts.HAIN2_CONSTRUCT),
 		        new Date(), hogwarts);
 		Context.getObsService().saveObs(obs, null);
-		assertNotNull(service.getHAIN2(obs.getObsId()));
+		assertNotNull(service.getHAIN2(obs));
 	}
 	
 	/**
@@ -303,9 +301,8 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	 */
 	@Test(expected = RuntimeException.class)
 	public final void testThrowExceptionGetHAIN2() {
-		Integer obsId = -1;
 		// Throw exception when obs doesn't exist
-		service.getHAIN2(obsId);
+		service.getHAIN2(null);
 		// Throw exception when obs concept is incorrect
 	}
 	
@@ -667,7 +664,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getEncountersWithNoProgramId(org.openmrs.EncounterType, org.openmrs.Patient)}
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getEncountersWithNoProgram(org.openmrs.EncounterType, org.openmrs.Patient)}
 	 * .
 	 */
 	@Test
@@ -950,7 +947,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getPreviousRegimenFormForPatient(org.openmrs.Patient, java.util.ArrayList, java.util.Date)}
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getPreviousRegimenForm(org.openmrs.Patient, java.util.ArrayList, java.util.Date)}
 	 * .
 	 */
 	@Test
@@ -961,7 +958,7 @@ public class MdrtbServiceTest extends MdrtbTestBase {
 	
 	/**
 	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getCurrentRegimenFormForPatient(org.openmrs.Patient, java.util.Date)}
+	 * {@link org.openmrs.module.mdrtb.service.MdrtbServiceImpl#getCurrentRegimenForm(org.openmrs.Patient, java.util.Date)}
 	 * .
 	 */
 	@Test

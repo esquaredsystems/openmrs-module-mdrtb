@@ -114,7 +114,6 @@ public class XpertCellTag extends TagSupport {
 			}
 			
 			// now create the actual string to render
-			// TODO: using the ../ is a little sketchy because it relies on directory structure not changing?
 			// TODO: this is operating on the assumption that all the bacs are from the same specimen
 			ret = "<td onmouseover=\"document.body.style.cursor = \'pointer\'\" onmouseout=\"document.body.style.cursor = \'default\'\" "
 			        + "onclick=\"window.location = \'../specimen/specimen.form?specimenId="

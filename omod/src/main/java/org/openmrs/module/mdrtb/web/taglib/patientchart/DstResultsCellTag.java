@@ -75,8 +75,6 @@ public class DstResultsCellTag extends TagSupport {
 					        + MdrtbUtil.getConceptName(dstResult.getResult(), Context.getLocale().getLanguage(),
 					            ConceptNameType.FULLY_SPECIFIED).getName() + "<br>";
 					
-					// TODO: figure out if this is the right rule: if there are multiple results for the same drug
-					// right now I'm setting the result to intermediate (so it will pick up that color)
 					if (result == null) {
 						result = dstResult.getResult();
 					} else if (!result.equals(dstResult.getResult())) {

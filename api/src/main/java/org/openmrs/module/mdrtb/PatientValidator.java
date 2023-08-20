@@ -12,8 +12,8 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 /**
- * TODO: this handles some patient validation features that are missing from Openmrs 1.6 TODO: once
- * we've upgraded to a more recent version of OpenMRS that handles patient validation better, we can
+ * TODO: this handles some patient validation features that are missing from Openmrs 1.6. Once we've
+ * upgraded to a more recent version of OpenMRS that handles patient validation better, we can
  * discard this class
  */
 public class PatientValidator implements Validator {
@@ -29,8 +29,7 @@ public class PatientValidator implements Validator {
 	}
 	
 	/**
-	 * Validates the given Patient. Currently just checks for errors in identifiers. TODO: Check for
-	 * errors in all Patient fields.
+	 * Validates the given Patient. Currently just checks for errors in identifiers.
 	 * 
 	 * @param obj The patient to validate.
 	 * @see org.springframework.validation.Validator#validate(java.lang.Object,

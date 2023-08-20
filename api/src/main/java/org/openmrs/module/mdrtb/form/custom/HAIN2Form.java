@@ -143,7 +143,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 		
 		if (obsgroup != null)
 			obs = MdrtbUtil.getObsFromObsGroup(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FLUOROQUINOLONE_RESISTANCE), obsgroup);
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FLUOROQUINOLONE_RESULT), obsgroup);
 		
 		if (obs == null) {
 			return null;
@@ -160,7 +160,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 		
 		if (obsgroup != null) {
 			obs = MdrtbUtil.getObsFromObsGroup(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FLUOROQUINOLONE_RESISTANCE), obsgroup);
+			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FLUOROQUINOLONE_RESULT), obsgroup);
 			
 		}
 		
@@ -193,7 +193,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 				log.debug("creating new obs");
 				//obsgroup = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
-				    MdrtbConcepts.FLUOROQUINOLONE_RESISTANCE), encounter.getEncounterDatetime(), encounter.getLocation());
+				    MdrtbConcepts.FLUOROQUINOLONE_RESULT), encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(result);
 				obs.setObsGroup(obsgroup);
 				obsgroup.addGroupMember(obs);

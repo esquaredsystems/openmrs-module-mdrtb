@@ -126,31 +126,39 @@ public class MdrtbConcepts {
 	
 	public final static String COLONIES = "COLONIES";
 	
+	public final static String COLONIES_IN_CONTROL = "COLONIES IN CONTROL";
+	
+	public final static String CONCENTRATION = "CONCENTRATION";
+	
 	public final static String CULTURE_CONSTRUCT = "TUBERCULOSIS CULTURE CONSTRUCT";
+	
+	public final static String CULTURE_GROWTH = "GROWTH";
 	
 	public final static String CULTURE_METHOD = "TUBERCULOSIS CULTURE METHOD";
 	
 	public final static String CULTURE_RESULT = "TUBERCULOSIS CULTURE RESULT";
 	
+	public final static String DAYS_TO_POSITIVITY = "DAYS TO POSITIVITY";
+	
 	public final static String DIRECT_INDIRECT = "DIRECT/INDIRECT";
 	
 	public final static String DST_CONSTRUCT = "TUBERCULOSIS DRUG SENSITIVITY TEST CONSTRUCT";
+	
+	public final static String DST_CONTAMINATED = "DST CONTAMINATED";
 	
 	public final static String DST_METHOD = "TUBERCULOSIS DRUG SENSITIVITY TEST METHOD";
 	
 	public final static String DST_RESULT = "TUBERCULOSIS DRUG SENSITIVITY TEST RESULT";
 	
-	public final static String COLONIES_IN_CONTROL = "COLONIES IN CONTROL";
+	public final static String INTERMEDIATE_TO_TB_DRUG = "INDETERMINATE TO TUBERCULOSIS DRUG";
 	
-	public final static String CONCENTRATION = "CONCENTRATION";
+	public final static String MICROSCOPY_TEST_CONSTRUCT = "MICROSCOPY TEST CONSTRUCT";
+	
+	public final static String OTHER_MYCOBACTERIA_NON_CODED = "OTHER MYCOBACTERIA NON-CODED";
 	
 	public final static String RESISTANT_TO_TB_DRUG = "RESISTANT TO TUBERCULOSIS DRUG";
 	
-	public final static String INTERMEDIATE_TO_TB_DRUG = "INDETERMINATE TO TUBERCULOSIS DRUG";
-	
 	public final static String SUSCEPTIBLE_TO_TB_DRUG = "SUSCEPTIBLE TO TUBERCULOSIS DRUG";
-	
-	public final static String OTHER_MYCOBACTERIA_NON_CODED = "OTHER MYCOBACTERIA NON-CODED";
 	
 	public final static String SCANTY = "SCANTY";
 	
@@ -178,6 +186,8 @@ public class MdrtbConcepts {
 	
 	public final static String TYPE_OF_ORGANISM_NON_CODED = "TYPE OF ORGANISM NON-CODED";
 	
+	public final static String SCANNED_LAB_REPORT = "SCANNED LAB REPORT";
+	
 	public final static String SPECIMEN_ID = "TUBERCULOSIS SPECIMEN ID";
 	
 	public final static String SPECIMEN_APPEARANCE = "APPEARANCE OF SPECIMEN";
@@ -186,14 +196,6 @@ public class MdrtbConcepts {
 	
 	public final static String WAITING_FOR_TEST_RESULTS = "WAITING FOR TEST RESULTS";
 	
-	public final static String DST_CONTAMINATED = "DST CONTAMINATED";
-	
-	public final static String SCANNED_LAB_REPORT = "SCANNED LAB REPORT";
-	
-	public final static String DAYS_TO_POSITIVITY = "DAYS TO POSITIVITY";
-	
-	public final static String CULTURE_GROWTH = "GROWTH";
-	
 	// GeneXpert and HAIN Test
 	public final static String GENEXPERT = "GENEXPERT";
 	
@@ -201,7 +203,7 @@ public class MdrtbConcepts {
 	
 	public final static String MTB_RESULT = "MTB RESULT";
 	
-	public final static String RIFAMPICIN_RESISTANCE = "RIFAMPICIN RESISTANCE";
+	public final static String RIFAMPICIN_RESULT = "RIFAMPICIN RESULT";
 	
 	public final static String DETECTED = "DETECTED";
 	
@@ -225,9 +227,9 @@ public class MdrtbConcepts {
 	
 	public final static String HAIN2_CONSTRUCT = "TUBERCULOSIS HAIN2 TEST CONSTRUCT";
 	
-	public final static String ISONIAZID_RESISTANCE = "ISONIAZID RESISTANCE";
+	public final static String ISONIAZID_RESULT = "ISONIAZID RESULT";
 	
-	public final static String FLUOROQUINOLONE_RESISTANCE = "FLUOROQUINOLONE RESISTANCE";
+	public final static String FLUOROQUINOLONE_RESULT = "FLUOROQUINOLONE RESULT";
 	
 	public final static String INJECTABLE_RESISTANCE = "INJECTABLE RESISTANCE";
 	
@@ -325,10 +327,8 @@ public class MdrtbConcepts {
 	
 	public final static String LOST_TO_FOLLOWUP = "LOST TO FOLLOW UP";
 	
-	// TODO: Rename to "Treatment started on second line drugs"
 	public final static String STARTED_SLD_TREATMENT = "Started SLD Treatment";
 	
-	// TODO: Rename to "Date of Treatment Outcome"
 	public final static String TREATMENT_OUTCOME_DATE = "TREATMENT OUTCOME DATE";
 	
 	// TB Type
