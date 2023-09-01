@@ -174,17 +174,18 @@ public class Form89SingleExportController {
 		SimpleDateFormat sdf = Context.getDateFormat();
 		
 		for (final Form89 f89 : f89List) {
-			final Form89Data f89Data = new Form89Data();
+			System.out.println("Processing: " + f89.getPatient().toString());
+			Form89Data f89Data = new Form89Data();
 			
-			final Patient patient = f89.getPatient();
+			Patient patient = f89.getPatient();
 			if (patient == null || patient.isVoided()) {
 				continue;
 			}
 			f89Data.setPatient(patient);
 			f89Data.setForm89(f89);
-			//PATIENT IDENTIFIER
 			
-			final String identifier = f89.getRegistrationNumber();
+			//PATIENT IDENTIFIER
+			String identifier = f89.getRegistrationNumber();
 			f89Data.setIdentifier(identifier);
 			
 			//DATE OF TB03 REGISTRATION
@@ -199,7 +200,7 @@ public class Form89SingleExportController {
 				f89Data.setDateOfBirth(sdf.format(patient.getBirthdate()));
 			
 			//AGE AT TB03 Registration
-			final Integer age = f89.getAgeAtRegistration();
+			Integer age = f89.getAgeAtRegistration();
 			if (age != null)
 				f89Data.setAgeAtTB03Registration(age);
 			
@@ -228,7 +229,7 @@ public class Form89SingleExportController {
 			
 			//DIAGNOSTIC SMEAR
 			
-			final List<SmearForm> smears = f89.getSmears();
+			List<SmearForm> smears = f89.getSmears();
 			SmearForm diagnosticSmear = null;
 			
 			if (smears != null && smears.size() != 0) {
@@ -246,7 +247,7 @@ public class Form89SingleExportController {
 				
 				f89Data.setDiagnosticSmearTestNumber(diagnosticSmear.getSpecimenId());
 				
-				final Location loc = diagnosticSmear.getLocation();
+				Location loc = diagnosticSmear.getLocation();
 				if (loc != null) {
 					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
 						f89Data.setDiagnosticSmearLab(loc.getAddress6());
@@ -262,7 +263,7 @@ public class Form89SingleExportController {
 				System.out.println("NULL DIAG SMEAR");
 			}
 			
-			final List<XpertForm> xperts = f89.getXperts();
+			List<XpertForm> xperts = f89.getXperts();
 			
 			XpertForm firstXpert = null;
 			
@@ -278,7 +279,7 @@ public class Form89SingleExportController {
 				
 				f89Data.setXpertTestNumber(firstXpert.getSpecimenId());
 				
-				final Location loc = firstXpert.getLocation();
+				Location loc = firstXpert.getLocation();
 				if (loc != null) {
 					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
 						f89Data.setXpertLab(loc.getAddress6());
@@ -290,11 +291,7 @@ public class Form89SingleExportController {
 				}
 			}
 			
-			else {
-				System.out.println("NULL DIAG XPERT");
-			}
-			
-			final List<HAINForm> hains = f89.getHains();
+			List<HAINForm> hains = f89.getHains();
 			HAINForm firstHAIN = null;
 			if (hains != null && hains.size() != 0)
 				firstHAIN = hains.get(0);
@@ -311,7 +308,7 @@ public class Form89SingleExportController {
 				
 				f89Data.setHainTestNumber(firstHAIN.getSpecimenId());
 				
-				final Location loc = firstHAIN.getLocation();
+				Location loc = firstHAIN.getLocation();
 				if (loc != null) {
 					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
 						f89Data.setHainLab(loc.getAddress6());
@@ -323,11 +320,7 @@ public class Form89SingleExportController {
 				}
 			}
 			
-			else {
-				System.out.println("NULL DIAG HAIN");
-			}
-			
-			final List<HAIN2Form> hain2s = f89.getHain2s();
+			List<HAIN2Form> hain2s = f89.getHain2s();
 			
 			HAIN2Form firstHAIN2 = null;
 			
@@ -345,7 +338,7 @@ public class Form89SingleExportController {
 					f89Data.setHain2TestDate(sdf.format(firstHAIN2.getEncounterDatetime()));
 				
 				f89Data.setHain2TestNumber(firstHAIN2.getSpecimenId());
-				final Location loc = firstHAIN2.getLocation();
+				Location loc = firstHAIN2.getLocation();
 				if (loc != null) {
 					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
 						f89Data.setHain2Lab(loc.getAddress6());
@@ -355,10 +348,6 @@ public class Form89SingleExportController {
 						f89Data.setHain2Lab(loc.getCountyDistrict());
 					}
 				}
-			}
-			
-			else {
-				System.out.println("NULL DIAG HAIN");
 			}
 			
 			q = null;

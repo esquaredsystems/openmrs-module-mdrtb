@@ -358,6 +358,10 @@ public class Form8Controller {
 		
 		//table1
 		for (TB03Form tf : tb03List) {
+			if (tf.getPatient() == null || tf.getPatient().getVoided()) {
+				continue;
+			}
+			System.out.println("Processing: " + tf.getPatient().toString());
 			ageAtRegistration = -1;
 			pulmonary = null;
 			bacPositive = null;
@@ -420,13 +424,7 @@ public class Form8Controller {
 			decay = null;
 			
 			hospitalised = null;
-			
-			if (tf.getPatient() == null || tf.getPatient().getVoided()) {
-				System.out.println("patient void - skipping ENC: " + tf.getEncounter().getEncounterId());
-				
-				continue;
-			}
-			
+						
 			ageAtRegistration = tf.getAgeAtTB03Registration();
 			age = ageAtRegistration.intValue();
 			
@@ -510,6 +508,8 @@ public class Form8Controller {
 				rural = null;
 			}
 			
+			rural = fList.isEmpty() ? null : (fList.get(0).getLocationType().getConceptId().equals(ruralId) ? true : false);
+			
 			Concept q = tf.getAnatomicalSite();
 			
 			if (q != null) {
@@ -519,19 +519,16 @@ public class Form8Controller {
 			}
 			
 			if (bacPositive != null && bacPositive && pulmonary != null && pulmonary) {
-				System.out.println("REG:" + regGroup);
 				if (regGroup != null
 				        && regGroup.getConceptId().equals(
 				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				                MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
-					System.out.println("5a - 1");
 					table5a.setRespBacNew(table5a.getRespBacNew() + 1);
 					
 					if (rural != null && rural) {
 						table5a.setRespBacNewVillager(table5a.getRespBacNewVillager() + 1);
 					}
 				} else if (regGroup != null) {
-					System.out.println("5a - 2");
 					table5a.setRespBacOther(table5a.getRespBacOther() + 1);
 					
 					if (rural != null && rural) {
@@ -581,7 +578,7 @@ public class Form8Controller {
 					table3.setGroup2To1(table3.getGroup2To1() + 1);
 				}
 				
-				System.out.println("patient not new - skipping " + tf.getPatient().getPatientId());
+				// Patient not new - skip
 				continue;
 				
 			}
@@ -590,7 +587,7 @@ public class Form8Controller {
 			    tf.getPatientProgramId(), null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
-				System.out.println("no f89 - skipping " + tf.getPatient().getPatientId());
+				// No f89 - skip
 				continue;
 			}
 			
@@ -610,14 +607,12 @@ public class Form8Controller {
 			}
 			
 			gender = tf.getPatient().getGender();
-			if (gender != null && gender.equals("M")) {
+			if ("M".equals(gender)) {
 				male = Boolean.TRUE;
 			}
-			
-			else if (gender != null && gender.equals("F")) {
+			else if ("F".equals(gender)) {
 				female = Boolean.TRUE;
 			}
-			
 			else {
 				male = null;
 				female = null;
@@ -629,7 +624,6 @@ public class Form8Controller {
 			if (q != null) {
 				if (q.getConceptId().intValue() == pulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.TRUE;
-					System.out.println("PULMONARY");
 					
 					pulSite = f89.getPulSite();
 					if (pulSite != null && pulSite.getConceptId().intValue() == fibroCavId) {
@@ -685,7 +679,6 @@ public class Form8Controller {
 				
 				else if (q.getConceptId().intValue() == extrapulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.FALSE;
-					System.out.println("EXTRAPULMONARY");
 					epulSite = f89.getEpLocation();
 					
 					if (epulSite != null) {
@@ -744,8 +737,6 @@ public class Form8Controller {
 				}
 				
 				else {
-					
-					System.out.println("PULMONARY NULL: " + tf.getPatient().getPatientId());
 					pulmonary = null;
 				}
 			}

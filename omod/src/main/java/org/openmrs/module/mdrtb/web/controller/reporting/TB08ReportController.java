@@ -216,24 +216,22 @@ public class TB08ReportController {
 			Patient patient = tf.getPatient();
 			if (patient == null || patient.getVoided()) {
 				continue;
-				
 			}
+			System.out.println("Processing: " + patient.toString());
 			ageAtRegistration = tf.getAgeAtTB03Registration();
 			
 			//get disease site
 			Concept q = tf.getAnatomicalSite();// Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB);
 			
-			if (q != null) {
-				if (q.getConceptId().intValue() == pulmonaryConcept.getConceptId().intValue()) {
-					pulmonary = Boolean.TRUE;
-				} else if (q.getConceptId().intValue() == extrapulmonaryConcept.getConceptId().intValue()) {
-					pulmonary = Boolean.FALSE;
-				} else {
-					pulmonary = null;
-				}
-			} else {
-				System.out.println("NO SITE");
+			if (q == null) {
 				continue;
+			}
+			if (q.getConceptId().intValue() == pulmonaryConcept.getConceptId().intValue()) {
+				pulmonary = Boolean.TRUE;
+			} else if (q.getConceptId().intValue() == extrapulmonaryConcept.getConceptId().intValue()) {
+				pulmonary = Boolean.FALSE;
+			} else {
+				pulmonary = null;
 			}
 			
 			bacPositive = MdrtbUtil.isDiagnosticBacPositive(tf);

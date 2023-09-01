@@ -410,7 +410,7 @@ path is used.The %Y and %M are replaced with 4 digit year and 2 digit month resp
     <global_property property="mdrtb.dst.formId" property_value="11" description="" uuid="c097dc00-b33c-11e7-9f2c-782bcb563a1c"/>
     <global_property property="mdrtb.findPatientNumResults" property_value="20" description="" uuid="2bb9984c-5d10-4b5f-894b-17dda35fee41"/>
     <global_property property="mdrtb.fixedIdentifierLocation" description="" uuid="4e7eae01-f3c8-4508-9f6e-cb2c4dc328a4"/>
-    <global_property property="mdrtb.follow_up_encounter_type" property_value="Form 89" description="" uuid="4fab5192-396d-4731-ad7d-2f21aae7eb03"/>
+    <global_property property="mdrtb.encounterType.form89" property_value="Form 89" description="" uuid="4fab5192-396d-4731-ad7d-2f21aae7eb03"/>
     <global_property property="mdrtb.formIdToAttachToBacteriologyEntry" description="" uuid="cbe1ff33-d818-4aee-b54a-35588d71a6e4"/>
     <global_property property="mdrtb.hain.formId" property_value="15" description="" uuid="c097da8b-b33c-11e7-9f2c-782bcb563a1c"/>
     <global_property property="mdrtb.intake_encounter_type" property_value="TB03" description="" uuid="509ccaec-5d71-4759-9ef8-4a3fdaf654bc"/>

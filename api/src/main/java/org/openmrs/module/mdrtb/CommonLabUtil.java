@@ -30,8 +30,6 @@ public class CommonLabUtil {
 	
 	List<LabTestType> types = new ArrayList<>();
 	
-	List<LabTestAttributeType> attributeTypes = new ArrayList<>();
-	
 	List<LabTestAttributeType> commonAttributeTypes = new ArrayList<>();
 	
 	List<LabTestAttributeType> xpertAttributeTypes = new ArrayList<>();
@@ -67,70 +65,74 @@ public class CommonLabUtil {
 				service = Context.getService(CommonLabTestService.class);
 				if (service != null) {
 					if (types.isEmpty()) {
-						types = service.getAllLabTestTypes(false);						
+						types = service.getAllLabTestTypes(false);
 					}
-					if (attributeTypes.isEmpty()) {
-						attributeTypes = service.getAllLabTestAttributeTypes(false);
+					// If the prior does not work, fallback to SQL
+					if (types == null) {
+						types = getLabTestTypesViaSql();
 					}
 				}
 			}
 			catch (Exception e) {
 				log.debug("Common Lab service may not have initialized!" + e.getMessage());
 			}
-			// If the prior does not work, fallback to SQL
-			if (types == null) {
-				String sql = "select test_type_id, name, short_name, test_group, requires_specimen, reference_concept_id, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid from commonlabtest_type from ";
-				List<List<Object>> list = Context.getAdministrationService().executeSQL(sql, true);
-				for (List<Object> row : list) {
-					LabTestType type = new LabTestType();
-					type.setId((Integer) row.get(0));
-					type.setName((String) row.get(1));
-					type.setShortName((String) row.get(3));
-					type.setTestGroup(LabTestGroup.valueOf((String) row.get(4)));
-					type.setRequiresSpecimen((Boolean) row.get(5));
-				}
-			}
-		}
-		
-		for (LabTestAttributeType at : attributeTypes) {
-			// Must be MDRTB Lab Test type
-			if (at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
-				switch (at.getGroupName().toUpperCase()) {
-					case "XPERT":
-						xpertAttributeTypes.add(at);
-						break;
-					case "HAIN":
-						hainAttributeTypes.add(at);
-						break;
-					case "HAIN2":
-						hain2AttributeTypes.add(at);
-						break;
-					case "CULTURE":
-						cultureAttributeTypes.add(at);
-						break;
-					case "SMEAR":
-						smearAttributeTypes.add(at);
-						break;
-					case "DST1_MGIT":
-						dstMgitAttributeTypes.add(at);
-						break;
-					case "DST1_LJ":
-						dstLjAttributeTypes.add(at);
-						break;
-					case "DST2":
-						dst2AttributeTypes.add(at);
-						break;
-					case "DST2_MGIT":
-						dst2MgitAttributeTypes.add(at);
-						break;
-					case "DST2_LJ":
-						dst2LjAttributeTypes.add(at);
-						break;
-					default:
+			// Fetch all attribuet types for DST tests
+			List<LabTestAttributeType> attributeTypes = service.getAllLabTestAttributeTypes(false);
+			// Attach attributes for MDRTB test type
+			for (LabTestAttributeType at : attributeTypes) {
+				if (at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
+					if (at.getGroupName() == null) {
 						commonAttributeTypes.add(at);
+					} 
+					else {
+						switch (at.getGroupName().toUpperCase()) {
+							case "XPERT":
+								xpertAttributeTypes.add(at);
+								break;
+							case "HAIN":
+								hainAttributeTypes.add(at);
+								break;
+							case "HAIN2":
+								hain2AttributeTypes.add(at);
+								break;
+							case "CULTURE":
+								cultureAttributeTypes.add(at);
+								break;
+							case "SMEAR":
+								smearAttributeTypes.add(at);
+								break;
+						}
+					}
+				}
+			}
+			for (LabTestAttributeType at : attributeTypes) {
+				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST2_TEST_NAME)) {
+					dst2AttributeTypes.add(at);
+				}
+				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST2_MGIT_TEST_NAME)) {
+					dst2MgitAttributeTypes.add(at);
+				}
+				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST2_LJ_TEST_NAME)) {
+					dst2LjAttributeTypes.add(at);
 				}
 			}
 		}
+	}
+
+	private List<LabTestType> getLabTestTypesViaSql() {
+		String sql = "select test_type_id, name, short_name, test_group, requires_specimen, reference_concept_id, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid from commonlabtest_type from ";
+		List<List<Object>> list = Context.getAdministrationService().executeSQL(sql, true);
+		List<LabTestType> testTypes = new ArrayList<>();
+		for (List<Object> row : list) {
+			LabTestType type = new LabTestType();
+			type.setId((Integer) row.get(0));
+			type.setName((String) row.get(1));
+			type.setShortName((String) row.get(3));
+			type.setTestGroup(LabTestGroup.valueOf((String) row.get(4)));
+			type.setRequiresSpecimen((Boolean) row.get(5));
+			testTypes.add(type);
+		}
+		return testTypes;
 	}
 
 	public List<LabTest> getLabTests(Patient patient) {
@@ -145,6 +147,21 @@ public class CommonLabUtil {
 		return testType;
 	}
 	
+	public LabTestType getDst2TestType() {
+		List<LabTestType> testType = service.getLabTestTypes(MdrtbConstants.DST2_TEST_NAME, null, null, null, null, false);
+		return testType.isEmpty() ? null : testType.get(0);
+	}
+
+	public LabTestType getDst2MgitTestType() {
+		List<LabTestType> testType = service.getLabTestTypes(MdrtbConstants.DST2_MGIT_TEST_NAME, null, null, null, null, false);
+		return testType.isEmpty() ? null : testType.get(0);
+	}
+
+	public LabTestType getDst2LjTestType() {
+		List<LabTestType> testType = service.getLabTestTypes(MdrtbConstants.DST2_LJ_TEST_NAME, null, null, null, null, false);
+		return testType.isEmpty() ? null : testType.get(0);
+	}
+
 	public LabTestSample getMostRecentAcceptedSample(Integer labTestId) {
 		LabTest test = service.getLabTest(labTestId);
 		return getMostRecentAcceptedSample(test);

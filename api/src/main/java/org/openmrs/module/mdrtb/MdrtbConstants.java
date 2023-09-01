@@ -229,6 +229,12 @@ public class MdrtbConstants {
 	
 	public static final String GP_MDRTB_TEST_TYPE_UUID = "commonlabtest.mdrtbTestTypeUuid";
 	
+	public static final String DST2_TEST_NAME = "DST2";
+	
+	public static final String DST2_MGIT_TEST_NAME = "DST2 MGIT";
+	
+	public static final String DST2_LJ_TEST_NAME = "DST2 LJ";
+	
 	public static final String MDRTB_TEST_TYPE_UUID = Context.getAdministrationService().getGlobalProperty(
 	    GP_MDRTB_TEST_TYPE_UUID);
 	

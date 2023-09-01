@@ -253,7 +253,8 @@ public class TB08uController {
 			if (patient == null || patient.getVoided()) {
 				continue;
 			}
-			
+			System.out.println("Processing: " + patient.toString());
+
 			//DATE OF MDR TREATMENT START
 			Date txStartDate = tf.getMdrTreatmentStartDate();
 			if (txStartDate != null) {

@@ -206,11 +206,10 @@ public class TB03ExportController {
 			
 			//PATIENT IDENTIFIER
 			/* tb03Data.setIdentifier(patient.getActiveIdentifiers().get(0).toString());*/
-			
+			System.out.println("Processing: " + tf.getPatient().toString());
 			String identifier = TB03Util.getRegistrationNumber(tf);
 			tb03Data.setIdentifier(identifier);
-			System.out.println("ID:" + tb03Data.getIdentifier());
-			
+
 			//DATE OF TB03 REGISTRATION
 			
 			Date encDate = tf.getEncounterDatetime();
@@ -314,9 +313,6 @@ public class TB03ExportController {
 						tb03Data.setDiagnosticSmearLab(loc.getCountyDistrict());
 					}
 				}
-				
-				System.out.println(tb03Data.getDiagnosticSmearResult() + "," + tb03Data.getDiagnosticSmearDate() + ","
-				        + tb03Data.getDiagnosticSmearTestNumber());
 			}
 			
 			//DIAGNOSTIC XPERT
