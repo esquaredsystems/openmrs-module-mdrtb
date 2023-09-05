@@ -126,7 +126,6 @@ public class TB03ExportController {
 		
 	}
 	
-	@SuppressWarnings({ "deprecation" })
 	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/reporting/tb03")
 	public static String doTB03(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
@@ -209,7 +208,7 @@ public class TB03ExportController {
 			System.out.println("Processing: " + tf.getPatient().toString());
 			String identifier = TB03Util.getRegistrationNumber(tf);
 			tb03Data.setIdentifier(identifier);
-
+			
 			//DATE OF TB03 REGISTRATION
 			
 			Date encDate = tf.getEncounterDatetime();
@@ -229,19 +228,19 @@ public class TB03ExportController {
 			Concept q = tf.getTreatmentSiteIP();
 			
 			if (q != null)
-				tb03Data.setIntensivePhaseFacility(q.getName().getName());
+				tb03Data.setIntensivePhaseFacility(q.getName(Context.getLocale()).getName());
 			
 			//TX CENTER FOR CP
 			q = tf.getTreatmentSiteCP();
 			
 			if (q != null)
-				tb03Data.setContinuationPhaseFacility(q.getName().getName());
+				tb03Data.setContinuationPhaseFacility(q.getName(Context.getLocale()).getName());
 			
 			//DOTS TREATMENT REGIMEN
 			q = tf.getPatientCategory();
 			
 			if (q != null)
-				tb03Data.setTreatmentRegimen(q.getName().getName());
+				tb03Data.setTreatmentRegimen(q.getName(Context.getLocale()).getName());
 			
 			//DATE OF TB03 TREATMENT START
 			Date txStart = tf.getTreatmentStartDate();
@@ -252,13 +251,13 @@ public class TB03ExportController {
 			q = tf.getAnatomicalSite();
 			
 			if (q != null)
-				tb03Data.setSiteOfDisease(q.getName().getName());
+				tb03Data.setSiteOfDisease(q.getName(Context.getLocale()).getName());
 			
 			//HIV TEST RESULT
 			q = tf.getHivStatus();
 			
 			if (q != null)
-				tb03Data.setHivTestResult(q.getName().getName());
+				tb03Data.setHivTestResult(q.getName(Context.getLocale()).getName());
 			
 			//DATE OF HIV TEST
 			Date hivTestDate = tf.getHivTestDate();
@@ -295,7 +294,8 @@ public class TB03ExportController {
 			SmearForm diagnosticSmear = TB03Util.getDiagnosticSmearForm(tf);
 			if (diagnosticSmear != null) {
 				if (diagnosticSmear.getSmearResult() != null) {
-					tb03Data.setDiagnosticSmearResult(diagnosticSmear.getSmearResult().getName().getName());
+					tb03Data.setDiagnosticSmearResult(diagnosticSmear.getSmearResult().getName(Context.getLocale())
+					        .getName());
 				}
 				if (diagnosticSmear.getEncounterDatetime() != null) {
 					tb03Data.setDiagnosticSmearDate(sdf.format(diagnosticSmear.getEncounterDatetime()));
@@ -305,13 +305,7 @@ public class TB03ExportController {
 				
 				Location loc = diagnosticSmear.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03Data.setDiagnosticSmearLab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						tb03Data.setDiagnosticSmearLab(loc.getCountyDistrict());
-					}
+					tb03Data.setDiagnosticSmearLab(loc.getName());
 				}
 			}
 			
@@ -320,9 +314,9 @@ public class TB03ExportController {
 			XpertForm firstXpert = TB03Util.getFirstXpertForm(tf);
 			if (firstXpert != null) {
 				if (firstXpert.getMtbResult() != null)
-					tb03Data.setXpertMTBResult(firstXpert.getMtbResult().getName().getName());
+					tb03Data.setXpertMTBResult(firstXpert.getMtbResult().getName(Context.getLocale()).getName());
 				if (firstXpert.getRifResult() != null)
-					tb03Data.setXpertRIFResult(firstXpert.getRifResult().getName().getName());
+					tb03Data.setXpertRIFResult(firstXpert.getRifResult().getName(Context.getLocale()).getName());
 				if (firstXpert.getEncounterDatetime() != null)
 					tb03Data.setXpertTestDate(sdf.format(firstXpert.getEncounterDatetime()));
 				
@@ -330,8 +324,8 @@ public class TB03ExportController {
 				
 				Location loc = firstXpert.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03Data.setXpertLab(loc.getAddress6());
+					if (loc.getName() != null && loc.getName().length() != 0) {
+						tb03Data.setXpertLab(loc.getName());
 					}
 					
 					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
@@ -344,11 +338,11 @@ public class TB03ExportController {
 			HAINForm firstHAIN = TB03Util.getFirstHAINForm(tf);
 			if (firstHAIN != null) {
 				if (firstHAIN.getMtbResult() != null)
-					tb03Data.setHainMTBResult(firstHAIN.getMtbResult().getName().getName());
+					tb03Data.setHainMTBResult(firstHAIN.getMtbResult().getName(Context.getLocale()).getName());
 				if (firstHAIN.getRifResult() != null)
-					tb03Data.setHainRIFResult(firstHAIN.getRifResult().getName().getName());
+					tb03Data.setHainRIFResult(firstHAIN.getRifResult().getName(Context.getLocale()).getName());
 				if (firstHAIN.getInhResult() != null)
-					tb03Data.setHainINHResult(firstHAIN.getInhResult().getName().getName());
+					tb03Data.setHainINHResult(firstHAIN.getInhResult().getName(Context.getLocale()).getName());
 				if (firstHAIN.getEncounterDatetime() != null)
 					tb03Data.setHainTestDate(sdf.format(firstHAIN.getEncounterDatetime()));
 				
@@ -370,11 +364,11 @@ public class TB03ExportController {
 			HAIN2Form firstHAIN2 = TB03Util.getFirstHAIN2Form(tf);
 			if (firstHAIN2 != null) {
 				if (firstHAIN2.getMtbResult() != null)
-					tb03Data.setHain2MTBResult(firstHAIN2.getMtbResult().getName().getName());
+					tb03Data.setHain2MTBResult(firstHAIN2.getMtbResult().getName(Context.getLocale()).getName());
 				if (firstHAIN2.getInjResult() != null)
-					tb03Data.setHain2InjResult(firstHAIN2.getInjResult().getName().getName());
+					tb03Data.setHain2InjResult(firstHAIN2.getInjResult().getName(Context.getLocale()).getName());
 				if (firstHAIN2.getFqResult() != null)
-					tb03Data.setHain2FqResult(firstHAIN2.getFqResult().getName().getName());
+					tb03Data.setHain2FqResult(firstHAIN2.getFqResult().getName(Context.getLocale()).getName());
 				if (firstHAIN2.getEncounterDatetime() != null)
 					tb03Data.setHain2TestDate(sdf.format(firstHAIN2.getEncounterDatetime()));
 				
@@ -396,7 +390,7 @@ public class TB03ExportController {
 			CultureForm diagnosticCulture = TB03Util.getDiagnosticCultureForm(tf);
 			if (diagnosticCulture != null) {
 				if (diagnosticCulture.getCultureResult() != null)
-					tb03Data.setCultureResult(diagnosticCulture.getCultureResult().getName().getName());
+					tb03Data.setCultureResult(diagnosticCulture.getCultureResult().getName(Context.getLocale()).getName());
 				if (diagnosticCulture.getEncounterDatetime() != null)
 					tb03Data.setCultureTestDate(sdf.format(diagnosticCulture.getEncounterDatetime()));
 				tb03Data.setCultureTestNumber(diagnosticCulture.getSpecimenId());
@@ -427,7 +421,7 @@ public class TB03ExportController {
 				for (DstResult res : resList) {
 					if (res.getDrug() != null) {
 						drugName = res.getDrug().getShortestName(Context.getLocale(), false).getName();
-						result = res.getResult().getName().getName();
+						result = res.getResult().getName(Context.getLocale()).getName();
 						tb03Data.getDstResults().put(drugName, result);
 					}
 				}
@@ -439,7 +433,7 @@ public class TB03ExportController {
 			q = tf.getResistanceType();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
 			
 			if (q != null)
-				tb03Data.setDrugResistance(q.getName().getName());
+				tb03Data.setDrugResistance(q.getName(Context.getLocale()).getName());
 			
 			//FOLLOW-UP SMEARS
 			
@@ -460,7 +454,8 @@ public class TB03ExportController {
 					followupSmear = TB03Util.getFollowupSmearForm(tf, 2);
 					if (followupSmear != null) {
 						if (followupSmear.getSmearResult() != null)
-							tb03Data.setMonth2SmearResult(followupSmear.getSmearResult().getName().getName());
+							tb03Data.setMonth2SmearResult(followupSmear.getSmearResult().getName(Context.getLocale())
+							        .getName());
 						if (followupSmear.getEncounterDatetime() != null)
 							tb03Data.setMonth2SmearDate(sdf.format(followupSmear.getEncounterDatetime()));
 						
@@ -481,7 +476,8 @@ public class TB03ExportController {
 					followupSmear = TB03Util.getFollowupSmearForm(tf, 3);
 					if (followupSmear != null) {
 						if (followupSmear.getSmearResult() != null)
-							tb03Data.setMonth3SmearResult(followupSmear.getSmearResult().getName().getName());
+							tb03Data.setMonth3SmearResult(followupSmear.getSmearResult().getName(Context.getLocale())
+							        .getName());
 						if (followupSmear.getEncounterDatetime() != null)
 							tb03Data.setMonth3SmearDate(sdf.format(followupSmear.getEncounterDatetime()));
 						
@@ -501,7 +497,8 @@ public class TB03ExportController {
 					followupSmear = TB03Util.getFollowupSmearForm(tf, 5);
 					if (followupSmear != null) {
 						if (followupSmear.getSmearResult() != null)
-							tb03Data.setMonth5SmearResult(followupSmear.getSmearResult().getName().getName());
+							tb03Data.setMonth5SmearResult(followupSmear.getSmearResult().getName(Context.getLocale())
+							        .getName());
 						if (followupSmear.getEncounterDatetime() != null)
 							tb03Data.setMonth5SmearDate(sdf.format(followupSmear.getEncounterDatetime()));
 						
@@ -521,7 +518,8 @@ public class TB03ExportController {
 					followupSmear = TB03Util.getFollowupSmearForm(tf, 6);
 					if (followupSmear != null) {
 						if (followupSmear.getSmearResult() != null)
-							tb03Data.setMonth6SmearResult(followupSmear.getSmearResult().getName().getName());
+							tb03Data.setMonth6SmearResult(followupSmear.getSmearResult().getName(Context.getLocale())
+							        .getName());
 						if (followupSmear.getEncounterDatetime() != null)
 							tb03Data.setMonth6SmearDate(sdf.format(followupSmear.getEncounterDatetime()));
 						
@@ -544,7 +542,8 @@ public class TB03ExportController {
 					followupSmear = TB03Util.getFollowupSmearForm(tf, 3);
 					if (followupSmear != null) {
 						if (followupSmear.getSmearResult() != null)
-							tb03Data.setMonth3SmearResult(followupSmear.getSmearResult().getName().getName());
+							tb03Data.setMonth3SmearResult(followupSmear.getSmearResult().getName(Context.getLocale())
+							        .getName());
 						if (followupSmear.getEncounterDatetime() != null)
 							tb03Data.setMonth3SmearDate(sdf.format(followupSmear.getEncounterDatetime()));
 						
@@ -564,7 +563,8 @@ public class TB03ExportController {
 					followupSmear = TB03Util.getFollowupSmearForm(tf, 4);
 					if (followupSmear != null) {
 						if (followupSmear.getSmearResult() != null)
-							tb03Data.setMonth4SmearResult(followupSmear.getSmearResult().getName().getName());
+							tb03Data.setMonth4SmearResult(followupSmear.getSmearResult().getName(Context.getLocale())
+							        .getName());
 						if (followupSmear.getEncounterDatetime() != null)
 							tb03Data.setMonth4SmearDate(sdf.format(followupSmear.getEncounterDatetime()));
 						
@@ -584,7 +584,8 @@ public class TB03ExportController {
 					followupSmear = TB03Util.getFollowupSmearForm(tf, 5);
 					if (followupSmear != null) {
 						if (followupSmear.getSmearResult() != null)
-							tb03Data.setMonth5SmearResult(followupSmear.getSmearResult().getName().getName());
+							tb03Data.setMonth5SmearResult(followupSmear.getSmearResult().getName(Context.getLocale())
+							        .getName());
 						if (followupSmear.getEncounterDatetime() != null)
 							tb03Data.setMonth5SmearDate(sdf.format(followupSmear.getEncounterDatetime()));
 						
@@ -605,7 +606,8 @@ public class TB03ExportController {
 					followupSmear = TB03Util.getFollowupSmearForm(tf, 8);
 					if (followupSmear != null) {
 						if (followupSmear.getSmearResult() != null)
-							tb03Data.setMonth8SmearResult(followupSmear.getSmearResult().getName().getName());
+							tb03Data.setMonth8SmearResult(followupSmear.getSmearResult().getName(Context.getLocale())
+							        .getName());
 						if (followupSmear.getEncounterDatetime() != null)
 							tb03Data.setMonth8SmearDate(sdf.format(followupSmear.getEncounterDatetime()));
 						

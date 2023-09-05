@@ -427,6 +427,8 @@ public class MdrtbConcepts {
 	public final static String PATIENT_PROGRAM_ID = "PATIENT PROGRAM ID";
 	
 	public final static String MDR_TB_PROGRAM = "MDR-TB PROGRAM";
+
+	public final static String DOTS_PROGRAM = "DOTS PROGRAM";
 	
 	public final static String FUNDING_SOURCE = "FUNDING SOURCE";
 	

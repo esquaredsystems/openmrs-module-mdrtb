@@ -141,7 +141,14 @@ public class CommonLabUtil {
 		}
 		return service.getLabTests(patient, false);
 	}
-	
+
+	public List<LabTest> getLabTests(Patient patient, LabTestType labTestType) {
+		if (patient == null) {
+			return null;
+		}
+		return service.getLabTests(labTestType, patient, null, null, null, null, null, null, false);
+	}
+
 	public LabTestType getMdrtbTestType() {
 		LabTestType testType = service.getLabTestTypeByUuid(MdrtbConstants.MDRTB_TEST_TYPE_UUID);
 		return testType;
@@ -168,8 +175,20 @@ public class CommonLabUtil {
 	}
 	
 	public LabTestSample getMostRecentAcceptedSample(LabTest labTest) {
-		LabTestSample sample = labTest.getLabTestSample(LabTestSampleStatus.ACCEPTED);
-		return sample;
+		List<LabTestSample> samples = service.getLabTestSamples(labTest, false);
+		LabTestSample mostRecent = null;
+		for (LabTestSample labTestSample : samples) {
+			if (labTestSample.getStatus() == LabTestSampleStatus.ACCEPTED) {
+				if (mostRecent == null) {
+					mostRecent = labTestSample;					
+				} else {
+					if (mostRecent.getDateCreated().before(labTestSample.getDateCreated())) {
+						mostRecent = labTestSample;					
+					}
+				}
+			}
+		}
+		return mostRecent;
 	}
 	
 	public LabTestSample getMostRecentProcessedSample(Integer labTestId) {
@@ -255,9 +274,28 @@ public class CommonLabUtil {
 	 * @param encounter
 	 * @return
 	 */
+	@SuppressWarnings("null")
 	public LabTest createLabTestOrder(Encounter encounter, LabTestType labTestType) {
 		// Check if an order already exists
 		Set<Order> orders = encounter.getOrders();
+		if (orders.isEmpty()) {
+			Encounter target = null;
+			List<Encounter> allEncounters = Context.getEncounterService().getEncountersByPatient(encounter.getPatient());
+			for (Encounter enc : allEncounters) {
+				if (enc.getEncounterType().equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {
+					if (target == null) {
+						target = enc;
+					} else {
+						// Match the date, we're interested in the encounter closest to the function parameter
+						long diff = Math.abs(encounter.getEncounterDatetime().getTime() - enc.getEncounterDatetime().getTime());
+						if (diff < Math.abs(encounter.getEncounterDatetime().getTime() - target.getEncounterDatetime().getTime())) {
+							target = enc;
+						}
+					}
+				}
+			}
+			orders = target.getOrders();
+		}
 		CommonLabTestService labTestService = service;
 		for (Order o : orders) {
 			// Does this order have a LabTest object of given type?

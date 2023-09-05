@@ -412,7 +412,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 					if (oList != null && oList.size() > 0) {
 						for (Obs o : oList) {
 							for (Obs oInner : o.getGroupMembers()) {
-								oInner.getConcept().getName().getName();
+								//TODO: Useless code: oInner.getConcept().getName(Context.getLocale()).getName();
 								if (oInner.getConcept().getConceptId() == (Context.getService(MdrtbService.class)
 								        .getConcept(MdrtbConcepts.SIMPLE_TB_TEST_RESULT)).getConceptId()
 								        && (mcp.getTestResult() == null || mcp.getTestResult().getObsDatetime().getTime() <= oInner

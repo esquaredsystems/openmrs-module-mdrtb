@@ -237,7 +237,6 @@ public class Form89SingleExportController {
 			}
 			
 			if (diagnosticSmear != null) {
-				System.out.println("SMEAR ID:" + diagnosticSmear.getId());
 				if (diagnosticSmear.getSmearResult() != null) {
 					f89Data.setDiagnosticSmearResult(diagnosticSmear.getSmearResult().getName(Context.getLocale()).getName());
 				}
@@ -249,18 +248,8 @@ public class Form89SingleExportController {
 				
 				Location loc = diagnosticSmear.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						f89Data.setDiagnosticSmearLab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						f89Data.setDiagnosticSmearLab(loc.getCountyDistrict());
-					}
+					f89Data.setDiagnosticSmearLab(loc.getName());
 				}
-			}
-			
-			else {
-				System.out.println("NULL DIAG SMEAR");
 			}
 			
 			List<XpertForm> xperts = f89.getXperts();

@@ -194,19 +194,19 @@ public class TB03SingleExportController {
 			Concept q = tf.getTreatmentSiteIP();
 			
 			if (q != null)
-				tb03Data.setIntensivePhaseFacility(q.getName().getName());
+				tb03Data.setIntensivePhaseFacility(q.getName(Context.getLocale()).getName());
 			
 			//TX CENTER FOR CP
 			q = tf.getTreatmentSiteCP();
 			
 			if (q != null)
-				tb03Data.setContinuationPhaseFacility(q.getName().getName());
+				tb03Data.setContinuationPhaseFacility(q.getName(Context.getLocale()).getName());
 			
 			//DOTS TREATMENT REGIMEN
 			q = tf.getPatientCategory();
 			
 			if (q != null)
-				tb03Data.setTreatmentRegimen(q.getName().getName());
+				tb03Data.setTreatmentRegimen(q.getName(Context.getLocale()).getName());
 			
 			//DATE OF TB03 TREATMENT START
 			Date txStart = tf.getTreatmentStartDate();
@@ -217,13 +217,13 @@ public class TB03SingleExportController {
 			q = tf.getAnatomicalSite();
 			
 			if (q != null)
-				tb03Data.setSiteOfDisease(q.getName().getName());
+				tb03Data.setSiteOfDisease(q.getName(Context.getLocale()).getName());
 			
 			//HIV TEST RESULT
 			q = tf.getHivStatus();
 			
 			if (q != null)
-				tb03Data.setHivTestResult(q.getName().getName());
+				tb03Data.setHivTestResult(q.getName(Context.getLocale()).getName());
 			
 			//DATE OF HIV TEST
 			Date hivTestDate = tf.getHivTestDate();
@@ -268,15 +268,11 @@ public class TB03SingleExportController {
 				
 				Location loc = diagnosticSmear.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03Data.setDiagnosticSmearLab(loc.getAddress6());
-					} else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						tb03Data.setDiagnosticSmearLab(loc.getCountyDistrict());
-					}
+					tb03Data.setDiagnosticSmearLab(loc.getName());
 				}
 				
-				System.out.println(tb03Data.getDiagnosticSmearResult() + "," + tb03Data.getDiagnosticSmearDate() + ","
-				        + tb03Data.getDiagnosticSmearTestNumber());
+				//				System.out.println(tb03Data.getDiagnosticSmearResult() + "," + tb03Data.getDiagnosticSmearDate() + ","
+				//				        + tb03Data.getDiagnosticSmearTestNumber());
 			}
 			
 			XpertForm firstXpert = TB03Util.getFirstXpertForm(tf);

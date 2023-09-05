@@ -46,6 +46,7 @@ import org.openmrs.Order;
 import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
+import org.openmrs.PatientIdentifierType;
 import org.openmrs.PatientProgram;
 import org.openmrs.PatientState;
 import org.openmrs.Person;
@@ -655,8 +656,17 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public PatientIdentifier getPatientProgramIdentifier(PatientProgram pp) {
-		//FIXME: Why aren't we just doing the following?
-		// return pp.getPatient().getPatientIdentifier();
+		Concept concept = pp.getProgram().getConcept();
+		if (concept.equals(getConcept(MdrtbConcepts.MDR_TB_PROGRAM))) {
+			PatientIdentifierType mdrType = Context.getPatientService().getPatientIdentifierTypeByName(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
+			return pp.getPatient().getPatientIdentifier(mdrType);
+		} else if (concept.equals(getConcept(MdrtbConcepts.DOTS_PROGRAM))) {
+			PatientIdentifierType drType = Context.getPatientService().getPatientIdentifierTypeByName(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE);
+			return pp.getPatient().getPatientIdentifier(drType);
+		}
+		return pp.getPatient().getPatientIdentifier();
+		
+		/*
 		Integer id = null;
 		Context.getProgramWorkflowService().getPatientProgram(pp.getPatientProgramId());
 		String query = "select patient_id from patient_program where patient_program_id = " + pp.getPatientProgramId();
@@ -675,6 +685,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			return pi;
 		}
 		return null;
+		*/
 	}
 	
 	public Program getMdrtbProgram() {
@@ -1537,13 +1548,14 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	/**
-	 * Looks for an Encounter in the given program against which a Specimen sample should exist, and returns all such encounters.
+	 * Looks for an Encounter in the given program against which a Specimen sample should exist, and
+	 * returns all such encounters.
 	 */
 	public List<DSTForm> getDstForms(Integer patientProgramId) {
 		// TbPatientProgram tpp = getTbPatientProgram(patientProgramId);
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<DSTForm> dsts = new ArrayList<DSTForm>();
-		ArrayList<EncounterType> et = new ArrayList<EncounterType>();		
+		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
 		et.add(MdrtbConstants.ET_TB03_TB_INTAKE);
 		et.add(MdrtbConstants.ET_TB03U_MDRTB_INTAKE);
 		et.add(MdrtbConstants.ET_TB03U_XDRTB_INTAKE);

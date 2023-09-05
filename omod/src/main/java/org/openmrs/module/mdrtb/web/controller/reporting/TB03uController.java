@@ -247,7 +247,7 @@ public class TB03uController {
 			q = tf.getMdrStatus();
 			
 			if (q != null) {
-				tb03uData.setMdrtbStatus(q.getName().getName());
+				tb03uData.setMdrtbStatus(q.getName(Context.getLocale()).getName());
 			}
 			
 			//MDR CONF DATE
@@ -259,7 +259,7 @@ public class TB03uController {
 			q = tf.getPatientCategory();
 			
 			if (q != null)
-				tb03uData.setTreatmentRegimen(q.getName().getName());
+				tb03uData.setTreatmentRegimen(q.getName(Context.getLocale()).getName());
 			
 			//DATE OF MDR TREATMENT START
 			Date txStartDate = tf.getMdrTreatmentStartDate();
@@ -270,7 +270,7 @@ public class TB03uController {
 			q = tf.getTxLocation();
 			
 			if (q != null) {
-				tb03uData.setTreatmentLocation(q.getName().getName());
+				tb03uData.setTreatmentLocation(q.getName(Context.getLocale()).getName());
 			}
 			
 			//DST
@@ -307,13 +307,7 @@ public class TB03uController {
 				
 				Location loc = firstXpert.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03uData.setXpertLab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						tb03uData.setXpertLab(loc.getCountyDistrict());
-					}
+					tb03uData.setXpertLab(loc.getName());
 				}
 			}
 			
@@ -332,13 +326,7 @@ public class TB03uController {
 				
 				Location loc = firstHAIN.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03uData.setHainLab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						tb03uData.setHainLab(loc.getCountyDistrict());
-					}
+					tb03uData.setHainLab(loc.getName());
 				}
 			}
 			
@@ -371,21 +359,21 @@ public class TB03uController {
 			q = tf.getResistanceType();
 			
 			if (q != null) {
-				tb03uData.setDrugResistance(q.getName().getName());
+				tb03uData.setDrugResistance(q.getName(Context.getLocale()).getName());
 			}
 			
 			//DIAGNOSTIC METHOD
 			q = tf.getBasisForDiagnosis();
 			
 			if (q != null) {
-				tb03uData.setDiagnosticMethod(q.getName().getName());
+				tb03uData.setDiagnosticMethod(q.getName(Context.getLocale()).getName());
 			}
 			
 			//HIV TEST RESULT
 			q = tf.getHivStatus();
 			
 			if (q != null) {
-				tb03uData.setHivTestResult(q.getName().getName());
+				tb03uData.setHivTestResult(q.getName(Context.getLocale()).getName());
 			}
 			
 			//DATE OF HIV TEST
@@ -784,7 +772,7 @@ public class TB03uController {
 			q = tf.getRelapsed();
 			
 			if (q != null) {
-				tb03uData.setRelapsed(q.getName().getName());
+				tb03uData.setRelapsed(q.getName(Context.getLocale()).getName());
 			}
 			
 			//RELAPSED AT MONTH?
