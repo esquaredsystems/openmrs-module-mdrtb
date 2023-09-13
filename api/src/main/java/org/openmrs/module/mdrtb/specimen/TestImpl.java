@@ -5,6 +5,7 @@ import java.util.Date;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.Order;
 import org.openmrs.module.commonlabtest.LabTest;
 import org.openmrs.module.commonlabtest.LabTestAttribute;
 import org.openmrs.module.commonlabtest.LabTestSample;
@@ -44,6 +45,7 @@ public abstract class TestImpl implements Test {
 	
 	public Date getDateCollected() {
 		try {
+			Order order = test.getOrder();
 			LabTestSample testSample = CommonLabUtil.getService().getMostRecentAcceptedSample(test);
 			return testSample.getCollectionDate();
 		}

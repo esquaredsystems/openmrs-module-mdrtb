@@ -25,7 +25,7 @@ import org.openmrs.module.mdrtb.reporting.custom.TB03Util;
 import org.openmrs.module.mdrtb.reporting.custom.TB03uData;
 import org.openmrs.module.mdrtb.reporting.custom.TB03uUtil;
 import org.openmrs.module.mdrtb.specimen.Dst;
-import org.openmrs.module.mdrtb.specimen.DstResult;
+import org.openmrs.module.mdrtb.specimen.DstImpl;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
@@ -257,10 +257,10 @@ public class TB03uSingleController {
 					tb03uData.setDstCollectionDate(sdf.format(firstDst.getDateCollected()));
 				if (firstDst.getResultDate() != null)
 					tb03uData.setDstResultDate(sdf.format(firstDst.getResultDate()));
-				List<DstResult> resList = firstDst.getResults();
+				List<DstImpl> resList = firstDst.getResults();
 				String drugName = null;
 				String result = null;
-				for (DstResult res : resList) {
+				for (DstImpl res : resList) {
 					if (res.getDrug() != null) {
 						drugName = res.getDrug().getShortestName(Context.getLocale(), false).toString();
 						result = res.getResult().getName(Context.getLocale()).getName();

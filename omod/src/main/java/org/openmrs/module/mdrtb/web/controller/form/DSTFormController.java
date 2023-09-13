@@ -19,17 +19,14 @@ import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.commonlabtest.LabTest;
 import org.openmrs.module.commonlabtest.LabTestType;
-import org.openmrs.module.commonlabtest.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
-import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.DSTForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.specimen.DstImpl;
-import org.openmrs.module.mdrtb.specimen.DstResult;
 import org.openmrs.module.mdrtb.web.util.MdrtbWebUtil;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
@@ -144,7 +141,7 @@ public class DSTFormController {
 			
 			Set<String> removeDstResultSet = new HashSet<String>(Arrays.asList(removeDstResults));
 			
-			for (DstResult result : dst.getResults()) {
+			for (DstImpl result : dst.getResults()) {
 				if (result.getId() != null && removeDstResultSet.contains(result.getId())) {
 					dst.removeResult(result);
 				}
@@ -156,7 +153,7 @@ public class DSTFormController {
 			if (StringUtils.isNotEmpty(request.getParameter("addDstResult" + i + ".result"))
 			        && StringUtils.isNotEmpty(request.getParameter("addDstResult" + i + ".drug"))) {
 				// create the new result
-				DstResult dstResult = dst.addResult();
+				DstImpl dstResult = dst.addResult();
 				
 				// pull the values from the request
 				

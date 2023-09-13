@@ -35,13 +35,15 @@ public interface Dst extends Test {
 	
 	public void setColoniesInControl(Integer coloniesInControl);
 	
-	public List<DstResult> getResults();
+//	public List<DstResult> getResults();
+	public List<DstImpl> getResults();
 	
-	public Map<Integer, List<DstResult>> getResultsMap();
+//	public Map<Integer, List<DstResult>> getResultsMap();
+	public List<DstImpl> getResultsMap();
 	
-	public DstResult addResult();
+	public DstImpl addResult();
 	
-	public void removeResult(DstResult result);
+	public void removeResult(DstImpl result);
 	
 	public String getResultsString();
 	

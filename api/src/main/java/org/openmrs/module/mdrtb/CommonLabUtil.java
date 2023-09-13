@@ -58,6 +58,10 @@ public class CommonLabUtil {
 		return new CommonLabUtil();
 	}
 	
+	public CommonLabTestService getCommonLabService() {
+		return service;
+	}
+	
 	public CommonLabUtil() {
 		// Try to Initialize service
 		if (service == null) {

@@ -5,12 +5,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.openmrs.api.context.Context;
 import org.openmrs.module.commonlabtest.LabTest;
 import org.openmrs.module.commonlabtest.LabTestType;
-import org.openmrs.module.commonlabtest.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.CommonLabUtil;
-import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
 import org.openmrs.module.mdrtb.form.custom.DSTForm;
 import org.openmrs.module.mdrtb.form.custom.HAIN2Form;
@@ -69,7 +66,6 @@ public class TB03uUtil {
 			d = new DstImpl(dstTest);
 			// d = new DstImpl(dsts.get(0).getEncounter());
 		}
-		
 		return d;
 	}
 	

@@ -2,7 +2,6 @@ package org.openmrs.module.mdrtb.specimen;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.openmrs.Concept;
 import org.openmrs.Location;
@@ -105,7 +104,7 @@ public interface Specimen extends Comparable<Specimen> {
 	
 	public List<Test> getTests();
 	
-	public Map<Integer, List<DstResult>> getDstResultsMap();
+	public List<DstImpl> getDstResultsMap();
 	
 	public ScannedLabReport addScannedLabReport();
 	

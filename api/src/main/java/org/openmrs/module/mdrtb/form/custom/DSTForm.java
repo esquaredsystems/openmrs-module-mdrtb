@@ -1,7 +1,6 @@
 package org.openmrs.module.mdrtb.form.custom;
 
 import java.util.List;
-import java.util.Map;
 
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
@@ -9,7 +8,6 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.commonlabtest.LabTest;
 import org.openmrs.module.commonlabtest.LabTestType;
-import org.openmrs.module.commonlabtest.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
@@ -17,7 +15,6 @@ import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.specimen.DstImpl;
-import org.openmrs.module.mdrtb.specimen.DstResult;
 
 public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	
@@ -40,19 +37,19 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 		// di = new DstImpl(this.encounter);
 	}
 	
-	public DstResult addResult() {
+	public DstImpl addResult() {
 		return di.addResult();
 	}
 	
-	public List<DstResult> getResults() {
+	public List<DstImpl> getResults() {
 		return di.getResults();
 	}
 	
-	public Map<Integer, List<DstResult>> getResultsMap() {
+	public List<DstImpl> getResultsMap() {
 		return di.getResultsMap();
 	}
 	
-	public void removeResult(DstResult result) {
+	public void removeResult(DstImpl result) {
 		di.removeResult(result);
 	}
 	

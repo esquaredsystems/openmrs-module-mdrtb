@@ -18,7 +18,7 @@ import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.specimen.Culture;
 import org.openmrs.module.mdrtb.specimen.Dst;
-import org.openmrs.module.mdrtb.specimen.DstResult;
+import org.openmrs.module.mdrtb.specimen.DstImpl;
 import org.openmrs.module.mdrtb.specimen.Smear;
 import org.openmrs.module.mdrtb.specimen.SpecimenConstants.TestStatus;
 import org.openmrs.module.mdrtb.specimen.Test;
@@ -303,12 +303,12 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 	public String getDstResultString(Dst dst) {
 		
 		String results = "";
-		Map<Integer, List<DstResult>> dstResultsMap = dst.getResultsMap();
+		List<DstImpl> dstResultsMap = dst.getResultsMap();
 		Collection<Concept> drugs = getPossibleDrugTypes();
 		
 		for (Concept drug : drugs) {
 			if (dstResultsMap.get(drug.getId()) != null) {
-				for (DstResult result : dstResultsMap.get(drug.getId())) {
+				for (DstImpl result : dstResultsMap.get(drug.getId())) {
 					StringBuffer sb = new StringBuffer();
 					sb.append(result.getDrug().getName(Context.getLocale(), ConceptNameType.SHORT, null));
 					sb.append(": ");

@@ -23,7 +23,6 @@ import org.openmrs.module.mdrtb.specimen.Culture;
 import org.openmrs.module.mdrtb.specimen.CultureImpl;
 import org.openmrs.module.mdrtb.specimen.Dst;
 import org.openmrs.module.mdrtb.specimen.DstImpl;
-import org.openmrs.module.mdrtb.specimen.DstResult;
 import org.openmrs.module.mdrtb.specimen.ScannedLabReport;
 import org.openmrs.module.mdrtb.specimen.Smear;
 import org.openmrs.module.mdrtb.specimen.SmearImpl;
@@ -511,7 +510,7 @@ public class SpecimenController extends AbstractSpecimenController {
 			if (StringUtils.isNotEmpty(request.getParameter("addDstResult" + i + ".result"))
 			        && StringUtils.isNotEmpty(request.getParameter("addDstResult" + i + ".drug"))) {
 				// create the new result
-				DstResult dstResult = dst.addResult();
+				DstImpl dstResult = dst.addResult();
 				
 				// pull the values from the request
 				String colonies = request.getParameter("addDstResult" + i + ".colonies");
@@ -524,7 +523,7 @@ public class SpecimenController extends AbstractSpecimenController {
 					dstResult.setColonies(Integer.valueOf(colonies));
 				}
 				if (StringUtils.isNotBlank(concentration)) {
-					dstResult.setConcentration(Double.valueOf(concentration));
+					dstResult.setConcentration(Integer.valueOf(concentration));
 				}
 				// although the DstResult obj should handle it, still a good idea to set the result before the drug because of the wonky way result/drugs are stored
 				if (StringUtils.isNotBlank(resultType)) {
@@ -541,7 +540,7 @@ public class SpecimenController extends AbstractSpecimenController {
 		if (removeDstResults != null) {
 			Set<String> removeDstResultSet = new HashSet<String>(Arrays.asList(removeDstResults));
 			
-			for (DstResult result : dst.getResults()) {
+			for (DstImpl result : dst.getResults()) {
 				if (result.getId() != null && removeDstResultSet.contains(result.getId())) {
 					dst.removeResult(result);
 				}
