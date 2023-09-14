@@ -25,7 +25,7 @@ import org.openmrs.module.mdrtb.reporting.custom.TB03Util;
 import org.openmrs.module.mdrtb.reporting.custom.TB03uData;
 import org.openmrs.module.mdrtb.reporting.custom.TB03uUtil;
 import org.openmrs.module.mdrtb.specimen.Dst;
-import org.openmrs.module.mdrtb.specimen.DstImpl;
+import org.openmrs.module.mdrtb.specimen.DstResult;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-@SuppressWarnings({ "deprecation", "unused" })
 @Controller
 public class TB03uController {
 	
@@ -155,9 +154,9 @@ public class TB03uController {
 		model.addAttribute("patientSet", patientSet);
 		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		Integer report_oblast = null;
-		Integer report_quarter = null;
-		Integer report_month = null;
+		//		Integer report_oblast = null;
+		//		Integer report_quarter = null;
+		//		Integer report_month = null;
 		
 		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
 		    year, quarter, month, "TB-03u", "MDRTB");
@@ -189,7 +188,6 @@ public class TB03uController {
 		ArrayList<TB03uData> patientSet = new ArrayList<TB03uData>();
 		SimpleDateFormat sdf = Context.getDateFormat();
 		
-		Integer regimenConceptId = null;
 		Integer codId = null;
 		
 		for (TB03uForm tf : tb03uList) {
@@ -198,9 +196,8 @@ public class TB03uController {
 			System.out.println("Processing: " + tf.getPatient().toString());
 			
 			Patient patient = tf.getPatient();
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
-				
 			}
 			
 			tb03uData.setPatient(patient);
@@ -281,10 +278,10 @@ public class TB03uController {
 					tb03uData.setDstCollectionDate(sdf.format(firstDst.getDateCollected()));
 				if (firstDst.getResultDate() != null)
 					tb03uData.setDstResultDate(sdf.format(firstDst.getResultDate()));
-				List<DstImpl> resList = firstDst.getResults();
+				List<DstResult> resList = firstDst.getResults();
 				String drugName = null;
 				String result = null;
-				for (DstImpl res : resList) {
+				for (DstResult res : resList) {
 					if (res.getDrug() != null) {
 						drugName = res.getDrug().getShortestName(Context.getLocale(), false).toString();
 						result = res.getResult().getName(Context.getLocale()).getName();
@@ -799,7 +796,6 @@ public class TB03uController {
 			if (notes != null)
 				tb03uData.setNotes(notes);
 			
-			regimenConceptId = null;
 			codId = null;
 			q = null;
 			

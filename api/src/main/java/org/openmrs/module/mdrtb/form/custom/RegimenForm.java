@@ -50,9 +50,12 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueDatetime() == null || (date == null && obs != null)
-		        || !obs.getValueDatetime().equals(date)) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueDatetime() == null);
+		boolean isDateNull = date == null;
+		boolean isValueDifferent = (obs != null && obs.getValueDatetime() != null && !obs.getValueDatetime().equals(date));
+		
+		if (isObsNull || isObsValueNull || (isDateNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -91,9 +94,12 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || (number == null && obs != null)
-		        || !obs.getValueText().equals(number)) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueText() == null);
+		boolean isNumberNull = number == null;
+		boolean isValueDifferent = (obs != null && obs.getValueText() != null && !obs.getValueText().equals(number));
+		
+		if (isObsNull || isObsValueNull || (isNumberNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -332,9 +338,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -375,9 +385,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -419,9 +433,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -463,9 +481,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -507,9 +529,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -551,9 +577,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -595,9 +625,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -639,9 +673,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -683,9 +721,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -727,9 +769,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -773,9 +819,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -817,9 +867,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -861,9 +915,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -905,9 +963,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -949,9 +1011,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -993,9 +1059,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1037,9 +1107,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1081,9 +1155,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1125,9 +1203,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1167,8 +1249,12 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || (name == null && obs != null) || !obs.getValueText().equals(name)) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueText() == null);
+		boolean isNameNull = name == null;
+		boolean isValueDifferent = (obs != null && obs.getValueText() != null && !obs.getValueText().equals(name));
+		
+		if (isObsNull || isObsValueNull || (isNameNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -1209,9 +1295,13 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		
 		// we only need to update this if this is a new obs or if the value has
 		// changed.
-		if (obs == null || obs.getValueNumeric() == null || (dose == null && obs != null)
-		        || obs.getValueNumeric() != dose.doubleValue()) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueNumeric() == null);
+		boolean isDoseNull = dose == null;
+		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
+		        .doubleValue());
+		
+		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1251,8 +1341,12 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || (name == null && obs != null) || !obs.getValueText().equals(name)) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueText() == null);
+		boolean isNameNull = name == null;
+		boolean isValueDifferent = (obs != null && obs.getValueText() != null && !obs.getValueText().equals(name));
+		
+		if (isObsNull || isObsValueNull || (isNameNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -1352,9 +1446,12 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || (comment == null && obs != null)
-		        || !obs.getValueText().equals(comment)) {
-			
+		boolean isObsNull = obs == null;
+		boolean isObsValueNull = (obs != null && obs.getValueText() == null);
+		boolean isCommentNull = comment == null;
+		boolean isValueDifferent = (obs != null && obs.getValueText() != null && !obs.getValueText().equals(comment));
+		
+		if (isObsNull || isObsValueNull || (isCommentNull && !isObsNull) || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {

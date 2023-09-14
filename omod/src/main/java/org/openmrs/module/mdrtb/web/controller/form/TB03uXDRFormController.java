@@ -408,8 +408,8 @@ public class TB03uXDRFormController {
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		
 		ArrayList<ConceptAnswer> typeArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.RESISTANCE_TYPE);
+		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.RESISTANCE_TYPE).getAnswers();
 		for (int i = 0; i < 3; i++) {
 			typeArray.add(null);
 		}
@@ -456,13 +456,13 @@ public class TB03uXDRFormController {
 	@ModelAttribute("mdrstatuses")
 	public Collection<ConceptAnswer> getPossibleMDRStatuses() {
 		
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.MDR_STATUS);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_STATUS).getAnswers();
 	}
 	
 	@ModelAttribute("txlocations")
 	public Collection<ConceptAnswer> getPossibleTxLocations() {
 		
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.TREATMENT_LOCATION);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_LOCATION).getAnswers();
 	}
 	
 	@ModelAttribute("basesfordiagnosis")
@@ -471,8 +471,8 @@ public class TB03uXDRFormController {
 		for (int i = 0; i < 6; i++) {
 			stateArray.add(null);
 		}
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.METHOD_OF_DETECTION);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		for (ConceptAnswer ca : bases) {
 			if (ca.getAnswerConcept().getId().intValue() == ms.getConcept(MdrtbConcepts.GENEXPERT).getId().intValue()) {
@@ -498,16 +498,16 @@ public class TB03uXDRFormController {
 	
 	@ModelAttribute("hivstatuses")
 	public Collection<ConceptAnswer> getPossibleHivStatuses() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RESULT_OF_HIV_TEST);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESULT_OF_HIV_TEST).getAnswers();
 	}
 	
 	@ModelAttribute("relapses")
 	public Collection<ConceptAnswer> getPossibleRelapses() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RELAPSED);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSED).getAnswers();
 	}
 	
 	@ModelAttribute("causes")
 	public Collection<ConceptAnswer> getPossibleCausesOfDeath() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.CAUSE_OF_DEATH);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSE_OF_DEATH).getAnswers();
 	}
 }

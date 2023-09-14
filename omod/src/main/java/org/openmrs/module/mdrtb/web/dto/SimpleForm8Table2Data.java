@@ -5,6 +5,8 @@ import org.openmrs.module.mdrtb.reporting.custom.Form8Table2Data;
 
 public class SimpleForm8Table2Data extends BaseOpenmrsData {
 	
+	private static final long serialVersionUID = -8088810099020264999L;
+
 	private Integer activePHCTotal;
 	
 	private Integer respiratoryPHCTotal;

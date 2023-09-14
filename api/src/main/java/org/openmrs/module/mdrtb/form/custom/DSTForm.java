@@ -1,6 +1,7 @@
 package org.openmrs.module.mdrtb.form.custom;
 
 import java.util.List;
+import java.util.Map;
 
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
@@ -15,6 +16,7 @@ import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.specimen.DstImpl;
+import org.openmrs.module.mdrtb.specimen.DstResult;
 
 public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	
@@ -37,19 +39,19 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 		// di = new DstImpl(this.encounter);
 	}
 	
-	public DstImpl addResult() {
+	public DstResult addResult() {
 		return di.addResult();
 	}
 	
-	public List<DstImpl> getResults() {
+	public List<DstResult> getResults() {
 		return di.getResults();
 	}
 	
-	public List<DstImpl> getResultsMap() {
+	public Map<Integer, List<DstResult>> getResultsMap() {
 		return di.getResultsMap();
 	}
 	
-	public void removeResult(DstImpl result) {
+	public void removeResult(DstResult result) {
 		di.removeResult(result);
 	}
 	

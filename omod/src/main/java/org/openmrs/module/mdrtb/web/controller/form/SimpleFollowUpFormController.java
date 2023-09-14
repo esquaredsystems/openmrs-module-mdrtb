@@ -69,7 +69,9 @@ public class SimpleFollowUpFormController extends AbstractFormController {
 		}
 		
 		// save the actual update
-		Context.getEncounterService().saveEncounter(followup.getEncounter());
+		if (followup != null) {
+			Context.getEncounterService().saveEncounter(followup.getEncounter());
+		}
 		
 		// clears the command object from the session
 		status.setComplete();

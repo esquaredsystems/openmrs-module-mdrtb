@@ -61,7 +61,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.commonlabtest.LabTest;
 import org.openmrs.module.commonlabtest.LabTestType;
-import org.openmrs.module.commonlabtest.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.BaseLocation;
 import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.District;
@@ -95,7 +94,6 @@ import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.specimen.Culture;
-import org.openmrs.module.mdrtb.specimen.CultureImpl;
 import org.openmrs.module.mdrtb.specimen.Dst;
 import org.openmrs.module.mdrtb.specimen.ScannedLabReport;
 import org.openmrs.module.mdrtb.specimen.Smear;
@@ -658,10 +656,13 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public PatientIdentifier getPatientProgramIdentifier(PatientProgram pp) {
 		Concept concept = pp.getProgram().getConcept();
 		if (concept.equals(getConcept(MdrtbConcepts.MDR_TB_PROGRAM))) {
-			PatientIdentifierType mdrType = Context.getPatientService().getPatientIdentifierTypeByName(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
+			String mdrtbIdName = Context.getAdministrationService().getGlobalProperty(
+			    MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
+			PatientIdentifierType mdrType = Context.getPatientService().getPatientIdentifierTypeByName(mdrtbIdName);
 			return pp.getPatient().getPatientIdentifier(mdrType);
 		} else if (concept.equals(getConcept(MdrtbConcepts.DOTS_PROGRAM))) {
-			PatientIdentifierType drType = Context.getPatientService().getPatientIdentifierTypeByName(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE);
+			String dotsIdName = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE);
+			PatientIdentifierType drType = Context.getPatientService().getPatientIdentifierTypeByName(dotsIdName);
 			return pp.getPatient().getPatientIdentifier(drType);
 		}
 		return pp.getPatient().getPatientIdentifier();

@@ -5,6 +5,8 @@ import org.openmrs.module.mdrtb.reporting.custom.TB07Table1Data;
 
 public class SimpleTB07Table1Data extends BaseOpenmrsData {
 	
+	private static final long serialVersionUID = 1346979342060477505L;
+
 	private Integer newMalePulmonaryBC04;
 	
 	private Integer newFemalePulmonaryBC04;

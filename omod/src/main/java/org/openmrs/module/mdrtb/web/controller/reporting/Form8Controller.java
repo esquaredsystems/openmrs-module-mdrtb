@@ -492,22 +492,6 @@ public class Form8Controller {
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
 			    tf.getPatient(), null, tf.getPatientProgramId(), null, null, null);
 			
-			if (fList != null && fList.size() == 1) {
-				f89 = fList.get(0);
-				locationType = f89.getLocationType();
-				if (locationType != null && locationType.getConceptId().intValue() == ruralId) {
-					rural = Boolean.TRUE;
-				}
-				
-				else if (locationType != null) {
-					rural = Boolean.FALSE;
-				}
-			}
-			
-			else {
-				rural = null;
-			}
-			
 			rural = fList.isEmpty() ? null : (fList.get(0).getLocationType().getConceptId().equals(ruralId) ? true : false);
 			
 			Concept q = tf.getAnatomicalSite();

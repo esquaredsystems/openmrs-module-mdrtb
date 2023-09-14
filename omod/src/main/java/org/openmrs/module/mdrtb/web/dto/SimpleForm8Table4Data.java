@@ -5,6 +5,8 @@ import org.openmrs.module.mdrtb.reporting.custom.Form8Table4Data;
 
 public class SimpleForm8Table4Data extends BaseOpenmrsData {
 	
+	private static final long serialVersionUID = 4091335669879735078L;
+
 	private Integer hospitalised;
 	
 	private Integer inHospital;

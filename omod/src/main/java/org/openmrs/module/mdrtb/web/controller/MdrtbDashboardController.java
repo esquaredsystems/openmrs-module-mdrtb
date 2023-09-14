@@ -272,6 +272,7 @@ public class MdrtbDashboardController {
 		
 	}
 	
+	@SuppressWarnings("null")
 	@RequestMapping(value = "/module/mdrtb/program/programEdit.form", method = RequestMethod.POST)
 	public ModelAndView processEditPopup(@ModelAttribute("program") MdrtbPatientProgram program, BindingResult errors,
 	        @RequestParam(required = false, value = "causeOfDeath") Concept causeOfDeath, SessionStatus status,
@@ -308,6 +309,7 @@ public class MdrtbDashboardController {
 		
 	}
 	
+	@SuppressWarnings("null")
 	@RequestMapping(value = "/module/mdrtb/program/programClose.form", method = RequestMethod.POST)
 	public ModelAndView processClosePopup(@ModelAttribute("program") MdrtbPatientProgram program, BindingResult errors,
 	        @RequestParam(required = false, value = "causeOfDeath") Concept causeOfDeath, SessionStatus status,
@@ -346,6 +348,7 @@ public class MdrtbDashboardController {
 		
 	}
 	
+	@SuppressWarnings("null")
 	@RequestMapping(value = "/module/mdrtb/program/hospitalizationsEdit.form", method = RequestMethod.POST)
 	public ModelAndView editHospitalization(@ModelAttribute("program") MdrtbPatientProgram program, BindingResult errors,
 	        @ModelAttribute("hospitalizationState") PatientState hospitalizationState, BindingResult patientStateErrors,

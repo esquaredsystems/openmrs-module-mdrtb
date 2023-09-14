@@ -87,6 +87,7 @@ public class RegimenFormController {
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode, ModelMap model) {
+		/*
 		RegimenForm regimenForm = null;
 		if (encounterId != -1) { //we are editing an existing encounter
 			regimenForm = new RegimenForm(Context.getEncounterService().getEncounter(encounterId));
@@ -98,7 +99,7 @@ public class RegimenFormController {
 				e.printStackTrace();
 			}
 		}
-		
+		*/
 		model.addAttribute("encounterId", encounterId);
 		if (mode != null && mode.length() != 0) {
 			model.addAttribute("mode", mode);
@@ -164,8 +165,7 @@ public class RegimenFormController {
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.RESISTANCE_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -190,19 +190,19 @@ public class RegimenFormController {
 	
 	@ModelAttribute("cecOptions")
 	public Collection<ConceptAnswer> getPossibleCMACPlace() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.PLACE_OF_CENTRAL_COMMISSION);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLACE_OF_CENTRAL_COMMISSION).getAnswers();
 	}
 	
 	@ModelAttribute("fundingSources")
 	public Collection<ConceptAnswer> getPossibleFundingSources() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.FUNDING_SOURCE);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FUNDING_SOURCE).getAnswers();
 	}
 	
 	@ModelAttribute("sldregimens")
 	public Collection<ConceptAnswer> getPossibleSLDRegimenrs() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.SLD_REGIMEN_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.SLD_REGIMEN_TYPE).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();

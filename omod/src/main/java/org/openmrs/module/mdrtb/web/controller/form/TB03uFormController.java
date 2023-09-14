@@ -344,8 +344,8 @@ public class TB03uFormController {
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.RESISTANCE_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.RESISTANCE_TYPE).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> concepts = new HashSet<Concept>();
@@ -395,20 +395,20 @@ public class TB03uFormController {
 	
 	@ModelAttribute("mdrstatuses")
 	public Collection<ConceptAnswer> getPossibleMDRStatuses() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.MDR_STATUS);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_STATUS).getAnswers();
 	}
 	
 	@ModelAttribute("txlocations")
 	public Collection<ConceptAnswer> getPossibleTxLocations() {
 		
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.TREATMENT_LOCATION);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_LOCATION).getAnswers();
 	}
 	
 	@ModelAttribute("basesfordiagnosis")
 	public Collection<ConceptAnswer> getPossibleBasesForDiagnosis() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.METHOD_OF_DETECTION);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> concepts = new HashSet<Concept>();
@@ -431,17 +431,16 @@ public class TB03uFormController {
 	
 	@ModelAttribute("hivstatuses")
 	public Collection<ConceptAnswer> getPossibleHivStatuses() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RESULT_OF_HIV_TEST);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESULT_OF_HIV_TEST).getAnswers();
 	}
 	
 	@ModelAttribute("relapses")
 	public Collection<ConceptAnswer> getPossibleRelapses() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.RELAPSED);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RELAPSED).getAnswers();
 	}
 	
 	@ModelAttribute("causes")
 	public Collection<ConceptAnswer> getPossibleCausesOfDeath() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.CAUSE_OF_DEATH);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSE_OF_DEATH).getAnswers();
 	}
-	
 }

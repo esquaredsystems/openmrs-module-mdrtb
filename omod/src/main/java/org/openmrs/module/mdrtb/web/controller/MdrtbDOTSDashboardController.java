@@ -309,6 +309,7 @@ public class MdrtbDOTSDashboardController {
 		
 	}
 	
+	@SuppressWarnings("null")
 	@RequestMapping(value = "/module/mdrtb/program/tbhospitalizationsEdit.form", method = RequestMethod.POST)
 	public ModelAndView editHospitalization(@ModelAttribute("program") TbPatientProgram program, BindingResult errors,
 	        @ModelAttribute("hospitalizationState") PatientState hospitalizationState, BindingResult patientStateErrors,

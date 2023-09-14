@@ -66,9 +66,8 @@ public class MdrtbFindPatient {
 		
 		Collection<Object> patientList = new Vector<Object>();
 		
-		Integer userId = -1;
 		if (Context.isAuthenticated())
-			userId = Context.getAuthenticatedUser().getUserId();
+			Context.getAuthenticatedUser().getUserId();
 		PersonService ps = Context.getPersonService();
 		List<Person> patients;
 		

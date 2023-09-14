@@ -5,6 +5,8 @@ import org.openmrs.module.mdrtb.reporting.custom.TB07uData;
 
 public class SimpleTB07uData extends BaseOpenmrsData {
 	
+	private static final long serialVersionUID = 1063300624610243268L;
+	
 	private Integer totalDetections;
 	
 	private Integer mdrDetections;

@@ -48,6 +48,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
 
+@SuppressWarnings("deprecation")
 public class MdrtbManageContactsController extends SimpleFormController {
 	
 	/** Logger for this class and subclasses */

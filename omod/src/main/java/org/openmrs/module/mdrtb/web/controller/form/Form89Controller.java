@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.jfree.util.Log;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Location;
@@ -108,7 +109,8 @@ public class Form89Controller {
 					form89 = getForm89(-1, patientProgramId);
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					Log.error(e.getMessage());
+					form89 = new Form89();
 				}
 			}
 			
@@ -255,35 +257,35 @@ public class Form89Controller {
 	
 	@ModelAttribute("locationtypes")
 	public Collection<ConceptAnswer> getPossibleLocationTypes() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.LOCATION_TYPE);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_TYPE).getAnswers();
 	}
 	
 	@ModelAttribute("populationcategories")
 	public Collection<ConceptAnswer> getPossiblePopulationCategories() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.POPULATION_CATEGORY);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POPULATION_CATEGORY).getAnswers();
 	}
 	
 	@ModelAttribute("professions")
 	public Collection<ConceptAnswer> getPossibleProfessions() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.PROFESSION);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PROFESSION).getAnswers();
 	}
 	
 	@ModelAttribute("places")
 	public Collection<ConceptAnswer> getPossiblePlacesOfDetection() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.PLACE_OF_DETECTION);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLACE_OF_DETECTION).getAnswers();
 	}
 	
 	@ModelAttribute("circumstances")
 	public Collection<ConceptAnswer> getPossibleCircumstancesOfDetection() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION).getAnswers();
 	}
 	
 	@ModelAttribute("methods")
 	public Collection<ConceptAnswer> getPossibleMethodsOfDetection() {
 		
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.METHOD_OF_DETECTION);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -308,90 +310,90 @@ public class Form89Controller {
 	
 	@ModelAttribute("epsites")
 	public Collection<ConceptAnswer> getPossibleEpSites() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.SITE_OF_EPTB);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SITE_OF_EPTB).getAnswers();
 	}
 	
 	@ModelAttribute("psites")
 	public Collection<ConceptAnswer> getPossiblePSites() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.ANATOMICAL_SITE_OF_TB);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getAnswers();
 	}
 	
 	@ModelAttribute("eplocations")
 	public Collection<ConceptAnswer> getPossibleEPLocations() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.SITE_OF_EPTB);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SITE_OF_EPTB).getAnswers();
 	}
 	
 	@ModelAttribute("diabetesOptions")
 	public Collection<ConceptAnswer> getPossibleDiabetes() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.DIABETES);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIABETES).getAnswers();
 	}
 	
 	@ModelAttribute("cnsdlOptions")
 	public Collection<ConceptAnswer> getPossibleCNSDL() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.CNSDL);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CNSDL).getAnswers();
 	}
 	
 	@ModelAttribute("htHeartDiseaseOptions")
 	public Collection<ConceptAnswer> getPossibleHeartDisease() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE).getAnswers();
 	}
 	
 	@ModelAttribute("ulcerOptions")
 	public Collection<ConceptAnswer> getPossibleUlcers() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.ULCER);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ULCER).getAnswers();
 	}
 	
 	@ModelAttribute("presences")
 	public Collection<ConceptAnswer> getPossibleDecay() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.PRESENCE_OF_DECAY);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRESENCE_OF_DECAY).getAnswers();
 	}
 	
 	@ModelAttribute("mentalDisorderOptions")
 	public Collection<ConceptAnswer> mentalDisorderOptions() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.MENTAL_DISORDER);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MENTAL_DISORDER).getAnswers();
 	}
 	
 	@ModelAttribute("ibc20Options")
 	public Collection<ConceptAnswer> getPossibleIbc20() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.ICD20);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ICD20).getAnswers();
 	}
 	
 	@ModelAttribute("cancerOptions")
 	public Collection<ConceptAnswer> getPossibleCancer() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.CANCER);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CANCER).getAnswers();
 	}
 	
 	@ModelAttribute("hepatitisOptions")
 	public Collection<ConceptAnswer> getPossibleHepatitis() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.COMORBID_HEPATITIS);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COMORBID_HEPATITIS).getAnswers();
 	}
 	
 	@ModelAttribute("kidneyDiseaseOptions")
 	public Collection<ConceptAnswer> getPossibleKidneyDisease() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.KIDNEY_DISEASE);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.KIDNEY_DISEASE).getAnswers();
 	}
 	
 	@ModelAttribute("noDiseaseOptions")
 	public Collection<ConceptAnswer> getPossibleND() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.NO_DISEASE);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NO_DISEASE).getAnswers();
 	}
 	
 	@ModelAttribute("gptOptions")
 	public Collection<ConceptAnswer> getPossibleGPT() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.GENERAL_PRESCRIBED_TREATMENT);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENERAL_PRESCRIBED_TREATMENT).getAnswers();
 	}
 	
 	@ModelAttribute("cecOptions")
 	public Collection<ConceptAnswer> getPossibleCMACPlace() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.PLACE_OF_CENTRAL_COMMISSION);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLACE_OF_CENTRAL_COMMISSION).getAnswers();
 	}
 	
 	@ModelAttribute("yesno")
 	public ArrayList<ConceptAnswer> getYesno() {
 		
 		ArrayList<ConceptAnswer> typeArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS);
+		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getConcept(
+		    MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS).getAnswers();
 		for (int i = 0; i < 2; i++) {
 			typeArray.add(null);
 		}

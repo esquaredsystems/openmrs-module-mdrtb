@@ -161,7 +161,6 @@ public class ReportUtil {
 	 */
 	public static RenderingMode renderingModeFromResource(String label, String resourceName) {
 		InputStreamReader reader = null;
-		
 		try {
 			reader = new InputStreamReader(OpenmrsClassLoader.getInstance().getResourceAsStream(resourceName), "UTF-8");
 		}

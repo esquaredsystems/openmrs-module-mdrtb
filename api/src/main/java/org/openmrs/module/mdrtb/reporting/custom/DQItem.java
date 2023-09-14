@@ -17,6 +17,13 @@ public class DQItem {
 	
 	private ArrayList<String> form89Links;
 	
+	public DQItem() {
+		patient = null;
+		dateOfBirth = null;
+		tb03Links = new ArrayList<String>();
+		form89Links = new ArrayList<String>();
+	}
+	
 	public String getLocName() {
 		return locName;
 	}
@@ -59,13 +66,6 @@ public class DQItem {
 	
 	public void addTb03Link(String lnk) {
 		tb03Links.add(lnk);
-	}
-	
-	public DQItem() {
-		patient = null;
-		dateOfBirth = null;
-		tb03Links = new ArrayList<String>();
-		form89Links = new ArrayList<String>();
 	}
 	
 	public String getGender() {

@@ -23,6 +23,7 @@ import org.openmrs.module.mdrtb.specimen.Culture;
 import org.openmrs.module.mdrtb.specimen.CultureImpl;
 import org.openmrs.module.mdrtb.specimen.Dst;
 import org.openmrs.module.mdrtb.specimen.DstImpl;
+import org.openmrs.module.mdrtb.specimen.DstResult;
 import org.openmrs.module.mdrtb.specimen.ScannedLabReport;
 import org.openmrs.module.mdrtb.specimen.Smear;
 import org.openmrs.module.mdrtb.specimen.SmearImpl;
@@ -255,6 +256,7 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param removeScannedLabReports
 	 * @return
 	 */
+	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=specimen")
 	public ModelAndView processSubmit(@ModelAttribute("specimen") Specimen specimen, BindingResult specimenErrors,
 	        SessionStatus status, HttpServletRequest request, ModelMap map,
@@ -335,6 +337,7 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param testId
 	 * @return
 	 */
+	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=smear")
 	public ModelAndView processSubmit(@ModelAttribute("smear") Smear smear, BindingResult errors, SessionStatus status,
 	        HttpServletRequest request, ModelMap map,
@@ -391,6 +394,7 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param testId
 	 * @return
 	 */
+	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=culture")
 	public ModelAndView processSubmit(@ModelAttribute("culture") Culture culture, BindingResult errors,
 	        SessionStatus status, HttpServletRequest request, ModelMap map,
@@ -448,6 +452,7 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param removeDstResults
 	 * @return
 	 */
+	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=dst")
 	public ModelAndView processSubmit(@ModelAttribute("dst") Dst dst, BindingResult errors, SessionStatus status,
 	        HttpServletRequest request, ModelMap map,
@@ -510,7 +515,7 @@ public class SpecimenController extends AbstractSpecimenController {
 			if (StringUtils.isNotEmpty(request.getParameter("addDstResult" + i + ".result"))
 			        && StringUtils.isNotEmpty(request.getParameter("addDstResult" + i + ".drug"))) {
 				// create the new result
-				DstImpl dstResult = dst.addResult();
+				DstResult dstResult = dst.addResult();
 				
 				// pull the values from the request
 				String colonies = request.getParameter("addDstResult" + i + ".colonies");
@@ -523,7 +528,7 @@ public class SpecimenController extends AbstractSpecimenController {
 					dstResult.setColonies(Integer.valueOf(colonies));
 				}
 				if (StringUtils.isNotBlank(concentration)) {
-					dstResult.setConcentration(Integer.valueOf(concentration));
+					dstResult.setConcentration(Double.valueOf(concentration));
 				}
 				// although the DstResult obj should handle it, still a good idea to set the result before the drug because of the wonky way result/drugs are stored
 				if (StringUtils.isNotBlank(resultType)) {
@@ -540,7 +545,7 @@ public class SpecimenController extends AbstractSpecimenController {
 		if (removeDstResults != null) {
 			Set<String> removeDstResultSet = new HashSet<String>(Arrays.asList(removeDstResults));
 			
-			for (DstImpl result : dst.getResults()) {
+			for (DstResult result : dst.getResults()) {
 				if (result.getId() != null && removeDstResultSet.contains(result.getId())) {
 					dst.removeResult(result);
 				}
@@ -570,6 +575,7 @@ public class SpecimenController extends AbstractSpecimenController {
 	 * @param testId
 	 * @return
 	 */
+	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=xpert")
 	public ModelAndView processSubmit(@ModelAttribute("xpert") Xpert xpert, BindingResult errors, SessionStatus status,
 	        HttpServletRequest request, ModelMap map,

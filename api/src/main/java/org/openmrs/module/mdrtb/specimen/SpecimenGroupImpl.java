@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.specimen;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,7 +28,7 @@ public class SpecimenGroupImpl implements Specimen {
 	
 	List<Specimen> specimens;
 	
-	List<DstImpl> dstResultsMap = null;
+	Map<Integer, List<DstResult>> dstResultsMap = null;
 	
 	public SpecimenGroupImpl() {
 		this.specimens = new LinkedList<Specimen>();
@@ -127,14 +126,14 @@ public class SpecimenGroupImpl implements Specimen {
 	
 	// this is identical to the Specimen getDstResultsMap implementation...
 	// but since it calls the local getDsts() method it will create a map of dsts across all specimens in this group
-	public List<DstImpl> getDstResultsMap() {
+	public Map<Integer, List<DstResult>> getDstResultsMap() {
 		List<Dst> dsts = getDsts();
 		
 		if (dstResultsMap == null && dsts.size() > 0) {
-			dstResultsMap = new ArrayList<>();
+			dstResultsMap = new HashMap<Integer, List<DstResult>>();
 			
 			for (Dst dst : dsts) {
-				for (DstImpl result : dst.getResults()) {
+				for (DstResult result : dst.getResults()) {
 					
 					Integer drug = result.getDrug().getId();
 					
@@ -146,7 +145,7 @@ public class SpecimenGroupImpl implements Specimen {
 					}
 					// otherwise, create a new entry for this drug
 					else {
-						List<DstImpl> drugResults = new ArrayList<DstImpl>();
+						List<DstResult> drugResults = new LinkedList<DstResult>();
 						drugResults.add(result);
 						dstResultsMap.put(drug, drugResults);
 					}

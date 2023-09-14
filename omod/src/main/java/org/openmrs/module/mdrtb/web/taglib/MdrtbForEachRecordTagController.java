@@ -60,6 +60,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 	
 	private String filterList;
 	
+	@SuppressWarnings("null")
 	public int doStartTag() {
 		
 		records = null;

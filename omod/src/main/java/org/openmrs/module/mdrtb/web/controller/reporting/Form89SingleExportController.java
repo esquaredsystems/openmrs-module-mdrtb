@@ -178,7 +178,7 @@ public class Form89SingleExportController {
 			Form89Data f89Data = new Form89Data();
 			
 			Patient patient = f89.getPatient();
-			if (patient == null || patient.isVoided()) {
+			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			f89Data.setPatient(patient);

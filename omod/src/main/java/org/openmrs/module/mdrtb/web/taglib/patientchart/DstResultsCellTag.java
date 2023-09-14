@@ -17,7 +17,7 @@ import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.regimen.Regimen;
-import org.openmrs.module.mdrtb.specimen.DstImpl;
+import org.openmrs.module.mdrtb.specimen.DstResult;
 
 public class DstResultsCellTag extends TagSupport {
 	
@@ -25,7 +25,7 @@ public class DstResultsCellTag extends TagSupport {
 	
 	private final Log log = LogFactory.getLog(getClass());
 	
-	private List<DstImpl> dstResults;
+	private List<DstResult> dstResults;
 	
 	private List<Regimen> regimens;
 	
@@ -58,7 +58,7 @@ public class DstResultsCellTag extends TagSupport {
 			Concept result = null;
 			
 			// first we need to build the title string (for the tooltip) and determine the result
-			for (DstImpl dstResult : dstResults) {
+			for (DstResult dstResult : dstResults) {
 				
 				// need to ignore "none" results here
 				if (dstResult.getResult() != null
@@ -119,11 +119,11 @@ public class DstResultsCellTag extends TagSupport {
 		return EVAL_PAGE;
 	}
 	
-	public void setDstResults(List<DstImpl> dstResults) {
+	public void setDstResults(List<DstResult> dstResults) {
 		this.dstResults = dstResults;
 	}
 	
-	public List<DstImpl> getDstResults() {
+	public List<DstResult> getDstResults() {
 		return dstResults;
 	}
 	

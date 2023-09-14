@@ -1,6 +1,7 @@
 package org.openmrs.module.mdrtb;
 
 import org.openmrs.EncounterType;
+import org.openmrs.PatientIdentifierType;
 import org.openmrs.api.context.Context;
 
 public class MdrtbConstants {
@@ -220,6 +221,13 @@ public class MdrtbConstants {
 	@Deprecated
 	public static EncounterType MDRTB_BACTERIOLOGY_RESULT_ENCOUNTER_TYPE = Context.getEncounterService().getEncounterType(
 	    Context.getAdministrationService().getGlobalProperty(GP_TEST_RESULT_ENCOUNTER_TYPE_BACTERIOLOGY));
+	
+	/** Identifier Types **/
+	public static final PatientIdentifierType MDRTB_ID_TYPE = Context.getPatientService().getPatientIdentifierTypeByName(
+	    GP_MDRTB_IDENTIFIER_TYPE);
+	
+	public static final PatientIdentifierType DOTS_ID_TYPE = Context.getPatientService().getPatientIdentifierTypeByName(
+	    GP_DOTS_IDENTIFIER_TYPE);
 	
 	/** END - Encounter Types **/
 	/***************************/

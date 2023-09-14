@@ -21,7 +21,7 @@ import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.specimen.Culture;
 import org.openmrs.module.mdrtb.specimen.Dst;
-import org.openmrs.module.mdrtb.specimen.DstImpl;
+import org.openmrs.module.mdrtb.specimen.DstResult;
 import org.openmrs.module.mdrtb.specimen.Smear;
 import org.openmrs.module.mdrtb.specimen.Specimen;
 import org.openmrs.module.mdrtb.specimen.SpecimenConstants.TestStatus;
@@ -118,7 +118,7 @@ public class LabResultsStatusCalculator {
 		if (specimens != null) {
 			for (Specimen specimen : specimens) {
 				for (Dst dst : specimen.getDsts()) {
-					for (DstImpl result : dst.getResults()) {
+					for (DstResult result : dst.getResults()) {
 						if (resistant.equals(result.getResult())) {
 							if (!drugs.contains(result.getDrug())) {
 								drugs.add(result.getDrug());
@@ -506,7 +506,7 @@ public class LabResultsStatusCalculator {
 		if (specimens != null) {
 			for (Specimen specimen : specimens) {
 				for (Dst dst : specimen.getDsts()) {
-					for (DstImpl result : dst.getResults()) {
+					for (DstResult result : dst.getResults()) {
 						if (resistant.equals(result.getResult())) {
 							if (!drugs.contains(result.getDrug())) {
 								drugs.add(result.getDrug());

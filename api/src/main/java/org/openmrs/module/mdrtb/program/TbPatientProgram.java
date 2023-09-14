@@ -625,6 +625,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		return ret;
 	}
 	
+	@SuppressWarnings("null")
 	public List<Encounter> getTb03EncountersDuringProgramObs() {
 		
 		if (program.getDateEnrolled() == null) {
