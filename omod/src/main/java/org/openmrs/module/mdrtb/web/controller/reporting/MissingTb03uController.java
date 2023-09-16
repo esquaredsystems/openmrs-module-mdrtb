@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +16,10 @@ import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.form.custom.TB03Form;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
+import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.reporting.custom.DQItem;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
@@ -114,117 +117,22 @@ public class MissingTb03uController {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
-		SimpleDateFormat sdf = Context.getDateFormat();
-		SimpleDateFormat rdateSDF = Context.getDateTimeFormat();
-		
-		List<DQItem> missingTB03 = new ArrayList<DQItem>();
-		List<Patient> errList = new ArrayList<Patient>();
-		
-		Boolean errorFlag = Boolean.FALSE;
-		Integer errorCount = 0;
-		
-		Date treatmentStartDate = null;
-		Calendar tCal = null;
-		Calendar nowCal = null;
-		long timeDiff = 0;
-		double diffInWeeks = 0;
-		
-		DQItem dqi = null;
-		
+		System.out.println("PARAMS:" + oblastId + " " + districtId + " " + facilityId + " " + year + " " + quarter + " "
+		        + month);
 		Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
 		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		// Returns a map after calculation, so that it cane be used for any controller
+		Map<String, Object> map = getMissingTB03uPatientMap(year, quarterInt, monthInt, locList);
 		
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
-		Integer countNum = 0;
-		
-		for (TB03uForm tf : tb03uList) {
-			
-			//INIT
-			treatmentStartDate = null;
-			tCal = null;
-			nowCal = null;
-			timeDiff = 0;
-			diffInWeeks = 0;
-			
-			errorFlag = Boolean.FALSE;
-			
-			dqi = new DQItem();
-			Patient patient = tf.getPatient();
-			
-			if (patient == null || patient.getVoided()) {
-				continue;
-			}
-			//patientList.add(patient);
-			dqi.setPatient(patient);
-			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
-			
-		}
-		
-		MdrtbPatientProgram temp = null;
-		
-		List<MdrtbPatientProgram> progList = Context.getService(MdrtbService.class)
-		        .getAllMdrtbPatientProgramsEnrolledInDateRangeAndLocations(locList, startDate, endDate);
-		//Integer countNum = 0;
-		Boolean matched = Boolean.FALSE;
-		if (progList != null) {
-			for (MdrtbPatientProgram p : progList) {
-				matched = Boolean.FALSE;
-				dqi = new DQItem();
-				Patient patient = p.getPatient();//Context.getPatientService().getPatient(i);
-				
-				if (patient == null || patient.getVoided()) {
-					continue;
-				}
-				
-				for (TB03uForm t3f : tb03uList) {
-					Patient tempPat = t3f.getPatient();
-					
-					if (tempPat.getId().intValue() == patient.getId().intValue()) {
-						matched = Boolean.TRUE;
-						break;
-					}
-					
-				}
-				
-				if (!matched)
-					countNum++;
-				
-				// patientList.add(patient);
-				dqi.setPatient(patient);
-				dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
-				
-				List<TB03uForm> x = Context.getService(MdrtbService.class).getTB03uFormsForProgram(patient, p.getId());
-				
-				if (x == null || x.size() == 0) {
-					//errorFlag = Boolean.TRUE;
-					missingTB03.add(dqi);
-					
-					if (!errList.contains(patient)) {
-						errorCount++;
-						errList.add(patient);
-					}
-					
-				}
-			}
-		}
-		
-		Integer num = countNum;
-		
-		Integer errorPercentage = null;
-		if (num == 0)
-			errorPercentage = 0;
-		else
-			errorPercentage = (errorCount * 100) / num;
+		model.addAttribute("errorCount", map.get("errorCount"));
+		model.addAttribute("errorPercentage", map.get("errorPercentage") + "%");
+		model.addAttribute("num", map.get("num"));
+		model.addAttribute("missingTB03", map.get("patientSet"));
 		
 		String oName = null;
 		Region obl = Context.getService(MdrtbService.class).getRegion(oblastId);
@@ -244,23 +152,14 @@ public class MissingTb03uController {
 			if (fac != null)
 				fName = fac.getName();
 		}
-		
-		model.addAttribute("num", num);
-		model.addAttribute("missingTB03", missingTB03);
-		
-		model.addAttribute("errorCount", new Integer(errorCount));
-		model.addAttribute("errorPercentage", errorPercentage.toString() + "%");
 		model.addAttribute("oblastName", oName);
 		model.addAttribute("oName", oName);
 		model.addAttribute("dName", dName);
 		model.addAttribute("fName", fName);
-		
 		model.addAttribute("locale", Context.getLocale().toString());
-		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
 		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
 		    year, quarter, month, "DQ", "MDRTB");
-		System.out.println(reportStatus);
 		
 		model.addAttribute("oblast", oblastId);
 		model.addAttribute("facility", facilityId);
@@ -275,9 +174,67 @@ public class MissingTb03uController {
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
 		model.addAttribute("reportStatus", reportStatus);
 		return "/module/mdrtb/reporting/missingTb03uResults";
 	}
 	
+	public static Map<String, Object> getMissingTB03uPatientMap(Integer year, Integer quarter, Integer month,
+	        List<Location> locList) {
+		Map<String, Object> map = new HashMap<>();
+		List<DQItem> patientSet = new ArrayList<DQItem>();
+		List<Patient> errList = new ArrayList<Patient>();
+		
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+
+		SimpleDateFormat sdf = Context.getDateFormat();
+		DQItem dqi = null;
+		Date startDate = (Date) (dateMap.get("startDate"));
+		Date endDate = (Date) (dateMap.get("endDate"));
+		Integer totalCount = 0;
+		Integer errorCount = 0;
+		
+		List<MdrtbPatientProgram> progList = Context.getService(MdrtbService.class)
+				.getAllMdrtbPatientProgramsEnrolledInDateRangeAndLocations(locList, startDate, endDate);
+		for (TB03uForm tf : tb03uList) {
+			//INIT
+			dqi = new DQItem();
+			Patient patient = tf.getPatient();
+			if (patient == null || patient.getVoided()) {
+				continue;
+			}
+			dqi.setPatient(patient);
+			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
+		}
+		
+		if (progList.size() > 0) {
+			// For each Patient Program, search whether the patient has a TB03 form in the master list
+			for (MdrtbPatientProgram p : progList) {
+				totalCount++;
+				Boolean matched = Boolean.FALSE;
+				Patient patient = p.getPatient();
+				for (TB03uForm t3f : tb03uList) {
+					if (t3f.getPatient().getId().intValue() == patient.getId().intValue()) {
+						matched = Boolean.TRUE;
+						break;
+					}
+				}
+				if (!matched) {
+					// List<TB03Form> x = Context.getService(MdrtbService.class).getTB03FormsForProgram(patient, p.getId());
+					dqi = new DQItem();
+					dqi.setPatient(patient);
+					dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
+					patientSet.add(dqi);
+					errorCount++;
+				}				
+			}
+		}
+		Integer errorPercentage = (totalCount == 0) ? 0 : (errorCount * 100) / totalCount;
+		map.put("errorCount", errorCount);
+		map.put("errorPercentage", errorPercentage);
+		map.put("num", totalCount);
+		map.put("missingTB03", patientSet);
+		return map;
+	}
 }
