@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jfree.util.Log;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Patient;
@@ -80,9 +79,7 @@ public class MissingTb03Controller {
 				model.addAttribute("oblasts", oblasts);
 				model.addAttribute("districts", districts);
 			}
-		}
-		
-		else {
+		} else {
 			if (Integer.parseInt(oblast) == 186) {
 				oblasts = Context.getService(MdrtbService.class).getRegions();
 				districts = Context.getService(MdrtbService.class).getDistrictsByParent(Integer.parseInt(oblast));
@@ -115,7 +112,6 @@ public class MissingTb03Controller {
 		
 	}
 	
-	@SuppressWarnings("unused")
 	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/reporting/missingTb03")
 	public static String doDQ(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
@@ -198,6 +194,8 @@ public class MissingTb03Controller {
 		Integer totalCount = 0;
 		Integer errorCount = 0;
 		
+		List<TbPatientProgram> progList = Context.getService(MdrtbService.class)
+		        .getAllTbPatientProgramsEnrolledInDateRangeAndLocations(locList, startDate, endDate);
 		for (TB03Form tf : tb03List) {
 			//INIT
 			dqi = new DQItem();
@@ -209,8 +207,6 @@ public class MissingTb03Controller {
 			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
 		}
 		
-		List<TbPatientProgram> progList = Context.getService(MdrtbService.class)
-		        .getAllTbPatientProgramsEnrolledInDateRangeAndLocations(locList, startDate, endDate);
 		if (progList.size() > 0) {
 			// For each Patient Program, search whether the patient has a TB03 form in the master list
 			for (TbPatientProgram p : progList) {
