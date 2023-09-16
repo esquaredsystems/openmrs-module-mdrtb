@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.reporting;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -133,37 +132,66 @@ public class TB07ReportController {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
-		System.out.println("Loading TB07");
-		
-		// SimpleDateFormat sdf = Context.getDateFormat();
-		// sdf.applyPattern("dd.MM.yyyy"); // Not needed if the above is working
-		
-		SimpleDateFormat rdateSDF = Context.getDateTimeFormat();
-		// rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss"); // Not needed if the above is working
+		System.out.println("PARAMS:" + oblastId + " " + districtId + " " + facilityId + " " + year + " " + quarter + " "
+		        + month);
 		
 		Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
 		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
-		
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
+		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
-		System.out.println("list size:" + tb03List.size());
-		//CohortDefinition baseCohort = null;
+		TB07Table1Data table1 = getTB07PatientSet(year, quarterInt, monthInt, locList);
 		
-		//Integer codId = null;
-		//List<Obs> obsList = null;
+		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
+		//Integer report_oblast = null; Integer report_quarter = null; Integer report_month = null;
+		/*if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
+		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
+		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
+		
+		/*
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB 07");
+		if(location!=null)
+			 reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB-07","DOTSTB");
+		*/
+		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		    year, quarter, month, "TB-07", "DOTSTB");
+		System.out.println(reportStatus);
+		model.addAttribute("table1", table1);
+		model.addAttribute("oblast", oblastId);
+		model.addAttribute("facility", facilityId);
+		model.addAttribute("district", districtId);
+		model.addAttribute("year", year);
+		if (month != null && month.length() != 0)
+			model.addAttribute("month", month.replace("\"", ""));
+		else
+			model.addAttribute("month", "");
+		
+		if (quarter != null && quarter.length() != 0)
+			model.addAttribute("quarter", quarter.replace("\"", "'"));
+		else
+			model.addAttribute("quarter", "");
+		
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
+		model.addAttribute("reportStatus", reportStatus);
+		return "/module/mdrtb/reporting/tb07Results";
+	}
+	
+	public static TB07Table1Data getTB07PatientSet(Integer year, Integer quarter, Integer month, List<Location> locList) {
+		
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		
 		Integer ageAtRegistration = 0;
-		
 		Concept pulmonaryConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB);
 		Concept extrapulmonaryConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB);
 		Concept positiveConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POSITIVE);
 		Concept negativeConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE);
-		/*Concept hivDateConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_HIV_TEST);
+		/*
+		Concept hivDateConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_HIV_TEST);
 		Concept artStartConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_ART_TREATMENT_START);
-		Concept pctStartConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_PCT_TREATMENT_START);*/
+		Concept pctStartConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_PCT_TREATMENT_START);
+		*/
 		Concept contact = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
 		Concept migrant = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MIGRANT);
 		Concept phcWorker = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PHC_WORKER);
@@ -174,15 +202,12 @@ public class TB07ReportController {
 		Boolean hivPositive = null;
 		
 		TB07Table1Data table1 = new TB07Table1Data();
-		
 		for (TB03Form tf : tb03List) {
-			System.out.println("Processing Program ID: " + tf.getPatientProgramId());
 			ageAtRegistration = -1;
 			pulmonary = null;
 			bacPositive = null;
 			hivPositive = null;
 			Integer programId = tf.getPatientProgramId();
-			
 			TbPatientProgram tpp = null;
 			Form89 f89 = null;
 			
@@ -1545,9 +1570,7 @@ public class TB07ReportController {
 						}
 					}
 				}
-			}
-			
-			else {
+			} else {
 				System.out.println("NO GROUP:" + tf.getEncounter().getEncounterId());
 				continue;
 			}
@@ -1675,71 +1698,8 @@ public class TB07ReportController {
 		table1.setTotalAllHIV(table1.getTotalMaleHIV() + table1.getTotalFemaleHIV());
 		
 		//table1.setTotalAll(table1.getTotalMale() + getTotalFemale());
-		
 		//fin.add(table1);
-		//}
 		
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		//Integer report_oblast = null; Integer report_quarter = null; Integer report_month = null;
-		/*if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
-		
-		boolean reportStatus;// = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB 07");
-		/*if(location!=null)
-			 reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB-07","DOTSTB");
-		else*/
-		reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId, year,
-		    quarter, month, "TB-07", "DOTSTB");
-		
-		System.out.println(reportStatus);
-		
-		String oName = null;
-		String dName = null;
-		String fName = null;
-		
-		if (oblastId != null) {
-			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
-			if (o != null) {
-				oName = o.getName();
-			}
-		}
-		
-		if (districtId != null) {
-			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
-			if (d != null) {
-				dName = d.getName();
-			}
-		}
-		
-		if (facilityId != null) {
-			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
-			if (f != null) {
-				fName = f.getName();
-			}
-		}
-		
-		model.addAttribute("table1", table1);
-		model.addAttribute("oblast", oblastId);
-		model.addAttribute("facility", facilityId);
-		model.addAttribute("district", districtId);
-		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
-			model.addAttribute("month", month.replace("\"", ""));
-		else
-			model.addAttribute("month", "");
-		
-		if (quarter != null && quarter.length() != 0)
-			model.addAttribute("quarter", quarter.replace("\"", "'"));
-		else
-			model.addAttribute("quarter", "");
-		
-		model.addAttribute("oName", oName);
-		model.addAttribute("dName", dName);
-		model.addAttribute("fName", fName);
-		
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
-		model.addAttribute("reportStatus", reportStatus);
-		return "/module/mdrtb/reporting/tb07Results";
+		return table1;
 	}
 }
