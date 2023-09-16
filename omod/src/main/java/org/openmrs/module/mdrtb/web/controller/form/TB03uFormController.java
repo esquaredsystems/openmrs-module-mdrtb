@@ -344,8 +344,8 @@ public class TB03uFormController {
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.RESISTANCE_TYPE).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE)
+		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> concepts = new HashSet<Concept>();
@@ -407,8 +407,8 @@ public class TB03uFormController {
 	@ModelAttribute("basesfordiagnosis")
 	public Collection<ConceptAnswer> getPossibleBasesForDiagnosis() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> concepts = new HashSet<Concept>();

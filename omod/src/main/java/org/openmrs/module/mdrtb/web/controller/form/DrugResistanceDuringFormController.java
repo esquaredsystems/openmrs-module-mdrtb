@@ -160,8 +160,8 @@ public class DrugResistanceDuringFormController {
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		
 		ArrayList<ConceptAnswer> typeArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.DRUG_RESISTANCE_DURING_TREATMENT);
+		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.DRUG_RESISTANCE_DURING_TREATMENT).getAnswers();
 		for (int i = 0; i < 4; i++) {
 			typeArray.add(null);
 		}

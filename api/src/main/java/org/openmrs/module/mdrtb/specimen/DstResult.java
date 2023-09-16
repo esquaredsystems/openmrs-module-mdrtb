@@ -154,7 +154,7 @@ public class DstResult implements Comparable<DstResult> {
 		}
 		
 		// if we are trying to set the obs to null, simply void the obs
-		if (colonies == null) {
+		if (obs != null && colonies == null) {
 			obs.setVoided(true);
 			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			return;
@@ -182,7 +182,7 @@ public class DstResult implements Comparable<DstResult> {
 		}
 		
 		// if we are trying to set the obs to null, simply void the obs
-		if (concentration == null) {
+		if (obs != null && concentration == null) {
 			obs.setVoided(true);
 			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			return;

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.openmrs.Concept;
 import org.openmrs.Location;
@@ -15,7 +14,6 @@ import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
-import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.reporting.pv.AdverseEventsRegisterData;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
@@ -124,10 +122,10 @@ public class AdverseEventsRegisterController {
 		SimpleDateFormat rdateSDF = new SimpleDateFormat();
 		rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		//		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		//		Date startDate = (Date) (dateMap.get("startDate"));
+		//		Date endDate = (Date) (dateMap.get("endDate"));
 		
 		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;

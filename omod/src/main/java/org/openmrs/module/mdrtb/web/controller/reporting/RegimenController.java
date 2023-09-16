@@ -151,7 +151,7 @@ public class RegimenController {
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
-		Date startDate = (Date) (dateMap.get("startDate"));
+		//		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);

@@ -161,8 +161,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("aeOptions")
 	public ArrayList<ConceptAnswer> getPossibleAdverseEvents() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.ADVERSE_EVENT).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT)
+		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -204,8 +204,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("typeOptions")
 	public Collection<ConceptAnswer> getPossibleEventType() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.ADVERSE_EVENT_TYPE).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.ADVERSE_EVENT_TYPE).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -226,8 +226,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("saeOptions")
 	public Collection<ConceptAnswer> getPossibleSAEType() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.SAE_TYPE).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SAE_TYPE)
+		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -250,8 +250,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("specialOptions")
 	public Collection<ConceptAnswer> getPossibleSpecialType() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.SPECIAL_INTEREST_EVENT_TYPE).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.SPECIAL_INTEREST_EVENT_TYPE).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -282,8 +282,8 @@ public class AdverseEventsFormController {
 	
 	@ModelAttribute("cdOptions")
 	public Collection<ConceptAnswer> getCausalityDrugOptions() {
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.CAUSALITY_DRUG_1).getAnswers();
+		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_DRUG_1)
+		        .getAnswers();
 		return ca;
 		
 	}
@@ -291,8 +291,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("carOptions")
 	public Collection<ConceptAnswer> getCausalityAssessmentOptions() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_1).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.CAUSALITY_ASSESSMENT_RESULT_1).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -315,8 +315,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("actions")
 	public Collection<ConceptAnswer> getActionOptions() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.ADVERSE_EVENT_ACTION).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.ADVERSE_EVENT_ACTION).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -340,8 +340,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("outcomes")
 	public Collection<ConceptAnswer> getActionOutcomes() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.ADVERSE_EVENT_OUTCOME).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.ADVERSE_EVENT_OUTCOME).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -364,8 +364,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("meddraCodes")
 	public ArrayList<ConceptAnswer> getMeddraCodeOptions() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.MEDDRA_CODE).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MEDDRA_CODE)
+		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -395,8 +395,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("drugRechallenges")
 	public ArrayList<ConceptAnswer> getRechallengeOptions() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.DRUG_RECHALLENGE).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DRUG_RECHALLENGE)
+		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -435,8 +435,8 @@ public class AdverseEventsFormController {
 	@ModelAttribute("yesno")
 	public ArrayList<ConceptAnswer> getYesNo() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();

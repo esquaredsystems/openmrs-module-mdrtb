@@ -284,8 +284,8 @@ public class Form89Controller {
 	public Collection<ConceptAnswer> getPossibleMethodsOfDetection() {
 		
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -392,8 +392,8 @@ public class Form89Controller {
 	public ArrayList<ConceptAnswer> getYesno() {
 		
 		ArrayList<ConceptAnswer> typeArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS).getAnswers();
+		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.REQUIRES_ANCILLARY_DRUGS).getAnswers();
 		for (int i = 0; i < 2; i++) {
 			typeArray.add(null);
 		}

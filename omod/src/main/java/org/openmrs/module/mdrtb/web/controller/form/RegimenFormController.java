@@ -165,7 +165,8 @@ public class RegimenFormController {
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE)
+		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();
@@ -201,8 +202,8 @@ public class RegimenFormController {
 	@ModelAttribute("sldregimens")
 	public Collection<ConceptAnswer> getPossibleSLDRegimenrs() {
 		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.SLD_REGIMEN_TYPE).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SLD_REGIMEN_TYPE)
+		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<Concept>();

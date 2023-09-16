@@ -1008,7 +1008,7 @@ public class MdrtbUtil {
 			errors.reject(Context.getMessageSourceService().getMessage("mdrtb.emptyId"));
 		}
 		// Only validate if the PatientIdentifier is not voided
-		if (!pi.getVoided()) {
+		if (pi != null && !pi.getVoided()) {
 			// Check is already in use by another patient
 			try {
 				String id = pi.getIdentifier();

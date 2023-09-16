@@ -348,8 +348,8 @@ public class TB03FormController {
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		ArrayList<ConceptAnswer> answerArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleConceptAnswers(
-		    MdrtbConcepts.RESISTANCE_TYPE);
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE)
+		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> concepts = new HashSet<Concept>();
@@ -398,6 +398,6 @@ public class TB03FormController {
 	
 	@ModelAttribute("causes")
 	public Collection<ConceptAnswer> getPossibleCausesOfDeath() {
-		return Context.getService(MdrtbService.class).getPossibleConceptAnswers(MdrtbConcepts.CAUSE_OF_DEATH);
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSE_OF_DEATH).getAnswers();
 	}
 }

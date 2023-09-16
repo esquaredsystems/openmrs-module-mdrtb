@@ -408,8 +408,8 @@ public class TB03uXDRFormController {
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		
 		ArrayList<ConceptAnswer> typeArray = new ArrayList<ConceptAnswer>();
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.RESISTANCE_TYPE).getAnswers();
+		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE)
+		        .getAnswers();
 		for (int i = 0; i < 3; i++) {
 			typeArray.add(null);
 		}
@@ -471,8 +471,8 @@ public class TB03uXDRFormController {
 		for (int i = 0; i < 6; i++) {
 			stateArray.add(null);
 		}
-		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
+		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		for (ConceptAnswer ca : bases) {
 			if (ca.getAnswerConcept().getId().intValue() == ms.getConcept(MdrtbConcepts.GENEXPERT).getId().intValue()) {
