@@ -8,7 +8,6 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.commonlabtest.LabTest;
-import org.openmrs.module.commonlabtest.LabTestType;
 import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
@@ -25,18 +24,18 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	public DSTForm(Patient patient) {
 		super(patient);
 		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
-		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-		LabTest dst = CommonLabUtil.getService().createLabTestOrder(this.encounter, labTestType);
+		LabTest dst = CommonLabUtil.getService().getDstLabTestOrder(this.encounter);
 		di = new DstImpl(dst);
 		// di = new DstImpl(this.encounter);
 	}
 	
 	public DSTForm(Encounter encounter) {
 		super(encounter);
-		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-		LabTest dst = CommonLabUtil.getService().createLabTestOrder(this.encounter, labTestType);
+		LabTest dst = CommonLabUtil.getService().getDstLabTestOrder(this.encounter);
+		if (dst == null) {
+			dst = CommonLabUtil.getService().createDstLabTestOrder(this.encounter);
+		}
 		di = new DstImpl(dst);
-		// di = new DstImpl(this.encounter);
 	}
 	
 	public DstResult addResult() {
@@ -47,8 +46,13 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 		return di.getResults();
 	}
 	
+	@Deprecated
 	public Map<Integer, List<DstResult>> getResultsMap() {
 		return di.getResultsMap();
+	}
+	
+	public List<DstResult> getResultsList() {
+		return di.getResults();
 	}
 	
 	public void removeResult(DstResult result) {

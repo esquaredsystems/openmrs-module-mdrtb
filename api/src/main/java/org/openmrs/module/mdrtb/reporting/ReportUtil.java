@@ -168,46 +168,43 @@ public class ReportUtil {
 			throw new MdrtbAPIException("Error reading template from stream", e);
 		}
 		
-		if (reader != null) {
-			final ReportDesign design = new ReportDesign();
-			ReportDesignResource resource = new ReportDesignResource();
-			resource.setName("template");
-			String extension = resourceName.substring(resourceName.lastIndexOf("."));
-			resource.setExtension(extension);
-			String contentType = "text/plain";
-			for (ContentType type : ContentType.values()) {
-				if (type.getExtension().equals(extension)) {
-					contentType = type.getContentType();
-				}
+		final ReportDesign design = new ReportDesign();
+		ReportDesignResource resource = new ReportDesignResource();
+		resource.setName("template");
+		String extension = resourceName.substring(resourceName.lastIndexOf("."));
+		resource.setExtension(extension);
+		String contentType = "text/plain";
+		for (ContentType type : ContentType.values()) {
+			if (type.getExtension().equals(extension)) {
+				contentType = type.getContentType();
 			}
-			resource.setContentType(contentType);
-			ReportRenderer renderer = null;
-			try {
-				resource.setContents(IOUtils.toByteArray(reader, "UTF-8"));
-			}
-			catch (Exception e) {
-				throw new RuntimeException("Error reading template from stream", e);
-			}
-			
-			design.getResources().add(resource);
-			if ("xls".equals(extension)) {
-				renderer = new ExcelTemplateRenderer() {
-					
-					public ReportDesign getDesign(String argument) {
-						return design;
-					}
-				};
-			} else {
-				renderer = new TextTemplateRenderer() {
-					
-					public ReportDesign getDesign(String argument) {
-						return design;
-					}
-				};
-			}
-			return new RenderingMode(renderer, label, extension, null);
 		}
-		return null;
+		resource.setContentType(contentType);
+		ReportRenderer renderer = null;
+		try {
+			resource.setContents(IOUtils.toByteArray(reader, "UTF-8"));
+		}
+		catch (Exception e) {
+			throw new RuntimeException("Error reading template from stream", e);
+		}
+		
+		design.getResources().add(resource);
+		if ("xls".equals(extension)) {
+			renderer = new ExcelTemplateRenderer() {
+				
+				public ReportDesign getDesign(String argument) {
+					return design;
+				}
+			};
+		} else {
+			renderer = new TextTemplateRenderer() {
+				
+				public ReportDesign getDesign(String argument) {
+					return design;
+				}
+			};
+		}
+		return new RenderingMode(renderer, label, extension, null);
 	}
 	
 	// TODO: Accepting year, quarter and month as Objects is criminal. Must fix this

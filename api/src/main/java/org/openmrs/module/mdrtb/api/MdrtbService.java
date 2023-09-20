@@ -231,6 +231,10 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
+	public List<Concept> getAllDrugResistanceConcepts();
+	
+	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
+	@Transactional(readOnly = true)
 	public List<TbPatientProgram> getAllTbPatientProgramsEnrolledInDateRangeAndLocations(List<Location> locations,
 	        Date startDate, Date endDate);
 	

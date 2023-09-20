@@ -413,6 +413,14 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		}
 	}
 	
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((patientIdentifier == null) ? 0 : patientIdentifier.hashCode());
+		result = prime * result + ((program == null) ? 0 : program.hashCode());
+		return result;
+	}
+	
 	/**
 	 * Implementation of comparable method
 	 */

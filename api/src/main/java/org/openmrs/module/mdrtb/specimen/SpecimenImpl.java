@@ -562,19 +562,11 @@ public class SpecimenImpl implements Specimen {
 		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if any of the DST results is present
-			LabTestAttribute dst = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
-			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST1);
 			LabTestAttribute dstLj = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
-			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST1_LJ);
+			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST_LJ);
 			LabTestAttribute dstMgit = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
-			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST1_MGIT);
-			LabTestAttribute dst2 = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
-			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST2);
-			LabTestAttribute dst2Lj = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
-			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST2_LJ);
-			LabTestAttribute dst2Mgit = CommonLabUtil.getService().getDstAttributeByTestAndName(labTest,
-			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST2_MGIT);
-			if (dst != null || dstLj != null || dstMgit != null || dst2 != null || dst2Lj != null || dst2Mgit != null) {
+			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST_MGIT);
+			if (dstLj != null || dstMgit != null) {
 				dsts.add(new DstImpl(labTest));
 			}
 		}

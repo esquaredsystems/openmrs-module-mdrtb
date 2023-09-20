@@ -61,8 +61,7 @@ public class TB03uUtil {
 		List<DSTForm> dsts = tf.getDsts();
 		
 		if (dsts != null && dsts.size() > 0) {
-			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-			LabTest dstTest = CommonLabUtil.getService().createLabTestOrder(dsts.get(0).getEncounter(), labTestType);
+			LabTest dstTest = CommonLabUtil.getService().getDstLabTestOrder(dsts.get(0).getEncounter());
 			d = new DstImpl(dstTest);
 			// d = new DstImpl(dsts.get(0).getEncounter());
 		}
@@ -122,11 +121,10 @@ public class TB03uUtil {
 		List<XpertForm> xperts = tf.getXperts();
 		if (xperts != null && xperts.size() > 0) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-			LabTest xpert = CommonLabUtil.getService().createLabTestOrder(xperts.get(0).getEncounter(), labTestType);
+			LabTest xpert = CommonLabUtil.getService().getMdrtbLabTestOrder(xperts.get(0).getEncounter(), labTestType);
 			c = new XpertImpl(xpert);
 			// c = new XpertImpl(xperts.get(0).getEncounter());
 		}
-		
 		return c;
 	}
 	
@@ -143,11 +141,10 @@ public class TB03uUtil {
 	
 	public static HAIN getFirstHAIN(TB03uForm tf) {
 		HAIN c = null;
-		
 		List<HAINForm> hains = tf.getHains();
 		if (hains != null && hains.size() > 0) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-			LabTest hain = CommonLabUtil.getService().createLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAINImpl(hain);
 			// c = new HAINImpl(hains.get(0).getEncounter());
 		}
@@ -168,11 +165,10 @@ public class TB03uUtil {
 	
 	public static HAIN2 getFirstHAIN2(TB03uForm tf) {
 		HAIN2 c = null;
-		
 		List<HAIN2Form> hains = tf.getHain2s();
 		if (hains != null && hains.size() > 0) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-			LabTest hain = CommonLabUtil.getService().createLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAIN2Impl(hain);
 			// c = new HAIN2Impl(hains.get(0).getEncounter());
 		}

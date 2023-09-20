@@ -45,7 +45,7 @@ public class TB03Util {
 		for (CultureForm cf : tf.getCultures()) {//, startDateCollected, endDateCollected)) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0) {
 				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-				LabTest culture = CommonLabUtil.getService().createLabTestOrder(cf.getEncounter(), labTestType);
+				LabTest culture = CommonLabUtil.getService().getMdrtbLabTestOrder(cf.getEncounter(), labTestType);
 				c = new CultureImpl(culture);
 				// c = new CultureImpl(cf.getEncounter());
 				break;
@@ -70,7 +70,7 @@ public class TB03Util {
 		List<XpertForm> xperts = tf.getXperts();
 		if (xperts != null && xperts.size() > 0) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-			LabTest xpert = CommonLabUtil.getService().createLabTestOrder(xperts.get(0).getEncounter(), labTestType);
+			LabTest xpert = CommonLabUtil.getService().getMdrtbLabTestOrder(xperts.get(0).getEncounter(), labTestType);
 			c = new XpertImpl(xpert);
 			// c = new XpertImpl(xperts.get(0).getEncounter());
 		}
@@ -91,7 +91,7 @@ public class TB03Util {
 		List<HAINForm> hains = tf.getHains();
 		if (hains != null && hains.size() > 0) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-			LabTest hain = CommonLabUtil.getService().createLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAINImpl(hain);
 			//c = new HAINImpl(hains.get(0).getEncounter());
 		}
@@ -112,7 +112,7 @@ public class TB03Util {
 		List<HAIN2Form> hains = tf.getHain2s();
 		if (hains != null && hains.size() > 0) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-			LabTest hain = CommonLabUtil.getService().createLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAIN2Impl(hain);
 			// c = new HAIN2Impl(hains.get(0).getEncounter());
 		}
@@ -134,7 +134,7 @@ public class TB03Util {
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == 0) {
 				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-				LabTest smear = CommonLabUtil.getService().createLabTestOrder(sf.getEncounter(), labTestType);
+				LabTest smear = CommonLabUtil.getService().getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
 				c = new SmearImpl(smear);
 				//c = new SmearImpl(sf.getEncounter());
 				c.setResult(sf.getSmearResult());
@@ -161,7 +161,7 @@ public class TB03Util {
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == month.intValue()) {
 				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-				LabTest smear = CommonLabUtil.getService().createLabTestOrder(sf.getEncounter(), labTestType);
+				LabTest smear = CommonLabUtil.getService().getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
 				c = new SmearImpl(smear);
 				// c = new SmearImpl(sf.getEncounter());
 				break;
@@ -185,8 +185,7 @@ public class TB03Util {
 		Dst d = null;
 		List<DSTForm> dsts = tf.getDsts();
 		if (dsts != null && dsts.size() > 0) {
-			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-			LabTest dst = CommonLabUtil.getService().createLabTestOrder(dsts.get(0).getEncounter(), labTestType);
+			LabTest dst = CommonLabUtil.getService().getDstLabTestOrder(dsts.get(0).getEncounter());
 			d = new DstImpl(dst);
 			// d = new DstImpl(dsts.get(0).getEncounter());
 		}

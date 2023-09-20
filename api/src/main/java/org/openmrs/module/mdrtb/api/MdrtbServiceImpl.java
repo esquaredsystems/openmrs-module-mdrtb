@@ -109,6 +109,7 @@ import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
 import org.openmrs.module.reporting.cohort.query.service.CohortQueryService;
 import org.openmrs.module.reporting.common.ObjectUtil;
 
+@SuppressWarnings("null")
 public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService {
 	
 	protected final Log log = LogFactory.getLog(getClass());
@@ -407,6 +408,38 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<Concept> getAntiretrovirals() {
 		return getDrugsInSet(getConcept(MdrtbConcepts.ANTIRETROVIRALS));
+	}
+	
+	public List<Concept> getAllDrugResistanceConcepts() {
+		List<Concept> list = new ArrayList<>();
+		list.add(getConcept(MdrtbConcepts.AMIKACIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.BEDAQUILINE_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.CAPREOMYCIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.CIPROFLOXACIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.CLARITHROMYCIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.CLOFAZAMINE_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.CYCLOSERINE_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.DELAMANID_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.ETHAMBUTOL_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.ETHIONAMIDE_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.GATIFLOXACIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.ISONIAZID_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.KANAMYCIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.LEVOFLOXACIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.LINEZOLID_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.MOXIFLOXACIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.OFLOXACIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.OTHER_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.P_AMINOSALICY_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.PROTHIONAMIDE_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.PYRAZINAMIDE_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.RIFABUTIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.RIFAMPICIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.STREPTOMYCIN_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.TERIZIDONE_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.THIOACETAZONE_RESISTANCE));
+		list.add(getConcept(MdrtbConcepts.VIOMYCIN_RESISTANCE));
+		return list;
 	}
 	
 	public List<TbPatientProgram> getAllTbPatientProgramsEnrolledInDateRangeAndLocations(List<Location> locations,
@@ -929,14 +962,14 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public Xpert getXpert(Integer obsId) {
 		Obs obs = Context.getObsService().getObs(obsId);
 		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-		LabTest xpert = CommonLabUtil.getService().createLabTestOrder(obs.getEncounter(), labTestType);
+		LabTest xpert = CommonLabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new XpertImpl(xpert);
 		// return new XpertImpl(Context.getObsService().getObs(obsId));
 	}
 	
 	public Smear getSmear(Obs obs) {
 		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-		LabTest smear = CommonLabUtil.getService().createLabTestOrder(obs.getEncounter(), labTestType);
+		LabTest smear = CommonLabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new SmearImpl(smear);
 		// return new SmearImpl(obs);
 	}
@@ -958,7 +991,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public HAIN getHAIN(Obs obs) {
 		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-		LabTest hain = CommonLabUtil.getService().createLabTestOrder(obs.getEncounter(), labTestType);
+		LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new HAINImpl(hain);
 		// return new HAINImpl(obs);
 	}
@@ -980,7 +1013,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public HAIN2 getHAIN2(Obs obs) {
 		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-		LabTest hain = CommonLabUtil.getService().createLabTestOrder(obs.getEncounter(), labTestType);
+		LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new HAIN2Impl(hain);
 		// return new HAIN2Impl(obs);
 	}
@@ -1557,11 +1590,23 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<DSTForm> dsts = new ArrayList<DSTForm>();
 		ArrayList<EncounterType> et = new ArrayList<EncounterType>();
+		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
+		// Search for all Specimen collection encounters containing this patientProgramId
+		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
+		for (Encounter e : encs) {
+			Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
+			// Add the DST form to list
+			if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
+				DSTForm sf = new DSTForm(e);
+				sf.setPatient(tpp.getPatient());
+				dsts.add(sf);
+			}
+		}
+		
+		/*
 		et.add(MdrtbConstants.ET_TB03_TB_INTAKE);
 		et.add(MdrtbConstants.ET_TB03U_MDRTB_INTAKE);
 		et.add(MdrtbConstants.ET_TB03U_XDRTB_INTAKE);
-		// Remove after upgrading to Common lab module
-		//TODO: et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
 			Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
@@ -1570,7 +1615,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				sf.setPatient(tpp.getPatient());
 				dsts.add(sf);
 			}
-			/*
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.DST_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
 				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
@@ -1578,8 +1622,9 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 					sf.setPatient(tpp.getPatient());
 					dsts.add(sf);
 				}
-			}*/
+			}
 		}
+		*/
 		Collections.sort(dsts);
 		return dsts;
 	}

@@ -1094,6 +1094,61 @@ public class MdrtbConcepts {
 	
 	public final static String VIALS = "VIAL(S)";
 	
+	/* All TB Drugs for Resistance */
+	public final static String AMIKACIN_RESISTANCE = "AMIKACIN RESISTANCE";
+	
+	public final static String BEDAQUILINE_RESISTANCE = "BEDAQUILINE RESISTANCE";
+	
+	public final static String CAPREOMYCIN_RESISTANCE = "CAPREOMYCIN RESISTANCE";
+	
+	public final static String CIPROFLOXACIN_RESISTANCE = "CIPROFLOXACIN RESISTANCE";
+	
+	public final static String CLARITHROMYCIN_RESISTANCE = "CLARITHROMYCIN RESISTANCE";
+	
+	public final static String CLOFAZAMINE_RESISTANCE = "CLOFAZAMINE RESISTANCE";
+	
+	public final static String CYCLOSERINE_RESISTANCE = "CYCLOSERINE RESISTANCE";
+	
+	public final static String DELAMANID_RESISTANCE = "DELAMANID RESISTANCE";
+	
+	public final static String ETHAMBUTOL_RESISTANCE = "ETHAMBUTOL RESISTANCE";
+	
+	public final static String ETHIONAMIDE_RESISTANCE = "ETHIONAMIDE RESISTANCE";
+	
+	public final static String GATIFLOXACIN_RESISTANCE = "GATIFLOXACIN RESISTANCE";
+	
+	public final static String ISONIAZID_RESISTANCE = "ISONIAZID RESISTANCE";
+	
+	public final static String KANAMYCIN_RESISTANCE = "KANAMYCIN RESISTANCE";
+	
+	public final static String LEVOFLOXACIN_RESISTANCE = "LEVOFLOXACIN RESISTANCE";
+	
+	public final static String LINEZOLID_RESISTANCE = "LINEZOLID RESISTANCE";
+	
+	public final static String MOXIFLOXACIN_RESISTANCE = "MOXIFLOXACIN RESISTANCE";
+	
+	public final static String OFLOXACIN_RESISTANCE = "OFLOXACIN RESISTANCE";
+	
+	public final static String OTHER_RESISTANCE = "OTHER RESISTANCE";
+	
+	public final static String P_AMINOSALICY_RESISTANCE = "P-AMINOSALICY RESISTANCE";
+	
+	public final static String PROTHIONAMIDE_RESISTANCE = "PROTHIONAMIDE RESISTANCE";
+	
+	public final static String PYRAZINAMIDE_RESISTANCE = "PYRAZINAMIDE RESISTANCE";
+	
+	public final static String RIFABUTIN_RESISTANCE = "RIFABUTIN RESISTANCE";
+	
+	public final static String RIFAMPICIN_RESISTANCE = "RIFAMPICIN RESISTANCE";
+	
+	public final static String STREPTOMYCIN_RESISTANCE = "STREPTOMYCIN RESISTANCE";
+	
+	public final static String TERIZIDONE_RESISTANCE = "TERIZIDONE RESISTANCE";
+	
+	public final static String THIOACETAZONE_RESISTANCE = "THIOACETAZONE RESISTANCE";
+	
+	public final static String VIOMYCIN_RESISTANCE = "VIOMYCIN RESISTANCE";
+	
 	// Private Cache for Concepts
 	private Map<String, Concept> cache = new HashMap<String, Concept>();
 	

@@ -651,6 +651,14 @@ public class MdrtbPatientProgram implements Comparable<MdrtbPatientProgram>, Val
 		}
 	}
 	
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((patientIdentifier == null) ? 0 : patientIdentifier.hashCode());
+		result = prime * result + ((program == null) ? 0 : program.hashCode());
+		return result;
+	}
+	
 	/**
 	 * Implementation of comparable method
 	 */

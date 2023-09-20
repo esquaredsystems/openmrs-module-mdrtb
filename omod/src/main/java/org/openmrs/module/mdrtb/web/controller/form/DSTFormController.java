@@ -18,7 +18,6 @@ import org.openmrs.PatientProgram;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.commonlabtest.LabTest;
-import org.openmrs.module.commonlabtest.LabTestType;
 import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbUtil;
@@ -121,13 +120,11 @@ public class DSTFormController {
 			mdr = true;
 		}
 		
-		else {
-			mdr = false;
-		}
-		
 		Context.getEncounterService().saveEncounter(dst.getEncounter());
-		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
-		LabTest dstTest = CommonLabUtil.getService().createLabTestOrder(dst.getEncounter(), labTestType);
+		LabTest dstTest = CommonLabUtil.getService().getDstLabTestOrder(dst.getEncounter());
+		if (dstTest == null) {
+			dstTest = CommonLabUtil.getService().createDstLabTestOrder(dst.getEncounter());
+		}
 		dst.setDi(new DstImpl(dstTest));
 		//dst.setDi(new DstImpl(dst.getEncounter()));
 		
@@ -143,7 +140,7 @@ public class DSTFormController {
 			Set<String> removeDstResultSet = new HashSet<String>(Arrays.asList(removeDstResults));
 			
 			for (DstResult result : dst.getResults()) {
-				if (result.getId() != null && removeDstResultSet.contains(result.getId())) {
+				if (result.getDrug().getId() != null && removeDstResultSet.contains(result.getDrug().getId().toString())) {
 					dst.removeResult(result);
 				}
 			}

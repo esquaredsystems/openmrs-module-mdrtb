@@ -46,12 +46,6 @@ public class CommonLabUtil {
 	
 	List<LabTestAttributeType> dstLjAttributeTypes = new ArrayList<>();
 	
-	List<LabTestAttributeType> dst2AttributeTypes = new ArrayList<>();
-	
-	List<LabTestAttributeType> dst2MgitAttributeTypes = new ArrayList<>();
-	
-	List<LabTestAttributeType> dst2LjAttributeTypes = new ArrayList<>();
-	
 	private CommonLabTestService service;
 	
 	public static CommonLabUtil getService() {
@@ -110,14 +104,11 @@ public class CommonLabUtil {
 				}
 			}
 			for (LabTestAttributeType at : attributeTypes) {
-				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST2_TEST_NAME)) {
-					dst2AttributeTypes.add(at);
+				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST_MGIT_TEST_NAME)) {
+					dstMgitAttributeTypes.add(at);
 				}
-				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST2_MGIT_TEST_NAME)) {
-					dst2MgitAttributeTypes.add(at);
-				}
-				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST2_LJ_TEST_NAME)) {
-					dst2LjAttributeTypes.add(at);
+				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST_LJ_TEST_NAME)) {
+					dstLjAttributeTypes.add(at);
 				}
 			}
 		}
@@ -158,18 +149,13 @@ public class CommonLabUtil {
 		return testType;
 	}
 	
-	public LabTestType getDst2TestType() {
-		List<LabTestType> testType = service.getLabTestTypes(MdrtbConstants.DST2_TEST_NAME, null, null, null, null, false);
+	public LabTestType getDstMgitTestType() {
+		List<LabTestType> testType = service.getLabTestTypes(MdrtbConstants.DST_MGIT_TEST_NAME, null, null, null, null, false);
 		return testType.isEmpty() ? null : testType.get(0);
 	}
 
-	public LabTestType getDst2MgitTestType() {
-		List<LabTestType> testType = service.getLabTestTypes(MdrtbConstants.DST2_MGIT_TEST_NAME, null, null, null, null, false);
-		return testType.isEmpty() ? null : testType.get(0);
-	}
-
-	public LabTestType getDst2LjTestType() {
-		List<LabTestType> testType = service.getLabTestTypes(MdrtbConstants.DST2_LJ_TEST_NAME, null, null, null, null, false);
+	public LabTestType getDstLjTestType() {
+		List<LabTestType> testType = service.getLabTestTypes(MdrtbConstants.DST_LJ_TEST_NAME, null, null, null, null, false);
 		return testType.isEmpty() ? null : testType.get(0);
 	}
 
@@ -212,7 +198,17 @@ public class CommonLabUtil {
 		}
 		return null;
 	}
-	
+
+	public LabTestAttributeType getLabTestAttributeTypeByTestTypeAndName(LabTestType testType, String name) {
+		List<LabTestAttributeType> list = service.getLabTestAttributeTypes(testType, false);
+		for (LabTestAttributeType type : list) {
+			if (type.getName().equalsIgnoreCase(name)) {
+				return type;
+			}
+		}
+		return null;
+	}
+
 	public LabTestAttribute getCommonAttributeByTestAndName(LabTest labTest, String name) {
 		return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, commonAttributeTypes);
 	}
@@ -239,17 +235,10 @@ public class CommonLabUtil {
 	
 	public LabTestAttribute getDstAttributeByTestAndName(LabTest labTest, String name, DstTestType dstTestType) {
 		switch (dstTestType) {
-			case DST1_LJ:
+			case DST_LJ:
 				return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, dstLjAttributeTypes);
-			case DST1_MGIT:
+			case DST_MGIT:
 				return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, dstMgitAttributeTypes);
-			case DST1: //TODO: Check if there exists a DST already
-			case DST2:
-				return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, dst2AttributeTypes);
-			case DST2_LJ:
-				return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, dst2LjAttributeTypes);
-			case DST2_MGIT:
-				return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, dst2MgitAttributeTypes);
 		}
 		return null;
 	}
@@ -278,8 +267,7 @@ public class CommonLabUtil {
 	 * @param encounter
 	 * @return
 	 */
-	@SuppressWarnings("null")
-	public LabTest createLabTestOrder(Encounter encounter, LabTestType labTestType) {
+	public LabTest getMdrtbLabTestOrder(Encounter encounter, LabTestType labTestType) {
 		// Check if an order already exists
 		Set<Order> orders = encounter.getOrders();
 		if (orders.isEmpty()) {
@@ -298,7 +286,9 @@ public class CommonLabUtil {
 					}
 				}
 			}
-			orders = target.getOrders();
+			if (target != null) {
+				orders = target.getOrders();
+			}
 		}
 		CommonLabTestService labTestService = service;
 		for (Order o : orders) {
@@ -310,7 +300,10 @@ public class CommonLabUtil {
 				}
 			}
 		}
-		// Otherwise create a new Order
+		return null;
+	}
+	
+	public LabTest createMdrtbLabTestOrder(Encounter encounter, LabTestType labTestType) {
 		Order order = new Order();
 		order.setEncounter(encounter);
 		order.setAction(Action.NEW);
@@ -319,6 +312,60 @@ public class CommonLabUtil {
 		order.setUrgency(Urgency.ROUTINE);
 		LabTest labTest = new LabTest(order);
 		labTest.setLabTestType(labTestType);
+		return labTest;
+	}
+	
+	public LabTest getDstLabTestOrder(Encounter encounter) {
+		// Check if an order already exists
+		Set<Order> orders = encounter.getOrders();
+		if (orders.isEmpty()) {
+			Encounter target = null;
+			List<Encounter> allEncounters = Context.getEncounterService().getEncountersByPatient(encounter.getPatient());
+			for (Encounter enc : allEncounters) {
+				if (enc.getEncounterType().equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {
+					if (target == null) {
+						target = enc;
+					} else {
+						// Match the date, we're interested in the encounter closest to the function parameter
+						long diff = Math.abs(encounter.getEncounterDatetime().getTime() - enc.getEncounterDatetime().getTime());
+						if (diff < Math.abs(encounter.getEncounterDatetime().getTime() - target.getEncounterDatetime().getTime())) {
+							target = enc;
+						}
+					}
+				}
+			}
+			if (target != null) {
+				orders = target.getOrders();
+			}
+		}
+		CommonLabTestService labTestService = service;
+		LabTestType ljType = getDstLjTestType();
+		LabTestType mgitType = getDstMgitTestType();
+		for (Order o : orders) {
+			// Does this order have a LabTest object of either LJ or MGIT DST?
+			LabTest existing = labTestService.getLabTest(o.getOrderId());
+			if (existing != null) {
+				if (existing.getLabTestType().equals(mgitType)) {
+					return existing;
+				}
+				if (existing.getLabTestType().equals(ljType)) {
+					return existing;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public LabTest createDstLabTestOrder(Encounter encounter) {
+		LabTestType mgitType = getDstMgitTestType();
+		Order order = new Order();
+		order.setEncounter(encounter);
+		order.setAction(Action.NEW);
+		OrderType orderType = Context.getOrderService().getOrderTypeByUuid(OrderType.TEST_ORDER_TYPE_UUID);
+		order.setOrderType(orderType);
+		order.setUrgency(Urgency.ROUTINE);
+		LabTest labTest = new LabTest(order);
+		labTest.setLabTestType(mgitType);
 		return labTest;
 	}
 }

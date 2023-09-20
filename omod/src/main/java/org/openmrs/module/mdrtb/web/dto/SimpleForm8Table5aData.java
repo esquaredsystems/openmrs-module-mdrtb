@@ -6,7 +6,7 @@ import org.openmrs.module.mdrtb.reporting.custom.Form8Table5aData;
 public class SimpleForm8Table5aData extends BaseOpenmrsData {
 	
 	private static final long serialVersionUID = 5549137578720435225L;
-
+	
 	private Integer respBacNew;
 	
 	private Integer respBacOther;

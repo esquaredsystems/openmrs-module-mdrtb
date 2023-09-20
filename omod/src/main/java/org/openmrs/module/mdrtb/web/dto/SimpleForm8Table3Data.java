@@ -6,7 +6,7 @@ import org.openmrs.module.mdrtb.reporting.custom.Form8Table3Data;
 public class SimpleForm8Table3Data extends BaseOpenmrsData {
 	
 	private static final long serialVersionUID = -8397746792762958376L;
-
+	
 	private Integer group2To1;
 	
 	private Integer relapse;

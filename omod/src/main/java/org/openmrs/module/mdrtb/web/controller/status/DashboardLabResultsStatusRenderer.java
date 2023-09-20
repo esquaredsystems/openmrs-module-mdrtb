@@ -301,7 +301,6 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 	}
 	
 	public String getDstResultString(Dst dst) {
-		
 		String results = "";
 		Map<Integer, List<DstResult>> dstResultsMap = dst.getResultsMap();
 		Collection<Concept> drugs = getPossibleDrugTypes();
@@ -310,16 +309,15 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 			if (dstResultsMap.get(drug.getId()) != null) {
 				for (DstResult result : dstResultsMap.get(drug.getId())) {
 					StringBuffer sb = new StringBuffer();
-					sb.append(result.getDrug().getName(Context.getLocale(), ConceptNameType.SHORT, null));
+					sb.append(result.getDrug().getShortNameInLocale(Context.getLocale()));
 					sb.append(": ");
-					ConceptName name = result.getResult().getName(Context.getLocale(), ConceptNameType.SHORT, null);
+					ConceptName name = result.getResult().getShortNameInLocale(Context.getLocale());
 					if (name == null) {
 						name = result.getResult().getName(Context.getLocale());
 					}
 					sb.append(name.getName());
 					sb.append("; ");
 					results += sb.toString();
-					
 				}
 			}
 		}

@@ -525,10 +525,10 @@ public class SpecimenController extends AbstractSpecimenController {
 				
 				// assign them if they exist
 				if (StringUtils.isNotBlank(colonies)) {
-					dstResult.setColonies(Integer.valueOf(colonies));
+					// No longer in use
 				}
 				if (StringUtils.isNotBlank(concentration)) {
-					dstResult.setConcentration(Double.valueOf(concentration));
+					// No longer in use
 				}
 				// although the DstResult obj should handle it, still a good idea to set the result before the drug because of the wonky way result/drugs are stored
 				if (StringUtils.isNotBlank(resultType)) {
@@ -546,7 +546,7 @@ public class SpecimenController extends AbstractSpecimenController {
 			Set<String> removeDstResultSet = new HashSet<String>(Arrays.asList(removeDstResults));
 			
 			for (DstResult result : dst.getResults()) {
-				if (result.getId() != null && removeDstResultSet.contains(result.getId())) {
+				if (result.getDrug().getId() != null && removeDstResultSet.contains(result.getDrug().getId().toString())) {
 					dst.removeResult(result);
 				}
 			}
