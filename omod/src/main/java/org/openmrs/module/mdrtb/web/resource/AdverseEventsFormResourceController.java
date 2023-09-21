@@ -1,6 +1,7 @@
 package org.openmrs.module.mdrtb.web.resource;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.PatientProgram;
@@ -226,7 +228,9 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 			    Patient.class)).getByUniqueId(patientUuid);
 			if (patient == null)
 				return new EmptySearchResult();
-			List<Encounter> encs = Context.getEncounterService().getEncountersByPatient(patient);
+			Collection<EncounterType> types = new ArrayList<>();
+			types.add(MdrtbConstants.ET_ADVERSE_EVENT);
+			List<Encounter> encs = Context.getService(MdrtbService.class).getEncountersByPatientAndTypes(patient, types);
 			for (Encounter encounter : encs) {
 				if (encounter.getEncounterType().equals(MdrtbConstants.ET_ADVERSE_EVENT)) {
 					AdverseEventsForm aeForm = new AdverseEventsForm(encounter);
