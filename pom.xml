@@ -195,7 +195,7 @@
 						<source>1.8</source>
 					</configuration>
 				</plugin>
-                <!-- <plugin>
+                <plugin>
 					<groupId>net.revelc.code.formatter</groupId>
 					<artifactId>formatter-maven-plugin</artifactId>
 					<configuration>
@@ -216,7 +216,7 @@
 							</goals>
 						</execution>
 					</executions>
-				</plugin> -->
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
