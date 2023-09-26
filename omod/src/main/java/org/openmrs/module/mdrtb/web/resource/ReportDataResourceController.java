@@ -1,82 +1,182 @@
 package org.openmrs.module.mdrtb.web.resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.ss.formula.functions.T;
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.ReportData;
+import org.openmrs.module.mdrtb.ReportStatus;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.web.dto.SimpleReportData;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
+import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.api.Searchable;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
+import org.openmrs.module.webservices.rest.web.resource.impl.DataDelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
+import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/reportdata", supportedClass = ReportData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
-public class ReportDataResourceController extends DelegatingCrudResource<ReportData> implements Searchable {
+import io.swagger.models.Model;
+import io.swagger.models.ModelImpl;
+import io.swagger.models.properties.IntegerProperty;
+import io.swagger.models.properties.RefProperty;
+import io.swagger.models.properties.StringProperty;
+
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/reportdata", supportedClass = SimpleReportData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+public class ReportDataResourceController extends DataDelegatingCrudResource<SimpleReportData> implements Searchable {
 	
-	/**
-	 * Logger for this class
-	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	private MdrtbService service = Context.getService(MdrtbService.class);
 	
 	@Override
-	public ReportData newDelegate() {
-		return new ReportData();
-	}
-	
-	@Override
-	public ReportData save(ReportData delegate) {
-		return service.saveReportData(delegate);
-	}
-	
-	@Override
-	public ReportData getByUniqueId(String uuid) {
-		return service.getReportDataByUuid(uuid);
-	}
-	
-	@Override
-	protected void delete(ReportData delegate, String reason, RequestContext context) throws ResponseException {
-		service.saveReportData(delegate);
-	}
-	
-	@Override
-	public void purge(ReportData delegate, RequestContext context) throws ResponseException {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("uuid");
-		description.addProperty("display");
-		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
 		description.addSelfLink();
+		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
+		description.addProperty("uuid");
+		description.addProperty("location");
+		description.addProperty("reportName");
+		description.addProperty("description");
+		description.addProperty("year");
+		description.addProperty("quarter");
+		description.addProperty("month");
+		description.addProperty("reportType");
+		description.addProperty("reportStatus");
+		description.addProperty("tableData");
 		return description;
+	}
+	
+	public Model getGETModel(Representation rep) {
+		ModelImpl modelImpl = (ModelImpl) super.getGETModel(rep);
+		modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
+		        .property("location", new RefProperty("#/definitions/LocationGet"))
+		        .property("reportName", new StringProperty()).property("description", new StringProperty())
+		        .property("year", new IntegerProperty()).property("quarter", new IntegerProperty())
+		        .property("month", new IntegerProperty()).property("reportType", new StringProperty())
+		        .property("reportStatus", new StringProperty());
+		if (rep instanceof FullRepresentation) {
+			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
+			        .property("location", new RefProperty("#/definitions/LocationGet"))
+			        .property("reportName", new StringProperty()).property("description", new StringProperty())
+			        .property("year", new IntegerProperty()).property("quarter", new IntegerProperty())
+			        .property("month", new IntegerProperty()).property("reportType", new StringProperty())
+			        .property("reportStatus", new StringProperty()).property("tableData", new StringProperty());
+		}
+		return modelImpl;
+	}
+	
+	@Override
+	public Model getCREATEModel(Representation rep) {
+		return new ModelImpl().property("locationUuid", new StringProperty()).property("reportName", new StringProperty())
+		        .property("description", new StringProperty()).property("year", new IntegerProperty())
+		        .property("quarter", new IntegerProperty()).property("month", new IntegerProperty())
+		        .property("reportType", new StringProperty()).property("reportStatus", new StringProperty())
+		        .property("tableData", new StringProperty());
+	}
+	
+	@Override
+	public Model getUPDATEModel(Representation rep) {
+		return getCREATEModel(rep);
 	}
 	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
-		DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
-		delegatingResourceDescription.addProperty("name");
-		delegatingResourceDescription.addProperty("description");
-		return delegatingResourceDescription;
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addRequiredProperty("locationUuid");
+		description.addRequiredProperty("reportName");
+		description.addRequiredProperty("tableData");
+		description.addRequiredProperty("year");
+		description.addProperty("month");
+		description.addProperty("quarter");
+		description.addProperty("reportType");
+		description.addProperty("description");
+		return description;
+	}
+	
+	@Override
+	public SimpleReportData newDelegate() {
+		SimpleReportData reportObject = new SimpleReportData();
+		reportObject.setReportStatus(ReportStatus.UNLOCKED);
+		return reportObject;
+	}
+	
+	@PropertyGetter("display")
+	public String getDisplayString(SimpleReportData reportObject) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(reportObject.getUuid());
+		sb.append(" ");
+		sb.append(reportObject.getReportName());
+		sb.append(" ");
+		sb.append(reportObject.getYear());
+		return sb.toString();
+	}
+	
+	@Override
+	public SimpleReportData getByUniqueId(String uuid) {
+		ReportData reportData = service.getReportDataByUuid(uuid);
+		if (reportData == null) {
+			throw new ResourceNotFoundException(Context.getMessageSourceService()
+			        .getMessage("mdrtb.missingScannedLabReport"));
+		}
+		return new SimpleReportData(reportData);
+	}
+	
+	@Override
+	public SimpleReportData save(SimpleReportData delegate) throws ResponseException {
+		ReportData reportData = delegate.toReportData();
+		reportData = service.saveReportData(reportData);
+		return new SimpleReportData(reportData);
+	}
+	
+	@Override
+	protected void delete(SimpleReportData delegate, String reason, RequestContext context) throws ResponseException {
+		service.voidReportData(delegate.toReportData(), reason);
+	}
+	
+	@Override
+	public void purge(SimpleReportData delegate, RequestContext context) throws ResponseException {
+		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
-		// String query = context.getParameter("q");
-		List<T> results = null;
-		return new NeedsPaging<T>(results, context);
+		String yearStr = context.getRequest().getParameter("year");
+		String quarterStr = context.getRequest().getParameter("quarter");
+		String monthStr = context.getRequest().getParameter("month");
+		String regionUuid = context.getRequest().getParameter("region");
+		String districtUuid = context.getRequest().getParameter("district");
+		String facilityUuid = context.getRequest().getParameter("facility");
+		String reportName = context.getRequest().getParameter("name");
+		String reportTypeStr = context.getRequest().getParameter("type");
+		ReportType reportType = reportTypeStr == null ? null : ReportType.valueOf(reportTypeStr.toUpperCase());
+		// If conditions don't meet
+		if (yearStr == null || regionUuid == null) {
+			return new EmptySearchResult();
+		}
+		Location region = Context.getLocationService().getLocationByUuid(regionUuid);
+		Location district = Context.getLocationService().getLocationByUuid(districtUuid);
+		Location facility = Context.getLocationService().getLocationByUuid(facilityUuid);
+		Integer year = yearStr == null ? null : Integer.parseInt(yearStr);
+		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
+		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
+		List<ReportData> list = service.searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
+		List<SimpleReportData> reportObjects = new ArrayList<>();
+		for (ReportData reportData : list) {
+			reportObjects.add(new SimpleReportData(reportData));
+		}
+		return new NeedsPaging<SimpleReportData>(reportObjects, context);
 	}
 }

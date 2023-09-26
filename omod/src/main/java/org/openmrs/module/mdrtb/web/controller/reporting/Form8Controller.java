@@ -16,6 +16,7 @@ import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.Form89;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
@@ -142,7 +143,7 @@ public class Form8Controller {
 		}
 		
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-08", "DOTSTB");
+		    year, quarterInt, monthInt, "TB-08", ReportType.DOTSTB);
 		
 		String oName = null;
 		String dName = null;

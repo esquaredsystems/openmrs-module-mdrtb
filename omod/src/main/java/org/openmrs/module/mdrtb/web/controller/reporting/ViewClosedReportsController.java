@@ -152,11 +152,8 @@ public class ViewClosedReportsController {
 				returnStr = "/module/mdrtb/reporting/viewClosedReports";
 			} else if (formAction.equals("view")) {
 				System.out.println("-----VIEW-----");
-				List<String> allReports = Context.getService(MdrtbService.class).readTableData(oblastId, 
-					districtId, facilityId, year, quarter, month, reportName, null);
-				List<String> allReports = (List<String>) Context.getService(MdrtbService.class).readTableData(oblast,
-				    district, facilityId, year, q, m, reportName.replaceAll(" ", "_").toUpperCase(), reportDate,
-				    reportType);
+				List<String> allReports = Context.getService(MdrtbService.class).readTableData(oblastId, districtId,
+				    facilityId, year, quarter, month, reportName, null);
 				
 				if (allReports.isEmpty() && allReports.size() == 0) {
 					html = "<p>No Data Found</p>";

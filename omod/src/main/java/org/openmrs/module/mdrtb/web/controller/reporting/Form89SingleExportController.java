@@ -13,6 +13,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.Form89;
 import org.openmrs.module.mdrtb.form.custom.HAIN2Form;
@@ -145,7 +146,7 @@ public class Form89SingleExportController {
 		model.addAttribute("locale", Context.getLocale().toString());
 		
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-03", "DOTSTB");
+		    year, quarterInt, monthInt, "TB-03", ReportType.DOTSTB);
 		
 		System.out.println(reportStatus);
 		model.addAttribute("oblast", oblastId);

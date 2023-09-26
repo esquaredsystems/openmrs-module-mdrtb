@@ -18,6 +18,7 @@ import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
 import org.openmrs.module.mdrtb.form.custom.Form89;
@@ -544,7 +545,7 @@ public class DOTSDQController {
 		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
-		    year, quarter, month, "DOTSDQ", "DOTSTB");
+		    year, quarterInt, monthInt, "DOTSDQ", ReportType.DOTSTB);
 		
 		model.addAttribute("oblast", oblastId);
 		model.addAttribute("facility", facilityId);

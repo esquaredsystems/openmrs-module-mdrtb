@@ -2062,7 +2062,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			Context.getProgramWorkflowService().savePatientProgram(program.getPatientProgram());
 		}
 	}
-
+	
 	public Smear createSmear(Specimen specimen) {
 		return null;
 	}
@@ -2098,7 +2098,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			dao.saveReportData(reportData);
 		}
 	}
-
+	
 	public void unvoidReportData(ReportData reportData) throws APIException {
 		if (reportData.getVoided()) {
 			reportData.setVoided(false);
@@ -2113,7 +2113,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	        Integer quarter, Integer month, String reportName, ReportType reportType) {
 		return dao.searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
 	}
-
+	
 	public void unlockReport(ReportData reportData) {
 		if (reportData.getVoided()) {
 			throw new APIException("Cannot unlock a voided report");
@@ -2123,12 +2123,12 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public boolean getReportArchived(Integer region, Integer district, Integer facility, Integer year, Integer quarter,
-			Integer month, String name, ReportType reportType) {
+	        Integer month, String name, ReportType reportType) {
 		return dao.getReportArchived(region, district, facility, year, quarter, month, name, reportType);
 	}
 	
 	public List<String> readTableData(Integer regionId, Integer districtId, Integer facilityId, Integer year,
-			Integer quarter, Integer month, String name, ReportType reportType) {
+	        Integer quarter, Integer month, String name, ReportType reportType) {
 		return dao.getReportDataAsList(regionId, districtId, facilityId, year, quarter, month, name, reportType);
 	}
 	
@@ -2136,46 +2136,30 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return dao.getReports(reportType.toString());
 	}
 	
-	public void lockReport(Location location, Integer year, Integer quarter,
-	        Integer month, String data, boolean reportStatus, String reportName, ReportType reportType) {
-		try {
-			log.debug("Saving file:" + location + ", " + year + ", " +  reportName + ", " + reportType);
-			
-			ReportStatus status = reportStatus ? ReportStatus.LOCKED : ReportStatus.UNLOCKED;
-			ReportData reportData = new ReportData();
-			reportData.setLocation(location);
-			reportData.setYear(year);
-			reportData.setQuarter(quarter);
-			reportData.setMonth(month);
-			reportData.setReportName(reportName);
-			reportData.setReportType(reportType);
-			reportData.setReportStatus(status);
-			reportData.setTableData(data);
-			dao.saveReportData(reportData);
-			saveReportData(reportData);
-		}
-		catch (Exception e) {
-			log.debug(e.getMessage());
-		}
-	}
-	
 	public void lockReport(ReportData reportData) {
+		if (reportData.getReportStatus() == ReportStatus.UNLOCKED) {
+			try {
+				dao.saveReportData(reportData);
+				saveReportData(reportData);
+			}
+			catch (Exception e) {
+				log.debug(e.getMessage());
+			}
+		}
 	}
 	
 	@Override
 	public void saveScannedLabReport(ScannedLabReport report) {
 		if (report == null) {
-			log.warn("Unable to save dst: dst object is null");
+			log.warn("Unable to save DST: DST object is null");
 			return;
 		}
-		
 		// make sure getScannedLabReport returns that right type
 		// (i.e., that this service implementation is using the specimen implementation
 		// that it expects, which should return a observation)
 		if (!(report.getScannedLabReport() instanceof Obs)) {
 			throw new APIException("Not a valid scanned lab report implementation for this service implementation");
 		}
-		
 		// otherwise, go ahead and do the save
 		Context.getObsService().saveObs((Obs) report.getScannedLabReport(), "voided by MDRTB module");
 	}

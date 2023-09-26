@@ -108,7 +108,7 @@ public interface MdrtbService extends OpenmrsService {
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional
 	void voidReportData(ReportData reportData, String reason) throws APIException;
-
+	
 	/**
 	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
 	 * this module's privilege. It is executed in a transaction.
@@ -120,7 +120,7 @@ public interface MdrtbService extends OpenmrsService {
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional
 	void unvoidReportData(ReportData reportData) throws APIException;
-
+	
 	/**
 	 * Returns the Concept specified by the passed lookup string. Checks MdrtbConcepts mapping, id,
 	 * name, and uuid before returning null
@@ -1063,9 +1063,9 @@ public interface MdrtbService extends OpenmrsService {
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void processDeath(Patient patient, Date deathDate, Concept causeOfDeath);
-
+	
 	/**
-	 * Searches for saved Report Data using various parameters 
+	 * Searches for saved Report Data using various parameters
 	 * 
 	 * @param region
 	 * @param district
@@ -1078,16 +1078,16 @@ public interface MdrtbService extends OpenmrsService {
 	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	public List<ReportData> searchReportData(Location region, Location district, Location facility, Integer year, Integer quarter,
-	        Integer month, String reportName, ReportType reportType);
-
+	public List<ReportData> searchReportData(Location region, Location district, Location facility, Integer year,
+	        Integer quarter, Integer month, String reportName, ReportType reportType);
+	
 	public void unlockReport(ReportData reportData);
 	
-	public boolean getReportArchived(Integer oblastId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
-			Integer month, String name, ReportType reportType);
+	public boolean getReportArchived(Integer oblastId, Integer districtId, Integer facilityId, Integer year,
+	        Integer quarter, Integer month, String name, ReportType reportType);
 	
 	public List<String> readTableData(Integer oblastId, Integer districtId, Integer facilityId, Integer year,
-			Integer quarter, Integer month, String name, ReportType reportType);
+	        Integer quarter, Integer month, String name, ReportType reportType);
 	
 	/**
 	 * Fetch all reports and create a nested list for each column

@@ -13,6 +13,7 @@ import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.Form89;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
@@ -145,7 +146,7 @@ public class TB07ReportController {
 		TB07Table1Data table1 = getTB07PatientSet(year, quarterInt, monthInt, locList);
 		
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-07", "DOTSTB");
+		    year, quarterInt, monthInt, "TB-07", ReportType.DOTSTB);
 		System.out.println(reportStatus);
 		model.addAttribute("table1", table1);
 		model.addAttribute("oblast", oblastId);

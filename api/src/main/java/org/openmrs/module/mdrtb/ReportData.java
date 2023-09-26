@@ -32,9 +32,9 @@ import org.openmrs.module.mdrtb.reporting.custom.PDFHelper;
 @Entity(name = "mdrtb.ReportData")
 @Table(name = "report_data")
 public class ReportData extends BaseOpenmrsData {
-
+	
 	private static final long serialVersionUID = 1348372808239298611L;
-
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "report_id")

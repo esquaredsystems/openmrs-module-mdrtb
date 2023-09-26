@@ -39,7 +39,6 @@ import org.openmrs.module.mdrtb.LocationHierarchy;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.ReportData;
 import org.openmrs.module.mdrtb.ReportType;
-import org.openmrs.module.mdrtb.reporting.custom.PDFHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -203,9 +202,9 @@ public class MdrtbDao {
 		}		
 		return list;
 	}
-
-	public boolean getReportArchived(Integer regionId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
-			Integer month, String reportName, ReportType reportType) {
+	
+	public boolean getReportArchived(Integer regionId, Integer districtId, Integer facilityId, Integer year,
+	        Integer quarter, Integer month, String reportName, ReportType reportType) {
 		Location region = regionId != null ? Context.getLocationService().getLocation(regionId) : null;
 		Location district = districtId != null ? Context.getLocationService().getLocation(districtId) : null;
 		Location facility = facilityId != null ? Context.getLocationService().getLocation(facilityId) : null;
