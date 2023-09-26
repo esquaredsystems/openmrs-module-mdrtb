@@ -16,6 +16,7 @@ import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
 import org.openmrs.module.mdrtb.form.custom.HAIN2Form;
@@ -632,8 +633,8 @@ public class TB03SingleExportController {
 		
 		boolean reportStatus;// = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB 03");
 		
-		reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId, year,
-		    quarter, month, "TB-03", "DOTSTB");
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
+		    year, quarterInt, monthInt, "TB-03", ReportType.DOTSTB);
 		
 		System.out.println(reportStatus);
 		model.addAttribute("oblast", oblastId);

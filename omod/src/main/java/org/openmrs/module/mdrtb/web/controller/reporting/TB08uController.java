@@ -12,6 +12,7 @@ import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.reporting.custom.TB08uData;
@@ -134,8 +135,9 @@ public class TB08uController {
 		TB08uData table1 = getTB08uPatientSet(locList, year, quarterInt, monthInt);
 		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-08u", "MDRTB");
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
+		    year, quarterInt, monthInt, "TB-08u", ReportType.MDRTB);
+		
 		System.out.println(reportStatus);
 		
 		String oName = null;

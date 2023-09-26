@@ -14,6 +14,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
@@ -155,8 +156,8 @@ public class MissingTb03uController {
 		model.addAttribute("fName", fName);
 		model.addAttribute("locale", Context.getLocale().toString());
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
-		    year, quarter, month, "DQ", "MDRTB");
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
+		    year, quarterInt, monthInt, "DQ", ReportType.MDRTB);
 		
 		model.addAttribute("oblast", oblastId);
 		model.addAttribute("facility", facilityId);

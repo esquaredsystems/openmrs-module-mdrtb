@@ -144,18 +144,7 @@ public class TB07ReportController {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		TB07Table1Data table1 = getTB07PatientSet(year, quarterInt, monthInt, locList);
 		
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		//Integer report_oblast = null; Integer report_quarter = null; Integer report_month = null;
-		/*if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
-		
-		/*
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB 07");
-		if(location!=null)
-			 reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB-07","DOTSTB");
-		*/
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarter, month, "TB-07", "DOTSTB");
 		System.out.println(reportStatus);
 		model.addAttribute("table1", table1);

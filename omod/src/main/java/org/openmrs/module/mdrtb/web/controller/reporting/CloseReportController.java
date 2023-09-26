@@ -16,9 +16,10 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportData;
+import org.openmrs.module.mdrtb.ReportStatus;
 import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
-import org.openmrs.module.mdrtb.reporting.custom.PDFHelper;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
@@ -68,8 +69,7 @@ public class CloseReportController {
 		Integer month = (m != null && m.length() != 0) ? null : Integer.parseInt(m.replace("\"", ""));
 		Date reportDate = null;
 		
-		String tableData = null;
-		boolean reportStatus = false;
+		ReportStatus reportStatus = ReportStatus.UNLOCKED;
 		
 		try {
 			if (!(reportDateStr.equals(""))) {
@@ -80,10 +80,7 @@ public class CloseReportController {
 					reportDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(reportDateStr);
 				}
 			}
-			if (!(table.equals(""))) {
-				tableData = new PDFHelper().compressCode(table);
-			}
-			reportStatus = true;
+			reportStatus = ReportStatus.LOCKED;
 			
 			StringBuffer sb = new StringBuffer().append("Oblast: ").append(region).append("District: ").append(district)
 			        .append("Facility: ").append(facility).append("Year: ").append(year).append("Quarter: ").append(quarter)
@@ -91,14 +88,23 @@ public class CloseReportController {
 			        .append(reportStatus).append("Report Date: ").append(reportDate).append("Form Path: ").append(formPath);
 			System.out.println(sb.toString());
 			
+			ReportData reportData = new ReportData();
+			reportData.setLocation(facility);
+			reportData.setYear(year);
+			reportData.setMonth(month);
+			reportData.setQuarter(quarter);
+			reportData.setReportStatus(reportStatus);
+			reportData.setReportName(reportName);
+			reportData.setTableData(table);
+			
 			if (formPath.equals("tb08uResults") || formPath.equals("tb07uResults") || formPath.equals("tb03uResults")
 			        || formPath.equals("dquResults")) {
-				Context.getService(MdrtbService.class).lockReport(region, district, facility, year, quarter, month,
-				    reportDate, tableData, reportStatus, reportName, ReportType.MDRTB);
+				reportData.setReportType(ReportType.MDRTB);
+				Context.getService(MdrtbService.class).lockReport(reportData);
 			} else {
 				try {
-					Context.getService(MdrtbService.class).lockReport(region, district, facility, year, quarter, month,
-					    reportDate, tableData, reportStatus, reportName, ReportType.DOTSTB);
+					reportData.setReportType(ReportType.DOTSTB);
+					Context.getService(MdrtbService.class).lockReport(reportData);
 				}
 				catch (Exception ee) {
 					System.out.println("Caught in inner catch:" + ee.getMessage());
@@ -113,12 +119,11 @@ public class CloseReportController {
 			System.out.println("---POST CLOSE-----");
 		}
 		catch (Exception e) {
-			reportStatus = false;
 			System.out.println("Caught in outer catch:" + e.getMessage());
 			e.printStackTrace();
 			
 			model.addAttribute("ex", e);
-			model.addAttribute("reportStatus", reportStatus);
+			model.addAttribute("reportStatus", false);
 		}
 		
 		String url = "";

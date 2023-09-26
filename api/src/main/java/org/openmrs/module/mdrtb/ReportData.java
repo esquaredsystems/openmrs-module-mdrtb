@@ -9,7 +9,7 @@
  */
 package org.openmrs.module.mdrtb;
 
-import java.util.Date;
+import java.io.IOException;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -22,34 +22,27 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
+import org.openmrs.module.mdrtb.reporting.custom.PDFHelper;
 
 /**
  * Please note that a corresponding table schema must be created in liquibase.xml.
  */
 @Entity(name = "mdrtb.ReportData")
 @Table(name = "report_data")
-public class ReportData extends BaseOpenmrsObject {
-	
-	private static final long serialVersionUID = 1L;
-	
+public class ReportData extends BaseOpenmrsData {
+
+	private static final long serialVersionUID = 1348372808239298611L;
+
 	@Id
 	@GeneratedValue
 	@Column(name = "report_id")
 	private Integer id;
 	
 	@ManyToOne
-	@JoinColumn(name = "region_id")
-	private Location region;
-	
-	@ManyToOne
-	@JoinColumn(name = "district_id")
-	private Location district;
-	
-	@ManyToOne
-	@JoinColumn(name = "facility_id")
-	private Location facility;
+	@JoinColumn(name = "location_id")
+	private Location location;
 	
 	@Basic
 	@Column(name = "report_name", length = 255)
@@ -71,19 +64,15 @@ public class ReportData extends BaseOpenmrsObject {
 	@Column(name = "month")
 	private Integer month;
 	
-	@Basic
-	@Column(name = "report_date")
-	private Date reportDate;
-	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "report_type", length = 50)
 	private ReportType reportType;
 	
-	@Basic
-	@Column(name = "report_status")
-	private Integer reportStatus;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "report_status", length = 50)
+	private ReportStatus reportStatus;
 	
-	@Column(name = "table_data", columnDefinition = "text")
+	@Column(name = "table_data")
 	private String tableData;
 	
 	@Override
@@ -96,28 +85,12 @@ public class ReportData extends BaseOpenmrsObject {
 		this.id = id;
 	}
 	
-	public Location getRegion() {
-		return region;
+	public Location getLocation() {
+		return location;
 	}
 	
-	public void setRegion(Location region) {
-		this.region = region;
-	}
-	
-	public Location getDistrict() {
-		return district;
-	}
-	
-	public void setDistrict(Location district) {
-		this.district = district;
-	}
-	
-	public Location getFacility() {
-		return facility;
-	}
-	
-	public void setFacility(Location facility) {
-		this.facility = facility;
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 	
 	public String getReportName() {
@@ -160,14 +133,6 @@ public class ReportData extends BaseOpenmrsObject {
 		this.month = month;
 	}
 	
-	public Date getReportDate() {
-		return reportDate;
-	}
-	
-	public void setReportDate(Date reportDate) {
-		this.reportDate = reportDate;
-	}
-	
 	public ReportType getReportType() {
 		return reportType;
 	}
@@ -176,19 +141,23 @@ public class ReportData extends BaseOpenmrsObject {
 		this.reportType = reportType;
 	}
 	
-	public Integer getReportStatus() {
+	public ReportStatus getReportStatus() {
 		return reportStatus;
 	}
 	
-	public void setReportStatus(Integer reportStatus) {
+	public void setReportStatus(ReportStatus reportStatus) {
 		this.reportStatus = reportStatus;
 	}
 	
-	public String getTableData() {
-		return tableData;
+	public String getTableData() throws IOException {
+		if (tableData != null) {
+			return new PDFHelper().decompressCode(tableData);
+		}
+		return null;
 	}
 	
-	public void setTableData(String tableData) {
-		this.tableData = tableData;
+	public void setTableData(String tableData) throws IOException {
+		String compressCode = new PDFHelper().compressCode(tableData);
+		this.tableData = compressCode;
 	}
 }

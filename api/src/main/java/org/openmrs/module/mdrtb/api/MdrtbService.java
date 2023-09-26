@@ -98,6 +98,30 @@ public interface MdrtbService extends OpenmrsService {
 	ReportData saveReportData(ReportData reportData) throws APIException;
 	
 	/**
+	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
+	 * this module's privilege. It is executed in a transaction.
+	 * 
+	 * @param reportData
+	 * @return
+	 * @throws APIException
+	 */
+	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
+	@Transactional
+	void voidReportData(ReportData reportData, String reason) throws APIException;
+
+	/**
+	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
+	 * this module's privilege. It is executed in a transaction.
+	 * 
+	 * @param reportData
+	 * @return
+	 * @throws APIException
+	 */
+	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
+	@Transactional
+	void unvoidReportData(ReportData reportData) throws APIException;
+
+	/**
 	 * Returns the Concept specified by the passed lookup string. Checks MdrtbConcepts mapping, id,
 	 * name, and uuid before returning null
 	 * 
@@ -1039,28 +1063,42 @@ public interface MdrtbService extends OpenmrsService {
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void processDeath(Patient patient, Date deathDate, Concept causeOfDeath);
+
+	/**
+	 * Searches for saved Report Data using various parameters 
+	 * 
+	 * @param region
+	 * @param district
+	 * @param facility
+	 * @param year
+	 * @param quarter
+	 * @param month
+	 * @param reportName
+	 * @param reportType
+	 * @return
+	 */
+	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
+	public List<ReportData> searchReportData(Location region, Location district, Location facility, Integer year, Integer quarter,
+	        Integer month, String reportName, ReportType reportType);
+
+	public void unlockReport(ReportData reportData);
 	
-	public void unlockReport(Integer oblastId, Integer districtId, Integer facilityId, Integer year, String quarter,
-	        String month, String name, String date, String type);
-	
-	public boolean readReportStatus(Integer oblastId, Integer districtId, Integer facilityId, Integer year, String quarter,
-	        String month, String name, String type);
+	public boolean getReportArchived(Integer oblastId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
+			Integer month, String name, ReportType reportType);
 	
 	public List<String> readTableData(Integer oblastId, Integer districtId, Integer facilityId, Integer year,
-	        String quarter, String month, String name, String date, String reportType);
+			Integer quarter, Integer month, String name, ReportType reportType);
 	
 	/**
 	 * Fetch all reports and create a nested list for each column
 	 * 
 	 * @param reportType
-	 * @return List of List<Objects> with objects in exactly the order: reportid, region, district,
-	 *         facility, reportName, year, quarter, month, reportDate, reportType, reportStatus
+	 * @return List of Reports
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public List<List<Object>> getReportsWithoutData(ReportType reportType);
 	
-	public void lockReport(Region region, District district, Facility facility, Integer year, Integer quarter,
-	        Integer month, Date reportDate, String tableData, boolean reportStatus, String reportName, ReportType reportType);
+	public void lockReport(ReportData reportData);
 	
 	/**
 	 * Saves a scanned lab report in the appropriate obs constructs

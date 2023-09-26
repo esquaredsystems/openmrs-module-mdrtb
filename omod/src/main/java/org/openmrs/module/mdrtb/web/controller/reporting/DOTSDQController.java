@@ -543,7 +543,7 @@ public class DOTSDQController {
 		model.addAttribute("locale", Context.getLocale().toString());
 		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarter, month, "DOTSDQ", "DOTSTB");
 		
 		model.addAttribute("oblast", oblastId);

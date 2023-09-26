@@ -12,6 +12,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportStatus;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.reporting.pv.AdverseEventsRegisterData;
@@ -158,9 +160,11 @@ public class AdverseEventsRegisterController {
 		if (aeRegister != null && aeRegister.size() != 0) {
 			Collections.sort(aeRegister);
 		}
-		
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-07", "DOTSTB");
+
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
+		    year, quarterInt, monthInt, "TB-07", ReportType.DOTSTB);
 		
 		System.out.println(reportStatus);
 		

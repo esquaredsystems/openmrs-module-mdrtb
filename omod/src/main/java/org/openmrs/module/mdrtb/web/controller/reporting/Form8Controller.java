@@ -141,7 +141,7 @@ public class Form8Controller {
 			model.addAttribute(table.getKey(), table.getValue());
 		}
 		
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarter, month, "TB-08", "DOTSTB");
 		
 		String oName = null;

@@ -13,6 +13,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportData;
 import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.reporting.custom.PDFHelper;
@@ -126,26 +127,35 @@ public class ViewClosedReportsController {
 	public ModelAndView viewClosedReportsPost(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("district") Integer districtId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,
-	        @RequestParam("quarter") String quarter, @RequestParam("month") String month,
+	        @RequestParam("quarter") String q, @RequestParam("month") String m,
 	        @RequestParam("reportName") String reportName, @RequestParam("reportDate") String reportDate,
 	        @RequestParam("formAction") String formAction, @RequestParam("reportType") String reportType, ModelMap model)
 	        throws EvaluationException {
-		Integer oblast = oblastId;
-		Integer district = districtId;
-		Integer facility = facilityId;
+		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
+		Integer quarter = q == null ? null : Integer.parseInt(q.replace("\"", ""));
+		Integer month = (m != null && m.length() != 0) ? null : Integer.parseInt(m.replace("\"", ""));
 		String html = "";
 		String returnStr = "";
 		try {
 			if (formAction.equals("unlock")) {
 				System.out.println("-----UNLOCK-----");
-				Context.getService(MdrtbService.class).unlockReport(oblast, district, facility, year, quarter, month,
-				    reportName.replaceAll(" ", "_").toUpperCase(), reportDate, reportType);
+				Context.getService(MdrtbService.class).saveScannedLabReport(null);
+				ReportData reportData = new ReportData();
+				reportData.setLocation(facility);
+				reportData.setYear(year);
+				reportData.setMonth(month);
+				reportData.setQuarter(quarter);
+				reportData.setReportName(reportName);
+				
+				Context.getService(MdrtbService.class).unlockReport(reportData);
 				viewClosedReportsGet(reportType, model);
 				returnStr = "/module/mdrtb/reporting/viewClosedReports";
 			} else if (formAction.equals("view")) {
 				System.out.println("-----VIEW-----");
+				List<String> allReports = Context.getService(MdrtbService.class).readTableData(oblastId, 
+					districtId, facilityId, year, quarter, month, reportName, null);
 				List<String> allReports = (List<String>) Context.getService(MdrtbService.class).readTableData(oblast,
-				    district, facility, year, quarter, month, reportName.replaceAll(" ", "_").toUpperCase(), reportDate,
+				    district, facilityId, year, q, m, reportName.replaceAll(" ", "_").toUpperCase(), reportDate,
 				    reportType);
 				
 				if (allReports.isEmpty() && allReports.size() == 0) {
@@ -154,8 +164,8 @@ public class ViewClosedReportsController {
 					html = new PDFHelper().decompressCode(allReports.get(0));
 				}
 				model.addAttribute("html", html);
-				model.addAttribute("oblast", oblast);
-				model.addAttribute("district", district);
+				model.addAttribute("oblast", oblastId);
+				model.addAttribute("district", districtId);
 				model.addAttribute("facility", facility);
 				model.addAttribute("year", year);
 				model.addAttribute("quarter", quarter);

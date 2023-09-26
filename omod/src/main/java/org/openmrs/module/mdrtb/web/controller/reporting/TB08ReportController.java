@@ -123,7 +123,7 @@ public class TB08ReportController {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		TB08Data table1 = getTB08PatientSet(year, quarterInt, monthInt, locList);
 		
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarter, month, "TB-08", "DOTSTB");
 		System.out.println(reportStatus);
 		

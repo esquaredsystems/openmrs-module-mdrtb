@@ -13,6 +13,7 @@ import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.RegimenForm;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
@@ -149,19 +150,9 @@ public class TB07uController {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		TB07uData table1 = getTB07uPatientSet(locList, year, quarterInt, monthInt);
 		
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		/*
-		 * Integer report_oblast = null;
-		 * Integer report_quarter = null;
-		 * Integer report_month = null;
-		 * if(new PDFHelper().isInt(oblast)) { report_oblast =
-		 * Integer.parseInt(oblast); } if(new PDFHelper().isInt(quarter)) {
-		 * report_quarter = Integer.parseInt(quarter); } if(new
-		 * PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }
-		 */
 		model.addAttribute("table1", table1);
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
-		    year, quarter, month, "TB-08u", "MDRTB");
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
+		    year, quarterInt, monthInt, "TB-08u", ReportType.MDRTB);
 		System.out.println(reportStatus);
 		
 		String oName = null;

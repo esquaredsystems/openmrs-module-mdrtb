@@ -156,7 +156,7 @@ public class TB03ExportController {
 		model.addAttribute("patientSet", patientSet);
 		model.addAttribute("locale", Context.getLocale().toString());
 		
-		boolean reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId,
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarter, month, "TB-03", "DOTSTB");
 		
 		//System.out.println(reportStatus);

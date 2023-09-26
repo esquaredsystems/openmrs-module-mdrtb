@@ -9,9 +9,9 @@
  */
 package org.openmrs.module.mdrtb.api.dao;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -134,54 +134,6 @@ public class MdrtbDao {
 	}
 	
 	/**
-	 * Locked Reports are stored as {@link ReportData} object
-	 * 
-	 * @param regionId
-	 * @param districtId
-	 * @param facilityId
-	 * @param year
-	 * @param quarter
-	 * @param month
-	 * @param reportDate
-	 * @param tableData
-	 * @param reportStatus
-	 * @param reportName
-	 * @param reportType
-	 */
-	public void lockReport(Integer regionId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
-	        Integer month, Date reportDate, String tableData, boolean reportStatus, String reportName, ReportType reportType)
-	        throws Exception {
-		log.debug("Save as PDF:" + regionId + ", " + districtId + ", " + facilityId + ", " + year + ", " + reportDate + ", "
-		        + tableData + ", " + reportName + ", " + reportType);
-		Integer status = reportStatus ? 1 : 0;
-		ReportData reportData = new ReportData();
-		reportData.setRegion(Context.getLocationService().getLocation(regionId));
-		reportData.setDistrict(Context.getLocationService().getLocation(districtId));
-		reportData.setFacility(Context.getLocationService().getLocation(facilityId));
-		reportData.setYear(year);
-		reportData.setQuarter(quarter);
-		reportData.setMonth(month);
-		reportData.setReportDate(reportDate);
-		reportData.setReportName(reportName);
-		reportData.setReportType(reportType);
-		reportData.setReportStatus(status);
-		reportData.setTableData(tableData);
-		saveReportData(reportData);
-	}
-	
-	public int countPDFRows() {
-		Session session = sessionFactory.getCurrentSession();
-		int size = session.createCriteria(ReportData.class).add(Restrictions.eq("reportType", ReportType.MDRTB)).list()
-		        .size();
-		return size;
-	}
-	
-	public List<String> getReportDataColumns() {
-		return Arrays.asList("report_id", "region_id", "district_id", "facility_id", "report_name", "year", "quarter",
-		    "month", "report_date", "report_status");
-	}
-	
-	/**
 	 * Fetch all reports and create a nested list for each column
 	 * 
 	 * @param reportType
@@ -194,66 +146,71 @@ public class MdrtbDao {
 		return list;
 	}
 	
-	@SuppressWarnings({ "unchecked" })
-	public List<String> readTableData(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
-	        String month, String reportName, String date, String reportType) {
-		String sql = "select table_data from report_data "
-		        + processReportFilters(oblast, district, facility, year, quarter, month, reportName, reportType);
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		List<String> list = (List<String>) session.createSQLQuery(sql.toString()).list();
+	@SuppressWarnings("unchecked")
+	public List<ReportData> searchReportData(Location region, Location district, Location facility, Integer year, Integer quarter,
+	        Integer month, String reportName, ReportType reportType) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReportData.class);
+		criteria.add(Restrictions.eq("year", year));
+		if (reportType != null) {
+			criteria.add(Restrictions.eq("reportType", reportType));
+		}
+		if (reportName != null) {
+			criteria.add(Restrictions.eq("reportName", reportName));
+		}
+		if (quarter != null) {
+			criteria.add(Restrictions.eq("quarter", quarter));
+		} else if (month != null) {
+			criteria.add(Restrictions.eq("month", month));
+		}
+		List<Integer> facilityIds = new ArrayList<>();
+		if (facility != null) {
+			// If Facility is provided, nothing else needed
+			facilityIds.add(facility.getLocationId());
+		} else if (district != null) {
+			// If District is provided, then retrieve all its children
+			List<BaseLocation> facilities = getLocationsByParent(new BaseLocation(district, LocationHierarchy.DISTRICT));
+			for (BaseLocation f : facilities) {
+				facilityIds.add(f.getLocationId());
+			}
+		} else {
+			// If Region is provided, then O boy! We're in for a lengthy stride...
+			List<BaseLocation> districts = getLocationsByParent(new BaseLocation(region, LocationHierarchy.REGION));
+			for (BaseLocation d : districts) {
+				List<BaseLocation> facilities = getLocationsByParent(d);
+				for (BaseLocation f : facilities) {
+					facilityIds.add(f.getLocationId());
+				}
+			}
+		}
+		criteria.add(Restrictions.in("location_id", facilityIds.toArray()));
+		return criteria.list();
+	}
+	
+	public List<String> getReportDataAsList(Integer regionId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
+	        Integer month, String reportName, ReportType reportType) {
+		Location region = regionId != null ? Context.getLocationService().getLocation(regionId) : null;
+		Location district = districtId != null ? Context.getLocationService().getLocation(districtId) : null;
+		Location facility = facilityId != null ? Context.getLocationService().getLocation(facilityId) : null;
+		List<ReportData> reports = searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
+		List<String> list = new ArrayList<>();
+		for (ReportData report : reports) {
+			try {
+				list.add(report.getTableData());
+			}
+			catch (IOException e) {
+				log.debug(e.getMessage());
+			}
+		}		
 		return list;
 	}
-	
-	public void unlockReport(Integer oblast, Integer district, Integer facility, Integer year, String quarter, String month,
-	        String name, String date, String reportType) {
-		String sql = "delete from report_data "
-		        + processReportFilters(oblast, district, facility, year, quarter, month, name, reportType);
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-		session.createSQLQuery(sql).executeUpdate();
-		session.getTransaction().commit();
-	}
-	
-	public String processReportFilters(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
-	        String month, String name, String reportType) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("where report_type='" + reportType + "' ");
-		sb.append("".equals(name) ? "" : "and report_name='" + name + "' ");
-		sb.append(oblast == null ? "and oblast_id IS NULL " : " and oblast_id='" + oblast + "' ");
-		sb.append(district == null ? "and district_id IS NULL " : " and district_id='" + district + "' ");
-		sb.append(facility == null ? "and facility_id IS NULL " : " and facility_id='" + facility + "' ");
-		sb.append(year == null ? "and year IS NULL " : " and year='" + year + "' ");
-		if (quarter == null) {
-			sb.append("and quarter IS NULL ");
-		} else if (quarter.equals(Context.getMessageSourceService().getMessage("mdrtb.annual"))) {
-			sb.append("and quarter = '' ");
-		} else {
-			sb.append("and quarter = '" + quarter + "' ");
-		}
-		sb.append(month == null ? "and month IS NULL " : " and month='" + month + "' ");
-		return sb.toString();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public boolean readReportStatus(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
-	        String month, String name, String reportType) {
-		String sql = "select report_status from report_data "
-		        + processReportFilters(oblast, district, facility, year, quarter, month, name, reportType);
-		
-		Session session = sessionFactory.getCurrentSession();
-		//		session.beginTransaction();
-		List<String> statusList = (List<String>) session.createSQLQuery(sql).list();
-		List<String> list = new PDFHelper().byteToStrArray(statusList.toString());
-		boolean reportStatus = false;
-		if (list.size() > 0) {
-			try {
-				reportStatus = Integer.parseInt(list.get(0)) == 1;
-			}
-			catch (Exception e) {}
-		}
-		//		session.getTransaction().commit();
-		return reportStatus;
+
+	public boolean getReportArchived(Integer regionId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
+			Integer month, String reportName, ReportType reportType) {
+		Location region = regionId != null ? Context.getLocationService().getLocation(regionId) : null;
+		Location district = districtId != null ? Context.getLocationService().getLocation(districtId) : null;
+		Location facility = facilityId != null ? Context.getLocationService().getLocation(facilityId) : null;
+		List<ReportData> reports = searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
+		return reports.size() > 0;
 	}
 	
 	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames) {

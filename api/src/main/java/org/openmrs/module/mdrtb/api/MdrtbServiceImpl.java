@@ -30,30 +30,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Cohort;
-import org.openmrs.Concept;
-import org.openmrs.ConceptAnswer;
-import org.openmrs.ConceptName;
-import org.openmrs.ConceptNameTag;
-import org.openmrs.ConceptSet;
-import org.openmrs.DrugOrder;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
-import org.openmrs.Location;
-import org.openmrs.LocationTag;
-import org.openmrs.Obs;
-import org.openmrs.Order;
-import org.openmrs.OrderType;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PatientIdentifierType;
-import org.openmrs.PatientProgram;
-import org.openmrs.PatientState;
-import org.openmrs.Person;
-import org.openmrs.Program;
-import org.openmrs.ProgramWorkflow;
-import org.openmrs.ProgramWorkflowState;
-import org.openmrs.Provider;
+import org.openmrs.*;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OrderContext;
 import org.openmrs.api.UserService;
@@ -61,51 +38,16 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.commonlabtest.LabTest;
 import org.openmrs.module.commonlabtest.LabTestType;
-import org.openmrs.module.mdrtb.BaseLocation;
-import org.openmrs.module.mdrtb.CommonLabUtil;
-import org.openmrs.module.mdrtb.District;
-import org.openmrs.module.mdrtb.Facility;
-import org.openmrs.module.mdrtb.LocationHierarchy;
-import org.openmrs.module.mdrtb.MdrtbConcepts;
-import org.openmrs.module.mdrtb.MdrtbConstants;
-import org.openmrs.module.mdrtb.MdrtbUtil;
-import org.openmrs.module.mdrtb.Region;
-import org.openmrs.module.mdrtb.ReportData;
-import org.openmrs.module.mdrtb.ReportType;
-import org.openmrs.module.mdrtb.TbUtil;
+import org.openmrs.module.mdrtb.*;
 import org.openmrs.module.mdrtb.api.dao.MdrtbDao;
 import org.openmrs.module.mdrtb.comparator.PatientProgramComparator;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
-import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
-import org.openmrs.module.mdrtb.form.custom.CultureForm;
-import org.openmrs.module.mdrtb.form.custom.DSTForm;
-import org.openmrs.module.mdrtb.form.custom.DrugResistanceDuringTreatmentForm;
-import org.openmrs.module.mdrtb.form.custom.Form89;
-import org.openmrs.module.mdrtb.form.custom.HAIN2Form;
-import org.openmrs.module.mdrtb.form.custom.HAINForm;
-import org.openmrs.module.mdrtb.form.custom.RegimenForm;
-import org.openmrs.module.mdrtb.form.custom.SmearForm;
-import org.openmrs.module.mdrtb.form.custom.TB03Form;
-import org.openmrs.module.mdrtb.form.custom.TB03uForm;
-import org.openmrs.module.mdrtb.form.custom.TransferInForm;
-import org.openmrs.module.mdrtb.form.custom.TransferOutForm;
-import org.openmrs.module.mdrtb.form.custom.XpertForm;
+import org.openmrs.module.mdrtb.form.custom.*;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
-import org.openmrs.module.mdrtb.specimen.Culture;
-import org.openmrs.module.mdrtb.specimen.Dst;
-import org.openmrs.module.mdrtb.specimen.ScannedLabReport;
-import org.openmrs.module.mdrtb.specimen.Smear;
-import org.openmrs.module.mdrtb.specimen.SmearImpl;
-import org.openmrs.module.mdrtb.specimen.Specimen;
-import org.openmrs.module.mdrtb.specimen.SpecimenImpl;
-import org.openmrs.module.mdrtb.specimen.custom.HAIN;
-import org.openmrs.module.mdrtb.specimen.custom.HAIN2;
-import org.openmrs.module.mdrtb.specimen.custom.HAIN2Impl;
-import org.openmrs.module.mdrtb.specimen.custom.HAINImpl;
-import org.openmrs.module.mdrtb.specimen.custom.Xpert;
-import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
+import org.openmrs.module.mdrtb.specimen.*;
+import org.openmrs.module.mdrtb.specimen.custom.*;
 import org.openmrs.module.reporting.cohort.query.service.CohortQueryService;
 import org.openmrs.module.reporting.common.ObjectUtil;
 
@@ -259,18 +201,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		}
 		
 		return map;
-	}
-	
-	public ReportData getReportData(Integer id) throws APIException {
-		return dao.getReportData(id);
-	}
-	
-	public ReportData getReportDataByUuid(String uuid) throws APIException {
-		return dao.getReportDataByUuid(uuid);
-	}
-	
-	public ReportData saveReportData(ReportData reportData) throws APIException {
-		return dao.saveReportData(reportData);
 	}
 	
 	public Concept getConcept(String lookup) {
@@ -873,7 +803,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				enc.setForm(Context.getFormService().getForm(Integer.valueOf(formIdWithWhichToViewEncounter)));
 		}
 		catch (Exception ex) {
-			log.error("Invalid formId found in global property " + MdrtbConstants.GP_BACTERIOLOGY_ENTRY_FORM_ID);
+			log.error("Invalid formId found in global property.");
 		}
 		// otherwise, go ahead and do the save
 		Context.getEncounterService().saveEncounter(enc);
@@ -2132,37 +2062,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			Context.getProgramWorkflowService().savePatientProgram(program.getPatientProgram());
 		}
 	}
-	
-	public void unlockReport(Integer oblastId, Integer districtId, Integer facilityId, Integer year, String quarter,
-	        String month, String name, String date, String type) {
-		dao.unlockReport(oblastId, districtId, facilityId, year, quarter, month, name, date, type);
-	}
-	
-	public boolean readReportStatus(Integer oblast, Integer district, Integer facility, Integer year, String quarter,
-	        String month, String name, String type) {
-		return dao.readReportStatus(oblast, district, facility, year, quarter, month, name, type);
-	}
-	
-	public List<String> readTableData(Integer oblastId, Integer districtId, Integer facilityId, Integer year,
-	        String quarter, String month, String name, String date, String reportType) {
-		return dao.readTableData(oblastId, districtId, facilityId, year, quarter, month, name, date, reportType);
-	}
-	
-	public List<List<Object>> getReportsWithoutData(ReportType reportType) {
-		return dao.getReports(reportType.toString());
-	}
-	
-	public void lockReport(Region region, District district, Facility facility, Integer year, Integer quarter,
-	        Integer month, Date reportDate, String tableData, boolean reportStatus, String reportName, ReportType reportType) {
-		try {
-			dao.lockReport(region.getId(), district.getId(), facility.getId(), year, quarter, month, reportDate, tableData,
-			    reportStatus, reportName, reportType);
-		}
-		catch (Exception e) {
-			log.debug(e.getMessage());
-		}
-	}
-	
+
 	public Smear createSmear(Specimen specimen) {
 		return null;
 	}
@@ -2172,6 +2072,94 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public void saveSmear(Smear smear) {
+	}
+	
+	/*******************/
+	/** SAVED REPORTS **/
+	/*******************/
+	public ReportData getReportData(Integer id) throws APIException {
+		return dao.getReportData(id);
+	}
+	
+	public ReportData getReportDataByUuid(String uuid) throws APIException {
+		return dao.getReportDataByUuid(uuid);
+	}
+	
+	public ReportData saveReportData(ReportData reportData) throws APIException {
+		return dao.saveReportData(reportData);
+	}
+	
+	public void voidReportData(ReportData reportData, String reason) throws APIException {
+		if (!reportData.getVoided()) {
+			reportData.setVoided(true);
+			reportData.setVoidReason(reason);
+			reportData.setDateVoided(new Date());
+			reportData.setVoidedBy(Context.getAuthenticatedUser());
+			dao.saveReportData(reportData);
+		}
+	}
+
+	public void unvoidReportData(ReportData reportData) throws APIException {
+		if (reportData.getVoided()) {
+			reportData.setVoided(false);
+			reportData.setVoidReason("Previously voided with reason:" + reportData.getVoidReason());
+			reportData.setDateVoided(null);
+			reportData.setVoidedBy(null);
+			dao.saveReportData(reportData);
+		}
+	}
+	
+	public List<ReportData> searchReportData(Location region, Location district, Location facility, Integer year,
+	        Integer quarter, Integer month, String reportName, ReportType reportType) {
+		return dao.searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
+	}
+
+	public void unlockReport(ReportData reportData) {
+		if (reportData.getVoided()) {
+			throw new APIException("Cannot unlock a voided report");
+		}
+		reportData.setReportStatus(ReportStatus.UNLOCKED);
+		dao.saveReportData(reportData);
+	}
+	
+	public boolean getReportArchived(Integer region, Integer district, Integer facility, Integer year, Integer quarter,
+			Integer month, String name, ReportType reportType) {
+		return dao.getReportArchived(region, district, facility, year, quarter, month, name, reportType);
+	}
+	
+	public List<String> readTableData(Integer regionId, Integer districtId, Integer facilityId, Integer year,
+			Integer quarter, Integer month, String name, ReportType reportType) {
+		return dao.getReportDataAsList(regionId, districtId, facilityId, year, quarter, month, name, reportType);
+	}
+	
+	public List<List<Object>> getReportsWithoutData(ReportType reportType) {
+		return dao.getReports(reportType.toString());
+	}
+	
+	public void lockReport(Location location, Integer year, Integer quarter,
+	        Integer month, String data, boolean reportStatus, String reportName, ReportType reportType) {
+		try {
+			log.debug("Saving file:" + location + ", " + year + ", " +  reportName + ", " + reportType);
+			
+			ReportStatus status = reportStatus ? ReportStatus.LOCKED : ReportStatus.UNLOCKED;
+			ReportData reportData = new ReportData();
+			reportData.setLocation(location);
+			reportData.setYear(year);
+			reportData.setQuarter(quarter);
+			reportData.setMonth(month);
+			reportData.setReportName(reportName);
+			reportData.setReportType(reportType);
+			reportData.setReportStatus(status);
+			reportData.setTableData(data);
+			dao.saveReportData(reportData);
+			saveReportData(reportData);
+		}
+		catch (Exception e) {
+			log.debug(e.getMessage());
+		}
+	}
+	
+	public void lockReport(ReportData reportData) {
 	}
 	
 	@Override

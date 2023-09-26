@@ -14,10 +14,12 @@ import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.form.custom.RegimenForm;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
+import org.openmrs.module.mdrtb.reporting.custom.TB08uData;
 import org.openmrs.module.mdrtb.reporting.pv.PVDataTable1;
 import org.openmrs.module.mdrtb.reporting.pv.PVDataTable2;
 import org.openmrs.module.mdrtb.reporting.pv.PVDataTable3;
@@ -1974,18 +1976,13 @@ public class AdverseEventsReportController {
 		//fin.add(table1);
 		//}
 		
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		//Integer report_oblast = null; Integer report_quarter = null; Integer report_month = null;
-		/*if(new PDFHelper().isInt(oblast)) { report_oblast = Integer.parseInt(oblast); }
-		if(new PDFHelper().isInt(quarter)) { report_quarter = Integer.parseInt(quarter); }
-		if(new PDFHelper().isInt(month)) { report_month = Integer.parseInt(month); }*/
-		
 		boolean reportStatus;// = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB 07");
 		/*if(location!=null)
 			 reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB-07","DOTSTB");
 		else*/
-		reportStatus = Context.getService(MdrtbService.class).readReportStatus(oblastId, districtId, facilityId, year,
-		    quarter, month, "TB-07", "DOTSTB");
+		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
+		reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId, year,
+		    quarterInt, monthInt, "TB-07", ReportType.DOTSTB);
 		
 		System.out.println(reportStatus);
 		
