@@ -10,13 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.CompressionUtil;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
 import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.ReportData;
 import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
-import org.openmrs.module.mdrtb.reporting.custom.PDFHelper;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
@@ -158,7 +158,7 @@ public class ViewClosedReportsController {
 				if (allReports.isEmpty() && allReports.size() == 0) {
 					html = "<p>No Data Found</p>";
 				} else {
-					html = new PDFHelper().decompressCode(allReports.get(0));
+					html = CompressionUtil.decompressCode(allReports.get(0));
 				}
 				model.addAttribute("html", html);
 				model.addAttribute("oblast", oblastId);

@@ -12,15 +12,12 @@ import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import org.apache.commons.io.IOUtils;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
-import com.thoughtworks.xstream.core.util.Base64Encoder;
 
 @SuppressWarnings({ "deprecation" })
 public class PDFHelper {
@@ -111,38 +108,5 @@ public class PDFHelper {
 	public boolean isCompressed(final byte[] compressed) {
 		return (compressed[0] == (byte) (GZIPInputStream.GZIP_MAGIC))
 		        && (compressed[1] == (byte) (GZIPInputStream.GZIP_MAGIC >> 8));
-	}
-	
-	public String toAscii(String s) {
-		StringBuilder sb = new StringBuilder(s.length() * 9 / 10);
-		for (int i = 0; i < s.length(); ++i) {
-			int ch = (int) s.charAt(i);
-			if (0 < ch && ch < 128) {
-				sb.append(ch);
-			} else {
-				sb.append(String.format("\\u%04x", ch));
-			}
-		}
-		return sb.toString();
-	}
-	
-	public String compressCode(String str) throws IOException {
-		if (str == null || str.length() == 0) {
-			return str;
-		}
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		GZIPOutputStream gzip = new GZIPOutputStream(out);
-		gzip.write(str.getBytes());
-		gzip.close();
-		return (new Base64Encoder().encode(out.toByteArray()));
-	}
-	
-	public String decompressCode(String str) throws IOException {
-		if (str == null || str.length() == 0) {
-			return str;
-		}
-		byte[] bytes = new Base64Encoder().decode(str);
-		GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
-		return IOUtils.toString(gis);
 	}
 }

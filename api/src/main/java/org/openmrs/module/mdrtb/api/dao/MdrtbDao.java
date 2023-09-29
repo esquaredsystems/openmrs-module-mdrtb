@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.DataFormatException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -161,28 +162,31 @@ public class MdrtbDao {
 		} else if (month != null) {
 			criteria.add(Restrictions.eq("month", month));
 		}
-		List<Integer> facilityIds = new ArrayList<>();
+		List<Location> facilityList = new ArrayList<>();
 		if (facility != null) {
 			// If Facility is provided, nothing else needed
-			facilityIds.add(facility.getLocationId());
+			facilityList.add(facility);
 		} else if (district != null) {
 			// If District is provided, then retrieve all its children
-			List<BaseLocation> facilities = getLocationsByParent(new BaseLocation(district, LocationHierarchy.DISTRICT));
+			BaseLocation parent = new BaseLocation(district, LocationHierarchy.DISTRICT);
+			List<BaseLocation> facilities = getLocationsByParent(parent);
 			for (BaseLocation f : facilities) {
-				facilityIds.add(f.getLocationId());
+				facilityList.add(f);
 			}
 		} else {
 			// If Region is provided, then O boy! We're in for a lengthy stride...
-			List<BaseLocation> districts = getLocationsByParent(new BaseLocation(region, LocationHierarchy.REGION));
+			BaseLocation parent = new BaseLocation(region, LocationHierarchy.REGION);
+			List<BaseLocation> districts = getLocationsByParent(parent);
 			for (BaseLocation d : districts) {
 				List<BaseLocation> facilities = getLocationsByParent(d);
 				for (BaseLocation f : facilities) {
-					facilityIds.add(f.getLocationId());
+					facilityList.add(f);
 				}
 			}
 		}
-		criteria.add(Restrictions.in("location_id", facilityIds.toArray()));
-		return criteria.list();
+		criteria.add(Restrictions.in("location", facilityList.toArray()));
+		List<ReportData> list = criteria.list();
+		return list;
 	}
 	
 	public List<String> getReportDataAsList(Integer regionId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
@@ -196,7 +200,7 @@ public class MdrtbDao {
 			try {
 				list.add(report.getTableData());
 			}
-			catch (IOException e) {
+			catch (IOException | DataFormatException e) {
 				log.debug(e.getMessage());
 			}
 		}		

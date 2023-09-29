@@ -10,6 +10,7 @@
 package org.openmrs.module.mdrtb;
 
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -24,7 +25,6 @@ import javax.persistence.Table;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
-import org.openmrs.module.mdrtb.reporting.custom.PDFHelper;
 
 /**
  * Please note that a corresponding table schema must be created in liquibase.xml.
@@ -149,15 +149,15 @@ public class ReportData extends BaseOpenmrsData {
 		this.reportStatus = reportStatus;
 	}
 	
-	public String getTableData() throws IOException {
+	public String getTableData() throws IOException, DataFormatException {
 		if (tableData != null) {
-			return new PDFHelper().decompressCode(tableData);
+			return CompressionUtil.decompressCode(tableData);
 		}
 		return null;
 	}
 	
 	public void setTableData(String tableData) throws IOException {
-		String compressCode = new PDFHelper().compressCode(tableData);
+		String compressCode = CompressionUtil.decompressCode(tableData);
 		this.tableData = compressCode;
 	}
 }

@@ -17,7 +17,6 @@ import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
-import org.openmrs.module.webservices.rest.web.representation.FullRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.api.Searchable;
@@ -66,15 +65,7 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 		        .property("reportName", new StringProperty()).property("description", new StringProperty())
 		        .property("year", new IntegerProperty()).property("quarter", new IntegerProperty())
 		        .property("month", new IntegerProperty()).property("reportType", new StringProperty())
-		        .property("reportStatus", new StringProperty());
-		if (rep instanceof FullRepresentation) {
-			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
-			        .property("location", new RefProperty("#/definitions/LocationGet"))
-			        .property("reportName", new StringProperty()).property("description", new StringProperty())
-			        .property("year", new IntegerProperty()).property("quarter", new IntegerProperty())
-			        .property("month", new IntegerProperty()).property("reportType", new StringProperty())
-			        .property("reportStatus", new StringProperty()).property("tableData", new StringProperty());
-		}
+		        .property("reportStatus", new StringProperty()).property("tableData", new StringProperty());
 		return modelImpl;
 	}
 	
@@ -131,14 +122,14 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 			throw new ResourceNotFoundException(Context.getMessageSourceService()
 			        .getMessage("mdrtb.missingScannedLabReport"));
 		}
-		return new SimpleReportData(reportData);
+		return new SimpleReportData(reportData, true);
 	}
 	
 	@Override
 	public SimpleReportData save(SimpleReportData delegate) throws ResponseException {
 		ReportData reportData = delegate.toReportData();
 		reportData = service.saveReportData(reportData);
-		return new SimpleReportData(reportData);
+		return new SimpleReportData(reportData, false);
 	}
 	
 	@Override
@@ -175,7 +166,7 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 		List<ReportData> list = service.searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
 		List<SimpleReportData> reportObjects = new ArrayList<>();
 		for (ReportData reportData : list) {
-			reportObjects.add(new SimpleReportData(reportData));
+			reportObjects.add(new SimpleReportData(reportData, false));
 		}
 		return new NeedsPaging<SimpleReportData>(reportObjects, context);
 	}

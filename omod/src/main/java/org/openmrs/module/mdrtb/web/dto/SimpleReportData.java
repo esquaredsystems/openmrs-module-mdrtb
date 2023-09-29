@@ -4,6 +4,7 @@
 package org.openmrs.module.mdrtb.web.dto;
 
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
@@ -39,8 +40,9 @@ public class SimpleReportData extends BaseOpenmrsData {
 		super();
 	}
 	
-	public SimpleReportData(ReportData reportData) {
+	public SimpleReportData(ReportData reportData, boolean attachData) {
 		setId(reportData.getId());
+		setUuid(reportData.getUuid());
 		setLocation(reportData.getLocation());
 		setReportName(reportData.getReportName());
 		setDescription(reportData.getDescription());
@@ -51,17 +53,23 @@ public class SimpleReportData extends BaseOpenmrsData {
 		setReportStatus(reportData.getReportStatus());
 		setDateCreated(reportData.getDateCreated());
 		setCreator(reportData.getCreator());
-		try {
-			setTableData(reportData.getTableData());
-		}
-		catch (IOException e) {
-			e.printStackTrace();
+		if (attachData) {
+			try {
+				String html = reportData.getTableData();
+				html = html.replaceAll("\r\n", "");
+				html = html.replaceAll("\t", "");
+				setTableData(html);
+			}
+			catch (IOException | DataFormatException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public ReportData toReportData() {
 		ReportData reportData = new ReportData();
 		reportData.setId(id);
+		reportData.setUuid(getUuid());
 		reportData.setLocation(location);
 		reportData.setReportName(reportName);
 		reportData.setDescription(description);

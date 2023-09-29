@@ -935,10 +935,80 @@ inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIB
 inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
 where o.concept_id = 118 and o.value_coded = 19; -- (The question concept should be SUSCEPTIBLE and value coded be OTHER)
 
+
+
+/* REPORT DATA */
+-- Import location hierarchies
+drop table if exists _address_hierarchy;
+create table _address_hierarchy 
+select ahe.address_hierarchy_entry_id as id, ahe.name, ahe.level_id, 0 as location_id, 
+p.address_hierarchy_entry_id as parent_id, p.name as parent_name, p.level_id as parent_level, pl.location_id as parent_location_id, 
+gp.parent_id as grandparent_id, gp.name as grandparent_name, gp.level_id as grandparent_level, gpl.location_id as grandparent_location_id from openmrspih.address_hierarchy_entry ahe 
+left join openmrspih.address_hierarchy_entry p on p.address_hierarchy_entry_id = ahe.parent_id and p.level_id <> 1 
+left join openmrspih.address_hierarchy_entry gp on gp.address_hierarchy_entry_id = p.parent_id and gp.level_id <> 1 
+left join openmrspih.location gpl on gpl.name = gp.name and gpl.state_province = gp.name and gpl.retired = 0 
+left join location pl on pl.name = p.name and pl.retired = 0 ;
+
+-- Really messy method of finding out the right location IDs
+update `_address_hierarchy` set grandparent_location_id = (
+    case grandparent_name 
+        when 'Кулябский регион' then 271 
+        when 'Душанбе' then 272 
+        else NULL
+    end
+) where grandparent_location_id is null;
+
+update `_address_hierarchy` set parent_location_id = (
+    case parent_name 
+        when 'Другой' then 5 
+        when 'Сугд' then 201 
+        when 'Кургантюбинский регион' then 270
+        when 'НТМ' then 273 
+        when 'Хатлон' then 274 
+        when 'ВМКБ' then 276 
+        else NULL
+    end
+) where parent_location_id is null;
+
+update `_address_hierarchy` set location_id = (
+    case name 
+        when 'Другой' then 5 
+        when 'Сугд' then 201 
+        when 'Кургантюбинский регион' then 270 
+        when 'Кулябский регион' then 271 
+        when 'Душанбе' then 272 
+        when 'НТМ' then 273 
+        when 'Хатлон' then 274 
+        when 'ВМКБ' then 276 
+        else NULL
+    end
+) where location_id is null;
+
+
+-- Update the remaining ones by matching parents
+update `_address_hierarchy` ah join location l on l.name = ah.name and l.parent_location = ah.parent_location_id 
+set ah.location_id = l.location_id where ah.location_id = 0;
+-- Update the last batch
+update `_address_hierarchy` ah join location l on l.name = ah.name 
+set ah.location_id = l.location_id where ah.location_id = 0;
+
+
+truncate report_data ;
+-- Import the facilities
+-- insert ignore into report_data (report_id, location_id, report_name, description, year, quarter, `month`, report_type, report_status, date_created, creator, voided, uuid, table_data) 
+select rd.report_id, fa.location_id, rd.report_name, '' as description, rd.year, (case rd.quarter when '' then null else rd.quarter end) as `quarter`, if(rd.month, '', null) as `month`, rd.report_type, (case rd.report_status when 1 then 'LOCKED' else 'UNLOCKED' end) report_status, rd.report_date, 1, 0, uuid(), rd.table_data from openmrspih.report_data as rd 
+inner join _address_hierarchy fa on fa.id = rd.facility_id 
+union
+select rd.report_id, da.location_id, rd.report_name, '' as description, rd.year, (case rd.quarter when '' then null else rd.quarter end) as `quarter`, if(rd.month, '', null) as `month`, rd.report_type, (case rd.report_status when 1 then 'LOCKED' else 'UNLOCKED' end) report_status, rd.report_date, 1, 0, uuid(), rd.table_data from openmrspih.report_data as rd 
+inner join _address_hierarchy da on da.id = rd.district_id 
+where rd.facility_id is null
+union
+select rd.report_id, oa.location_id, rd.report_name, '' as description, rd.year, (case rd.quarter when '' then null else rd.quarter end) as `quarter`, if(rd.month, '', null) as `month`, rd.report_type, (case rd.report_status when 1 then 'LOCKED' else 'UNLOCKED' end) report_status, rd.report_date, 1, 0, uuid(), rd.table_data from openmrspih.report_data as rd 
+inner join _address_hierarchy oa on oa.id = rd.oblast_id 
+where rd.facility_id is null and rd.district_id is null;
+
 set foreign_key_checks = 1;
 
-
-select uuid() union select uuid() union select uuid() union select uuid() union select uuid() ;
 
 
 select 0 as test_attribute_id, ct.test_order_id, tat.test_attribute_type_id, o.value_datetime, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
@@ -946,19 +1016,6 @@ inner join orders o2 ON o2.encounter_id = o.encounter_id
 inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
 inner join commonlabtest_attribute_type as tat on tat.test_type_id = 5 and tat.name = 'DATE COLLECTED' 
 where o.concept_id = 188;
-
-
-select * from commonlabtest_type;
-select * from commonlabtest_attribute_type;
-select * from commonlabtest_sample;
-select * from commonlabtest_test;
-select * from commonlabtest_attribute;
-select * from orders o where o.patient_id = 32072;
-select * from location ;
-select * from program p ;
-select * from patient_identifier_type pit ;
-select * from patient_program pp where pp.patient_program_id = 76875;
-select * from global_property gp where gp.property like '%program%';
 
 select o.encounter_id, et.name from orders o 
 inner join encounter e on e.encounter_id = o.encounter_id 
@@ -970,18 +1027,13 @@ inner join commonlabtest_sample cs on cs.test_order_id = ca.test_order_id and cs
 left join commonlabtest_attribute_type cat on cat.test_attribute_type_id = ca.attribute_type_id 
 left join concept as c on c.uuid = ca.value_reference 
 left join concept_name cn on cn.concept_id = c.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED'
-order by test_attribute_id 
-;
-
+order by test_attribute_id ;
 
 select o.obs_id, o.person_id, o.encounter_id, o.location_id, o.obs_datetime, o2.concept_id, cn2.name as abba, o.concept_id, cn.name as question, o.obs_group_id, o.value_coded, o.value_numeric, o.value_text from obs as o 
 inner join concept_name cn on cn.concept_id = o.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED' 
 inner join obs o2 on o2.obs_id = o.obs_group_id and o2.concept_id in (138, 139, 153, 524, 535, 542, 549, 552, 571, 572, 573) -- (Concepts For TB DST) 
 inner join concept_name cn2 on cn2.concept_id = o2.concept_id and cn2.locale = 'en' and cn2.concept_name_type = 'FULLY_SPECIFIED' 
 where o.voided = 0 and cn.voided = 0; -- (The question concept should be SUSCEPTIBLE and value coded be AMIKACIN)
-
-select * from global_property gp 
-where gp.property like '%mdrtb.dotsPatientIdentifierType%';
 
 select et.name, o.* from obs as o 
 inner join encounter e on e.encounter_id = o.encounter_id 
@@ -990,6 +1042,15 @@ where o.concept_id = 576
 and year(e.encounter_datetime) = 2023 
 and et.name = 'Specimen Collection';
 
-select * from orders where encounter_id = 470661;
-select * from commonlabtest_attribute ct where ct.test_order_id = 596299;
+
+
+select ahe.address_hierarchy_entry_id as id, ahe.name, ahe.level_id, 0 as location_id, 
+p.address_hierarchy_entry_id as parent_id, p.name as parent_name, p.level_id as parent_level, pl.location_id as parent_location_id, 
+gp.parent_id as grandparent_id, gp.name as grandparent_name, gp.level_id as grandparent_level, gpl.location_id as grandparent_location_id from openmrspih.address_hierarchy_entry ahe 
+left join openmrspih.address_hierarchy_entry p on p.address_hierarchy_entry_id = ahe.parent_id and p.level_id <> 1 
+left join openmrspih.address_hierarchy_entry gp on gp.address_hierarchy_entry_id = p.parent_id and gp.level_id <> 1 
+left join openmrspih.location gpl on gpl.name = gp.name and gpl.state_province = gp.name and gpl.retired = 0 
+left join openmrspih.location pl on pl.name = p.name and pl.retired = 0 ;
+
+select * from report_data ; 
 
