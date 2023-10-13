@@ -254,14 +254,24 @@ public class ReportUtil {
 			endMonth = month;
 		}
 		Map<String, Date> periodDates = new HashMap<String, Date>();
-		Calendar c = Calendar.getInstance();
-		c.set(Calendar.YEAR, year);
-		c.set(Calendar.MONTH, startMonth - 1);
-		c.set(Calendar.DATE, 1);
-		periodDates.put("startDate", c.getTime());
-		c.set(Calendar.MONTH, endMonth - 1);
-		c.set(Calendar.DATE, c.getActualMaximum(Calendar.DATE));
-		periodDates.put("endDate", c.getTime());
+		Calendar start = Calendar.getInstance();
+		Calendar end = Calendar.getInstance();
+		start.set(year, startMonth - 1, 1, 0, 0, 0);
+		end.set(year, endMonth - 1, end.getActualMaximum(Calendar.DATE), 23, 59, 59);
+		// Date alteration for Tajikistan (year starts from 26th Dec and ends on 25th Dec)
+		// Handle month change if necessary
+		if (start.get(Calendar.MONTH) != (startMonth - 1)) {
+			start.add(Calendar.MONTH, -1);
+			start.set(Calendar.DATE, start.getActualMaximum(Calendar.DATE));
+		}
+		if (end.get(Calendar.MONTH) != (endMonth - 1)) {
+			end.add(Calendar.MONTH, -1);
+			end.set(Calendar.DATE, end.getActualMaximum(Calendar.DATE));
+		}
+		start.add(Calendar.DATE, -6);
+		end.add(Calendar.DATE, -6);
+		periodDates.put("startDate", start.getTime());
+		periodDates.put("endDate", end.getTime());
 		return periodDates;
 	}
 	

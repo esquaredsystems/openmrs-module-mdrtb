@@ -72,7 +72,7 @@ public class ReportData extends BaseOpenmrsData {
 	@Column(name = "report_status", length = 50)
 	private ReportStatus reportStatus;
 	
-	@Column(name = "table_data")
+	@Column(name = "table_data", length = 65536)
 	private String tableData;
 	
 	@Override
@@ -157,7 +157,7 @@ public class ReportData extends BaseOpenmrsData {
 	}
 	
 	public void setTableData(String tableData) throws IOException {
-		String compressCode = CompressionUtil.decompressCode(tableData);
+		String compressCode = CompressionUtil.compressCode(tableData);
 		this.tableData = compressCode;
 	}
 }

@@ -4,7 +4,7 @@ import org.openmrs.BaseOpenmrsData;
 
 public class SimpleDataObject extends BaseOpenmrsData {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6977541171908933802L;
 	
 	private Integer id;
 	

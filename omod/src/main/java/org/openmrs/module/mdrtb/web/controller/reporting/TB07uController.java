@@ -211,7 +211,7 @@ public class TB07uController {
 		List<RegimenForm> regList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year, quarter,
 		    month);
 		if (regList != null) {
-			System.out.println("REG LIST: " + regList.size());
+			System.out.println("Total Registered with Regimen Form: " + regList.size());
 		}
 		TB07uData table1 = new TB07uData();
 		Concept q = null;
@@ -519,7 +519,7 @@ public class TB07uController {
 					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId().intValue(), regList, locList, year,
 					    quarter, month);
 				} else {
-					System.out.println("REG LIST NULL: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId().intValue());
 				}
 				
 				if (rf != null) {
@@ -534,11 +534,11 @@ public class TB07uController {
 						}
 						
 						else {
-							System.out.println("REG OTHER: " + tf.getPatient().getPatientId().intValue());
+							System.out.println("Other Registered: " + tf.getPatient().getPatientId().intValue());
 						}
 					}
 				} else {
-					System.out.println("RF NULL: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("No Regimen Form: " + tf.getPatient().getPatientId().intValue());
 				}
 				
 				if (newCase != null && newCase) {
@@ -1365,7 +1365,7 @@ public class TB07uController {
 					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId().intValue(), regList, locList, year,
 					    quarter, month);
 				} else {
-					System.out.println("REG LIST NULL: " + tf.getPatient().getPatientId());
+					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId());
 				}
 				
 				if (rf != null) {
@@ -1378,11 +1378,11 @@ public class TB07uController {
 						else if (regimen.getConceptId().intValue() == indBdq) {
 							isIndBdq = Boolean.TRUE;
 						} else {
-							System.out.println("REG NOT COUNTED: " + tf.getPatient().getPatientId());
+							System.out.println("Not counting: " + tf.getPatient().getPatientId());
 						}
 					}
 				} else {
-					System.out.println("RF LIST NULL: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("No Regimen Form: " + tf.getPatient().getPatientId().intValue());
 				}
 				
 				if (newCase != null && newCase) {
@@ -2222,7 +2222,7 @@ public class TB07uController {
 				}
 				
 				else {
-					System.out.println("REG LIST NULL: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId().intValue());
 				}
 				
 				if (rf != null) {
@@ -2235,15 +2235,15 @@ public class TB07uController {
 						else if (regimen.getConceptId().intValue() == indBdq) {
 							isIndBdq = Boolean.TRUE;
 						} else {
-							System.out.println("REG OTHER: " + tf.getPatient().getPatientId().intValue());
+							System.out.println("Other Registered: " + tf.getPatient().getPatientId().intValue());
 						}
 					} else {
-						System.out.println("REG NULL: " + tf.getPatient().getPatientId().intValue());
+						System.out.println("Not counting: " + tf.getPatient().getPatientId().intValue());
 					}
 				}
 				
 				else {
-					System.out.println("RF NULL: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("No Regimen Form: " + tf.getPatient().getPatientId().intValue());
 				}
 				
 				if (newCase != null && newCase) {

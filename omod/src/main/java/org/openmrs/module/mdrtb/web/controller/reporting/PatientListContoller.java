@@ -146,12 +146,10 @@ public class PatientListContoller {
 		String dName = "";
 		if (districtId != null) {
 			dName = Context.getService(MdrtbService.class).getDistrict(districtId).getName();
-			
 		}
 		String fName = "";
 		if (facilityId != null) {
 			fName = Context.getService(MdrtbService.class).getFacility(facilityId).getName();
-			
 		}
 		model.addAttribute("oblast", oName);
 		model.addAttribute("district", dName);
@@ -171,13 +169,11 @@ public class PatientListContoller {
 		String report = getAllCasesEnrolledTable(locList, year, quarterInt, monthInt);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
-		
 	}
 	
 	public static String getAllCasesEnrolledTable(List<Location> locList, Integer year, Integer quarter, Integer month) {
 		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		Collections.sort(tb03s);
-		
 		String report = "";
 		
 		//NEW CASES 
@@ -259,14 +255,10 @@ public class PatientListContoller {
 				report += "<td align=\"left\">" + Context.getDateFormat().format(tf.getTreatmentStartDate()) + "</td>";
 			else
 				report += "<td></td>";
-			
 			if (tf.getTreatmentSiteIP() != null) {
 				report += "<td align=\"left\">" + tf.getTreatmentSiteIP().getName().getName() + "</td>";
-			}
-			
-			else
+			} else
 				report += "<td></td>";
-			
 			report += "<td align=\"left\">" + p.getFamilyName() + "," + p.getGivenName() + "</td>";
 			report += "<td align=\"left\">" + getGender(p) + "</td>";
 			report += "<td align=\"left\">" + Context.getDateFormat().format(p.getBirthdate()) + "</td>";
@@ -277,22 +269,15 @@ public class PatientListContoller {
 				if (asId.intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB)
 				        .getConceptId().intValue()) {
 					report += "<td align=\"left\">" + getMessage("mdrtb.lists.pulmonaryShort") + "</td>";
-				}
-				
-				else if (asId.intValue() == Context.getService(MdrtbService.class)
+				} else if (asId.intValue() == Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB).getConceptId().intValue()) {
 					report += "<td align=\"left\">" + getMessage("mdrtb.lists.extrapulmonaryShort") + "</td>";
-				}
-				
-				else {
+				} else {
 					report += "<td></td>";
 				}
 				//report += "<td align=\"left\">" + tf.getAnatomicalSite().getName().getName().charAt(0) + "</td>";
-			}
-			
-			else
+			} else
 				report += "<td></td>";
-			
 			if (tf.getRegistrationGroup() != null)
 				report += "<td align=\"left\">" + tf.getRegistrationGroup().getName().getName() + "</td>";
 			else
@@ -302,17 +287,12 @@ public class PatientListContoller {
 			List<SmearForm> smears = tf.getSmears();
 			if (smears != null && smears.size() != 0) {
 				Collections.sort(smears);
-				
 				SmearForm ds = smears.get(0);
-				
 				if (ds.getSmearResult() != null) {
-					
 					if (ds.getSmearResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
 					        .getConcept(MdrtbConcepts.NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
-					}
-					
-					else {
+					} else {
 						Integer[] concs = MdrtbUtil.getPositiveResultConceptIds();
 						for (int index = 0; index < concs.length; index++) {
 							if (concs[index].intValue() == ds.getSmearResult().getConceptId().intValue()) {
@@ -322,14 +302,10 @@ public class PatientListContoller {
 							
 						}
 					}
-				}
-				
-				else {
+				} else {
 					report += "<td></td>";
 				}
-			}
-			
-			else {
+			} else {
 				report += "<td></td>";
 			}
 			
@@ -337,60 +313,41 @@ public class PatientListContoller {
 			List<XpertForm> xperts = tf.getXperts();
 			if (xperts != null && xperts.size() != 0) {
 				Collections.sort(xperts);
-				
 				XpertForm dx = xperts.get(0);
 				Concept mtb = dx.getMtbResult();
 				Concept res = dx.getRifResult();
-				
 				if (mtb == null) {
 					report += "<td></td>";
-				}
-				
-				else {
+				} else {
 					if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
 					        .getConcept(MdrtbConcepts.POSITIVE).getConceptId().intValue()
 					        || mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
 					                .getConcept(MdrtbConcepts.MTB_POSITIVE).getConceptId().intValue()) {
 						String xr = getMessage("mdrtb.positiveShort");
-						
 						if (res != null) {
 							int resId = res.getConceptId().intValue();
-							
 							if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DETECTED)
 							        .getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.resistantShort");
 								report += "<td align=\"left\">" + xr + "</td>";
-							}
-							
-							else if (resId == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_DETECTED)
-							        .getConceptId().intValue()) {
+							} else if (resId == Context.getService(MdrtbService.class)
+							        .getConcept(MdrtbConcepts.NOT_DETECTED).getConceptId().intValue()) {
 								xr += "/" + getMessage("mdrtb.sensitiveShort");
 								report += "<td align=\"left\">" + xr + "</td>";
-							}
-							
-							else {
+							} else {
 								report += "<td align=\"left\">" + xr + "</td>";
 							}
-						}
-						
-						else {
+						} else {
 							report += "<td align=\"left\">" + xr + "</td>";
 						}
-					}
-					
-					else if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
+					} else if (mtb.getConceptId().intValue() == Context.getService(MdrtbService.class)
 					        .getConcept(MdrtbConcepts.MTB_NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
-					}
-					
-					else {
+					} else {
 						report += "<td></td>";
 					}
 				}
-				
-			}
-			
-			else {
+			} else {
 				report += "<td></td>";
 			}
 			
@@ -398,19 +355,15 @@ public class PatientListContoller {
 			List<HAINForm> hains = tf.getHains();
 			if (hains != null && hains.size() != 0) {
 				Collections.sort(hains);
-				
 				HAINForm h = hains.get(0);
-				
 				Concept ih = h.getInhResult();
 				Concept rh = h.getRifResult();
 				Concept res = h.getMtbResult();
-				
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
 					report += "<td></td>";
 				}
-				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
@@ -432,25 +385,20 @@ public class PatientListContoller {
 			List<HAIN2Form> hain2s = tf.getHain2s();
 			if (hain2s != null && hain2s.size() != 0) {
 				Collections.sort(hain2s);
-				
 				HAIN2Form h = hain2s.get(0);
-				
 				Concept ih = h.getInjResult();
 				Concept fq = h.getFqResult();
 				Concept res = h.getMtbResult();
-				
 				if (res != null) {
 					report += "<td align=\"left\">" + res.getName().getName() + "</td>";
 				} else {
 					report += "<td></td>";
 				}
-				
 				if (ih != null) {
 					report += "<td align=\"left\">" + ih.getName().getName() + "</td>";
 				} else {
 					report += "<td></td>";
 				}
-				
 				if (fq != null) {
 					report += "<td align=\"left\">" + fq.getName().getName() + "</td>";
 				} else {
@@ -466,84 +414,58 @@ public class PatientListContoller {
 			List<CultureForm> cultures = tf.getCultures();
 			if (cultures != null && cultures.size() != 0) {
 				Collections.sort(cultures);
-				
 				CultureForm dc = cultures.get(0);
-				
 				if (dc.getCultureResult() != null) {
-					
 					if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
 					        .getConcept(MdrtbConcepts.NEGATIVE).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.negativeShort") + "</td>";
-					}
-					
-					else if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
+					} else if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
 					        .getConcept(MdrtbConcepts.CULTURE_GROWTH).getConceptId().intValue()) {
 						report += "<td align=\"left\">" + getMessage("mdrtb.lists.growth") + "</td>";
-					}
-					
-					else {
+					} else {
 						Integer[] concs = MdrtbUtil.getPositiveResultConceptIds();
 						for (int index = 0; index < concs.length; index++) {
 							if (concs[index].intValue() == dc.getCultureResult().getConceptId().intValue()) {
 								report += "<td align=\"left\">" + getMessage("mdrtb.positiveShort") + "</td>";
 								break;
 							}
-							
 						}
 					}
-				}
-				
-				else {
+				} else {
 					report += "<td></td>";
 				}
-			}
-			
-			else {
+			} else {
 				report += "<td></td>";
 			}
 			
 			//Drug Resistance
 			if (tf.getResistanceType() != null) {
 				report += "<td align=\"left\">" + tf.getResistanceType().getName().getName() + "</td>";
-			}
-			
-			else {
+			} else {
 				report += "<td></td>";
 			}
-			
 			report += "<td align=\"left\">" + getResistantDrugs(tf) + "</td>";
 			report += "<td align=\"left\">" + getSensitiveDrugs(tf) + "</td>";
-			
 			if (tf.getHivStatus() != null) {
 				report += "<td align=\"left\">" + tf.getHivStatus().getName().getName() + "</td>";
-			}
-			
-			else {
+			} else {
 				report += "<td></td>";
 			}
-			
 			if (tf.getTreatmentOutcome() != null) {
 				report += "<td align=\"left\">" + tf.getTreatmentOutcome().getName().getName() + "</td>";
-			}
-			
-			else {
+			} else {
 				report += "<td></td>";
 			}
-			
 			if (tf.getTreatmentOutcomeDate() != null) {
 				report += "<td align=\"left\">" + Context.getDateFormat().format(tf.getTreatmentOutcomeDate()) + "</td>";
-			}
-			
-			else {
+			} else {
 				report += "<td></td>";
 			}
 			
 			//OTHER NUMBER
 			report += "<td align=\"left\">" + getReRegistrationNumber(tf) + "</td>";
-			
 			report += "<td align=\"left\">" + getPatientLink(tf) + "</td>";
 			report += "</tr>";
-			
 		}
 		
 		report += "</table>";

@@ -255,7 +255,6 @@ public class PatientListResourceController extends DelegatingCrudResource<Simple
 			case DRTB_PATIENTS_WITH_SUCCESSFUL_TREATMENT:
 				htmlTable = PatientListContoller.getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarter, month);
 				break;
-		
 		}
 		tableData.add(new SimpleDataObject(htmlTable, null, null));
 		return new NeedsPaging<SimpleDataObject>(tableData, context);

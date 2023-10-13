@@ -55,6 +55,10 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 		description.addProperty("reportType");
 		description.addProperty("reportStatus");
 		description.addProperty("tableData");
+		description.addProperty("dateCreated");
+		description.addProperty("creator");
+		description.addProperty("dateChanged");
+		description.addProperty("changedBy");
 		return description;
 	}
 	
@@ -71,7 +75,7 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 	
 	@Override
 	public Model getCREATEModel(Representation rep) {
-		return new ModelImpl().property("locationUuid", new StringProperty()).property("reportName", new StringProperty())
+		return new ModelImpl().property("location", new StringProperty()).property("reportName", new StringProperty())
 		        .property("description", new StringProperty()).property("year", new IntegerProperty())
 		        .property("quarter", new IntegerProperty()).property("month", new IntegerProperty())
 		        .property("reportType", new StringProperty()).property("reportStatus", new StringProperty())
@@ -86,13 +90,14 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addRequiredProperty("locationUuid");
+		description.addRequiredProperty("location");
 		description.addRequiredProperty("reportName");
 		description.addRequiredProperty("tableData");
 		description.addRequiredProperty("year");
 		description.addProperty("month");
 		description.addProperty("quarter");
 		description.addProperty("reportType");
+		description.addProperty("reportStatus");
 		description.addProperty("description");
 		return description;
 	}
@@ -100,7 +105,6 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 	@Override
 	public SimpleReportData newDelegate() {
 		SimpleReportData reportObject = new SimpleReportData();
-		reportObject.setReportStatus(ReportStatus.UNLOCKED);
 		return reportObject;
 	}
 	
@@ -128,8 +132,11 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 	@Override
 	public SimpleReportData save(SimpleReportData delegate) throws ResponseException {
 		ReportData reportData = delegate.toReportData();
+		String tableData = delegate.getTableData();
 		reportData = service.saveReportData(reportData);
-		return new SimpleReportData(reportData, false);
+		delegate = new SimpleReportData(reportData, false);
+		delegate.setTableData(tableData);
+		return delegate;
 	}
 	
 	@Override

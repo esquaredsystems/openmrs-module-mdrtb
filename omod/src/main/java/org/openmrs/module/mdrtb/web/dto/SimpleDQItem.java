@@ -3,6 +3,7 @@ package org.openmrs.module.mdrtb.web.dto;
 import java.util.ArrayList;
 
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.PersonAddress;
 import org.openmrs.module.mdrtb.reporting.custom.DQItem;
 
 public class SimpleDQItem extends BaseOpenmrsData {
@@ -11,7 +12,13 @@ public class SimpleDQItem extends BaseOpenmrsData {
 	
 	private String patientUuid;
 	
+	private String patientName;
+	
+	private String gender;
+	
 	private String dateOfBirth;
+	
+	private String residentialAddress;
 	
 	private String locName;
 	
@@ -21,7 +28,19 @@ public class SimpleDQItem extends BaseOpenmrsData {
 	
 	public SimpleDQItem(DQItem dqItem) {
 		setPatientUuid(dqItem.getPatient().getUuid());
+		setPatientName(dqItem.getPatient().getPersonName().getFullName());
+		setGender(dqItem.getGender());
 		setDateOfBirth(dqItem.getDateOfBirth());
+		PersonAddress pa = dqItem.getPatient().getPersonAddress();
+		if (pa != null) {
+			String address = pa.getCountry() + "," + pa.getStateProvince() + "," + pa.getCountyDistrict();
+			if (pa.getAddress1() != null && pa.getAddress1().length() != 0) {
+				address += "," + pa.getAddress1();
+				if (pa.getAddress2() != null && pa.getAddress2().length() != 0)
+					address += "," + pa.getAddress2();
+			}
+			setResidentialAddress(address);
+		}
 		setLocName(dqItem.getLocName());
 		setTb03Links(dqItem.getTb03Links());
 		setForm89Links(dqItem.getForm89Links());
@@ -44,6 +63,22 @@ public class SimpleDQItem extends BaseOpenmrsData {
 		this.patientUuid = patientUuid;
 	}
 	
+	public String getPatientName() {
+		return patientName;
+	}
+	
+	public void setPatientName(String patientName) {
+		this.patientName = patientName;
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
 	public String getDateOfBirth() {
 		return dateOfBirth;
 	}
@@ -58,6 +93,14 @@ public class SimpleDQItem extends BaseOpenmrsData {
 	
 	public void setLocName(String locName) {
 		this.locName = locName;
+	}
+	
+	public String getResidentialAddress() {
+		return residentialAddress;
+	}
+	
+	public void setResidentialAddress(String residentialAddress) {
+		this.residentialAddress = residentialAddress;
 	}
 	
 	public ArrayList<String> getTb03Links() {

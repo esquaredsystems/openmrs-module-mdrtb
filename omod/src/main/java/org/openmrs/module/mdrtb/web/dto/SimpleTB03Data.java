@@ -3,6 +3,7 @@ package org.openmrs.module.mdrtb.web.dto;
 import java.util.Map;
 
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.PersonAddress;
 import org.openmrs.module.mdrtb.reporting.custom.TB03Data;
 
 public class SimpleTB03Data extends BaseOpenmrsData {
@@ -12,6 +13,12 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 	private String patientUuid;
 	
 	private String identifier;
+	
+	private String patientName;
+	
+	private String gender;
+	
+	private String residentialAddress;
 	
 	private String tb03RegistrationDate;
 	
@@ -159,6 +166,18 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 	
 	public SimpleTB03Data(TB03Data tb03Data) {
 		patientUuid = tb03Data.getPatient().getUuid();
+		patientName = tb03Data.getPatient().getPersonName().getFullName();
+		gender = tb03Data.getGender();
+		PersonAddress pa = tb03Data.getPatient().getPersonAddress();
+		if (pa != null) {
+			String address = pa.getCountry() + "," + pa.getStateProvince() + "," + pa.getCountyDistrict();
+			if (pa.getAddress1() != null && pa.getAddress1().length() != 0) {
+				address += "," + pa.getAddress1();
+				if (pa.getAddress2() != null && pa.getAddress2().length() != 0)
+					address += "," + pa.getAddress2();
+			}
+			residentialAddress = address;
+		}
 		identifier = tb03Data.getIdentifier();
 		tb03RegistrationDate = tb03Data.getTb03RegistrationDate();
 		ageAtTB03Registration = tb03Data.getAgeAtTB03Registration();
@@ -249,6 +268,30 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 	
 	public void setPatientUuid(String patientUuid) {
 		this.patientUuid = patientUuid;
+	}
+	
+	public String getPatientName() {
+		return patientName;
+	}
+	
+	public void setPatientName(String patientName) {
+		this.patientName = patientName;
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	
+	public String getResidentialAddress() {
+		return residentialAddress;
+	}
+	
+	public void setResidentialAddress(String residentialAddress) {
+		this.residentialAddress = residentialAddress;
 	}
 	
 	public String getIdentifier() {

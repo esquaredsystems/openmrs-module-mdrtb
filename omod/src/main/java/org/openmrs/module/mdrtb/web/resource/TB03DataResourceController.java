@@ -38,6 +38,9 @@ public class TB03DataResourceController extends DelegatingCrudResource<SimpleTB0
 		description.addSelfLink();
 		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
 		description.addProperty("patientUuid");
+		description.addProperty("patientName");
+		description.addProperty("gender");
+		description.addProperty("residentialAddress");
 		description.addProperty("identifier");
 		description.addProperty("tb03RegistrationDate");
 		description.addProperty("ageAtTB03Registration");
