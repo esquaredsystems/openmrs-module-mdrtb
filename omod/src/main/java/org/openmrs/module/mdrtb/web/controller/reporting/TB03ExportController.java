@@ -311,7 +311,6 @@ public class TB03ExportController {
 			}
 			
 			//DIAGNOSTIC XPERT
-			
 			XpertForm firstXpert = TB03Util.getFirstXpertForm(tf);
 			if (firstXpert != null) {
 				if (firstXpert.getMtbResult() != null)

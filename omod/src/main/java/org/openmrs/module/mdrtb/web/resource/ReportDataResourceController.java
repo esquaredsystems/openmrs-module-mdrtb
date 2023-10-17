@@ -9,7 +9,6 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.ReportData;
-import org.openmrs.module.mdrtb.ReportStatus;
 import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.web.dto.SimpleReportData;

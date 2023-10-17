@@ -8,6 +8,12 @@ import org.openmrs.module.mdrtb.MdrtbConstants;
 
 public class TB03Data implements Comparable<TB03Data> {
 	
+	private static final String UNDETERMINED_RESULT_SHORT = "U";
+	
+	private static final String NEGATIVE_RESULT_SHORT = "-";
+	
+	private static final String POSITIVE_RESULT_SHORT = "+";
+	
 	private Patient patient;
 	
 	private String identifier;
@@ -339,17 +345,21 @@ public class TB03Data implements Comparable<TB03Data> {
 		this.xpertMTBResult = xpertMTBResult;
 	}
 	
-	public String getXpertRIFResult() {
+	public String getXpertRIFResultCode() {
 		if (xpertRIFResult != null) {
-			if (xpertRIFResult.equals("+"))
+			if (xpertRIFResult.equals(POSITIVE_RESULT_SHORT))
 				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifPosShort");
-			else if (xpertRIFResult.equals("-"))
+			else if (xpertRIFResult.equals(NEGATIVE_RESULT_SHORT))
 				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifNegShort");
-			else if (xpertRIFResult.equals("U"))
+			else if (xpertRIFResult.equals(UNDETERMINED_RESULT_SHORT))
 				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifIndShort");
 			else
 				return "/" + xpertRIFResult;
 		}
+		return xpertRIFResult;
+	}
+	
+	public String getXpertRIFResult() {
 		return xpertRIFResult;
 	}
 	
@@ -381,13 +391,13 @@ public class TB03Data implements Comparable<TB03Data> {
 		this.hainMTBResult = hainMTBResult;
 	}
 	
-	public String getHainINHResult() {
+	public String getHainINHResultCode() {
 		if (hainINHResult != null) {
-			if (hainINHResult.equals("+"))
+			if (hainINHResult.equals(POSITIVE_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hainINHResult.equals("-"))
+			else if (hainINHResult.equals(NEGATIVE_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hainINHResult.equals("U"))
+			else if (hainINHResult.equals(UNDETERMINED_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
 			else
 				return hainINHResult;
@@ -395,22 +405,30 @@ public class TB03Data implements Comparable<TB03Data> {
 		return hainINHResult;
 	}
 	
+	public String getHainINHResult() {
+		return hainINHResult;
+	}
+	
 	public void setHainINHResult(String hainINHResult) {
 		this.hainINHResult = hainINHResult;
 	}
 	
-	public String getHainRIFResult() {
+	public String getHainRIFResultCode() {
 		
 		if (hainRIFResult != null) {
-			if (hainRIFResult.equals("+"))
+			if (hainRIFResult.equals(POSITIVE_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hainRIFResult.equals("-"))
+			else if (hainRIFResult.equals(NEGATIVE_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hainRIFResult.equals("U"))
+			else if (hainRIFResult.equals(UNDETERMINED_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
 			else
 				return hainRIFResult;
 		}
+		return hainRIFResult;
+	}
+	
+	public String getHainRIFResult() {
 		return hainRIFResult;
 	}
 	
@@ -866,13 +884,13 @@ public class TB03Data implements Comparable<TB03Data> {
 		hain2MTBResult = hain2mtbResult;
 	}
 	
-	public String getHain2InjResult() {
+	public String getHain2InjResultCode() {
 		if (hain2InjResult != null) {
-			if (hain2InjResult.equals("+"))
+			if (hain2InjResult.equals(POSITIVE_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hain2InjResult.equals("-"))
+			else if (hain2InjResult.equals(NEGATIVE_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hain2InjResult.equals("U"))
+			else if (hain2InjResult.equals(UNDETERMINED_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
 			else
 				return hain2InjResult;
@@ -880,21 +898,29 @@ public class TB03Data implements Comparable<TB03Data> {
 		return hain2InjResult;
 	}
 	
+	public String getHain2InjResult() {
+		return hain2InjResult;
+	}
+	
 	public void setHain2InjResult(String hain2InjResult) {
 		this.hain2InjResult = hain2InjResult;
 	}
 	
-	public String getHain2FqResult() {
+	public String getHain2FqResultCode() {
 		if (hain2FqResult != null) {
-			if (hain2FqResult.equals("+"))
+			if (hain2FqResult.equals(POSITIVE_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hain2FqResult.equals("-"))
+			else if (hain2FqResult.equals(NEGATIVE_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hain2FqResult.equals("U"))
+			else if (hain2FqResult.equals(UNDETERMINED_RESULT_SHORT))
 				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
 			else
 				return hain2FqResult;
 		}
+		return hain2FqResult;
+	}
+	
+	public String getHain2FqResult() {
 		return hain2FqResult;
 	}
 	

@@ -223,10 +223,19 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			}
 			// Next try precise name
 			try {
-				Concept c = Context.getConceptService().getConceptByName(lookup);
-				if (c != null) {
+				List<Concept> list = Context.getConceptService().getConceptsByName(lookup, Locale.ENGLISH, false);
+				// If there is exactly 1 object, then return it
+				if (list.size() == 1) {
+					Concept c = list.get(0);
 					initializeEverythingAboutConcept(c);
 					return c;
+				}
+				// For more than 1 objects, match the exact name
+				for (Concept c : list) {
+					if (c.getFullySpecifiedName(Locale.ENGLISH).getName().equalsIgnoreCase(lookup)) {
+						initializeEverythingAboutConcept(c);
+						return c;
+					}
 				}
 			}
 			catch (Exception e) {}

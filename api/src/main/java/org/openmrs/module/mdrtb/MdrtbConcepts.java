@@ -418,7 +418,7 @@ public class MdrtbConcepts {
 	
 	public final static String DATE_OF_MDR_CONFIRMATION = "DATE OF MDR CONFIRMATION";
 	
-	public final static String RELAPSED = "RELAPSED";
+	public final static String RELAPSED = "PATIENT RELAPSED";
 	
 	public final static String RELAPSE_MONTH = "RELAPSE MONTH";
 	
