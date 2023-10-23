@@ -1,9 +1,11 @@
 package org.openmrs.module.mdrtb.reporting.custom;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 
 import org.openmrs.Concept;
 import org.openmrs.Obs;
@@ -11,6 +13,7 @@ import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientProgram;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestAttribute;
 import org.openmrs.module.commonlabtest.LabTestType;
 import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
@@ -42,12 +45,11 @@ public class TB03Util {
 	
 	public static Culture getDiagnosticCulture(TB03Form tf) {
 		Culture c = null;
-		for (CultureForm cf : tf.getCultures()) {//, startDateCollected, endDateCollected)) {
+		for (CultureForm cf : tf.getCultures()) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0) {
 				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
 				LabTest culture = CommonLabUtil.getService().getMdrtbLabTestOrder(cf.getEncounter(), labTestType);
 				c = new CultureImpl(culture);
-				// c = new CultureImpl(cf.getEncounter());
 				break;
 			}
 		}
@@ -56,7 +58,7 @@ public class TB03Util {
 	
 	public static CultureForm getDiagnosticCultureForm(TB03Form tf) {
 		CultureForm c = null;
-		for (CultureForm cf : tf.getCultures()) {//, startDateCollected, endDateCollected)) {
+		for (CultureForm cf : tf.getCultures()) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0) {
 				c = cf;
 				break;
@@ -68,11 +70,10 @@ public class TB03Util {
 	public static Xpert getFirstXpert(TB03Form tf) {
 		Xpert c = null;
 		List<XpertForm> xperts = tf.getXperts();
-		if (xperts != null && xperts.size() > 0) {
+		if (xperts != null && !xperts.isEmpty()) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
 			LabTest xpert = CommonLabUtil.getService().getMdrtbLabTestOrder(xperts.get(0).getEncounter(), labTestType);
 			c = new XpertImpl(xpert);
-			// c = new XpertImpl(xperts.get(0).getEncounter());
 		}
 		return c;
 	}
@@ -80,7 +81,7 @@ public class TB03Util {
 	public static XpertForm getFirstXpertForm(TB03Form tf) {
 		XpertForm c = null;
 		List<XpertForm> xperts = tf.getXperts();
-		if (xperts != null && xperts.size() > 0) {
+		if (xperts != null && !xperts.isEmpty()) {
 			c = xperts.get(0);
 		}
 		return c;
@@ -89,11 +90,10 @@ public class TB03Util {
 	public static HAIN getFirstHAIN(TB03Form tf) {
 		HAIN c = null;
 		List<HAINForm> hains = tf.getHains();
-		if (hains != null && hains.size() > 0) {
+		if (hains != null && !hains.isEmpty()) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
 			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAINImpl(hain);
-			//c = new HAINImpl(hains.get(0).getEncounter());
 		}
 		return c;
 	}
@@ -101,8 +101,8 @@ public class TB03Util {
 	public static HAINForm getFirstHAINForm(TB03Form tf) {
 		HAINForm c = null;
 		List<HAINForm> hains = tf.getHains();
-		if (hains != null && hains.size() > 0) {
-			c = hains.get(0);// new HAINImpl(hains.get(0).getEncounter());
+		if (hains != null && !hains.isEmpty()) {
+			c = hains.get(0);
 		}
 		return c;
 	}
@@ -110,11 +110,10 @@ public class TB03Util {
 	public static HAIN2 getFirstHAIN2(TB03Form tf) {
 		HAIN2 c = null;
 		List<HAIN2Form> hains = tf.getHain2s();
-		if (hains != null && hains.size() > 0) {
+		if (hains != null && !hains.isEmpty()) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
 			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAIN2Impl(hain);
-			// c = new HAIN2Impl(hains.get(0).getEncounter());
 		}
 		return c;
 	}
@@ -122,9 +121,9 @@ public class TB03Util {
 	public static HAIN2Form getFirstHAIN2Form(TB03Form tf) {
 		HAIN2Form c = null;
 		List<HAIN2Form> hains = tf.getHain2s();
-		//, startDateCollected, endDateCollected)) {
-		if (hains != null && hains.size() > 0) {
-			c = hains.get(0);// new HAINImpl(hains.get(0).getEncounter());
+		
+		if (hains != null && !hains.isEmpty()) {
+			c = hains.get(0);
 		}
 		return c;
 	}
@@ -136,7 +135,6 @@ public class TB03Util {
 				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
 				LabTest smear = CommonLabUtil.getService().getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
 				c = new SmearImpl(smear);
-				//c = new SmearImpl(sf.getEncounter());
 				c.setResult(sf.getSmearResult());
 				c.setResultDate(sf.getEncounterDatetime());
 				break;
@@ -163,7 +161,6 @@ public class TB03Util {
 				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
 				LabTest smear = CommonLabUtil.getService().getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
 				c = new SmearImpl(smear);
-				// c = new SmearImpl(sf.getEncounter());
 				break;
 			}
 		}
@@ -184,10 +181,31 @@ public class TB03Util {
 	public static Dst getDiagnosticDST(TB03Form tf) {
 		Dst d = null;
 		List<DSTForm> dsts = tf.getDsts();
-		if (dsts != null && dsts.size() > 0) {
-			LabTest dst = CommonLabUtil.getService().getDstLabTestOrder(dsts.get(0).getEncounter());
-			d = new DstImpl(dst);
-			// d = new DstImpl(dsts.get(0).getEncounter());
+		List<LabTest> monthZeroDsts = new ArrayList<>();
+		Concept monthConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONTH_OF_TREATMENT);
+		if (dsts != null && !dsts.isEmpty()) {
+			for (DSTForm dstForm : dsts) {
+				// Which one is diagnostic? The one with Month = 0
+				Obs monthOfTreatment = MdrtbUtil.getObsFromEncounter(monthConcept, dstForm.getEncounter());
+				if (monthOfTreatment != null && monthOfTreatment.getValueNumeric().equals(0D)) {
+					LabTest dst = CommonLabUtil.getService().getDstLabTestOrder(dstForm.getEncounter());
+					monthZeroDsts.add(dst);
+				}
+			}
+		}
+		Date latest = new Date(0);
+		for (LabTest labTest : monthZeroDsts) {
+			Set<LabTestAttribute> attributes = labTest.getAttributes();
+			// Any DST-related stuff?
+			for (LabTestAttribute attribute : attributes) {
+				if("DST".equalsIgnoreCase(attribute.getAttributeType().getGroupName())) {
+					return new DstImpl(labTest);
+				}
+			}
+			if (labTest.getDateCreated().after(latest)) {
+				latest = labTest.getDateCreated();
+				d = new DstImpl(labTest);
+			}
 		}
 		return d;
 	}

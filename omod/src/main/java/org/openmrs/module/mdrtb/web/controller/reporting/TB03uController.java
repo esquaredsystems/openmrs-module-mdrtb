@@ -149,7 +149,7 @@ public class TB03uController {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		ArrayList<TB03uData> patientSet = getTB03uPatientSet(year, quarterInt, monthInt, locList);
+		List<TB03uData> patientSet = getTB03uPatientSet(year, quarterInt, monthInt, locList);
 		Integer num = patientSet.size();
 		model.addAttribute("num", num);
 		model.addAttribute("patientSet", patientSet);
@@ -181,12 +181,12 @@ public class TB03uController {
 		return "/module/mdrtb/reporting/tb03uResults";
 	}
 	
-	public static ArrayList<TB03uData> getTB03uPatientSet(Integer year, Integer quarter, Integer month,
+	public static List<TB03uData> getTB03uPatientSet(Integer year, Integer quarter, Integer month,
 	        List<Location> locList) {
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
 		        .getTB03uFormsFilled(locList, year, quarter, month);
 		
-		ArrayList<TB03uData> patientSet = new ArrayList<TB03uData>();
+		ArrayList<TB03uData> patientSet = new ArrayList<>();
 		SimpleDateFormat sdf = Context.getDateFormat();
 		
 		Integer codId = null;
@@ -343,13 +343,7 @@ public class TB03uController {
 				
 				Location loc = firstHAIN2.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03uData.setHain2Lab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						tb03uData.setHain2Lab(loc.getCountyDistrict());
-					}
+					tb03uData.setHain2Lab(loc.getName());
 				}
 			}
 			
@@ -752,7 +746,7 @@ public class TB03uController {
 			
 			//TX OUTCOME
 			//CHECK CAUSE OF DEATH
-			q = tf.getCauseOfDeath();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSE_OF_DEATH);
+			q = tf.getCauseOfDeath();
 			
 			if (q != null) {
 				codId = q.getConceptId();
@@ -797,9 +791,6 @@ public class TB03uController {
 			if (notes != null)
 				tb03uData.setNotes(notes);
 			
-			codId = null;
-			q = null;
-			
 			patientSet.add(tb03uData);
 			
 		}
@@ -807,5 +798,4 @@ public class TB03uController {
 		Collections.sort(patientSet);
 		return patientSet;
 	}
-	
 }

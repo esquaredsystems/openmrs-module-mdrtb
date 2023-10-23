@@ -271,13 +271,7 @@ public class Form89SingleExportController {
 				
 				Location loc = firstXpert.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						f89Data.setXpertLab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						f89Data.setXpertLab(loc.getCountyDistrict());
-					}
+					f89Data.setXpertLab(loc.getName());
 				}
 			}
 			

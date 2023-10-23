@@ -216,7 +216,7 @@ public class ReportUtil {
 		boolean quarterProvided = quarterObj != null && !"".equals(quarterObj);
 		boolean monthProvided = monthObj != null && !"".equals(monthObj);
 		if (!(yearProvided || quarterProvided || monthProvided)) {
-			Map<String, Date> periodDates = new HashMap<String, Date>();
+			Map<String, Date> periodDates = new HashMap<>();
 			periodDates.put("startDate", null);
 			periodDates.put("endDate", new Date());
 			return periodDates;
@@ -225,7 +225,9 @@ public class ReportUtil {
 			throw new IllegalArgumentException("Please enter either a quarter or a month");
 		}
 		
-		Integer year = Calendar.getInstance().get(Calendar.YEAR), quarter, month;
+		Integer quarter;
+		Integer month;
+		Integer year = Calendar.getInstance().get(Calendar.YEAR);
 		// Validate input and construct start and end months
 		int startMonth = 1;
 		int endMonth = 12;
@@ -269,6 +271,7 @@ public class ReportUtil {
 			end.set(Calendar.DATE, end.getActualMaximum(Calendar.DATE));
 		}
 		start.add(Calendar.DATE, -6);
+		start.add(Calendar.SECOND, -1);
 		end.add(Calendar.DATE, -6);
 		periodDates.put("startDate", start.getTime());
 		periodDates.put("endDate", end.getTime());

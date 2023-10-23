@@ -381,8 +381,6 @@ update _drug_order set units = 'MILLILITRE(S)' where units = 'ml';
 update global_property set property_value = '31bf065e-0370-102d-b0e3-001ec94a0cc1' where property = 'commonlabtest.specimenSiteConceptUuid';
 update global_property set property_value = '2da61322-bcc5-4c32-b412-1b1ef37f4a25' where property = 'commonlabtest.specimenTypeConceptUuid';
 
-select * from global_property gp where property like 'commonlab%';
-
 truncate commonlabtest_type;
 insert into commonlabtest_type (test_type_id, name, short_name, test_group, requires_specimen, reference_concept_id, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid) 
 select test_type_id, name, short_name, test_group, requires_specimen, reference_concept_id, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid from _commonlabtest_type ;
@@ -430,13 +428,6 @@ inner join users u on u.user_id = e.creator
 inner join provider p on p.person_id = u.person_id 
 inner join concept_name cn on cn.name = 'MICROSCOPY TEST CONSTRUCT' and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED' and cn.voided = 0 
 where e.encounter_type in (5, 11);
--- Now store orders against Specimen Collection encounter
-insert into orders (order_type_id, concept_id, orderer, encounter_id, date_activated, creator, date_created, voided, voided_by, date_voided, void_reason, patient_id, uuid, urgency, order_number, order_action, care_setting) 
-select 3 as order_type_id, cn.concept_id, e.creator, e.encounter_id, e.encounter_datetime, p.provider_id as orderer, e.date_created, e.voided, e.voided_by, e.date_voided, e.voided_by, e.patient_id, UUID(), 'ROUTINE' as urgency, concat('ORD-', e.encounter_id) as order_number, 'NEW' as order_action, 1 as care_setting from encounter as e 
-inner join users u on u.user_id = e.creator 
-inner join provider p on p.person_id = u.person_id 
-inner join concept_name cn on cn.name = 'DST2 CONSTRUCT' and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED' and cn.voided = 0 
-where e.encounter_type = 5;
 
 
 -- Update the order and set the creator where respective user does not exist
@@ -448,6 +439,7 @@ truncate commonlabtest_test;
 insert into commonlabtest_test (test_order_id, test_type_id, lab_reference_number, creator, date_created, voided, voided_by, date_voided, void_reason, uuid) 
 select o.order_id, (case o.concept_id when 410 then 5 else 7 end) as test_type_id, concat(date_format(o.date_activated, '%Y%m%d'), '-', o.encounter_id) as lab_reference_number, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from orders as o 
 where o.order_type_id = 3 and o.voided = 0;
+
 
 /* Create a PROCESSED sample to ensure data integrity */
 truncate commonlabtest_sample ;
@@ -668,292 +660,323 @@ inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.grou
 where o.concept_id = 312 and o.voided = 0;
 
 
-
 /* DST2 TEST */
+-- Collect all Drug results in a separate table
+drop table if exists _drug_result;
+create table _drug_result 
+select o2.encounter_id, ct.test_order_id, ct.test_type_id, o.obs_datetime, concat(cn2.name, ' RESISTANCE') as drug, cn.name as answer, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
+inner join orders o2 ON o2.encounter_id = o.encounter_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+left join concept_name cn on cn.concept_id = o.concept_id and cn.concept_name_type = 'FULLY_SPECIFIED' and cn.locale = 'en' 
+left join concept_name cn2 on cn2.concept_id = o.value_coded and cn2.concept_name_type = 'FULLY_SPECIFIED' and cn2.locale = 'en' 
+where ct.test_type_id = 7 and o.concept_id in (118, 132);
 
--- Add attributes - For DST MGIT (All Susceptible Drugs)
--- If Resistance exists in Susceptible drugs, then insert as Drug name with answer as Susceptible
--- AMIKACIN
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'AMIKACIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 115; -- (The question concept should be SUSCEPTIBLE and value coded be AMIKACIN)
--- BEDAQUILINE
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'BEDAQUILINE RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 447; -- (The question concept should be SUSCEPTIBLE and value coded be BEDAQUILINE)
--- CAPREOMYCIN
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'CAPREOMYCIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 107; -- (The question concept should be SUSCEPTIBLE and value coded be CAPREOMYCIN)
--- CIPROFLOXACIN
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'CIPROFLOXACIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 79; -- (The question concept should be SUSCEPTIBLE and value coded be CIPROFLOXACIN)
--- CLARITHROMYCIN
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'CLARITHROMYCIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 93; -- (The question concept should be SUSCEPTIBLE and value coded be CLARITHROMYCIN)
--- CLOFAZAMINE
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'CLOFAZAMINE RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 72; -- (The question concept should be SUSCEPTIBLE and value coded be CLOFAZAMINE)
--- CYCLOSERINE
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'CYCLOSERINE RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 104; -- (The question concept should be SUSCEPTIBLE and value coded be CYCLOSERINE)
--- DELAMANID
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'DELAMANID RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 448; -- (The question concept should be SUSCEPTIBLE and value coded be DELAMANID)
--- ETHAMBUTOL
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'ETHAMBUTOL RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 113; -- (The question concept should be SUSCEPTIBLE and value coded be ETHAMBUTOL)
--- ETHIONAMIDE
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'ETHIONAMIDE RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 76; -- (The question concept should be SUSCEPTIBLE and value coded be ETHIONAMIDE)
--- GATIFLOXACIN
-insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'GATIFLOXACIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 117; -- (The question concept should be SUSCEPTIBLE and value coded be GATIFLOXACIN)
--- ISONIAZID
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'ISONIAZID RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 92; -- (The question concept should be SUSCEPTIBLE and value coded be ISONIAZID)
--- KANAMYCIN
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'KANAMYCIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 112; -- (The question concept should be SUSCEPTIBLE and value coded be KANAMYCIN)
--- LEVOFLOXACIN
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'LEVOFLOXACIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 101; -- (The question concept should be SUSCEPTIBLE and value coded be LEVOFLOXACIN)
--- LINEZOLID
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'LINEZOLID RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 446; -- (The question concept should be SUSCEPTIBLE and value coded be LINEZOLID)
--- MOXIFLOXACIN
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'MOXIFLOXACIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 109; -- (The question concept should be SUSCEPTIBLE and value coded be MOXIFLOXACIN)
--- OFLOXACIN
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'OFLOXACIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 108; -- (The question concept should be SUSCEPTIBLE and value coded be OFLOXACIN)
--- P-AMINOSALICY
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'P-AMINOSALICY RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 98; -- (The question concept should be SUSCEPTIBLE and value coded be P-AMINOSALICY)
--- PROTHIONAMIDE
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'PROTHIONAMIDE RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 42; -- (The question concept should be SUSCEPTIBLE and value coded be PROTHIONAMIDE)
--- PYRAZINAMIDE
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'PYRAZINAMIDE RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 41; -- (The question concept should be SUSCEPTIBLE and value coded be PYRAZINAMIDE)
--- PYRIDOXINE
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'PYRIDOXINE RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 73; -- (The question concept should be SUSCEPTIBLE and value coded be PYRIDOXINE)
--- RIFABUTIN
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'RIFABUTIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 114; -- (The question concept should be SUSCEPTIBLE and value coded be RIFABUTIN)
--- RIFAMPICIN
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'RIFAMPICIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 74; -- (The question concept should be SUSCEPTIBLE and value coded be RIFAMPICIN)
--- STREPTOMYCIN
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'STREPTOMYCIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 75; -- (The question concept should be SUSCEPTIBLE and value coded be STREPTOMYCIN)
--- TERIZIDONE
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'TERIZIDONE RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 40; -- (The question concept should be SUSCEPTIBLE and value coded be TERIZIDONE)
--- THIOACETAZONE
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'THIOACETAZONE RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 99; -- (The question concept should be SUSCEPTIBLE and value coded be THIOACETAZONE)
--- VIOMYCIN
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'VIOMYCIN RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 116; -- (The question concept should be SUSCEPTIBLE and value coded be VIOMYCIN)
--- OTHER RESISTANCE
--- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
-select 0, ct.test_order_id, cat.test_attribute_type_id, c2.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 7 and cat.name = 'OTHER RESISTANCE' 
-inner join concept c2 on c2.concept_id = 543 -- (Concept for Answer as SUSCEPTIBLE)
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 138 -- (Concept For TB DRUG SENSITIVITY TEST)
-where o.concept_id = 118 and o.value_coded = 19; -- (The question concept should be SUSCEPTIBLE and value coded be OTHER)
+-- insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid) 
+select 0, o.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _drug_result as o 
+inner join commonlabtest_attribute_type cat on cat.name = o.drug and cat.test_type_id = o.test_type_id 
+inner join concept_name cn on cn.name = o.drug and cn.concept_name_type = 'FULLY_SPECIFIED' and cn.locale = 'en' 
+inner join concept_name cn2 on cn2.name = o.answer and cn2.concept_name_type = 'FULLY_SPECIFIED' and cn2.locale = 'en' 
+inner join concept c on c.concept_id = cn2.concept_id
+where o.voided = 0;
 
+-- Enc, Obs, Q, A, Parent, Parent Q, Parent A from All Encounters
+drop table if exists _encounter_results;
+create table _encounter_results ;
+select o.encounter_id, o.person_id, o.obs_id, o.obs_group_id, cnp.name as parent_concept, o.obs_datetime, o.concept_id, cn.name as question, o.value_numeric, o.value_text, o.value_datetime, o.value_coded, cn2.name as answer, o.location_id, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason from encounter e 
+inner join obs o on o.encounter_id = e.encounter_id 
+inner join concept_name cn on cn.concept_id = o.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED' 
+left join concept_name cn2 on cn2.concept_id = o.value_coded and cn2.locale = 'en' and cn2.concept_name_type = 'FULLY_SPECIFIED' 
+left join obs op on op.obs_id = o.obs_group_id 
+left join concept_name cnp on cnp.concept_id = op.concept_id and cnp.locale = 'en' and cnp.concept_name_type = 'FULLY_SPECIFIED' 
+where e.encounter_type in (5, 7, 11) and e.voided = 0 and o.voided = 0;
+
+-- select e.patient_id, et.name, p.concept_id as parent_concept_id, get_concept_name(p.concept_id) as parent, o.obs_id, o.concept_id, get_concept_name(o.concept_id) as concept, o.encounter_id, o.obs_datetime, o.obs_group_id, o.value_coded, get_concept_name(o.value_coded) as answer, o.value_text from obs o 
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'AMIKACIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 115;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'CAPREOMYCIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 107;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'CIPROFLOXACIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 79;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'CLARITHROMYCIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 93;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'CLOFAZAMINE RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 72;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'CYCLOSERINE RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 104;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'ETHAMBUTOL RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 113;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'ETHIONAMIDE RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 76;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'GATIFLOXACIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 117;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'ISONIAZID RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 92;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'KANAMYCIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 112;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'LEVOFLOXACIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 101;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'MOXIFLOXACIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 109;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'OFLOXACIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 108;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'P-AMINOSALICY RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 98;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'PROTHIONAMIDE RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 42;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'PYRAZINAMIDE RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 41;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'PYRIDOXINE RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 73;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'RIFABUTIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 114;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'RIFAMPICIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 74;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'STREPTOMYCIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 75;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'TERIZIDONE RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 40;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'THIOACETAZONE RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 99;
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'VIOMYCIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 116;
+-- OTHER RESISTANCE = ?
+-- DELAMANID RESISTANCE = ?
+-- LINEZOLID RESISTANCE = ?
+
+insert into commonlabtest_attribute (test_attribute_id,test_order_id,attribute_type_id,value_reference,creator,date_created,voided,voided_by,date_voided,void_reason,uuid)
+select 0, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.name = 'VIOMYCIN RESISTANCE' 
+where p.concept_id in (118, 138) and o.value_coded = 116
+
+select o.* from _encounter_results as o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+inner join obs p on p.obs_id = o.obs_group_id 
+inner join orders o2 on o2.encounter_id = e.encounter_id 
+inner join concept c on c.concept_id = o.concept_id 
+inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
+where o.encounter_id = 679497;
 
 
 /* REPORT DATA */
@@ -1030,115 +1053,34 @@ set foreign_key_checks = 1;
 
 
 
-select 0 as test_attribute_id, ct.test_order_id, tat.test_attribute_type_id, o.value_datetime, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join commonlabtest_attribute_type as tat on tat.test_type_id = 5 and tat.name = 'DATE COLLECTED' 
-where o.concept_id = 188;
-
-select o.encounter_id, et.name from orders o 
-inner join encounter e on e.encounter_id = o.encounter_id 
-inner join encounter_type et on et.encounter_type_id = e.encounter_type 
-where o.patient_id = 259059;
-
-select ca.test_attribute_id, ca.attribute_type_id, cat.name as attribute_name, ca.value_reference, cn.name as value_concept, cs.test_sample_id, cs.lab_sample_identifier, cs.collector, cs.collection_date, cs.processed_date, cat.datatype, cat.datatype_config from commonlabtest_attribute ca 
-inner join commonlabtest_sample cs on cs.test_order_id = ca.test_order_id and cs.status in ('PROCESSED')
-left join commonlabtest_attribute_type cat on cat.test_attribute_type_id = ca.attribute_type_id 
-left join concept as c on c.uuid = ca.value_reference 
-left join concept_name cn on cn.concept_id = c.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED'
-order by test_attribute_id ;
-
 select o.obs_id, o.person_id, o.encounter_id, o.location_id, o.obs_datetime, o2.concept_id, cn2.name as abba, o.concept_id, cn.name as question, o.obs_group_id, o.value_coded, o.value_numeric, o.value_text from obs as o 
 inner join concept_name cn on cn.concept_id = o.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED' 
 inner join obs o2 on o2.obs_id = o.obs_group_id and o2.concept_id in (138, 139, 153, 524, 535, 542, 549, 552, 571, 572, 573) -- (Concepts For TB DST) 
 inner join concept_name cn2 on cn2.concept_id = o2.concept_id and cn2.locale = 'en' and cn2.concept_name_type = 'FULLY_SPECIFIED' 
 where o.voided = 0 and cn.voided = 0; -- (The question concept should be SUSCEPTIBLE and value coded be AMIKACIN)
 
-select et.name, o.* from obs as o 
-inner join encounter e on e.encounter_id = o.encounter_id 
-inner join encounter_type et on et.encounter_type_id = e.encounter_type 
-where o.concept_id = 576
-and year(e.encounter_datetime) = 2023 
-and et.name = 'Specimen Collection';
-
-select ahe.address_hierarchy_entry_id as id, ahe.name, ahe.level_id, 0 as location_id, 
-p.address_hierarchy_entry_id as parent_id, p.name as parent_name, p.level_id as parent_level, pl.location_id as parent_location_id, 
-gp.parent_id as grandparent_id, gp.name as grandparent_name, gp.level_id as grandparent_level, gpl.location_id as grandparent_location_id from openmrspih.address_hierarchy_entry ahe 
-left join openmrspih.address_hierarchy_entry p on p.address_hierarchy_entry_id = ahe.parent_id and p.level_id <> 1 
-left join openmrspih.address_hierarchy_entry gp on gp.address_hierarchy_entry_id = p.parent_id and gp.level_id <> 1 
-left join openmrspih.location gpl on gpl.name = gp.name and gpl.state_province = gp.name and gpl.retired = 0 
-left join openmrspih.location pl on pl.name = p.name and pl.retired = 0 ;
-
-
 
 # Get all lab results against a patient ID
-select ct.test_order_id, ct.test_type_id, ca.attribute_type_id, cat.name as question, ca.value_reference, cn.name as answer from commonlabtest_test as ct 
+select o.order_id, o.encounter_id, o.date_created, ct.test_order_id, ct.test_type_id, ca.attribute_type_id, cat.name as question, ca.value_reference, cn.name as answer from commonlabtest_test as ct 
 inner join orders as o on o.order_id = ct.test_order_id 
 inner join commonlabtest_attribute ca on ca.test_order_id = ct.test_order_id 
 inner join commonlabtest_attribute_type cat on cat.test_attribute_type_id = ca.attribute_type_id 
 left join concept c on c.uuid = ca.value_reference 
 left join concept_name cn on cn.concept_id = c.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED'
-where o.patient_id = 246033;
+where o.patient_id = (select pi2.patient_id from patient_identifier pi2 where pi2.identifier = '01220001' limit 1);
 
--- View the observations when parent is SMEAR MICROSCOPY
-select o.obs_id, o2.concept_id, cn3.name as parent_concept, o.encounter_id, o.obs_group_id, o.obs_datetime, o.concept_id, o.value_numeric, o.value_text, o.value_datetime, cn.name as question, o.value_coded, cn2.name as answer from encounter e 
+select et.name, e.encounter_datetime, e.date_created, e.location_id, o.obs_id, o.concept_id, get_concept_name(o.concept_id) as concept, o.encounter_id, o.obs_datetime, o.obs_group_id, o.value_coded, get_concept_name(o.value_coded) as answer, o.value_text from obs o 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+where o.person_id in (select pi2.patient_id from patient_identifier pi2 where pi2.identifier = '01220021');
+
+select e.*, o.concept_id, get_concept_name(o.concept_id) as q, o.value_numeric, o.value_coded, get_concept_name(o.value_coded) as a from encounter e 
 inner join obs o on o.encounter_id = e.encounter_id 
-inner join obs o2 on o2.obs_id = o.obs_group_id 
-inner join concept_name cn on cn.concept_id = o.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED'
-inner join concept_name cn3 on cn3.concept_id = o2.concept_id and cn3.locale = 'en' and cn3.concept_name_type = 'FULLY_SPECIFIED'
-left join concept_name cn2 on cn2.concept_id = o.value_coded and cn2.locale = 'en' and cn2.concept_name_type = 'FULLY_SPECIFIED'
-where e.encounter_type = 5;
-and o.person_id = 246033;
-
-
--- Create a new table for "TUBERCULOSIS XPERT TEST CONSTRUCT"
-CREATE TABLE obs_xpert SELECT cn.name, o.* FROM obs AS o
-INNER JOIN concept_name cn ON cn.concept_id = o.concept_id AND cn.locale = 'en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
-INNER JOIN obs AS o2 ON o2.obs_id = o.obs_group_id
-WHERE o2.concept_id = 311;
-
-CREATE TABLE obs_smear SELECT cn.name, o.* FROM obs AS o
-INNER JOIN concept_name cn ON cn.concept_id = o.concept_id AND cn.locale = 'en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
-INNER JOIN obs AS o2 ON o2.obs_id = o.obs_group_id
-WHERE o2.concept_id = 69;
-
-CREATE TABLE obs_culture SELECT cn.name, o.* FROM obs AS o
-INNER JOIN concept_name cn ON cn.concept_id = o.concept_id AND cn.locale = 'en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
-INNER JOIN obs AS o2 ON o2.obs_id = o.obs_group_id
-WHERE o2.concept_id = 153;
-
-CREATE TABLE obs_dst SELECT cn.name, o.* FROM obs AS o
-INNER JOIN concept_name cn ON cn.concept_id = o.concept_id AND cn.locale = 'en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
-INNER JOIN obs AS o2 ON o2.obs_id = o.obs_group_id
-WHERE o2.concept_id = 139;
-
-CREATE TABLE obs_hain SELECT cn.name, o.* FROM obs AS o
-INNER JOIN concept_name cn ON cn.concept_id = o.concept_id AND cn.locale = 'en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
-INNER JOIN obs AS o2 ON o2.obs_id = o.obs_group_id
-WHERE o2.concept_id = 323;
-
-CREATE TABLE obs_hain2 SELECT cn.name, o.* FROM obs AS o
-INNER JOIN concept_name cn ON cn.concept_id = o.concept_id AND cn.locale = 'en' AND cn.concept_name_type = 'FULLY_SPECIFIED'
-INNER JOIN obs AS o2 ON o2.obs_id = o.obs_group_id
-WHERE o2.concept_id = 414;
-
-
-select o.obs_id, o2.concept_id, o.encounter_id, o.obs_group_id, o.obs_datetime, o.concept_id, o.value_numeric, o.value_text, o.value_datetime, cn.name as question, o.value_coded, cn2.name as answer from encounter e 
-inner join obs o on o.encounter_id = e.encounter_id 
-inner join obs o2 on o2.obs_id = o.obs_group_id 
-inner join concept_name cn on cn.concept_id = o.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED'
-left join concept_name cn2 on cn2.concept_id = o.value_coded and cn2.locale = 'en' and cn2.concept_name_type = 'FULLY_SPECIFIED'
-where e.encounter_type = 11 and o2.concept_id = 410 
+where e.encounter_id = 679497 and e.voided = 0 
 ;
 
-select 0 as test_attribute_id, ct.test_order_id, cat.test_attribute_type_id, c.uuid, o.creator, o.date_created, o.voided, o.voided_by, o.date_voided, o.void_reason, uuid() as uuid from obs as o 
-inner join orders o2 ON o2.encounter_id = o.encounter_id 
-inner join commonlabtest_test ct on ct.test_order_id = o2.order_id 
-inner join concept c on c.concept_id = o.value_coded 
-inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 323 
-inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.group_name = 'HAIN' and cat.name = 'XPERT MTB BURDEN' 
-where o.concept_id = 318 and o.voided = 0;
+select cat.name, ca.* from commonlabtest_attribute ca 
+inner join commonlabtest_attribute_type cat on cat.test_attribute_type_id = ca.attribute_type_id 
+where ca.test_order_id in 
+(select o.order_id from orders o where o.encounter_id = 679497) and ca.voided = 0;
 
-
-select concept_id, value_text from openmrs19.tmp_obs 
-where concept_id = 191;

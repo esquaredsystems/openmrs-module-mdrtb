@@ -19,8 +19,6 @@ public abstract class TestImpl implements Test {
 	protected LabTest test; // the top-level obs that holds all the data for this test
 	
 	/** implementing subclasses must override this method to define their type */
-	public abstract String getTestType();
-	
 	public Object getTest() {
 		return this.test;
 	}

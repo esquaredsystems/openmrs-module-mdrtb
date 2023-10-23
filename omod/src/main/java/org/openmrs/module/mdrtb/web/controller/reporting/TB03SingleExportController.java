@@ -289,13 +289,7 @@ public class TB03SingleExportController {
 				
 				Location loc = firstXpert.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03Data.setXpertLab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						tb03Data.setXpertLab(loc.getCountyDistrict());
-					}
+					tb03Data.setXpertLab(loc.getName());
 				}
 			}
 			

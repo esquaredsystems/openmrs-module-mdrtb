@@ -41,11 +41,14 @@ import org.openmrs.module.BaseModuleActivator;
  */
 public class MdrtbActivator extends BaseModuleActivator {
 	
+	private static final String DEFAULT = "default";
+	
 	private Log log = LogFactory.getLog(this.getClass());
 	
 	/**
 	 * @see #started()
 	 */
+	@Override
 	public void started() {
 		log.info("Starting up MDR-TB module.");
 		//registerAddressTemplates();
@@ -60,6 +63,7 @@ public class MdrtbActivator extends BaseModuleActivator {
 		unregisterAddressTemplates();
 	}
 	
+	@Override
 	public void contextRefreshed() {
 		configureGlobalProperties();
 		integrityCheck();
@@ -71,9 +75,9 @@ public class MdrtbActivator extends BaseModuleActivator {
 	public void registerAddressTemplates() {
 		
 		log.info("Registering default address format.");
-		AddressTemplate at = new AddressTemplate("default");
+		AddressTemplate at = new AddressTemplate(DEFAULT);
 		at.setDisplayName("Default Address Format");
-		at.setCountry("default");
+		at.setCountry(DEFAULT);
 		Map<String, String> nameMappings = new HashMap<String, String>();
 		nameMappings.put("cityVillage", "Location.cityVillage");
 		nameMappings.put("address1", "PersonAddress.address1");
@@ -83,7 +87,7 @@ public class MdrtbActivator extends BaseModuleActivator {
 		sizeMappings.put("address1", "60");
 		at.setSizeMappings(sizeMappings);
 		Map<String, String> elementDefaults = new HashMap<String, String>();
-		elementDefaults.put("country", "default");
+		elementDefaults.put("country", DEFAULT);
 		at.setElementDefaults(elementDefaults);
 		at.setLineByLineFormat(Arrays.asList("cityVillage address1"));
 		AddressSupport.getInstance().getLayoutTemplates().add(at);
@@ -95,7 +99,7 @@ public class MdrtbActivator extends BaseModuleActivator {
 	public void unregisterAddressTemplates() {
 		for (Iterator<AddressTemplate> i = AddressSupport.getInstance().getLayoutTemplates().iterator(); i.hasNext();) {
 			AddressTemplate at = i.next();
-			if ("default".equals(at.getCodeName())) {
+			if (DEFAULT.equals(at.getCodeName())) {
 				i.remove();
 			}
 		}

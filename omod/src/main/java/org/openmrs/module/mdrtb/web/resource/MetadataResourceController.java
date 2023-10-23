@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptName;
@@ -37,8 +35,6 @@ import org.openmrs.util.OpenmrsClassLoader;
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/metadata", supportedClass = SimpleReportData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class MetadataResourceController extends DataDelegatingCrudResource<SimpleReportData> implements Searchable {
 	
-	protected final Log log = LogFactory.getLog(getClass());
-	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -50,8 +46,7 @@ public class MetadataResourceController extends DataDelegatingCrudResource<Simpl
 	
 	@Override
 	public SimpleReportData newDelegate() {
-		SimpleReportData reportObject = new SimpleReportData();
-		return reportObject;
+		return new SimpleReportData();
 	}
 	
 	@PropertyGetter("display")
@@ -119,10 +114,9 @@ public class MetadataResourceController extends DataDelegatingCrudResource<Simpl
 			        Map<String, String> map = new HashMap<>();
 			        for (String line : lines) {
 			        	String[] parts = line.split("\\=", 2);
-			        	if (parts.length == 2) {
-			        		if (parts[0].startsWith("mdrtb.") || parts[0].startsWith("commonlabtest.")) {
+			        	if (parts.length == 2 &&  (parts[0].startsWith("mdrtb.") || parts[0].startsWith("commonlabtest."))) {
 								map.put(parts[0], parts[1]);
-			        		}
+			        		
 			        	}
 					}
 			        SimpleObject object = new SimpleObject();
@@ -131,22 +125,6 @@ public class MetadataResourceController extends DataDelegatingCrudResource<Simpl
 			    } catch (IOException e) {
 			    }
 			}
-			
-			/*
-			String locale = context.getRequest().getParameter("locale");
-			if (locale == null) {
-				locale = "en";
-			}
-			Collection<PresentationMessage> presentations = Context.getMessageSourceService().getPresentations();
-			for (PresentationMessage p : presentations) {
-				if (p.getLocale().getLanguage().equals(locale)) {
-					SimpleObject messageObj = new SimpleObject();
-					messageObj.add("code", p.getCode());
-					messageObj.add("message", p.getMessage());
-					objects.add(messageObj);
-				}
-			}
-			*/
 		}
 		return new NeedsPaging<SimpleObject>(objects, context);
 	}

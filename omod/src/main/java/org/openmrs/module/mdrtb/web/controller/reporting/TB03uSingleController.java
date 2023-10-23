@@ -162,7 +162,7 @@ public class TB03uSingleController {
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
 		    monthInt);
 		
-		ArrayList<TB03uData> patientSet = new ArrayList<TB03uData>();
+		ArrayList<TB03uData> patientSet = new ArrayList<>();
 		SimpleDateFormat sdf = new SimpleDateFormat();
 		
 		Integer regimenConceptId = null;
@@ -306,13 +306,7 @@ public class TB03uSingleController {
 				
 				Location loc = firstHAIN.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03uData.setHainLab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						tb03uData.setHainLab(loc.getCountyDistrict());
-					}
+					tb03uData.setHainLab(loc.getName());
 				}
 			}
 			

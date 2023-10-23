@@ -30,9 +30,9 @@ public class TB03uUtil {
 	public static SmearForm getFollowupSmearForm(TB03uForm form, Integer month) {
 		SmearForm c = null;
 		
-		for (SmearForm sf : form.getSmears()) {//, startDateCollected, endDateCollected)) {
+		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == month.intValue()) {
-				c = sf;//new SmearImpl(sf.getEncounter());
+				c = sf;
 				break;
 			}
 			
@@ -44,9 +44,9 @@ public class TB03uUtil {
 	public static CultureForm getFollowupCultureForm(TB03uForm form, Integer month) {
 		CultureForm c = null;
 		
-		for (CultureForm cf : form.getCultures()) {//, startDateCollected, endDateCollected)) {
+		for (CultureForm cf : form.getCultures()) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == month.intValue()) {
-				c = cf;//new CultureImpl(cf.getEncounter());
+				c = cf;
 				break;
 			}
 			
@@ -56,17 +56,17 @@ public class TB03uUtil {
 	}
 	
 	public static Dst getDiagnosticDST(TB03uForm tf) {
-		Dst d = null;
-		
 		List<DSTForm> dsts = tf.getDsts();
-		
-		if (dsts != null && dsts.size() > 0) {
-			LabTest dstTest = CommonLabUtil.getService().getDstLabTestOrder(dsts.get(0).getEncounter());
-			d = new DstImpl(dstTest);
-			// d = new DstImpl(dsts.get(0).getEncounter());
+		if (dsts != null && !dsts.isEmpty()) {
+			// Repeat until an encounter with associated lab order is found
+			for (DSTForm dstForm : dsts) {
+				LabTest dstTest = CommonLabUtil.getService().getDstLabTestOrder(dstForm.getEncounter());
+				if (dstTest != null) {
+					return new DstImpl(dstTest);
+				}
+			}
 		}
-		
-		return d;
+		return null;
 	}
 	
 	//find out which date and before or after
@@ -119,11 +119,10 @@ public class TB03uUtil {
 	public static Xpert getFirstXpert(TB03uForm tf) {
 		Xpert c = null;
 		List<XpertForm> xperts = tf.getXperts();
-		if (xperts != null && xperts.size() > 0) {
+		if (xperts != null && !xperts.isEmpty()) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
 			LabTest xpert = CommonLabUtil.getService().getMdrtbLabTestOrder(xperts.get(0).getEncounter(), labTestType);
 			c = new XpertImpl(xpert);
-			// c = new XpertImpl(xperts.get(0).getEncounter());
 		}
 		return c;
 	}
@@ -131,7 +130,7 @@ public class TB03uUtil {
 	public static XpertForm getFirstXpertForm(TB03uForm tf) {
 		XpertForm c = null;
 		List<XpertForm> xperts = tf.getXperts();
-		if (xperts != null && xperts.size() > 0) {
+		if (xperts != null && !xperts.isEmpty()) {
 			c = xperts.get(0);
 			
 		}
@@ -142,11 +141,10 @@ public class TB03uUtil {
 	public static HAIN getFirstHAIN(TB03uForm tf) {
 		HAIN c = null;
 		List<HAINForm> hains = tf.getHains();
-		if (hains != null && hains.size() > 0) {
+		if (hains != null && !hains.isEmpty()) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
 			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAINImpl(hain);
-			// c = new HAINImpl(hains.get(0).getEncounter());
 		}
 		
 		return c;
@@ -156,8 +154,8 @@ public class TB03uUtil {
 		HAINForm c = null;
 		
 		List<HAINForm> hains = tf.getHains();
-		if (hains != null && hains.size() > 0) {
-			c = hains.get(0);// new HAINImpl(hains.get(0).getEncounter());
+		if (hains != null && !hains.isEmpty()) {
+			c = hains.get(0);
 		}
 		
 		return c;
@@ -166,11 +164,10 @@ public class TB03uUtil {
 	public static HAIN2 getFirstHAIN2(TB03uForm tf) {
 		HAIN2 c = null;
 		List<HAIN2Form> hains = tf.getHain2s();
-		if (hains != null && hains.size() > 0) {
+		if (hains != null && !hains.isEmpty()) {
 			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
 			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAIN2Impl(hain);
-			// c = new HAIN2Impl(hains.get(0).getEncounter());
 		}
 		
 		return c;
@@ -180,8 +177,8 @@ public class TB03uUtil {
 		HAIN2Form c = null;
 		
 		List<HAIN2Form> hains = tf.getHain2s();
-		if (hains != null && hains.size() > 0) {
-			c = hains.get(0);// new HAINImpl(hains.get(0).getEncounter());
+		if (hains != null && !hains.isEmpty()) {
+			c = hains.get(0);
 		}
 		
 		return c;

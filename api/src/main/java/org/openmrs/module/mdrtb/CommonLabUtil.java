@@ -2,6 +2,7 @@ package org.openmrs.module.mdrtb;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -99,6 +100,8 @@ public class CommonLabUtil {
 							case "SMEAR":
 								smearAttributeTypes.add(at);
 								break;
+							default:
+								break;
 						}
 					}
 				}
@@ -145,8 +148,7 @@ public class CommonLabUtil {
 	}
 
 	public LabTestType getMdrtbTestType() {
-		LabTestType testType = service.getLabTestTypeByUuid(MdrtbConstants.MDRTB_TEST_TYPE_UUID);
-		return testType;
+		return service.getLabTestTypeByUuid(MdrtbConstants.MDRTB_TEST_TYPE_UUID);
 	}
 	
 	public LabTestType getDstMgitTestType() {
@@ -168,7 +170,7 @@ public class CommonLabUtil {
 		List<LabTestSample> samples = service.getLabTestSamples(labTest, false);
 		LabTestSample mostRecent = null;
 		for (LabTestSample labTestSample : samples) {
-			if (labTestSample.getStatus() == LabTestSampleStatus.ACCEPTED) {
+			if (labTestSample.getStatus() == LabTestSampleStatus.ACCEPTED || labTestSample.getStatus() == LabTestSampleStatus.PROCESSED) {
 				if (mostRecent == null) {
 					mostRecent = labTestSample;					
 				} else {
@@ -179,16 +181,6 @@ public class CommonLabUtil {
 			}
 		}
 		return mostRecent;
-	}
-	
-	public LabTestSample getMostRecentProcessedSample(Integer labTestId) {
-		LabTest test = service.getLabTest(labTestId);
-		return getMostRecentAcceptedSample(test);
-	}
-	
-	public LabTestSample getMostRecentProcessedSample(LabTest labTest) {
-		LabTestSample sample = labTest.getLabTestSample(LabTestSampleStatus.PROCESSED);
-		return sample;
 	}
 	
 	public LabTestAttributeType getLabTestAttributeTypeByName(String name) {
@@ -292,12 +284,12 @@ public class CommonLabUtil {
 		}
 		CommonLabTestService labTestService = service;
 		for (Order o : orders) {
-			// Does this order have a LabTest object of given type?
+			// Does this order have a LabTest object of either LJ or MGIT DST?
 			LabTest existing = labTestService.getLabTest(o.getOrderId());
 			if (existing != null) {
-				if (existing.getLabTestType().equals(labTestType)) {
-					return existing;
-				}
+				List<LabTestAttribute> attributes = labTestService.getLabTestAttributes(existing.getTestOrderId());
+				existing.setAttributes(new HashSet<>(attributes));
+				return existing;
 			}
 		}
 		return null;
@@ -345,12 +337,15 @@ public class CommonLabUtil {
 			// Does this order have a LabTest object of either LJ or MGIT DST?
 			LabTest existing = labTestService.getLabTest(o.getOrderId());
 			if (existing != null) {
+				List<LabTestAttribute> attributes = labTestService.getLabTestAttributes(existing.getTestOrderId());
+				existing.setAttributes(new HashSet<>(attributes));
 				if (existing.getLabTestType().equals(mgitType)) {
 					return existing;
 				}
 				if (existing.getLabTestType().equals(ljType)) {
 					return existing;
 				}
+				return existing;
 			}
 		}
 		return null;

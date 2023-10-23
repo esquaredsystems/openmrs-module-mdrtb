@@ -350,13 +350,7 @@ public class TB03ExportController {
 				
 				Location loc = firstHAIN.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03Data.setHainLab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						tb03Data.setHainLab(loc.getCountyDistrict());
-					}
+					tb03Data.setHainLab(loc.getName());
 				}
 			}
 			
@@ -397,13 +391,7 @@ public class TB03ExportController {
 				
 				Location loc = diagnosticCulture.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
-						tb03Data.setCultureLab(loc.getAddress6());
-					}
-					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
-						tb03Data.setCultureLab(loc.getCountyDistrict());
-					}
+					tb03Data.setCultureLab(loc.getName());
 				}
 			}
 			
@@ -420,12 +408,11 @@ public class TB03ExportController {
 				String result = null;
 				for (DstResult res : resList) {
 					if (res.getDrug() != null) {
-						drugName = res.getDrug().getShortestName(Context.getLocale(), false).getName();
-						result = res.getResult().getName(Context.getLocale()).getName();
+						drugName = res.getDrug().getFullySpecifiedName(Context.getLocale()).getName();
+						result = res.getResult().getShortestName(Context.getLocale(), false).getName();
 						tb03Data.getDstResults().put(drugName, result);
 					}
 				}
-				
 			}
 			
 			//DRUG RESISTANCE

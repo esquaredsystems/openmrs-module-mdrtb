@@ -3,8 +3,6 @@ package org.openmrs.module.mdrtb.web.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.MdrtbService;
@@ -30,8 +28,6 @@ public class TB03uDataResourceController extends DelegatingCrudResource<SimpleTB
 	/**
 	 * Logger for this class
 	 */
-	protected final Log log = LogFactory.getLog(getClass());
-	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -176,8 +172,7 @@ public class TB03uDataResourceController extends DelegatingCrudResource<SimpleTB
 	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
-		DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
-		return delegatingResourceDescription;
+		return new DelegatingResourceDescription();
 	}
 	
 	@Override
@@ -223,7 +218,7 @@ public class TB03uDataResourceController extends DelegatingCrudResource<SimpleTB
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
 		List<TB03uData> patientSet = TB03uController.getTB03uPatientSet(year, quarter, month, locList);
-		List<SimpleTB03uData> list = new ArrayList<SimpleTB03uData>();
+		List<SimpleTB03uData> list = new ArrayList<>();
 		for (TB03uData SimpleTB03uData : patientSet) {
 			list.add(new SimpleTB03uData(SimpleTB03uData));
 		}
