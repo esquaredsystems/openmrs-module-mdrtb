@@ -63,7 +63,7 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 	@Override
 	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors err) throws Exception {
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		if (Context.isAuthenticated()) {
 			
 			String dateFormat = Context.getDateFormat().toPattern();
@@ -159,7 +159,7 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 	 */
 	@Override
 	protected Object formBackingObject(HttpServletRequest request) throws Exception {
-		List<MdrtbTreatmentSupporter> ret = new ArrayList<MdrtbTreatmentSupporter>();
+		List<MdrtbTreatmentSupporter> ret = new ArrayList<>();
 		if (Context.isAuthenticated()) {
 			Concept phoneConcept = (Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TELEPHONE_NUMBER));
 			

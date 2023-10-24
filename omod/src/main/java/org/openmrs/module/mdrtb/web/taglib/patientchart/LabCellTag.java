@@ -27,7 +27,7 @@ public class LabCellTag extends TagSupport {
 		StringBuffer ret = new StringBuffer();
 		
 		// determine all the lab locations associated with this specimen
-		Set<Location> labs = new HashSet<Location>();
+		Set<Location> labs = new HashSet<>();
 		
 		for (Test test : specimen.getTests()) {
 			labs.add(test.getLab());

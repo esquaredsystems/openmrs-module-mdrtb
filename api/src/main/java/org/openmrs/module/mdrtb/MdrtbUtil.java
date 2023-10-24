@@ -151,7 +151,7 @@ public class MdrtbUtil {
 	 */
 	public static Set<EncounterType> getMdrtbEncounterTypes() {
 		
-		Set<EncounterType> types = new HashSet<EncounterType>();
+		Set<EncounterType> types = new HashSet<>();
 		types.add(MdrtbConstants.ET_TB03U_MDRTB_INTAKE);
 		types.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		types.add(MdrtbConstants.ET_TRANSFER_OUT);
@@ -168,7 +168,7 @@ public class MdrtbUtil {
 		MdrtbService service = Context.getService(MdrtbService.class);
 		
 		// create a list of all concepts that represent positive results
-		Set<Concept> positiveResults = new HashSet<Concept>();
+		Set<Concept> positiveResults = new HashSet<>();
 		positiveResults.add(service.getConcept(MdrtbConcepts.STRONGLY_POSITIVE));
 		positiveResults.add(service.getConcept(MdrtbConcepts.MODERATELY_POSITIVE));
 		positiveResults.add(service.getConcept(MdrtbConcepts.WEAKLY_POSITIVE));
@@ -200,7 +200,7 @@ public class MdrtbUtil {
 	 * Loads and sorts the drugs stored in the global property mdtrb.defaultDstDrugs
 	 */
 	public static List<List<Object>> getDefaultDstDrugs() {
-		List<List<Object>> drugs = new LinkedList<List<Object>>();
+		List<List<Object>> drugs = new LinkedList<>();
 		
 		String defaultDstDrugs = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DEFAULT_DST_DRUGS);
 		
@@ -251,7 +251,7 @@ public class MdrtbUtil {
 	 * map)
 	 */
 	private static void addDefaultDstDrugToMap(List<List<Object>> drugs, Concept concept, String concentration) {
-		List<Object> data = new LinkedList<Object>();
+		List<Object> data = new LinkedList<>();
 		data.add(concept);
 		data.add(concentration);
 		drugs.add(data);
@@ -280,7 +280,7 @@ public class MdrtbUtil {
 	 * are discarded
 	 */
 	public static List<Concept> sortDrugs(List<Concept> drugsToSort, List<Concept> drugList) {
-		List<Concept> sortedDrugs = new LinkedList<Concept>();
+		List<Concept> sortedDrugs = new LinkedList<>();
 		
 		for (Concept drug : drugList) {
 			if (drugsToSort.contains(drug)) {
@@ -406,10 +406,10 @@ public class MdrtbUtil {
 	 */
 	public static void setTestDefaults(Specimen specimen, Test test) {
 		
-		Set<String> accessionNumberSet = new HashSet<String>();
-		Set<Date> dateOrderedSet = new HashSet<Date>();
-		Set<Date> dateReceivedSet = new HashSet<Date>();
-		Set<Location> labSet = new HashSet<Location>();
+		Set<String> accessionNumberSet = new HashSet<>();
+		Set<Date> dateOrderedSet = new HashSet<>();
+		Set<Date> dateReceivedSet = new HashSet<>();
+		Set<Location> labSet = new HashSet<>();
 		
 		// first add the identifier of the sample to the accession number set
 		accessionNumberSet.add(specimen.getIdentifier());
@@ -630,7 +630,7 @@ public class MdrtbUtil {
 		if (!oblast.equals("") && location == null)
 			o = Context.getService(MdrtbService.class).getRegion(Integer.parseInt(oblast));
 		
-		List<Location> locList = new ArrayList<Location>();
+		List<Location> locList = new ArrayList<>();
 		if (o != null && location == null)
 			locList = Context.getService(MdrtbService.class).getLocationsFromRegion(o);
 		else if (location != null)
@@ -761,7 +761,7 @@ public class MdrtbUtil {
 		
 		// if facility is selected
 		if (location != null && locList == null) {
-			locList = new ArrayList<Location>();
+			locList = new ArrayList<>();
 			locList.add(location);
 		}
 		
@@ -900,7 +900,7 @@ public class MdrtbUtil {
 		List<SmearForm> smears = tf.getSmears();
 		
 		for (SmearForm sf : smears) {
-			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment().intValue() == 0
+			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == 0
 			        && MdrtbUtil.getPositiveResultConcepts().contains(sf.getSmearResult())) {
 				return true;
 			}
@@ -909,7 +909,7 @@ public class MdrtbUtil {
 		List<CultureForm> cultures = tf.getCultures();
 		
 		for (CultureForm cf : cultures) {
-			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment().intValue() == 0
+			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0
 			        && MdrtbUtil.getPositiveResultConcepts().contains(cf.getCultureResult())) {
 				return true;
 			}
@@ -923,7 +923,7 @@ public class MdrtbUtil {
 		Obs resultObs = null;
 		for (XpertForm xf : xperts) {
 			
-			if (xf.getMonthOfTreatment() != null && xf.getMonthOfTreatment().intValue() == 0) {
+			if (xf.getMonthOfTreatment() != null && xf.getMonthOfTreatment() == 0) {
 				resultObs = null;
 				constructObs = MdrtbUtil.getObsFromEncounter(xpertConstructs, xf.getEncounter());
 				if (constructObs != null) {
@@ -942,7 +942,7 @@ public class MdrtbUtil {
 		constructObs = null;
 		resultObs = null;
 		for (HAINForm hf : hains) {
-			if (hf.getMonthOfTreatment() != null && hf.getMonthOfTreatment().intValue() == 0) {
+			if (hf.getMonthOfTreatment() != null && hf.getMonthOfTreatment() == 0) {
 				
 				resultObs = null;
 				constructObs = MdrtbUtil.getObsFromEncounter(hainConstructs, hf.getEncounter());
@@ -964,7 +964,7 @@ public class MdrtbUtil {
 		constructObs = null;
 		resultObs = null;
 		for (HAIN2Form hf : hain2s) {
-			if (hf.getMonthOfTreatment() != null && hf.getMonthOfTreatment().intValue() == 0) {
+			if (hf.getMonthOfTreatment() != null && hf.getMonthOfTreatment() == 0) {
 				
 				resultObs = null;
 				constructObs = MdrtbUtil.getObsFromEncounter(hain2Constructs, hf.getEncounter());

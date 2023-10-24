@@ -68,7 +68,7 @@ public class MdrtbTSAdmFormController extends SimpleFormController {
 	@Override
 	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors err) throws Exception {
 		
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		if (Context.isAuthenticated()) {
 			
 			String dateFormat = Context.getDateFormat().toPattern();
@@ -102,7 +102,7 @@ public class MdrtbTSAdmFormController extends SimpleFormController {
 			//get the potential answers for the TS Activity concept and make them available to the JSP 
 			Concept tsActivityConcept = (Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.TREATMENT_SUPPORTER_CURRENTLY_ACTIVE));
-			List<Concept> activityAnswers = new ArrayList<Concept>();
+			List<Concept> activityAnswers = new ArrayList<>();
 			if (tsActivityConcept == null)
 				throw new RuntimeException("Could not find concept for treatment supporter activity");
 			Collection<ConceptAnswer> cons = tsActivityConcept.getAnswers(false);

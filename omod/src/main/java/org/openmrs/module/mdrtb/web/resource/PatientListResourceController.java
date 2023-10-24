@@ -259,6 +259,6 @@ public class PatientListResourceController extends DelegatingCrudResource<Simple
 				break;
 		}
 		tableData.add(new SimpleDataObject(htmlTable, null, null));
-		return new NeedsPaging<SimpleDataObject>(tableData, context);
+		return new NeedsPaging<>(tableData, context);
 	}
 }

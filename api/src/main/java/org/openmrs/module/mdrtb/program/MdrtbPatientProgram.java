@@ -348,12 +348,12 @@ public class MdrtbPatientProgram implements Comparable<MdrtbPatientProgram>, Val
 		}
 		
 		List<Encounter> encs = Context.getService(MdrtbService.class).getMdrtbEncounters(program.getPatient());
-		ArrayList<Encounter> ret = new ArrayList<Encounter>();
+		ArrayList<Encounter> ret = new ArrayList<>();
 		Obs temp = null;
 		for (Encounter encounter : encs) {
 			temp = MdrtbUtil.getObsFromEncounter(
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
-			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == getId().intValue())
+			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == getId())
 				ret.add(encounter);
 		}
 		return ret;
@@ -480,7 +480,7 @@ public class MdrtbPatientProgram implements Comparable<MdrtbPatientProgram>, Val
 	 */
 	private List<PatientState> getAllPatientStates(Concept workflowConcept, Concept patientStateConcept) {
 		
-		List<PatientState> states = new LinkedList<PatientState>();
+		List<PatientState> states = new LinkedList<>();
 		
 		for (PatientState state : this.program.getStates()) {
 			if (state.getState().getConcept().equals(patientStateConcept)

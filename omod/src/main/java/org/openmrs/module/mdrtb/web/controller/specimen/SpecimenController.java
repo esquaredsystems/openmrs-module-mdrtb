@@ -291,7 +291,7 @@ public class SpecimenController extends AbstractSpecimenController {
 		
 		// remove scanned lab reports if necessary
 		if (removeScannedLabReports != null) {
-			Set<String> removeScannedLabReportSet = new HashSet<String>(Arrays.asList(removeScannedLabReports));
+			Set<String> removeScannedLabReportSet = new HashSet<>(Arrays.asList(removeScannedLabReports));
 			
 			for (ScannedLabReport report : specimen.getScannedLabReports()) {
 				if (report.getId() != null && removeScannedLabReportSet.contains(report.getId())) {
@@ -357,7 +357,7 @@ public class SpecimenController extends AbstractSpecimenController {
 			map.put("testErrors", errors);
 			
 			// override the testTypes parameter; we only want to create the add box for a smear in this case
-			Collection<String> testTypes = new LinkedList<String>();
+			Collection<String> testTypes = new LinkedList<>();
 			testTypes.add("smear");
 			map.put("testTypes", testTypes);
 			
@@ -414,7 +414,7 @@ public class SpecimenController extends AbstractSpecimenController {
 			map.put("testErrors", errors);
 			
 			// override the testTypes parameter; we only want to create the add box for a culture in this case
-			Collection<String> testTypes = new LinkedList<String>();
+			Collection<String> testTypes = new LinkedList<>();
 			testTypes.add("culture");
 			map.put("testTypes", testTypes);
 			
@@ -474,15 +474,15 @@ public class SpecimenController extends AbstractSpecimenController {
 			map.put("testErrors", errors);
 			
 			// override the testTypes parameter; we only want to create the add box for a dst in this case
-			Collection<String> testTypes = new LinkedList<String>();
+			Collection<String> testTypes = new LinkedList<>();
 			testTypes.add("dst");
 			map.put("testTypes", testTypes);
 			
 			// hacky way to populate any add data, so that we save it and can redisplay it
-			List<String> addDstResultResult = new ArrayList<String>();
-			List<String> addDstResultConcentration = new ArrayList<String>();
-			List<String> addDstResultColonies = new ArrayList<String>();
-			List<String> addDstResultDrug = new ArrayList<String>();
+			List<String> addDstResultResult = new ArrayList<>();
+			List<String> addDstResultConcentration = new ArrayList<>();
+			List<String> addDstResultColonies = new ArrayList<>();
+			List<String> addDstResultDrug = new ArrayList<>();
 			
 			int i = 1;
 			while (i < 30) {
@@ -543,7 +543,7 @@ public class SpecimenController extends AbstractSpecimenController {
 		
 		// remove dst results
 		if (removeDstResults != null) {
-			Set<String> removeDstResultSet = new HashSet<String>(Arrays.asList(removeDstResults));
+			Set<String> removeDstResultSet = new HashSet<>(Arrays.asList(removeDstResults));
 			
 			for (DstResult result : dst.getResults()) {
 				if (result.getDrug().getId() != null && removeDstResultSet.contains(result.getDrug().getId().toString())) {
@@ -595,7 +595,7 @@ public class SpecimenController extends AbstractSpecimenController {
 			map.put("testErrors", errors);
 			
 			// override the testTypes parameter; we only want to create the add box for a smear in this case
-			Collection<String> testTypes = new LinkedList<String>();
+			Collection<String> testTypes = new LinkedList<>();
 			testTypes.add("xpert");
 			map.put("testTypes", testTypes);
 			
@@ -645,7 +645,7 @@ public class SpecimenController extends AbstractSpecimenController {
 			map.put("testErrors", errors);
 			
 			// override the testTypes parameter; we only want to create the add box for a smear in this case
-			Collection<String> testTypes = new LinkedList<String>();
+			Collection<String> testTypes = new LinkedList<>();
 			testTypes.add("hain");
 			map.put("testTypes", testTypes);
 			

@@ -24,7 +24,7 @@ public class ShortSummaryPortletController extends PatientSummaryPortletControll
 	protected String[] getSummaryColumns(HttpServletRequest request) {
 		String[] columns = request.getParameterValues("columns");
 		if (columns == null || columns.length == 0) {
-			List<String> l = new ArrayList<String>();
+			List<String> l = new ArrayList<>();
 			l.add(PatientSummaryUtil.PATIENT_ID);
 			l.add(PatientSummaryUtil.FULL_NAME);
 			l.add(PatientSummaryUtil.AGE);

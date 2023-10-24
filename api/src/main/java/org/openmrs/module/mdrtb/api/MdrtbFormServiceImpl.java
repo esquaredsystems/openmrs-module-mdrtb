@@ -117,7 +117,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 		
 		// Update Patient if there was an outcome
 		if (outcome != null
-		        && (outcome.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		        && (outcome.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 		            MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID)))) {
 			Patient patient = tbPatientProgram.getPatient();
 			if (!patient.getDead()) {
@@ -206,7 +206,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 		
 		// Update Patient if there was an outcome
 		if (outcome != null
-		        && (outcome.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		        && (outcome.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 		            MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID)))) {
 			Patient patient = mdrtbPatientProgram.getPatient();
 			if (!patient.getDead()) {

@@ -83,8 +83,8 @@ public class PreviewReportRenderer extends SimpleHtmlReportRenderer {
 				if (dataset.getDefinition() instanceof CohortCrossTabDataSetDefinition) {
 					CohortCrossTabDataSetDefinition cdd = (CohortCrossTabDataSetDefinition) dataset.getDefinition();
 					
-					List<String> rows = new ArrayList<String>(cdd.getRows().keySet());
-					List<String> cols = new ArrayList<String>(cdd.getColumns().keySet());
+					List<String> rows = new ArrayList<>(cdd.getRows().keySet());
+					List<String> cols = new ArrayList<>(cdd.getColumns().keySet());
 					
 					if (rows.isEmpty()) {
 						for (String colName : cols) {

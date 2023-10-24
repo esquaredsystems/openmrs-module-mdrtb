@@ -243,7 +243,7 @@ public class TB03uXDRFormController {
 		Context.getProgramWorkflowService().savePatientProgram(tpp.getPatientProgram());
 		
 		if (outcome != null
-		        && outcome.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+		        && outcome.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 		            MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
 			Patient patient = tpp.getPatient();
 			if (!patient.getDead())
@@ -312,7 +312,7 @@ public class TB03uXDRFormController {
 	@ModelAttribute("categories")
 	public Collection<ConceptAnswer> getPossiblePatientCategories() {
 		//return Context.getService(MdrtbService.class).getPossibleRegimens();
-		ArrayList<ConceptAnswer> catArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> catArray = new ArrayList<>();
 		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getPossibleRegimens();
 		for (int i = 0; i < 3; i++) {
 			catArray.add(null);
@@ -336,7 +336,7 @@ public class TB03uXDRFormController {
 	
 	@ModelAttribute("groups")
 	public ArrayList<ProgramWorkflowState> getPossiblePatientGroups() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		for (int i = 0; i < 8; i++) {
 			stateArray.add(null);
 		}
@@ -377,7 +377,7 @@ public class TB03uXDRFormController {
 	
 	@ModelAttribute("bydrug")
 	public ArrayList<ProgramWorkflowState> getPossibleResultsByDrugs() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			stateArray.add(null);
 		}
@@ -407,7 +407,7 @@ public class TB03uXDRFormController {
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		
-		ArrayList<ConceptAnswer> typeArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> typeArray = new ArrayList<>();
 		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE)
 		        .getAnswers();
 		for (int i = 0; i < 3; i++) {
@@ -431,11 +431,11 @@ public class TB03uXDRFormController {
 	
 	@ModelAttribute("outcomes")
 	public ArrayList<ProgramWorkflowState> getPossibleTreatmentOutcomes() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class).getPossibleTbProgramOutcomes();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.CURED));
 			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_COMPLETE));
 			concepts.add(ms.getConcept(MdrtbConcepts.DIED));
@@ -467,7 +467,7 @@ public class TB03uXDRFormController {
 	
 	@ModelAttribute("basesfordiagnosis")
 	public Collection<ConceptAnswer> getPossibleBasesForDiagnosis() {
-		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> stateArray = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
 			stateArray.add(null);
 		}

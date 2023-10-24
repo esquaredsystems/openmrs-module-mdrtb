@@ -168,7 +168,7 @@ public class MdrtbDashboardController {
 		map.put("patientId", program.getPatient().getId());
 		
 		// now add the status items
-		Map<String, Status> statusMap = new HashMap<String, Status>();
+		Map<String, Status> statusMap = new HashMap<>();
 		
 		// lab reports status
 		Status labReportsStatus = new LabResultsStatusCalculator(new DashboardLabResultsStatusRenderer()).calculate(program);
@@ -238,9 +238,9 @@ public class MdrtbDashboardController {
 		Integer showTb03uXDR = 0;
 		
 		if (program.getTb03uXDR() == null) {
-			int preXdrId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRE_XDR_TB).getId().intValue();
-			int xdrId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XDR_TB).getId().intValue();
-			int tdrId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TDR_TB).getId().intValue();
+			int preXdrId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRE_XDR_TB).getId();
+			int xdrId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XDR_TB).getId();
+			int tdrId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TDR_TB).getId();
 			Concept resDuringTx = Context.getService(MdrtbService.class).getConcept(
 			    MdrtbConcepts.DRUG_RESISTANCE_DURING_TREATMENT);
 			List<DrugResistanceDuringTreatmentForm> drdts = Context.getService(MdrtbService.class).getDrdtForms(
@@ -249,7 +249,7 @@ public class MdrtbDashboardController {
 				for (DrugResistanceDuringTreatmentForm drdt : drdts) {
 					Obs temp = MdrtbUtil.getObsFromEncounter(resDuringTx, drdt.getEncounter());
 					if (temp != null) {
-						int cid = temp.getValueCoded().getId().intValue();
+						int cid = temp.getValueCoded().getId();
 						
 						if (cid == preXdrId || cid == xdrId || cid == tdrId) {
 							showTb03uXDR = 1;
@@ -413,7 +413,7 @@ public class MdrtbDashboardController {
 	private void addFlags(Map<String, Status> statusMap, ModelMap map) {
 		
 		// calculate flags
-		List<StatusFlag> flags = new LinkedList<StatusFlag>();
+		List<StatusFlag> flags = new LinkedList<>();
 		
 		for (Status status : statusMap.values()) {
 			if (status.getFlags() != null && !status.getFlags().isEmpty()) {

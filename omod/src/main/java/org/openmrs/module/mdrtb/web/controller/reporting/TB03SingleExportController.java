@@ -150,7 +150,7 @@ public class TB03SingleExportController {
 		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
 		    monthInt);
 		
-		ArrayList<TB03Data> patientSet = new ArrayList<TB03Data>();
+		ArrayList<TB03Data> patientSet = new ArrayList<>();
 		SimpleDateFormat sdf = Context.getDateFormat();
 		SimpleDateFormat rdateSDF = Context.getDateTimeFormat();
 		

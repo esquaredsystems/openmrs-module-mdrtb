@@ -75,7 +75,7 @@ public class MdrtbRegimenPortletController {
 			Map<String, String> parameters = (Map<String, String>) request.getAttribute("org.openmrs.portlet.parameters");
 			
 			Patient patient = null;
-			Map<String, RegimenHistory> historyGroups = new LinkedHashMap<String, RegimenHistory>();
+			Map<String, RegimenHistory> historyGroups = new LinkedHashMap<>();
 			if (history == null) {
 				patient = Context.getPatientService().getPatient(patientId);
 				historyGroups = RegimenUtils.getRegimenHistory(patient);
@@ -104,7 +104,7 @@ public class MdrtbRegimenPortletController {
 			map.addAllAttributes(parameters);
 			
 			// Alerts
-			Map<DrugOrder, String> drugAlerts = new HashMap<DrugOrder, String>();
+			Map<DrugOrder, String> drugAlerts = new HashMap<>();
 			if ("true".equals(parameters.get("alerts"))) {
 				
 				Regimen activeTbRegimen = historyGroups.get("tb").getActiveRegimen();
@@ -112,7 +112,7 @@ public class MdrtbRegimenPortletController {
 				// Show warnings for any drug orders which are active and have resistances.
 				Concept resistantQuestion = getMdrtbService().getConcept(MdrtbConcepts.RESISTANT_TO_TB_DRUG);
 				List<Obs> dstResults = Context.getObsService().getObservationsByPersonAndConcept(patient, resistantQuestion);
-				Set<Concept> resistances = new HashSet<Concept>();
+				Set<Concept> resistances = new HashSet<>();
 				for (Obs o : dstResults) {
 					resistances.add(o.getValueCoded());
 				}

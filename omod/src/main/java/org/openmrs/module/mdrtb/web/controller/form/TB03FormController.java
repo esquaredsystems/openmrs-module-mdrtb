@@ -270,11 +270,11 @@ public class TB03FormController {
 	
 	@ModelAttribute("categories")
 	public ArrayList<ConceptAnswer> getPossiblePatientCategories() {
-		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> stateArray = new ArrayList<>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleRegimens();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.REGIMEN_1_NEW));
 			concepts.add(ms.getConcept(MdrtbConcepts.REGIMEN_1_RETREATMENT));
 			concepts.add(ms.getConcept(MdrtbConcepts.REGIMEN_2_STANDARD));
@@ -293,12 +293,12 @@ public class TB03FormController {
 	
 	@ModelAttribute("groups")
 	public ArrayList<ProgramWorkflowState> getPossiblePatientGroups() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPatientGroups();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.NEW));
 			concepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_1));
 			concepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2));
@@ -321,12 +321,12 @@ public class TB03FormController {
 	@ModelAttribute("bydrug")
 	public ArrayList<ProgramWorkflowState> getPossibleResultsByDrugs() {
 		// return Context.getService(MdrtbService.class).getPossibleDOTSClassificationsAccordingToPreviousDrugUse();
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleDOTSClassificationsAccordingToPreviousDrugUse();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.NEW));
 			concepts.add(ms.getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_SECOND_LINE_DRUGS));
 			for (ProgramWorkflowState pws : states) {
@@ -347,12 +347,12 @@ public class TB03FormController {
 	
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
-		ArrayList<ConceptAnswer> answerArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> answerArray = new ArrayList<>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE)
 		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.MONO));
 			concepts.add(ms.getConcept(MdrtbConcepts.PDR_TB));
 			concepts.add(ms.getConcept(MdrtbConcepts.RR_TB));
@@ -375,11 +375,11 @@ public class TB03FormController {
 	
 	@ModelAttribute("outcomes")
 	public ArrayList<ProgramWorkflowState> getPossibleTreatmentOutcomes() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class).getPossibleTbProgramOutcomes();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_COMPLETE));
 			concepts.add(ms.getConcept(MdrtbConcepts.CURED));
 			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_FAILED));

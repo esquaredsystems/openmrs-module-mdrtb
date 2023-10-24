@@ -24,10 +24,10 @@ public class MdrtbAllergyUtils {
 	
 	public static Map<Patient, List<MdrtbAllergyStringObj>> getPatientAllergies(List<Patient> pList) {
 		
-		Map<Patient, List<MdrtbAllergyStringObj>> ret = new HashMap<Patient, List<MdrtbAllergyStringObj>>();
-		List<Concept> cList = new ArrayList<Concept>();
+		Map<Patient, List<MdrtbAllergyStringObj>> ret = new HashMap<>();
+		List<Concept> cList = new ArrayList<>();
 		cList.add(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT));
-		List<Person> persList = new ArrayList<Person>();
+		List<Person> persList = new ArrayList<>();
 		for (Patient p : pList)
 			persList.add(p);
 		List<Obs> oList = Context.getObsService().getObservations(persList, null, cList, null, null, null, null, null, null,
@@ -39,7 +39,7 @@ public class MdrtbAllergyUtils {
 		    MdrtbConcepts.ADVERSE_EVENT_OUTCOME_DATE);
 		
 		for (Patient p : pList) {
-			ArrayList<MdrtbAllergyStringObj> allergyList = new ArrayList<MdrtbAllergyStringObj>();
+			ArrayList<MdrtbAllergyStringObj> allergyList = new ArrayList<>();
 			for (Obs oParent : oList) {
 				if (oParent.getPersonId().equals(p.getPatientId())) {
 					MdrtbAllergyStringObj maso = new MdrtbAllergyStringObj();

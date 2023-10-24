@@ -59,7 +59,7 @@ public class OutcomeReport implements ReportSpecification {
 	 * @see ReportSpecification#getParameters()
 	 */
 	public List<Parameter> getParameters() {
-		List<Parameter> l = new ArrayList<Parameter>();
+		List<Parameter> l = new ArrayList<>();
 		l.add(new Parameter("location", Context.getMessageSourceService().getMessage("mdrtb.facility"), Location.class));
 		l.add(new Parameter("year", Context.getMessageSourceService().getMessage("mdrtb.yearOfTreatmentStart"),
 		        Integer.class));
@@ -72,7 +72,7 @@ public class OutcomeReport implements ReportSpecification {
 	 * @see ReportSpecification#getRenderingModes()
 	 */
 	public List<RenderingMode> getRenderingModes() {
-		List<RenderingMode> l = new ArrayList<RenderingMode>();
+		List<RenderingMode> l = new ArrayList<>();
 		l.add(ReportUtil.renderingModeFromResource("HTML", "org/openmrs/module/mdrtb/reporting/data/output/OutcomeReport"
 		        + (StringUtils.isNotBlank(Context.getLocale().getLanguage()) ? "_" + Context.getLocale().getLanguage() : "")
 		        + ".html"));
@@ -106,7 +106,7 @@ public class OutcomeReport implements ReportSpecification {
 		Date endDate = (Date) context.getParameterValue("endDate");
 		
 		// Base Cohort is patients who started treatment during year, optionally at location
-		Map<String, Mapped<? extends CohortDefinition>> baseCohortDefs = new LinkedHashMap<String, Mapped<? extends CohortDefinition>>();
+		Map<String, Mapped<? extends CohortDefinition>> baseCohortDefs = new LinkedHashMap<>();
 		baseCohortDefs.put("startedTreatment", new Mapped(Cohorts.getStartedTreatmentFilter(startDate, endDate), null));
 		if (location != null) {
 			CohortDefinition locationFilter = Cohorts.getLocationFilter(location, startDate, endDate);

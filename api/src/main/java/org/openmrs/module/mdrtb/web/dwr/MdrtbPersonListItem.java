@@ -44,7 +44,7 @@ public class MdrtbPersonListItem {
 	
 	private Boolean voided = false;
 	
-	private Map<String, String> attributes = new HashMap<String, String>();
+	private Map<String, String> attributes = new HashMap<>();
 	
 	// private String healthCenter = "";
 	// private String mothersName;

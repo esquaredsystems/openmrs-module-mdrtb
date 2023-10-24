@@ -76,7 +76,7 @@ public class DstResultCohortDefinitionEvaluator implements CohortDefinitionEvalu
 				
 				// Must be resistant to at least one fluoroquinolone
 				Concept quinoloneSet = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.QUINOLONES);
-				List<Concept> quinolones = new ArrayList<Concept>();
+				List<Concept> quinolones = new ArrayList<>();
 				for (ConceptSet set : quinoloneSet.getConceptSets()) {
 					quinolones.add(set.getConcept());
 				}

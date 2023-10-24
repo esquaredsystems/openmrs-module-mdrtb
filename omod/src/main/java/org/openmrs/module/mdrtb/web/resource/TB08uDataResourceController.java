@@ -359,8 +359,8 @@ public class TB08uDataResourceController extends DelegatingCrudResource<SimpleTB
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
 		TB08uData tb08uData = TB08uController.getTB08uPatientSet(locList, year, quarter, month);
-		List<SimpleTB08uData> list = new ArrayList<SimpleTB08uData>();
+		List<SimpleTB08uData> list = new ArrayList<>();
 		list.add(new SimpleTB08uData(tb08uData));
-		return new NeedsPaging<SimpleTB08uData>(list, context);
+		return new NeedsPaging<>(list, context);
 	}
 }

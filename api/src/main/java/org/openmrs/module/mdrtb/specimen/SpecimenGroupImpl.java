@@ -31,7 +31,7 @@ public class SpecimenGroupImpl implements Specimen {
 	Map<Integer, List<DstResult>> dstResultsMap = null;
 	
 	public SpecimenGroupImpl() {
-		this.specimens = new LinkedList<Specimen>();
+		this.specimens = new LinkedList<>();
 	}
 	
 	public SpecimenGroupImpl(List<Specimen> specimens) {
@@ -109,7 +109,7 @@ public class SpecimenGroupImpl implements Specimen {
 	}
 	
 	public List<Culture> getCultures() {
-		List<Culture> cultures = new LinkedList<Culture>();
+		List<Culture> cultures = new LinkedList<>();
 		
 		for (Specimen specimen : specimens) {
 			cultures.addAll(specimen.getCultures());
@@ -130,7 +130,7 @@ public class SpecimenGroupImpl implements Specimen {
 		List<Dst> dsts = getDsts();
 		
 		if (dstResultsMap == null && dsts.size() > 0) {
-			dstResultsMap = new HashMap<Integer, List<DstResult>>();
+			dstResultsMap = new HashMap<>();
 			
 			for (Dst dst : dsts) {
 				for (DstResult result : dst.getResults()) {
@@ -145,7 +145,7 @@ public class SpecimenGroupImpl implements Specimen {
 					}
 					// otherwise, create a new entry for this drug
 					else {
-						List<DstResult> drugResults = new LinkedList<DstResult>();
+						List<DstResult> drugResults = new LinkedList<>();
 						drugResults.add(result);
 						dstResultsMap.put(drug, drugResults);
 					}
@@ -156,7 +156,7 @@ public class SpecimenGroupImpl implements Specimen {
 	}
 	
 	public List<Dst> getDsts() {
-		List<Dst> dsts = new LinkedList<Dst>();
+		List<Dst> dsts = new LinkedList<>();
 		
 		for (Specimen specimen : specimens) {
 			dsts.addAll(specimen.getDsts());
@@ -168,7 +168,7 @@ public class SpecimenGroupImpl implements Specimen {
 	}
 	
 	public List<Xpert> getXperts() {
-		List<Xpert> xperts = new LinkedList<Xpert>();
+		List<Xpert> xperts = new LinkedList<>();
 		
 		for (Specimen specimen : specimens) {
 			xperts.addAll(specimen.getXperts());
@@ -180,7 +180,7 @@ public class SpecimenGroupImpl implements Specimen {
 	}
 	
 	public List<HAIN> getHAINs() {
-		List<HAIN> hains = new LinkedList<HAIN>();
+		List<HAIN> hains = new LinkedList<>();
 		
 		for (Specimen specimen : specimens) {
 			hains.addAll(specimen.getHAINs());
@@ -192,7 +192,7 @@ public class SpecimenGroupImpl implements Specimen {
 	}
 	
 	public List<HAIN2> getHAIN2s() {
-		List<HAIN2> hains = new LinkedList<HAIN2>();
+		List<HAIN2> hains = new LinkedList<>();
 		
 		for (Specimen specimen : specimens) {
 			hains.addAll(specimen.getHAIN2s());
@@ -224,7 +224,7 @@ public class SpecimenGroupImpl implements Specimen {
 	}
 	
 	public List<ScannedLabReport> getScannedLabReports() {
-		List<ScannedLabReport> scannedLabReports = new LinkedList<ScannedLabReport>();
+		List<ScannedLabReport> scannedLabReports = new LinkedList<>();
 		
 		for (Specimen specimen : specimens) {
 			scannedLabReports.addAll(specimen.getScannedLabReports());
@@ -234,7 +234,7 @@ public class SpecimenGroupImpl implements Specimen {
 	}
 	
 	public List<Smear> getSmears() {
-		List<Smear> smears = new LinkedList<Smear>();
+		List<Smear> smears = new LinkedList<>();
 		
 		for (Specimen specimen : specimens) {
 			smears.addAll(specimen.getSmears());
@@ -250,7 +250,7 @@ public class SpecimenGroupImpl implements Specimen {
 	}
 	
 	public List<Test> getTests() {
-		List<Test> tests = new LinkedList<Test>();
+		List<Test> tests = new LinkedList<>();
 		
 		for (Specimen specimen : specimens) {
 			tests.addAll(specimen.getTests());

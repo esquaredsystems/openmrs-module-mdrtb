@@ -110,7 +110,7 @@ public class DrugResistanceDuringTreatmentResourceController extends DataDelegat
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		String patientUuid = context.getRequest().getParameter("q");
-		List<SimpleDrugResistanceDuringTreatmentForm> drugResistanceForms = new ArrayList<SimpleDrugResistanceDuringTreatmentForm>();
+		List<SimpleDrugResistanceDuringTreatmentForm> drugResistanceForms = new ArrayList<>();
 		if (patientUuid != null) {
 			Patient patient = ((PatientResource1_8) Context.getService(RestService.class).getResourceBySupportedClass(
 			    Patient.class)).getByUniqueId(patientUuid);
@@ -123,7 +123,7 @@ public class DrugResistanceDuringTreatmentResourceController extends DataDelegat
 					drugResistanceForms.add(new SimpleDrugResistanceDuringTreatmentForm(drugResistanceForm));
 				}
 			}
-			return new NeedsPaging<SimpleDrugResistanceDuringTreatmentForm>(drugResistanceForms, context);
+			return new NeedsPaging<>(drugResistanceForms, context);
 		}
 		return null;
 	}

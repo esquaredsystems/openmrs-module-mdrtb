@@ -834,7 +834,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != month.intValue()) {
+		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != month) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -904,7 +904,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id.intValue()) {
+		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -925,7 +925,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	
 	public List<SmearForm> getSmears() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<SmearForm>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getSmearForms(getPatientProgramId());
 		
@@ -933,7 +933,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	
 	public List<DrugResistanceDuringTreatmentForm> getDrdts() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<DrugResistanceDuringTreatmentForm>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getDrdtForms(getPatientProgramId());
 		
@@ -941,7 +941,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	
 	public List<CultureForm> getCultures() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<CultureForm>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getCultureForms(getPatientProgramId());
 		
@@ -949,7 +949,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	
 	public List<DSTForm> getDsts() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<DSTForm>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getDstForms(getPatientProgramId());
 		

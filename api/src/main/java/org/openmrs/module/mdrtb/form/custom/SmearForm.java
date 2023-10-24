@@ -49,7 +49,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != month.intValue()) {
+		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != month) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -180,7 +180,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id.intValue()) {
+		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)

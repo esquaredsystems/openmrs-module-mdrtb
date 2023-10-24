@@ -83,7 +83,7 @@ public class RegimenHistory {
 	 * @return List of all regimen change dates, ordered from earliest to latest
 	 */
 	public List<Date> getRegimenChangeDates() {
-		return new ArrayList<Date>(getRegimenChanges().keySet());
+		return new ArrayList<>(getRegimenChanges().keySet());
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class RegimenHistory {
 	 * @return the List of future Drug Orders
 	 */
 	public Set<DrugOrder> getPastDrugOrders() {
-		Set<DrugOrder> s = new HashSet<DrugOrder>();
+		Set<DrugOrder> s = new HashSet<>();
 		Date today = new Date();
 		for (RegimenChange change : getRegimenChanges().values()) {
 			if (change.getChangeDate().compareTo(today) <= 0) {
@@ -121,7 +121,7 @@ public class RegimenHistory {
 	 * @return the List of future Drug Orders
 	 */
 	public Set<DrugOrder> getFutureDrugOrders() {
-		Set<DrugOrder> s = new HashSet<DrugOrder>();
+		Set<DrugOrder> s = new HashSet<>();
 		Date today = new Date();
 		for (RegimenChange change : getRegimenChanges().values()) {
 			if (change.getChangeDate().compareTo(today) > 0) {
@@ -169,7 +169,7 @@ public class RegimenHistory {
 	 * Gets all the regimens in this history between two dates
 	 */
 	public List<Regimen> getRegimensBetweenDates(Date fromDate, Date toDate, boolean inclusive) {
-		List<Regimen> regimens = new ArrayList<Regimen>();
+		List<Regimen> regimens = new ArrayList<>();
 		
 		// strip the time elements out of the dates
 		RegimenUtils.stripTimeComponent(fromDate);
@@ -262,7 +262,7 @@ public class RegimenHistory {
 	 */
 	public Map<Date, RegimenChange> getRegimenChanges() {
 		if (regimenChanges == null) {
-			regimenChanges = new TreeMap<Date, RegimenChange>();
+			regimenChanges = new TreeMap<>();
 		}
 		return regimenChanges;
 	}

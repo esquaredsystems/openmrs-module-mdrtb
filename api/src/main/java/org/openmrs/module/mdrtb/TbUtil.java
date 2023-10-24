@@ -109,7 +109,7 @@ public class TbUtil {
 	 */
 	public static Set<EncounterType> getTbEncounterTypes() {
 		
-		Set<EncounterType> types = new HashSet<EncounterType>();
+		Set<EncounterType> types = new HashSet<>();
 		types.add(MdrtbConstants.ET_TB03_TB_INTAKE);
 		types.add(MdrtbConstants.ET_FORM89_TB_FOLLOWUP);
 		types.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
@@ -132,7 +132,7 @@ public class TbUtil {
 	 * are discarded
 	 */
 	public static List<Concept> sortDrugs(List<Concept> drugsToSort, List<Concept> drugList) {
-		List<Concept> sortedDrugs = new LinkedList<Concept>();
+		List<Concept> sortedDrugs = new LinkedList<>();
 		
 		for (Concept drug : drugList) {
 			if (drugsToSort.contains(drug)) {
@@ -215,10 +215,10 @@ public class TbUtil {
 	 */
 	public static void setTestDefaults(Specimen specimen, Test test) {
 		
-		Set<String> accessionNumberSet = new HashSet<String>();
-		Set<Date> dateOrderedSet = new HashSet<Date>();
-		Set<Date> dateReceivedSet = new HashSet<Date>();
-		Set<Location> labSet = new HashSet<Location>();
+		Set<String> accessionNumberSet = new HashSet<>();
+		Set<Date> dateOrderedSet = new HashSet<>();
+		Set<Date> dateReceivedSet = new HashSet<>();
+		Set<Location> labSet = new HashSet<>();
 		
 		// first add the identifier of the sample to the accession number set
 		accessionNumberSet.add(specimen.getIdentifier());

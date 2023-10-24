@@ -62,8 +62,8 @@ public class SaveRegimenController {
 		
 		// Get parameters organized
 		
-		Set<String> ordersToContinue = new HashSet<String>();
-		Set<String> ordersToStop = new HashSet<String>();
+		Set<String> ordersToContinue = new HashSet<>();
+		Set<String> ordersToStop = new HashSet<>();
 		
 		for (Object param : request.getParameterMap().keySet()) {
 			String[] split = param.toString().split(":", 2);
@@ -85,8 +85,8 @@ public class SaveRegimenController {
 		Context.getPatientService().savePatient(patient);
 		
 		// Modify which orders which were started on this date, if needed.
-		Set<DrugOrder> existingOrdersStarted = (change == null ? new HashSet<DrugOrder>() : change.getOrdersStarted());
-		Set<String> orderIdsToPreserve = new HashSet<String>();
+		Set<DrugOrder> existingOrdersStarted = (change == null ? new HashSet<>() : change.getOrdersStarted());
+		Set<String> orderIdsToPreserve = new HashSet<>();
 		
 		String[] newOrderKeys = request.getParameterValues("newOrderKey");
 		if (newOrderKeys != null) {

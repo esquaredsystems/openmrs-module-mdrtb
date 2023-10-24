@@ -109,8 +109,8 @@ public class Form8DataResourceController extends DelegatingCrudResource<SimpleFo
 		TB08Data tb08TableData = (TB08Data) tableMap.getOrDefault("table6", null);
 		SimpleForm8Data simpleForm8Data = new SimpleForm8Data(form8Table1Data, form8Table2Data, form8Table3Data,
 		        form8Table4Data, form8Table5aData, tb08TableData);
-		List<SimpleForm8Data> list = new ArrayList<SimpleForm8Data>();
+		List<SimpleForm8Data> list = new ArrayList<>();
 		list.add(simpleForm8Data);
-		return new NeedsPaging<SimpleForm8Data>(list, context);
+		return new NeedsPaging<>(list, context);
 	}
 }

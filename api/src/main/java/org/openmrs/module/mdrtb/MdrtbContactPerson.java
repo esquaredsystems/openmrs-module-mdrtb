@@ -43,13 +43,13 @@ public class MdrtbContactPerson {
 	
 	public List<Obs> getTestResults() {
 		if (testResults == null)
-			return new ArrayList<Obs>();
+			return new ArrayList<>();
 		return testResults;
 	}
 	
 	public void addTestResult(Obs o) {
 		if (testResults == null)
-			testResults = new ArrayList<Obs>();
+			testResults = new ArrayList<>();
 		testResults.add(o);
 	}
 	

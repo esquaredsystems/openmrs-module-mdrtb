@@ -32,7 +32,7 @@ public class SimpleTB03MissingData extends BaseOpenmrsData {
 		if (map.containsKey("num")) {
 			setTotalCases((Integer) map.get("num"));
 		}
-		setDqItems(new ArrayList<SimpleDQItem>());
+		setDqItems(new ArrayList<>());
 		if (map.containsKey("missingTB03")) {
 			List<DQItem> patientSet = (List<DQItem>) map.get("missingTB03");
 			for (DQItem dqItem : patientSet) {

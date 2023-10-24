@@ -80,12 +80,12 @@ public class ProgramController {
 	
 	@ModelAttribute("classificationsAccordingToPreviousDrugUse")
 	public Collection<ProgramWorkflowState> getClassificationsAccordingToPreviousDrugUse() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPreviousDrugUse();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> classificationConcepts = new HashSet<Concept>();
+			Set<Concept> classificationConcepts = new HashSet<>();
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.NEW));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_FIRST_LINE_DRUGS_ONLY));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_SECOND_LINE_DRUGS));
@@ -102,12 +102,12 @@ public class ProgramController {
 	
 	@ModelAttribute("classificationsAccordingToPreviousDrugUseDOTS")
 	public Collection<ProgramWorkflowState> getDOTSClassificationsAccordingToPreviousDrugUse() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleDOTSClassificationsAccordingToPreviousDrugUse();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> classificationConcepts = new HashSet<Concept>();
+			Set<Concept> classificationConcepts = new HashSet<>();
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.NEW));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_FIRST_LINE_DRUGS_ONLY));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_SECOND_LINE_DRUGS));
@@ -125,12 +125,12 @@ public class ProgramController {
 	
 	@ModelAttribute("classificationsAccordingToPreviousTreatment")
 	public Collection<ProgramWorkflowState> getClassificationsAccordingToPreviousTreatment() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPreviousTreatment();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> classificationConcepts = new HashSet<Concept>();
+			Set<Concept> classificationConcepts = new HashSet<>();
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.NEW));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_1));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2));
@@ -152,12 +152,12 @@ public class ProgramController {
 	
 	@ModelAttribute("classificationsAccordingToPatientGroups")
 	public ArrayList<ProgramWorkflowState> getClassificationsAccordingToPatientGroups() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPatientGroups();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> classificationConcepts = new HashSet<Concept>();
+			Set<Concept> classificationConcepts = new HashSet<>();
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.NEW));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_1));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2));
@@ -765,12 +765,12 @@ public class ProgramController {
 	
 	public List<PatientIdentifier> getUnassignedDotsIdentifiers(Patient p) {
 		List<PatientIdentifier> ids = null;
-		List<PatientIdentifier> ret = new ArrayList<PatientIdentifier>();
+		List<PatientIdentifier> ret = new ArrayList<>();
 		PatientIdentifierType pit = Context.getPatientService().getPatientIdentifierTypeByName(
 		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE));
-		List<PatientIdentifierType> typeList = new ArrayList<PatientIdentifierType>();
+		List<PatientIdentifierType> typeList = new ArrayList<>();
 		typeList.add(pit);
-		List<Patient> patList = new ArrayList<Patient>();
+		List<Patient> patList = new ArrayList<>();
 		patList.add(p);
 		
 		ids = Context.getPatientService().getPatientIdentifiers(null, typeList, null, patList, null);
@@ -784,13 +784,13 @@ public class ProgramController {
 	
 	public List<PatientIdentifier> getUnassignedMdrIdentifiers(Patient p) {
 		List<PatientIdentifier> ids = null;
-		List<PatientIdentifier> ret = new ArrayList<PatientIdentifier>();
+		List<PatientIdentifier> ret = new ArrayList<>();
 		PatientIdentifierType pit = Context.getPatientService().getPatientIdentifierTypeByName(
 		    Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE));
 		
-		List<PatientIdentifierType> typeList = new ArrayList<PatientIdentifierType>();
+		List<PatientIdentifierType> typeList = new ArrayList<>();
 		typeList.add(pit);
-		List<Patient> patList = new ArrayList<Patient>();
+		List<Patient> patList = new ArrayList<>();
 		patList.add(p);
 		
 		ids = Context.getPatientService().getPatientIdentifiers(null, typeList, null, patList, null);

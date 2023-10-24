@@ -15,7 +15,7 @@ public class MdrtbPatientProgramStateCohortDefinition extends BaseCohortDefiniti
 	private static final long serialVersionUID = 1L;
 	
 	@ConfigurationProperty(group = "workflow")
-	private List<Concept> stateConcepts = new ArrayList<Concept>();
+	private List<Concept> stateConcepts = new ArrayList<>();
 	
 	@ConfigurationProperty(group = "workflow")
 	private Concept workflowConcept;

@@ -232,7 +232,7 @@ public class SpecimenImpl implements Specimen {
 		List<Dst> dsts = getDsts();
 		
 		if (dstResultsMap == null && dsts.size() > 0) {
-			dstResultsMap = new HashMap<Integer, List<DstResult>>();
+			dstResultsMap = new HashMap<>();
 			
 			for (Dst dst : dsts) {
 				for (DstResult result : dst.getResults()) {
@@ -247,7 +247,7 @@ public class SpecimenImpl implements Specimen {
 					}
 					// otherwise, create a new entry for this drug
 					else {
-						List<DstResult> drugResults = new LinkedList<DstResult>();
+						List<DstResult> drugResults = new LinkedList<>();
 						drugResults.add(result);
 						dstResultsMap.put(drug, drugResults);
 					}
@@ -280,7 +280,7 @@ public class SpecimenImpl implements Specimen {
 	}
 	
 	public List<ScannedLabReport> getScannedLabReports() {
-		List<ScannedLabReport> reports = new LinkedList<ScannedLabReport>();
+		List<ScannedLabReport> reports = new LinkedList<>();
 		
 		// iterate through top-level obs and create scanned lab reports
 		if (encounter.getObsAtTopLevel(false) != null) {
@@ -302,7 +302,7 @@ public class SpecimenImpl implements Specimen {
 	}
 	
 	public List<Test> getTests() {
-		List<Test> tests = new LinkedList<Test>();
+		List<Test> tests = new LinkedList<>();
 		
 		tests.addAll(getSmears());
 		tests.addAll(getCultures());
@@ -532,7 +532,7 @@ public class SpecimenImpl implements Specimen {
 	}
 	
 	public List<Culture> getCultures() {
-		List<Culture> cultures = new LinkedList<Culture>();
+		List<Culture> cultures = new LinkedList<>();
 		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
@@ -558,7 +558,7 @@ public class SpecimenImpl implements Specimen {
 	}
 	
 	public List<Dst> getDsts() {
-		List<Dst> dsts = new LinkedList<Dst>();
+		List<Dst> dsts = new LinkedList<>();
 		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if any of the DST results is present
@@ -585,7 +585,7 @@ public class SpecimenImpl implements Specimen {
 	}
 	
 	public List<Smear> getSmears() {
-		List<Smear> smears = new LinkedList<Smear>();
+		List<Smear> smears = new LinkedList<>();
 		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
@@ -611,7 +611,7 @@ public class SpecimenImpl implements Specimen {
 	}
 	
 	public List<Xpert> getXperts() {
-		List<Xpert> xperts = new LinkedList<Xpert>();
+		List<Xpert> xperts = new LinkedList<>();
 		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
@@ -637,7 +637,7 @@ public class SpecimenImpl implements Specimen {
 	}
 	
 	public List<HAIN> getHAINs() {
-		List<HAIN> hains = new LinkedList<HAIN>();
+		List<HAIN> hains = new LinkedList<>();
 		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
@@ -662,7 +662,7 @@ public class SpecimenImpl implements Specimen {
 	}
 	
 	public List<HAIN2> getHAIN2s() {
-		List<HAIN2> hains = new LinkedList<HAIN2>();
+		List<HAIN2> hains = new LinkedList<>();
 		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present

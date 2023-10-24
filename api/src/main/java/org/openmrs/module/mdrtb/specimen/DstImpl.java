@@ -263,7 +263,7 @@ public class DstImpl extends TestImpl implements Dst {
 		// Check if the resultsMap is already initialized
 		Map<Integer, List<DstResult>> resultsMap = new HashMap<>();
 		for (DstResult result : getResults()) {
-            List<DstResult> drugResults = new LinkedList<DstResult>();
+            List<DstResult> drugResults = new LinkedList<>();
             drugResults.add(result);
 			resultsMap.put(result.getDrug().getId(), drugResults);
 		}

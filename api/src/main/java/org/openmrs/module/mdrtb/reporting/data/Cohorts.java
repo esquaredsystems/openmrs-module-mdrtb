@@ -128,7 +128,7 @@ public class Cohorts {
 	
 	public static CohortDefinition getMdrtbPatientProgramStateFilter(Concept workflowConcept, Concept stateConcept,
 	        Date startDate, Date endDate) {
-		List<Concept> stateConcepts = new ArrayList<Concept>();
+		List<Concept> stateConcepts = new ArrayList<>();
 		if (stateConcept != null)
 			stateConcepts.add(stateConcept);
 		

@@ -159,7 +159,7 @@ public class DrugResistanceDuringFormController {
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
 		
-		ArrayList<ConceptAnswer> typeArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> typeArray = new ArrayList<>();
 		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.DRUG_RESISTANCE_DURING_TREATMENT).getAnswers();
 		for (int i = 0; i < 4; i++) {

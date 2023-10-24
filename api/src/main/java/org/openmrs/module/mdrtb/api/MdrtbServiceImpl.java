@@ -172,7 +172,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	private Map<Integer, String> loadCache(String mapAsString) {
-		Map<Integer, String> map = new HashMap<Integer, String>();
+		Map<Integer, String> map = new HashMap<>();
 		
 		if (StringUtils.isNotBlank(mapAsString)) {
 			for (String mapping : mapAsString.split("\\|")) {
@@ -256,7 +256,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public PatientState getPatientState(Integer stateId) {
 		if (stateId != null) {
 			return (PatientState) dao.getSessionFactory().getCurrentSession()
-			        .createQuery("from PatientState s where patientStateId = :psid").setInteger("psid", stateId.intValue())
+			        .createQuery("from PatientState s where patientStateId = :psid").setInteger("psid", stateId)
 			        .uniqueResult();
 		}
 		return null;
@@ -308,7 +308,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<Concept> drugConcepts = null;
 		if (drugSet != null) {
 			List<ConceptSet> concepts = Context.getConceptService().getConceptSetsByConcept(drugSet);
-			drugConcepts = new ArrayList<Concept>();
+			drugConcepts = new ArrayList<>();
 			for (ConceptSet cs : concepts) {
 				drugConcepts.add(cs.getConcept());
 			}
@@ -434,7 +434,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		TbPatientProgram temp = null;
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
-		List<TbPatientProgram> tbPrograms = new LinkedList<TbPatientProgram>();
+		List<TbPatientProgram> tbPrograms = new LinkedList<>();
 		// convert to mdrtb patient programs
 		for (PatientProgram program : programs) {
 			// tbPrograms.add(new TbPatientProgram(program));
@@ -477,7 +477,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		    startDate, endDate, null, null, false);
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
-		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<MdrtbPatientProgram>();
+		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<>();
 		// convert to mdrtb patient programs
 		for (PatientProgram program : programs) {
 			mdrtbPrograms.add(new MdrtbPatientProgram(program));
@@ -738,7 +738,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Obs temp = null;
 		for (Encounter encounter : specimenEncounters) {
 			temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
-			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == programId.intValue())
+			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == programId)
 				specimens.add(new SpecimenImpl(encounter));
 		}
 		
@@ -1396,7 +1396,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : encs) {
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.SMEAR_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
+				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
 					SmearForm sf = new SmearForm(e);
 					sf.setPatient(tpp.getPatient());
 					smears.add(sf);
@@ -1416,7 +1416,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : encs) {
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.CULTURE_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
+				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
 					CultureForm sf = new CultureForm(e);
 					sf.setPatient(tpp.getPatient());
 					cultures.add(sf);
@@ -1436,7 +1436,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : encs) {
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.XPERT_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
+				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
 					XpertForm sf = new XpertForm(e);
 					sf.setPatient(tpp.getPatient());
 					xperts.add(sf);
@@ -1456,7 +1456,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : encs) {
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.HAIN_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
+				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
 					HAINForm sf = new HAINForm(e);
 					sf.setPatient(tpp.getPatient());
 					hains.add(sf);
@@ -1476,7 +1476,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : encs) {
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.HAIN2_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
+				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
 					HAIN2Form sf = new HAIN2Form(e);
 					sf.setPatient(tpp.getPatient());
 					hains.add(sf);
@@ -1501,7 +1501,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : encs) {
 			Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
 			// Add the DST form to list
-			if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
+			if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
 				DSTForm sf = new DSTForm(e);
 				sf.setPatient(tpp.getPatient());
 				dsts.add(sf);
@@ -1518,7 +1518,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
 			Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-			if (temp != null && temp.getValueNumeric().intValue() == patientProgramId.intValue()) {
+			if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
 				DrugResistanceDuringTreatmentForm drdt = new DrugResistanceDuringTreatmentForm(e);
 				drdt.setPatient(tpp.getPatient());
 				drdts.add(drdt);
@@ -1558,7 +1558,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgramId.intValue()) {
+			        && idObs.getValueNumeric().intValue() == patientProgramId) {
 				forms.add(new TB03Form(e));
 			}
 		}
@@ -1575,7 +1575,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgramId.intValue()) {
+			        && idObs.getValueNumeric().intValue() == patientProgramId) {
 				forms.add(new Form89(e));
 			}
 		}
@@ -1603,7 +1603,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				Obs ppObs = MdrtbUtil.getObsFromEncounter(ppid, e);
 				if (ppObs != null) {
 					if (ppObs.getValueNumeric() != null
-					        && (ppObs.getValueNumeric().intValue() == patientProgramId.intValue())) {
+					        && (ppObs.getValueNumeric().intValue() == patientProgramId)) {
 						forms.add(new Form89(e));
 					}
 				}
@@ -1823,7 +1823,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgId.intValue()) {
+			        && idObs.getValueNumeric().intValue() == patientProgId) {
 				form = new TB03uForm(e);
 				break;
 			}
@@ -1841,7 +1841,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgId.intValue()) {
+			        && idObs.getValueNumeric().intValue() == patientProgId) {
 				forms.add(new RegimenForm(e));
 			}
 		}
@@ -1899,7 +1899,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == mdrtbProgramId.intValue()) {
+			        && idObs.getValueNumeric().intValue() == mdrtbProgramId) {
 				forms.add(new TB03uForm(e));
 			}
 		}
@@ -1916,7 +1916,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgId.intValue()) {
+			        && idObs.getValueNumeric().intValue() == patientProgId) {
 				forms.add(new AdverseEventsForm(e));
 			}
 		}

@@ -24,7 +24,7 @@ public class MdrtbFindPatient {
 	
 	public Collection<Object> findPatients(String searchValue, boolean includeVoided, boolean onlyMdrTbPatients) {
 		
-		Collection<Object> patientList = new Vector<Object>();
+		Collection<Object> patientList = new Vector<>();
 		
 		Integer userId = -1;
 		if (Context.isAuthenticated())
@@ -34,7 +34,7 @@ public class MdrtbFindPatient {
 		PatientService ps = Context.getPatientService();
 		List<Patient> patients;
 		patients = ps.getPatients(searchValue);
-		patientList = new Vector<Object>(patients.size());
+		patientList = new Vector<>(patients.size());
 		String primaryIdentifier = Context.getAdministrationService().getGlobalProperty(
 		    MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 		for (Patient p : patients) {
@@ -64,7 +64,7 @@ public class MdrtbFindPatient {
 	
 	public Collection<Object> findPeople(String searchValue, String dateString, boolean includeVoided) {
 		
-		Collection<Object> patientList = new Vector<Object>();
+		Collection<Object> patientList = new Vector<>();
 		
 		if (Context.isAuthenticated())
 			Context.getAuthenticatedUser().getUserId();
@@ -72,7 +72,7 @@ public class MdrtbFindPatient {
 		List<Person> patients;
 		
 		patients = ps.getPeople(searchValue, false);
-		patientList = new Vector<Object>(patients.size());
+		patientList = new Vector<>(patients.size());
 		String persAttTypeString = Context.getAdministrationService().getGlobalProperty(
 		    MdrtbConstants.GP_TREATMENT_SUPPORTER_PERSON_ATTRIBUTE_TYPE);
 		PersonAttributeType pat = Context.getPersonService().getPersonAttributeTypeByName(persAttTypeString);
@@ -86,7 +86,7 @@ public class MdrtbFindPatient {
 	
 	public Collection<Object> findAllPeople(String searchValue, String dateString, boolean includeVoided) {
 		
-		Collection<Object> patientList = new Vector<Object>();
+		Collection<Object> patientList = new Vector<>();
 		
 		if (Context.isAuthenticated()) {
 			Context.getAuthenticatedUser().getUserId();
@@ -95,7 +95,7 @@ public class MdrtbFindPatient {
 		List<Person> patients;
 		
 		patients = ps.getPeople(searchValue, false);
-		patientList = new Vector<Object>(patients.size());
+		patientList = new Vector<>(patients.size());
 		
 		for (Person p : patients) {
 			patientList.add(new MdrtbPersonListItem(p, dateString));

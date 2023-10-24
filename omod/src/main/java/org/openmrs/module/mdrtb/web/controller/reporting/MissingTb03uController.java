@@ -180,8 +180,8 @@ public class MissingTb03uController {
 	public static Map<String, Object> getMissingTB03uPatientMap(Integer year, Integer quarter, Integer month,
 	        List<Location> locList) {
 		Map<String, Object> map = new HashMap<>();
-		List<DQItem> patientSet = new ArrayList<DQItem>();
-		List<Patient> errList = new ArrayList<Patient>();
+		List<DQItem> patientSet = new ArrayList<>();
+		List<Patient> errList = new ArrayList<>();
 		
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);

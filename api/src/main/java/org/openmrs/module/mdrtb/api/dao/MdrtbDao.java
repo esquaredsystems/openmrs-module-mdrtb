@@ -75,7 +75,6 @@ public class MdrtbDao {
 	}
 	
 	/**
-	 * @see MdrtbDAO#getLocationsWithAnyProgramEnrollments()
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Location> getLocationsWithAnyProgramEnrollments() throws DAOException {
@@ -84,12 +83,11 @@ public class MdrtbDao {
 	}
 	
 	/**
-	 * @see MdrtbDAO#getAllRayonsTJK()
 	 */
 	@Deprecated
 	public List<String> getAllRayonsTJK() throws DAOException {
 		List<BaseLocation> list = getLocationsByHierarchyLevel(LocationHierarchy.DISTRICT);
-		List<String> names = new ArrayList<String>();
+		List<String> names = new ArrayList<>();
 		for (BaseLocation location : list) {
 			names.add(location.getName());
 		}
@@ -98,7 +96,7 @@ public class MdrtbDao {
 	
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	public Map<Integer, List<DrugOrder>> getDrugOrders(Cohort patients, List<Concept> drugConcepts) throws DAOException {
-		Map<Integer, List<DrugOrder>> ret = new HashMap<Integer, List<DrugOrder>>();
+		Map<Integer, List<DrugOrder>> ret = new HashMap<>();
 		if (patients != null && patients.size() == 0)
 			return ret;
 		
@@ -120,7 +118,7 @@ public class MdrtbDao {
 			Integer ptId = regimen.getPatient().getPatientId();
 			List<DrugOrder> list = ret.get(ptId);
 			if (list == null) {
-				list = new ArrayList<DrugOrder>();
+				list = new ArrayList<>();
 				ret.put(ptId, list);
 			}
 			list.add(regimen);
@@ -225,8 +223,8 @@ public class MdrtbDao {
 	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames, Date startDate, Date endDate,
 	        Date closeDate) {
 		SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		List<Integer> encounterIds = new ArrayList<Integer>();
-		List<Integer> tempList = new ArrayList<Integer>();
+		List<Integer> encounterIds = new ArrayList<>();
+		List<Integer> tempList = new ArrayList<>();
 		String sql = "";
 		Session session = sessionFactory.getCurrentSession();
 		for (String encounterTypeName : encounterTypeNames) {
@@ -247,7 +245,7 @@ public class MdrtbDao {
 			}
 		}
 		
-		List<Encounter> encounters = new ArrayList<Encounter>();
+		List<Encounter> encounters = new ArrayList<>();
 		Encounter encounter = new Encounter();
 		for (Integer encounterId : encounterIds) {
 			encounter = Context.getEncounterService().getEncounter(encounterId);
@@ -267,12 +265,12 @@ public class MdrtbDao {
 	 * @return
 	 */
 	public List<BaseLocation> getLocationsByHierarchyLevel(LocationHierarchy level) {
-		Map<LocationAttributeType, Object> attributeValues = new HashMap<LocationAttributeType, Object>();
+		Map<LocationAttributeType, Object> attributeValues = new HashMap<>();
 		LocationAttributeType key = Context.getLocationService().getLocationAttributeTypeByName(
 		    MdrtbConstants.LOCATION_ATTRIBUTE_TYPE_LEVEL);
 		attributeValues.put(key, level.toString());
 		List<Location> list = Context.getLocationService().getLocations(null, null, attributeValues, false, null, null);
-		List<BaseLocation> locations = new ArrayList<BaseLocation>();
+		List<BaseLocation> locations = new ArrayList<>();
 		for (Location location : list) {
 			locations.add(new BaseLocation(location, level));
 		}

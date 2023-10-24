@@ -75,7 +75,7 @@ public class RegimenHistoryTag extends TagSupport {
 		String futureTitle = MessageUtil.translate(prefix + "future", "Future");
 		String daysTitle = MessageUtil.translate(prefix + "days", "days");
 		
-		List<Regimen> allRegimens = new ArrayList<Regimen>();
+		List<Regimen> allRegimens = new ArrayList<>();
 		if (history != null) {
 			allRegimens = history.getAllRegimens();
 		}
@@ -88,7 +88,7 @@ public class RegimenHistoryTag extends TagSupport {
 			}
 			
 			// Construct sorted Map from Drug generic display name to Concept for all relevant drugs
-			Map<String, Concept> allDrugs = new TreeMap<String, Concept>();
+			Map<String, Concept> allDrugs = new TreeMap<>();
 			for (Regimen r : allRegimens) {
 				for (Concept c : r.getUniqueGenerics()) {
 					allDrugs.put(
@@ -141,11 +141,11 @@ public class RegimenHistoryTag extends TagSupport {
 			
 				sb.append("<table class='" + cssClass + "'><tbody>");
 				
-				List<List<String>> rowData = new ArrayList<List<String>>();
+				List<List<String>> rowData = new ArrayList<>();
 				int activeCol = -1;
 				
 				// Date Row
-				List<String> dateRow = new ArrayList<String>();
+				List<String> dateRow = new ArrayList<>();
 				dateRow.add(dateTitle);
 				for (int i = 0; i < allRegimens.size(); i++) {
 					Regimen r = allRegimens.get(i);
@@ -158,7 +158,7 @@ public class RegimenHistoryTag extends TagSupport {
 				
 				// Drug Rows
 				for (String s : allDrugs.keySet()) {
-					List<String> drugRow = new ArrayList<String>();
+					List<String> drugRow = new ArrayList<>();
 					drugRow.add(s);
 					for (Regimen r : allRegimens) {
 						drugRow.add((r.containsGeneric(allDrugs.get(s)) ? drugIndicator : " &nbsp;"));
@@ -167,7 +167,7 @@ public class RegimenHistoryTag extends TagSupport {
 				}
 				
 				// Duration Row
-				List<String> durationRow = new ArrayList<String>();
+				List<String> durationRow = new ArrayList<>();
 				durationRow.add(durationTitle);
 				for (Regimen r : allRegimens) {
 					durationRow.add((r.isFuture() ? futureTitle : r.getDurationInDays() + " " + daysTitle));
@@ -175,7 +175,7 @@ public class RegimenHistoryTag extends TagSupport {
 				rowData.add(durationRow);
 				
 				// Type Row
-				List<String> typeRow = new ArrayList<String>();
+				List<String> typeRow = new ArrayList<>();
 				typeRow.add(typeTitle);
 				for (Regimen r : allRegimens) {
 					typeRow.add(RegimenUtils.formatCodedObs(r.getReasonForStarting(), ""));

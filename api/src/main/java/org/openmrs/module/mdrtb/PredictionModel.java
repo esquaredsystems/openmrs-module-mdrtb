@@ -39,7 +39,7 @@ public class PredictionModel {
 	
 	public static Map<RiskFactor, Boolean> getRiskFactors(Patient p) {
 		
-		Map<RiskFactor, Boolean> m = new HashMap<RiskFactor, Boolean>();
+		Map<RiskFactor, Boolean> m = new HashMap<>();
 		
 		m.put(RiskFactor.Male, "M".equals(p.getGender()));
 		m.put(RiskFactor.HivPositive, hasAnyObsValue(p, 3753, 703)); // HIV Status = Positive

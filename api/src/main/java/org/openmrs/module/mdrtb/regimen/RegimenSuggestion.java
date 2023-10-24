@@ -105,7 +105,7 @@ public class RegimenSuggestion implements Serializable {
 	 */
 	public List<DrugSuggestion> getDrugComponents() {
 		if (drugComponents == null) {
-			drugComponents = new ArrayList<DrugSuggestion>();
+			drugComponents = new ArrayList<>();
 		}
 		return drugComponents;
 	}

@@ -45,7 +45,7 @@ public class PatientChartFactory {
 		
 		// if no specimens, operate on the an empty set
 		if (specimens == null) {
-			specimens = new LinkedList<Specimen>();
+			specimens = new LinkedList<>();
 		}
 		
 		// the getSpecimen method should return the specimens sorted, but just in case it is changed
@@ -192,7 +192,7 @@ public class PatientChartFactory {
 	private List<RecordComponent> createSpecimenRecordComponents(List<Specimen> specimens, RegimenHistory regimenHistory,
 	        Calendar startDate, Calendar endDate) {
 		
-		List<RecordComponent> components = new LinkedList<RecordComponent>();
+		List<RecordComponent> components = new LinkedList<>();
 		
 		// get all the specimens to include in this record, i.e. all specimens collected during this time period
 		List<Specimen> specimensToAdd = getSpecimensBeforeDate(specimens, endDate);
@@ -241,7 +241,7 @@ public class PatientChartFactory {
 		
 		MdrtbPatientProgram mdrtbProgram = new MdrtbPatientProgram(program);
 		
-		List<RecordComponent> stateChangeRecordComponents = new LinkedList<RecordComponent>();
+		List<RecordComponent> stateChangeRecordComponents = new LinkedList<>();
 		
 		// the only state we are worried about at this point is the treatment start date and treatment end date
 		if (mdrtbProgram.getTreatmentStartDateDuringProgram() != null) {
@@ -265,7 +265,7 @@ public class PatientChartFactory {
 	// this method is intended to be use with the getPatientChart API method
 	private List<RecordComponent> getStateChangeRecordComponentsBeforeDate(List<RecordComponent> components,
 	        Calendar compareDate) {
-		List<RecordComponent> results = new LinkedList<RecordComponent>();
+		List<RecordComponent> results = new LinkedList<>();
 		Calendar stateChangeDate = Calendar.getInstance();
 		
 		while (!components.isEmpty()) {
@@ -286,7 +286,7 @@ public class PatientChartFactory {
 	// also, this method pulls all the specimens it returns off the list of specimens passed to it;
 	// this method is intended to be use with the getPatientChart API method
 	private List<Specimen> getSpecimensBeforeDate(List<Specimen> specimens, Calendar compareDate) {
-		List<Specimen> results = new LinkedList<Specimen>();
+		List<Specimen> results = new LinkedList<>();
 		Calendar specimenDate = Calendar.getInstance();
 		
 		while (!specimens.isEmpty()) {

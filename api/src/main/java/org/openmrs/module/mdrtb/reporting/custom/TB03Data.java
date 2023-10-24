@@ -163,7 +163,7 @@ public class TB03Data implements Comparable<TB03Data> {
 	private String dstResultDate;
 	
 	public TB03Data() {
-		dstResults = new HashMap<String, String>();
+		dstResults = new HashMap<>();
 	}
 	
 	public Patient getPatient() {

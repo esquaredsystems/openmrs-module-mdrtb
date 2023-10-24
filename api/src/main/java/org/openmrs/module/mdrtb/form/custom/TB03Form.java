@@ -42,7 +42,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 	
 	public List<SmearForm> getSmears() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<SmearForm>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getSmearForms(getPatientProgramId());
 		
@@ -50,7 +50,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 	
 	public List<CultureForm> getCultures() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<CultureForm>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getCultureForms(getPatientProgramId());
 		
@@ -58,7 +58,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 	
 	public List<XpertForm> getXperts() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<XpertForm>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getXpertForms(getPatientProgramId());
 		
@@ -66,7 +66,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 	
 	public List<HAINForm> getHains() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<HAINForm>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getHAINForms(getPatientProgramId());
 		
@@ -74,7 +74,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 	
 	public List<HAIN2Form> getHain2s() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<HAIN2Form>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getHAIN2Forms(getPatientProgramId());
 		
@@ -82,7 +82,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 	
 	public List<DSTForm> getDsts() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<DSTForm>();
+			return new ArrayList<>();
 		}
 		return Context.getService(MdrtbService.class).getDstForms(getPatientProgramId());
 		
@@ -853,7 +853,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 			return;
 		}
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id.intValue()) {
+		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id) {
 			// void the existing obs if it exists, because openmrs doesn't void obs when saved via encounters
 			if (obs != null) {
 				obs.setVoided(true);

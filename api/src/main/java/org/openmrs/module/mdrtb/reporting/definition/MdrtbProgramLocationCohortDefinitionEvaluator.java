@@ -77,12 +77,12 @@ public class MdrtbProgramLocationCohortDefinitionEvaluator implements CohortDefi
 		
 		// now convert the result set into a map from patient id a list of patient programs
 		// (note that we are defining the "start date" of a specified patient program range to be the completion date of the program prior to that program)
-		Map<Integer, List<SimpleProgram>> programMap = new HashMap<Integer, List<SimpleProgram>>();
+		Map<Integer, List<SimpleProgram>> programMap = new HashMap<>();
 		
 		for (List<Object> result : results) {
 			Integer patientId = (Integer) result.get(0);
 			if (programMap.get(patientId) == null) {
-				programMap.put(patientId, new ArrayList<SimpleProgram>());
+				programMap.put(patientId, new ArrayList<>());
 				programMap.get(patientId).add(new SimpleProgram(null, (Date) result.get(2), (Integer) result.get(3)));
 			} else {
 				List<SimpleProgram> programs = programMap.get(patientId);

@@ -86,7 +86,7 @@ public class MetadataResourceController extends DataDelegatingCrudResource<Simpl
 				so.add("display", c.getDisplayString());
 				// Attach names
 				Collection<ConceptName> names = c.getNames();
-				Collection<SimpleObject> nameSet = new ArrayList<SimpleObject>();
+				Collection<SimpleObject> nameSet = new ArrayList<>();
 				for (ConceptName n : names) {
 					SimpleObject nameObj = new SimpleObject();
 					nameObj.add("uuid", n.getUuid());
@@ -126,6 +126,6 @@ public class MetadataResourceController extends DataDelegatingCrudResource<Simpl
 			    }
 			}
 		}
-		return new NeedsPaging<SimpleObject>(objects, context);
+		return new NeedsPaging<>(objects, context);
 	}
 }

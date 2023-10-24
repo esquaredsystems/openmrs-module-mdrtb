@@ -50,13 +50,13 @@ public class VisitStatusCalculator {
 		EncounterType drdtType = MdrtbConstants.ET_DRUG_RESISTANCE_DURING_TREATMENT;
 		
 		// where we will store the various visits
-		List<StatusItem> intakeVisits = new LinkedList<StatusItem>();
-		List<StatusItem> followUpVisits = new LinkedList<StatusItem>();
-		List<StatusItem> scheduledFollowUpVisits = new LinkedList<StatusItem>();
-		List<StatusItem> specimenCollectionVisits = new LinkedList<StatusItem>();
-		List<StatusItem> transferOutVisits = new LinkedList<StatusItem>();
-		List<StatusItem> transferInVisits = new LinkedList<StatusItem>();
-		List<StatusItem> drdtVisits = new LinkedList<StatusItem>();
+		List<StatusItem> intakeVisits = new LinkedList<>();
+		List<StatusItem> followUpVisits = new LinkedList<>();
+		List<StatusItem> scheduledFollowUpVisits = new LinkedList<>();
+		List<StatusItem> specimenCollectionVisits = new LinkedList<>();
+		List<StatusItem> transferOutVisits = new LinkedList<>();
+		List<StatusItem> transferInVisits = new LinkedList<>();
+		List<StatusItem> drdtVisits = new LinkedList<>();
 		
 		List<Encounter> encounters = null;
 		
@@ -181,12 +181,12 @@ public class VisitStatusCalculator {
 		EncounterType transferInType = MdrtbConstants.ET_TRANSFER_IN;
 		
 		// where we will store the various visits
-		List<StatusItem> intakeVisits = new LinkedList<StatusItem>();
-		List<StatusItem> followUpVisits = new LinkedList<StatusItem>();
-		List<StatusItem> scheduledFollowUpVisits = new LinkedList<StatusItem>();
-		List<StatusItem> specimenCollectionVisits = new LinkedList<StatusItem>();
-		List<StatusItem> transferOutVisits = new LinkedList<StatusItem>();
-		List<StatusItem> transferInVisits = new LinkedList<StatusItem>();
+		List<StatusItem> intakeVisits = new LinkedList<>();
+		List<StatusItem> followUpVisits = new LinkedList<>();
+		List<StatusItem> scheduledFollowUpVisits = new LinkedList<>();
+		List<StatusItem> specimenCollectionVisits = new LinkedList<>();
+		List<StatusItem> transferOutVisits = new LinkedList<>();
+		List<StatusItem> transferInVisits = new LinkedList<>();
 		
 		List<Encounter> encounters = null;
 		

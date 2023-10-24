@@ -171,7 +171,7 @@ public class Form89SingleExportController {
 	        List<Location> locList) {
 		List<Form89> f89List = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
 		
-		ArrayList<Form89Data> patientSet = new ArrayList<Form89Data>();
+		ArrayList<Form89Data> patientSet = new ArrayList<>();
 		SimpleDateFormat sdf = Context.getDateFormat();
 		
 		for (final Form89 f89 : f89List) {

@@ -14,9 +14,9 @@ abstract public class Status {
 	
 	TbPatientProgram tbProgram;
 	
-	Map<String, StatusItem> items = new HashMap<String, StatusItem>();
+	Map<String, StatusItem> items = new HashMap<>();
 	
-	List<StatusFlag> flags = new LinkedList<StatusFlag>();
+	List<StatusFlag> flags = new LinkedList<>();
 	
 	public Status() {
 	}
@@ -70,7 +70,7 @@ abstract public class Status {
 	
 	public List<StatusFlag> getFlags() {
 		
-		List<StatusFlag> flags = new LinkedList<StatusFlag>();
+		List<StatusFlag> flags = new LinkedList<>();
 		
 		flags.addAll(this.flags);
 		

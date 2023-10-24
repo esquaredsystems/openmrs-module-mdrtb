@@ -123,7 +123,7 @@ public class Form8Controller {
 		
 		List<Location> locList = null;
 		if (oblastId != null) {
-			if (oblastId.intValue() == 186) {
+			if (oblastId == 186) {
 				locList = Context.getService(MdrtbService.class)
 				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
 			} else {
@@ -230,7 +230,7 @@ public class Form8Controller {
 		
 		Boolean rural = null;
 		Concept ruralConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.VILLAGE);
-		int ruralId = ruralConcept.getConceptId().intValue();
+		int ruralId = ruralConcept.getConceptId();
 		Concept locationType = null;
 		
 		/*Boolean bacEx = null;
@@ -274,73 +274,73 @@ public class Form8Controller {
 		
 		//PULMONARY
 		Concept fibroCavConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FIBROUS_CAVERNOUS);
-		int fibroCavId = fibroCavConcept.getConceptId().intValue();
+		int fibroCavId = fibroCavConcept.getConceptId();
 		Concept miliaryConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MILITARY_SERVANT);
-		int miliaryId = miliaryConcept.getConceptId().intValue();
+		int miliaryId = miliaryConcept.getConceptId();
 		Concept focalConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FOCAL);
-		int focalId = focalConcept.getConceptId().intValue();
+		int focalId = focalConcept.getConceptId();
 		Concept infiltrativeConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.INFILTRATIVE);
-		int infiltrativeId = infiltrativeConcept.getConceptId().intValue();
+		int infiltrativeId = infiltrativeConcept.getConceptId();
 		Concept disseminatedConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DISSEMINATED);
-		int disseminatedId = disseminatedConcept.getConceptId().intValue();
+		int disseminatedId = disseminatedConcept.getConceptId();
 		Concept cavernousConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAVERNOUS);
-		int cavernousId = cavernousConcept.getConceptId().intValue();
+		int cavernousId = cavernousConcept.getConceptId();
 		Concept cirrhoticConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CIRRHOTIC);
-		int cirrhoticId = cirrhoticConcept.getConceptId().intValue();
+		int cirrhoticId = cirrhoticConcept.getConceptId();
 		Concept primaryComplexConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_PRIMARY_COMPLEX);
-		int primaryComplexId = primaryComplexConcept.getConceptId().intValue();
+		int primaryComplexId = primaryComplexConcept.getConceptId();
 		Concept tuberculomaConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOMA);
-		int tuberculomaId = tuberculomaConcept.getConceptId().intValue();
+		int tuberculomaId = tuberculomaConcept.getConceptId();
 		Concept bronchiConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.BRONCHUS);
-		int bronchiId = bronchiConcept.getConceptId().intValue();
+		int bronchiId = bronchiConcept.getConceptId();
 		
 		//EP TB
 		Concept plevConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLEVRITIS);
-		int plevId = plevConcept.getConceptId().intValue();
+		int plevId = plevConcept.getConceptId();
 		Concept itLymphConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_LYMPH_NODES);
-		int itLymphId = itLymphConcept.getConceptId().intValue();
+		int itLymphId = itLymphConcept.getConceptId();
 		Concept cnsConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_CNS);
-		int cnsId = cnsConcept.getConceptId().intValue();
+		int cnsId = cnsConcept.getConceptId();
 		Concept osteoArticularConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OSTEOARTICULAR);
-		int osteoArticularId = osteoArticularConcept.getConceptId().intValue();
+		int osteoArticularId = osteoArticularConcept.getConceptId();
 		Concept urogenitalConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENITOURINARY);
-		int urogenitalId = urogenitalConcept.getConceptId().intValue();
+		int urogenitalId = urogenitalConcept.getConceptId();
 		Concept peripheralLymphNodesConcept = Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.OF_LYMPH_NODES);
-		int peripheralLymphNodesId = peripheralLymphNodesConcept.getConceptId().intValue();
+		int peripheralLymphNodesId = peripheralLymphNodesConcept.getConceptId();
 		Concept abdominalConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ABDOMINAL);
-		int abdominalId = abdominalConcept.getConceptId().intValue();
+		int abdominalId = abdominalConcept.getConceptId();
 		Concept eyeConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OCULAR);
-		int eyeId = eyeConcept.getConceptId().intValue();
+		int eyeId = eyeConcept.getConceptId();
 		Concept skinConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULODERMA);
-		int skinId = skinConcept.getConceptId().intValue();
+		int skinId = skinConcept.getConceptId();
 		Concept liverConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_LIVER);
-		int liverId = liverConcept.getConceptId().intValue();
+		int liverId = liverConcept.getConceptId();
 		
 		//Other
 		Concept phcFacilityConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PHC_FACILITY);
-		int phcFacilityId = phcFacilityConcept.getConceptId().intValue();
+		int phcFacilityId = phcFacilityConcept.getConceptId();
 		Concept tbFacilityConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_FACILITY);
-		int tbFacilityId = tbFacilityConcept.getConceptId().intValue();
+		int tbFacilityId = tbFacilityConcept.getConceptId();
 		Concept privateSectorFacilityConcept = Context.getService(MdrtbService.class).getConcept(
 		    MdrtbConcepts.PRIVATE_SECTOR_FACILITY);
-		int privateSectorFacilityId = privateSectorFacilityConcept.getConceptId().intValue();
+		int privateSectorFacilityId = privateSectorFacilityConcept.getConceptId();
 		Concept otherFacilityConcept = Context.getService(MdrtbService.class).getConcept(
 		    MdrtbConcepts.OTHER_MEDICAL_FACILITY);
-		int otherFacilityId = otherFacilityConcept.getConceptId().intValue();
+		int otherFacilityId = otherFacilityConcept.getConceptId();
 		
 		Concept phcWorkerConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PHC_WORKER);
-		int phcWorkerId = phcWorkerConcept.getConceptId().intValue();
+		int phcWorkerId = phcWorkerConcept.getConceptId();
 		Concept tbWorkerConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_SERVICES_WORKER);
-		int tbWorkerId = tbWorkerConcept.getConceptId().intValue();
+		int tbWorkerId = tbWorkerConcept.getConceptId();
 		Concept contactConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
-		int contactId = contactConcept.getConceptId().intValue();
+		int contactId = contactConcept.getConceptId();
 		Concept migrantConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MIGRANT);
-		int migrantId = migrantConcept.getConceptId().intValue();
+		int migrantId = migrantConcept.getConceptId();
 		Concept yesConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
-		int yesId = yesConcept.getConceptId().intValue();
+		int yesId = yesConcept.getConceptId();
 		Concept hospConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOSPITAL);
-		int hospId = hospConcept.getConceptId().intValue();
+		int hospId = hospConcept.getConceptId();
 		
 		Concept pulSite = null;
 		Concept epulSite = null;
@@ -348,9 +348,9 @@ public class Form8Controller {
 		int age = 0;
 		int resId = 0;
 		
-		int noResId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NONE).getConceptId().intValue();
-		int unknownId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.UNKNOWN).getConceptId().intValue();
-		int monoId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONO).getConceptId().intValue();
+		int noResId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NONE).getConceptId();
+		int unknownId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.UNKNOWN).getConceptId();
+		int monoId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONO).getConceptId();
 		
 		Boolean pregnant = null;
 		Concept detectedAt = null;
@@ -427,14 +427,14 @@ public class Form8Controller {
 			hospitalised = null;
 						
 			ageAtRegistration = tf.getAgeAtTB03Registration();
-			age = ageAtRegistration.intValue();
+			age = ageAtRegistration;
 			
 			bacPositive = MdrtbUtil.isDiagnosticBacPositive(tf);
 			
 			regGroup = tf.getRegistrationGroup();
 			
-			if ((tf.getTreatmentSiteIP() != null && tf.getTreatmentSiteIP().getConceptId().intValue() == hospId)
-			        || (tf.getTreatmentSiteCP() != null && tf.getTreatmentSiteCP().getConceptId().intValue() == hospId)) {
+			if ((tf.getTreatmentSiteIP() != null && tf.getTreatmentSiteIP().getConceptId() == hospId)
+			        || (tf.getTreatmentSiteCP() != null && tf.getTreatmentSiteCP().getConceptId() == hospId)) {
 				hospitalised = Boolean.TRUE;
 				
 				table4.setHospitalised(table4.getHospitalised() + 1);
@@ -528,9 +528,9 @@ public class Form8Controller {
 			                MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
 				
 				if (regGroup != null
-				        && ((regGroup.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
+				        && ((regGroup.getConceptId() == Integer.parseInt(Context.getAdministrationService()
 				                .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) || (regGroup
-				                .getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
+                        .getConceptId() == Integer.parseInt(Context.getAdministrationService()
 				                .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))))) {
 					
 					table2.setRelapseCount(table2.getRelapseCount() + 1);
@@ -539,9 +539,9 @@ public class Form8Controller {
 				}
 				
 				else if (regGroup != null
-				        && ((regGroup.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
+				        && ((regGroup.getConceptId() == Integer.parseInt(Context.getAdministrationService()
 				                .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) || (regGroup
-				                .getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
+                        .getConceptId() == Integer.parseInt(Context.getAdministrationService()
 				                .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))))) {
 					
 					table2.setFailCount(table2.getFailCount() + 1);
@@ -579,7 +579,7 @@ public class Form8Controller {
 			f89 = fList.get(0);
 			
 			locationType = f89.getLocationType();
-			if (locationType != null && locationType.getConceptId().intValue() == ruralId) {
+			if (locationType != null && locationType.getConceptId() == ruralId) {
 				rural = Boolean.TRUE;
 			}
 			
@@ -611,52 +611,52 @@ public class Form8Controller {
 					pulmonary = Boolean.TRUE;
 					
 					pulSite = f89.getPulSite();
-					if (pulSite != null && pulSite.getConceptId().intValue() == fibroCavId) {
+					if (pulSite != null && pulSite.getConceptId() == fibroCavId) {
 						fibroCav = Boolean.TRUE;
 						table2.setFibrousTotal(table2.getFibrousTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId().intValue() == miliaryId) {
+					if (pulSite != null && pulSite.getConceptId() == miliaryId) {
 						miliary = Boolean.TRUE;
 						table2.setMiliaryTotal(table2.getMiliaryTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId().intValue() == focalId) {
+					if (pulSite != null && pulSite.getConceptId() == focalId) {
 						focal = Boolean.TRUE;
 						table2.setFocalTotal(table2.getFocalTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId().intValue() == infiltrativeId) {
+					if (pulSite != null && pulSite.getConceptId() == infiltrativeId) {
 						infiltrative = Boolean.TRUE;
 						table2.setInfiltrativeTotal(table2.getInfiltrativeTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId().intValue() == disseminatedId) {
+					if (pulSite != null && pulSite.getConceptId() == disseminatedId) {
 						disseminated = Boolean.TRUE;
 						table2.setDisseminatedTotal(table2.getDisseminatedTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId().intValue() == cavernousId) {
+					if (pulSite != null && pulSite.getConceptId() == cavernousId) {
 						cavernous = Boolean.TRUE;
 						table2.setCavernousTotal(table2.getCavernousTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId().intValue() == cirrhoticId) {
+					if (pulSite != null && pulSite.getConceptId() == cirrhoticId) {
 						cirrhotic = Boolean.TRUE;
 						table2.setCirrhoticTotal(table2.getCirrhoticTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId().intValue() == primaryComplexId) {
+					if (pulSite != null && pulSite.getConceptId() == primaryComplexId) {
 						tbComplex = Boolean.TRUE;
 						table2.setTbComplexTotal(table2.getTbComplexTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId().intValue() == tuberculomaId) {
+					if (pulSite != null && pulSite.getConceptId() == tuberculomaId) {
 						tuberculoma = Boolean.TRUE;
 						table2.setTuberculomaTotal(table2.getTuberculomaTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId().intValue() == bronchiId) {
+					if (pulSite != null && pulSite.getConceptId() == bronchiId) {
 						bronchi = Boolean.TRUE;
 						table2.setBronchiTotal(table2.getBronchiTotal() + 1);
 					}
@@ -667,52 +667,52 @@ public class Form8Controller {
 					epulSite = f89.getEpLocation();
 					
 					if (epulSite != null) {
-						if (epulSite.getConceptId().intValue() == cnsId) {
+						if (epulSite.getConceptId() == cnsId) {
 							cns = Boolean.TRUE;
 							table2.setNervousSystemTotal(table2.getNervousSystemTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId().intValue() == osteoArticularId) {
+						else if (epulSite.getConceptId() == osteoArticularId) {
 							osteoArticular = Boolean.TRUE;
 							table2.setOsteoarticularTotal(table2.getOsteoarticularTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId().intValue() == urogenitalId) {
+						else if (epulSite.getConceptId() == urogenitalId) {
 							urogenital = Boolean.TRUE;
 							table2.setUrogenitalTotal(table2.getUrogenitalTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId().intValue() == peripheralLymphNodesId) {
+						else if (epulSite.getConceptId() == peripheralLymphNodesId) {
 							peripheralLymphNodes = Boolean.TRUE;
 							table2.setPeripheralLymphNodesTotal(table2.getPeripheralLymphNodesTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId().intValue() == abdominalId) {
+						else if (epulSite.getConceptId() == abdominalId) {
 							abdominal = Boolean.TRUE;
 							table2.setAbdominalTotal(table2.getAbdominalTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId().intValue() == eyeId) {
+						else if (epulSite.getConceptId() == eyeId) {
 							eye = Boolean.TRUE;
 							table2.setEyeTotal(table2.getEyeTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId().intValue() == plevId) {
+						else if (epulSite.getConceptId() == plevId) {
 							plevritis = Boolean.TRUE;
 							table2.setPleurisyTotal(table2.getPleurisyTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId().intValue() == itLymphId) {
+						else if (epulSite.getConceptId() == itLymphId) {
 							itLymph = Boolean.TRUE;
 							table2.setHilarLymphNodesTotal(table2.getHilarLymphNodesTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId().intValue() == liverId) {
+						else if (epulSite.getConceptId() == liverId) {
 							liver = Boolean.TRUE;
 							table2.setLiverTotal(table2.getLiverTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId().intValue() == skinId) {
+						else if (epulSite.getConceptId() == skinId) {
 							skin = Boolean.TRUE;
 							table2.setSkinTotal(table2.getSkinTotal() + 1);
 						}
@@ -753,7 +753,7 @@ public class Form8Controller {
 			q = tf.getResistanceType();
 			
 			if (q != null) {
-				resId = q.getConceptId().intValue();
+				resId = q.getConceptId();
 				
 				if (resId != noResId && resId != unknownId && resId != monoId) {
 					resistant = Boolean.TRUE;
@@ -775,7 +775,7 @@ public class Form8Controller {
 			
 			detectedAt = f89.getPlaceOfDetection();
 			if (detectedAt != null) {
-				int detId = detectedAt.getConceptId().intValue();
+				int detId = detectedAt.getConceptId();
 				
 				table2.setDetectedByRoutineCheckups(table2.getDetectedByRoutineCheckups() + 1);
 				
@@ -817,7 +817,7 @@ public class Form8Controller {
 			
 			circOf = f89.getCircumstancesOfDetection();
 			if (circOf != null) {
-				int circId = circOf.getConceptId().intValue();
+				int circId = circOf.getConceptId();
 				
 				if (circId == contactId) {
 					contact = Boolean.TRUE;
@@ -833,7 +833,7 @@ public class Form8Controller {
 			prof = f89.getProfession();
 			
 			if (prof != null) {
-				int profId = prof.getConceptId().intValue();
+				int profId = prof.getConceptId();
 				
 				if (profId == phcWorkerId) {
 					phcWorker = Boolean.TRUE;
@@ -847,14 +847,14 @@ public class Form8Controller {
 			}
 			
 			if (f89.getPregnant() != null) {
-				if (f89.getPregnant().getConceptId().intValue() == yesId) {
+				if (f89.getPregnant().getConceptId() == yesId) {
 					pregnant = Boolean.TRUE;
 				}
 			}
 			
 			//decay
 			if (f89.getPresenceOfDecay() != null) {
-				if (f89.getPresenceOfDecay().getConceptId().intValue() == yesId) {
+				if (f89.getPresenceOfDecay().getConceptId() == yesId) {
 					
 					table2.setDecayPhaseTotal(table2.getDecayPhaseTotal() + 1);
 					

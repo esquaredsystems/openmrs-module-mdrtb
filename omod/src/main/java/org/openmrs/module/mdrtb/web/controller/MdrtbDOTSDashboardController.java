@@ -164,7 +164,7 @@ public class MdrtbDOTSDashboardController {
 		}
 		
 		// now add the status items
-		Map<String, Status> statusMap = new HashMap<String, Status>();
+		Map<String, Status> statusMap = new HashMap<>();
 		
 		// lab reports status
 		Status labReportsStatus = new LabResultsStatusCalculator(new DashboardLabResultsStatusRenderer())
@@ -374,7 +374,7 @@ public class MdrtbDOTSDashboardController {
 	private void addFlags(Map<String, Status> statusMap, ModelMap map) {
 		
 		// calculate flags
-		List<StatusFlag> flags = new LinkedList<StatusFlag>();
+		List<StatusFlag> flags = new LinkedList<>();
 		
 		for (Status status : statusMap.values()) {
 			if (status.getFlags() != null && !status.getFlags().isEmpty()) {

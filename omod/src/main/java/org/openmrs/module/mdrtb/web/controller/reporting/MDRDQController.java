@@ -121,15 +121,15 @@ public class MDRDQController {
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat();
-		List<DQItem> missingTB03 = new ArrayList<DQItem>();
-		List<DQItem> missingAge = new ArrayList<DQItem>();
-		List<DQItem> missingPatientGroup = new ArrayList<DQItem>();
-		List<DQItem> missingDST = new ArrayList<DQItem>();
-		List<DQItem> notStartedTreatment = new ArrayList<DQItem>();
-		List<DQItem> missingOutcomes = new ArrayList<DQItem>();
+		List<DQItem> missingTB03 = new ArrayList<>();
+		List<DQItem> missingAge = new ArrayList<>();
+		List<DQItem> missingPatientGroup = new ArrayList<>();
+		List<DQItem> missingDST = new ArrayList<>();
+		List<DQItem> notStartedTreatment = new ArrayList<>();
+		List<DQItem> missingOutcomes = new ArrayList<>();
 		//List<DQItem> missingAddress = new ArrayList<DQItem>();
-		List<DQItem> noMDRId = new ArrayList<DQItem>();
-		List<DQItem> noSite = new ArrayList<DQItem>();
+		List<DQItem> noMDRId = new ArrayList<>();
+		List<DQItem> noSite = new ArrayList<>();
 		
 		Boolean errorFlag = Boolean.FALSE;
 		Integer errorCount = 0;
@@ -152,7 +152,7 @@ public class MDRDQController {
 		
 		List<Location> locList = null;
 		if (oblastId != null) {
-			if (oblastId.intValue() == 186) {
+			if (oblastId == 186) {
 				locList = Context.getService(MdrtbService.class)
 				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
 			} else {

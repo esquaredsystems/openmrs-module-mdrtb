@@ -1473,7 +1473,7 @@ public class TB07ReportController {
 				}
 				
 				//OTHER		
-				else if (q.getConceptId().intValue() == Integer.parseInt(Context.getAdministrationService()
+				else if (q.getConceptId() == Integer.parseInt(Context.getAdministrationService()
 				        .getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID))) {
 					table1.setOtherAll(table1.getOtherAll() + 1);
 					if (hivPositive)

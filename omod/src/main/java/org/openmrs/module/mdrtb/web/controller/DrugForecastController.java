@@ -48,7 +48,7 @@ public class DrugForecastController {
 	public void showSimpleForecastOptions(ModelMap model) {
 		Cohort cohort = Context.getService(CohortQueryService.class).getPatientsWithGender(true, true, true);
 		cohort.setDescription("All patients in system");
-		List<Concept> drugSets = new ArrayList<Concept>();
+		List<Concept> drugSets = new ArrayList<>();
 		{
 			Concept tb = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOSIS_DRUGS);
 			tb.getConceptSets();
@@ -83,9 +83,9 @@ public class DrugForecastController {
 		
 		int duration = DrugForecastUtil.daysFrom(fromDate, toDate);
 		
-		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> data = new ArrayList<>();
 		for (Map.Entry<Drug, Double> e : usage.entrySet()) {
-			Map<String, Object> row = new HashMap<String, Object>();
+			Map<String, Object> row = new HashMap<>();
 			row.put("drug", e.getKey());
 			row.put("totalUsage", DrugForecastUtil.formatNicely(e.getValue()));
 			row.put("dailyUsage", DrugForecastUtil.formatNicely(duration <= 0 ? 0.0 : e.getValue() / duration));
@@ -105,7 +105,7 @@ public class DrugForecastController {
 		
 		Cohort cohort = Context.getService(CohortQueryService.class).getPatientsWithGender(true, true, true);
 		cohort.setDescription("All patients in system");
-		List<Concept> drugSets = new ArrayList<Concept>();
+		List<Concept> drugSets = new ArrayList<>();
 		{
 			Concept tb = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOSIS_DRUGS);
 			tb.getConceptSets();

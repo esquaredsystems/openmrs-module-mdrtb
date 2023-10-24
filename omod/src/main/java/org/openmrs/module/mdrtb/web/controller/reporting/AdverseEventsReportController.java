@@ -140,7 +140,7 @@ public class AdverseEventsReportController {
 		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId != null) {
-			if (oblastId.intValue() == 186) {
+			if (oblastId == 186) {
 				locList = Context.getService(MdrtbService.class)
 				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
 			} else {
@@ -155,7 +155,7 @@ public class AdverseEventsReportController {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		List<RegimenForm> regimenList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year,
 		    quarterInt, monthInt);
-		ArrayList<Patient> countedPatients = new ArrayList<Patient>();
+		ArrayList<Patient> countedPatients = new ArrayList<>();
 		
 		System.out.println("list size:" + regimenList.size());
 		//CohortDefinition baseCohort = null;

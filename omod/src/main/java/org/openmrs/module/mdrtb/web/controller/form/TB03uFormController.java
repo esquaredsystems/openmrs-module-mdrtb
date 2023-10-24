@@ -268,11 +268,11 @@ public class TB03uFormController {
 	
 	@ModelAttribute("categories")
 	public Collection<ConceptAnswer> getPossiblePatientCategories() {
-		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> stateArray = new ArrayList<>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleRegimens();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.REGIMEN_2_STANDARD));
 			concepts.add(ms.getConcept(MdrtbConcepts.REGIMEN_2_SHORT));
 			concepts.add(ms.getConcept(MdrtbConcepts.REGIMEN_2_INDIVIDUALIZED));
@@ -289,12 +289,12 @@ public class TB03uFormController {
 	
 	@ModelAttribute("groups")
 	public ArrayList<ProgramWorkflowState> getPossiblePatientGroups() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPreviousTreatment();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.NEW));
 			concepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_1));
 			concepts.add(ms.getConcept(MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2));
@@ -316,12 +316,12 @@ public class TB03uFormController {
 	
 	@ModelAttribute("bydrug")
 	public ArrayList<ProgramWorkflowState> getPossibleResultsByDrugs() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class)
 		        .getPossibleClassificationsAccordingToPreviousDrugUse();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.NEW));
 			concepts.add(ms.getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_FIRST_LINE_DRUGS_ONLY));
 			concepts.add(ms.getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_SECOND_LINE_DRUGS));
@@ -343,12 +343,12 @@ public class TB03uFormController {
 	
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
-		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> stateArray = new ArrayList<>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE)
 		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.PDR_TB));
 			concepts.add(ms.getConcept(MdrtbConcepts.RR_TB));
 			concepts.add(ms.getConcept(MdrtbConcepts.MDR_TB));
@@ -370,11 +370,11 @@ public class TB03uFormController {
 	
 	@ModelAttribute("outcomes")
 	public ArrayList<ProgramWorkflowState> getPossibleTreatmentOutcomes() {
-		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<ProgramWorkflowState>();
+		ArrayList<ProgramWorkflowState> stateArray = new ArrayList<>();
 		Set<ProgramWorkflowState> states = Context.getService(MdrtbService.class).getPossibleTbProgramOutcomes();
 		if (states != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.CURED));
 			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_COMPLETE));
 			concepts.add(ms.getConcept(MdrtbConcepts.DIED));
@@ -406,12 +406,12 @@ public class TB03uFormController {
 	
 	@ModelAttribute("basesfordiagnosis")
 	public Collection<ConceptAnswer> getPossibleBasesForDiagnosis() {
-		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> stateArray = new ArrayList<>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.METHOD_OF_DETECTION).getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.GENEXPERT));
 			concepts.add(ms.getConcept(MdrtbConcepts.HAIN_1_DETECTION));
 			concepts.add(ms.getConcept(MdrtbConcepts.HAIN_2_DETECTION));

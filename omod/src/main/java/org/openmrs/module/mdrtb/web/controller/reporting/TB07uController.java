@@ -228,21 +228,19 @@ public class TB07uController {
 		
 		Concept regimen = null;
 		
-		int shrt = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SHORT_MDR_REGIMEN).getConceptId()
-		        .intValue();
+		int shrt = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SHORT_MDR_REGIMEN).getConceptId();
 		
-		int standard = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.STANDARD_MDR_REGIMEN).getConceptId()
-		        .intValue();
+		int standard = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.STANDARD_MDR_REGIMEN).getConceptId();
 		
 		int indLzd = Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.INDIVIDUAL_WITH_CLOFAZIMIN_AND_LINEZOLID).getConceptId().intValue();
+				.getConcept(MdrtbConcepts.INDIVIDUAL_WITH_CLOFAZIMIN_AND_LINEZOLID).getConceptId();
 		int indBdq = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.INDIVIDUAL_WITH_BEDAQUILINE)
-		        .getConceptId().intValue();
-		int rr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RR_TB).getConceptId().intValue();
-		int mdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB).getConceptId().intValue();
-		int pdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PDR_TB).getConceptId().intValue();
-		int preXdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRE_XDR_TB).getConceptId().intValue();
-		int xdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XDR_TB).getConceptId().intValue();
+				.getConceptId();
+		int rr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RR_TB).getConceptId();
+		int mdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB).getConceptId();
+		int pdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PDR_TB).getConceptId();
+		int preXdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRE_XDR_TB).getConceptId();
+		int xdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XDR_TB).getConceptId();
 		int age = 0;
 		
 		Boolean isShort = null;
@@ -256,7 +254,7 @@ public class TB07uController {
 		Integer ageAtRegistration = 0;
 		
 		Concept positiveConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POSITIVE);
-		int positive = positiveConcept.getConceptId().intValue();
+		int positive = positiveConcept.getConceptId();
 		Concept resistanceType = null;
 		
 		RegimenForm rf = null;
@@ -293,10 +291,10 @@ public class TB07uController {
 			txStarted = txStartDate != null;
 			
 			ageAtRegistration = tf.getAgeAtMDRRegistration();
-			age = ageAtRegistration != null ? ageAtRegistration.intValue() : Integer.MAX_VALUE;
+			age = ageAtRegistration != null ? ageAtRegistration : Integer.MAX_VALUE;
 			
 			hivStatus = tf.getHivStatus();
-			if (hivStatus != null && hivStatus.getConceptId().intValue() == positive) {
+			if (hivStatus != null && hivStatus.getConceptId() == positive) {
 				hiv = Boolean.TRUE;
 			}
 			
@@ -305,7 +303,7 @@ public class TB07uController {
 			if (q == null)
 				continue;
 			
-			int groupId = q.getConceptId().intValue();
+			int groupId = q.getConceptId();
 			
 			if (groupId == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 			    MdrtbConstants.GP_NEW_CONCEPT_ID))) {
@@ -336,7 +334,7 @@ public class TB07uController {
 			if (q == null)
 				continue;
 			
-			if (q.getConceptId().intValue() == pdr) {
+			if (q.getConceptId() == pdr) {
 				table1.setPdrDetections(table1.getPdrDetections() + 1);
 				table1.setTotalPdr(table1.getTotalPdr() + 1);
 				table1.setTotalDetections(table1.getTotalDetections() + 1);
@@ -510,35 +508,35 @@ public class TB07uController {
 						table1.setOtherTotalHiv(table1.getOtherTotalHiv() + 1);
 					}
 				}
-			} else if (q.getConceptId().intValue() == rr || q.getConceptId().intValue() == mdr) {
+			} else if (q.getConceptId() == rr || q.getConceptId() == mdr) {
 				table1.setMdrDetections(table1.getMdrDetections() + 1);
 				table1.setTotalMdr(table1.getTotalMdr() + 1);
 				table1.setTotalDetections(table1.getTotalDetections() + 1);
 				
 				if (regList != null) {
-					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId().intValue(), regList, locList, year,
+					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId(), regList, locList, year,
 					    quarter, month);
 				} else {
-					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId());
 				}
 				
 				if (rf != null) {
 					regimen = rf.getSldRegimenType();
 					if (regimen != null) {
-						if (regimen.getConceptId().intValue() == shrt) {
+						if (regimen.getConceptId() == shrt) {
 							isShort = Boolean.TRUE;
 						}
 						
-						else if (regimen.getConceptId().intValue() == standard) {
+						else if (regimen.getConceptId() == standard) {
 							isStandard = Boolean.TRUE;
 						}
 						
 						else {
-							System.out.println("Other Registered: " + tf.getPatient().getPatientId().intValue());
+							System.out.println("Other Registered: " + tf.getPatient().getPatientId());
 						}
 					}
 				} else {
-					System.out.println("No Regimen Form: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("No Regimen Form: " + tf.getPatient().getPatientId());
 				}
 				
 				if (newCase != null && newCase) {
@@ -1356,13 +1354,13 @@ public class TB07uController {
 				}
 			}
 			
-			else if (q.getConceptId().intValue() == preXdr) {
+			else if (q.getConceptId() == preXdr) {
 				table1.setPreXdrDetections(table1.getPreXdrDetections() + 1);
 				table1.setTotalPreXdr(table1.getTotalPreXdr() + 1);
 				table1.setTotalDetections(table1.getTotalDetections() + 1);
 				
 				if (regList != null) {
-					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId().intValue(), regList, locList, year,
+					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId(), regList, locList, year,
 					    quarter, month);
 				} else {
 					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId());
@@ -1371,18 +1369,18 @@ public class TB07uController {
 				if (rf != null) {
 					regimen = rf.getSldRegimenType();
 					if (regimen != null) {
-						if (regimen.getConceptId().intValue() == indLzd) {
+						if (regimen.getConceptId() == indLzd) {
 							isIndLzd = Boolean.TRUE;
 						}
 						
-						else if (regimen.getConceptId().intValue() == indBdq) {
+						else if (regimen.getConceptId() == indBdq) {
 							isIndBdq = Boolean.TRUE;
 						} else {
 							System.out.println("Not counting: " + tf.getPatient().getPatientId());
 						}
 					}
 				} else {
-					System.out.println("No Regimen Form: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("No Regimen Form: " + tf.getPatient().getPatientId());
 				}
 				
 				if (newCase != null && newCase) {
@@ -2211,39 +2209,39 @@ public class TB07uController {
 				}
 			}
 			
-			else if (q.getConceptId().intValue() == xdr) {
+			else if (q.getConceptId() == xdr) {
 				table1.setXdrDetections(table1.getXdrDetections() + 1);
 				table1.setTotalXdr(table1.getTotalXdr() + 1);
 				table1.setTotalDetections(table1.getTotalDetections() + 1);
 				
 				if (regList != null) {
-					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId().intValue(), regList, locList, year,
+					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId(), regList, locList, year,
 					    quarter, month);
 				}
 				
 				else {
-					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId());
 				}
 				
 				if (rf != null) {
 					regimen = rf.getSldRegimenType();
 					if (regimen != null) {
-						if (regimen.getConceptId().intValue() == indLzd) {
+						if (regimen.getConceptId() == indLzd) {
 							isIndLzd = Boolean.TRUE;
 						}
 						
-						else if (regimen.getConceptId().intValue() == indBdq) {
+						else if (regimen.getConceptId() == indBdq) {
 							isIndBdq = Boolean.TRUE;
 						} else {
-							System.out.println("Other Registered: " + tf.getPatient().getPatientId().intValue());
+							System.out.println("Other Registered: " + tf.getPatient().getPatientId());
 						}
 					} else {
-						System.out.println("Not counting: " + tf.getPatient().getPatientId().intValue());
+						System.out.println("Not counting: " + tf.getPatient().getPatientId());
 					}
 				}
 				
 				else {
-					System.out.println("No Regimen Form: " + tf.getPatient().getPatientId().intValue());
+					System.out.println("No Regimen Form: " + tf.getPatient().getPatientId());
 				}
 				
 				if (newCase != null && newCase) {
@@ -3083,7 +3081,7 @@ public class TB07uController {
 		Date latDate = null;
 		
 		for (RegimenForm rf : forms) {
-			if (rf.getPatient().getPatientId().intValue() == patientId) {
+			if (rf.getPatient().getPatientId() == patientId) {
 				if (latDate == null) {
 					latDate = rf.getEncounterDatetime();
 					latest = rf;

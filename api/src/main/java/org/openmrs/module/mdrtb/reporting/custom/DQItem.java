@@ -20,8 +20,8 @@ public class DQItem {
 	public DQItem() {
 		patient = null;
 		dateOfBirth = null;
-		tb03Links = new ArrayList<String>();
-		form89Links = new ArrayList<String>();
+		tb03Links = new ArrayList<>();
+		form89Links = new ArrayList<>();
 	}
 	
 	public String getLocName() {

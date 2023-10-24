@@ -61,7 +61,7 @@ public class MOHReport implements ReportSpecification {
 	 * @see ReportSpecification#getParameters()
 	 */
 	public List<Parameter> getParameters() {
-		List<Parameter> l = new ArrayList<Parameter>();
+		List<Parameter> l = new ArrayList<>();
 		l.add(new Parameter("location", translate("location"), Location.class));
 		l.add(new Parameter("year", translate("year"), Integer.class));
 		l.add(new Parameter("quarter", translate("quarter"), Integer.class));
@@ -73,7 +73,7 @@ public class MOHReport implements ReportSpecification {
 	 * @see ReportSpecification#getRenderingModes()
 	 */
 	public List<RenderingMode> getRenderingModes() {
-		List<RenderingMode> l = new ArrayList<RenderingMode>();
+		List<RenderingMode> l = new ArrayList<>();
 		return l;
 	}
 	

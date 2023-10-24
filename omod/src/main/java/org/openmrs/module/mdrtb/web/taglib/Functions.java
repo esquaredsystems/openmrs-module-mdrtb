@@ -72,7 +72,7 @@ public class Functions {
 	 * @return a List of Objects, ordered in the reverse of their original order
 	 */
 	public static <T> List<T> reverse(Collection<T> collection) {
-		List<T> l = new ArrayList<T>(collection);
+		List<T> l = new ArrayList<>(collection);
 		Collections.reverse(l);
 		return l;
 	}
@@ -82,7 +82,7 @@ public class Functions {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T extends Comparable> List<T> sort(Collection<T> collection) {
-		List<T> l = new ArrayList<T>(collection);
+		List<T> l = new ArrayList<>(collection);
 		Collections.sort(l);
 		return l;
 	}
@@ -192,7 +192,7 @@ public class Functions {
 	}
 	
 	public static List<Concept> answersToQuestion(String question) {
-		List<Concept> ret = new ArrayList<Concept>();
+		List<Concept> ret = new ArrayList<>();
 		Concept c = Context.getService(MdrtbService.class).getConcept(question);
 		if (c != null) {
 			for (ConceptAnswer ca : c.getAnswers()) {

@@ -20,7 +20,7 @@ public class LabResultsReportsController {
 	@RequestMapping("/module/mdrtb/specimen/labResultsReports.form")
 	public ModelAndView showReports(ModelMap map) {
 		
-		List<Status> status = new ArrayList<Status>();
+		List<Status> status = new ArrayList<>();
 		
 		for (MdrtbPatientProgram program : Context.getService(MdrtbService.class).getAllMdrtbPatientPrograms()) {
 			if (!program.getPatient().getVoided()) {

@@ -54,7 +54,7 @@ public class LabResultsStatusCalculator {
 		
 		// just create an empty list of specimens if no specimens during the program
 		if (specimens == null) {
-			specimens = new LinkedList<Specimen>();
+			specimens = new LinkedList<>();
 		}
 		
 		// get the control smear and diagnostic culture
@@ -111,7 +111,7 @@ public class LabResultsStatusCalculator {
 	private StatusItem calculateResistanceProfile(List<Specimen> specimens) {
 		StatusItem resistanceProfile = new StatusItem();
 		
-		List<Concept> drugs = new LinkedList<Concept>();
+		List<Concept> drugs = new LinkedList<>();
 		
 		Concept resistant = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANT_TO_TB_DRUG);
 		
@@ -197,7 +197,7 @@ public class LabResultsStatusCalculator {
 		Set<Concept> positiveResults = MdrtbUtil.getPositiveResultConcepts();
 		
 		StatusItem conversion = new StatusItem();
-		List<Date> negativeDates = new LinkedList<Date>();
+		List<Date> negativeDates = new LinkedList<>();
 		
 		// loop through all the specimens until we hit one with a positive smear or
 		// culture
@@ -308,7 +308,7 @@ public class LabResultsStatusCalculator {
 	private void findPendingLabResults(List<Specimen> specimens, LabResultsStatus status) {
 		StatusItem pendingLabResults = new StatusItem();
 		
-		List<StatusItem> tests = new LinkedList<StatusItem>();
+		List<StatusItem> tests = new LinkedList<>();
 		
 		if (specimens != null) {
 			for (Specimen specimen : specimens) {
@@ -453,7 +453,7 @@ public class LabResultsStatusCalculator {
 		
 		// just create an empty list of specimens if no specimens during the program
 		if (specimens == null) {
-			specimens = new LinkedList<Specimen>();
+			specimens = new LinkedList<>();
 		}
 		
 		// get the control smear and diagnostic culture
@@ -499,7 +499,7 @@ public class LabResultsStatusCalculator {
 	public StatusItem calculateMostRecentResistanceProfile(List<Specimen> specimens) {
 		StatusItem resistanceProfile = new StatusItem();
 		
-		List<Concept> drugs = new LinkedList<Concept>();
+		List<Concept> drugs = new LinkedList<>();
 		
 		Concept resistant = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANT_TO_TB_DRUG);
 		

@@ -60,7 +60,7 @@ public class WHOForm07 implements ReportSpecification {
 	 * @see ReportSpecification#getParameters()
 	 */
 	public List<Parameter> getParameters() {
-		List<Parameter> l = new ArrayList<Parameter>();
+		List<Parameter> l = new ArrayList<>();
 		l.add(new Parameter("location", Context.getMessageSourceService().getMessage("mdrtb.facility"), Location.class));
 		l.add(new Parameter("year", Context.getMessageSourceService().getMessage("mdrtb.yearOfTreatmentStart"),
 		        Integer.class));
@@ -71,7 +71,7 @@ public class WHOForm07 implements ReportSpecification {
 	 * @see ReportSpecification#getRenderingModes()
 	 */
 	public List<RenderingMode> getRenderingModes() {
-		List<RenderingMode> l = new ArrayList<RenderingMode>();
+		List<RenderingMode> l = new ArrayList<>();
 		l.add(ReportUtil.renderingModeFromResource("HTML", "org/openmrs/module/mdrtb/reporting/data/output/WHOForm07"
 		        + (StringUtils.isNotBlank(Context.getLocale().getLanguage()) ? "_" + Context.getLocale().getLanguage() : "")
 		        + ".html"));
@@ -108,7 +108,7 @@ public class WHOForm07 implements ReportSpecification {
 		Date endDate = (Date) context.getParameterValue("endDate");
 		
 		// Base Cohort is confirmed mdr patients, in program, who started treatment during year, optionally at location
-		Map<String, Mapped<? extends CohortDefinition>> baseCohortDefs = new LinkedHashMap<String, Mapped<? extends CohortDefinition>>();
+		Map<String, Mapped<? extends CohortDefinition>> baseCohortDefs = new LinkedHashMap<>();
 		baseCohortDefs.put("confirmedMdr",
 		    new Mapped(Cohorts.getConfirmedMdrInProgramAndStartedTreatmentFilter(startDate, endDate), null));
 		if (location != null) {

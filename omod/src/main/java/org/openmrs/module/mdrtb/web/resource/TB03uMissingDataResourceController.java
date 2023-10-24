@@ -104,6 +104,6 @@ public class TB03uMissingDataResourceController extends DelegatingCrudResource<S
 		if (map.size() > 0) {
 			list.add(new SimpleTB03uMissingData(map));
 		}
-		return new NeedsPaging<SimpleTB03uMissingData>(list, context);
+		return new NeedsPaging<>(list, context);
 	}
 }

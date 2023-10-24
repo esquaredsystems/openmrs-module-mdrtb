@@ -36,7 +36,7 @@ public class ReportingController {
 	public void report(@RequestParam(required = false, value = "type") Class<? extends ReportSpecification> type,
 	        HttpServletRequest request, ModelMap model) throws Exception {
 		
-		List<ReportSpecification> availableReports = new ArrayList<ReportSpecification>();
+		List<ReportSpecification> availableReports = new ArrayList<>();
 		availableReports.add(new TB07TJK());
 		
 		availableReports.add(new TB08TJK());
@@ -66,7 +66,7 @@ public class ReportingController {
 		try {
 			ReportSpecification report = type.newInstance();
 			
-			Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+			Map<String, Object> parameters = new LinkedHashMap<>();
 			for (Parameter p : report.getParameters()) {
 				Object val = WidgetUtil.getFromRequest(request, "p." + p.getName(), p.getType(), p.getCollectionType());
 				parameters.put(p.getName(), val);

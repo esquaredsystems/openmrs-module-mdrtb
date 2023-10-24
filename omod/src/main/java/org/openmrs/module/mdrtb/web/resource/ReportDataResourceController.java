@@ -174,6 +174,6 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 		for (ReportData reportData : list) {
 			reportObjects.add(new SimpleReportData(reportData, false));
 		}
-		return new NeedsPaging<SimpleReportData>(reportObjects, context);
+		return new NeedsPaging<>(reportObjects, context);
 	}
 }

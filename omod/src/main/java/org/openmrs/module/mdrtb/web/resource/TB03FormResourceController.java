@@ -158,7 +158,7 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		String patientUuid = context.getRequest().getParameter("q");
-		List<SimpleTB03Form> simpleTB03Forms = new ArrayList<SimpleTB03Form>();
+		List<SimpleTB03Form> simpleTB03Forms = new ArrayList<>();
 		if (patientUuid != null) {
 			Patient patient = ((PatientResource1_8) Context.getService(RestService.class).getResourceBySupportedClass(
 			    Patient.class)).getByUniqueId(patientUuid);
@@ -171,7 +171,7 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 					simpleTB03Forms.add(new SimpleTB03Form(tb03));
 				}
 			}
-			return new NeedsPaging<SimpleTB03Form>(simpleTB03Forms, context);
+			return new NeedsPaging<>(simpleTB03Forms, context);
 		}
 		return null;
 	}

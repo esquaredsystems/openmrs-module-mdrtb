@@ -222,7 +222,7 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		String patientUuid = context.getRequest().getParameter("q");
-		List<SimpleAdverseEventsForm> simpleAeForms = new ArrayList<SimpleAdverseEventsForm>();
+		List<SimpleAdverseEventsForm> simpleAeForms = new ArrayList<>();
 		if (patientUuid != null) {
 			Patient patient = ((PatientResource1_8) Context.getService(RestService.class).getResourceBySupportedClass(
 			    Patient.class)).getByUniqueId(patientUuid);
@@ -237,7 +237,7 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 					simpleAeForms.add(new SimpleAdverseEventsForm(aeForm));
 				}
 			}
-			return new NeedsPaging<SimpleAdverseEventsForm>(simpleAeForms, context);
+			return new NeedsPaging<>(simpleAeForms, context);
 		}
 		return null;
 	}

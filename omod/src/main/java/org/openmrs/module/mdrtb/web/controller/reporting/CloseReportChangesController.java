@@ -63,7 +63,7 @@ public class CloseReportChangesController {
 		/* CHANGE DETECTION LOGIC CODE*/
 		
 		/*MDRTB EncounterTypes For Report Generation*/
-		List<String> reportEncounterTypes = new ArrayList<String>();
+		List<String> reportEncounterTypes = new ArrayList<>();
 		
 		if (reportName.equals("TB-03u") || reportName.equals("TB-08u") || reportName.equals("TB-07u")
 		        || reportName.equals("DQ"))
@@ -86,9 +86,9 @@ public class CloseReportChangesController {
 		System.out.println(endDate);
 		System.out.println(closeDate);
 		
-		List<Encounter> modifiedEncounters = new ArrayList<Encounter>();
-		Map<Integer, Obs> modifiedObs = new HashMap<Integer, Obs>();
-		Map<Encounter, Patient> modifiedPatients = new HashMap<Encounter, Patient>();
+		List<Encounter> modifiedEncounters = new ArrayList<>();
+		Map<Integer, Obs> modifiedObs = new HashMap<>();
+		Map<Encounter, Patient> modifiedPatients = new HashMap<>();
 		
 		List<Encounter> encounters = (List<Encounter>) Context.getService(MdrtbService.class).getEncountersByEncounterTypes(
 		    reportEncounterTypes, startDate, endDate, null);
@@ -157,12 +157,12 @@ public class CloseReportChangesController {
 			}
 		}
 		
-		ArrayList<ArrayList<String>> encounterData = new ArrayList<ArrayList<String>>();
-		ArrayList<ArrayList<String>> patientData = new ArrayList<ArrayList<String>>();
-		ArrayList<ArrayList<String>> obsData = new ArrayList<ArrayList<String>>();
+		ArrayList<ArrayList<String>> encounterData = new ArrayList<>();
+		ArrayList<ArrayList<String>> patientData = new ArrayList<>();
+		ArrayList<ArrayList<String>> obsData = new ArrayList<>();
 		
 		for (Encounter encounter : modifiedEncounters) {
-			ArrayList<String> tempData = new ArrayList<String>();
+			ArrayList<String> tempData = new ArrayList<>();
 			
 			tempData.add(Integer.toString(encounter.getId())); // encounter id
 			tempData.add(Integer.toString(encounter.getEncounterType().getId())); // encounter type id
@@ -185,7 +185,7 @@ public class CloseReportChangesController {
 		
 		Iterator iterator1 = modifiedPatients.entrySet().iterator();
 		while (iterator1.hasNext()) {
-			ArrayList<String> tempData = new ArrayList<String>();
+			ArrayList<String> tempData = new ArrayList<>();
 			Map.Entry patientMap = (Map.Entry) iterator1.next();
 			Encounter encounter = (Encounter) patientMap.getKey();
 			Patient patient = (Patient) patientMap.getValue();
@@ -205,7 +205,7 @@ public class CloseReportChangesController {
 		
 		Iterator iterator2 = modifiedObs.entrySet().iterator();
 		while (iterator2.hasNext()) {
-			ArrayList<String> tempData = new ArrayList<String>();
+			ArrayList<String> tempData = new ArrayList<>();
 			Map.Entry obsMap = (Map.Entry) iterator2.next();
 			Integer id = (Integer) obsMap.getKey();
 			

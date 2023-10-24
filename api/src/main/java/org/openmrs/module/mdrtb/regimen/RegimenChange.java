@@ -42,7 +42,7 @@ public class RegimenChange implements Comparable<RegimenChange> {
 	 * @return the unique Drugs started during this change
 	 */
 	public Set<Concept> getDrugsStartedAndNotEnded() {
-		Set<Concept> s = new HashSet<Concept>();
+		Set<Concept> s = new HashSet<>();
 		for (DrugOrder d : getOrdersStarted()) {
 			s.add(d.getConcept());
 		}
@@ -56,7 +56,7 @@ public class RegimenChange implements Comparable<RegimenChange> {
 	 * @return the unique Drugs ended during this change
 	 */
 	public Set<Concept> getDrugsEndedAndNotStarted() {
-		Set<Concept> s = new HashSet<Concept>();
+		Set<Concept> s = new HashSet<>();
 		for (DrugOrder d : getOrdersEnded()) {
 			s.add(d.getConcept());
 		}
@@ -70,7 +70,7 @@ public class RegimenChange implements Comparable<RegimenChange> {
 	 * @return the Unique reasons why drugs were stopped
 	 */
 	public Set<Concept> getReasonsDrugsEnded() {
-		Set<Concept> s = new HashSet<Concept>();
+		Set<Concept> s = new HashSet<>();
 		for (DrugOrder d : getOrdersEnded()) {
 			// d.getDiscontinuedReason() was replaced with d.getOrderReason()
 			if (d.getOrderReason() != null) {
@@ -101,7 +101,7 @@ public class RegimenChange implements Comparable<RegimenChange> {
 	 */
 	public Set<DrugOrder> getOrdersStarted() {
 		if (ordersStarted == null) {
-			ordersStarted = new HashSet<DrugOrder>();
+			ordersStarted = new HashSet<>();
 		}
 		return ordersStarted;
 	}
@@ -118,7 +118,7 @@ public class RegimenChange implements Comparable<RegimenChange> {
 	 */
 	public Set<DrugOrder> getOrdersEnded() {
 		if (ordersEnded == null) {
-			ordersEnded = new HashSet<DrugOrder>();
+			ordersEnded = new HashSet<>();
 		}
 		return ordersEnded;
 	}

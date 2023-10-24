@@ -198,7 +198,7 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		String patientUuid = context.getRequest().getParameter("q");
-		List<SimpleForm89> simpleForm89s = new ArrayList<SimpleForm89>();
+		List<SimpleForm89> simpleForm89s = new ArrayList<>();
 		if (patientUuid != null) {
 			Patient patient = ((PatientResource1_8) Context.getService(RestService.class).getResourceBySupportedClass(
 			    Patient.class)).getByUniqueId(patientUuid);
@@ -211,7 +211,7 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 					simpleForm89s.add(new SimpleForm89(form89));
 				}
 			}
-			return new NeedsPaging<SimpleForm89>(simpleForm89s, context);
+			return new NeedsPaging<>(simpleForm89s, context);
 		}
 		return null;
 	}

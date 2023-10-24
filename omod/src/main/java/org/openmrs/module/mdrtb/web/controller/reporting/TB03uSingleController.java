@@ -145,7 +145,7 @@ public class TB03uSingleController {
 		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId != null) {
-			if (oblastId.intValue() == 186) {
+			if (oblastId == 186) {
 				locList = Context.getService(MdrtbService.class)
 				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
 			} else {

@@ -44,7 +44,7 @@ public class AdminList extends AdministrationSectionExt {
 	 * @see org.openmrs.module.web.extension.AdministrationSectionExt#getLinks()
 	 */
 	public Map<String, String> getLinks() {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		map.put("module/mdrtb/mdrtb.form", "mdrtb.title.homepage");
 		return map;
 	}

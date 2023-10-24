@@ -52,7 +52,7 @@ public class TB03UCohortDefinitionEvaluator implements CohortDefinitionEvaluator
 		Cohort c = new Cohort();
 		
 		EncounterType encType = MdrtbConstants.ET_TB03_TB_INTAKE;
-		ArrayList<EncounterType> typeList = new ArrayList<EncounterType>();
+		ArrayList<EncounterType> typeList = new ArrayList<>();
 		typeList.add(encType);
 		
 		Date startDate = tcd.getOnOrAfter();

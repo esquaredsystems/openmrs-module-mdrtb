@@ -13,7 +13,7 @@ public class PatientChart {
 	private List<Concept> drugTypes;
 	
 	public PatientChart() {
-		setRecords(new LinkedList<Record>());
+		setRecords(new LinkedList<>());
 	}
 	
 	public void setRecords(List<Record> records) {

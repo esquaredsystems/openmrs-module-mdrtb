@@ -140,23 +140,23 @@ public class DOTSDQController {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat();
 		
-		List<DQItem> missingTB03 = new ArrayList<DQItem>();
-		List<DQItem> missingAge = new ArrayList<DQItem>();
-		List<DQItem> missingPatientGroup = new ArrayList<DQItem>();
-		List<DQItem> noForm89 = new ArrayList<DQItem>();
-		List<DQItem> invalidForm89 = new ArrayList<DQItem>();
-		List<DQItem> missingDiagnosticTests = new ArrayList<DQItem>();
-		List<DQItem> notStartedTreatment = new ArrayList<DQItem>();
-		List<DQItem> missingOutcomes = new ArrayList<DQItem>();
+		List<DQItem> missingTB03 = new ArrayList<>();
+		List<DQItem> missingAge = new ArrayList<>();
+		List<DQItem> missingPatientGroup = new ArrayList<>();
+		List<DQItem> noForm89 = new ArrayList<>();
+		List<DQItem> invalidForm89 = new ArrayList<>();
+		List<DQItem> missingDiagnosticTests = new ArrayList<>();
+		List<DQItem> notStartedTreatment = new ArrayList<>();
+		List<DQItem> missingOutcomes = new ArrayList<>();
 		//List<DQItem> missingAddress = new ArrayList<DQItem>();
-		List<DQItem> noDOTSId = new ArrayList<DQItem>();
-		List<DQItem> noSite = new ArrayList<DQItem>();
-		List<DQItem> noTifAfterTransferOut = new ArrayList<DQItem>();
-		List<DQItem> noTofBeforeTransferIn = new ArrayList<DQItem>();
-		List<DQItem> duplicateTB03 = new ArrayList<DQItem>();
-		List<DQItem> duplicateForm89 = new ArrayList<DQItem>();
-		List<DQItem> unlinkedTB03 = new ArrayList<DQItem>();
-		List<Patient> errList = new ArrayList<Patient>();
+		List<DQItem> noDOTSId = new ArrayList<>();
+		List<DQItem> noSite = new ArrayList<>();
+		List<DQItem> noTifAfterTransferOut = new ArrayList<>();
+		List<DQItem> noTofBeforeTransferIn = new ArrayList<>();
+		List<DQItem> duplicateTB03 = new ArrayList<>();
+		List<DQItem> duplicateForm89 = new ArrayList<>();
+		List<DQItem> unlinkedTB03 = new ArrayList<>();
+		List<Patient> errList = new ArrayList<>();
 		
 		Boolean errorFlag = Boolean.FALSE;
 		Integer errorCount = 0;
@@ -198,10 +198,10 @@ public class DOTSDQController {
 		    quarter, month);
 		List<TransferOutForm> allTofs = null;
 		List<TransferInForm> allTifs = null;
-		HashMap<Integer, Integer> dupMap = new HashMap<Integer, Integer>();
-		HashMap<Integer, Integer> f89DupMap = new HashMap<Integer, Integer>();
+		HashMap<Integer, Integer> dupMap = new HashMap<>();
+		HashMap<Integer, Integer> f89DupMap = new HashMap<>();
 		
-		int neww = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEW).getId().intValue();
+		int neww = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEW).getId();
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
@@ -299,7 +299,7 @@ public class DOTSDQController {
 			
 			//Patient not new but has form89
 			if (tf.getRegistrationGroup() != null) {
-				if (tf.getRegistrationGroup().getConceptId().intValue() != neww) {
+				if (tf.getRegistrationGroup().getConceptId() != neww) {
 					List<Form89> formList = Context.getService(MdrtbService.class).getForm89FormsForProgram(patient,
 					    patientProgramId);
 					
@@ -322,7 +322,7 @@ public class DOTSDQController {
 				errorFlag = Boolean.TRUE;
 			}
 			
-			else if (tf.getRegistrationGroup().getId().intValue() == (Context.getService(MdrtbService.class)
+			else if (tf.getRegistrationGroup().getId() == (Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.NEW).getId().intValue())) {
 				List<Form89> f89 = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
 				    tf.getPatient(), null, tf.getPatientProgramId(), year, quarter, month);

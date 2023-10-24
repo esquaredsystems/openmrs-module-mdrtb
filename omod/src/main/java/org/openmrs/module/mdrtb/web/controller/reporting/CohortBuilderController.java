@@ -75,7 +75,7 @@ public class CohortBuilderController implements Controller {
 	}
 	
 	public List<String> getLinks() {
-		List<String> ret = new ArrayList<String>();
+		List<String> ret = new ArrayList<>();
 		for (CohortBuilderLinkProvider p : HandlerUtil.getHandlersForType(CohortBuilderLinkProvider.class, null)) {
 			List<String> links = p.getLinkSpecifications();
 			if (links != null)
@@ -95,14 +95,14 @@ public class CohortBuilderController implements Controller {
 	
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,
 	        IOException {
-		Map<String, Object> model = new HashMap<String, Object>();
+		Map<String, Object> model = new HashMap<>();
 		if (Context.isAuthenticated()) {
 			CohortSearchHistory history = getMySearchHistory(request);
 			if (history == null) {
 				history = new CohortSearchHistory();
 				setMySearchHistory(request, history);
 			}
-			List<Shortcut> shortcuts = new ArrayList<Shortcut>();
+			List<Shortcut> shortcuts = new ArrayList<>();
 			String shortcutProperty = Context.getAdministrationService().getGlobalProperty(
 			    MdrtbConstants.GP_COHORT_COHORT_BUILDER_SHORTCUTS);
 			if (shortcutProperty != null && shortcutProperty.length() > 0) {
@@ -119,7 +119,7 @@ public class CohortBuilderController implements Controller {
 			
 			ConceptService cs = Context.getConceptService();
 			// TODO: generalize this beyond PIH data model
-			List<Concept> orderStopReasons = new ArrayList<Concept>();
+			List<Concept> orderStopReasons = new ArrayList<>();
 			{
 				Concept c = cs.getConceptByName("REASON ORDER STOPPED");
 				if (c != null)
@@ -137,7 +137,7 @@ public class CohortBuilderController implements Controller {
 				}
 			});
 			
-			List<Concept> drugSets = new ArrayList<Concept>();
+			List<Concept> drugSets = new ArrayList<>();
 			{
 				String temp = Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_COHORT_BUILDER_DRUG_SETS);
@@ -198,7 +198,7 @@ public class CohortBuilderController implements Controller {
 			if (spec.startsWith("@")) {
 				// could be "@org.openmrs.reporting.ArvTreatmentGroupFilter(group#java.lang.String)"
 				// could be "@org.openmrs.reporting.PatientCharacteristicFilter(gender=m#java.lang.String)"
-				List<ArgHolder> temp = new ArrayList<ArgHolder>();
+				List<ArgHolder> temp = new ArrayList<>();
 				if (spec.indexOf('(') <= 0 || spec.indexOf(')') <= 0)
 					log.error("this line is missing a ( or a ): " + spec);
 				setClassName(spec.substring(1, spec.indexOf('(')));
@@ -439,7 +439,7 @@ public class CohortBuilderController implements Controller {
 			String temp = request.getParameter("vars");
 			String[] args = temp.split(",");
 			log.debug(args.length + " args: vars=" + temp);
-			List<ArgHolder> argValues = new ArrayList<ArgHolder>();
+			List<ArgHolder> argValues = new ArrayList<>();
 			
 			for (String arg : args) {
 				log.debug("looking at: " + arg);
@@ -520,7 +520,7 @@ public class CohortBuilderController implements Controller {
 	}
 	
 	private List<LinkSpec> linkHelper() {
-		List<LinkSpec> ret = new ArrayList<LinkSpec>();
+		List<LinkSpec> ret = new ArrayList<>();
 		for (String spec : getLinks()) {
 			ret.add(new LinkSpec(spec));
 		}
@@ -570,7 +570,7 @@ public class CohortBuilderController implements Controller {
 		
 		String url;
 		
-		List<LinkArg> arguments = new ArrayList<LinkArg>();
+		List<LinkArg> arguments = new ArrayList<>();
 		
 		public LinkSpec(String spec) {
 			StringTokenizer st = new StringTokenizer(spec, ":");

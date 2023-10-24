@@ -39,7 +39,7 @@ public class PatientSummaryPortletController extends PortletController {
 	@SuppressWarnings("unchecked")
 	protected void populateModel(HttpServletRequest request, Map<String, Object> model) {
 		
-		List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> data = new ArrayList<>();
 		Integer patientId = (Integer) model.get("patientId");
 		String lId = (String) model.get("locationId");
 		String patientIds = (String) model.get("patientIds");

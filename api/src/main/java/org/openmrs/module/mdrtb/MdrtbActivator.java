@@ -78,15 +78,15 @@ public class MdrtbActivator extends BaseModuleActivator {
 		AddressTemplate at = new AddressTemplate(DEFAULT);
 		at.setDisplayName("Default Address Format");
 		at.setCountry(DEFAULT);
-		Map<String, String> nameMappings = new HashMap<String, String>();
+		Map<String, String> nameMappings = new HashMap<>();
 		nameMappings.put("cityVillage", "Location.cityVillage");
 		nameMappings.put("address1", "PersonAddress.address1");
 		at.setNameMappings(nameMappings);
-		Map<String, String> sizeMappings = new HashMap<String, String>();
+		Map<String, String> sizeMappings = new HashMap<>();
 		sizeMappings.put("cityVillage", "20");
 		sizeMappings.put("address1", "60");
 		at.setSizeMappings(sizeMappings);
-		Map<String, String> elementDefaults = new HashMap<String, String>();
+		Map<String, String> elementDefaults = new HashMap<>();
 		elementDefaults.put("country", DEFAULT);
 		at.setElementDefaults(elementDefaults);
 		at.setLineByLineFormat(Arrays.asList("cityVillage address1"));
@@ -143,7 +143,7 @@ public class MdrtbActivator extends BaseModuleActivator {
 		
 		/** Concepts **/
 		ConceptService conceptService = Context.getConceptService();
-		Map<String, String> globalPropertyConceptMap = new HashMap<String, String>();
+		Map<String, String> globalPropertyConceptMap = new HashMap<>();
 		globalPropertyConceptMap.put(MdrtbConstants.GP_NEW_CONCEPT_ID, MdrtbConcepts.NEW);
 		globalPropertyConceptMap.put(MdrtbConstants.GP_OTHER_CONCEPT_ID, MdrtbConcepts.OTHER);
 		globalPropertyConceptMap.put(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID, MdrtbConcepts.DEFAULT_AFTER_REGIMEN_1);

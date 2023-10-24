@@ -138,7 +138,7 @@ public class TB03ExportController {
 		
 		List<Location> locList = null;
 		if (oblastId != null) {
-			if (oblastId.intValue() == 186) {
+			if (oblastId == 186) {
 				locList = Context.getService(MdrtbService.class)
 				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
 			} else {
@@ -182,7 +182,7 @@ public class TB03ExportController {
 	public static ArrayList<TB03Data> getTB03PatientSet(Integer year, Integer quarter, Integer month, List<Location> locList) {
 		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		
-		ArrayList<TB03Data> patientSet = new ArrayList<TB03Data>();
+		ArrayList<TB03Data> patientSet = new ArrayList<>();
 		SimpleDateFormat sdf = Context.getDateFormat();
 		
 		Integer regimenConceptId = null;

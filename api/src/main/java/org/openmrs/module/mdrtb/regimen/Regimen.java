@@ -107,7 +107,7 @@ public class Regimen {
 	 * @return the unique set of reasons why this Regimen was discontinued
 	 */
 	public Set<Concept> getEndReasons() {
-		Set<Concept> c = new HashSet<Concept>();
+		Set<Concept> c = new HashSet<>();
 		if (getEndDate() != null) {
 			for (DrugOrder o : getDrugOrders()) {
 				//TODO: o.getDiscontinuedReason() was replaced with o.getOrderReason() write unit test to verify
@@ -123,7 +123,7 @@ public class Regimen {
 	 * @return the unique set of generic drugs within this Order
 	 */
 	public Set<Concept> getUniqueGenerics() {
-		Set<Concept> ret = new HashSet<Concept>();
+		Set<Concept> ret = new HashSet<>();
 		for (DrugOrder o : getDrugOrders()) {
 			ret.add(o.getConcept());
 		}
@@ -224,7 +224,7 @@ public class Regimen {
 		if (reasonForStarting != null) {
 			hash += 31 * reasonForStarting.getObsId().hashCode();
 		}
-		Set<Integer> orderIds = new TreeSet<Integer>();
+		Set<Integer> orderIds = new TreeSet<>();
 		for (DrugOrder order : getDrugOrders()) {
 			orderIds.add(order.getOrderId());
 		}
@@ -283,7 +283,7 @@ public class Regimen {
 	 */
 	public Set<DrugOrder> getDrugOrders() {
 		if (drugOrders == null) {
-			drugOrders = new HashSet<DrugOrder>();
+			drugOrders = new HashSet<>();
 		}
 		return drugOrders;
 	}

@@ -592,6 +592,6 @@ public class TB07DataResourceController extends DelegatingCrudResource<SimpleTB0
 		TB07Table1Data TB07DataTable1 = TB07ReportController.getTB07PatientSet(year, quarter, month, locList);
 		List<SimpleTB07Table1Data> list = new ArrayList<>();
 		list.add(new SimpleTB07Table1Data(TB07DataTable1));
-		return new NeedsPaging<SimpleTB07Table1Data>(list, context);
+		return new NeedsPaging<>(list, context);
 	}
 }

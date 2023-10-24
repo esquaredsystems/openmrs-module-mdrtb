@@ -222,6 +222,6 @@ public class TB03uDataResourceController extends DelegatingCrudResource<SimpleTB
 		for (TB03uData SimpleTB03uData : patientSet) {
 			list.add(new SimpleTB03uData(SimpleTB03uData));
 		}
-		return new NeedsPaging<SimpleTB03uData>(list, context);
+		return new NeedsPaging<>(list, context);
 	}
 }

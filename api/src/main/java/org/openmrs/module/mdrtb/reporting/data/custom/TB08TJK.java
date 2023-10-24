@@ -73,7 +73,7 @@ public class TB08TJK implements ReportSpecification {
 	 * @see ReportSpecification#getParameters()
 	 */
 	public List<Parameter> getParameters() {
-		List<Parameter> l = new ArrayList<Parameter>();
+		List<Parameter> l = new ArrayList<>();
 		l.add(new Parameter("location", Context.getMessageSourceService().getMessage("mdrtb.facility"), Location.class));
 		l.add(new Parameter("year", Context.getMessageSourceService().getMessage("mdrtb.yearOfTreatmentStart"),
 		        Integer.class));
@@ -86,7 +86,7 @@ public class TB08TJK implements ReportSpecification {
 	 * @see ReportSpecification#getRenderingModes()
 	 */
 	public List<RenderingMode> getRenderingModes() {
-		List<RenderingMode> l = new ArrayList<RenderingMode>();
+		List<RenderingMode> l = new ArrayList<>();
 		l.add(ReportUtil.renderingModeFromResource("HTML", "org/openmrs/module/mdrtb/reporting/data/output/TB08"
 		        + (StringUtils.isNotBlank(Context.getLocale().getLanguage()) ? "_" + Context.getLocale().getLanguage() : "")
 		        + ".html"));
@@ -131,7 +131,7 @@ public class TB08TJK implements ReportSpecification {
 		if (!oblast.equals("") && location == null)
 			o = Context.getService(MdrtbService.class).getRegion(Integer.parseInt(oblast));
 		
-		List<Location> locList = new ArrayList<Location>();
+		List<Location> locList = new ArrayList<>();
 		if (o != null && location == null)
 			locList = Context.getService(MdrtbService.class).getLocationsFromRegion(o);
 		else if (location != null)
@@ -149,7 +149,7 @@ public class TB08TJK implements ReportSpecification {
 		
 		//OBLAST
 		if (!locList.isEmpty()) {
-			List<CohortDefinition> cohortDefinitions = new ArrayList<CohortDefinition>();
+			List<CohortDefinition> cohortDefinitions = new ArrayList<>();
 			for (Location loc : locList)
 				cohortDefinitions.add(Cohorts.getLocationFilter(loc, startDate, endDate));
 			

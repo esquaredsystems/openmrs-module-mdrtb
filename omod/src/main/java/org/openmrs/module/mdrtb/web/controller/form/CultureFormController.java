@@ -163,7 +163,7 @@ public class CultureFormController {
 	
 	@ModelAttribute("cultureresults")
 	public Collection<ConceptAnswer> getCultureResults() {
-		ArrayList<ConceptAnswer> resultArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> resultArray = new ArrayList<>();
 		for (int i = 0; i < 6; i++) {
 			resultArray.add(null);
 		}

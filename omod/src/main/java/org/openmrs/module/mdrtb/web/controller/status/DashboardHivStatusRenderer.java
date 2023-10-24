@@ -54,7 +54,7 @@ public class DashboardHivStatusRenderer implements HivStatusRenderer {
 		
 		if (regimen != null) {
 			// first we need to pull out all the drugs in this regimen
-			List<Concept> generics = new LinkedList<Concept>();
+			List<Concept> generics = new LinkedList<>();
 			for (DrugOrder component : regimen.getDrugOrders()) {
 				// TODO: note that we are operating on generics, not the drug itself
 				generics.add(component.getConcept());

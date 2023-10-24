@@ -120,7 +120,7 @@ public class SpecimenReportingTools {
 		
 		List<List<Object>> results = Context.getAdministrationService().executeSQL(sql, true);
 		
-		Map<Patient, List<Specimen>> resultMap = new TreeMap<Patient, List<Specimen>>(new PersonByNameComparator());
+		Map<Patient, List<Specimen>> resultMap = new TreeMap<>(new PersonByNameComparator());
 		
 		Calendar dateToCompare = Calendar.getInstance(Context.getLocale());
 		dateToCompare.add(Calendar.DAY_OF_YEAR, -daysSinceCulture);
@@ -138,7 +138,7 @@ public class SpecimenReportingTools {
 					}
 				}
 				if (!resultMap.containsKey(patient)) {
-					resultMap.put(patient, new ArrayList<Specimen>());
+					resultMap.put(patient, new ArrayList<>());
 				}
 				resultMap.get(patient).add(specimen);
 			}
@@ -188,7 +188,7 @@ public class SpecimenReportingTools {
 		
 		List<List<Object>> results = Context.getAdministrationService().executeSQL(sql, true);
 		
-		Map<Patient, List<Specimen>> resultMap = new TreeMap<Patient, List<Specimen>>(new PersonByNameComparator());
+		Map<Patient, List<Specimen>> resultMap = new TreeMap<>(new PersonByNameComparator());
 		
 		Calendar dateToCompare = Calendar.getInstance(Context.getLocale());
 		dateToCompare.add(Calendar.DAY_OF_YEAR, -daysSinceSmear);
@@ -206,7 +206,7 @@ public class SpecimenReportingTools {
 					}
 				}
 				if (!resultMap.containsKey(patient)) {
-					resultMap.put(patient, new ArrayList<Specimen>());
+					resultMap.put(patient, new ArrayList<>());
 				}
 				resultMap.get(patient).add(specimen);
 			}
@@ -271,7 +271,7 @@ public class SpecimenReportingTools {
 	 */
 	private static Map<Patient, List<Specimen>> convertQueryResultsToResultsMap(List<List<Object>> results) {
 		
-		Map<Patient, List<Specimen>> resultMap = new TreeMap<Patient, List<Specimen>>(new PersonByNameComparator());
+		Map<Patient, List<Specimen>> resultMap = new TreeMap<>(new PersonByNameComparator());
 		
 		for (List<Object> result : results) {
 			Patient patient = Context.getPatientService().getPatient((Integer) result.get(0));
@@ -280,7 +280,7 @@ public class SpecimenReportingTools {
 			// only add patient that aren't dead
 			if (!patient.getDead()) {
 				if (!resultMap.containsKey(patient)) {
-					resultMap.put(patient, new ArrayList<Specimen>());
+					resultMap.put(patient, new ArrayList<>());
 				}
 				resultMap.get(patient).add(specimen);
 			}

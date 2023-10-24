@@ -61,7 +61,7 @@ public class ReportUtil {
 		cd.setOnOrAfter(fromDate);
 		cd.setOnOrBefore(toDate);
 		cd.setOperator(operator);
-		List<Concept> answers = new ArrayList<Concept>();
+		List<Concept> answers = new ArrayList<>();
 		for (Integer id : answerIds) {
 			answers.add(Context.getConceptService().getConcept(id));
 		}
@@ -278,7 +278,7 @@ public class ReportUtil {
 	}
 	
 	public static Map<String, CohortDefinition> getMdrtbOutcomesFilterSet(Date startDate, Date endDate) {
-		Map<String, CohortDefinition> map = new HashMap<String, CohortDefinition>();
+		Map<String, CohortDefinition> map = new HashMap<>();
 		
 		Concept workflowConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME);
 		
@@ -302,7 +302,7 @@ public class ReportUtil {
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_OUT), startDate, endDate);
 		
 		CohortDefinition stillEnrolled = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-		    new ArrayList<Concept>(), startDate, endDate);
+				new ArrayList<>(), startDate, endDate);
 		
 		map.put("Cured", cured);
 		map.put("TreatmentCompleted", complete);
@@ -317,7 +317,7 @@ public class ReportUtil {
 	}
 	
 	public static Map<String, CohortDefinition> getMdrtbPreviousDrugUseFilterSet(Date startDate, Date endDate) {
-		Map<String, CohortDefinition> map = new HashMap<String, CohortDefinition>();
+		Map<String, CohortDefinition> map = new HashMap<>();
 		
 		Concept workflowConcept = Context.getService(MdrtbService.class).getConcept(
 		    MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_DRUG_USE);
@@ -333,7 +333,7 @@ public class ReportUtil {
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PREVIOUSLY_TREATED_SECOND_LINE_DRUGS),
 		    startDate, endDate);
 		
-		CohortDefinition unknown = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, new ArrayList<Concept>(),
+		CohortDefinition unknown = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, new ArrayList<>(),
 		    startDate, endDate);
 		
 		map.put("New", newPatient);
@@ -345,7 +345,7 @@ public class ReportUtil {
 	}
 	
 	public static Map<String, CohortDefinition> getMdrtbPreviousTreatmentFilterSet(Date startDate, Date endDate) {
-		Map<String, CohortDefinition> map = new HashMap<String, CohortDefinition>();
+		Map<String, CohortDefinition> map = new HashMap<>();
 		
 		Concept workflowConcept = Context.getService(MdrtbService.class).getConcept(
 		    MdrtbConcepts.CAT_4_CLASSIFICATION_PREVIOUS_TREATMENT);
@@ -379,7 +379,7 @@ public class ReportUtil {
 		CohortDefinition other = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER), startDate, endDate);
 		
-		CohortDefinition unknown = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, new ArrayList<Concept>(),
+		CohortDefinition unknown = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept, new ArrayList<>(),
 		    startDate, endDate);
 		
 		//TODO: Thoroughly investigate this usage
@@ -403,7 +403,7 @@ public class ReportUtil {
 	 */
 	public static Map<Integer, List<MdrtbPatientProgram>> getMdrtbPatientProgramsInDateRangeMap(Date startDate, Date endDate) {
 		
-		Map<Integer, List<MdrtbPatientProgram>> mdrtbPatientProgramsMap = new HashMap<Integer, List<MdrtbPatientProgram>>();
+		Map<Integer, List<MdrtbPatientProgram>> mdrtbPatientProgramsMap = new HashMap<>();
 		
 		// get all the mdrtb patient programs
 		for (MdrtbPatientProgram program : Context.getService(MdrtbService.class).getAllMdrtbPatientProgramsInDateRange(
@@ -412,7 +412,7 @@ public class ReportUtil {
 			
 			// create a new entry for this patient if we don't already have it
 			if (!mdrtbPatientProgramsMap.containsKey(patientId)) {
-				mdrtbPatientProgramsMap.put(patientId, new ArrayList<MdrtbPatientProgram>());
+				mdrtbPatientProgramsMap.put(patientId, new ArrayList<>());
 			}
 			
 			// add the program
@@ -425,7 +425,7 @@ public class ReportUtil {
 	public static Map<Integer, List<MdrtbPatientProgram>> getMdrtbPatientProgramsEnrolledInDateRangeMap(Date startDate,
 	        Date endDate) {
 		
-		Map<Integer, List<MdrtbPatientProgram>> tbPatientProgramsMap = new HashMap<Integer, List<MdrtbPatientProgram>>();
+		Map<Integer, List<MdrtbPatientProgram>> tbPatientProgramsMap = new HashMap<>();
 		
 		// get all the mdrtb patient programs
 		for (MdrtbPatientProgram program : Context.getService(MdrtbService.class)
@@ -434,7 +434,7 @@ public class ReportUtil {
 			
 			// create a new entry for this patient if we don't already have it
 			if (!tbPatientProgramsMap.containsKey(patientId)) {
-				tbPatientProgramsMap.put(patientId, new ArrayList<MdrtbPatientProgram>());
+				tbPatientProgramsMap.put(patientId, new ArrayList<>());
 			}
 			
 			// add the program

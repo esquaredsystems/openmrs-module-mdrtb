@@ -102,7 +102,7 @@ public class HivStatusCalculator {
 	
 	public void findRegimens(Patient patient, Status status) {
 		
-		List<StatusItem> regimenList = new LinkedList<StatusItem>();
+		List<StatusItem> regimenList = new LinkedList<>();
 		
 		for (Regimen regimen : MdrtbUtil.getAntiretroviralRegimens(patient)) {
 			

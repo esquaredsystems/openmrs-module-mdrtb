@@ -164,12 +164,12 @@ public class RegimenFormController {
 	
 	@ModelAttribute("resistancetypes")
 	public ArrayList<ConceptAnswer> getPossibleResistanceTypes() {
-		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> stateArray = new ArrayList<>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE)
 		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> classificationConcepts = new HashSet<Concept>();
+			Set<Concept> classificationConcepts = new HashSet<>();
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.PDR_TB));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.RR_TB));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.MDR_TB));
@@ -201,12 +201,12 @@ public class RegimenFormController {
 	
 	@ModelAttribute("sldregimens")
 	public Collection<ConceptAnswer> getPossibleSLDRegimenrs() {
-		ArrayList<ConceptAnswer> stateArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> stateArray = new ArrayList<>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SLD_REGIMEN_TYPE)
 		        .getAnswers();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> classificationConcepts = new HashSet<Concept>();
+			Set<Concept> classificationConcepts = new HashSet<>();
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.SHORT_MDR_REGIMEN));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.STANDARD_MDR_REGIMEN));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.INDIVIDUAL_WITH_BEDAQUILINE));

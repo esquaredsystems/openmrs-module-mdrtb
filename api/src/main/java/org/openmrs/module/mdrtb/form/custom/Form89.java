@@ -1219,7 +1219,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id.intValue()) {
+		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -1240,10 +1240,10 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	
 	public List<SmearForm> getSmears() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<SmearForm>();
+			return new ArrayList<>();
 		}
 		
-		ArrayList<SmearForm> ret = new ArrayList<SmearForm>();
+		ArrayList<SmearForm> ret = new ArrayList<>();
 		List<SmearForm> allSmears = Context.getService(MdrtbService.class).getSmearForms(getPatientProgramId());
 		
 		if (allSmears == null)
@@ -1263,10 +1263,10 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	public List<XpertForm> getXperts() {
 		
 		if (getPatientProgramId() == null) {
-			return new ArrayList<XpertForm>();
+			return new ArrayList<>();
 		}
 		
-		ArrayList<XpertForm> ret = new ArrayList<XpertForm>();
+		ArrayList<XpertForm> ret = new ArrayList<>();
 		List<XpertForm> allXperts = Context.getService(MdrtbService.class).getXpertForms(getPatientProgramId());
 		
 		if (allXperts == null)
@@ -1285,10 +1285,10 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	
 	public List<HAINForm> getHains() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<HAINForm>();
+			return new ArrayList<>();
 		}
 		
-		ArrayList<HAINForm> ret = new ArrayList<HAINForm>();
+		ArrayList<HAINForm> ret = new ArrayList<>();
 		List<HAINForm> allHains = Context.getService(MdrtbService.class).getHAINForms(getPatientProgramId());
 		
 		if (allHains == null)
@@ -1305,10 +1305,10 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	
 	public List<HAIN2Form> getHain2s() {
 		if (getPatientProgramId() == null) {
-			return new ArrayList<HAIN2Form>();
+			return new ArrayList<>();
 		}
 		
-		ArrayList<HAIN2Form> ret = new ArrayList<HAIN2Form>();
+		ArrayList<HAIN2Form> ret = new ArrayList<>();
 		List<HAIN2Form> allHains = Context.getService(MdrtbService.class).getHAIN2Forms(getPatientProgramId());
 		
 		if (allHains == null)

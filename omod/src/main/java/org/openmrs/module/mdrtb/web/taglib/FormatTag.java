@@ -115,7 +115,7 @@ public class FormatTag extends BodyTagSupport {
 					} else if (o instanceof DrugOrder) {
 						ret = RegimenUtils.formatDrugOrders(((Collection<DrugOrder>) l), separator, defaultVal);
 					} else {
-						List<String> s = new ArrayList<String>();
+						List<String> s = new ArrayList<>();
 						for (Object item : l) {
 							s.add(formatObject(item));
 						}

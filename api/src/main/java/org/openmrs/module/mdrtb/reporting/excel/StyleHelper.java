@@ -24,17 +24,17 @@ public class StyleHelper {
 	
 	HSSFWorkbook wb;
 	
-	Map<String, HSSFFont> fonts = new HashMap<String, HSSFFont>();
+	Map<String, HSSFFont> fonts = new HashMap<>();
 	
-	Map<String, HSSFCellStyle> styles = new HashMap<String, HSSFCellStyle>();
+	Map<String, HSSFCellStyle> styles = new HashMap<>();
 	
-	Collection<String> fontAttributeNames = new HashSet<String>();
+	Collection<String> fontAttributeNames = new HashSet<>();
 	
-	Collection<String> fontAttributeStarting = new ArrayList<String>();
+	Collection<String> fontAttributeStarting = new ArrayList<>();
 	
 	short dateDataFormat;
 	
-	static Map<String, Short> backgroundColors = new HashMap<String, Short>();
+	static Map<String, Short> backgroundColors = new HashMap<>();
 	static {
 		backgroundColors.put("grey", new Short(HSSFColor.HSSFColorPredefined.GREY_40_PERCENT.getIndex()));
 	}
@@ -50,7 +50,7 @@ public class StyleHelper {
 	}
 	
 	public HSSFFont getFont(String s) {
-		SortedSet<String> att = new TreeSet<String>();
+		SortedSet<String> att = new TreeSet<>();
 		for (StringTokenizer st = new StringTokenizer(s, ","); st.hasMoreTokens();) {
 			String str = st.nextToken().trim().toLowerCase();
 			if (str.equals("")) {
@@ -200,7 +200,7 @@ public class StyleHelper {
 		} else if (s.startsWith("bgcolor=")) {
 			s = s.substring(8);
 			if (backgroundColors.containsKey(s)) {
-				style.setFillForegroundColor(((Short) backgroundColors.get(s)).shortValue());
+				style.setFillForegroundColor((Short) backgroundColors.get(s));
 				style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 			}
 		}

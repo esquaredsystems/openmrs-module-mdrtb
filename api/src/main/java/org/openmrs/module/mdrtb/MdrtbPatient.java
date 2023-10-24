@@ -28,7 +28,7 @@ public class MdrtbPatient {
 	
 	private PatientIdentifier patientIdentifier;
 	
-	private Set<Obs> obs = new HashSet<Obs>();
+	private Set<Obs> obs = new HashSet<>();
 	
 	private List<Order> orders;
 	
@@ -110,17 +110,17 @@ public class MdrtbPatient {
 	
 	private List<MdrtbContactPerson> contacts;
 	
-	private Map<Integer, String> oes = new HashMap<Integer, String>();
+	private Map<Integer, String> oes = new HashMap<>();
 	
-	private List<Concept> resistanceDrugConcepts = new ArrayList<Concept>();
+	private List<Concept> resistanceDrugConcepts = new ArrayList<>();
 	
-	private List<Obs> stEmpIndObs = new ArrayList<Obs>();
+	private List<Obs> stEmpIndObs = new ArrayList<>();
 	
-	private List<Encounter> htmlEncList = new ArrayList<Encounter>();
+	private List<Encounter> htmlEncList = new ArrayList<>();
 	
 	private Obs causeOfDeath;
 	
-	private Map<Object, Object> extra = new HashMap<Object, Object>();
+	private Map<Object, Object> extra = new HashMap<>();
 	
 	public List<Encounter> getHtmlEncList() {
 		return htmlEncList;
@@ -148,7 +148,7 @@ public class MdrtbPatient {
 	
 	public List<MdrtbContactPerson> getContacts() {
 		if (contacts == null)
-			return new ArrayList<MdrtbContactPerson>();
+			return new ArrayList<>();
 		return contacts;
 	}
 	
@@ -539,7 +539,7 @@ public class MdrtbPatient {
 	
 	public void addContact(MdrtbContactPerson mcp) {
 		if (contacts == null)
-			contacts = new ArrayList<MdrtbContactPerson>();
+			contacts = new ArrayList<>();
 		contacts.add(mcp);
 		
 	}
@@ -566,7 +566,7 @@ public class MdrtbPatient {
 	
 	public void addEncounterToHtmlEncList(Encounter enc) {
 		if (this.htmlEncList == null)
-			this.htmlEncList = new ArrayList<Encounter>();
+			this.htmlEncList = new ArrayList<>();
 		this.htmlEncList.add(enc);
 	}
 	

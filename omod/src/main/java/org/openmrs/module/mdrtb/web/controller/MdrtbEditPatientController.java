@@ -102,7 +102,7 @@ public class MdrtbEditPatientController {
 	
 	@ModelAttribute("locations")
 	public Collection<Location> getPossibleLocations() {
-		List<Location> list = new ArrayList<Location>();
+		List<Location> list = new ArrayList<>();
 		list.add(Context.getLocationService().getLocation(1));
 		return list;
 	}
@@ -119,7 +119,7 @@ public class MdrtbEditPatientController {
 	public Map<Integer, PatientIdentifier> getPatientIdentifierMap(
 	        @RequestParam(required = false, value = "patientId") Integer patientId) {
 		
-		final Map<Integer, PatientIdentifier> map = new HashMap<Integer, PatientIdentifier>();
+		final Map<Integer, PatientIdentifier> map = new HashMap<>();
 		
 		if (patientId != null && patientId != -1) {
 			Patient patient = Context.getPatientService().getPatient(patientId);
@@ -146,7 +146,7 @@ public class MdrtbEditPatientController {
 	public List<PatientIdentifierType> getPatientIdentifierTypesAutoAssigned() {
 		// this is only relevant if we are using the idgen module
 		if (!ModuleFactory.getStartedModulesMap().containsKey("idgen")) {
-			return new LinkedList<PatientIdentifierType>(); // return an empty list
+			return new LinkedList<>(); // return an empty list
 		} else {
 			// access the idgen module via reflection
 			try {
@@ -163,7 +163,7 @@ public class MdrtbEditPatientController {
 				log.error(
 				    "Unable to access IdentifierSourceService for automatic id generation.  Is the Idgen module installed and up-to-date?",
 				    e);
-				return new LinkedList<PatientIdentifierType>(); // return an empty list
+				return new LinkedList<>(); // return an empty list
 			}
 		}
 	}
@@ -258,7 +258,7 @@ public class MdrtbEditPatientController {
 			}
 			
 			Set<Person> similarPersons = Context.getPersonService().getSimilarPeople(addName, birthYear, addGender);
-			Set<PatientListItem> similarPatients = new HashSet<PatientListItem>();
+			Set<PatientListItem> similarPatients = new HashSet<>();
 			String primaryIdentifier = Context.getAdministrationService().getGlobalProperty(
 			    MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 			

@@ -164,7 +164,7 @@ public class RegimenFormResourceController extends DataDelegatingCrudResource<Si
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		String patientUuid = context.getRequest().getParameter("q");
-		List<SimpleRegimenForm> simpleRegimenForms = new ArrayList<SimpleRegimenForm>();
+		List<SimpleRegimenForm> simpleRegimenForms = new ArrayList<>();
 		if (patientUuid != null) {
 			Patient patient = ((PatientResource1_8) Context.getService(RestService.class).getResourceBySupportedClass(
 			    Patient.class)).getByUniqueId(patientUuid);
@@ -177,7 +177,7 @@ public class RegimenFormResourceController extends DataDelegatingCrudResource<Si
 					simpleRegimenForms.add(new SimpleRegimenForm(regimenForm));
 				}
 			}
-			return new NeedsPaging<SimpleRegimenForm>(simpleRegimenForms, context);
+			return new NeedsPaging<>(simpleRegimenForms, context);
 		}
 		return null;
 	}

@@ -49,7 +49,7 @@ public class MdrtbHomePageController {
 		
 		if (Context.isAuthenticated()) {
 			
-			Map<String, String> reports = new LinkedHashMap<String, String>();
+			Map<String, String> reports = new LinkedHashMap<>();
 			
 			// Load any configured BIRT reports
 			if (ModuleFactory.getStartedModulesMap().containsKey("birt")) {

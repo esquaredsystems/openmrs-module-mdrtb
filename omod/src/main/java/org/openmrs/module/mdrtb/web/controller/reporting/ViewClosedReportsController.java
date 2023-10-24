@@ -70,9 +70,9 @@ public class ViewClosedReportsController {
 			reportTypes.add((Integer)row.get(i++));
 			reportStatuses.add((Integer)row.get(i++));
 		}
-		List<Region> regions = new ArrayList<Region>();
-		List<District> districts = new ArrayList<District>();
-		List<Facility> facilities = new ArrayList<Facility>();
+		List<Region> regions = new ArrayList<>();
+		List<District> districts = new ArrayList<>();
+		List<Facility> facilities = new ArrayList<>();
 		
 		for (Integer regionId : regionIds) {
 			regions.add(Context.getService(MdrtbService.class).getRegion(regionId));
@@ -95,7 +95,7 @@ public class ViewClosedReportsController {
 		
 		//List<Location> locations = Context.getLocationService().getAllLocations(false);
 		List<Region> o = Context.getService(MdrtbService.class).getRegions();
-		List<List<Location>> oblastLocations = new ArrayList<List<Location>>();
+		List<List<Location>> oblastLocations = new ArrayList<>();
 		for (Region oblast : o) {
 			List<Location> l = Context.getService(MdrtbService.class).getLocationsFromRegion(oblast);
 			oblastLocations.add(l);

@@ -907,7 +907,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id.intValue()) {
+		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -944,7 +944,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 	}
 	
 	public ArrayList<Concept> getSuspectedDrugs() {
-		ArrayList<Concept> drugs = new ArrayList<Concept>();
+		ArrayList<Concept> drugs = new ArrayList<>();
 		
 		Concept c = getCausalityAssessmentResult1();
 		Concept d = getCausalityDrug1();
@@ -1855,91 +1855,91 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		
 		String at = "";
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
-		int yesId = yes.getId().intValue();
+		int yesId = yes.getId();
 		MessageSourceService mss = Context.getMessageSourceService();
 		
 		Concept q = getClinicalScreenDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at = mss.getMessage("mdrtb.pv.clinicalScreen") + ", ";
 		}
 		q = getVisualAcuityDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.visualAcuity") + ", ";
 		}
 		q = getSimpleHearingTestDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.hearingTest") + ", ";
 		}
 		q = getAudiogramDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.audiogram") + ", ";
 		}
 		q = getNeuroInvestigationDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.neuroInvestigations") + ", ";
 		}
 		q = getSerumCreatnineDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.serumCreatnine") + ", ";
 		}
 		q = getAltDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.alt") + ", ";
 		}
 		q = getAstDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.ast") + ", ";
 		}
 		q = getBilirubinDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.bilirubin") + ", ";
 		}
 		q = getAlkalinePhosphataseDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.alkalinePhosphatase") + ", ";
 		}
 		q = getYgtDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.ygt") + ", ";
 		}
 		q = getLipaseDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.lipase") + ", ";
 		}
 		q = getAmylaseDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.amylase") + ", ";
 		}
 		q = getPotassiumDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.potassium") + ", ";
 		}
 		q = getMagnesiumDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.magnesium") + ", ";
 		}
 		q = getCalciumDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.calcium") + ", ";
 		}
 		q = getAlbuminDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.albumin") + ", ";
 		}
 		q = getCbcDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.cbc") + ", ";
 		}
 		q = getBloodGlucoseDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.bloodGlucose") + ", ";
 		}
 		q = getThyroidTestDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.thyroidTest") + ", ";
 		}
 		q = getOtherTestDone();
-		if (q != null && q.getId().intValue() == yesId) {
+		if (q != null && q.getId() == yesId) {
 			at += mss.getMessage("mdrtb.pv.other") + ", ";
 		}
 		if (at != null && at.length() > 0)

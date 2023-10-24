@@ -24,7 +24,7 @@ public class TreatmentStatusCalculator {
 		TreatmentState treatmentState = null;
 		
 		// get the list of regimens for this patient within the program period
-		List<StatusItem> regimenList = new LinkedList<StatusItem>();
+		List<StatusItem> regimenList = new LinkedList<>();
 		
 		List<Regimen> regimensDuringProgram = mdrtbProgram.getMdrtbRegimensDuringProgram();
 		
@@ -94,7 +94,7 @@ public class TreatmentStatusCalculator {
 		TreatmentState treatmentState = null;
 		
 		// get the list of regimens for this patient within the program period
-		List<StatusItem> regimenList = new LinkedList<StatusItem>();
+		List<StatusItem> regimenList = new LinkedList<>();
 		
 		List<Regimen> regimensDuringProgram = mdrtbProgram.getTbRegimensDuringProgram();
 		

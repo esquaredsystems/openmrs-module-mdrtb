@@ -116,7 +116,7 @@ public class TransferOutFormResourceController extends DataDelegatingCrudResourc
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		String patientUuid = context.getRequest().getParameter("q");
-		List<SimpleTransferOutForm> simpleRegimenForms = new ArrayList<SimpleTransferOutForm>();
+		List<SimpleTransferOutForm> simpleRegimenForms = new ArrayList<>();
 		if (patientUuid != null) {
 			Patient patient = ((PatientResource1_8) Context.getService(RestService.class).getResourceBySupportedClass(
 			    Patient.class)).getByUniqueId(patientUuid);
@@ -129,7 +129,7 @@ public class TransferOutFormResourceController extends DataDelegatingCrudResourc
 					simpleRegimenForms.add(new SimpleTransferOutForm(transferOutForm));
 				}
 			}
-			return new NeedsPaging<SimpleTransferOutForm>(simpleRegimenForms, context);
+			return new NeedsPaging<>(simpleRegimenForms, context);
 		}
 		return null;
 	}

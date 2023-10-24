@@ -67,7 +67,7 @@ public class PDFHelper {
 	
 	public List<String> byteToStrArray(String str) {
 		String arr[] = (str.replaceAll(" ", "").replace("[", "").replace("]", "")).split(",");
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		for (int i = 0; i < arr.length; i++) {
 			list.add(arr[i]);
 		}

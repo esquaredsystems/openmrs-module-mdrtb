@@ -252,11 +252,11 @@ public class SmearFormController {
 	
 	@ModelAttribute("smearresults")
 	public ArrayList<ConceptAnswer> getSmearResults() {
-		ArrayList<ConceptAnswer> answerArray = new ArrayList<ConceptAnswer>();
+		ArrayList<ConceptAnswer> answerArray = new ArrayList<>();
 		Collection<ConceptAnswer> bases = Context.getService(MdrtbService.class).getPossibleSmearResults();
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
-			Set<Concept> concepts = new HashSet<Concept>();
+			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.LOWAFB));
 			concepts.add(ms.getConcept(MdrtbConcepts.WEAKLY_POSITIVE));
 			concepts.add(ms.getConcept(MdrtbConcepts.MODERATELY_POSITIVE));

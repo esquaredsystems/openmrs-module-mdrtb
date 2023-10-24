@@ -96,7 +96,7 @@ public class MdrtbQueryService {
 	}
 	
 	public static Map<Integer, String> getResistanceProfilesByPatient(EvaluationContext context, Date maxResultDate) {
-		Map<Integer, String> ret = new HashMap<Integer, String>();
+		Map<Integer, String> ret = new HashMap<>();
 		for (Map.Entry<String, Cohort> e : getResistanceProfiles(context, maxResultDate).entrySet()) {
 			for (Integer pId : MdrtbUtil.getcohortMembershipIds(e.getValue())) {
 				ret.put(pId, e.getKey());
@@ -117,7 +117,7 @@ public class MdrtbQueryService {
 			return profiles;
 		}
 		
-		Map<String, Cohort> ret = new TreeMap<String, Cohort>();
+		Map<String, Cohort> ret = new TreeMap<>();
 		
 		Integer resistant = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANT_TO_TB_DRUG).getId();
 		
@@ -133,14 +133,14 @@ public class MdrtbQueryService {
 			q.append("and	p.patient_id in (" + MdrtbUtil.getCohortCommaSeparatedPatientIds(context.getBaseCohort()) + ")");
 		}
 		List<List<Object>> results = Context.getAdministrationService().executeSQL(q.toString(), true);
-		Map<Object, Map<Object, String>> patDrugs = new HashMap<Object, Map<Object, String>>();
+		Map<Object, Map<Object, String>> patDrugs = new HashMap<>();
 		for (List<Object> l : results) {
 			Object pId = l.get(0);
 			Object cId = l.get(1);
 			String cName = l.get(2).toString();
 			Map<Object, String> patMap = patDrugs.get(pId);
 			if (patMap == null) {
-				patMap = new HashMap<Object, String>();
+				patMap = new HashMap<>();
 				patDrugs.put(pId, patMap);
 			}
 			String curr = patMap.get(cId);
@@ -163,7 +163,7 @@ public class MdrtbQueryService {
 		};
 		
 		for (Object pId : patDrugs.keySet()) {
-			Set<String> drugNames = new TreeSet<String>(dstComparator);
+			Set<String> drugNames = new TreeSet<>(dstComparator);
 			drugNames.addAll(patDrugs.get(pId).values());
 			String s = OpenmrsUtil.join(drugNames, "+");
 			Cohort c = ret.get(s);
@@ -201,7 +201,7 @@ public class MdrtbQueryService {
 	 * @return the most recent Obs Result for the given Cohort and Question
 	 */
 	public static Map<Integer, Result> getLatestObsResults(Cohort cohort, Concept question) {
-		Map<Integer, Result> ret = new HashMap<Integer, Result>();
+		Map<Integer, Result> ret = new HashMap<>();
 		
 		StringBuilder q = new StringBuilder();
 		q.append("select	o.person_id, o.obs_datetime, o.value_coded, o.value_numeric, o.value_datetime ");
@@ -231,7 +231,7 @@ public class MdrtbQueryService {
 	 * @return the active PatientState Result for the given ProgramWorkflow and Cohort
 	 */
 	public static Map<Integer, Result> getActiveState(Cohort cohort, ProgramWorkflow workflow) {
-		Map<Integer, Result> ret = new HashMap<Integer, Result>();
+		Map<Integer, Result> ret = new HashMap<>();
 		
 		StringBuilder q = new StringBuilder();
 		q.append("select	p.patient_id, s.concept_id, ps.start_date ");

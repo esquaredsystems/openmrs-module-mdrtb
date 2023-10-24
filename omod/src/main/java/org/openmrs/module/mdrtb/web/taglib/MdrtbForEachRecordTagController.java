@@ -70,7 +70,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 		if (name.equals("patientIdentifierType")) {
 			
 			PatientService ps = Context.getPatientService();
-			List<PatientIdentifierType> pitsOut = new ArrayList<PatientIdentifierType>();
+			List<PatientIdentifierType> pitsOut = new ArrayList<>();
 			List<PatientIdentifierType> pits = Context.getPatientService().getAllPatientIdentifierTypes();
 			
 			//records = ps.getPatientIdentifierTypes().iterator();
@@ -105,7 +105,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 			EncounterService es = Context.getEncounterService();
 			records = es.getAllEncounterTypes().iterator();
 		} else if (name.equals("location")) {
-			List<Location> locationOut = new ArrayList<Location>();
+			List<Location> locationOut = new ArrayList<>();
 			List<Location> locations = Context.getLocationService().getAllLocations(false);
 			
 			if (filterList != null && filterList.equals("") == false) {
@@ -150,7 +150,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 			
 			records = civilStatus.getAnswers().iterator();
 			
-			Map<String, String> opts = new HashMap<String, String>();
+			Map<String, String> opts = new HashMap<>();
 			for (ConceptAnswer a : civilStatus.getAnswers()) {
 				opts.put(a.getAnswerConcept().getConceptId().toString(), a.getAnswerConcept().getName(locale, false)
 				        .getName());
@@ -167,7 +167,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 			List<org.openmrs.Program> ret = Context.getProgramWorkflowService().getAllPrograms();
 			records = ret.iterator();
 		} else if (name.equals("workflow")) {
-			List<ProgramWorkflow> workflows = new ArrayList<ProgramWorkflow>();
+			List<ProgramWorkflow> workflows = new ArrayList<>();
 			Program p = Context.getProgramWorkflowService().getProgramByName(programName);
 			if (StringUtils.hasText(workflowNames)) {
 				for (StringTokenizer st = new StringTokenizer(workflowNames, "|"); st.hasMoreTokens();) {
@@ -179,7 +179,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 			}
 			records = workflows.iterator();
 		} else if (name.equals("state")) {
-			List<ProgramWorkflowState> filteredStates = new ArrayList<ProgramWorkflowState>();
+			List<ProgramWorkflowState> filteredStates = new ArrayList<>();
 			Program p = Context.getProgramWorkflowService().getProgramByName(programName);
 			if (StringUtils.hasText(workflowNames)) {
 				for (StringTokenizer st = new StringTokenizer(workflowNames, "|"); st.hasMoreTokens();) {
@@ -193,7 +193,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 			List<Role> ret = Context.getUserService().getAllRoles();
 			records = ret.iterator();
 		} else if (name.equals("user")) {
-			List<User> users = new ArrayList<User>();
+			List<User> users = new ArrayList<>();
 			if (StringUtils.hasText(filterList)) {
 				for (StringTokenizer st = new StringTokenizer(filterList, "|"); st.hasMoreTokens();) {
 					String r = st.nextToken();

@@ -40,7 +40,7 @@ public class ProgramDataSourceMDRTB implements LogicDataSource {
 	
 	private static Log log = LogFactory.getLog(ProgramDataSourceMDRTB.class);
 	
-	private static final Collection<String> keys = new ArrayList<String>();
+	private static final Collection<String> keys = new ArrayList<>();
 	
 	/**
 	 * @see LogicDataSource#read(LogicContext, Cohort, .LogicCriteria)
@@ -48,7 +48,7 @@ public class ProgramDataSourceMDRTB implements LogicDataSource {
 	public Map<Integer, Result> read(LogicContext context, Cohort patients, LogicCriteria criteria) {
 		
 		log.info("read patient programs for " + patients.size() + " patients, criteria " + criteria);
-		Map<Integer, Result> resultSet = new HashMap<Integer, Result>();
+		Map<Integer, Result> resultSet = new HashMap<>();
 		Collection<PatientProgram> patientPrograms = getPatientPrograms(patients, criteria);
 		
 		for (PatientProgram patientProgram : patientPrograms) {
@@ -103,12 +103,12 @@ public class ProgramDataSourceMDRTB implements LogicDataSource {
 	 * @return
 	 */
 	public Collection<PatientProgram> getPatientPrograms(Cohort patients, LogicCriteria criteria) {
-		Collection<PatientProgram> patientPrograms = new ArrayList<PatientProgram>();
+		Collection<PatientProgram> patientPrograms = new ArrayList<>();
 		ProgramWorkflowService service = Context.getProgramWorkflowService();
 		
 		String token = criteria.getRootToken();
 		Program prog = service.getProgramByName(token);
-		List<Program> progList = new ArrayList<Program>();
+		List<Program> progList = new ArrayList<>();
 		progList.add(prog);
 		patientPrograms = service.getPatientPrograms(patients, progList);
 		

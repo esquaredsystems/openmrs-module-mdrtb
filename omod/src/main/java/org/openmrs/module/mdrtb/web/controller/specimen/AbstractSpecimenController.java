@@ -144,7 +144,7 @@ public abstract class AbstractSpecimenController {
 		Collection<User> providers = Context.getUserService().getUsersByRole(provider);
 		
 		// add all the persons to a sorted set sorted by name
-		SortedSet<Person> persons = new TreeSet<Person>(new PersonByNameComparator());
+		SortedSet<Person> persons = new TreeSet<>(new PersonByNameComparator());
 		
 		for (User user : providers) {
 			persons.add(user.getPerson());
@@ -165,7 +165,7 @@ public abstract class AbstractSpecimenController {
 	
 	@ModelAttribute("testTypes")
 	public Collection<String> getPossibleTestTypes() {
-		Collection<String> testTypes = new LinkedList<String>();
+		Collection<String> testTypes = new LinkedList<>();
 		testTypes.add("smear");
 		testTypes.add("culture");
 		testTypes.add("dst");
@@ -187,7 +187,7 @@ public abstract class AbstractSpecimenController {
 	// used in the jquery in specimen.jsp to trigger hide/show of days of positivity field
 	@ModelAttribute("positiveResultsIds")
 	public Collection<String> getPositiveResultsIds() {
-		Set<String> positiveResultsIds = new HashSet<String>();
+		Set<String> positiveResultsIds = new HashSet<>();
 		
 		for (Concept positiveResult : MdrtbUtil.getPositiveResultConcepts()) {
 			positiveResultsIds.add(positiveResult.getConceptId().toString());

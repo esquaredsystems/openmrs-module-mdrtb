@@ -346,13 +346,13 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		List<Encounter> encs = Context.getService(MdrtbService.class).getEncountersByPatientAndTypes(program.getPatient(),
 		    TbUtil.getTbEncounterTypes());
 		
-		ArrayList<Encounter> ret = new ArrayList<Encounter>();
+		ArrayList<Encounter> ret = new ArrayList<>();
 		
 		Obs temp = null;
 		for (Encounter encounter : encs) {
 			temp = MdrtbUtil.getObsFromEncounter(
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
-			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == getId().intValue())
+			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == getId())
 				ret.add(encounter);
 		}
 		
@@ -512,7 +512,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 	 */
 	private List<PatientState> getAllPatientStates(Concept workflowConcept, Concept patientStateConcept) {
 		
-		List<PatientState> states = new LinkedList<PatientState>();
+		List<PatientState> states = new LinkedList<>();
 		
 		for (PatientState state : this.program.getStates()) {
 			if (state.getState().getConcept().equals(patientStateConcept)
@@ -615,18 +615,18 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 			return null;
 		}
 		
-		List<EncounterType> eSet = new ArrayList<EncounterType>();
+		List<EncounterType> eSet = new ArrayList<>();
 		eSet.add(MdrtbConstants.ET_FORM89_TB_FOLLOWUP);
 		List<Encounter> encs = Context.getService(MdrtbService.class).getEncountersByPatientAndTypes(program.getPatient(),
 		    eSet);
 		
-		ArrayList<Encounter> ret = new ArrayList<Encounter>();
+		ArrayList<Encounter> ret = new ArrayList<>();
 		
 		Obs temp = null;
 		for (Encounter encounter : encs) {
 			temp = MdrtbUtil.getObsFromEncounter(
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
-			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == getId().intValue())
+			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == getId())
 				ret.add(encounter);
 		}
 		
@@ -640,20 +640,20 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 			return null;
 		}
 		
-		List<EncounterType> eSet = new ArrayList<EncounterType>();
+		List<EncounterType> eSet = new ArrayList<>();
 		eSet.add(MdrtbConstants.ET_TB03_TB_INTAKE);
 		List<Encounter> encs = Context.getService(MdrtbService.class).getEncountersByPatientAndTypes(program.getPatient(),
 		    eSet);
 		if (encs != null) {
 			System.out.println("TB03 Encounters: " + encs.size());
 		}
-		ArrayList<Encounter> ret = new ArrayList<Encounter>();
+		ArrayList<Encounter> ret = new ArrayList<>();
 		
 		Obs temp = null;
 		for (Encounter encounter : encs) {
 			temp = MdrtbUtil.getObsFromEncounter(
 			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
-			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == getId().intValue())
+			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == getId())
 				ret.add(encounter);
 		}
 		

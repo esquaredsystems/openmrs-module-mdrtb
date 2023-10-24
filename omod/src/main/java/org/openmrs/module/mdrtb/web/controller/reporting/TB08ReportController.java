@@ -242,22 +242,22 @@ public class TB08ReportController {
 			
 			if (q != null) {
 				
-				if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_CURED_CONCEPT_ID))) {
 					cured = Boolean.TRUE;
 				}
 				
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_TX_COMPLETED_CONCEPT_ID))) {
 					txCompleted = Boolean.TRUE;
 				}
 				
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_TX_FAILURE_CONCEPT_ID))) {
 					failed = Boolean.TRUE;
 				}
 				
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID))) {
 					q = tf.getCauseOfDeath();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSE_OF_DEATH);
 					
@@ -270,22 +270,22 @@ public class TB08ReportController {
 					}
 				}
 				
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_LTFU_CONCEPT_ID))) {
 					defaulted = Boolean.TRUE;
 				}
 				
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_CANCELED_CONCEPT_ID))) {
 					canceled = Boolean.TRUE;
 				}
 				
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_TRANSFER_OUT_CONCEPT_ID))) {
 					transferOut = Boolean.TRUE;
 				}
 				
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OUTCOME_STARTED_SLD_CONCEPT_ID))) {
 					sld = Boolean.TRUE;
 				}
@@ -297,7 +297,7 @@ public class TB08ReportController {
 			
 			if (q != null) {
 				
-				if (q.getId().intValue() != Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				if (q.getId() != Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_TRANSFER_IN_CONCEPT_ID))) {
 					
 					table1.setAllDetected(table1.getAllDetected() + 1);
@@ -348,7 +348,7 @@ public class TB08ReportController {
 					}
 				}
 				//NEW
-				if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 					
 					table1.setNewAllDetected(table1.getNewAllDetected() + 1);
@@ -1283,9 +1283,9 @@ public class TB08ReportController {
 				}
 				
 				//RELAPSE
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))
-				        || q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        || q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				            MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID))) {
 					
 					table1.setRelapseAllDetected(table1.getRelapseAllDetected() + 1);
@@ -2217,9 +2217,9 @@ public class TB08ReportController {
 				}
 				
 				//FAILURE
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))
-				        || q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        || q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				            MdrtbConstants.GP_AFTER_FAILURE2_CONCEPT_ID))) {
 					table1.setFailureAllDetected(table1.getFailureAllDetected() + 1);
 					
@@ -2428,9 +2428,9 @@ public class TB08ReportController {
 					}
 				}
 				
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))
-				        || q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				        || q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				            MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))) {
 					table1.setDefaultAllDetected(table1.getDefaultAllDetected() + 1);
 					
@@ -2641,7 +2641,7 @@ public class TB08ReportController {
 				}
 				
 				//OTHER
-				else if (q.getId().intValue() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				else if (q.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				    MdrtbConstants.GP_OTHER_CONCEPT_ID))) {
 					table1.setOtherAllDetected(table1.getOtherAllDetected() + 1);
 					

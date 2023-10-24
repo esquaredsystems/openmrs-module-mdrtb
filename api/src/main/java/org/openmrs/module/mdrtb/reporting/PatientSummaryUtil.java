@@ -121,7 +121,7 @@ public class PatientSummaryUtil {
 	public static final String[] TEST_KEYS = { RESISTANCE_LIST };
 	
 	public static final Map<String, String> getAvailableKeys() {
-		Map<String, String> keys = new LinkedHashMap<String, String>();
+		Map<String, String> keys = new LinkedHashMap<>();
 		
 		for (String s : DEMOGRAPHICS_KEYS) {
 			keys.put(s, MessageUtil.translate("mdrtb." + s));
@@ -188,10 +188,10 @@ public class PatientSummaryUtil {
 	        Date effectiveDate) {
 		
 		long ms = System.currentTimeMillis();
-		Map<Integer, Map<String, Object>> byPatient = new HashMap<Integer, Map<String, Object>>();
+		Map<Integer, Map<String, Object>> byPatient = new HashMap<>();
 		
 		if (columns == null) {
-			columns = new ArrayList<String>(getAvailableKeys().keySet());
+			columns = new ArrayList<>(getAvailableKeys().keySet());
 		}
 		if (effectiveDate == null) {
 			effectiveDate = new Date();
@@ -202,7 +202,7 @@ public class PatientSummaryUtil {
 		
 		List<Patient> patients = Context.getService(MdrtbService.class)
 		        .getPatients(MdrtbUtil.getcohortMembershipIds(cohort));
-		List<Person> persons = new ArrayList<Person>();
+		List<Person> persons = new ArrayList<>();
 		for (Patient p : patients) {
 			persons.add(p);
 		}
@@ -212,8 +212,8 @@ public class PatientSummaryUtil {
 		Program mdrProgram = Context.getService(MdrtbService.class).getMdrtbProgram();
 		
 		Map<Integer, String> resistanceProfiles = null;
-		Map<Concept, Map<Integer, Result>> logicResults = new HashMap<Concept, Map<Integer, Result>>();
-		Map<ProgramWorkflow, Map<Integer, Result>> stateResults = new HashMap<ProgramWorkflow, Map<Integer, Result>>();
+		Map<Concept, Map<Integer, Result>> logicResults = new HashMap<>();
+		Map<ProgramWorkflow, Map<Integer, Result>> stateResults = new HashMap<>();
 		
 		log.warn("Retrieved Patients in: " + ((System.currentTimeMillis() - ms) / 1000) + " seconds");
 		ms = System.currentTimeMillis();
@@ -222,7 +222,7 @@ public class PatientSummaryUtil {
 			log.debug("Evaluating: " + p.getPatientId());
 			Map<String, Object> map = byPatient.get(p.getPatientId());
 			if (map == null) {
-				map = new HashMap<String, Object>();
+				map = new HashMap<>();
 				byPatient.put(p.getPatientId(), map);
 			}
 			

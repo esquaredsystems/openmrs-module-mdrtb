@@ -125,6 +125,6 @@ public class Form89DataResourceController extends DelegatingCrudResource<SimpleF
 		for (Form89Data form89Data : patientSet) {
 			list.add(new SimpleForm89Data(form89Data));
 		}
-		return new NeedsPaging<SimpleForm89Data>(list, context);
+		return new NeedsPaging<>(list, context);
 	}
 }

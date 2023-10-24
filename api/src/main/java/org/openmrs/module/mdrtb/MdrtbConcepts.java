@@ -1150,13 +1150,13 @@ public class MdrtbConcepts {
 	public final static String VIOMYCIN_RESISTANCE = "VIOMYCIN RESISTANCE";
 	
 	// Private Cache for Concepts
-	private Map<String, Concept> cache = new HashMap<String, Concept>();
+	private Map<String, Concept> cache = new HashMap<>();
 	
 	/**
 	 * @return all of the defined Concept Mappings
 	 */
 	public Set<String[]> getAllConceptMappings() {
-		Set<String[]> ret = new TreeSet<String[]>();
+		Set<String[]> ret = new TreeSet<>();
 		for (Field f : MdrtbConcepts.class.getFields()) {
 			
 			// TODO: make sure this array reflection works--this has not yet been used or tested

@@ -125,7 +125,7 @@ public class RegimenType implements Serializable {
 	 */
 	public List<RegimenSuggestion> getSuggestions() {
 		if (suggestions == null) {
-			suggestions = new ArrayList<RegimenSuggestion>();
+			suggestions = new ArrayList<>();
 		}
 		return suggestions;
 	}

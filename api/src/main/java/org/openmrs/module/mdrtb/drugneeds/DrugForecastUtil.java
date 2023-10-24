@@ -43,14 +43,14 @@ public class DrugForecastUtil {
 	}
 	
 	public static Map<Drug, Integer> countPatientsTakingDrugs(Cohort cohort, Concept drugSet, Date onDate) {
-		Map<Drug, Set<Integer>> temp = new HashMap<Drug, Set<Integer>>();
+		Map<Drug, Set<Integer>> temp = new HashMap<>();
 		for (DrugOrder o : getDrugOrders(cohort, drugSet, onDate, onDate)) {
 			if (o.getDrug() != null) {
 				addToSet(temp, o.getDrug(), o.getPatient().getPatientId());
 			}
 		}
-		Map<Drug, Integer> ret = new TreeMap<Drug, Integer>(new Comparator<Drug>() {
-			
+		Map<Drug, Integer> ret = new TreeMap<>(new Comparator<Drug>() {
+
 			public int compare(Drug left, Drug right) {
 				return left.getName().compareTo(right.getName());
 			}
@@ -62,14 +62,14 @@ public class DrugForecastUtil {
 	}
 	
 	public static Map<Concept, Integer> countPatientsTakingGenericDrugs(Cohort cohort, Concept drugSet, Date onDate) {
-		Map<Concept, Set<Integer>> temp = new HashMap<Concept, Set<Integer>>();
+		Map<Concept, Set<Integer>> temp = new HashMap<>();
 		for (DrugOrder o : getDrugOrders(cohort, drugSet, onDate, onDate)) {
 			if (o.getConcept() != null) {
 				addToSet(temp, o.getConcept(), o.getPatient().getPatientId());
 			}
 		}
-		Map<Concept, Integer> ret = new TreeMap<Concept, Integer>(new Comparator<Concept>() {
-			
+		Map<Concept, Integer> ret = new TreeMap<>(new Comparator<Concept>() {
+
 			public int compare(Concept left, Concept right) {
 				return left.getName(Context.getLocale()).getName().compareTo(right.getName(Context.getLocale()).getName());
 			}
@@ -81,8 +81,8 @@ public class DrugForecastUtil {
 	}
 	
 	public static Map<Drug, Double> simpleDrugNeedsCalculation(Cohort cohort, Concept drugSet, Date fromDate, Date toDate) {
-		Map<Drug, Double> ret = new TreeMap<Drug, Double>(new Comparator<Drug>() {
-			
+		Map<Drug, Double> ret = new TreeMap<>(new Comparator<Drug>() {
+
 			public int compare(Drug left, Drug right) {
 				return left.getName().compareTo(right.getName());
 			}
@@ -103,7 +103,7 @@ public class DrugForecastUtil {
 			cal.add(Calendar.DAY_OF_MONTH, 1);
 			toDate = cal.getTime();
 		}
-		List<DrugOrder> ret = new ArrayList<DrugOrder>();
+		List<DrugOrder> ret = new ArrayList<>();
 		
 		for (Collection<DrugOrder> orders : Context.getService(MdrtbService.class).getDrugOrders(cohort, drugSet).values()) {
 			for (DrugOrder o : orders) {
@@ -158,7 +158,7 @@ public class DrugForecastUtil {
 	public static <T> void addToSet(Map<T, Set<Integer>> map, T key, Integer value) {
 		Set<Integer> s = map.get(key);
 		if (s == null) {
-			s = new HashSet<Integer>();
+			s = new HashSet<>();
 			map.put(key, s);
 		}
 		s.add(value);
@@ -195,8 +195,8 @@ public class DrugForecastUtil {
 	}
 	
 	public static ArrayList<PatientSLDMap> getPatientsTakingDrugs(Cohort cohort, Concept drugSet, Date fromDate, Date toDate) {
-		HashMap<Integer, PatientSLDMap> patientDrugs = new HashMap<Integer, PatientSLDMap>();
-		ArrayList<PatientSLDMap> patients = new ArrayList<PatientSLDMap>();
+		HashMap<Integer, PatientSLDMap> patientDrugs = new HashMap<>();
+		ArrayList<PatientSLDMap> patients = new ArrayList<>();
 		Collection<DrugOrder> drugOrders = getDrugOrders(cohort, drugSet, fromDate, toDate);
 		
 		log.debug("DRUG ORDERS: " + drugOrders.size());

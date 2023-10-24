@@ -96,7 +96,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 								testInt = Integer.valueOf(deleteContactString);
 							}
 							catch (Exception ignored) {}
-							if (testInt.intValue() > 0) {
+							if (testInt > 0) {
 								Relationship r = perS.getRelationship(testInt);
 								perS.voidRelationship(r, "voided by mdr-tb contacts module");
 							}
@@ -225,7 +225,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 					String newPersonCounterString = request.getParameter("newRowsToBeAdded");
 					Integer newPersonCounter = Integer.valueOf(newPersonCounterString);
 					
-					for (int i = 1; i <= newPersonCounter.intValue(); i++) {
+					for (int i = 1; i <= newPersonCounter; i++) {
 						
 						String personIdString = request.getParameter("newRelationshipId_" + i);
 						String givenNameString = request.getParameter("newGivenName_" + i);
@@ -254,7 +254,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 								test = true;
 							if (givenNameString != null && !givenNameString.equals(""))
 								test = true;
-							if (personIdTmp.intValue() == 0 && test && contact == null) {
+							if (personIdTmp == 0 && test && contact == null) {
 								
 								contact = new Person();
 								contact.setDead(false);
@@ -547,7 +547,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 	
 	@Override
 	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors errs) throws Exception {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		if (Context.isAuthenticated()) {
 			map.put("tbResultConceptId",
 			    (Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SIMPLE_TB_TEST_RESULT)).getConceptId());
@@ -562,7 +562,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			String relationshipTypesString = Context.getAdministrationService().getGlobalProperty(
 			    MdrtbConstants.GP_PATIENT_IDENTIFIER_TYPE_LIST);
 			
-			List<PatientIdentifierType> pitList = new ArrayList<PatientIdentifierType>();
+			List<PatientIdentifierType> pitList = new ArrayList<>();
 			for (StringTokenizer st = new StringTokenizer(relationshipTypesString, "|"); st.hasMoreTokens();) {
 				String s = st.nextToken().trim();
 				PatientIdentifierType pitTmp = Context.getPatientService().getPatientIdentifierTypeByName(s);

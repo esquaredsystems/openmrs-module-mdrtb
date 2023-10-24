@@ -10,7 +10,7 @@ public class Record {
 	private String label;
 	
 	public Record() {
-		this.components = new LinkedList<RecordComponent>();
+		this.components = new LinkedList<>();
 	}
 	
 	public Record(List<RecordComponent> specimens) {

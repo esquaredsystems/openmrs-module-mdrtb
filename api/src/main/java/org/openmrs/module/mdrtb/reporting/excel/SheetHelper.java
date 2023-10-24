@@ -204,7 +204,7 @@ public class SheetHelper {
 			String cellValueString = cellValue.toString();
 			try {
 				if (cell.getCellType() == CellType.BOOLEAN) {
-					cell.setCellValue(Boolean.valueOf(cellValueString).booleanValue());
+					cell.setCellValue(Boolean.valueOf(cellValueString));
 					return;
 				}
 				if (cell.getCellType() == CellType.FORMULA) {

@@ -31,7 +31,7 @@ public class MdrtbTreatmentSupporter {
 	
 	public List<Obs> getPhoneNumbers() {
 		if (this.phoneNumbers == null)
-			phoneNumbers = new ArrayList<Obs>();
+			phoneNumbers = new ArrayList<>();
 		return phoneNumbers;
 	}
 	
@@ -41,7 +41,7 @@ public class MdrtbTreatmentSupporter {
 	
 	public void addPhoneObs(Obs o) {
 		if (this.phoneNumbers == null)
-			phoneNumbers = new ArrayList<Obs>();
+			phoneNumbers = new ArrayList<>();
 		this.phoneNumbers.add(o);
 	}
 	

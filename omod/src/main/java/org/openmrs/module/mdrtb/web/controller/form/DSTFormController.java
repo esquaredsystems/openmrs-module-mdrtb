@@ -137,7 +137,7 @@ public class DSTFormController {
 		// remove dst results
 		if (removeDstResults != null) {
 			
-			Set<String> removeDstResultSet = new HashSet<String>(Arrays.asList(removeDstResults));
+			Set<String> removeDstResultSet = new HashSet<>(Arrays.asList(removeDstResults));
 			
 			for (DstResult result : dst.getResults()) {
 				if (result.getDrug().getId() != null && removeDstResultSet.contains(result.getDrug().getId().toString())) {

@@ -47,7 +47,7 @@ public class RegimenUtils {
 	 * @return a List of Drugs whose Concept matches a Concept in the passed set
 	 */
 	public static List<Drug> getDrugsWithGenericInSet(Concept drugSet) {
-		List<Drug> ret = new ArrayList<Drug>();
+		List<Drug> ret = new ArrayList<>();
 		List<Drug> allDrugs = Context.getConceptService().getAllDrugs();
 		if (drugSet == null) {
 			return allDrugs;
@@ -62,7 +62,7 @@ public class RegimenUtils {
 	}
 	
 	public static List<Concept> getGenericsForDrugSet(String drugSet) {
-		List<Concept> generics = new ArrayList<Concept>();
+		List<Concept> generics = new ArrayList<>();
 		if (ObjectUtil.isNull(drugSet) || drugSet.equals("*")) {
 			ConceptClass drugClass = Context.getConceptService().getConceptClass(OpenmrsConstants.CONCEPT_CLASS_DRUG);
 			generics = Context.getConceptService().getConceptsByClass(drugClass);
@@ -135,7 +135,7 @@ public class RegimenUtils {
 	 * @return the full regimen history for the patient, categorized by type
 	 */
 	public static Map<String, RegimenHistory> getRegimenHistory(Patient patient) {
-		Map<String, RegimenHistory> m = new LinkedHashMap<String, RegimenHistory>();
+		Map<String, RegimenHistory> m = new LinkedHashMap<>();
 		
 		List<DrugOrder> orders = Context.getService(MdrtbService.class).getDrugOrders(patient);
 		
@@ -222,7 +222,7 @@ public class RegimenUtils {
 	 *         the passed String
 	 */
 	public static String formatDrugOrders(Collection<DrugOrder> orders, String separator, String emptyCode) {
-		Set<Concept> s = new HashSet<Concept>();
+		Set<Concept> s = new HashSet<>();
 		for (DrugOrder d : orders) {
 			s.add(d.getConcept());
 		}
@@ -234,7 +234,7 @@ public class RegimenUtils {
 	 *         String
 	 */
 	public static String formatCodedObs(Collection<Obs> obs, String separator, String emptyCode) {
-		Set<Concept> s = new HashSet<Concept>();
+		Set<Concept> s = new HashSet<>();
 		for (Obs o : obs) {
 			if (o.getValueCoded() != null) {
 				s.add(o.getValueCoded());
@@ -264,7 +264,7 @@ public class RegimenUtils {
 			}
 			return "";
 		}
-		List<String> shortNames = new ArrayList<String>();
+		List<String> shortNames = new ArrayList<>();
 		for (Concept c : concepts) {
 			shortNames.add(MdrtbUtil.getConceptName(c, Context.getLocale().getLanguage(), ConceptNameType.SHORT).getName());
 		}

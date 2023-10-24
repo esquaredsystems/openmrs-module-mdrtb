@@ -155,7 +155,7 @@ public class RegimenController {
 		Date endDate = (Date) (dateMap.get("endDate"));
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
-		ArrayList<RegimenReportRow> rows = new ArrayList<RegimenReportRow>();
+		ArrayList<RegimenReportRow> rows = new ArrayList<>();
 		Integer programId = null;
 		Patient p = null;
 		Date treatmentStartDate = null;

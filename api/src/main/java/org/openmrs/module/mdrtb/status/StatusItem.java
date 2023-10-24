@@ -14,7 +14,7 @@ public class StatusItem {
 	
 	private String link;
 	
-	private List<StatusFlag> flags = new LinkedList<StatusFlag>();
+	private List<StatusFlag> flags = new LinkedList<>();
 	
 	public StatusItem() {
 	}

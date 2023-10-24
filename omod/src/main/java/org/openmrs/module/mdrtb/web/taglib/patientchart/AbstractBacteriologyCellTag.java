@@ -193,7 +193,7 @@ public abstract class AbstractBacteriologyCellTag extends TagSupport {
 	// TODO: move this into a global property?
 	private static Map<Concept, Integer> initializeRankings() {
 		
-		Map<Concept, Integer> resultRankings = new HashMap<Concept, Integer>();
+		Map<Concept, Integer> resultRankings = new HashMap<>();
 		
 		resultRankings.put(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.STRONGLY_POSITIVE), 1);
 		resultRankings.put(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MODERATELY_POSITIVE), 2);
