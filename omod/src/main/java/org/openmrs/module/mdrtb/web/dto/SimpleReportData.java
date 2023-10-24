@@ -4,7 +4,6 @@
 package org.openmrs.module.mdrtb.web.dto;
 
 import java.io.IOException;
-import java.util.zip.DataFormatException;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
@@ -60,7 +59,7 @@ public class SimpleReportData extends BaseOpenmrsData {
 				html = html.replaceAll("\t", "");
 				setTableData(html);
 			}
-			catch (IOException | DataFormatException e) {
+			catch (IOException e) {
 				e.printStackTrace();
 			}
 		}

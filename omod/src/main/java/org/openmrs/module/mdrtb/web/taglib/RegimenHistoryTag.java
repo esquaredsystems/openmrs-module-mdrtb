@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.logging.Log;
@@ -59,7 +58,7 @@ public class RegimenHistoryTag extends TagSupport {
 	 * @see TagSupport#doStartTag()
 	 */
 	@Override
-	public int doStartTag() throws JspException {
+	public int doStartTag() {
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -219,7 +218,7 @@ public class RegimenHistoryTag extends TagSupport {
 	 * @see TagSupport#doEndTag()
 	 */
 	@Override
-	public int doEndTag() throws JspException {
+	public int doEndTag() {
 		history = null;
 		messagePrefix = null;
 		cssClass = null;

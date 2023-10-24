@@ -301,7 +301,7 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 	}
 	
 	public String getDstResultString(Dst dst) {
-		String results = "";
+		StringBuilder results = new StringBuilder();
 		Map<Integer, List<DstResult>> dstResultsMap = dst.getResultsMap();
 		Collection<Concept> drugs = getPossibleDrugTypes();
 		
@@ -317,15 +317,15 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 					}
 					sb.append(name.getName());
 					sb.append("; ");
-					results += sb.toString();
+					results.append(sb.toString());
 				}
 			}
 		}
 		
 		if (results.length() == 0) {
-			results = "N/A";
+			results = new StringBuilder("N/A");
 		}
 		
-		return results;
+		return results.toString();
 	}
 }

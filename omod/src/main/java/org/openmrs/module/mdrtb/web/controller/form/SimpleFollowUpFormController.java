@@ -1,7 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.form;
 
-import java.lang.reflect.InvocationTargetException;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -29,7 +27,7 @@ public class SimpleFollowUpFormController extends AbstractFormController {
 	@ModelAttribute("followup")
 	public SimpleFollowUpForm getIntakeForm(@RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId) throws SecurityException,
-	        IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        IllegalArgumentException {
 		
 		// if no form is specified, create a new one
 		if (encounterId == -1) {

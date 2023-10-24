@@ -19,7 +19,6 @@ import org.openmrs.module.mdrtb.form.custom.RegimenForm;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.reporting.custom.TB07uData;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -138,7 +137,7 @@ public class TB07uController {
 	public static String doTB07u(@RequestParam("district") Integer districtId, @RequestParam("facility") Integer facilityId,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
-	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = "month", required = false) String month, ModelMap model) {
 		System.out.println("---POST-----");
 		
 		Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
@@ -233,9 +232,9 @@ public class TB07uController {
 		int standard = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.STANDARD_MDR_REGIMEN).getConceptId();
 		
 		int indLzd = Context.getService(MdrtbService.class)
-				.getConcept(MdrtbConcepts.INDIVIDUAL_WITH_CLOFAZIMIN_AND_LINEZOLID).getConceptId();
+		        .getConcept(MdrtbConcepts.INDIVIDUAL_WITH_CLOFAZIMIN_AND_LINEZOLID).getConceptId();
 		int indBdq = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.INDIVIDUAL_WITH_BEDAQUILINE)
-				.getConceptId();
+		        .getConceptId();
 		int rr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RR_TB).getConceptId();
 		int mdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB).getConceptId();
 		int pdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PDR_TB).getConceptId();
@@ -514,8 +513,7 @@ public class TB07uController {
 				table1.setTotalDetections(table1.getTotalDetections() + 1);
 				
 				if (regList != null) {
-					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId(), regList, locList, year,
-					    quarter, month);
+					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId(), regList, locList, year, quarter, month);
 				} else {
 					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId());
 				}
@@ -1360,8 +1358,7 @@ public class TB07uController {
 				table1.setTotalDetections(table1.getTotalDetections() + 1);
 				
 				if (regList != null) {
-					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId(), regList, locList, year,
-					    quarter, month);
+					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId(), regList, locList, year, quarter, month);
 				} else {
 					System.out.println("Not in Registered List: " + tf.getPatient().getPatientId());
 				}
@@ -2215,8 +2212,7 @@ public class TB07uController {
 				table1.setTotalDetections(table1.getTotalDetections() + 1);
 				
 				if (regList != null) {
-					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId(), regList, locList, year,
-					    quarter, month);
+					rf = getLatestRegimenForPatient(tf.getPatient().getPatientId(), regList, locList, year, quarter, month);
 				}
 				
 				else {

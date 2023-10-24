@@ -51,8 +51,7 @@ public class ExportReportController {
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,
 	        @RequestParam("quarter") String quarter, @RequestParam("month") String month,
 	        @RequestParam("reportDate") String reportDate, @RequestParam("table") String table,
-	        @RequestParam("reportName") String reportName, @RequestParam("formPath") String formPath, ModelMap model)
-	        throws Exception {
+	        @RequestParam("reportName") String reportName, @RequestParam("formPath") String formPath, ModelMap model) {
 		System.out.println("-----Export Report POST-----");
 		
 		Integer oblast = null;

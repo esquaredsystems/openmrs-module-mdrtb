@@ -103,8 +103,6 @@ public class SimpleTB03uForm extends BaseOpenmrsData {
 	
 	/**
 	 * Provide {@link SimpleTB03uForm} representation of {@link TB03uForm}
-	 * 
-	 * @return
 	 */
 	public TB03uForm toForm() {
 		TB03uForm tb03u = new TB03uForm();

@@ -27,7 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class SpecimenReportsOverviewController {
 	
 	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		
 		//bind dates
 		SimpleDateFormat dateFormat = Context.getDateFormat();

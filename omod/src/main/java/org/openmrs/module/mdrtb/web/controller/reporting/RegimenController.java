@@ -40,7 +40,6 @@ import org.openmrs.module.mdrtb.regimen.RegimenHistory;
 import org.openmrs.module.mdrtb.regimen.RegimenUtils;
 import org.openmrs.module.mdrtb.reporting.RegimenReportRow;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -138,7 +137,7 @@ public class RegimenController {
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, HttpServletResponse response, ModelMap model)
-	        throws EvaluationException, IOException {
+	        throws IOException {
 		
 		System.out.println("---POST-----");
 		

@@ -33,7 +33,7 @@ public class SaveDrugOrderController {
 	protected static final Log log = LogFactory.getLog(SaveDrugOrderController.class);
 	
 	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		DateFormat dateFormat = Context.getDateFormat();
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true, 10));
@@ -58,7 +58,7 @@ public class SaveDrugOrderController {
 	        @RequestParam(required = false, value = "autoExpireDate") Date autoExpireDate,
 	        @RequestParam(required = false, value = "discontinuedDate") Date discontinuedDate,
 	        @RequestParam(required = false, value = "discontinuedReason") Concept discontinuedReason,
-	        HttpServletRequest request, ModelMap model) throws Exception {
+	        HttpServletRequest request, ModelMap model) {
 		
 		DrugOrder drugOrder = null;
 		if (ObjectUtil.isNull(orderId)) {

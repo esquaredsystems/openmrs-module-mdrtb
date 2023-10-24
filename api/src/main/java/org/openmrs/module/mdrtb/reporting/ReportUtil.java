@@ -156,8 +156,6 @@ public class ReportUtil {
 	
 	/**
 	 * Looks up a resource on the class path, and returns a RenderingMode based on it
-	 * 
-	 * @throws UnsupportedEncodingException
 	 */
 	public static RenderingMode renderingModeFromResource(String label, String resourceName) {
 		InputStreamReader reader = null;

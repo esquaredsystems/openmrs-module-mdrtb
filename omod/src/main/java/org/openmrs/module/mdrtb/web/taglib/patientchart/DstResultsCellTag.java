@@ -54,7 +54,7 @@ public class DstResultsCellTag extends TagSupport {
 		
 		// now figure out what DST result to display
 		if (dstResults != null && !dstResults.isEmpty()) {
-			String title = "";
+			StringBuilder title = new StringBuilder();
 			Concept result = null;
 			
 			// first we need to build the title string (for the tooltip) and determine the result
@@ -70,10 +70,10 @@ public class DstResultsCellTag extends TagSupport {
 						concentration = dstResult.getConcentration().toString() + " - ";
 					}
 					
-					title = title
-					        + concentration
-					        + MdrtbUtil.getConceptName(dstResult.getResult(), Context.getLocale().getLanguage(),
-					            ConceptNameType.FULLY_SPECIFIED).getName() + "<br>";
+					title.append(concentration)
+					        .append(
+					            MdrtbUtil.getConceptName(dstResult.getResult(), Context.getLocale().getLanguage(),
+					                ConceptNameType.FULLY_SPECIFIED).getName()).append("<br>");
 					
 					if (result == null) {
 						result = dstResult.getResult();

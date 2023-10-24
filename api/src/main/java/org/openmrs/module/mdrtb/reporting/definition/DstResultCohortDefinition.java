@@ -86,15 +86,13 @@ public class DstResultCohortDefinition extends BaseCohortDefinition {
 	}
 	
 	/**
-	 * @param tbClassification
-	 */
+     */
 	public void setTbClassification(TbClassification tbClassification) {
 		this.tbClassification = tbClassification;
 	}
 	
 	/**
-	 * @return
-	 */
+     */
 	public TbClassification getTbClassification() {
 		return tbClassification;
 	}

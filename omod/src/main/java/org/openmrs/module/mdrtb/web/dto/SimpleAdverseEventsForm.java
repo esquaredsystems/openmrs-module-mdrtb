@@ -189,9 +189,6 @@ public class SimpleAdverseEventsForm extends BaseOpenmrsData {
 	
 	/**
 	 * Provide {@link SimpleAdverseEventsForm} representation of {@link TB03Form}
-	 * 
-	 * @param tb03
-	 * @return
 	 */
 	public AdverseEventsForm toForm() {
 		AdverseEventsForm aeForm = new AdverseEventsForm();

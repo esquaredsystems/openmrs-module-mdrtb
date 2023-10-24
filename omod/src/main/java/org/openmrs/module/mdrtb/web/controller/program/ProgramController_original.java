@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.program;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -34,7 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProgramController_original {
 	
 	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		
 		//bind dates
 		SimpleDateFormat dateFormat = Context.getDateFormat();
@@ -86,8 +85,7 @@ public class ProgramController_original {
 	@RequestMapping(value = "/module/mdrtb/program/programEnroll.form", method = RequestMethod.POST)
 	public ModelAndView processEnroll(@ModelAttribute("program") MdrtbPatientProgram program, BindingResult errors,
 	        @RequestParam(required = true, value = "patientId") Integer patientId, SessionStatus status,
-	        HttpServletRequest request, ModelMap map) throws SecurityException, IllegalArgumentException,
-	        NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        HttpServletRequest request, ModelMap map) throws SecurityException, IllegalArgumentException {
 		
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		

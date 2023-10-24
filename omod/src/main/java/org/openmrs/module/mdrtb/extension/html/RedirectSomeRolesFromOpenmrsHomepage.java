@@ -57,5 +57,4 @@ public class RedirectSomeRolesFromOpenmrsHomepage extends Extension {
 		}
 		return "<BR><BR><BR><Br><center><br><BR><image ><img src='/openmrs/images/openmrs_logo_large.gif' alt='OpenMRS'><center>";
 	}
-	
 }

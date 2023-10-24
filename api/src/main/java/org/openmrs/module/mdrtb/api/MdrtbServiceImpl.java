@@ -150,9 +150,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	/**
 	 * Get the mdrtb program via the name listed in global properties
-	 * 
-	 * @param workflowConcept
-	 * @return
 	 */
 	private static Set<ProgramWorkflowState> getPossibleTbWorkflowStates(Concept workflowConcept) {
 		// get the mdrtb program via the name listed in global properties

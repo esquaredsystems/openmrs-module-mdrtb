@@ -1,7 +1,6 @@
 package org.openmrs.module.mdrtb.web.controller;
 
 import java.lang.reflect.Method;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +67,7 @@ public class MdrtbEditPatientController {
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		//bind dates
 		SimpleDateFormat dateFormat = Context.getDateFormat();
 		dateFormat.setLenient(false);
@@ -239,8 +238,7 @@ public class MdrtbEditPatientController {
 	        @RequestParam(required = false, value = "addAge") String addAge,
 	        @RequestParam(required = false, value = "addGender") String addGender,
 	        @RequestParam(required = false, value = "add") String add,
-	        @RequestParam(required = false, value = "skipSimilarCheck") Boolean skipSimilarCheck, ModelMap map)
-	        throws ParseException {
+	        @RequestParam(required = false, value = "skipSimilarCheck") Boolean skipSimilarCheck, ModelMap map) {
 		
 		// if we are dealing with a new patient (one with no id, or id=-1) we need to check for similar patients first
 		if ((skipSimilarCheck == null || !skipSimilarCheck) && (patientId == null || patientId == -1)) {

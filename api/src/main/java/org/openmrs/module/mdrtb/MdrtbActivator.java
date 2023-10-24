@@ -232,11 +232,6 @@ public class MdrtbActivator extends BaseModuleActivator {
 	
 	/**
 	 * Creates {@link GlobalProperty}. Updates the existing object ONLY if its value is empty
-	 * 
-	 * @param prop
-	 * @param val
-	 * @param description
-	 * @param uuid
 	 */
 	private void setGlobalProperty(String prop, String val, String description, String uuid) {
 		AdministrationService service = Context.getAdministrationService();

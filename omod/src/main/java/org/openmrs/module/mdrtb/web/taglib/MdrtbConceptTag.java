@@ -37,7 +37,7 @@ public class MdrtbConceptTag extends BodyTagSupport {
 	
 	private String mappingVar;
 	
-	public int doStartTag() throws JspException {
+	public int doStartTag() {
 		
 		ConceptName n = concept.getName();
 		

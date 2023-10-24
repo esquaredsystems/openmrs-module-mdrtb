@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.form;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,7 +49,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class DSTFormController {
 	
 	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		
 		//bind dates
 		SimpleDateFormat dateFormat = Context.getDateFormat();
@@ -67,7 +66,7 @@ public class DSTFormController {
 	@ModelAttribute("dst")
 	public DSTForm getDSTForm(@RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId) throws SecurityException,
-	        IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        IllegalArgumentException {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);

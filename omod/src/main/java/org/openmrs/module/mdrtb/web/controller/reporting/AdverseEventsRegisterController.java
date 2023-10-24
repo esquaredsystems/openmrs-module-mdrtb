@@ -16,7 +16,6 @@ import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.reporting.pv.AdverseEventsRegisterData;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -114,7 +113,7 @@ public class AdverseEventsRegisterController {
 	public static String doAE(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
-	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = "month", required = false) String month, ModelMap model) {
 		
 		System.out.println("---POST-----");
 		
@@ -217,5 +216,4 @@ public class AdverseEventsRegisterController {
 		return "/module/mdrtb/reporting/pv/aeRegisterResults";
 		//_" + Context.getLocale().toString().substring(0, 2);
 	}
-	
 }

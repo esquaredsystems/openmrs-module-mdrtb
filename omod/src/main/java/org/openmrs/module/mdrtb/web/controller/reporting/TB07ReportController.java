@@ -19,7 +19,6 @@ import org.openmrs.module.mdrtb.form.custom.Form89;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.custom.TB07Table1Data;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -131,7 +130,7 @@ public class TB07ReportController {
 	public static String doTB07(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
-	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = "month", required = false) String month, ModelMap model) {
 		
 		System.out.println("PARAMS:" + oblastId + " " + districtId + " " + facilityId + " " + year + " " + quarter + " "
 		        + month);
@@ -1473,8 +1472,8 @@ public class TB07ReportController {
 				}
 				
 				//OTHER		
-				else if (q.getConceptId() == Integer.parseInt(Context.getAdministrationService()
-				        .getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID))) {
+				else if (q.getConceptId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
+				    MdrtbConstants.GP_OTHER_CONCEPT_ID))) {
 					table1.setOtherAll(table1.getOtherAll() + 1);
 					if (hivPositive)
 						table1.setOtherAllHIV(table1.getOtherAllHIV() + 1);

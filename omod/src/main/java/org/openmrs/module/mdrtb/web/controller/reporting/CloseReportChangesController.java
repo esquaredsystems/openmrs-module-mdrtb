@@ -174,12 +174,12 @@ public class CloseReportChangesController {
 			tempData.add(encounter.getPatient().getPersonName().toString()); // encounter patient name
 			
 			Set<Obs> tempDataObs = encounter.getAllObs();
-			String data = "";
+			StringBuilder data = new StringBuilder();
 			for (Obs obs : tempDataObs) {
-				data += obs.getConcept().getName() + " (" + obs.getId() + ")<br/>";
+				data.append(obs.getConcept().getName()).append(" (").append(obs.getId()).append(")<br/>");
 			}
 			
-			tempData.add(data); // encounter obs data
+			tempData.add(data.toString()); // encounter obs data
 			encounterData.add(tempData);
 		}
 		

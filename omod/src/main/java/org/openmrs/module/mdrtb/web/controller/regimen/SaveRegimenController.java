@@ -39,7 +39,7 @@ public class SaveRegimenController {
 	protected static final Log log = LogFactory.getLog(SaveRegimenController.class);
 	
 	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		DateFormat dateFormat = Context.getDateFormat();
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true, 10));

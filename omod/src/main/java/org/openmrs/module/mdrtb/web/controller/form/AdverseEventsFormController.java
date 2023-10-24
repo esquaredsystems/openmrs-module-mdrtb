@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.form;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,7 +45,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class AdverseEventsFormController {
 	
 	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		
 		//bind dates
 		SimpleDateFormat dateFormat = Context.getDateFormat();
@@ -64,8 +63,7 @@ public class AdverseEventsFormController {
 	public AdverseEventsForm getAdverseEventsForm(@RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId/*,
 	                                                                                           @RequestParam(required = false, value = "previousProgramId") Integer previousProgramId*/)
-	        throws SecurityException, IllegalArgumentException, NoSuchMethodException, IllegalAccessException,
-	        InvocationTargetException {
+	        throws SecurityException, IllegalArgumentException {
 		
 		// if no form is specified, create a new one
 		if (encounterId == -1) {

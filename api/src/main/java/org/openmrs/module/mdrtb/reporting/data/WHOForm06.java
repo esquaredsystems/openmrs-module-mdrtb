@@ -154,5 +154,4 @@ public class WHOForm06 implements ReportSpecification {
 		}
 		return data;
 	}
-	
 }

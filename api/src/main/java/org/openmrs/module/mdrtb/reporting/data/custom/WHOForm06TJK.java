@@ -163,5 +163,4 @@ public class WHOForm06TJK implements ReportSpecification {
 		}
 		return data;
 	}
-	
 }

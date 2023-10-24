@@ -1,6 +1,6 @@
 package org.openmrs.module.mdrtb.web.dto;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.PersonAddress;
@@ -22,9 +22,9 @@ public class SimpleDQItem extends BaseOpenmrsData {
 	
 	private String locName;
 	
-	private ArrayList<String> tb03Links;
+	private List<String> tb03Links;
 	
-	private ArrayList<String> form89Links;
+	private List<String> form89Links;
 	
 	public SimpleDQItem(DQItem dqItem) {
 		setPatientUuid(dqItem.getPatient().getUuid());
@@ -103,11 +103,11 @@ public class SimpleDQItem extends BaseOpenmrsData {
 		this.residentialAddress = residentialAddress;
 	}
 	
-	public ArrayList<String> getTb03Links() {
+	public List<String> getTb03Links() {
 		return tb03Links;
 	}
 	
-	public void setTb03Links(ArrayList<String> tb03Links) {
+	public void setTb03Links(List<String> tb03Links) {
 		this.tb03Links = tb03Links;
 	}
 	
@@ -117,11 +117,11 @@ public class SimpleDQItem extends BaseOpenmrsData {
 		}
 	}
 	
-	public ArrayList<String> getForm89Links() {
+	public List<String> getForm89Links() {
 		return form89Links;
 	}
 	
-	public void setForm89Links(ArrayList<String> form89Links) {
+	public void setForm89Links(List<String> form89Links) {
 		this.form89Links = form89Links;
 	}
 	

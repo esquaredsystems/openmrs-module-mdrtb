@@ -48,5 +48,4 @@ public class AdminList extends AdministrationSectionExt {
 		map.put("module/mdrtb/mdrtb.form", "mdrtb.title.homepage");
 		return map;
 	}
-	
 }

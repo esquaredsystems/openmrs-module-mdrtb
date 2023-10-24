@@ -55,7 +55,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
-	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		
 	}
 	
@@ -546,7 +546,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 	}
 	
 	@Override
-	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors errs) throws Exception {
+	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors errs) {
 		Map<String, Object> map = new HashMap<>();
 		if (Context.isAuthenticated()) {
 			map.put("tbResultConceptId",
@@ -598,5 +598,4 @@ public class MdrtbManageContactsController extends SimpleFormController {
 		}
 		return map;
 	}
-	
 }

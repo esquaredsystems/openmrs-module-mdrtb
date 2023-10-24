@@ -63,10 +63,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Returns the smear that should be used to bind a form posting to
-	 * 
-	 * @param smearId
-	 * @param specimenId
-	 * @return
 	 */
 	@ModelAttribute("smear")
 	public Smear getSmear(@RequestParam(required = false, value = "smearId") Integer smearId,
@@ -92,10 +88,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Returns the culture that should be used to bind a form posting to
-	 * 
-	 * @param cultureId
-	 * @param specimenId
-	 * @return
 	 */
 	@ModelAttribute("culture")
 	public Culture getCulture(@RequestParam(required = false, value = "cultureId") Integer cultureId,
@@ -124,10 +116,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Returns the dst that should be used to bind a form posting to
-	 * 
-	 * @param dstId
-	 * @param specimenId
-	 * @return
 	 */
 	@ModelAttribute("dst")
 	public Dst getDst(@RequestParam(required = false, value = "dstId") Integer dstId,
@@ -156,10 +144,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Returns the smear that should be used to bind a form posting to
-	 * 
-	 * @param smearId
-	 * @param specimenId
-	 * @return
 	 */
 	@ModelAttribute("xpert")
 	public Xpert getXpert(@RequestParam(required = false, value = "xpertId") Integer xpertId,
@@ -185,10 +169,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Returns the smear that should be used to bind a form posting to
-	 * 
-	 * @param smearId
-	 * @param specimenId
-	 * @return
 	 */
 	@ModelAttribute("hain")
 	public HAIN getHAIN(@RequestParam(required = false, value = "hainId") Integer hainId,
@@ -214,9 +194,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Returns the specimen that should be used to bind a form posting to
-	 * 
-	 * @param specimenId
-	 * @return
 	 */
 	@ModelAttribute("specimen")
 	public Specimen getSpecimen(@RequestParam(required = false, value = "specimenId") Integer specimenId) {
@@ -245,16 +222,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Handles the submission of a specimen form
-	 * 
-	 * @param specimen
-	 * @param specimenErrors
-	 * @param status
-	 * @param request
-	 * @param map
-	 * @param testId
-	 * @param scannedLabReport
-	 * @param removeScannedLabReports
-	 * @return
 	 */
 	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=specimen")
@@ -327,15 +294,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Handles the submission of a smear form
-	 * 
-	 * @param smear
-	 * @param smearErrors
-	 * @param status
-	 * @param request
-	 * @param map
-	 * @param specimenId
-	 * @param testId
-	 * @return
 	 */
 	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=smear")
@@ -384,15 +342,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Handles the submission of a culture form
-	 * 
-	 * @param culture
-	 * @param cultureErrors
-	 * @param status
-	 * @param request
-	 * @param map
-	 * @param specimenId
-	 * @param testId
-	 * @return
 	 */
 	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=culture")
@@ -441,16 +390,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Handles the submission of a DST form
-	 * 
-	 * @param dst
-	 * @param dstErrors
-	 * @param status
-	 * @param request
-	 * @param map
-	 * @param specimenId
-	 * @param testId
-	 * @param removeDstResults
-	 * @return
 	 */
 	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=dst")
@@ -565,15 +504,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Handles the submission of a xpert form
-	 * 
-	 * @param xpert
-	 * @param xpertErrors
-	 * @param status
-	 * @param request
-	 * @param map
-	 * @param specimenId
-	 * @param testId
-	 * @return
 	 */
 	@SuppressWarnings("null")
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=xpert")
@@ -616,15 +546,6 @@ public class SpecimenController extends AbstractSpecimenController {
 	
 	/**
 	 * Handles the submission of a xpert form
-	 * 
-	 * @param hain
-	 * @param hainErrors
-	 * @param status
-	 * @param request
-	 * @param map
-	 * @param specimenId
-	 * @param testId
-	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST, params = "submissionType=hain")
 	public ModelAndView processSubmit(@ModelAttribute("hain") HAIN hain, BindingResult errors, SessionStatus status,

@@ -97,11 +97,8 @@ public class ProgramDataSourceMDRTB implements LogicDataSource {
 	
 	/**
 	 * Get the patient programs for the
-	 * 
-	 * @param patients
-	 * @param criteria
-	 * @return
-	 */
+	 *
+     */
 	public Collection<PatientProgram> getPatientPrograms(Cohort patients, LogicCriteria criteria) {
 		Collection<PatientProgram> patientPrograms = new ArrayList<>();
 		ProgramWorkflowService service = Context.getProgramWorkflowService();

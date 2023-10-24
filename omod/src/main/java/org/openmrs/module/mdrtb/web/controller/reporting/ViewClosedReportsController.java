@@ -17,7 +17,6 @@ import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.ReportData;
 import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -129,8 +128,7 @@ public class ViewClosedReportsController {
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,
 	        @RequestParam("quarter") String q, @RequestParam("month") String m,
 	        @RequestParam("reportName") String reportName, @RequestParam("reportDate") String reportDate,
-	        @RequestParam("formAction") String formAction, @RequestParam("reportType") String reportType, ModelMap model)
-	        throws EvaluationException {
+	        @RequestParam("formAction") String formAction, @RequestParam("reportType") String reportType, ModelMap model) {
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		Integer quarter = q == null ? null : Integer.parseInt(q.replace("\"", ""));
 		Integer month = (m != null && m.length() != 0) ? null : Integer.parseInt(m.replace("\"", ""));

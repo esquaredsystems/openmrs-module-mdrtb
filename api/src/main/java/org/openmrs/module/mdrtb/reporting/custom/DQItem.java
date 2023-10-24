@@ -1,6 +1,7 @@
 package org.openmrs.module.mdrtb.reporting.custom;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
@@ -13,9 +14,9 @@ public class DQItem {
 	
 	private String locName;
 	
-	private ArrayList<String> tb03Links;
+	private List<String> tb03Links;
 	
-	private ArrayList<String> form89Links;
+	private List<String> form89Links;
 	
 	public DQItem() {
 		patient = null;
@@ -48,11 +49,11 @@ public class DQItem {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
-	public ArrayList<String> getTb03Links() {
+	public List<String> getTb03Links() {
 		return tb03Links;
 	}
 	
-	public void setTb03Links(ArrayList<String> tb03Links) {
+	public void setTb03Links(List<String> tb03Links) {
 		this.tb03Links = tb03Links;
 	}
 	
@@ -80,11 +81,11 @@ public class DQItem {
 		return null;
 	}
 	
-	public ArrayList<String> getForm89Links() {
+	public List<String> getForm89Links() {
 		return form89Links;
 	}
 	
-	public void setForm89Links(ArrayList<String> form89Links) {
+	public void setForm89Links(List<String> form89Links) {
 		this.form89Links = form89Links;
 	}
 	

@@ -66,7 +66,7 @@ public class MdrtbTSAdmFormController extends SimpleFormController {
 	}
 	
 	@Override
-	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors err) throws Exception {
+	protected Map<String, Object> referenceData(HttpServletRequest request, Object obj, Errors err) {
 		
 		Map<String, Object> map = new HashMap<>();
 		if (Context.isAuthenticated()) {
@@ -118,7 +118,7 @@ public class MdrtbTSAdmFormController extends SimpleFormController {
 	
 	@Override
 	protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object object,
-	        BindException exceptions) throws Exception {
+	        BindException exceptions) {
 		
 		if (Context.isAuthenticated()) {
 			String action = request.getParameter("submit");
@@ -208,7 +208,7 @@ public class MdrtbTSAdmFormController extends SimpleFormController {
 	 * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
-	protected Object formBackingObject(HttpServletRequest request) throws Exception {
+	protected Object formBackingObject(HttpServletRequest request) {
 		
 		if (Context.isAuthenticated()) {
 			MdrtbTreatmentSupporter p = new MdrtbTreatmentSupporter();

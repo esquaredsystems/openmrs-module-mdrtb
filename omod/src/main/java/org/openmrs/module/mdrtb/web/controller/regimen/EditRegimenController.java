@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class EditRegimenController {
 	
 	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		DateFormat dateFormat = Context.getDateFormat();
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true, 10));

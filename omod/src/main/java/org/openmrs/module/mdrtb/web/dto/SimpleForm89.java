@@ -164,8 +164,6 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	
 	/**
 	 * Provide {@link SimpleForm89} representation of {@link Form89}
-	 * 
-	 * @return
 	 */
 	public Form89 toForm() {
 		Form89 form89 = new Form89();

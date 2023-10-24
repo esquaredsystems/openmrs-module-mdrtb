@@ -42,7 +42,7 @@ public class XpertCellTag extends TagSupport {
 		
 		String colorString = "";
 		
-		String resultString = "";
+		StringBuilder resultString = new StringBuilder();
 		
 		String ret = "";
 		
@@ -68,8 +68,8 @@ public class XpertCellTag extends TagSupport {
 						Concept rifResult = xpert.getRifResistance();
 						
 						// append the appropriate result to the result list
-						resultString = resultString + xpert.getResult().getName(Context.getLocale()).getName() + "/"
-						        + rifResult.getName(Context.getLocale()).getName();
+						resultString.append(xpert.getResult().getName(Context.getLocale()).getName()).append("/")
+						        .append(rifResult.getName(Context.getLocale()).getName());
 						
 						// append the appropriate title to the title list
 						titleString = titleString.concat(xpert.getResult().getName(Context.getLocale()).getName() + " - "

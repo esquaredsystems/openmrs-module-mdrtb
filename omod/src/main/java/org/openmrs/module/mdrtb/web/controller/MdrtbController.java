@@ -53,11 +53,6 @@ public class MdrtbController {
 	
 	/**
 	 * All the parameters are optional based on the necessity
-	 * 
-	 * @param httpSession
-	 * @param anyRequestObject
-	 * @param errors
-	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public String onPost(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject,
@@ -76,7 +71,7 @@ public class MdrtbController {
 	 * by the return type of this method
 	 */
 	@ModelAttribute("users")
-	protected List<User> getUsers() throws Exception {
+	protected List<User> getUsers() {
 		List<User> users = userService.getAllUsers();
 		return users;
 	}

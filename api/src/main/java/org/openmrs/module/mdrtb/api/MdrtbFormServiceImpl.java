@@ -43,11 +43,6 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 	
 	/**
 	 * Process the {@link TB03Form} for DOTS-TB patients
-	 * 
-	 * @param tb03
-	 * @param location
-	 * @return
-	 * @throws MdrtbAPIException
 	 */
 	public TB03Form processTB03Form(TB03Form tb03, Location location) throws MdrtbAPIException {
 		// Should have encounter property
@@ -131,11 +126,6 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 	
 	/**
 	 * Process the {@link TB03uForm} for MDR-TB patients
-	 * 
-	 * @param tb03u
-	 * @param location
-	 * @return
-	 * @throws MdrtbAPIException
 	 */
 	public TB03uForm processTB03uForm(TB03uForm tb03u, Location location) throws MdrtbAPIException {
 		// Should have encounter property
@@ -220,10 +210,6 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 	
 	/**
 	 * Process the {@link Form89} for DOTS-TB patients
-	 * 
-	 * @param form89
-	 * @param location
-	 * @return
 	 */
 	public Form89 processForm89(Form89 form89, Location location) {
 		// Should have encounter property

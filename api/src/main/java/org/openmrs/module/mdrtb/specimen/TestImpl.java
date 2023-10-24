@@ -323,8 +323,6 @@ public abstract class TestImpl implements Test {
 	/**
 	 * Determines the current status of this test by examines the values of the various date fields
 	 * Auto generated method comment
-	 * 
-	 * @return
 	 */
 	private TestStatus calculateStatus() {
 		

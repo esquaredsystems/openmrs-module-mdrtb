@@ -609,18 +609,21 @@ public class PatientListContoller {
 				Concept rh = h.getRifResult();
 				Concept res = h.getMtbResult();
 				if (res != null) {
-					report.append(ALIGN_LEFT_TAG).append(res.getName().getName()).append(CLOSE_TD);
+					report.append(ALIGN_LEFT_TAG).append(res.getShortestName(Context.getLocale(), false).getName())
+					        .append(CLOSE_TD);
 				} else {
 					report.append(OPEN_CLOSE_TD);
 				}
 				if (ih != null) {
-					report.append(ALIGN_LEFT_TAG).append(ih.getName().getName()).append(CLOSE_TD);
+					report.append(ALIGN_LEFT_TAG).append(ih.getShortestName(Context.getLocale(), false).getName())
+					        .append(CLOSE_TD);
 				} else {
 					report.append(OPEN_CLOSE_TD);
 				}
 				
 				if (rh != null) {
-					report.append(ALIGN_LEFT_TAG).append(rh.getName().getName()).append(CLOSE_TD);
+					report.append(ALIGN_LEFT_TAG).append(rh.getShortestName(Context.getLocale(), false).getName())
+					        .append(CLOSE_TD);
 				} else {
 					report.append(OPEN_CLOSE_TD);
 				}
@@ -639,17 +642,20 @@ public class PatientListContoller {
 				Concept fq = h.getFqResult();
 				Concept res = h.getMtbResult();
 				if (res != null) {
-					report.append(ALIGN_LEFT_TAG).append(res.getName().getName()).append(CLOSE_TD);
+					report.append(ALIGN_LEFT_TAG).append(res.getShortestName(Context.getLocale(), false).getName())
+					        .append(CLOSE_TD);
 				} else {
 					report.append(OPEN_CLOSE_TD);
 				}
 				if (ih != null) {
-					report.append(ALIGN_LEFT_TAG).append(ih.getName().getName()).append(CLOSE_TD);
+					report.append(ALIGN_LEFT_TAG).append(ih.getShortestName(Context.getLocale(), false).getName())
+					        .append(CLOSE_TD);
 				} else {
 					report.append(OPEN_CLOSE_TD);
 				}
 				if (fq != null) {
-					report.append(ALIGN_LEFT_TAG).append(fq.getName().getName()).append(CLOSE_TD);
+					report.append(ALIGN_LEFT_TAG).append(fq.getShortestName(Context.getLocale(), false).getName())
+					        .append(CLOSE_TD);
 				} else {
 					report.append(OPEN_CLOSE_TD);
 				}
@@ -689,19 +695,24 @@ public class PatientListContoller {
 			
 			//Drug Resistance
 			if (tf.getResistanceType() != null) {
-				report.append(ALIGN_LEFT_TAG).append(tf.getResistanceType().getName().getName()).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG)
+				        .append(tf.getResistanceType().getShortestName(Context.getLocale(), false).getName())
+				        .append(CLOSE_TD);
 			} else {
 				report.append(OPEN_CLOSE_TD);
 			}
 			report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
 			report.append(ALIGN_LEFT_TAG).append(getSensitiveDrugs(tf)).append(CLOSE_TD);
 			if (tf.getHivStatus() != null) {
-				report.append(ALIGN_LEFT_TAG).append(tf.getHivStatus().getName().getName()).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG)
+				        .append(tf.getHivStatus().getShortestName(Context.getLocale(), false).getName()).append(CLOSE_TD);
 			} else {
 				report.append(OPEN_CLOSE_TD);
 			}
 			if (tf.getTreatmentOutcome() != null) {
-				report.append(ALIGN_LEFT_TAG).append(tf.getTreatmentOutcome().getName().getName()).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG)
+				        .append(tf.getTreatmentOutcome().getShortestName(Context.getLocale(), false).getName())
+				        .append(CLOSE_TD);
 			} else {
 				report.append(OPEN_CLOSE_TD);
 			}

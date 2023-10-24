@@ -252,10 +252,8 @@ public class CommonLabUtil {
 	/**
 	 * Searches for a Lab Test order against given {@link Encounter} and creates if one doesn't
 	 * exist, otherwise returns existing one.
-	 * 
-	 * @param encounter
-	 * @return
-	 */
+	 *
+     */
 	public LabTest getMdrtbLabTestOrder(Encounter encounter, LabTestType labTestType) {
 		// Check if an order already exists
 		Set<Order> orders = encounter.getOrders();

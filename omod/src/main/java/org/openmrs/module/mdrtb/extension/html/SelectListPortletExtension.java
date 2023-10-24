@@ -14,15 +14,11 @@ public abstract class SelectListPortletExtension extends PortletExt {
 	
 	/**
 	 * Return the key that identifies this option
-	 * 
-	 * @return
 	 */
 	public abstract String getKey();
 	
 	/**
 	 * Return the message code to use to display this option
-	 * 
-	 * @return
 	 */
 	public abstract String getLabel();
 }

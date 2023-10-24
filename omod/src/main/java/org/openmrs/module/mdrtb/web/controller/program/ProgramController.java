@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.program;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +59,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ProgramController {
 	
 	@InitBinder
-	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
 		
 		//bind dates
 		SimpleDateFormat dateFormat = Context.getDateFormat();
@@ -221,8 +220,7 @@ public class ProgramController {
 	@RequestMapping(value = "/module/mdrtb/program/programEnroll.form", method = RequestMethod.POST)
 	public ModelAndView processEnroll(@ModelAttribute("program") MdrtbPatientProgram program, BindingResult errors,
 	        @RequestParam(required = true, value = "patientId") Integer patientId, SessionStatus status,
-	        HttpServletRequest request, ModelMap map) throws SecurityException, IllegalArgumentException,
-	        NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        HttpServletRequest request, ModelMap map) throws SecurityException, IllegalArgumentException {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		
 		if (patient == null) {
@@ -412,7 +410,7 @@ public class ProgramController {
 	        @RequestParam(required = false, value = "idId") Integer idId,
 	        
 	        SessionStatus status, HttpServletRequest request, ModelMap map) throws SecurityException,
-	        IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        IllegalArgumentException {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		
 		if (patient == null) {
@@ -558,8 +556,7 @@ public class ProgramController {
 	        @RequestParam(required = true, value = "district") String districtId,
 	        @RequestParam(required = false, value = "facility") String facilityId,
 	        @RequestParam(required = true, value = "identifierValue") String identifierValue, SessionStatus status,
-	        HttpServletRequest request, ModelMap map) throws SecurityException, IllegalArgumentException,
-	        NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        HttpServletRequest request, ModelMap map) throws SecurityException, IllegalArgumentException {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		if (patient == null) {
 			throw new RuntimeException("Process enroll called with invalid patient id " + patientId);
@@ -673,8 +670,7 @@ public class ProgramController {
 	        @RequestParam(required = true, value = "district") String districtId,
 	        @RequestParam(required = false, value = "facility") String facilityId,
 	        @RequestParam(required = true, value = "identifierValue") String identifierValue, SessionStatus status,
-	        HttpServletRequest request, ModelMap map) throws SecurityException, IllegalArgumentException,
-	        NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        HttpServletRequest request, ModelMap map) throws SecurityException, IllegalArgumentException {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		if (patient == null) {
 			throw new RuntimeException("Process enroll called with invalid patient id " + patientId);
@@ -834,7 +830,7 @@ public class ProgramController {
 	        @RequestParam(required = true, value = "classificationAccordingToPatientGroups") Integer classificationAccordingToPatientGroups,
 	        @RequestParam(required = true, value = "classificationAccordingToPreviousDrugUse") Integer classificationAccordingToPreviousDrugUse,
 	        SessionStatus status, HttpServletRequest request, ModelMap map) throws SecurityException,
-	        IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        IllegalArgumentException {
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		TbPatientProgram tpp = ms.getTbPatientProgram(programId);
 		
@@ -895,7 +891,7 @@ public class ProgramController {
 	        @RequestParam(required = true, value = "classificationAccordingToPreviousTreatment") Integer classificationAccordingToPreviousTreatment,
 	        @RequestParam(required = true, value = "classificationAccordingToPreviousDrugUse") Integer classificationAccordingToPreviousDrugUse,
 	        SessionStatus status, HttpServletRequest request, ModelMap map) throws SecurityException,
-	        IllegalArgumentException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	        IllegalArgumentException {
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		MdrtbPatientProgram tpp = ms.getMdrtbPatientProgram(programId);
 		

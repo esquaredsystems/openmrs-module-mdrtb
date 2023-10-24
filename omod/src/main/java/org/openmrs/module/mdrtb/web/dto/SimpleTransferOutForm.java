@@ -29,8 +29,6 @@ public class SimpleTransferOutForm extends BaseOpenmrsData {
 	/**
 	 * Provide {@link SimpleTransferOutForm} representation of
 	 * {@link DrugResistanceDuringTreatmentForm}
-	 * 
-	 * @return
 	 */
 	public TransferOutForm toForm() {
 		TransferOutForm transferOutForm = new TransferOutForm();

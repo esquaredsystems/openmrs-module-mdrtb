@@ -32,5 +32,4 @@ public class LabResultsReportsController {
 		
 		return new ModelAndView("/module/mdrtb/specimen/labResultsReports", map);
 	}
-	
 }

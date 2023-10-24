@@ -21,7 +21,6 @@ import org.openmrs.module.mdrtb.form.custom.HAINForm;
 import org.openmrs.module.mdrtb.form.custom.SmearForm;
 import org.openmrs.module.mdrtb.form.custom.XpertForm;
 import org.openmrs.module.mdrtb.reporting.custom.Form89Data;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -122,7 +121,7 @@ public class Form89SingleExportController {
 	public static String doForm89(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
-	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = "month", required = false) String month, ModelMap model) {
 		
 		System.out.println("---POST-----");
 		System.out.println("PARAMS:" + oblastId + " " + districtId + " " + facilityId + " " + year + " " + quarter + " "
@@ -340,5 +339,4 @@ public class Form89SingleExportController {
 		}
 		return patientSet;
 	}
-	
 }

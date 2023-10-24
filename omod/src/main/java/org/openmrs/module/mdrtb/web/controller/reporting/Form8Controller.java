@@ -26,7 +26,6 @@ import org.openmrs.module.mdrtb.reporting.custom.Form8Table3Data;
 import org.openmrs.module.mdrtb.reporting.custom.Form8Table4Data;
 import org.openmrs.module.mdrtb.reporting.custom.Form8Table5aData;
 import org.openmrs.module.mdrtb.reporting.custom.TB08Data;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -119,7 +118,7 @@ public class Form8Controller {
 	public static String doTB08(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
-	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = "month", required = false) String month, ModelMap model) {
 		
 		List<Location> locList = null;
 		if (oblastId != null) {

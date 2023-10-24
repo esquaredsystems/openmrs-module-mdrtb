@@ -15,7 +15,6 @@ package org.openmrs.module.mdrtb.web.taglib;
 
 import java.io.IOException;
 
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
@@ -66,7 +65,7 @@ public class ModalDialogTag extends BodyTagSupport {
 	/**
 	 * @see Tag#doStartTag()
 	 */
-	public int doStartTag() throws JspException {
+	public int doStartTag() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<script type=\"text/javascript\">");
 		sb.append("	$j(document).ready(function(){");
@@ -103,7 +102,7 @@ public class ModalDialogTag extends BodyTagSupport {
 	/**
 	 * @see Tag#doEndTag()
 	 */
-	public int doEndTag() throws JspException {
+	public int doEndTag() {
 		modal = false;
 		autoOpen = false;
 		draggable = false;

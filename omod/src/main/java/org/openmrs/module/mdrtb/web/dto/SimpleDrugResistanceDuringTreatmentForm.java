@@ -32,8 +32,6 @@ public class SimpleDrugResistanceDuringTreatmentForm extends BaseOpenmrsData {
 	/**
 	 * Provide {@link SimpleDrugResistanceDuringTreatmentForm} representation of
 	 * {@link DrugResistanceDuringTreatmentForm}
-	 * 
-	 * @return
 	 */
 	public DrugResistanceDuringTreatmentForm toForm() {
 		DrugResistanceDuringTreatmentForm drugResistanceForm = new DrugResistanceDuringTreatmentForm();

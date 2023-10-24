@@ -76,10 +76,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Returns an item by uuid. It can be called by any authenticated user. It is fetched in read
 	 * only transaction.
-	 * 
-	 * @param uuid
-	 * @return
-	 * @throws APIException
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -88,10 +84,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
 	 * this module's privilege. It is executed in a transaction.
-	 * 
-	 * @param reportData
-	 * @return
-	 * @throws APIException
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional
@@ -100,10 +92,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
 	 * this module's privilege. It is executed in a transaction.
-	 * 
-	 * @param reportData
-	 * @return
-	 * @throws APIException
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional
@@ -112,10 +100,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Saves an item. Sets the owner to superuser, if it is not set. It can be called by users with
 	 * this module's privilege. It is executed in a transaction.
-	 * 
-	 * @param reportData
-	 * @return
-	 * @throws APIException
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional
@@ -124,9 +108,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Returns the Concept specified by the passed lookup string. Checks MdrtbConcepts mapping, id,
 	 * name, and uuid before returning null
-	 * 
-	 * @param lookup
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -135,9 +116,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Returns collection of {@link ConceptAnswer} objects against a question concept passed as
 	 * string
-	 * 
-	 * @param conceptQuestion
-	 * @return
 	 */
 	//TODO: Remove this. Simply use getConcept().getConceptAnswers()
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
@@ -164,9 +142,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns list of {@link Patient} objects by Ids
-	 * 
-	 * @param patientIds
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -178,8 +153,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns list of all users with Provider role
-	 * 
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -188,8 +161,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Returns {@link PatientState} by Id. This is because since Openmrs 2.x the getById method was
 	 * removed
-	 * 
-	 * @param stateId
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -197,9 +168,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns all DrugOrders of given {@link Patient}
-	 * 
-	 * @param patient
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -207,10 +175,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns map of Patients with their respective {@link DrugOrder} lists
-	 * 
-	 * @param cohort
-	 * @param drugSet
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -218,17 +182,12 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Save {@link DrugOrder}
-	 * 
-	 * @param drugOrder
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public DrugOrder saveDrugOrder(DrugOrder drugOrder);
 	
 	/**
 	 * Returns all of the Drug Concepts within the ConceptSet which match the parameter
-	 * 
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -237,8 +196,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Returns all the possible Drug Concepts to display in a DST result, in the order we want to
 	 * display
-	 * 
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -246,8 +203,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns all the possible Antiretroviral Concepts
-	 * 
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -264,8 +219,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Gets the DOTS program
-	 * 
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -280,9 +233,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns all the DOTS programs for a given patient
-	 * 
-	 * @param patient
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -311,10 +261,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns all the MDR-TB programs in the system that were active during a specific date range
-	 * 
-	 * @param startDate
-	 * @param endDate
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -322,10 +268,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns all MDRTB Patient Programs enrolled within given range
-	 * 
-	 * @param startDate
-	 * @param endDate
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -377,9 +319,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns {@link PatientIdentifier} object from {@link PatientProgram}
-	 * 
-	 * @param patientProgram
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -387,9 +326,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns {@link PatientIdentifier} object from {@link MdrtbPatientProgram}
-	 * 
-	 * @param mdrPatientProgram
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -402,10 +338,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Replacing the deprecated method in {@link ProgramWorkflowService} to return
 	 * {@link ProgramWorkflow} by {@link Concept}
-	 * 
-	 * @param program
-	 * @param conceptId
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -414,11 +346,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Replacing the deprecated method in {@link ProgramWorkflowService} to return
 	 * {@link ProgramWorkflowState} by {@link ProgramWorkflow} and {@link Concept}
-	 * 
-	 * @param programWorkflow
-	 * @param conceptId
-	 * @return
-	 * @throws APIException
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -428,7 +355,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Returns a specific ProgramWorkflowState, given the concept associated with the state
 	 * 
-	 * @param programWorkflowStateConcept
 	 * @return {@link ProgramWorkflowState}
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
@@ -437,8 +363,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns set of {@link ProgramWorkflowState} objects according to any of the Patient group
-	 * 
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -446,8 +370,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Returns set of {@link ProgramWorkflowState} objects according to Past Drug
-	 * 
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -546,8 +468,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Saves or updates a specimen object
-	 * 
-	 * @param specimen
 	 */
 	public void saveSpecimen(Specimen specimen);
 	
@@ -592,18 +512,12 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Attach given program Id to an encounter Id
-	 * 
-	 * @param encounterId
-	 * @param programId
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void addProgramIdToEncounter(Integer encounterId, Integer programId);
 	
 	/**
 	 * Attach given Patient identifier to Program
-	 * 
-	 * @param patientIdenifierId
-	 * @param patientProgramId
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void addIdentifierToProgram(Integer patientIdenifierId, Integer patientProgramId);
@@ -624,8 +538,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Fetches an GeneXpert test against the given obsId
-	 * 
-	 * @param obsId
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -639,9 +551,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Fetches a HAIN test against given {@link Obs}
-	 * 
-	 * @param obs
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -656,9 +565,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Fetches a HAIN2 test against given obsId
-	 * 
-	 * @param obs
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -692,9 +598,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Fetches a smear given the obs of a Tuberculosis Smear Test Construct
-	 * 
-	 * @param obs
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public Smear getSmear(Obs obs);
@@ -729,11 +632,6 @@ public interface MdrtbService extends OpenmrsService {
 	/***************/
 	/**
 	 * Find the {@link Location} object mapped with given parameters
-	 * 
-	 * @param regionId
-	 * @param districtId
-	 * @param facilityId
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -741,8 +639,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Get list of ISO countries
-	 * 
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -827,11 +723,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Should return the list of child locations based on the parameters. If only the region is
 	 * supplied, then the list of all its children as well as grand children should be returned.
-	 * 
-	 * @param region
-	 * @param district
-	 * @param facility
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -1042,12 +933,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Returns Cohort of patients by {@link Program} and {@link ProgramWorkflowState} between given
 	 * date range
-	 * 
-	 * @param program
-	 * @param stateList
-	 * @param fromDate
-	 * @param toDate
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -1056,26 +941,12 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Handles exiting a patient from care
-	 * 
-	 * @param patient
-	 * @param deathDate
-	 * @param causeOfDeath
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void processDeath(Patient patient, Date deathDate, Concept causeOfDeath);
 	
 	/**
 	 * Searches for saved Report Data using various parameters
-	 * 
-	 * @param region
-	 * @param district
-	 * @param facility
-	 * @param year
-	 * @param quarter
-	 * @param month
-	 * @param reportName
-	 * @param reportType
-	 * @return
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public List<ReportData> searchReportData(Location region, Location district, Location facility, Integer year,
@@ -1092,7 +963,6 @@ public interface MdrtbService extends OpenmrsService {
 	/**
 	 * Fetch all reports and create a nested list for each column
 	 * 
-	 * @param reportType
 	 * @return List of Reports
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
@@ -1102,8 +972,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	/**
 	 * Saves a scanned lab report in the appropriate obs constructs
-	 * 
-	 * @param report
 	 */
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	public void saveScannedLabReport(ScannedLabReport report);

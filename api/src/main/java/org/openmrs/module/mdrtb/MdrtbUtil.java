@@ -346,8 +346,6 @@ public class MdrtbUtil {
 	 * that concept that matches the language and is of the specified type If no matches, returns
 	 * any name of the specified type If still no match, returns the fully specified name for the
 	 * specified locale If still no mathc, returns any fully qualified name
-	 * 
-	 * @throws Exception
 	 */
 	public static ConceptName getConceptName(Concept concept, String language, ConceptNameType conceptNameType) {
 		if (concept == null) {
@@ -1122,9 +1120,6 @@ public class MdrtbUtil {
 	
 	/**
 	 * Returns Ids of all members of the given {@link Cohort}
-	 * 
-	 * @param cohort
-	 * @return
 	 */
 	public static List<Integer> getcohortMembershipIds(Cohort cohort) {
 		List<Integer> ids = cohort.getMemberships().stream().map(m -> m.getCohortMemberId()).collect(Collectors.toList());

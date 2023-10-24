@@ -29,8 +29,6 @@ public class PatientSummaryPortletController extends PortletController {
 	
 	/**
 	 * Return the columns appropriate for this Patient Summary
-	 * 
-	 * @return
 	 */
 	protected String[] getSummaryColumns(HttpServletRequest request) {
 		return null; // Default to all columns

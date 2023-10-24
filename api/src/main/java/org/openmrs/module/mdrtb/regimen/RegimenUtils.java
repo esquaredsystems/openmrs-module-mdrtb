@@ -171,7 +171,6 @@ public class RegimenUtils {
 	}
 	
 	/**
-	 * @param patient
 	 * @return the Tuberculosis Regimens for a Patient
 	 */
 	public static RegimenHistory getTbRegimenHistory(Patient patient) {
@@ -179,7 +178,6 @@ public class RegimenUtils {
 	}
 	
 	/**
-	 * @param patient
 	 * @return the SLD Regimen for a Patient
 	 */
 	public static RegimenHistory getSLDRegimenHistory(Patient patient) {
@@ -194,7 +192,6 @@ public class RegimenUtils {
 	}
 	
 	/**
-	 * @param patient
 	 * @return the FLD Regimens for a Patient
 	 */
 	public static RegimenHistory getFLDRegimenHistory(Patient patient) {
@@ -202,7 +199,6 @@ public class RegimenUtils {
 	}
 	
 	/**
-	 * @param patient
 	 * @return the HIV Regimens for a Patient
 	 */
 	public static RegimenHistory getHivRegimenHistory(Patient patient) {

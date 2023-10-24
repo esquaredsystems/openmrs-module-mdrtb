@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 import javax.servlet.jsp.tagext.Tag;
@@ -102,7 +101,7 @@ public class FormatTag extends BodyTagSupport {
 	 * @see Tag#doStartTag()
 	 */
 	@SuppressWarnings("unchecked")
-	public int doStartTag() throws JspException {
+	public int doStartTag() {
 		
 		String ret = (ObjectUtil.notNull(defaultVal) ? MessageUtil.translate(defaultVal) : "");
 		if (obj != null) {
@@ -141,7 +140,7 @@ public class FormatTag extends BodyTagSupport {
 	/**
 	 * @see Tag#doEndTag()
 	 */
-	public int doEndTag() throws JspException {
+	public int doEndTag() {
 		obj = null;
 		separator = null;
 		defaultVal = null;

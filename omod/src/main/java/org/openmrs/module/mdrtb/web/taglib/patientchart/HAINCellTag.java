@@ -42,7 +42,7 @@ public class HAINCellTag extends TagSupport {
 		
 		String colorString = "";
 		
-		String resultString = "";
+		StringBuilder resultString = new StringBuilder();
 		
 		String ret = "";
 		
@@ -69,8 +69,8 @@ public class HAINCellTag extends TagSupport {
 						Concept inhResult = hain.getInhResistance();
 						
 						// append the appropriate result to the result list
-						resultString = resultString + hain.getResult().getName(Context.getLocale()).getName() + "/"
-						        + rifResult.getName(Context.getLocale()).getName();
+						resultString.append(hain.getResult().getName(Context.getLocale()).getName()).append("/")
+						        .append(rifResult.getName(Context.getLocale()).getName());
 						
 						// append the appropriate title to the title list
 						titleString = titleString.concat(hain.getResult().getName(Context.getLocale()).getName() + " - "

@@ -246,7 +246,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 	/**
 	 * @see javax.servlet.jsp.tagext.BodyTag#doInitBody()
 	 */
-	public void doInitBody() throws JspException {
+	public void doInitBody() {
 		if (records.hasNext()) {
 			Object obj = records.next();
 			iterate(obj);
@@ -256,7 +256,7 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 	/**
 	 * @see javax.servlet.jsp.tagext.IterationTag#doAfterBody()
 	 */
-	public int doAfterBody() throws JspException {
+	public int doAfterBody() {
 		if (records.hasNext()) {
 			Object obj = records.next();
 			iterate(obj);

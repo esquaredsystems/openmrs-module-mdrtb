@@ -10,7 +10,6 @@
 package org.openmrs.module.mdrtb;
 
 import java.io.IOException;
-import java.util.zip.DataFormatException;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -149,7 +148,7 @@ public class ReportData extends BaseOpenmrsData {
 		this.reportStatus = reportStatus;
 	}
 	
-	public String getTableData() throws IOException, DataFormatException {
+	public String getTableData() throws IOException {
 		if (tableData != null) {
 			return CompressionUtil.decompressCode(tableData);
 		}

@@ -13,7 +13,6 @@
  */
 package org.openmrs.module.mdrtb.web.controller.reporting;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -93,8 +91,7 @@ public class CohortBuilderController implements Controller {
 		return new CohortSearchHistory();
 	}
 	
-	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-	        IOException {
+	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> model = new HashMap<>();
 		if (Context.isAuthenticated()) {
 			CohortSearchHistory history = getMySearchHistory(request);
@@ -311,16 +308,14 @@ public class CohortBuilderController implements Controller {
 		}
 	}
 	
-	public ModelAndView clearHistory(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-	        IOException {
+	public ModelAndView clearHistory(HttpServletRequest request, HttpServletResponse response) {
 		if (Context.isAuthenticated()) {
 			setMySearchHistory(request, null);
 		}
 		return new ModelAndView(new RedirectView(getSuccessView()));
 	}
 	
-	public ModelAndView addFilter(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-	        IOException {
+	public ModelAndView addFilter(HttpServletRequest request, HttpServletResponse response) {
 		if (Context.isAuthenticated()) {
 			ReportObjectService rs = (ReportObjectService) Context.getService(ReportObjectService.class);
 			CohortSearchHistory history = getMySearchHistory(request);
@@ -363,8 +358,7 @@ public class CohortBuilderController implements Controller {
 		return new ModelAndView(new RedirectView(getSuccessView()));
 	}
 	
-	public ModelAndView removeFilter(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-	        IOException {
+	public ModelAndView removeFilter(HttpServletRequest request, HttpServletResponse response) {
 		if (Context.isAuthenticated()) {
 			CohortSearchHistory history = getMySearchHistory(request);
 			String temp = request.getParameter("index");
@@ -432,8 +426,8 @@ public class CohortBuilderController implements Controller {
 		        || ((checkFirst.equals(Object.class) || checkFirst.equals(List.class)) && checkFor.equals(checkNext));
 	}
 	
-	public ModelAndView addDynamicFilter(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-	        IOException, ClassNotFoundException {
+	public ModelAndView addDynamicFilter(HttpServletRequest request, HttpServletResponse response) throws
+            ClassNotFoundException {
 		if (Context.isAuthenticated()) {
 			String filterClassName = request.getParameter("filterClass");
 			String temp = request.getParameter("vars");
@@ -499,8 +493,7 @@ public class CohortBuilderController implements Controller {
 		return new ModelAndView(new RedirectView(getSuccessView()));
 	}
 	
-	public ModelAndView saveHistory(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-	        IOException {
+	public ModelAndView saveHistory(HttpServletRequest request, HttpServletResponse response) {
 		// FIXME: fix this!
 		if (Context.isAuthenticated()) {
 			String name = request.getParameter("name");

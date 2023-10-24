@@ -1,12 +1,10 @@
 package org.openmrs.module.mdrtb.web.controller.reporting;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -58,8 +56,7 @@ public class CloseReportController {
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,
 	        @RequestParam("quarter") String q, @RequestParam("month") String m,
 	        @RequestParam("reportDate") String reportDateStr, @RequestParam("table") String table,
-	        @RequestParam("reportName") String reportName, @RequestParam("formPath") String formPath, ModelMap model)
-	        throws EvaluationException, IOException, ServletException {
+	        @RequestParam("reportName") String reportName, @RequestParam("formPath") String formPath, ModelMap model) {
 		System.out.println("-----Close Report POST-----");
 		
 		Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
