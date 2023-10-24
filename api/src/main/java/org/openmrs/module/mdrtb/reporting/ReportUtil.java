@@ -207,7 +207,6 @@ public class ReportUtil {
 		return new RenderingMode(renderer, label, extension, null);
 	}
 	
-	// TODO: Accepting year, quarter and month as Objects is criminal. Must fix this
 	public static Map<String, Date> getPeriodDates(Object yearObj, Object quarterObj, Object monthObj) {
 		
 		// if the year is null, we don't have start and end dates, want to query from
@@ -221,9 +220,9 @@ public class ReportUtil {
 			periodDates.put("endDate", new Date());
 			return periodDates;
 		}
-		if (!quarterProvided && !monthProvided) {
+		/*if (!quarterProvided && !monthProvided) {
 			throw new IllegalArgumentException("Please enter either a quarter or a month");
-		}
+		}*/
 		
 		Integer quarter;
 		Integer month;
@@ -255,7 +254,7 @@ public class ReportUtil {
 			startMonth = month;
 			endMonth = month;
 		}
-		Map<String, Date> periodDates = new HashMap<String, Date>();
+		Map<String, Date> periodDates = new HashMap<>();
 		Calendar start = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
 		start.set(year, startMonth - 1, 1, 0, 0, 0);

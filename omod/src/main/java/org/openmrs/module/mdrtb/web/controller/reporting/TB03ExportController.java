@@ -408,7 +408,7 @@ public class TB03ExportController {
 				String result = null;
 				for (DstResult res : resList) {
 					if (res.getDrug() != null) {
-						drugName = res.getDrug().getFullySpecifiedName(Context.getLocale()).getName();
+						drugName = res.getDrug().getShortestName(Context.getLocale(), false).getName();
 						result = res.getResult().getShortestName(Context.getLocale(), false).getName();
 						tb03Data.getDstResults().put(drugName, result);
 					}

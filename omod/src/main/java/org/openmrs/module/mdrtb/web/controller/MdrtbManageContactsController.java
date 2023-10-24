@@ -95,7 +95,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 							try {
 								testInt = Integer.valueOf(deleteContactString);
 							}
-							catch (Exception ex) {}
+							catch (Exception ignored) {}
 							if (testInt.intValue() > 0) {
 								Relationship r = perS.getRelationship(testInt);
 								perS.voidRelationship(r, "voided by mdr-tb contacts module");

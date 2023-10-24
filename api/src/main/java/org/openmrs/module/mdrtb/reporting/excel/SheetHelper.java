@@ -216,17 +216,17 @@ public class SheetHelper {
 					return;
 				}
 			}
-			catch (Exception e) {}
+			catch (Exception ignored) {}
 			try {
 				cell.setCellValue(Integer.toString(Integer.parseInt(cellValueString)));
 				return;
 			}
-			catch (Exception e) {}
+			catch (Exception ignored) {}
 			try {
 				cell.setCellValue(Double.toString(Double.parseDouble(cellValueString)));
 				return;
 			}
-			catch (Exception e) {}
+			catch (Exception ignored) {}
 			cell.setCellValue(cellValueString);
 			return;
 		}

@@ -343,7 +343,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 			pws = Context.getService(MdrtbService.class).getTbPatientProgram(programId)
 			        .getClassificationAccordingToPatientGroups();
 		}
-		catch (Exception e) {}
+		catch (Exception ignored) {}
 		if (pws == null)
 			return null;
 		return pws.getConcept();

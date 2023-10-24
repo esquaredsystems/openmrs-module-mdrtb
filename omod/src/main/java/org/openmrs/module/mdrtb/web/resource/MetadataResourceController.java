@@ -122,7 +122,7 @@ public class MetadataResourceController extends DataDelegatingCrudResource<Simpl
 			        SimpleObject object = new SimpleObject();
 			        object.add(resources[i], map);
 			        objects.add(object);
-			    } catch (IOException e) {
+			    } catch (IOException ignored) {
 			    }
 			}
 		}

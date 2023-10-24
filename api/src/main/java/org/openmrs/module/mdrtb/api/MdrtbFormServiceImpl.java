@@ -98,7 +98,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 			    group.getId());
 			tbPatientProgram.setClassificationAccordingToPatientGroups(groupState);
 		}
-		catch (Exception e) {}
+		catch (Exception ignored) {}
 		try {
 			ProgramWorkflow groupByDrugFlow = Context.getService(MdrtbService.class).getProgramWorkflow(
 			    program,
@@ -108,7 +108,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 			    groupByDrugFlow, groupByDrug.getId());
 			tbPatientProgram.setClassificationAccordingToPreviousDrugUse(groupByDrugState);
 		}
-		catch (Exception e) {}
+		catch (Exception ignored) {}
 		
 		// Update Patient Program
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(
@@ -189,7 +189,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 			    group.getId());
 			mdrtbPatientProgram.setClassificationAccordingToPreviousTreatment(groupState);
 		}
-		catch (Exception e) {}
+		catch (Exception ignored) {}
 		try {
 			ProgramWorkflow groupByDrugFlow = Context.getService(MdrtbService.class).getProgramWorkflow(
 			    mdrtbPatientProgram.getPatientProgram().getProgram(),
@@ -199,7 +199,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 			    groupByDrugFlow, groupByDrug.getId());
 			mdrtbPatientProgram.setClassificationAccordingToPreviousDrugUse(groupByDrugState);
 		}
-		catch (Exception e) {}
+		catch (Exception ignored) {}
 		
 		// Update Patient Program
 		Context.getProgramWorkflowService().savePatientProgram(mdrtbPatientProgram.getPatientProgram());

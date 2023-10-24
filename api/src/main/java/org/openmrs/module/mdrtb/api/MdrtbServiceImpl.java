@@ -209,7 +209,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			try {
 				return conceptMap.lookup(lookup);
 			}
-			catch (Exception e) {}
+			catch (Exception ignored) {}
 			// Next try UUID
 			if (lookup.length() == 36 && lookup.matches(MdrtbConstants.UUID_REGEX)) {
 				try {
@@ -219,7 +219,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 						return c;
 					}
 				}
-				catch (Exception e) {}
+				catch (Exception ignored) {}
 			}
 			// Next try precise name
 			try {
@@ -238,7 +238,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 					}
 				}
 			}
-			catch (Exception e) {}
+			catch (Exception ignored) {}
 		}
 		log.warn("Concept: " + lookup + " was not found!");
 		return null;
@@ -1108,7 +1108,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 						}
 					}
 				}
-				catch (Exception e) {}
+				catch (Exception ignored) {}
 			}
 		}
 		return facilityList;

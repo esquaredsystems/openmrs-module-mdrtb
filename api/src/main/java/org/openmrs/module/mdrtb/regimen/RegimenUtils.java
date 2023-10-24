@@ -111,7 +111,7 @@ public class RegimenUtils {
 					if (is != null)
 						is.close();
 				}
-				catch (Exception e) {}
+				catch (Exception ignored) {}
 			}
 		}
 		

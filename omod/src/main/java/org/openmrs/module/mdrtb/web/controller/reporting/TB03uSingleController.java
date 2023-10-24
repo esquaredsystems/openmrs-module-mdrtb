@@ -836,5 +836,4 @@ public class TB03uSingleController {
 		
 		return "/module/mdrtb/reporting/tb03uSingleResults";
 	}
-	
 }

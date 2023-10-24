@@ -134,7 +134,7 @@ public class DrugForecastUtil {
 			// dosesPerDay = Integer.valueOf(s.substring(0, s.indexOf('/')));
 			dosesPerDay = o.getFrequency().getFrequencyPerDay();
 		}
-		catch (Exception ex) {}
+		catch (Exception ignored) {}
 		double total = pillsPerDose * dosesPerDay * days;
 		return total;
 	}

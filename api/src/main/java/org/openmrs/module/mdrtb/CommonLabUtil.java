@@ -59,60 +59,57 @@ public class CommonLabUtil {
 	
 	public CommonLabUtil() {
 		// Try to Initialize service
-		if (service == null) {
-			try {
-				service = Context.getService(CommonLabTestService.class);
-				if (service != null) {
-					if (types.isEmpty()) {
-						types = service.getAllLabTestTypes(false);
-					}
-					// If the prior does not work, fallback to SQL
-					if (types == null) {
-						types = getLabTestTypesViaSql();
-					}
+		try {
+			service = Context.getService(CommonLabTestService.class);
+			if (service != null) {
+				if (types.isEmpty()) {
+					types = service.getAllLabTestTypes(false);
+				}
+				// If the prior does not work, fallback to SQL
+				if (types == null) {
+					types = getLabTestTypesViaSql();
 				}
 			}
-			catch (Exception e) {
-				log.debug("Common Lab service may not have initialized!" + e.getMessage());
-			}
-			// Fetch all attribuet types for DST tests
-			List<LabTestAttributeType> attributeTypes = service.getAllLabTestAttributeTypes(false);
-			// Attach attributes for MDRTB test type
-			for (LabTestAttributeType at : attributeTypes) {
-				if (at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
-					if (at.getGroupName() == null) {
-						commonAttributeTypes.add(at);
-					} 
-					else {
-						switch (at.getGroupName().toUpperCase()) {
-							case "XPERT":
-								xpertAttributeTypes.add(at);
-								break;
-							case "HAIN":
-								hainAttributeTypes.add(at);
-								break;
-							case "HAIN2":
-								hain2AttributeTypes.add(at);
-								break;
-							case "CULTURE":
-								cultureAttributeTypes.add(at);
-								break;
-							case "SMEAR":
-								smearAttributeTypes.add(at);
-								break;
-							default:
-								break;
-						}
+		} catch (Exception e) {
+			log.debug("Common Lab service may not have initialized!" + e.getMessage());
+		}
+		// Fetch all attribuet types for DST tests
+		List<LabTestAttributeType> attributeTypes = service.getAllLabTestAttributeTypes(false);
+		// Attach attributes for MDRTB test type
+		for (LabTestAttributeType at : attributeTypes) {
+			if (at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName() == null) {
+					commonAttributeTypes.add(at);
+				}
+				else {
+					switch (at.getGroupName().toUpperCase()) {
+						case "XPERT":
+							xpertAttributeTypes.add(at);
+							break;
+						case "HAIN":
+							hainAttributeTypes.add(at);
+							break;
+						case "HAIN2":
+							hain2AttributeTypes.add(at);
+							break;
+						case "CULTURE":
+							cultureAttributeTypes.add(at);
+							break;
+						case "SMEAR":
+							smearAttributeTypes.add(at);
+							break;
+						default:
+							break;
 					}
 				}
 			}
-			for (LabTestAttributeType at : attributeTypes) {
-				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST_MGIT_TEST_NAME)) {
-					dstMgitAttributeTypes.add(at);
-				}
-				if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST_LJ_TEST_NAME)) {
-					dstLjAttributeTypes.add(at);
-				}
+		}
+		for (LabTestAttributeType at : attributeTypes) {
+			if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST_MGIT_TEST_NAME)) {
+				dstMgitAttributeTypes.add(at);
+			}
+			if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST_LJ_TEST_NAME)) {
+				dstLjAttributeTypes.add(at);
 			}
 		}
 	}

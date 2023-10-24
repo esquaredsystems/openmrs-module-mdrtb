@@ -166,7 +166,7 @@ public class TB03DataResourceController extends DelegatingCrudResource<SimpleTB0
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
 		List<TB03Data> patientSet = TB03ExportController.getTB03PatientSet(year, quarter, month, locList);
-		List<SimpleTB03Data> list = new ArrayList<SimpleTB03Data>();
+		List<SimpleTB03Data> list = new ArrayList<>();
 		for (TB03Data tb03Data : patientSet) {
 			list.add(new SimpleTB03Data(tb03Data));
 		}

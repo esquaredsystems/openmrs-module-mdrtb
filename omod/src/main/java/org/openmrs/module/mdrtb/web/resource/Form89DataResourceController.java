@@ -121,7 +121,7 @@ public class Form89DataResourceController extends DelegatingCrudResource<SimpleF
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
 		List<Form89Data> patientSet = Form89SingleExportController.getForm89PatientSet(year, quarter, month, locList);
-		List<SimpleForm89Data> list = new ArrayList<SimpleForm89Data>();
+		List<SimpleForm89Data> list = new ArrayList<>();
 		for (Form89Data form89Data : patientSet) {
 			list.add(new SimpleForm89Data(form89Data));
 		}

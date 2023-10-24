@@ -108,8 +108,7 @@ public class PatientListResourceController extends DelegatingCrudResource<Simple
 	
 	@Override
 	public DelegatingResourceDescription getCreatableProperties() {
-		DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
-		return delegatingResourceDescription;
+		return new DelegatingResourceDescription();
 	}
 	
 	@Override
@@ -155,105 +154,108 @@ public class PatientListResourceController extends DelegatingCrudResource<Simple
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		List<SimpleDataObject> tableData = new ArrayList<SimpleDataObject>();
+		List<SimpleDataObject> tableData = new ArrayList<>();
 		String htmlTable = null;
 		switch (listName.toLowerCase()) {
 			case ALL_CASES_ENROLLED:
-				htmlTable = PatientListContoller.getAllCasesEnrolledTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getAllCasesEnrolledTable(locList, year, quarter, month, true);
 				break;
 			case DOTS_CAES_BY_REGISTRATION_GROUP:
-				htmlTable = PatientListContoller.getDotsCasesByRegistrationGroupTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getDotsCasesByRegistrationGroupTable(locList, year, quarter, month, true);
 				break;
 			case DOTS_CASES_BY_ANATOMICAL_SITE:
-				htmlTable = PatientListContoller.getDotsCasesByAnatomicalSiteTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getDotsCasesByAnatomicalSiteTable(locList, year, quarter, month, true);
 				break;
 			case DOTS_CASES_BY_DRUG_RESISTANCE:
-				htmlTable = PatientListContoller.getDotsCasesByDrugResistanceTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getDotsCasesByDrugResistanceTable(locList, year, quarter, month, true);
 				break;
 			case DOTS_CASES_BY_REGISTRATION_GROUP_AND_BACTERIOLOGICAL_STATUS:
 				htmlTable = PatientListContoller.getDotsPulmonaryCasesByRegisrationGroupAndBacteriologicalStatusTable(
-				    locList, year, quarter, month);
+				    locList, year, quarter, month, true);
 				break;
 			case MDR_XDR_PATIENTS:
-				htmlTable = PatientListContoller.getMdrXdrPatientsTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getMdrXdrPatientsTable(locList, year, quarter, month, true);
 				break;
 			case MDR_XDR_PATIENTS_WITH_NO_TREATMENT:
-				htmlTable = PatientListContoller.getMdrXdrPatientsWithNoTreatmentTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getMdrXdrPatientsWithNoTreatmentTable(locList, year, quarter, month, true);
 				break;
 			case MDR_SUCCESSFUL_TREATMENT_OUTCOME:
-				htmlTable = PatientListContoller.getMdrSuccessfulTreatmentOutcomeTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getMdrSuccessfulTreatmentOutcomeTable(locList, year, quarter, month, true);
 				break;
 			case WOMEN_OF_CHILD_BEARING_AGE:
-				htmlTable = PatientListContoller.getWomenOfChildbearingAgeTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getWomenOfChildbearingAgeTable(locList, year, quarter, month, true);
 				break;
 			case MEN_OF_CONSCRIPT_AGE:
-				htmlTable = PatientListContoller.getMenOfConscriptAgeTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getMenOfConscriptAgeTable(locList, year, quarter, month, true);
 				break;
 			case WITH_CONCOMITANT_DISEASE:
-				htmlTable = PatientListContoller.getCasesWithConcamitantDiseasesTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithConcamitantDiseasesTable(locList, year, quarter, month, true);
 				break;
 			case WITH_CANCER:
-				htmlTable = PatientListContoller.getCasesWithCancerTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithCancerTable(locList, year, quarter, month, true);
 				break;
 			case DETECTED_FROM_CONTACT:
-				htmlTable = PatientListContoller.getCasesDetectedFromContactTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesDetectedFromContactTable(locList, year, quarter, month, true);
 				break;
 			case WITH_COPD:
-				htmlTable = PatientListContoller.getCasesWithCopdTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithCopdTable(locList, year, quarter, month, true);
 				break;
 			case WITH_HYPERTENSION:
-				htmlTable = PatientListContoller.getCasesWithHypertensionTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithHypertensionTable(locList, year, quarter, month, true);
 				break;
 			case WITH_ULCER:
-				htmlTable = PatientListContoller.getCasesWithUlcerTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithUlcerTable(locList, year, quarter, month, true);
 				break;
 			case WITH_MENTAL_DISORDER:
-				htmlTable = PatientListContoller.getCasesWithMentalDisorderTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithMentalDisorderTable(locList, year, quarter, month, true);
 				break;
 			case WITH_HIV:
-				htmlTable = PatientListContoller.getCasesWithHivTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithHivTable(locList, year, quarter, month, true);
 				break;
 			case WITH_HEPATITIS:
-				htmlTable = PatientListContoller.getCasesWithHepatitisTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithHepatitisTable(locList, year, quarter, month, true);
 				break;
 			case WITH_KIDNEY_DISEASE:
-				htmlTable = PatientListContoller.getCasesWithKidneyDiseaseTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithKidneyDiseaseTable(locList, year, quarter, month, true);
 				break;
 			case WITH_OTHER_DISEASE:
-				htmlTable = PatientListContoller.getCasesWithOtherDiseaseTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesWithOtherDiseaseTable(locList, year, quarter, month, true);
 				break;
 			case BY_SOC_PROF_STATUS:
-				htmlTable = PatientListContoller.getCasesBySocProfStatusTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesBySocProfStatusTable(locList, year, quarter, month, true);
 				break;
 			case BY_POPULATION_CATEGORY:
-				htmlTable = PatientListContoller.getCasesByPopulationCategoryTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesByPopulationCategoryTable(locList, year, quarter, month, true);
 				break;
 			case BY_DWELLING:
-				htmlTable = PatientListContoller.getCasesByDwellingTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesByDwellingTable(locList, year, quarter, month, true);
 				break;
 			case BY_PLACES_OF_DETECTION:
-				htmlTable = PatientListContoller.getCasesByPlaceOfDetectionTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesByPlaceOfDetectionTable(locList, year, quarter, month, true);
 				break;
 			case BY_CIRCUMSTANCES_OF_DETECTION:
-				htmlTable = PatientListContoller.getCasesByCircumstancesOfDetectionTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller
+				        .getCasesByCircumstancesOfDetectionTable(locList, year, quarter, month, true);
 				break;
 			case BY_METHOD_OF_DETECTION:
-				htmlTable = PatientListContoller.getCasesByMethodOfDetectionTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesByMethodOfDetectionTable(locList, year, quarter, month, true);
 				break;
 			case BY_PULMONARY_LOCATION:
-				htmlTable = PatientListContoller.getCasesByPulmonaryLocationTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesByPulmonaryLocationTable(locList, year, quarter, month, true);
 				break;
 			case BY_EXTRA_PULMONARY_LOCATION:
-				htmlTable = PatientListContoller.getCasesByExtraPulmonaryLocationTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getCasesByExtraPulmonaryLocationTable(locList, year, quarter, month, true);
 				break;
 			case DRTB_CASES:
-				htmlTable = PatientListContoller.getDrtbCasesTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getDrtbCasesTable(locList, year, quarter, month, true);
 				break;
 			case DRTB_PATIENTS_WITHOUT_TREATMENT:
-				htmlTable = PatientListContoller.getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarter, month,
+				    true);
 				break;
 			case DRTB_PATIENTS_WITH_SUCCESSFUL_TREATMENT:
-				htmlTable = PatientListContoller.getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarter, month);
+				htmlTable = PatientListContoller.getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarter, month,
+				    true);
 				break;
 		}
 		tableData.add(new SimpleDataObject(htmlTable, null, null));
