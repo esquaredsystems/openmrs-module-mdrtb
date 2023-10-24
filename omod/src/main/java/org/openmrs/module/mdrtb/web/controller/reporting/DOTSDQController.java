@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.reporting;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,7 +31,6 @@ import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.reporting.custom.DQItem;
 import org.openmrs.module.mdrtb.reporting.custom.TB03Util;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -136,11 +134,67 @@ public class DOTSDQController {
 	public static String doDQ(@RequestParam("district") Integer districtId, @RequestParam("oblast") Integer oblastId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam(value = "year", required = true) Integer year,
 	        @RequestParam(value = "quarter", required = false) String quarter,
-	        @RequestParam(value = "month", required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = "month", required = false) String month, ModelMap model) {
 		
-		SimpleDateFormat sdf = new SimpleDateFormat();
+		Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
+		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
+		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		
-		List<DQItem> missingTB03 = new ArrayList<>();
+		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
+		
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+
+		Map<String, Object> metrics = getDOTSQualityMetrics(year, quarterInt, monthInt, locList);
+		for (String key : metrics.keySet()) {
+			model.addAttribute(key, metrics.get(key));
+		}
+		
+		String oName = null;
+		Region obl = Context.getService(MdrtbService.class).getRegion(oblastId);
+		if (obl != null)
+			oName = obl.getName();
+		String dName = null;
+		if (districtId != null) {
+			District dist = Context.getService(MdrtbService.class).getDistrict(districtId);
+			if (dist != null)
+				dName = dist.getName();
+		}
+		String fName = null;
+		if (facilityId != null) {
+			Facility fac = Context.getService(MdrtbService.class).getFacility(facilityId);
+			if (fac != null)
+				fName = fac.getName();
+		}
+		model.addAttribute("oName", oName);
+		model.addAttribute("dName", dName);
+		model.addAttribute("fName", fName);
+		model.addAttribute("oblast", oblastId);
+		model.addAttribute("facility", facilityId);
+		model.addAttribute("district", districtId);
+		model.addAttribute("year", year);
+		if (month != null && month.length() != 0)
+			model.addAttribute("month", month.replace("\"", ""));
+		else
+			model.addAttribute("month", "");
+		
+		if (quarter != null && quarter.length() != 0)
+			model.addAttribute("quarter", quarter.replace("\"", "'"));
+		else
+			model.addAttribute("quarter", "");
+
+		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
+		    year, quarterInt, monthInt, "DOTSDQ", ReportType.DOTSTB);
+		model.addAttribute("reportStatus", reportStatus);
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
+		return "/module/mdrtb/reporting/dotsdqResults";
+	}
+
+	public static Map<String, Object> getDOTSQualityMetrics(Integer year, Integer quarter, Integer month,
+	        List<Location> locList) {
+		Map<String, Object> map = new HashMap<>();
+		new ArrayList<>();
 		List<DQItem> missingAge = new ArrayList<>();
 		List<DQItem> missingPatientGroup = new ArrayList<>();
 		List<DQItem> noForm89 = new ArrayList<>();
@@ -178,25 +232,10 @@ public class DOTSDQController {
 		Integer eptbConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB)
 		        .getConceptId();
 		
-		sdf.applyPattern("dd.MM.yyyy");
-		SimpleDateFormat rdateSDF = new SimpleDateFormat();
-		rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
-		
-		Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
-		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
-		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
-		
-		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
-		
-		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
 		List<TransferOutForm> tofList = Context.getService(MdrtbService.class).getTransferOutFormsFilled(locList, year,
-		    quarter, month);
+		    quarter.toString(), month.toString());
 		List<TransferInForm> tifList = Context.getService(MdrtbService.class).getTransferInFormsFilled(locList, year,
-		    quarter, month);
-		List<TransferOutForm> allTofs = null;
+		    quarter.toString(), month.toString());
 		List<TransferInForm> allTifs = null;
 		HashMap<Integer, Integer> dupMap = new HashMap<>();
 		HashMap<Integer, Integer> f89DupMap = new HashMap<>();
@@ -205,12 +244,12 @@ public class DOTSDQController {
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		dateMap.get("startDate");
+		dateMap.get("endDate");
 		Integer countNum = 0;
 		
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		for (TB03Form tf : tb03List) {
-			
 			//INIT
 			treatmentStartDate = null;
 			tCal = null;
@@ -225,28 +264,22 @@ public class DOTSDQController {
 			errorFlag = Boolean.FALSE;
 			eptb = Boolean.FALSE;
 			child = Boolean.FALSE;
-			
 			dqi = new DQItem();
 			Patient patient = tf.getPatient();
-			
 			if (patient == null || patient.getVoided()) {
 				continue;
 			}
-			
 			dqi.setPatient(patient);
-			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
+			dqi.setDateOfBirth(Context.getDateFormat().format(patient.getBirthdate()));
 			
 			//DUPLICATE TB03
 			Integer patientProgramId = null;
-			
 			patientProgramId = tf.getPatientProgramId();
 			Boolean found = Boolean.FALSE;
 			if (patientProgramId != null && !dupMap.containsKey(patientProgramId)) {
 				List<TB03Form> dupList = Context.getService(MdrtbService.class).getTB03FormsForProgram(patient,
 				    patientProgramId);
-				
 				if (dupList != null) {
-					
 					if (dupList.size() > 1) {
 						for (TB03Form form : dupList) {
 							if (form.getPatientProgramId().intValue() == patientProgramId.intValue()) {
@@ -257,7 +290,6 @@ public class DOTSDQController {
 						}
 					}
 				}
-				
 				if (found) {
 					dupMap.put(patientProgramId, patientProgramId);
 					errorFlag = Boolean.TRUE;
@@ -273,23 +305,18 @@ public class DOTSDQController {
 			}
 			
 			//duplicate FORM89
-			
 			found = Boolean.FALSE;
 			if (patientProgramId != null && !f89DupMap.containsKey(patientProgramId)) {
 				List<Form89> formList = Context.getService(MdrtbService.class).getForm89FormsForProgram(patient,
 				    patientProgramId);
-				
 				if (formList != null) {
-					
 					if (formList.size() > 1) {
 						for (Form89 form : formList) {
 							dqi.addForm89Link(form.getLink());
 							found = Boolean.TRUE;
-							
 						}
 					}
 				}
-				
 				if (found) {
 					f89DupMap.put(patientProgramId, patientProgramId);
 					errorFlag = Boolean.TRUE;
@@ -302,16 +329,12 @@ public class DOTSDQController {
 				if (tf.getRegistrationGroup().getConceptId() != neww) {
 					List<Form89> formList = Context.getService(MdrtbService.class).getForm89FormsForProgram(patient,
 					    patientProgramId);
-					
-					if (formList != null && formList.size() != 0) {
+					if (formList != null && !formList.isEmpty()) {
 						errorFlag = Boolean.TRUE;
 						invalidForm89.add(dqi);
 					}
-					
 				}
-				
 			}
-			
 			if (tf.getAgeAtTB03Registration() == null) {
 				missingAge.add(dqi);
 				errorFlag = Boolean.TRUE;
@@ -321,12 +344,11 @@ public class DOTSDQController {
 				missingPatientGroup.add(dqi);
 				errorFlag = Boolean.TRUE;
 			}
-			
 			else if (tf.getRegistrationGroup().getId() == (Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.NEW).getId().intValue())) {
 				List<Form89> f89 = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-				    tf.getPatient(), null, tf.getPatientProgramId(), year, quarter, month);
-				if (f89 == null || f89.size() == 0) {
+				    tf.getPatient(), null, tf.getPatientProgramId(), year, quarter.toString(), month.toString());
+				if (f89 == null || f89.isEmpty()) {
 					noForm89.add(dqi);
 					errorFlag = Boolean.TRUE;
 				}
@@ -338,7 +360,6 @@ public class DOTSDQController {
 				errorFlag = Boolean.TRUE;
 			} else {
 				//MISSING OUTCOMES
-				
 				treatmentStartDate = tf.getTreatmentStartDate();
 				tCal = new GregorianCalendar();
 				tCal.setTime(treatmentStartDate);
@@ -346,7 +367,6 @@ public class DOTSDQController {
 				timeDiff = nowCal.getTimeInMillis() - tCal.getTimeInMillis();
 				diffInWeeks = MdrtbUtil.timeDiffInWeeks(timeDiff);
 				if (diffInWeeks > 32) {
-					
 					if (tf.getTreatmentOutcome() == null) {
 						missingOutcomes.add(dqi);
 						errorFlag = Boolean.TRUE;
@@ -363,7 +383,6 @@ public class DOTSDQController {
 					eptb = Boolean.TRUE;
 				}
 			}
-			
 			if (tf.getAgeAtTB03Registration() != null) {
 				Integer age = tf.getAgeAtTB03Registration();
 				
@@ -379,10 +398,8 @@ public class DOTSDQController {
 			firstXpert = TB03Util.getFirstXpertForm(tf);
 			firstHAIN = TB03Util.getFirstHAINForm(tf);
 			diagnosticCulture = TB03Util.getDiagnosticCultureForm(tf);
-			
 			if (diagnosticSmear == null && diagnosticCulture == null && firstXpert == null && firstHAIN == null
 			        && eptb == Boolean.FALSE && child == Boolean.FALSE) {
-				
 				missingDiagnosticTests.add(dqi);
 				errorFlag = Boolean.TRUE;
 			}
@@ -415,15 +432,14 @@ public class DOTSDQController {
 			Date tofDate = tof.getEncounterDatetime();
 			Patient tofPatient = tof.getPatient();
 			dqi = new DQItem();
-			Patient patient = tof.getPatient();//Context.getPatientService().getPatient(i);
-			
+			Patient patient = tof.getPatient();
 			if (patient == null || patient.getVoided()) {
 				continue;
 			}
 			// patientList.add(patient);
 			dqi.setPatient(patient);
 			dqi.setLocName(tofLoc.getDisplayString());
-			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
+			dqi.setDateOfBirth(Context.getDateFormat().format(patient.getBirthdate()));
 			foundFlag = Boolean.FALSE;
 			errorFlag = Boolean.FALSE;
 			allTifs = Context.getService(MdrtbService.class).getTransferInFormsFilledForPatient(patient);
@@ -435,16 +451,12 @@ public class DOTSDQController {
 					}
 				}
 			}
-			
 			if (!foundFlag) {
-				
 				if (!errList.contains(patient)) {
 					errorCount++;
 					errList.add(patient);
 				}
-				
 				noTifAfterTransferOut.add(dqi);
-				
 			}
 		}
 		
@@ -458,7 +470,7 @@ public class DOTSDQController {
 			Date tifDate = tif.getEncounterDatetime();
 			Patient tifPatient = tif.getPatient();
 			dqi = new DQItem();
-			Patient patient = tif.getPatient();//Context.getPatientService().getPatient(i);
+			Patient patient = tif.getPatient();
 			
 			if (patient == null || patient.getVoided()) {
 				continue;
@@ -466,10 +478,10 @@ public class DOTSDQController {
 			// patientList.add(patient);
 			dqi.setPatient(patient);
 			dqi.setLocName(tifLoc.getDisplayString());
-			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
+			dqi.setDateOfBirth(Context.getDateFormat().format(patient.getBirthdate()));
 			foundFlag = Boolean.FALSE;
 			errorFlag = Boolean.FALSE;
-			allTofs = Context.getService(MdrtbService.class).getTransferOutFormsFilledForPatient(patient);
+			Context.getService(MdrtbService.class).getTransferOutFormsFilledForPatient(patient);
 			for (TransferOutForm tof : tofList) {
 				if (tifLoc.equals(tof.getLocation()) && tifPatient.equals(tof.getPatient())) {
 					if (tof.getEncounterDatetime().before(tifDate)) {
@@ -478,90 +490,41 @@ public class DOTSDQController {
 					}
 				}
 			}
-			
 			if (!foundFlag) {
-				
 				if (!errList.contains(patient)) {
 					errorCount++;
 					errList.add(patient);
 				}
-				
 				noTofBeforeTransferIn.add(dqi);
-				
 			}
-			
 		}
 		
-		Integer num = countNum;// + tofList.size();
-		
+		Integer num = countNum;
 		Integer errorPercentage = null;
 		if (num == 0)
 			errorPercentage = 0;
 		else
 			errorPercentage = (errorCount * 100) / num;
-		
-		String oName = null;
-		Region obl = Context.getService(MdrtbService.class).getRegion(oblastId);
-		if (obl != null)
-			oName = obl.getName();
-		
-		String dName = null;
-		if (districtId != null) {
-			District dist = Context.getService(MdrtbService.class).getDistrict(districtId);
-			if (dist != null)
-				dName = dist.getName();
-		}
-		
-		String fName = null;
-		if (facilityId != null) {
-			Facility fac = Context.getService(MdrtbService.class).getFacility(facilityId);
-			if (fac != null)
-				fName = fac.getName();
-		}
-		
-		model.addAttribute("num", num);
+		map.put("num", num);
 		//model.addAttribute("missingTB03", missingTB03);
-		model.addAttribute("duplicateTB03", duplicateTB03);
-		model.addAttribute("duplicateForm89", duplicateForm89);
-		model.addAttribute("unlinkedTB03", unlinkedTB03);
-		model.addAttribute("missingForm89", noForm89);
-		model.addAttribute("invalidForm89", invalidForm89);
-		model.addAttribute("missingAge", missingAge);
-		model.addAttribute("missingPatientGroup", missingPatientGroup);
-		model.addAttribute("missingDiagnosticTests", missingDiagnosticTests);
-		model.addAttribute("notStartedTreatment", notStartedTreatment);
-		model.addAttribute("missingOutcomes", missingOutcomes);
-		model.addAttribute("noDOTSId", noDOTSId);
-		model.addAttribute("noSite", noSite);
-		model.addAttribute("noTrasnferIn", noTifAfterTransferOut);
-		model.addAttribute("noTransferOut", noTofBeforeTransferIn);
-		model.addAttribute("errorCount", new Integer(errorCount));
-		model.addAttribute("errorPercentage", errorPercentage.toString() + "%");
-		model.addAttribute("oName", oName);
-		model.addAttribute("dName", dName);
-		model.addAttribute("fName", fName);
+		map.put("duplicateTB03", duplicateTB03);
+		map.put("duplicateForm89", duplicateForm89);
+		map.put("unlinkedTB03", unlinkedTB03);
+		map.put("missingForm89", noForm89);
+		map.put("invalidForm89", invalidForm89);
+		map.put("missingAge", missingAge);
+		map.put("missingPatientGroup", missingPatientGroup);
+		map.put("missingDiagnosticTests", missingDiagnosticTests);
+		map.put("notStartedTreatment", notStartedTreatment);
+		map.put("missingOutcomes", missingOutcomes);
+		map.put("noDOTSId", noDOTSId);
+		map.put("noSite", noSite);
+		map.put("noTrasnferIn", noTifAfterTransferOut);
+		map.put("noTransferOut", noTofBeforeTransferIn);
+		map.put("errorCount", new Integer(errorCount));
+		map.put("errorPercentage", errorPercentage.toString() + "%");
 		
-		model.addAttribute("locale", Context.getLocale().toString());
-		
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
-		    year, quarterInt, monthInt, "DOTSDQ", ReportType.DOTSTB);
-		
-		model.addAttribute("oblast", oblastId);
-		model.addAttribute("facility", facilityId);
-		model.addAttribute("district", districtId);
-		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
-			model.addAttribute("month", month.replace("\"", ""));
-		else
-			model.addAttribute("month", "");
-		
-		if (quarter != null && quarter.length() != 0)
-			model.addAttribute("quarter", quarter.replace("\"", "'"));
-		else
-			model.addAttribute("quarter", "");
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
-		model.addAttribute("reportStatus", reportStatus);
-		return "/module/mdrtb/reporting/dotsdqResults";
+		map.put("locale", Context.getLocale().toString());
+		return map;
 	}
 }
