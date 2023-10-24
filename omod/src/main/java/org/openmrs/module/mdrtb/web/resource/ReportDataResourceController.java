@@ -1,5 +1,6 @@
 package org.openmrs.module.mdrtb.web.resource;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,11 +131,20 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 	
 	@Override
 	public SimpleReportData save(SimpleReportData delegate) throws ResponseException {
+		// If the record exists, then we only want to update the Table data, nothing else.
 		ReportData reportData = delegate.toReportData();
-		String tableData = delegate.getTableData();
-		reportData = service.saveReportData(reportData);
-		delegate = new SimpleReportData(reportData, false);
-		delegate.setTableData(tableData);
+		ReportData existing = service.getReportDataByUuid(delegate.getUuid());
+		if (existing != null) {
+			try {
+				existing.setTableData(reportData.getTableData());
+				service.saveReportData(existing);
+			}
+			catch (IOException e) {
+				log.error(e.getMessage());
+			}
+		} else {
+			service.saveReportData(reportData);
+		}
 		return delegate;
 	}
 	

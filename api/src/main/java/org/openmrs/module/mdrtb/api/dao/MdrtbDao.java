@@ -16,7 +16,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.DataFormatException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -133,9 +132,6 @@ public class MdrtbDao {
 	
 	/**
 	 * Fetch all reports and create a nested list for each column
-	 * 
-	 * @param reportType
-	 * @return
 	 */
 	public List<List<Object>> getReports(String reportType) {
 		String sql = "select report_id, region_id, district_id, facility_id, report_name, year, quarter, month, report_date, report_type, report_status from report_data where report_type = "
@@ -160,31 +156,40 @@ public class MdrtbDao {
 		} else if (month != null) {
 			criteria.add(Restrictions.eq("month", month));
 		}
-		List<Location> facilityList = new ArrayList<>();
-		if (facility != null) {
-			// If Facility is provided, nothing else needed
-			facilityList.add(facility);
-		} else if (district != null) {
+		List<Location> locationList = new ArrayList<>();
+		boolean regionProvided = region != null;
+		boolean districtProvided = district != null;
+		boolean facilityProvided = facility != null;
+		// If Facility is also provided, then return only the list for that facility
+		if (facilityProvided) {
+			locationList.add(facility);
+		}
+		// If Region and District are provided, then the specific Region, District and all facilities will be fetched
+		else if (districtProvided) {
+			locationList.add(district);
 			// If District is provided, then retrieve all its children
 			BaseLocation parent = new BaseLocation(district, LocationHierarchy.DISTRICT);
 			List<BaseLocation> facilities = getLocationsByParent(parent);
 			for (BaseLocation f : facilities) {
-				facilityList.add(f);
+				locationList.add(f);
 			}
-		} else {
-			// If Region is provided, then O boy! We're in for a lengthy stride...
+		}
+		// If only Region is provided, then Region, and its entire tree of children and grandchildren
+		else if (regionProvided) {
+			locationList.add(district);
+			// O boy! We're in for a lengthy stride...
 			BaseLocation parent = new BaseLocation(region, LocationHierarchy.REGION);
 			List<BaseLocation> districts = getLocationsByParent(parent);
 			for (BaseLocation d : districts) {
+				locationList.add(d);
 				List<BaseLocation> facilities = getLocationsByParent(d);
 				for (BaseLocation f : facilities) {
-					facilityList.add(f);
+					locationList.add(f);
 				}
 			}
-		}
-		criteria.add(Restrictions.in("location", facilityList.toArray()));
-		List<ReportData> list = criteria.list();
-		return list;
+		}		
+		criteria.add(Restrictions.in("location", locationList.toArray()));
+		return criteria.list();
 	}
 	
 	public List<String> getReportDataAsList(Integer regionId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
@@ -195,13 +200,13 @@ public class MdrtbDao {
 		List<ReportData> reports = searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
 		List<String> list = new ArrayList<>();
 		for (ReportData report : reports) {
-			try {
+            try {
 				list.add(report.getTableData());
 			}
-			catch (IOException | DataFormatException e) {
-				log.debug(e.getMessage());
+			catch (IOException e) {
+				e.printStackTrace();
 			}
-		}		
+        }
 		return list;
 	}
 	
@@ -211,7 +216,7 @@ public class MdrtbDao {
 		Location district = districtId != null ? Context.getLocationService().getLocation(districtId) : null;
 		Location facility = facilityId != null ? Context.getLocationService().getLocation(facilityId) : null;
 		List<ReportData> reports = searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
-		return reports.size() > 0;
+		return !reports.isEmpty();
 	}
 	
 	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames) {
@@ -260,9 +265,6 @@ public class MdrtbDao {
 	
 	/**
 	 * Fetches Locations by their respective level of hierarchy
-	 * 
-	 * @param level
-	 * @return
 	 */
 	public List<BaseLocation> getLocationsByHierarchyLevel(LocationHierarchy level) {
 		Map<LocationAttributeType, Object> attributeValues = new HashMap<>();
