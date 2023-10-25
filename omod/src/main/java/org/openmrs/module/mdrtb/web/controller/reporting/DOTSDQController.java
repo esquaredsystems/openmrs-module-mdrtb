@@ -144,7 +144,7 @@ public class DOTSDQController {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-
+		
 		Map<String, Object> metrics = getDOTSQualityMetrics(year, quarterInt, monthInt, locList);
 		for (String key : metrics.keySet()) {
 			model.addAttribute(key, metrics.get(key));
@@ -182,19 +182,19 @@ public class DOTSDQController {
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");
-
+		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarterInt, monthInt, "DOTSDQ", ReportType.DOTSTB);
+		model.addAttribute("locale", Context.getLocale().toString());
 		model.addAttribute("reportStatus", reportStatus);
 		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
 		return "/module/mdrtb/reporting/dotsdqResults";
 	}
-
+	
 	public static Map<String, Object> getDOTSQualityMetrics(Integer year, Integer quarter, Integer month,
 	        List<Location> locList) {
 		Map<String, Object> map = new HashMap<>();
-		new ArrayList<>();
 		List<DQItem> missingAge = new ArrayList<>();
 		List<DQItem> missingPatientGroup = new ArrayList<>();
 		List<DQItem> noForm89 = new ArrayList<>();
@@ -202,7 +202,6 @@ public class DOTSDQController {
 		List<DQItem> missingDiagnosticTests = new ArrayList<>();
 		List<DQItem> notStartedTreatment = new ArrayList<>();
 		List<DQItem> missingOutcomes = new ArrayList<>();
-		//List<DQItem> missingAddress = new ArrayList<DQItem>();
 		List<DQItem> noDOTSId = new ArrayList<>();
 		List<DQItem> noSite = new ArrayList<>();
 		List<DQItem> noTifAfterTransferOut = new ArrayList<>();
@@ -233,9 +232,9 @@ public class DOTSDQController {
 		        .getConceptId();
 		
 		List<TransferOutForm> tofList = Context.getService(MdrtbService.class).getTransferOutFormsFilled(locList, year,
-		    quarter.toString(), month.toString());
+		    String.valueOf(quarter), String.valueOf(month));
 		List<TransferInForm> tifList = Context.getService(MdrtbService.class).getTransferInFormsFilled(locList, year,
-		    quarter.toString(), month.toString());
+			String.valueOf(quarter), String.valueOf(month));
 		List<TransferInForm> allTifs = null;
 		HashMap<Integer, Integer> dupMap = new HashMap<>();
 		HashMap<Integer, Integer> f89DupMap = new HashMap<>();
@@ -347,7 +346,7 @@ public class DOTSDQController {
 			else if (tf.getRegistrationGroup().getId() == (Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.NEW).getId().intValue())) {
 				List<Form89> f89 = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-				    tf.getPatient(), null, tf.getPatientProgramId(), year, quarter.toString(), month.toString());
+				    tf.getPatient(), null, tf.getPatientProgramId(), year, String.valueOf(quarter), String.valueOf(month));
 				if (f89 == null || f89.isEmpty()) {
 					noForm89.add(dqi);
 					errorFlag = Boolean.TRUE;
@@ -506,7 +505,6 @@ public class DOTSDQController {
 		else
 			errorPercentage = (errorCount * 100) / num;
 		map.put("num", num);
-		//model.addAttribute("missingTB03", missingTB03);
 		map.put("duplicateTB03", duplicateTB03);
 		map.put("duplicateForm89", duplicateForm89);
 		map.put("unlinkedTB03", unlinkedTB03);
@@ -523,8 +521,6 @@ public class DOTSDQController {
 		map.put("noTransferOut", noTofBeforeTransferIn);
 		map.put("errorCount", new Integer(errorCount));
 		map.put("errorPercentage", errorPercentage.toString() + "%");
-		
-		map.put("locale", Context.getLocale().toString());
 		return map;
 	}
 }

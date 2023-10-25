@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openmrs.Concept;
 import org.openmrs.Location;
@@ -119,14 +121,81 @@ public class MDRDQController {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) {
 		
-		SimpleDateFormat sdf = new SimpleDateFormat();
+		List<Location> locList = null;
+		if (oblastId != null) {
+			if (oblastId == 186) {
+				locList = Context.getService(MdrtbService.class)
+				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
+			} else {
+				Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
+				District district = Context.getService(MdrtbService.class).getDistrict(districtId);
+				Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
+				locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
+			}
+		}
+		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
+		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		
+		Map<String, Object> metrics = getMDRQualityMetrics(year, quarterInt, monthInt, locList);
+		for (String key : metrics.keySet()) {
+			model.addAttribute(key, metrics.get(key));
+		}
+		
+		String oName = null;
+		Region obl = Context.getService(MdrtbService.class).getRegion(oblastId);
+		if (obl != null)
+			oName = obl.getName();
+		
+		String dName = null;
+		if (districtId != null) {
+			District dist = Context.getService(MdrtbService.class).getDistrict(districtId);
+			if (dist != null)
+				dName = dist.getName();
+		}
+		
+		String fName = null;
+		if (facilityId != null) {
+			Facility fac = Context.getService(MdrtbService.class).getFacility(facilityId);
+			if (fac != null)
+				fName = fac.getName();
+		}
+		model.addAttribute("oblastName", oName);
+		model.addAttribute("oName", oName);
+		model.addAttribute("dName", dName);
+		model.addAttribute("fName", fName);
+		model.addAttribute("oblast", oblastId);
+		model.addAttribute("facility", facilityId);
+		model.addAttribute("district", districtId);
+		model.addAttribute("year", year);
+		if (month != null && month.length() != 0)
+			model.addAttribute("month", month.replace("\"", ""));
+		else
+			model.addAttribute("month", "");
+		
+		if (quarter != null && quarter.length() != 0)
+			model.addAttribute("quarter", quarter.replace("\"", "'"));
+		else
+			model.addAttribute("quarter", "");
+		
+		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
+		    year, quarterInt, monthInt, "DQ", ReportType.MDRTB);
+		model.addAttribute("locale", Context.getLocale().toString());
+		model.addAttribute("reportStatus", reportStatus);
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
+		return "/module/mdrtb/reporting/dqResults";
+	}
+	
+	public static Map<String, Object> getMDRQualityMetrics(Integer year, Integer quarter, Integer month,
+	        List<Location> locList) {
+		Map<String, Object> map = new HashMap<>();
+
 		List<DQItem> missingTB03 = new ArrayList<>();
 		List<DQItem> missingAge = new ArrayList<>();
 		List<DQItem> missingPatientGroup = new ArrayList<>();
 		List<DQItem> missingDST = new ArrayList<>();
 		List<DQItem> notStartedTreatment = new ArrayList<>();
 		List<DQItem> missingOutcomes = new ArrayList<>();
-		//List<DQItem> missingAddress = new ArrayList<DQItem>();
 		List<DQItem> noMDRId = new ArrayList<>();
 		List<DQItem> noSite = new ArrayList<>();
 		
@@ -144,29 +213,7 @@ public class MDRDQController {
 		HAIN firstHAIN = null;
 		Culture diagnosticCulture = null;
 		
-		sdf.applyPattern("dd.MM.yyyy");
-		
-		SimpleDateFormat rdateSDF = new SimpleDateFormat();
-		rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
-		
-		List<Location> locList = null;
-		if (oblastId != null) {
-			if (oblastId == 186) {
-				locList = Context.getService(MdrtbService.class)
-				        .getLocationListForDushanbe(oblastId, districtId, facilityId);
-			} else {
-				Region region = Context.getService(MdrtbService.class).getRegion(oblastId);
-				District district = Context.getService(MdrtbService.class).getDistrict(districtId);
-				Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
-				locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
-			}
-		}
-		
-		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
-		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
-		
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
 		for (TB03uForm tf : tb03uList) {
 			
 			//INIT
@@ -190,7 +237,7 @@ public class MDRDQController {
 			}
 			//patientList.add(patient);
 			dqi.setPatient(patient);
-			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
+			dqi.setDateOfBirth(Context.getDateFormat().format(patient.getBirthdate()));
 			
 			if (tf.getAgeAtMDRRegistration() == null) {
 				missingAge.add(dqi);
@@ -208,7 +255,6 @@ public class MDRDQController {
 				errorFlag = Boolean.TRUE;
 			} else {
 				//MISSING OUTCOMES
-				
 				treatmentStartDate = tf.getMdrTreatmentStartDate();
 				tCal = new GregorianCalendar();
 				tCal.setTime(treatmentStartDate);
@@ -222,7 +268,6 @@ public class MDRDQController {
 						errorFlag = Boolean.TRUE;
 					}
 				}
-				
 			}
 			
 			//NO SITE
@@ -244,83 +289,31 @@ public class MDRDQController {
 					noMDRId.add(dqi);
 					errorFlag = Boolean.TRUE;
 				}
-				
 			}
-			
 			else {
 				noMDRId.add(dqi);
 				errorFlag = Boolean.TRUE;
 			}
-			
 			if (errorFlag) {
 				errorCount++;
 			}
-			
 		}
-		
 		Integer num = tb03uList.size();
 		Integer errorPercentage = null;
 		if (num == 0)
 			errorPercentage = 0;
 		else
 			errorPercentage = (errorCount * 100) / num;
-		
-		String oName = null;
-		Region obl = Context.getService(MdrtbService.class).getRegion(oblastId);
-		if (obl != null)
-			oName = obl.getName();
-		
-		String dName = null;
-		if (districtId != null) {
-			District dist = Context.getService(MdrtbService.class).getDistrict(districtId);
-			if (dist != null)
-				dName = dist.getName();
-		}
-		
-		String fName = null;
-		if (facilityId != null) {
-			Facility fac = Context.getService(MdrtbService.class).getFacility(facilityId);
-			if (fac != null)
-				fName = fac.getName();
-		}
-		
-		model.addAttribute("num", num);
-		model.addAttribute("missingAge", missingAge);
-		model.addAttribute("missingPatientGroup", missingPatientGroup);
-		model.addAttribute("missingDST", missingDST);
-		model.addAttribute("notStartedTreatment", notStartedTreatment);
-		model.addAttribute("missingOutcomes", missingOutcomes);
-		model.addAttribute("noMDRId", noMDRId);
-		model.addAttribute("noSite", noSite);
-		model.addAttribute("errorCount", new Integer(errorCount));
-		model.addAttribute("errorPercentage", errorPercentage.toString() + "%");
-		model.addAttribute("oblastName", oName);
-		model.addAttribute("oName", oName);
-		model.addAttribute("dName", dName);
-		model.addAttribute("fName", fName);
-		
-		model.addAttribute("locale", Context.getLocale().toString());
-		
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
-		    year, quarterInt, monthInt, "DQ", ReportType.MDRTB);
-		System.out.println(reportStatus);
-		
-		model.addAttribute("oblast", oblastId);
-		model.addAttribute("facility", facilityId);
-		model.addAttribute("district", districtId);
-		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
-			model.addAttribute("month", month.replace("\"", ""));
-		else
-			model.addAttribute("month", "");
-		
-		if (quarter != null && quarter.length() != 0)
-			model.addAttribute("quarter", quarter.replace("\"", "'"));
-		else
-			model.addAttribute("quarter", "");
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
-		model.addAttribute("reportStatus", reportStatus);
-		return "/module/mdrtb/reporting/dqResults";
+		map.put("num", num);
+		map.put("missingAge", missingAge);
+		map.put("missingPatientGroup", missingPatientGroup);
+		map.put("missingDST", missingDST);
+		map.put("notStartedTreatment", notStartedTreatment);
+		map.put("missingOutcomes", missingOutcomes);
+		map.put("noMDRId", noMDRId);
+		map.put("noSite", noSite);
+		map.put("errorCount", new Integer(errorCount));
+		map.put("errorPercentage", errorPercentage.toString() + "%");
+		return map;
 	}
 }

@@ -12,6 +12,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.reporting.custom.DQItem;
 import org.openmrs.module.mdrtb.web.controller.reporting.DOTSDQController;
+import org.openmrs.module.mdrtb.web.controller.reporting.MDRDQController;
+import org.openmrs.module.mdrtb.web.dto.SimpleDQItem;
 import org.openmrs.module.mdrtb.web.dto.SimpleForm89Data;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -127,18 +129,23 @@ public class DataQualityResourceController extends DelegatingCrudResource<Simple
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
 		SimpleObject report = new SimpleObject();
 		// Fetch the respective report
-		if ("mdrtb".equalsIgnoreCase(type)) {
-			//TODO: MDRTB DQ Report
+		Map<String, Object> metrics;
+		if ("dots".equalsIgnoreCase(type)) {
+			metrics = DOTSDQController.getDOTSQualityMetrics(year, quarter, month, locList);
 		} else {
-			Map<String, Object> metrics = DOTSDQController.getDOTSQualityMetrics(year, quarter, month, locList);
-			for(Entry<String, Object> entry : metrics.entrySet()) {
-				// Check if the object is a List<DQItem> boxed inside it
-				if (metrics.get(entry.getValue()) instanceof List) {
-					List<DQItem> dqItem = (List<DQItem>) metrics.get(entry.getKey());
-					report.add(entry.getKey(), dqItem);
-				} else {
-					report.add(entry.getKey(), entry.getValue());
+			metrics = MDRDQController.getMDRQualityMetrics(year, quarter, month, locList);
+		}
+		for(Entry<String, Object> entry : metrics.entrySet()) {
+			// Check if the object is a List<DQItem> boxed inside it
+			if (entry.getValue() instanceof List) {
+				List<DQItem> dqItems = (List<DQItem>) metrics.get(entry.getKey());
+				List<SimpleDQItem> simpleDQItems = new ArrayList<>();
+				for (DQItem item : dqItems) {
+					simpleDQItems.add(new SimpleDQItem(item));
 				}
+				report.add(entry.getKey(), simpleDQItems);
+			} else {
+				report.add(entry.getKey(), entry.getValue());
 			}
 		}
 		List<SimpleObject> list = new ArrayList<>();
