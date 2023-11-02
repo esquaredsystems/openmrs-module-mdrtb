@@ -179,8 +179,7 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 	@Override
 	public SimpleTB03Form getByUniqueId(String uuid) {
 		Encounter encounter = Context.getEncounterService().getEncounterByUuid(uuid);
-		SimpleTB03Form simpleTB03Form = new SimpleTB03Form(new TB03Form(encounter));
-		return simpleTB03Form;
+		return new SimpleTB03Form(new TB03Form(encounter));
 	}
 	
 	@Override

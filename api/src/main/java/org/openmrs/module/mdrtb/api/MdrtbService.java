@@ -921,7 +921,7 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<AdverseEventsForm> getAEFormsFilled(List<Location> locations, Integer year, String quarter, String month);
+	public List<AdverseEventsForm> getAEFormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)

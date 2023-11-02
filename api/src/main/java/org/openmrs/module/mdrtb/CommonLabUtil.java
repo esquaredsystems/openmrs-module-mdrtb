@@ -144,7 +144,7 @@ public class CommonLabUtil {
 		return service.getLabTests(labTestType, patient, null, null, null, null, null, null, false);
 	}
 
-	public LabTestType getMdrtbTestType() {
+	public LabTestType getCommonTestType() {
 		return service.getLabTestTypeByUuid(MdrtbConstants.MDRTB_TEST_TYPE_UUID);
 	}
 	

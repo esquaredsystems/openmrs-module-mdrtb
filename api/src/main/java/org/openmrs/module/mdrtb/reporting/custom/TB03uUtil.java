@@ -120,7 +120,7 @@ public class TB03uUtil {
 		Xpert c = null;
 		List<XpertForm> xperts = tf.getXperts();
 		if (xperts != null && !xperts.isEmpty()) {
-			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 			LabTest xpert = CommonLabUtil.getService().getMdrtbLabTestOrder(xperts.get(0).getEncounter(), labTestType);
 			c = new XpertImpl(xpert);
 		}
@@ -142,7 +142,7 @@ public class TB03uUtil {
 		HAIN c = null;
 		List<HAINForm> hains = tf.getHains();
 		if (hains != null && !hains.isEmpty()) {
-			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAINImpl(hain);
 		}
@@ -165,7 +165,7 @@ public class TB03uUtil {
 		HAIN2 c = null;
 		List<HAIN2Form> hains = tf.getHain2s();
 		if (hains != null && !hains.isEmpty()) {
-			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAIN2Impl(hain);
 		}

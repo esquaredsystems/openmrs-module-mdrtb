@@ -30,7 +30,30 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.*;
+import org.openmrs.Cohort;
+import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
+import org.openmrs.ConceptName;
+import org.openmrs.ConceptNameTag;
+import org.openmrs.ConceptSet;
+import org.openmrs.DrugOrder;
+import org.openmrs.Encounter;
+import org.openmrs.EncounterType;
+import org.openmrs.Location;
+import org.openmrs.LocationTag;
+import org.openmrs.Obs;
+import org.openmrs.Order;
+import org.openmrs.OrderType;
+import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
+import org.openmrs.PatientIdentifierType;
+import org.openmrs.PatientProgram;
+import org.openmrs.PatientState;
+import org.openmrs.Person;
+import org.openmrs.Program;
+import org.openmrs.ProgramWorkflow;
+import org.openmrs.ProgramWorkflowState;
+import org.openmrs.Provider;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OrderContext;
 import org.openmrs.api.UserService;
@@ -38,16 +61,52 @@ import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.commonlabtest.LabTest;
 import org.openmrs.module.commonlabtest.LabTestType;
-import org.openmrs.module.mdrtb.*;
+import org.openmrs.module.mdrtb.BaseLocation;
+import org.openmrs.module.mdrtb.CommonLabUtil;
+import org.openmrs.module.mdrtb.District;
+import org.openmrs.module.mdrtb.Facility;
+import org.openmrs.module.mdrtb.LocationHierarchy;
+import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
+import org.openmrs.module.mdrtb.MdrtbUtil;
+import org.openmrs.module.mdrtb.Region;
+import org.openmrs.module.mdrtb.ReportData;
+import org.openmrs.module.mdrtb.ReportStatus;
+import org.openmrs.module.mdrtb.ReportType;
+import org.openmrs.module.mdrtb.TbUtil;
 import org.openmrs.module.mdrtb.api.dao.MdrtbDao;
 import org.openmrs.module.mdrtb.comparator.PatientProgramComparator;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
-import org.openmrs.module.mdrtb.form.custom.*;
+import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
+import org.openmrs.module.mdrtb.form.custom.CultureForm;
+import org.openmrs.module.mdrtb.form.custom.DSTForm;
+import org.openmrs.module.mdrtb.form.custom.DrugResistanceDuringTreatmentForm;
+import org.openmrs.module.mdrtb.form.custom.Form89;
+import org.openmrs.module.mdrtb.form.custom.HAIN2Form;
+import org.openmrs.module.mdrtb.form.custom.HAINForm;
+import org.openmrs.module.mdrtb.form.custom.RegimenForm;
+import org.openmrs.module.mdrtb.form.custom.SmearForm;
+import org.openmrs.module.mdrtb.form.custom.TB03Form;
+import org.openmrs.module.mdrtb.form.custom.TB03uForm;
+import org.openmrs.module.mdrtb.form.custom.TransferInForm;
+import org.openmrs.module.mdrtb.form.custom.TransferOutForm;
+import org.openmrs.module.mdrtb.form.custom.XpertForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
-import org.openmrs.module.mdrtb.specimen.*;
-import org.openmrs.module.mdrtb.specimen.custom.*;
+import org.openmrs.module.mdrtb.specimen.Culture;
+import org.openmrs.module.mdrtb.specimen.Dst;
+import org.openmrs.module.mdrtb.specimen.ScannedLabReport;
+import org.openmrs.module.mdrtb.specimen.Smear;
+import org.openmrs.module.mdrtb.specimen.SmearImpl;
+import org.openmrs.module.mdrtb.specimen.Specimen;
+import org.openmrs.module.mdrtb.specimen.SpecimenImpl;
+import org.openmrs.module.mdrtb.specimen.custom.HAIN;
+import org.openmrs.module.mdrtb.specimen.custom.HAIN2;
+import org.openmrs.module.mdrtb.specimen.custom.HAIN2Impl;
+import org.openmrs.module.mdrtb.specimen.custom.HAINImpl;
+import org.openmrs.module.mdrtb.specimen.custom.Xpert;
+import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
 import org.openmrs.module.reporting.cohort.query.service.CohortQueryService;
 import org.openmrs.module.reporting.common.ObjectUtil;
 
@@ -872,13 +931,13 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public Xpert getXpert(Integer obsId) {
 		Obs obs = Context.getObsService().getObs(obsId);
-		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 		LabTest xpert = CommonLabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new XpertImpl(xpert);
 	}
 	
 	public Smear getSmear(Obs obs) {
-		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 		LabTest smear = CommonLabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new SmearImpl(smear);
 	}
@@ -899,7 +958,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public HAIN getHAIN(Obs obs) {
-		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 		LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new HAINImpl(hain);
 		// return new HAINImpl(obs);
@@ -921,7 +980,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public HAIN2 getHAIN2(Obs obs) {
-		LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+		LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 		LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new HAIN2Impl(hain);
 	}
@@ -1427,6 +1486,19 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<XpertForm> getXpertForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<XpertForm> xperts = new ArrayList<>();
+		// Search in Lab module
+		List<LabTest> labTests = CommonLabUtil.getService().getLabTests(tpp.getPatient(), CommonLabUtil.getService().getCommonTestType());
+		if (!labTests.isEmpty()) {
+			for (LabTest labTest : labTests) {
+				Encounter e = labTest.getOrder().getEncounter();
+				XpertForm sf = new XpertForm(e, labTest);
+				sf.setPatient(tpp.getPatient());
+				xperts.add(sf);
+			}
+			Collections.sort(xperts);
+			return xperts;
+		}
+		// Fallback to legacy mode and search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
@@ -1921,11 +1993,11 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<AdverseEventsForm> getAEFormsFilled(List<Location> locations, Integer year, String quarter, String month) {
+	public List<AdverseEventsForm> getAEFormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month) {
 		ArrayList<AdverseEventsForm> forms = new ArrayList<>();
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		Date startDate = (dateMap.get("startDate"));
+		Date endDate = (dateMap.get("endDate"));
 		Calendar endCal = Calendar.getInstance();
 		endCal.setTimeInMillis(endDate.getTime());
 		endCal.add(Calendar.DATE, 1);

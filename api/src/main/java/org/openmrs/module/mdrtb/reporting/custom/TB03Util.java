@@ -47,7 +47,7 @@ public class TB03Util {
 		Culture c = null;
 		for (CultureForm cf : tf.getCultures()) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0) {
-				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+				LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 				LabTest culture = CommonLabUtil.getService().getMdrtbLabTestOrder(cf.getEncounter(), labTestType);
 				c = new CultureImpl(culture);
 				break;
@@ -71,7 +71,7 @@ public class TB03Util {
 		Xpert c = null;
 		List<XpertForm> xperts = tf.getXperts();
 		if (xperts != null && !xperts.isEmpty()) {
-			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 			LabTest xpert = CommonLabUtil.getService().getMdrtbLabTestOrder(xperts.get(0).getEncounter(), labTestType);
 			c = new XpertImpl(xpert);
 		}
@@ -91,7 +91,7 @@ public class TB03Util {
 		HAIN c = null;
 		List<HAINForm> hains = tf.getHains();
 		if (hains != null && !hains.isEmpty()) {
-			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAINImpl(hain);
 		}
@@ -111,7 +111,7 @@ public class TB03Util {
 		HAIN2 c = null;
 		List<HAIN2Form> hains = tf.getHain2s();
 		if (hains != null && !hains.isEmpty()) {
-			LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+			LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 			LabTest hain = CommonLabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
 			c = new HAIN2Impl(hain);
 		}
@@ -132,7 +132,7 @@ public class TB03Util {
 		Smear c = null;
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == 0) {
-				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+				LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 				LabTest smear = CommonLabUtil.getService().getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
 				c = new SmearImpl(smear);
 				c.setResult(sf.getSmearResult());
@@ -158,7 +158,7 @@ public class TB03Util {
 		Smear c = null;
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == month.intValue()) {
-				LabTestType labTestType = CommonLabUtil.getService().getMdrtbTestType();
+				LabTestType labTestType = CommonLabUtil.getService().getCommonTestType();
 				LabTest smear = CommonLabUtil.getService().getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
 				c = new SmearImpl(smear);
 				break;
