@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.reporting;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -115,19 +114,6 @@ public class AdverseEventsRegisterController {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) {
 		
-		System.out.println("---POST-----");
-		
-		SimpleDateFormat sdf = new SimpleDateFormat();
-		sdf.applyPattern("dd.MM.yyyy");
-		SimpleDateFormat rdateSDF = new SimpleDateFormat();
-		rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
-		
-		//		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
-		
-		//		Date startDate = (Date) (dateMap.get("startDate"));
-		//		Date endDate = (Date) (dateMap.get("endDate"));
-		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId != null) {
 			if (oblastId == 186) {
@@ -141,57 +127,36 @@ public class AdverseEventsRegisterController {
 			}
 		}
 		
-		List<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter,
-		    month);
-		
-		ArrayList<AdverseEventsRegisterData> aeRegister = new ArrayList<>();
-		
-		System.out.println("list size:" + forms.size());
-		//CohortDefinition baseCohort = null;
-		
-		//start of Table 1
-		for (AdverseEventsForm af : forms) {
-			AdverseEventsRegisterData aerd = new AdverseEventsRegisterData(af);
-			aeRegister.add(aerd);
-		}
-		
-		if (aeRegister != null && aeRegister.size() != 0) {
-			Collections.sort(aeRegister);
-		}
-		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
+		
+		List<AdverseEventsRegisterData> aeRegister = getAdverseEventsRegister(year, quarterInt, monthInt, locList);
+		model.addAttribute("forms", aeRegister);
+
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarterInt, monthInt, "TB-07", ReportType.DOTSTB);
-		
-		System.out.println(reportStatus);
 		
 		String oName = null;
 		String dName = null;
 		String fName = null;
-		
 		if (oblastId != null) {
 			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
 			if (o != null) {
 				oName = o.getName();
 			}
 		}
-		
 		if (districtId != null) {
 			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
 			if (d != null) {
 				dName = d.getName();
 			}
 		}
-		
 		if (facilityId != null) {
 			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
 			if (f != null) {
 				fName = f.getName();
 			}
 		}
-		
-		model.addAttribute("forms", aeRegister);
 		
 		model.addAttribute("oblast", oblastId);
 		model.addAttribute("facility", facilityId);
@@ -210,10 +175,22 @@ public class AdverseEventsRegisterController {
 		model.addAttribute("oName", oName);
 		model.addAttribute("dName", dName);
 		model.addAttribute("fName", fName);
-		
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
 		model.addAttribute("reportStatus", reportStatus);
 		return "/module/mdrtb/reporting/pv/aeRegisterResults";
-		//_" + Context.getLocale().toString().substring(0, 2);
+	}
+	
+	public static List<AdverseEventsRegisterData> getAdverseEventsRegister(Integer year, Integer quarter, Integer month,
+	        List<Location> locList) {
+		List<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter, month);
+		List<AdverseEventsRegisterData> aeRegister = new ArrayList<>();
+		for (AdverseEventsForm af : forms) {
+			AdverseEventsRegisterData aerd = new AdverseEventsRegisterData(af);
+			aeRegister.add(aerd);
+		}
+		if (!aeRegister.isEmpty()) {
+			Collections.sort(aeRegister);
+		}
+		return aeRegister;
 	}
 }

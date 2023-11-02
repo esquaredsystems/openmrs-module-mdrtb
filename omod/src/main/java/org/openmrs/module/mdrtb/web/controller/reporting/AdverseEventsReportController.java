@@ -357,8 +357,8 @@ public class AdverseEventsReportController {
 		Integer zId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PYRAZINAMIDE).getId();
 		Integer eId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ETHAMBUTOL).getId();
 		
-		List<AdverseEventsForm> aeForms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter,
-		    month);
+		List<AdverseEventsForm> aeForms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarterInt,
+		    monthInt);
 		System.out.println("SZ:" + aeForms.size());
 		
 		boolean isStandard = false;
