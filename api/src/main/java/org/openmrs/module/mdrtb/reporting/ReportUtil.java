@@ -294,7 +294,7 @@ public class ReportUtil {
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEFAULTED), startDate, endDate);
 		
 		CohortDefinition died = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED), startDate, endDate);
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH), startDate, endDate);
 		
 		CohortDefinition transferred = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_TRANSFERRED_OUT), startDate, endDate);

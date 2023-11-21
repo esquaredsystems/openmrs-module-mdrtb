@@ -8,6 +8,8 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestAttribute;
+import org.openmrs.module.commonlabtest.LabTestSample;
 import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
@@ -21,12 +23,13 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	
 	public DstImpl di;
 	
+	private LabTest labTest;
+	
 	public DSTForm(Patient patient) {
 		super(patient);
 		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		LabTest dst = CommonLabUtil.getService().getDstLabTestOrder(this.encounter);
 		di = new DstImpl(dst);
-		// di = new DstImpl(this.encounter);
 	}
 	
 	public DSTForm(Encounter encounter) {
@@ -36,6 +39,11 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 			dst = CommonLabUtil.getService().createDstLabTestOrder(this.encounter);
 		}
 		di = new DstImpl(dst);
+	}
+	
+	public DSTForm(Encounter encounter, LabTest labTest) {
+		super(encounter);
+		this.setLabTest(labTest);
 	}
 	
 	public DstResult addResult() {
@@ -68,6 +76,10 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	}
 	
 	public String getSpecimenId() {
+		if (labTest != null) {
+			LabTestSample sample = CommonLabUtil.getService().getMostRecentAcceptedSample(labTest);
+			return sample.getSampleIdentifier();
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);
 		return obs == null ? null : obs.getValueText();
@@ -103,6 +115,13 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	}
 	
 	public Integer getPatientProgramId() {
+		if (labTest != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			    MdrtbConcepts.PATIENT_PROGRAM_ID);
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -143,6 +162,13 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	}
 	
 	public Integer getMonthOfTreatment() {
+		if (labTest != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			    MdrtbConcepts.MONTH_OF_TREATMENT);
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONTH_OF_TREATMENT), encounter);
 		
@@ -193,5 +219,13 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	public String getLink() {
 		return "/module/mdrtb/form/dst.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
 		        + getEncounter().getId();
+	}
+	
+	public LabTest getLabTest() {
+		return labTest;
+	}
+	
+	public void setLabTest(LabTest labTest) {
+		this.labTest = labTest;
 	}
 }

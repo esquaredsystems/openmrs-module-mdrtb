@@ -383,7 +383,7 @@ public class TB03FormController {
 			concepts.add(ms.getConcept(MdrtbConcepts.CURED));
 			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_FAILED));
 			concepts.add(ms.getConcept(MdrtbConcepts.LOST_TO_FOLLOWUP));
-			concepts.add(ms.getConcept(MdrtbConcepts.DIED));
+			concepts.add(ms.getConcept(MdrtbConcepts.DEATH));
 			for (ProgramWorkflowState pws : states) {
 				for (Concept c : concepts) {
 					if (pws.getConcept().getId().equals(c.getId())) {

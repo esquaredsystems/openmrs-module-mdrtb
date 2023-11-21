@@ -38,7 +38,6 @@ import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.reporting.custom.TB03Util;
 import org.openmrs.module.mdrtb.specimen.DstImpl;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -61,7 +60,7 @@ public class PatientListContoller {
 	
 	static final String CLOSE_TD = "</td>";
 	
-	static final String ALIGN_LEFT_TAG = "<td align=\"left\">";
+	static final String ALIGN_LEFT_TAG = "<td style=\"padding:0.25rem;\" align=\"left\">";
 	
 	static final String OPEN_CLOSE_TD = "<td></td>";
 	
@@ -386,7 +385,7 @@ public class PatientListContoller {
 	public String allCasesEnrolled(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		String oName = "";
 		if (oblastId != null) {
@@ -491,6 +490,7 @@ public class PatientListContoller {
 		int i = 0;
 		Person p;
 		for (TB03Form tf : tb03s) {
+			System.out.println("Generating data for Patient: " + tf.getPatient().getPatientIdentifier());
 			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			i++;
@@ -534,8 +534,7 @@ public class PatientListContoller {
 			
 			//SMEAR
 			List<SmearForm> smears = tf.getSmears();
-			if (smears != null && smears.size() != 0) {
-				Collections.sort(smears);
+			if (smears != null && !smears.isEmpty()) {
 				SmearForm ds = smears.get(0);
 				if (ds.getSmearResult() != null) {
 					if (ds.getSmearResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
@@ -561,7 +560,6 @@ public class PatientListContoller {
 			//XPERT
 			List<XpertForm> xperts = tf.getXperts();
 			if (xperts != null && !xperts.isEmpty()) {
-				Collections.sort(xperts);
 				XpertForm dx = xperts.get(0);
 				Concept mtb = dx.getMtbResult();
 				Concept res = dx.getRifResult();
@@ -600,10 +598,9 @@ public class PatientListContoller {
 				report.append(OPEN_CLOSE_TD);
 			}
 			
-			//HAIN 1	
+			//HAIN 1
 			List<HAINForm> hains = tf.getHains();
 			if (hains != null && !hains.isEmpty()) {
-				Collections.sort(hains);
 				HAINForm h = hains.get(0);
 				Concept ih = h.getInhResult();
 				Concept rh = h.getRifResult();
@@ -635,8 +632,7 @@ public class PatientListContoller {
 			
 			//HAIN 2
 			List<HAIN2Form> hain2s = tf.getHain2s();
-			if (hain2s != null && hain2s.size() != 0) {
-				Collections.sort(hain2s);
+			if (hain2s != null && !hain2s.isEmpty()) {
 				HAIN2Form h = hain2s.get(0);
 				Concept ih = h.getInjResult();
 				Concept fq = h.getFqResult();
@@ -668,7 +664,6 @@ public class PatientListContoller {
 			//CULTURE
 			List<CultureForm> cultures = tf.getCultures();
 			if (cultures != null && !cultures.isEmpty()) {
-				Collections.sort(cultures);
 				CultureForm dc = cultures.get(0);
 				if (dc.getCultureResult() != null) {
 					if (dc.getCultureResult().getConceptId().intValue() == Context.getService(MdrtbService.class)
@@ -701,8 +696,8 @@ public class PatientListContoller {
 			} else {
 				report.append(OPEN_CLOSE_TD);
 			}
-			report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
-			report.append(ALIGN_LEFT_TAG).append(getSensitiveDrugs(tf)).append(CLOSE_TD);
+			report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
+			report.append(ALIGN_LEFT_TAG).append(getSensitiveDrugs(tf.getDsts())).append(CLOSE_TD);
 			if (tf.getHivStatus() != null) {
 				report.append(ALIGN_LEFT_TAG)
 				        .append(tf.getHivStatus().getShortestName(Context.getLocale(), false).getName()).append(CLOSE_TD);
@@ -741,7 +736,7 @@ public class PatientListContoller {
 	        @RequestParam(OBLAST) Integer oblastId, @RequestParam(FACILITY) Integer facilityId,
 	        @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -1063,7 +1058,7 @@ public class PatientListContoller {
 	        @RequestParam(OBLAST) Integer oblastId, @RequestParam(FACILITY) Integer facilityId,
 	        @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -1215,7 +1210,7 @@ public class PatientListContoller {
 	public String byDrugResistance(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -1305,7 +1300,7 @@ public class PatientListContoller {
 				report.append(renderPerson(p, true));
 				report.append(ALIGN_LEFT_TAG).append(tf.getAgeAtTB03Registration()).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getSiteOfDisease(tf)).append(CLOSE_TD);
-				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getPatientLink(tf.getPatient(), restfulLink)).append(CLOSE_TD);
 				report.append(CLOSE_TR);
 				
@@ -1349,7 +1344,7 @@ public class PatientListContoller {
 				report.append(renderPerson(p, true));
 				report.append(ALIGN_LEFT_TAG).append(tf.getAgeAtTB03Registration()).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getSiteOfDisease(tf)).append(CLOSE_TD);
-				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getPatientLink(tf.getPatient(), restfulLink)).append(CLOSE_TD);
 				report.append(CLOSE_TR);
 				
@@ -1393,7 +1388,7 @@ public class PatientListContoller {
 				report.append(renderPerson(p, true));
 				report.append(ALIGN_LEFT_TAG).append(tf.getAgeAtTB03Registration()).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getSiteOfDisease(tf)).append(CLOSE_TD);
-				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getPatientLink(tf.getPatient(), restfulLink)).append(CLOSE_TD);
 				report.append(CLOSE_TR);
 				
@@ -1437,7 +1432,7 @@ public class PatientListContoller {
 				report.append(renderPerson(p, true));
 				report.append(ALIGN_LEFT_TAG).append(tf.getAgeAtTB03Registration()).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getSiteOfDisease(tf)).append(CLOSE_TD);
-				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getPatientLink(tf.getPatient(), restfulLink)).append(CLOSE_TD);
 				report.append(CLOSE_TR);
 				
@@ -1481,7 +1476,7 @@ public class PatientListContoller {
 				report.append(renderPerson(p, true));
 				report.append(ALIGN_LEFT_TAG).append(tf.getAgeAtTB03Registration()).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getSiteOfDisease(tf)).append(CLOSE_TD);
-				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getPatientLink(tf.getPatient(), restfulLink)).append(CLOSE_TD);
 				report.append(CLOSE_TR);
 				
@@ -1525,7 +1520,7 @@ public class PatientListContoller {
 				report.append(renderPerson(p, true));
 				report.append(ALIGN_LEFT_TAG).append(tf.getAgeAtTB03Registration()).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getSiteOfDisease(tf)).append(CLOSE_TD);
-				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getPatientLink(tf.getPatient(), restfulLink)).append(CLOSE_TD);
 				report.append(CLOSE_TR);
 				
@@ -1569,7 +1564,7 @@ public class PatientListContoller {
 				report.append(renderPerson(p, true));
 				report.append(ALIGN_LEFT_TAG).append(tf.getAgeAtTB03Registration()).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getSiteOfDisease(tf)).append(CLOSE_TD);
-				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getPatientLink(tf.getPatient(), restfulLink)).append(CLOSE_TD);
 				report.append(CLOSE_TR);
 				
@@ -1612,7 +1607,7 @@ public class PatientListContoller {
 				report.append(renderPerson(p, true));
 				report.append(ALIGN_LEFT_TAG).append(tf.getAgeAtTB03Registration()).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getSiteOfDisease(tf)).append(CLOSE_TD);
-				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
+				report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
 				report.append(ALIGN_LEFT_TAG).append(getPatientLink(tf.getPatient(), restfulLink)).append(CLOSE_TD);
 				report.append(CLOSE_TR);
 				
@@ -1675,7 +1670,7 @@ public class PatientListContoller {
 	        @RequestParam(OBLAST) Integer oblastId, @RequestParam(FACILITY) Integer facilityId,
 	        @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -2132,7 +2127,7 @@ public class PatientListContoller {
 	        @RequestParam(OBLAST) Integer oblastId, @RequestParam(FACILITY) Integer facilityId,
 	        @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -2276,7 +2271,7 @@ public class PatientListContoller {
 	        @RequestParam(OBLAST) Integer oblastId, @RequestParam(FACILITY) Integer facilityId,
 	        @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -2381,7 +2376,7 @@ public class PatientListContoller {
 	public String mdrXdrPatients(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -2434,8 +2429,6 @@ public class PatientListContoller {
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
-		dateMap.get("startDate");
-		dateMap.get("endDate");
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
 		Concept mdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB);
 		
@@ -2525,7 +2518,7 @@ public class PatientListContoller {
 	public String womenOfChildbearingAge(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -2635,7 +2628,7 @@ public class PatientListContoller {
 	public String menOfConscriptAge(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -2744,7 +2737,7 @@ public class PatientListContoller {
 	public String withConcomitantDisease(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -3270,7 +3263,7 @@ public class PatientListContoller {
 	public String withCancer(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -3369,7 +3362,7 @@ public class PatientListContoller {
 	public String detectedFromContact(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -3475,7 +3468,7 @@ public class PatientListContoller {
 	public String withCOPD(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -3575,7 +3568,7 @@ public class PatientListContoller {
 	public String withHypertension(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -3681,7 +3674,7 @@ public class PatientListContoller {
 	public String withUlcer(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -3785,7 +3778,7 @@ public class PatientListContoller {
 	public String withMentalDisorder(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		String oName = "";
@@ -3885,7 +3878,7 @@ public class PatientListContoller {
 	public String withHIV(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -3986,7 +3979,7 @@ public class PatientListContoller {
 	public String withHepatitis(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -4086,7 +4079,7 @@ public class PatientListContoller {
 	public String withKidneyDisease(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -4187,7 +4180,7 @@ public class PatientListContoller {
 	public String withOtherDisease(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -4289,7 +4282,7 @@ public class PatientListContoller {
 	public String bySocProfStatus(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -4984,7 +4977,7 @@ public class PatientListContoller {
 	public String byPopulationCategory(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -5410,7 +5403,7 @@ public class PatientListContoller {
 	public String byDwelling(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -5599,7 +5592,7 @@ public class PatientListContoller {
 	public String byPlaceOfDetection(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -5886,7 +5879,7 @@ public class PatientListContoller {
 	        @RequestParam(OBLAST) Integer oblastId, @RequestParam(FACILITY) Integer facilityId,
 	        @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -6224,7 +6217,7 @@ public class PatientListContoller {
 	public String byMethodOfDetection(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -6681,7 +6674,7 @@ public class PatientListContoller {
 	public String byPulmonaryLocation(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -7229,7 +7222,7 @@ public class PatientListContoller {
 	        @RequestParam(OBLAST) Integer oblastId, @RequestParam(FACILITY) Integer facilityId,
 	        @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -7729,7 +7722,7 @@ public class PatientListContoller {
 	public String drTbPatients(@RequestParam(DISTRICT) Integer districtId, @RequestParam(OBLAST) Integer oblastId,
 	        @RequestParam(FACILITY) Integer facilityId, @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		String oName = "";
@@ -8034,8 +8027,8 @@ public class PatientListContoller {
 			else
 				report.append(OPEN_CLOSE_TD);
 			
-			report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
-			report.append(ALIGN_LEFT_TAG).append(getSensitiveDrugs(tf)).append(CLOSE_TD);
+			report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
+			report.append(ALIGN_LEFT_TAG).append(getSensitiveDrugs(tf.getDsts())).append(CLOSE_TD);
 			
 			if (tf.getHivStatus() != null)
 				report.append(ALIGN_LEFT_TAG).append(tf.getHivStatus().getName().getName()).append(CLOSE_TD);
@@ -8110,7 +8103,7 @@ public class PatientListContoller {
 	        @RequestParam(OBLAST) Integer oblastId, @RequestParam(FACILITY) Integer facilityId,
 	        @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -8463,8 +8456,8 @@ public class PatientListContoller {
 				report.append(OPEN_CLOSE_TD);
 			}
 			
-			report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf)).append(CLOSE_TD);
-			report.append(ALIGN_LEFT_TAG).append(getSensitiveDrugs(tf)).append(CLOSE_TD);
+			report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tf.getDsts())).append(CLOSE_TD);
+			report.append(ALIGN_LEFT_TAG).append(getSensitiveDrugs(tf.getDsts())).append(CLOSE_TD);
 			
 			if (tf.getHivStatus() != null) {
 				report.append(ALIGN_LEFT_TAG).append(tf.getHivStatus().getName().getName()).append(CLOSE_TD);
@@ -8511,7 +8504,7 @@ public class PatientListContoller {
 	        @RequestParam(OBLAST) Integer oblastId, @RequestParam(FACILITY) Integer facilityId,
 	        @RequestParam(value = YEAR, required = true) Integer year,
 	        @RequestParam(value = QUARTER, required = false) String quarter,
-	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) throws EvaluationException {
+	        @RequestParam(value = MONTH, required = false) String month, ModelMap model) {
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		
@@ -8745,7 +8738,7 @@ public class PatientListContoller {
 			
 			//HAIN 2
 			List<HAIN2Form> hain2s = tuf.getHain2s();
-			if (hain2s != null && hain2s.size() != 0) {
+			if (hain2s != null && !hain2s.isEmpty()) {
 				Collections.sort(hain2s);
 				
 				HAIN2Form h = hain2s.get(0);
@@ -8782,7 +8775,7 @@ public class PatientListContoller {
 			
 			//CULTURE
 			List<CultureForm> cultures = tuf.getCultures();
-			if (cultures != null && cultures.size() != 0) {
+			if (cultures != null && !cultures.isEmpty()) {
 				Collections.sort(cultures);
 				
 				CultureForm dc = cultures.get(0);
@@ -8829,8 +8822,8 @@ public class PatientListContoller {
 				report.append(OPEN_CLOSE_TD);
 			}
 			
-			report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tuf)).append(CLOSE_TD);
-			report.append(ALIGN_LEFT_TAG).append(getSensitiveDrugs(tuf)).append(CLOSE_TD);
+			report.append(ALIGN_LEFT_TAG).append(getResistantDrugs(tuf.getDsts())).append(CLOSE_TD);
+			report.append(ALIGN_LEFT_TAG).append(getSensitiveDrugs(tuf.getDsts())).append(CLOSE_TD);
 			
 			if (tuf.getHivStatus() != null) {
 				report.append(ALIGN_LEFT_TAG).append(tuf.getHivStatus().getName().getName()).append(CLOSE_TD);
@@ -8887,20 +8880,16 @@ public class PatientListContoller {
 			
 			report.append(ALIGN_LEFT_TAG).append(getPatientLink(tuf.getPatient(), restfulLink)).append(CLOSE_TD);
 			report.append(CLOSE_TR);
-			
 		}
-		
 		report.append(CLOSE_TABLE);
 		report.append(getMessage(MDRTB_NUMBER_OF_RECORDS)).append(": ").append(i);
 		return report.toString();
 	}
 	
 	////////////////////// UTILITY FUNCTIONS //////////////////////////
-	
 	private static String renderPerson(Person p, boolean gender) {
 		SimpleDateFormat dateFormat = Context.getDateFormat();
 		dateFormat.setLenient(false);
-		
 		String ret = "";
 		ret += ALIGN_LEFT_TAG + p.getFamilyName() + "," + p.getGivenName() + CLOSE_TD;
 		
@@ -8909,9 +8898,7 @@ public class PatientListContoller {
 			        : Context.getMessageSourceService().getMessage(MDRTB_TB_03_GENDER_FEMALE);
 			ret += ALIGN_LEFT_TAG + g + CLOSE_TD;
 		}
-		
 		ret += ALIGN_LEFT_TAG + dateFormat.format(p.getBirthdate()) + CLOSE_TD;
-		
 		return ret;
 		
 	}
@@ -8919,10 +8906,8 @@ public class PatientListContoller {
 	private static String renderDate(Date date) {
 		if (date == null)
 			return "";
-		
 		SimpleDateFormat dateFormat = Context.getDateFormat();
 		dateFormat.setLenient(false);
-		
 		return dateFormat.format(date);
 	}
 	
@@ -8936,39 +8921,21 @@ public class PatientListContoller {
 	}
 	
 	private static String getRegistrationNumber(TB03uForm form) {
-		String val;
-		PatientIdentifier pi;
-		Integer ppid;
 		Concept ppidConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
 		Obs idObs = MdrtbUtil.getObsFromEncounter(ppidConcept, form.getEncounter());
-		if (idObs == null) {
-			val = null;
-		}
-		
-		else {
-			ppid = idObs.getValueNumeric().intValue();
+		if (idObs != null) {
+			Integer ppid = idObs.getValueNumeric().intValue();
 			PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(ppid);
-			
 			if (pp != null) {
-				pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
-				if (pi == null) {
-					val = null;
-				}
+				PatientIdentifier pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
 				
-				else {
-					val = pi.getIdentifier();
+				if (pi != null) {
+					return pi.getIdentifier();
 				}
 			}
-			
-			else {
-				val = null;
-			}
 		}
-		if (val == null || val.length() == 0) {
-			val = getMessage(MDRTB_UNASSIGNED);
-		}
-		
-		return val;
+		String val = getMessage(MDRTB_UNASSIGNED);
+		return (val != null && !val.isEmpty()) ? val : null;
 	}
 	
 	public static String getPatientLink(Patient patient, boolean restfulLink) {
@@ -9023,34 +8990,25 @@ public class PatientListContoller {
 			if (tf.getEncounterDatetime().equals(temp.getEncounterDatetime())) {
 				tif = temp;
 				break;
-			}
-			
-			else if (tf.getEncounterDatetime().before(temp.getEncounterDatetime())) {
+			} else if (tf.getEncounterDatetime().before(temp.getEncounterDatetime())) {
 				if (endDate != null && temp.getEncounterDatetime().before(endDate)) {
 					tif = temp;
 					break;
-				}
-				
-				else if (endDate == null) {
+				} else if (endDate == null) {
 					tif = temp;
 					break;
 				}
 			}
 		}
-		
 		return tif;
 	}
 	
 	public static String getSiteOfDisease(TB03Form tf) {
-		
 		if (tf.getAnatomicalSite() != null) {
 			return tf.getAnatomicalSite().getName().getName();
-		}
-		
-		else {
+		} else {
 			return "";
 		}
-		
 	}
 	
 	public static String getRegistrationGroup(TB03Form tf) {
@@ -9060,70 +9018,29 @@ public class PatientListContoller {
 		return "";
 	}
 	
-	public static String getResistantDrugs(TB03Form tf) {
-		String drugs;
-		List<DSTForm> dsts = tf.getDsts();
-		if (dsts == null || dsts.size() == 0) {
-			drugs = "";
-		} else {
+	public static String getResistantDrugs(List<DSTForm> dsts) {
+		String drugs = "";
+		if (!dsts.isEmpty()) {
 			DSTForm latest = dsts.get(dsts.size() - 1);
 			DstImpl dst = latest.getDi();
-			return dst.getResistantDrugs();
+			if (dst != null) {
+				String display = dst.getResistantDrugs();
+				return display.replace(",", BR_TAG);
+			}
 		}
 		return drugs;
 	}
 	
-	public static String getSensitiveDrugs(TB03Form tf) {
-		String drugs;
-		List<DSTForm> dsts = tf.getDsts();
-		
-		if (dsts == null || dsts.isEmpty()) {
-			drugs = "";
-		}
-		
-		else {
+	public static String getSensitiveDrugs(List<DSTForm> dsts) {
+		String drugs = "";
+		if (!dsts.isEmpty()) {
 			DSTForm latest = dsts.get(dsts.size() - 1);
 			DstImpl dst = latest.getDi();
-			return dst.getSensitiveDrugs();
-			
+			if (dst != null) {
+				String display = dst.getSensitiveDrugs();
+				return display.replace(",", BR_TAG);
+			}
 		}
-		
-		return drugs;
-	}
-	
-	public static String getResistantDrugs(TB03uForm tf) {
-		String drugs;
-		List<DSTForm> dsts = tf.getDsts();
-		
-		if (dsts == null || dsts.isEmpty()) {
-			drugs = "";
-		}
-		
-		else {
-			DSTForm latest = dsts.get(dsts.size() - 1);
-			DstImpl dst = latest.getDi();
-			return dst.getResistantDrugs();
-			
-		}
-		
-		return drugs;
-	}
-	
-	public static String getSensitiveDrugs(TB03uForm tf) {
-		String drugs;
-		List<DSTForm> dsts = tf.getDsts();
-		
-		if (dsts == null || dsts.isEmpty()) {
-			drugs = "";
-		}
-		
-		else {
-			DSTForm latest = dsts.get(dsts.size() - 1);
-			DstImpl dst = latest.getDi();
-			return dst.getSensitiveDrugs();
-			
-		}
-		
 		return drugs;
 	}
 	

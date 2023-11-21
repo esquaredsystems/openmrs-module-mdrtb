@@ -5,6 +5,10 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestAttribute;
+import org.openmrs.module.commonlabtest.LabTestSample;
+import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
@@ -13,10 +17,11 @@ import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 
 public class SmearForm extends AbstractSimpleForm implements Comparable<SmearForm> {
 	
+	private LabTest labTest;
+	
 	public SmearForm() {
 		super();
 		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
-		
 	}
 	
 	public SmearForm(Patient patient) {
@@ -28,7 +33,19 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 		super(encounter);
 	}
 	
+	public SmearForm(Encounter encounter, LabTest labTest) {
+		super(encounter);
+		this.setLabTest(labTest);
+	}
+	
 	public Integer getMonthOfTreatment() {
+		if (labTest != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			    MdrtbConcepts.MONTH_OF_TREATMENT);
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONTH_OF_TREATMENT), encounter);
 		
@@ -69,6 +86,10 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 	}
 	
 	public String getSpecimenId() {
+		if (labTest != null) {
+			LabTestSample sample = CommonLabUtil.getService().getMostRecentAcceptedSample(labTest);
+			return sample.getSampleIdentifier();
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);
 		return obs == null ? null : obs.getValueText();
@@ -104,6 +125,13 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 	}
 	
 	public Concept getSmearResult() {
+		if (labTest != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getSmearAttributeByTestAndName(labTest,
+			    MdrtbConcepts.SMEAR_RESULT);
+			if (attribute != null) {
+				return (Concept) attribute.getValue();
+			}
+		}
 		Obs obsgroup = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SMEAR_CONSTRUCT), encounter);
 		Obs obs = null;
@@ -160,6 +188,13 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 	}
 	
 	public Integer getPatientProgramId() {
+		if (labTest != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			    MdrtbConcepts.PATIENT_PROGRAM_ID);
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -211,6 +246,14 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 	public String getLink() {
 		return "/module/mdrtb/form/smear.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
 		        + getEncounter().getId();
+	}
+	
+	public LabTest getLabTest() {
+		return labTest;
+	}
+	
+	public void setLabTest(LabTest labTest) {
+		this.labTest = labTest;
 	}
 	
 }

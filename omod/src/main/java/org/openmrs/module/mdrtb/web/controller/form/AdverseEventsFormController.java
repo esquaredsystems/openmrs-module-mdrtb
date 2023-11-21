@@ -229,7 +229,7 @@ public class AdverseEventsFormController {
 		if (bases != null) {
 			MdrtbService ms = Context.getService(MdrtbService.class);
 			Set<Concept> classificationConcepts = new HashSet<>();
-			classificationConcepts.add(ms.getConcept(MdrtbConcepts.DIED));
+			classificationConcepts.add(ms.getConcept(MdrtbConcepts.DEATH));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.HOSPITALIZATION_WORKFLOW));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.DISABILITY));
 			classificationConcepts.add(ms.getConcept(MdrtbConcepts.CONGENITAL_ANOMALY));

@@ -5,6 +5,10 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestAttribute;
+import org.openmrs.module.commonlabtest.LabTestSample;
+import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
@@ -12,6 +16,8 @@ import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 
 public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm> {
+	
+	private LabTest labTest;
 	
 	public HAINForm() {
 		super();
@@ -27,7 +33,16 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 		super(encounter);
 	}
 	
+	public HAINForm(Encounter encounter, LabTest labTest) {
+		super(encounter);
+		this.setLabTest(labTest);
+	}
+	
 	public String getSpecimenId() {
+		if (getLabTest() != null) {
+			LabTestSample sample = CommonLabUtil.getService().getMostRecentAcceptedSample(getLabTest());
+			return sample.getSampleIdentifier();
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);
 		
@@ -68,6 +83,13 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	}
 	
 	public Concept getMtbResult() {
+		if (getLabTest() != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getHainAttributeByTestAndName(getLabTest(),
+			    MdrtbConcepts.MTB_RESULT);
+			if (attribute != null) {
+				return (Concept) attribute.getValue();
+			}
+		}
 		Obs obsgroup = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), encounter);
 		Obs obs = null;
@@ -128,6 +150,13 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	}
 	
 	public Concept getRifResult() {
+		if (getLabTest() != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getHainAttributeByTestAndName(getLabTest(),
+			    MdrtbConcepts.RIFAMPICIN_RESULT);
+			if (attribute != null) {
+				return (Concept) attribute.getValue();
+			}
+		}
 		Obs obsgroup = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), encounter);
 		Obs obs = null;
@@ -188,6 +217,13 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	}
 	
 	public Concept getInhResult() {
+		if (getLabTest() != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(getLabTest(),
+			    MdrtbConcepts.ISONIAZID_RESULT);
+			if (attribute != null) {
+				return (Concept) attribute.getValue();
+			}
+		}
 		Obs obsgroup = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT), encounter);
 		Obs obs = null;
@@ -251,6 +287,13 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	}
 	
 	public Integer getPatientProgramId() {
+		if (getLabTest() != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(getLabTest(),
+			    MdrtbConcepts.PATIENT_PROGRAM_ID);
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
@@ -291,6 +334,13 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	}
 	
 	public Integer getMonthOfTreatment() {
+		if (getLabTest() != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(getLabTest(),
+			    MdrtbConcepts.MONTH_OF_TREATMENT);
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONTH_OF_TREATMENT), encounter);
 		
@@ -341,5 +391,13 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	public String getLink() {
 		return "/module/mdrtb/form/hain.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
 		        + getEncounter().getId();
+	}
+	
+	public LabTest getLabTest() {
+		return labTest;
+	}
+	
+	public void setLabTest(LabTest labTest) {
+		this.labTest = labTest;
 	}
 }

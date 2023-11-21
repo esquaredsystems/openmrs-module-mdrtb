@@ -3,9 +3,11 @@ package org.openmrs.module.mdrtb.specimen;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
@@ -317,6 +319,7 @@ public class DstImpl extends TestImpl implements Dst {
 		List<DstResult> dstResultsList = getResults();
 		Integer resistantConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANT_TO_TB_DRUG)
 		        .getId();
+		Set<String> resistantDrugNames = new HashSet<>();
 		for (Concept drug : drugs) {
 			for (DstResult result : dstResultsList) {
 				boolean matches = result.getDrug().getId().equals(drug.getId());
@@ -326,12 +329,15 @@ public class DstImpl extends TestImpl implements Dst {
 					if (name == null) {
 						name = result.getDrug().getName(Context.getLocale());
 					}
-					results.append(name.getName());
-					results.append(",");
+					resistantDrugNames.add(name.getName());
 				}
 			}
 		}
-		return results.length() == 0 ? "N/A" : results.toString();
+		for (String name : resistantDrugNames) {
+			results.append(name);
+			results.append(", ");			
+		}
+		return results.length() == 0 ? "" : results.toString();
 	}
 	
 	@Override
@@ -341,6 +347,7 @@ public class DstImpl extends TestImpl implements Dst {
 		List<DstResult> dstResultsList = getResults();
 		Integer resistantConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SUSCEPTIBLE_TO_TB_DRUG)
 		        .getId();
+		Set<String> resistantDrugNames = new HashSet<>();
 		for (Concept drug : drugs) {
 			for (DstResult result : dstResultsList) {
 				boolean matches = result.getDrug().getId().equals(drug.getId());
@@ -350,12 +357,15 @@ public class DstImpl extends TestImpl implements Dst {
 					if (name == null) {
 						name = result.getDrug().getName(Context.getLocale());
 					}
-					results.append(name.getName());
-					results.append(",");
+					resistantDrugNames.add(name.getName());
 				}
 			}
 		}
-		return results.length() == 0 ? "N/A" : results.toString();
+		for (String name : resistantDrugNames) {
+			results.append(name);
+			results.append(", ");			
+		}
+		return results.length() == 0 ? "" : results.toString();
 	}
 	
 	@Override

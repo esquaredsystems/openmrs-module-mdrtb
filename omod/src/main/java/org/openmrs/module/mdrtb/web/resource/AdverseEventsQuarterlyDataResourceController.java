@@ -8,9 +8,8 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.MdrtbService;
-import org.openmrs.module.mdrtb.reporting.pv.AdverseEventsRegisterData;
-import org.openmrs.module.mdrtb.web.controller.reporting.AdverseEventsRegisterController;
-import org.openmrs.module.mdrtb.web.dto.SimpleAdverseEventsRegisterData;
+import org.openmrs.module.mdrtb.web.controller.reporting.AdverseEventsReportController;
+import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
@@ -24,8 +23,8 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/adverseeventsregister", supportedClass = SimpleAdverseEventsRegisterData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
-public class AdverseEventsDataResourceController extends DelegatingCrudResource<SimpleAdverseEventsRegisterData> implements Searchable {
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/adverseeventsquarterly", supportedClass = SimpleObject.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+public class AdverseEventsQuarterlyDataResourceController extends DelegatingCrudResource<SimpleObject> implements Searchable {
 	
 	/**
 	 * Logger for this class
@@ -38,25 +37,10 @@ public class AdverseEventsDataResourceController extends DelegatingCrudResource<
 		description.addSelfLink();
 		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
 		description.addProperty("patientUuid");
-		description.addProperty("patientIdentifier");
-		description.addProperty("patientName");
-		description.addProperty("birthdate");
-		description.addProperty("onsetDate");
-		description.addProperty("aeDescription");
-		description.addProperty("diagnosticInvestigation");
-		description.addProperty("serious");
-		description.addProperty("ofSpecialInterest");
-		description.addProperty("ancillaryDrugs");
-		description.addProperty("doseChanged");
-		description.addProperty("suspectedDrug");
-		description.addProperty("suspectedDrugStartDate");
-		description.addProperty("actionOutcome");
-		description.addProperty("actionTaken");
-		description.addProperty("txRegimen");
-		description.addProperty("drugRechallenge");
-		description.addProperty("yellowCardDate");
-		description.addProperty("comments");
-		description.addProperty("adverseEventsForm");
+		description.addProperty("table1");
+		description.addProperty("table2");
+		description.addProperty("table3");
+		description.addProperty("table4");
 		return description;
 	}
 	
@@ -66,28 +50,27 @@ public class AdverseEventsDataResourceController extends DelegatingCrudResource<
 	}
 	
 	@Override
-	public SimpleAdverseEventsRegisterData newDelegate() {
+	public SimpleObject newDelegate() {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override
-	public SimpleAdverseEventsRegisterData save(SimpleAdverseEventsRegisterData delegate) {
+	public SimpleObject save(SimpleObject delegate) {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override
-	public SimpleAdverseEventsRegisterData getByUniqueId(String uniqueId) {
+	public SimpleObject getByUniqueId(String uniqueId) {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override
-	protected void delete(SimpleAdverseEventsRegisterData delegate, String reason, RequestContext context)
-	        throws ResponseException {
+	protected void delete(SimpleObject delegate, String reason, RequestContext context) throws ResponseException {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override
-	public void purge(SimpleAdverseEventsRegisterData delegate, RequestContext context) throws ResponseException {
+	public void purge(SimpleObject delegate, RequestContext context) throws ResponseException {
 		throw new ResourceDoesNotSupportOperationException();
 	}
 	
@@ -108,10 +91,10 @@ public class AdverseEventsDataResourceController extends DelegatingCrudResource<
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		List<AdverseEventsRegisterData> aeRegister = AdverseEventsRegisterController.getAdverseEventsRegister(year, quarter, month, locList);
-		List<SimpleAdverseEventsRegisterData> list = new ArrayList<>();
-		for (AdverseEventsRegisterData aeData : aeRegister) {
-			list.add(new SimpleAdverseEventsRegisterData(aeData));
+		List<Object> tables = AdverseEventsReportController.getPVDataTables(year, quarter, month, locList);
+		List<SimpleObject> list = new ArrayList<>();
+		for (int i = 0; i < tables.size(); i++) {
+			list.add(new SimpleObject().add("table" + (i + 1), tables.get(i)));
 		}
 		return new NeedsPaging<>(list, context);
 	}

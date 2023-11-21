@@ -5,6 +5,10 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestAttribute;
+import org.openmrs.module.commonlabtest.LabTestSample;
+import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
@@ -12,6 +16,8 @@ import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 
 public class CultureForm extends AbstractSimpleForm implements Comparable<CultureForm> {
+	
+	private LabTest labTest;
 	
 	public CultureForm() {
 		super();
@@ -27,7 +33,19 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 		super(encounter);
 	}
 	
+	public CultureForm(Encounter encounter, LabTest labTest) {
+		super(encounter);
+		this.setLabTest(labTest);
+	}
+	
 	public Integer getMonthOfTreatment() {
+		if (labTest != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			    MdrtbConcepts.MONTH_OF_TREATMENT);
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONTH_OF_TREATMENT), encounter);
 		return obs == null ? null : obs.getValueNumeric().intValue();
@@ -63,6 +81,10 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	}
 	
 	public String getSpecimenId() {
+		if (labTest != null) {
+			LabTestSample sample = CommonLabUtil.getService().getMostRecentAcceptedSample(labTest);
+			return sample.getSampleIdentifier();
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);
 		return obs == null ? null : obs.getValueText();
@@ -98,6 +120,13 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	}
 	
 	public Concept getCultureResult() {
+		if (labTest != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getCultureAttributeByTestAndName(labTest,
+			    MdrtbConcepts.CULTURE_RESULT);
+			if (attribute != null) {
+				return (Concept) attribute.getValue();
+			}
+		}
 		Obs obsgroup = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_CONSTRUCT), encounter);
 		Obs obs = null;
@@ -160,6 +189,13 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	}
 	
 	public Integer getPatientProgramId() {
+		if (labTest != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			    MdrtbConcepts.PATIENT_PROGRAM_ID);
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		return obs == null ? null : obs.getValueNumeric().intValue();
@@ -206,5 +242,13 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	public String getLink() {
 		return "/module/mdrtb/form/culture.form?patientProgramId=" + getPatientProgramId() + "&encounterId="
 		        + getEncounter().getId();
+	}
+	
+	public LabTest getLabTest() {
+		return labTest;
+	}
+	
+	public void setLabTest(LabTest labTest) {
+		this.labTest = labTest;
 	}
 }

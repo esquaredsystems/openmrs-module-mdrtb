@@ -313,7 +313,7 @@ public class MdrtbConcepts {
 	
 	public final static String DEFAULTED = "DEFAULTED";
 	
-	public final static String DIED = "DIED";
+	public final static String DEATH = "DEATH";
 	
 	public final static String TREATMENT_FAILED = "TREATMENT FAILED";
 	
@@ -645,7 +645,6 @@ public class MdrtbConcepts {
 	
 	public final static String SAE_TYPE = "SAE TYPE";
 	
-	//public final static String DEATH = "DEATH";
 	//public final static String HOSPITALIZATION = "HOSPITALIZATION";
 	public final static String DISABILITY = "DISABILITY";
 	

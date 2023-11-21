@@ -95,7 +95,7 @@ public class MdrtbDashboardController {
 	@ModelAttribute("patientDied")
 	public ProgramWorkflowState getPatientDiedState() {
 		return Context.getService(MdrtbService.class).getProgramWorkflowState(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH));
 	}
 	
 	@ModelAttribute("hospitalizationState")
@@ -292,7 +292,7 @@ public class MdrtbDashboardController {
 		
 		// mark the patient as died if required
 		ProgramWorkflowState patientDied = Context.getService(MdrtbService.class).getProgramWorkflowState(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH));
 		if (program.getOutcome() != null && program.getOutcome().equals(patientDied) && !program.getPatient().getDead()) {
 			Context.getPatientService().processDeath(
 			    program.getPatient(),
@@ -331,7 +331,7 @@ public class MdrtbDashboardController {
 		
 		// mark the patient as died if required
 		ProgramWorkflowState patientDied = Context.getService(MdrtbService.class).getProgramWorkflowState(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED));
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH));
 		if (program.getOutcome() != null && program.getOutcome().equals(patientDied) && !program.getPatient().getDead()) {
 			Context.getService(MdrtbService.class).processDeath(
 			    program.getPatient(),

@@ -1,6 +1,5 @@
 package org.openmrs.module.mdrtb.web.controller.reporting;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -123,19 +122,6 @@ public class AdverseEventsReportController {
 	        @RequestParam(value = "quarter", required = false) String quarter,
 	        @RequestParam(value = "month", required = false) String month, ModelMap model) {
 		
-		System.out.println("---POST-----");
-		
-		SimpleDateFormat sdf = new SimpleDateFormat();
-		sdf.applyPattern("dd.MM.yyyy");
-		SimpleDateFormat rdateSDF = new SimpleDateFormat();
-		rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
-		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
-		
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
-		
-		//ArrayList<Location> locList = Context.getService(MdrtbService.class).getLocationList(oblastId,districtId,facilityId);
 		List<Location> locList = null;
 		if (oblastId != null) {
 			if (oblastId == 186) {
@@ -151,15 +137,74 @@ public class AdverseEventsReportController {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		List<RegimenForm> regimenList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year,
-		    quarterInt, monthInt);
+		
+		List<Object> tables = getPVDataTables(year, quarterInt, monthInt, locList);
+		for (int i = 0; i < tables.size(); i++) {
+			model.addAttribute("table" + (i + 1), tables.get(i));
+		}
+		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
+		    year, quarterInt, monthInt, "TB-07", ReportType.DOTSTB);
+		
+		String oName = null;
+		String dName = null;
+		String fName = null;
+		
+		if (oblastId != null) {
+			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
+			if (o != null) {
+				oName = o.getName();
+			}
+		}
+		if (districtId != null) {
+			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
+			if (d != null) {
+				dName = d.getName();
+			}
+		}
+		if (facilityId != null) {
+			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
+			if (f != null) {
+				fName = f.getName();
+			}
+		}
+		
+		model.addAttribute("oblast", oblastId);
+		model.addAttribute("facility", facilityId);
+		model.addAttribute("district", districtId);
+		model.addAttribute("year", year);
+		if (month != null && month.length() != 0)
+			model.addAttribute("month", month.replace("\"", ""));
+		else
+			model.addAttribute("month", "");
+		
+		if (quarter != null && quarter.length() != 0)
+			model.addAttribute("quarter", quarter.replace("\"", "'"));
+		else
+			model.addAttribute("quarter", "");
+		
+		model.addAttribute("oName", oName);
+		model.addAttribute("dName", dName);
+		model.addAttribute("fName", fName);
+		
+		model.addAttribute("reportDate", Context.getDateTimeFormat().format(new Date()));
+		model.addAttribute("reportStatus", reportStatus);
+		return "/module/mdrtb/reporting/pv/aeResults";
+	}
+	
+	public static List<Object> getPVDataTables(Integer year, Integer quarter, Integer month, List<Location> locList) {
+		
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Date startDate = (dateMap.get("startDate"));
+		Date endDate = (dateMap.get("endDate"));
+		
+		List<RegimenForm> regimenList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year, quarter,
+		    month);
 		ArrayList<Patient> countedPatients = new ArrayList<>();
 		
-		System.out.println("list size:" + regimenList.size());
-		//CohortDefinition baseCohort = null;
 		List<Patient> allPatients = Context.getService(MdrtbService.class).getAllPatientsWithRegimenForms();
+		List<AdverseEventsForm> aeForms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter,
+		    month);
 		
-		//Integer regimenTypeConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SLD_REGIMEN_TYPE).getId();
 		Integer standardRegimenConceptId = Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.STANDARD_MDR_REGIMEN).getId();
 		Integer shortRegimenConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SHORT_MDR_REGIMEN)
@@ -174,113 +219,6 @@ public class AdverseEventsReportController {
 		        .getConcept(MdrtbConcepts.INDIVIDUAL_WITH_CLOFAZIMIN_AND_LINEZOLID).getId();
 		Integer otherRegimenConceptId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_MDRTB_REGIMEN)
 		        .getId();
-		
-		PVDataTable1 table1 = new PVDataTable1();
-		PVDataTable2 table2 = new PVDataTable2();
-		PVDataTable3 table3 = new PVDataTable3();
-		PVDataTable4 table4 = new PVDataTable4();
-		
-		//start of Table 1
-		for (RegimenForm rf : regimenList) {
-			
-			if (!countedPatients.contains(rf.getPatient())) {
-				countedPatients.add(rf.getPatient());
-				
-				//get disease site
-				Concept q = rf.getSldRegimenType();
-				
-				if (q != null) {
-					if (q.getConceptId().intValue() == standardRegimenConceptId) {
-						table1.setStandardRegimenEver(table1.getStandardRegimenEver() + 1);
-						table1.setStandardRegimenStarting(table1.getStandardRegimenStarting() + 1);
-					}
-					
-					else if (q.getConceptId().intValue() == shortRegimenConceptId) {
-						table1.setShortRegimenEver(table1.getShortRegimenEver() + 1);
-						table1.setShortRegimenStarting(table1.getShortRegimenStarting() + 1);
-					}
-					
-					else if (q.getConceptId().intValue() == regimenWithBdqConceptId) {
-						table1.setRegimenWithBdqEver(table1.getRegimenWithBdqEver() + 1);
-						table1.setRegimenWithBdqStarting(table1.getRegimenWithBdqStarting() + 1);
-					}
-					
-					else if (q.getConceptId().intValue() == regimenWithDlmConceptId) {
-						table1.setRegimenWithDlmEver(table1.getRegimenWithDlmEver() + 1);
-						table1.setRegimenWithDlmStarting(table1.getRegimenWithDlmStarting() + 1);
-					}
-					
-					else if (q.getConceptId().intValue() == regimenWithBdqDlmConceptId) {
-						table1.setRegimenWithBdqDlmEver(table1.getRegimenWithBdqDlmEver() + 1);
-						table1.setRegimenWithBdqDlmStarting(table1.getRegimenWithBdqDlmStarting() + 1);
-						
-					}
-					
-					else if (q.getConceptId().intValue() == regimenWithCfzLzdConceptId) {
-						table1.setRegimenWithCfzLzdEver(table1.getRegimenWithCfzLzdEver() + 1);
-						table1.setRegimenWithCfzLzdStarting(table1.getRegimenWithCfzLzdStarting() + 1);
-						
-					}
-					
-					else if (q.getConceptId().intValue() == otherRegimenConceptId) {
-						table1.setOtherRegimenEver(table1.getOtherRegimenEver() + 1);
-						table1.setOtherRegimenStarting(table1.getOtherRegimenStarting() + 1);
-						
-					}
-				}
-			}
-		}
-		
-		for (Patient p : allPatients) {
-			if (!countedPatients.contains(p)) {
-				RegimenForm rfp = Context.getService(MdrtbService.class).getPreviousRegimenForm(p, locList, endDate);
-				
-				if (rfp != null) {
-					Concept q = rfp.getSldRegimenType();
-					
-					if (q != null) {
-						if (q.getConceptId().intValue() == standardRegimenConceptId.intValue()) {
-							table1.setStandardRegimenEver(table1.getStandardRegimenEver() + 1);
-							//table1.setStandardRegimenEver(table1.getStandardRegimenStarting() + 1);
-						}
-						
-						else if (q.getConceptId().intValue() == shortRegimenConceptId.intValue()) {
-							table1.setShortRegimenEver(table1.getShortRegimenEver() + 1);
-							//table1.setShortRegimenEver(table1.getShortRegimenStarting() + 1);
-						}
-						
-						else if (q.getConceptId().intValue() == regimenWithBdqConceptId.intValue()) {
-							table1.setRegimenWithBdqEver(table1.getRegimenWithBdqEver() + 1);
-							//table1.setRegimenWithBdqEver(table1.getRegimenWithBdqStarting() + 1);
-						}
-						
-						else if (q.getConceptId().intValue() == regimenWithDlmConceptId.intValue()) {
-							table1.setRegimenWithDlmEver(table1.getRegimenWithDlmEver() + 1);
-							//table1.setRegimenWithDlmEver(table1.getRegimenWithDlmStarting() + 1);
-						}
-						
-						else if (q.getConceptId().intValue() == regimenWithBdqDlmConceptId) {
-							table1.setRegimenWithBdqDlmEver(table1.getRegimenWithBdqDlmEver() + 1);
-							//table1.setRegimenWithBdqDlmStarting(table1.getRegimenWithBdqDlmStarting() + 1);
-							
-						}
-						
-						else if (q.getConceptId().intValue() == regimenWithCfzLzdConceptId) {
-							table1.setRegimenWithCfzLzdEver(table1.getRegimenWithCfzLzdEver() + 1);
-							//table1.setRegimenWithBdqDlmStarting(table1.getRegimenWithCfzLzdStarting() + 1);
-							
-						}
-						
-						else if (q.getConceptId().intValue() == otherRegimenConceptId) {
-							table1.setOtherRegimenEver(table1.getOtherRegimenEver() + 1);
-							
-						}
-					}
-				}
-			}
-		}
-		
-		//end of Table 1
 		
 		Integer ancillaryDrugsId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANCILLARY_DRUG_GIVEN)
 		        .getId();
@@ -324,17 +262,17 @@ public class AdverseEventsReportController {
 		//	Integer saeTypeId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SAE_TYPE).getId();
 		// 	Integer specialInterestTypeId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIAL_INTEREST_EVENT_TYPE).getId();
 		
-		Integer deathId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED).getId();
-		Integer hospitilizationId = Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.HOSPITALIZATION_WORKFLOW).getId();
+		Integer deathId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH).getId();
+		Integer hospitilizationId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOSPITALIZATION_WORKFLOW)
+		        .getId();
 		Integer disabilityId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DISABILITY).getId();
-		Integer congenitalAbnormalityId = Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.CONGENITAL_ANOMALY).getId();
+		Integer congenitalAbnormalityId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONGENITAL_ANOMALY)
+		        .getId();
 		Integer lifeThreateningExperienceId = Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.LIFE_THREATENING_EXPERIENCE).getId();
 		
-		Integer psychiatricDisorderId = Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.PSYCHIATRIC_DISORDER).getId();
+		Integer psychiatricDisorderId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PSYCHIATRIC_DISORDER)
+		        .getId();
 		Integer myelosuppressionId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MYELOSUPPRESSION)
 		        .getId();
 		Integer lacticAcidosisId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LACTIC_ACIDOSIS).getId();
@@ -357,60 +295,79 @@ public class AdverseEventsReportController {
 		Integer zId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PYRAZINAMIDE).getId();
 		Integer eId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ETHAMBUTOL).getId();
 		
-		List<AdverseEventsForm> aeForms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarterInt,
-		    monthInt);
-		System.out.println("SZ:" + aeForms.size());
+		//start of Table 1
+		PVDataTable1 table1 = new PVDataTable1();
+		PVDataTable2 table2 = new PVDataTable2();
+		PVDataTable3 table3 = new PVDataTable3();
+		PVDataTable4 table4 = new PVDataTable4();
+		for (RegimenForm rf : regimenList) {
+			if (!countedPatients.contains(rf.getPatient())) {
+				countedPatients.add(rf.getPatient());
+				//get disease site
+				Concept q = rf.getSldRegimenType();
+				if (q != null) {
+					int intValue = q.getConceptId().intValue();
+					if (intValue == standardRegimenConceptId) {
+						table1.setStandardRegimenEver(table1.getStandardRegimenEver() + 1);
+						table1.setStandardRegimenStarting(table1.getStandardRegimenStarting() + 1);
+					} else if (intValue == shortRegimenConceptId) {
+						table1.setShortRegimenEver(table1.getShortRegimenEver() + 1);
+						table1.setShortRegimenStarting(table1.getShortRegimenStarting() + 1);
+					} else if (intValue == regimenWithBdqConceptId) {
+						table1.setRegimenWithBdqEver(table1.getRegimenWithBdqEver() + 1);
+						table1.setRegimenWithBdqStarting(table1.getRegimenWithBdqStarting() + 1);
+					} else if (intValue == regimenWithDlmConceptId) {
+						table1.setRegimenWithDlmEver(table1.getRegimenWithDlmEver() + 1);
+						table1.setRegimenWithDlmStarting(table1.getRegimenWithDlmStarting() + 1);
+					} else if (intValue == regimenWithBdqDlmConceptId) {
+						table1.setRegimenWithBdqDlmEver(table1.getRegimenWithBdqDlmEver() + 1);
+						table1.setRegimenWithBdqDlmStarting(table1.getRegimenWithBdqDlmStarting() + 1);
+					} else if (intValue == regimenWithCfzLzdConceptId) {
+						table1.setRegimenWithCfzLzdEver(table1.getRegimenWithCfzLzdEver() + 1);
+						table1.setRegimenWithCfzLzdStarting(table1.getRegimenWithCfzLzdStarting() + 1);
+					} else if (intValue == otherRegimenConceptId) {
+						table1.setOtherRegimenEver(table1.getOtherRegimenEver() + 1);
+						table1.setOtherRegimenStarting(table1.getOtherRegimenStarting() + 1);
+					}
+				}
+			}
+		}
 		
-		boolean isStandard = false;
-		boolean isShort = false;
-		boolean isBdq = false;
-		boolean isDlm = false;
-		boolean isBdqDlm = false;
-		boolean isCfzLzd = false;
-		boolean isOther = false;
-		
-		boolean isSuspBdq = false;
-		boolean isSuspDlm = false;
-		boolean isSuspCfz = false;
-		boolean isSuspLzd = false;
-		boolean isSuspAm = false;
-		boolean isSuspCm = false;
-		boolean isSuspMfx = false;
-		boolean isSuspLfx = false;
-		boolean isSuspCyc = false;
-		boolean isSuspPas = false;
-		boolean isSuspPto = false;
-		boolean isSuspZ = false;
-		boolean isSuspE = false;
+		for (Patient p : allPatients) {
+			if (!countedPatients.contains(p)) {
+				RegimenForm rfp = Context.getService(MdrtbService.class).getPreviousRegimenForm(p, locList, endDate);
+				if (rfp != null) {
+					Concept q = rfp.getSldRegimenType();
+					if (q != null) {
+						if (q.getConceptId().intValue() == standardRegimenConceptId.intValue()) {
+							table1.setStandardRegimenEver(table1.getStandardRegimenEver() + 1);
+						} else if (q.getConceptId().intValue() == shortRegimenConceptId.intValue()) {
+							table1.setShortRegimenEver(table1.getShortRegimenEver() + 1);
+						} else if (q.getConceptId().intValue() == regimenWithBdqConceptId.intValue()) {
+							table1.setRegimenWithBdqEver(table1.getRegimenWithBdqEver() + 1);
+						} else if (q.getConceptId().intValue() == regimenWithDlmConceptId.intValue()) {
+							table1.setRegimenWithDlmEver(table1.getRegimenWithDlmEver() + 1);
+						} else if (q.getConceptId().intValue() == regimenWithBdqDlmConceptId) {
+							table1.setRegimenWithBdqDlmEver(table1.getRegimenWithBdqDlmEver() + 1);
+						} else if (q.getConceptId().intValue() == regimenWithCfzLzdConceptId) {
+							table1.setRegimenWithCfzLzdEver(table1.getRegimenWithCfzLzdEver() + 1);
+						} else if (q.getConceptId().intValue() == otherRegimenConceptId) {
+							table1.setOtherRegimenEver(table1.getOtherRegimenEver() + 1);
+						}
+					}
+				}
+			}
+		}
+		//end of Table 1
+		boolean isStandard, isShort, isBdq, isDlm, isBdqDlm, isCfzLzd, isOther, isSuspBdq, isSuspDlm, isSuspCfz, isSuspLzd,
+		        isSuspAm, isSuspCm, isSuspMfx, isSuspLfx, isSuspCyc, isSuspPas, isSuspPto, isSuspZ, isSuspE;
 		
 		for (AdverseEventsForm ae : aeForms) {
-			
-			isStandard = false;
-			isShort = false;
-			isBdq = false;
-			isDlm = false;
-			isBdqDlm = false;
-			isCfzLzd = false;
-			isOther = false;
-			
-			isSuspBdq = false;
-			isSuspDlm = false;
-			isSuspCfz = false;
-			isSuspLzd = false;
-			isSuspAm = false;
-			isSuspCm = false;
-			isSuspMfx = false;
-			isSuspLfx = false;
-			isSuspCyc = false;
-			isSuspPas = false;
-			isSuspPto = false;
-			isSuspZ = false;
-			isSuspE = false;
-			
+			isStandard = isShort = isBdq = isDlm = isBdqDlm = isCfzLzd = isOther = isSuspBdq = isSuspDlm = isSuspCfz = isSuspLzd = false;
+			isSuspAm = isSuspCm = isSuspMfx = isSuspLfx = isSuspCyc = isSuspPas = isSuspPto = isSuspZ = isSuspE = false;
 			//TABLE2
 			Concept q = ae.getTypeOfEvent();
 			Concept aq = null;
-			
 			Integer id = null;
 			Integer qi = null;
 			
@@ -433,90 +390,52 @@ public class AdverseEventsReportController {
 				}
 				
 				if (regimenTypeConceptId != null) {
-					if (regimenTypeConceptId.intValue() == standardRegimenConceptId.intValue()) {
+					int intValue = regimenTypeConceptId.intValue();
+					if (intValue == standardRegimenConceptId.intValue()) {
 						isStandard = true;
-						
-					}
-					
-					else if (regimenTypeConceptId.intValue() == shortRegimenConceptId.intValue()) {
+					} else if (intValue == shortRegimenConceptId.intValue()) {
 						isShort = true;
-					}
-					
-					else if (regimenTypeConceptId.intValue() == regimenWithBdqConceptId.intValue()) {
+					} else if (intValue == regimenWithBdqConceptId.intValue()) {
 						isBdq = true;
-					}
-					
-					else if (regimenTypeConceptId.intValue() == regimenWithDlmConceptId.intValue()) {
+					} else if (intValue == regimenWithDlmConceptId.intValue()) {
 						isDlm = true;
-					}
-					
-					else if (regimenTypeConceptId.intValue() == regimenWithBdqDlmConceptId.intValue()) {
+					} else if (intValue == regimenWithBdqDlmConceptId.intValue()) {
 						isBdqDlm = true;
-					}
-					
-					else if (regimenTypeConceptId.intValue() == regimenWithCfzLzdConceptId.intValue()) {
+					} else if (intValue == regimenWithCfzLzdConceptId.intValue()) {
 						isCfzLzd = true;
-					}
-					
-					else if (regimenTypeConceptId.intValue() == otherRegimenConceptId.intValue()) {
+					} else if (intValue == otherRegimenConceptId.intValue()) {
 						isOther = true;
 					}
-					
 				}
 				
 				//Table 3 Setup
 				ArrayList<Concept> drugs = ae.getSuspectedDrugs();
 				if (drugs != null) {
 					for (Concept c : drugs) {
-						if (c.getId().intValue() == bdqId.intValue()) {
+						int intValue = c.getId().intValue();
+						if (intValue == bdqId.intValue()) {
 							isSuspBdq = true;
-						}
-						
-						else if (c.getId().intValue() == dlmId.intValue()) {
+						} else if (intValue == dlmId.intValue()) {
 							isSuspDlm = true;
-						}
-						
-						else if (c.getId().intValue() == cfzId.intValue()) {
+						} else if (intValue == cfzId.intValue()) {
 							isSuspCfz = true;
-						}
-						
-						else if (c.getId().intValue() == lzdId.intValue()) {
-							isSuspLzd = true;
-						}
-						
-						else if (c.getId().intValue() == amId.intValue()) {
+						} else if (intValue == amId.intValue()) {
 							isSuspAm = true;
-						}
-						
-						else if (c.getId().intValue() == cmId.intValue()) {
+						} else if (intValue == cmId.intValue()) {
 							isSuspCm = true;
-						}
-						
-						else if (c.getId().intValue() == mfxId.intValue()) {
+						} else if (intValue == mfxId.intValue()) {
 							isSuspMfx = true;
-						}
-						
-						else if (c.getId().intValue() == lzdId.intValue()) {
+						} else if (intValue == lzdId.intValue()) {
 							isSuspLzd = true;
-						}
-						
-						else if (c.getId().intValue() == cycId.intValue()) {
+						} else if (intValue == cycId.intValue()) {
 							isSuspCyc = true;
-						}
-						
-						else if (c.getId().intValue() == pasId.intValue()) {
+						} else if (intValue == pasId.intValue()) {
 							isSuspPas = true;
-						}
-						
-						else if (c.getId().intValue() == ptoId.intValue()) {
+						} else if (intValue == ptoId.intValue()) {
 							isSuspPto = true;
-						}
-						
-						else if (c.getId().intValue() == zId.intValue()) {
+						} else if (intValue == zId.intValue()) {
 							isSuspZ = true;
-						}
-						
-						else if (c.getId().intValue() == eId.intValue()) {
+						} else if (intValue == eId.intValue()) {
 							isSuspE = true;
 						}
 					}
@@ -583,7 +502,6 @@ public class AdverseEventsReportController {
 					if (isSuspE) {
 						table3.setSaeE(table3.getSaeE() + 1);
 					}
-					
 					table3.setSaeTotal(table3.getSaeTotal() + 1);
 					
 					if (aq == null)
@@ -948,7 +866,6 @@ public class AdverseEventsReportController {
 					if (isSuspLfx) {
 						table3.setSpecialInterestLfx(table3.getSpecialInterestLfx() + 1);
 					}
-					
 					if (isSuspCyc) {
 						table3.setSpecialInterestCyc(table3.getSpecialInterestCyc() + 1);
 					}
@@ -1387,7 +1304,6 @@ public class AdverseEventsReportController {
 						if (isSuspLfx) {
 							table3.setLacticAcidosisLfx(table3.getLacticAcidosisLfx() + 1);
 						}
-						
 						if (isSuspCyc) {
 							table3.setLacticAcidosisCyc(table3.getLacticAcidosisCyc() + 1);
 						}
@@ -1403,7 +1319,6 @@ public class AdverseEventsReportController {
 						if (isSuspE) {
 							table3.setLacticAcidosisE(table3.getLacticAcidosisE() + 1);
 						}
-						
 						table3.setLacticAcidosisTotal(table3.getLacticAcidosisTotal() + 1);
 					}
 					
@@ -1450,7 +1365,6 @@ public class AdverseEventsReportController {
 						if (isSuspLfx) {
 							table3.setHepatitisLfx(table3.getHepatitisLfx() + 1);
 						}
-						
 						if (isSuspCyc) {
 							table3.setHepatitisCyc(table3.getHepatitisCyc() + 1);
 						}
@@ -1466,7 +1380,6 @@ public class AdverseEventsReportController {
 						if (isSuspE) {
 							table3.setHepatitisE(table3.getHepatitisE() + 1);
 						}
-						
 						table3.setHepatitisTotal(table3.getHepatitisTotal() + 1);
 					}
 					
@@ -1528,9 +1441,7 @@ public class AdverseEventsReportController {
 						if (isSuspE) {
 							table3.setHypothyroidismE(table3.getHypothyroidismE() + 1);
 						}
-						
 						table3.setHypothyroidismTotal(table3.getHypothyroidismTotal() + 1);
-						
 					}
 					
 					else if (qi.intValue() == hypokalemiaId.intValue()) {
@@ -1576,7 +1487,6 @@ public class AdverseEventsReportController {
 						if (isSuspLfx) {
 							table3.setHypokalemiaLfx(table3.getHypokalemiaLfx() + 1);
 						}
-						
 						if (isSuspCyc) {
 							table3.setHypokalemiaCyc(table3.getHypokalemiaCyc() + 1);
 						}
@@ -1594,7 +1504,6 @@ public class AdverseEventsReportController {
 						}
 						table3.setHypokalemiaTotal(table3.getHypokalemiaTotal() + 1);
 					}
-					
 					else if (qi.intValue() == pancreatitisId.intValue()) {
 						if (isStandard) {
 							table2.setPancreatitisStandard(table2.getPancreatitisStandard() + 1);
@@ -1847,193 +1756,77 @@ public class AdverseEventsReportController {
 		}
 		
 		//TABLE 4 loop
-		
 		for (AdverseEventsForm ae : aeForms) {
 			
 			// TABLE 4
 			//Concept q = ae.getActionTaken();
 			Concept q = ae.getRequiresAncillaryDrugs();
 			Integer id = null;
-			
 			if (q != null) {
-				
 				id = q.getId();
-				System.out.println("ID1: " + id);
-				if (id != null
-				        && id.intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES).getId()
-				                .intValue()) {
-					
+				if (id != null && id.intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES)
+				        .getId().intValue()) {
 					q = ae.getAdverseEvent();
-					
 					if (q != null) {
 						id = q.getId();
-						System.out.println("ID2: " + id);
 						if (id.intValue() == nauseaId.intValue()) {
 							table4.setNausea(table4.getNausea() + 1);
-						}
-						
-						else if (id.intValue() == diarrhoeaId.intValue()) {
+						} else if (id.intValue() == diarrhoeaId.intValue()) {
 							table4.setDiarrhoea(table4.getDiarrhoea() + 1);
-						}
-						
-						else if (id.intValue() == arthalgiaId.intValue()) {
+						} else if (id.intValue() == arthalgiaId.intValue()) {
 							table4.setArthalgia(table4.getArthalgia() + 1);
-						}
-						
-						else if (id.intValue() == dizzinessId.intValue()) {
+						} else if (id.intValue() == dizzinessId.intValue()) {
 							table4.setDizziness(table4.getDizziness() + 1);
-						}
-						
-						else if (id.intValue() == hearingDisturbancesId.intValue()) {
+						} else if (id.intValue() == hearingDisturbancesId.intValue()) {
 							table4.setHearingDisturbances(table4.getHearingDisturbances() + 1);
-						}
-						
-						else if (id.intValue() == headachesId.intValue()) {
+						} else if (id.intValue() == headachesId.intValue()) {
 							table4.setHeadaches(table4.getHeadaches() + 1);
-						}
-						
-						else if (id.intValue() == sleepDisturbancesId.intValue()) {
+						} else if (id.intValue() == sleepDisturbancesId.intValue()) {
 							table4.setSleepDisturbances(table4.getSleepDisturbances() + 1);
-						}
-						
-						else if (id.intValue() == electrolyteDisturbancesId.intValue()) {
+						} else if (id.intValue() == electrolyteDisturbancesId.intValue()) {
 							table4.setElectrolyteDisturbance(table4.getElectrolyteDisturbance() + 1);
-						}
-						
-						else if (id.intValue() == abdominalPainId.intValue()) {
+						} else if (id.intValue() == abdominalPainId.intValue()) {
 							table4.setAbdominalPain(table4.getAbdominalPain() + 1);
-						}
-						
-						else if (id.intValue() == anorexiaId.intValue()) {
+						} else if (id.intValue() == anorexiaId.intValue()) {
 							table4.setAnorexia(table4.getAnorexia() + 1);
-						}
-						
-						else if (id.intValue() == gastritisId.intValue()) {
+						} else if (id.intValue() == gastritisId.intValue()) {
 							table4.setGastritis(table4.getGastritis() + 1);
-						}
-						
-						else if (id.intValue() == peripheralNeuropathyId.intValue()) {
+						} else if (id.intValue() == peripheralNeuropathyId.intValue()) {
 							table4.setPeripheralNeuropathy(table4.getPeripheralNeuropathy() + 1);
-						}
-						
-						else if (id.intValue() == depressionId.intValue()) {
+						} else if (id.intValue() == depressionId.intValue()) {
 							table4.setDepression(table4.getDepression() + 1);
-						}
-						
-						else if (id.intValue() == tinnitusId.intValue()) {
+						} else if (id.intValue() == tinnitusId.intValue()) {
 							table4.setTinnitus(table4.getTinnitus() + 1);
-						}
-						
-						else if (id.intValue() == allergicReactionId.intValue()) {
+						} else if (id.intValue() == allergicReactionId.intValue()) {
 							table4.setAllergicReaction(table4.getAllergicReaction() + 1);
-						}
-						
-						else if (id.intValue() == rashId.intValue()) {
+						} else if (id.intValue() == rashId.intValue()) {
 							table4.setRash(table4.getRash() + 1);
-						}
-						
-						else if (id.intValue() == visualDisturbancesId.intValue()) {
+						} else if (id.intValue() == visualDisturbancesId.intValue()) {
 							table4.setVisualDisturbances(table4.getVisualDisturbances() + 1);
-						}
-						
-						else if (id.intValue() == seizuresId.intValue()) {
+						} else if (id.intValue() == seizuresId.intValue()) {
 							table4.setSeizures(table4.getSeizures() + 1);
-						}
-						
-						else if (id.intValue() == hypothyroidismId.intValue()) {
+						} else if (id.intValue() == hypothyroidismId.intValue()) {
 							table4.setHypothyroidism(table4.getHypothyroidism() + 1);
-						}
-						
-						else if (id.intValue() == psychosisId.intValue()) {
+						} else if (id.intValue() == psychosisId.intValue()) {
 							table4.setPsychosis(table4.getPsychosis() + 1);
-						}
-						
-						else if (id.intValue() == suicidalIdeationId.intValue()) {
+						} else if (id.intValue() == suicidalIdeationId.intValue()) {
 							table4.setSuicidalIdeation(table4.getSuicidalIdeation() + 1);
-						}
-						
-						else if (id.intValue() == hepatitisId.intValue()) {
+						} else if (id.intValue() == hepatitisId.intValue()) {
 							table4.setHepatitis(table4.getHepatitis() + 1);
-						}
-						
-						else if (id.intValue() == renalFailureId.intValue()) {
+						} else if (id.intValue() == renalFailureId.intValue()) {
 							table4.setRenalFailure(table4.getRenalFailure() + 1);
-						}
-						
-						else if (id.intValue() == qtProlongationId.intValue()) {
+						} else if (id.intValue() == qtProlongationId.intValue()) {
 							table4.setQtProlongation(table4.getQtProlongation() + 1);
 						}
-						
 					}
 				}
 			}
 		}
-		
-		//table1.setTotalAll(table1.getTotalMale() + getTotalFemale());
-		
-		//fin.add(table1);
-		//}
-		
-		boolean reportStatus;// = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB 07");
-		/*if(location!=null)
-			 reportStatus = Context.getService(MdrtbService.class).readReportStatus(report_oblast, location.getId(), year, report_quarter, report_month, "TB-07","DOTSTB");
-		else*/
-		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId, year,
-		    quarterInt, monthInt, "TB-07", ReportType.DOTSTB);
-		
-		System.out.println(reportStatus);
-		
-		String oName = null;
-		String dName = null;
-		String fName = null;
-		
-		if (oblastId != null) {
-			Region o = Context.getService(MdrtbService.class).getRegion(oblastId);
-			if (o != null) {
-				oName = o.getName();
-			}
-		}
-		
-		if (districtId != null) {
-			District d = Context.getService(MdrtbService.class).getDistrict(districtId);
-			if (d != null) {
-				dName = d.getName();
-			}
-		}
-		
-		if (facilityId != null) {
-			Facility f = Context.getService(MdrtbService.class).getFacility(facilityId);
-			if (f != null) {
-				fName = f.getName();
-			}
-		}
-		
-		model.addAttribute("table1", table1);
-		model.addAttribute("table2", table2);
-		model.addAttribute("table3", table3);
-		model.addAttribute("table4", table4);
-		model.addAttribute("oblast", oblastId);
-		model.addAttribute("facility", facilityId);
-		model.addAttribute("district", districtId);
-		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
-			model.addAttribute("month", month.replace("\"", ""));
-		else
-			model.addAttribute("month", "");
-		
-		if (quarter != null && quarter.length() != 0)
-			model.addAttribute("quarter", quarter.replace("\"", "'"));
-		else
-			model.addAttribute("quarter", "");
-		
-		model.addAttribute("oName", oName);
-		model.addAttribute("dName", dName);
-		model.addAttribute("fName", fName);
-		
-		model.addAttribute("reportDate", rdateSDF.format(new Date()));
-		model.addAttribute("reportStatus", reportStatus);
-		return "/module/mdrtb/reporting/pv/aeResults";
-		//_" + Context.getLocale().toString().substring(0, 2);
+		List<Object> tables = new ArrayList<>();
+		tables.add(table1);
+		tables.add(table2);
+		tables.add(table3);
+		tables.add(table4);
+		return tables;
 	}
 }

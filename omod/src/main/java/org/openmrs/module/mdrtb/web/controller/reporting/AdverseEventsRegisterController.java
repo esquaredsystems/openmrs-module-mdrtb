@@ -132,7 +132,7 @@ public class AdverseEventsRegisterController {
 		
 		List<AdverseEventsRegisterData> aeRegister = getAdverseEventsRegister(year, quarterInt, monthInt, locList);
 		model.addAttribute("forms", aeRegister);
-
+		
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarterInt, monthInt, "TB-07", ReportType.DOTSTB);
 		

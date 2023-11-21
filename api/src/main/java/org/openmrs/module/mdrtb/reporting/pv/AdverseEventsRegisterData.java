@@ -106,8 +106,7 @@ public class AdverseEventsRegisterData implements Comparable<AdverseEventsRegist
 			return null;
 		if (q.getId() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SERIOUS).getId()) {
 			return Context.getMessageSourceService().getMessage(MdrtbConstants.MESSAGE_CODE_YES);
-		}
-		else {
+		} else {
 			return Context.getMessageSourceService().getMessage(MdrtbConstants.MESSAGE_CODE_NO);
 		}
 	}
@@ -120,8 +119,7 @@ public class AdverseEventsRegisterData implements Comparable<AdverseEventsRegist
 			return null;
 		if (q.getId() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_SPECIAL_INTEREST).getId()) {
 			return Context.getMessageSourceService().getMessage(MdrtbConstants.MESSAGE_CODE_YES);
-		}
-		else {
+		} else {
 			return Context.getMessageSourceService().getMessage(MdrtbConstants.MESSAGE_CODE_NO);
 		}
 	}

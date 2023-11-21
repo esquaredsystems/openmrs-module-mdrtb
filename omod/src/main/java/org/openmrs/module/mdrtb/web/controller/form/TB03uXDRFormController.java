@@ -436,7 +436,7 @@ public class TB03uXDRFormController {
 			Set<Concept> concepts = new HashSet<>();
 			concepts.add(ms.getConcept(MdrtbConcepts.CURED));
 			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_COMPLETE));
-			concepts.add(ms.getConcept(MdrtbConcepts.DIED));
+			concepts.add(ms.getConcept(MdrtbConcepts.DEATH));
 			concepts.add(ms.getConcept(MdrtbConcepts.TREATMENT_FAILED));
 			concepts.add(ms.getConcept(MdrtbConcepts.LOST_TO_FOLLOWUP));
 			concepts.add(ms.getConcept(MdrtbConcepts.CANCELLED));

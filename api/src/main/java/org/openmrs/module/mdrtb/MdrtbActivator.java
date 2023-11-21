@@ -154,7 +154,7 @@ public class MdrtbActivator extends BaseModuleActivator {
 		globalPropertyConceptMap.put(MdrtbConstants.GP_AFTER_RELAPSE2_CONCEPT_ID, MdrtbConcepts.RELAPSE_AFTER_REGIMEN_2);
 		globalPropertyConceptMap.put(MdrtbConstants.GP_OUTCOME_CANCELED_CONCEPT_ID, MdrtbConcepts.CANCELLED);
 		globalPropertyConceptMap.put(MdrtbConstants.GP_OUTCOME_CURED_CONCEPT_ID, MdrtbConcepts.CURED);
-		globalPropertyConceptMap.put(MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID, MdrtbConcepts.DIED);
+		globalPropertyConceptMap.put(MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID, MdrtbConcepts.DEATH);
 		globalPropertyConceptMap.put(MdrtbConstants.GP_OUTCOME_LTFU_CONCEPT_ID, MdrtbConcepts.LOST_TO_FOLLOWUP);
 		globalPropertyConceptMap.put(MdrtbConstants.GP_OUTCOME_STARTED_SLD_CONCEPT_ID, MdrtbConcepts.STARTED_SLD_TREATMENT);
 		globalPropertyConceptMap.put(MdrtbConstants.GP_OUTCOME_TRANSFER_OUT_CONCEPT_ID,

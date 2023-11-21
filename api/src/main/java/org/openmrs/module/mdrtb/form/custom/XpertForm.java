@@ -7,7 +7,6 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.commonlabtest.LabTest;
 import org.openmrs.module.commonlabtest.LabTestAttribute;
-import org.openmrs.module.commonlabtest.LabTestAttributeType;
 import org.openmrs.module.commonlabtest.LabTestSample;
 import org.openmrs.module.mdrtb.CommonLabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
@@ -27,6 +26,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 	
 	public XpertForm(Encounter encounter) {
 		super(encounter);
+		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 	}
 	
 	public XpertForm(Encounter encounter, LabTest labTest) {
@@ -82,7 +82,9 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		if (labTest != null) {
 			LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(labTest,
 			    MdrtbConcepts.MTB_RESULT);
-			return (Concept) attribute.getValue();
+			if (attribute != null) {
+				return (Concept) attribute.getValue();
+			}
 		}
 		Obs obsgroup = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), encounter);
@@ -143,7 +145,9 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		if (labTest != null) {
 			LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(labTest,
 			    MdrtbConcepts.RIFAMPICIN_RESULT);
-			return (Concept) attribute.getValue();
+			if (attribute != null) {
+				return (Concept) attribute.getValue();
+			}
 		}
 		Obs obsgroup = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.XPERT_CONSTRUCT), encounter);
@@ -203,9 +207,15 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 	}
 	
 	public Integer getPatientProgramId() {
+		if (labTest != null) {
+			LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(labTest,
+			    MdrtbConcepts.PATIENT_PROGRAM_ID);
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
+		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
-		
 		if (obs == null) {
 			return null;
 		} else {
@@ -246,7 +256,9 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		if (labTest != null) {
 			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.MONTH_OF_TREATMENT);
-			return (Integer) attribute.getValue();
+			if (attribute != null) {
+				return (Integer) attribute.getValue();
+			}
 		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MONTH_OF_TREATMENT), encounter);

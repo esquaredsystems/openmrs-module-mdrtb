@@ -134,14 +134,24 @@ public class CommonLabUtil {
 		if (patient == null) {
 			return null;
 		}
-		return service.getLabTests(patient, false);
+		List<LabTest> labTests = service.getLabTests(patient, false);
+		for (LabTest labTest : labTests) {
+			List<LabTestAttribute> attributes = CommonLabUtil.getService().getCommonLabService().getLabTestAttributes(labTest.getTestOrderId());
+			labTest.setAttributes(new HashSet<>(attributes));
+		}
+		return labTests;
 	}
 
 	public List<LabTest> getLabTests(Patient patient, LabTestType labTestType) {
 		if (patient == null) {
 			return null;
 		}
-		return service.getLabTests(labTestType, patient, null, null, null, null, null, null, false);
+		List<LabTest> labTests = service.getLabTests(labTestType, patient, null, null, null, null, null, null, false);
+		for (LabTest labTest : labTests) {
+			List<LabTestAttribute> attributes = CommonLabUtil.getService().getCommonLabService().getLabTestAttributes(labTest.getTestOrderId());
+			labTest.setAttributes(new HashSet<>(attributes));
+		}
+		return labTests;
 	}
 
 	public LabTestType getCommonTestType() {

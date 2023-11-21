@@ -179,7 +179,7 @@ public class TB08TJK implements ReportSpecification {
 		        .getConcept(MdrtbConcepts.CAUSE_OF_DEATH).getId(), null, null, SetComparator.IN,
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH_BY_TB).getId());
 		
-		//DIED: NON-TB
+		//DEATH: NON-TB
 		//CohortDefinition nonTbDeath = ReportUtil.minus(diedDuringTreatment, tbDied);
 		CohortDefinition nonTbDeath = ReportUtil.getCodedObsCohort(TimeModifier.ANY, Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.CAUSE_OF_DEATH).getId(), null, null, SetComparator.IN,

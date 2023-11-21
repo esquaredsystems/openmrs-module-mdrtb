@@ -1446,6 +1446,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<SmearForm> getSmearForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<SmearForm> smears = new ArrayList<>();
+		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
@@ -1459,6 +1460,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				}
 			}
 		}
+		// Search in Lab Tests
+		if (smears.isEmpty()) {
+			List<LabTest> labTests = CommonLabUtil.getService().getLabTests(tpp.getPatient(), CommonLabUtil.getService().getCommonTestType());
+			if (!labTests.isEmpty()) {
+				for (LabTest labTest : labTests) {
+					Encounter e = labTest.getOrder().getEncounter();
+					SmearForm sf = new SmearForm(e, labTest);
+					sf.setPatient(tpp.getPatient());
+					smears.add(sf);
+				}
+			}
+		}
 		Collections.sort(smears);
 		return smears;
 	}
@@ -1466,6 +1479,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<CultureForm> getCultureForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<CultureForm> cultures = new ArrayList<>();
+		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
@@ -1479,26 +1493,26 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				}
 			}
 		}
+		// Search in Lab Tests
+		if (cultures.isEmpty()) {
+			List<LabTest> labTests = CommonLabUtil.getService().getLabTests(tpp.getPatient(), CommonLabUtil.getService().getCommonTestType());
+			if (!labTests.isEmpty()) {
+				for (LabTest labTest : labTests) {
+					Encounter e = labTest.getOrder().getEncounter();
+					CultureForm sf = new CultureForm(e, labTest);
+					sf.setPatient(tpp.getPatient());
+					cultures.add(sf);
+				}
+			}
+		}
 		Collections.sort(cultures);
 		return cultures;
 	}
 	
 	public List<XpertForm> getXpertForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		ArrayList<XpertForm> xperts = new ArrayList<>();
-		// Search in Lab module
-		List<LabTest> labTests = CommonLabUtil.getService().getLabTests(tpp.getPatient(), CommonLabUtil.getService().getCommonTestType());
-		if (!labTests.isEmpty()) {
-			for (LabTest labTest : labTests) {
-				Encounter e = labTest.getOrder().getEncounter();
-				XpertForm sf = new XpertForm(e, labTest);
-				sf.setPatient(tpp.getPatient());
-				xperts.add(sf);
-			}
-			Collections.sort(xperts);
-			return xperts;
-		}
-		// Fallback to legacy mode and search in Encounters
+		ArrayList<XpertForm> xperts = new ArrayList<>();		
+		// Fallback to Lab module
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
@@ -1512,6 +1526,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				}
 			}
 		}
+		// Search in Lab Tests
+		if (xperts.isEmpty()) {
+			List<LabTest> labTests = CommonLabUtil.getService().getLabTests(tpp.getPatient(), CommonLabUtil.getService().getCommonTestType());
+			if (!labTests.isEmpty()) {
+				for (LabTest labTest : labTests) {
+					Encounter e = labTest.getOrder().getEncounter();
+					XpertForm sf = new XpertForm(e, labTest);
+					sf.setPatient(tpp.getPatient());
+					xperts.add(sf);
+				}
+			}
+		}
 		Collections.sort(xperts);
 		return xperts;
 	}
@@ -1519,6 +1545,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<HAINForm> getHAINForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<HAINForm> hains = new ArrayList<>();
+		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
@@ -1532,6 +1559,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				}
 			}
 		}
+		// Search in Lab Tests
+		if (hains.isEmpty()) {
+			List<LabTest> labTests = CommonLabUtil.getService().getLabTests(tpp.getPatient(), CommonLabUtil.getService().getCommonTestType());
+			if (!labTests.isEmpty()) {
+				for (LabTest labTest : labTests) {
+					Encounter e = labTest.getOrder().getEncounter();
+					HAINForm sf = new HAINForm(e, labTest);
+					sf.setPatient(tpp.getPatient());
+					hains.add(sf);
+				}
+			}
+		}
 		Collections.sort(hains);
 		return hains;
 	}
@@ -1539,6 +1578,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<HAIN2Form> getHAIN2Forms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<HAIN2Form> hains = new ArrayList<>();
+		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
@@ -1547,6 +1587,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
 				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
 					HAIN2Form sf = new HAIN2Form(e);
+					sf.setPatient(tpp.getPatient());
+					hains.add(sf);
+				}
+			}
+		}
+		// Search in Lab Tests
+		if (hains.isEmpty()) {
+			List<LabTest> labTests = CommonLabUtil.getService().getLabTests(tpp.getPatient(), CommonLabUtil.getService().getCommonTestType());
+			if (!labTests.isEmpty()) {
+				for (LabTest labTest : labTests) {
+					Encounter e = labTest.getOrder().getEncounter();
+					HAIN2Form sf = new HAIN2Form(e, labTest);
 					sf.setPatient(tpp.getPatient());
 					hains.add(sf);
 				}
@@ -1563,6 +1615,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<DSTForm> getDstForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<DSTForm> dsts = new ArrayList<>();
+		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		// Search for all Specimen collection encounters containing this patientProgramId
@@ -1574,6 +1627,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				DSTForm sf = new DSTForm(e);
 				sf.setPatient(tpp.getPatient());
 				dsts.add(sf);
+			}
+		}
+		// Search in Lab Tests
+		if (dsts.isEmpty()) {
+			List<LabTest> labTests = CommonLabUtil.getService().getLabTests(tpp.getPatient(), CommonLabUtil.getService().getCommonTestType());
+			if (!labTests.isEmpty()) {
+				for (LabTest labTest : labTests) {
+					Encounter e = labTest.getOrder().getEncounter();
+					DSTForm sf = new DSTForm(e, labTest);
+					sf.setPatient(tpp.getPatient());
+					dsts.add(sf);
+				}
 			}
 		}
 		return dsts;
@@ -2070,7 +2135,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		MdrtbPatientProgram program = getMostRecentMdrtbPatientProgram(patient);
 		if (program != null && program.getActive()) {
 			program.setDateCompleted(deathDate);
-			program.setOutcome(getProgramWorkflowState(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIED)));
+			program.setOutcome(getProgramWorkflowState(Context.getService(MdrtbService.class)
+			        .getConcept(MdrtbConcepts.DEATH)));
 			Context.getProgramWorkflowService().savePatientProgram(program.getPatientProgram());
 		}
 		// if the patient is hospitalized, we need to end the hospitalization

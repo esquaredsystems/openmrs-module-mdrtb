@@ -18,7 +18,6 @@ import org.openmrs.module.mdrtb.ReportData;
 import org.openmrs.module.mdrtb.ReportStatus;
 import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
-import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
