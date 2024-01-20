@@ -1084,3 +1084,32 @@ inner join commonlabtest_attribute_type cat on cat.test_attribute_type_id = ca.a
 where ca.test_order_id in 
 (select o.order_id from orders o where o.encounter_id = 679497) and ca.voided = 0;
 
+select cn.* from openmrs19.concept c 
+inner join openmrs19.concept_name cn on cn.concept_id = c.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED' 
+where name like '%RESISTANCE' 
+order by concept_name_id;
+
+select ca.test_attribute_id, ca.test_order_id, o.encounter_id, et.name as encounter_type, ca.attribute_type_id, cat.group_name, cat.name, ca.value_reference, get_concept_name(c.concept_id) as answer from commonlabtest_test ct 
+inner join commonlabtest_sample cs on cs.test_order_id = ct.test_order_id and cs.status IN ('ACCEPTED', 'PROCESSED') 
+inner join commonlabtest_attribute ca on ca.test_order_id = ct.test_order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = ct.test_type_id and cat.test_attribute_type_id = ca.attribute_type_id 
+inner join orders o on o.order_id = ct.test_order_id 
+inner join person p on p.person_id = o.patient_id 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+left join concept c on c.uuid = ca.value_reference 
+where p.person_id = 350489 
+;
+
+select * from patient_identifier pi2 where identifier = '26220058';
+select * from person where person_id = 349487;
+select * from person_name where person_id = 349487;
+select * from orders where patient_id = 349487;
+select * from commonlabtest_attribute_type where test_type_id = 5;
+select * from commonlabtest_test where test_order_id = 720887;
+select * from commonlabtest_sample where test_order_id = 720887;
+select * from concept_name cn ;
+
+update concept_name set locale_preferred = 0 
+where locale_preferred = 1 and concept_name_type = 'FULLY_SPECIFIED' and locale <> 'en';
+

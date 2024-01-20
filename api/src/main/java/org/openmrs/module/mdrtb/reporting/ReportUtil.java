@@ -289,7 +289,6 @@ public class ReportUtil {
 		CohortDefinition failed = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TREATMENT_FAILED), startDate, endDate);
 		
-		//TODO: Replace with LOST_TO_FOLLOWUP
 		CohortDefinition defaulted = Cohorts.getMdrtbPatientProgramStateFilter(workflowConcept,
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEFAULTED), startDate, endDate);
 		
@@ -305,7 +304,6 @@ public class ReportUtil {
 		map.put("Cured", cured);
 		map.put("TreatmentCompleted", complete);
 		map.put("Failed", failed);
-		//TODO: Replace with LOST_TO_FOLLOWUP
 		map.put("Defaulted", defaulted);
 		map.put("Died", died);
 		map.put("TransferredOut", transferred);

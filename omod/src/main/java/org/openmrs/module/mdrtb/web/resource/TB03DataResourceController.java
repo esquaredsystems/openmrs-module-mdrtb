@@ -155,13 +155,21 @@ public class TB03DataResourceController extends DelegatingCrudResource<SimpleTB0
 		String monthStr = context.getRequest().getParameter("month");
 		String locationUuid = context.getRequest().getParameter("location");
 		// If conditions don't meet
-		if (yearStr == null || locationUuid == null) {
+		if (yearStr == null) {
 			return new EmptySearchResult();
 		}
 		// Get location by UUID
-		Location parent = Context.getLocationService().getLocationByUuid(locationUuid);
-		// Get all child locations
-		List<Location> locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent);
+		Location parent;
+		List<Location> locList;
+		if (locationUuid != null) {
+			parent = Context.getLocationService().getLocationByUuid(locationUuid);			
+			// Get all child locations
+			locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent);
+		}
+		// Get all locations
+		else {
+			locList = Context.getLocationService().getAllLocations(false);
+		}
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
