@@ -88,6 +88,7 @@ public class Form8DataResourceController extends DelegatingCrudResource<SimpleFo
 		String yearStr = context.getRequest().getParameter("year");
 		String quarterStr = context.getRequest().getParameter("quarter");
 		String monthStr = context.getRequest().getParameter("month");
+		String month2Str = context.getRequest().getParameter("month2");
 		String locationUuid = context.getRequest().getParameter("location");
 		// If conditions don't meet
 		if (yearStr == null) {
@@ -108,7 +109,8 @@ public class Form8DataResourceController extends DelegatingCrudResource<SimpleFo
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		Map<String, Object> tableMap = Form8Controller.getForm8TableMap(locList, year, quarter, month);
+		Integer month2 = month2Str == null ? null : Integer.parseInt(month2Str);
+		Map<String, Object> tableMap = Form8Controller.getForm8TableMap(locList, year, quarter, month, month2);
 		Form8Table1Data form8Table1Data = (Form8Table1Data) tableMap.getOrDefault("table1", null);
 		Form8Table2Data form8Table2Data = (Form8Table2Data) tableMap.getOrDefault("table2", null);
 		Form8Table3Data form8Table3Data = (Form8Table3Data) tableMap.getOrDefault("table3", null);

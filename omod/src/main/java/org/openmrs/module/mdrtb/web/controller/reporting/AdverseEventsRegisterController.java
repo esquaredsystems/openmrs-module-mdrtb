@@ -130,7 +130,7 @@ public class AdverseEventsRegisterController {
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		
-		List<AdverseEventsRegisterData> aeRegister = getAdverseEventsRegister(year, quarterInt, monthInt, locList);
+		List<AdverseEventsRegisterData> aeRegister = getAdverseEventsRegister(year, quarterInt, monthInt, monthInt, locList);
 		model.addAttribute("forms", aeRegister);
 		
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
@@ -180,9 +180,9 @@ public class AdverseEventsRegisterController {
 		return "/module/mdrtb/reporting/pv/aeRegisterResults";
 	}
 	
-	public static List<AdverseEventsRegisterData> getAdverseEventsRegister(Integer year, Integer quarter, Integer month,
+	public static List<AdverseEventsRegisterData> getAdverseEventsRegister(Integer year, Integer quarter, Integer month, Integer month2,
 	        List<Location> locList) {
-		List<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter, month);
+		List<AdverseEventsForm> forms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter, month, month2);
 		List<AdverseEventsRegisterData> aeRegister = new ArrayList<>();
 		for (AdverseEventsForm af : forms) {
 			AdverseEventsRegisterData aerd = new AdverseEventsRegisterData(af);

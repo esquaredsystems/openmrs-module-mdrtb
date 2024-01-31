@@ -159,7 +159,7 @@ public class TB03uSingleController {
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
+		    monthInt, monthInt);
 		
 		ArrayList<TB03uData> patientSet = new ArrayList<>();
 		SimpleDateFormat sdf = new SimpleDateFormat();

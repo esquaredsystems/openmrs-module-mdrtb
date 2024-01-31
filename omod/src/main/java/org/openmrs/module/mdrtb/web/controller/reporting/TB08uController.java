@@ -131,7 +131,7 @@ public class TB08uController {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		TB08uData table1 = getTB08uPatientSet(locList, year, quarterInt, monthInt);
+		TB08uData table1 = getTB08uPatientSet(locList, year, quarterInt, monthInt, monthInt);
 		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
@@ -187,9 +187,10 @@ public class TB08uController {
 		return "/module/mdrtb/reporting/tb08uResults";
 	}
 	
-	public static TB08uData getTB08uPatientSet(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt) {
+	public static TB08uData getTB08uPatientSet(List<Location> locList, Integer year, Integer quarterInt, Integer monthInt,
+	        Integer month2Int) {
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
+		    monthInt, month2Int);
 		
 		TB08uData table1 = new TB08uData();
 		Concept q = null;

@@ -577,6 +577,7 @@ public class TB07DataResourceController extends DelegatingCrudResource<SimpleTB0
 		String yearStr = context.getRequest().getParameter("year");
 		String quarterStr = context.getRequest().getParameter("quarter");
 		String monthStr = context.getRequest().getParameter("month");
+		String month2Str = context.getRequest().getParameter("month2");
 		String locationUuid = context.getRequest().getParameter("location");
 		// If conditions don't meet
 		if (yearStr == null) {
@@ -597,7 +598,8 @@ public class TB07DataResourceController extends DelegatingCrudResource<SimpleTB0
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		TB07Table1Data TB07DataTable1 = TB07ReportController.getTB07PatientSet(year, quarter, month, locList);
+		Integer month2 = month2Str == null ? null : Integer.parseInt(month2Str);
+		TB07Table1Data TB07DataTable1 = TB07ReportController.getTB07PatientSet(year, quarter, month, month2, locList);
 		List<SimpleTB07Table1Data> list = new ArrayList<>();
 		list.add(new SimpleTB07Table1Data(TB07DataTable1));
 		return new NeedsPaging<>(list, context);

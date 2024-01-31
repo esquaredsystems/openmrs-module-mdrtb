@@ -136,7 +136,7 @@ public class MDRDQController {
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		
-		Map<String, Object> metrics = getMDRQualityMetrics(year, quarterInt, monthInt, locList);
+		Map<String, Object> metrics = getMDRQualityMetrics(year, quarterInt, monthInt, monthInt, locList);
 		for (String key : metrics.keySet()) {
 			model.addAttribute(key, metrics.get(key));
 		}
@@ -186,7 +186,7 @@ public class MDRDQController {
 		return "/module/mdrtb/reporting/dqResults";
 	}
 	
-	public static Map<String, Object> getMDRQualityMetrics(Integer year, Integer quarter, Integer month,
+	public static Map<String, Object> getMDRQualityMetrics(Integer year, Integer quarter, Integer month, Integer month2,
 	        List<Location> locList) {
 		Map<String, Object> map = new HashMap<>();
 
@@ -213,7 +213,7 @@ public class MDRDQController {
 		HAIN firstHAIN = null;
 		Culture diagnosticCulture = null;
 		
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month, month2);
 		for (TB03uForm tf : tb03uList) {
 			
 			//INIT

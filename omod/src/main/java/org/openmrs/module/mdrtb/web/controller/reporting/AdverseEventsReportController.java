@@ -138,7 +138,7 @@ public class AdverseEventsReportController {
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		
-		List<Object> tables = getPVDataTables(year, quarterInt, monthInt, locList);
+		List<Object> tables = getPVDataTables(year, quarterInt, monthInt, monthInt, locList);
 		for (int i = 0; i < tables.size(); i++) {
 			model.addAttribute("table" + (i + 1), tables.get(i));
 		}
@@ -191,9 +191,9 @@ public class AdverseEventsReportController {
 		return "/module/mdrtb/reporting/pv/aeResults";
 	}
 	
-	public static List<Object> getPVDataTables(Integer year, Integer quarter, Integer month, List<Location> locList) {
+	public static List<Object> getPVDataTables(Integer year, Integer quarter, Integer month, Integer month2, List<Location> locList) {
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
 		
@@ -203,7 +203,7 @@ public class AdverseEventsReportController {
 		
 		List<Patient> allPatients = Context.getService(MdrtbService.class).getAllPatientsWithRegimenForms();
 		List<AdverseEventsForm> aeForms = Context.getService(MdrtbService.class).getAEFormsFilled(locList, year, quarter,
-		    month);
+		    month, month2);
 		
 		Integer standardRegimenConceptId = Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.STANDARD_MDR_REGIMEN).getId();

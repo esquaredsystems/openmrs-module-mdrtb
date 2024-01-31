@@ -124,7 +124,7 @@ public class MissingTb03uController {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		
 		// Returns a map after calculation, so that it cane be used for any controller
-		Map<String, Object> map = getMissingTB03uPatientMap(year, quarterInt, monthInt, locList);
+		Map<String, Object> map = getMissingTB03uPatientMap(year, quarterInt, monthInt, monthInt, locList);
 		
 		model.addAttribute("errorCount", map.get("errorCount"));
 		model.addAttribute("errorPercentage", map.get("errorPercentage") + "%");
@@ -176,13 +176,13 @@ public class MissingTb03uController {
 		return "/module/mdrtb/reporting/missingTb03uResults";
 	}
 	
-	public static Map<String, Object> getMissingTB03uPatientMap(Integer year, Integer quarter, Integer month,
+	public static Map<String, Object> getMissingTB03uPatientMap(Integer year, Integer quarter, Integer month, Integer month2,
 	        List<Location> locList) {
 		Map<String, Object> map = new HashMap<>();
 		List<DQItem> patientSet = new ArrayList<>();
 		List<Patient> errList = new ArrayList<>();
 		
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month, month2);
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 
 		SimpleDateFormat sdf = Context.getDateFormat();

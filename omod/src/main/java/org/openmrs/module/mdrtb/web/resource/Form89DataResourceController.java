@@ -108,6 +108,7 @@ public class Form89DataResourceController extends DelegatingCrudResource<SimpleF
 		String yearStr = context.getRequest().getParameter("year");
 		String quarterStr = context.getRequest().getParameter("quarter");
 		String monthStr = context.getRequest().getParameter("month");
+		String month2Str = context.getRequest().getParameter("month2");
 		String locationUuid = context.getRequest().getParameter("location");
 		// If conditions don't meet
 		if (yearStr == null) {
@@ -128,7 +129,8 @@ public class Form89DataResourceController extends DelegatingCrudResource<SimpleF
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		List<Form89Data> patientSet = Form89SingleExportController.getForm89PatientSet(year, quarter, month, locList);
+		Integer month2 = month2Str == null ? null : Integer.parseInt(month2Str);
+		List<Form89Data> patientSet = Form89SingleExportController.getForm89PatientSet(year, quarter, month, month2, locList);
 		List<SimpleForm89Data> list = new ArrayList<>();
 		for (Form89Data form89Data : patientSet) {
 			list.add(new SimpleForm89Data(form89Data));

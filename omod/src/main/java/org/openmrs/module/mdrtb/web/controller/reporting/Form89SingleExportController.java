@@ -136,7 +136,7 @@ public class Form89SingleExportController {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		ArrayList<Form89Data> patientSet = getForm89PatientSet(year, quarterInt, monthInt, locList);
+		ArrayList<Form89Data> patientSet = getForm89PatientSet(year, quarterInt, monthInt, monthInt, locList);
 		
 		Collections.sort(patientSet);
 		Integer num = patientSet.size();
@@ -166,9 +166,9 @@ public class Form89SingleExportController {
 		return "/module/mdrtb/reporting/form89SingleResults";
 	}
 	
-	public static ArrayList<Form89Data> getForm89PatientSet(Integer year, Integer quarter, Integer month,
+	public static ArrayList<Form89Data> getForm89PatientSet(Integer year, Integer quarter, Integer month, Integer month2, 
 	        List<Location> locList) {
-		List<Form89> f89List = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+		List<Form89> f89List = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month, month2);
 		
 		ArrayList<Form89Data> patientSet = new ArrayList<>();
 		SimpleDateFormat sdf = Context.getDateFormat();

@@ -142,7 +142,7 @@ public class TB07ReportController {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		TB07Table1Data table1 = getTB07PatientSet(year, quarterInt, monthInt, locList);
+		TB07Table1Data table1 = getTB07PatientSet(year, quarterInt, monthInt, monthInt, locList);
 		
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarterInt, monthInt, "TB-07", ReportType.DOTSTB);
@@ -167,9 +167,11 @@ public class TB07ReportController {
 		return "/module/mdrtb/reporting/tb07Results";
 	}
 	
-	public static TB07Table1Data getTB07PatientSet(Integer year, Integer quarter, Integer month, List<Location> locList) {
+	public static TB07Table1Data getTB07PatientSet(Integer year, Integer quarter, Integer month, Integer month2,
+	        List<Location> locList) {
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Integer ageAtRegistration = 0;
 		Concept pulmonaryConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB);

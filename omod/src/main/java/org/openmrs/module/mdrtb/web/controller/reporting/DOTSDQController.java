@@ -145,7 +145,7 @@ public class DOTSDQController {
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		
-		Map<String, Object> metrics = getDOTSQualityMetrics(year, quarterInt, monthInt, locList);
+		Map<String, Object> metrics = getDOTSQualityMetrics(year, quarterInt, monthInt, monthInt, locList);
 		for (String key : metrics.keySet()) {
 			model.addAttribute(key, metrics.get(key));
 		}
@@ -192,7 +192,7 @@ public class DOTSDQController {
 		return "/module/mdrtb/reporting/dotsdqResults";
 	}
 	
-	public static Map<String, Object> getDOTSQualityMetrics(Integer year, Integer quarter, Integer month,
+	public static Map<String, Object> getDOTSQualityMetrics(Integer year, Integer quarter, Integer month, Integer month2,
 	        List<Location> locList) {
 		Map<String, Object> map = new HashMap<>();
 		List<DQItem> missingAge = new ArrayList<>();
@@ -247,7 +247,7 @@ public class DOTSDQController {
 		dateMap.get("endDate");
 		Integer countNum = 0;
 		
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month);
 		for (TB03Form tf : tb03List) {
 			//INIT
 			treatmentStartDate = null;
@@ -346,7 +346,7 @@ public class DOTSDQController {
 			else if (tf.getRegistrationGroup().getId() == (Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.NEW).getId().intValue())) {
 				List<Form89> f89 = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-				    tf.getPatient(), null, tf.getPatientProgramId(), year, String.valueOf(quarter), String.valueOf(month));
+				    tf.getPatient(), null, tf.getPatientProgramId(), year, String.valueOf(quarter), String.valueOf(month), String.valueOf(month2));
 				if (f89 == null || f89.isEmpty()) {
 					noForm89.add(dqi);
 					errorFlag = Boolean.TRUE;

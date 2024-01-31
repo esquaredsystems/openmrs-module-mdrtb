@@ -149,7 +149,7 @@ public class TB03ExportController {
 		}
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		ArrayList<TB03Data> patientSet = getTB03PatientSet(year, quarterInt, monthInt, locList);
+		ArrayList<TB03Data> patientSet = getTB03PatientSet(year, quarterInt, monthInt, monthInt, locList);
 		
 		Integer num = patientSet.size();
 		model.addAttribute("num", num);
@@ -178,8 +178,8 @@ public class TB03ExportController {
 		return "/module/mdrtb/reporting/tb03Results";
 	}
 	
-	public static ArrayList<TB03Data> getTB03PatientSet(Integer year, Integer quarter, Integer month, List<Location> locList) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	public static ArrayList<TB03Data> getTB03PatientSet(Integer year, Integer quarter, Integer month, Integer month2, List<Location> locList) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		
 		ArrayList<TB03Data> patientSet = new ArrayList<>();
 		SimpleDateFormat sdf = Context.getDateFormat();

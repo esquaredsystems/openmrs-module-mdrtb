@@ -205,6 +205,7 @@ public class TB03uDataResourceController extends DelegatingCrudResource<SimpleTB
 		String yearStr = context.getRequest().getParameter("year");
 		String quarterStr = context.getRequest().getParameter("quarter");
 		String monthStr = context.getRequest().getParameter("month");
+		String month2Str = context.getRequest().getParameter("month2");
 		String locationUuid = context.getRequest().getParameter("location");
 		// If conditions don't meet
 		if (yearStr == null) {
@@ -225,7 +226,8 @@ public class TB03uDataResourceController extends DelegatingCrudResource<SimpleTB
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		List<TB03uData> patientSet = TB03uController.getTB03uPatientSet(year, quarter, month, locList);
+		Integer month2 = month2Str == null ? null : Integer.parseInt(month2Str);
+		List<TB03uData> patientSet = TB03uController.getTB03uPatientSet(year, quarter, month, month2, locList);
 		List<SimpleTB03uData> list = new ArrayList<>();
 		for (TB03uData SimpleTB03uData : patientSet) {
 			list.add(new SimpleTB03uData(SimpleTB03uData));

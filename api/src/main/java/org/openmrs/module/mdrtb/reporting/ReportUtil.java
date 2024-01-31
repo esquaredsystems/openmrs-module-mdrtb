@@ -205,13 +205,13 @@ public class ReportUtil {
 		return new RenderingMode(renderer, label, extension, null);
 	}
 	
-	public static Map<String, Date> getPeriodDates(Object yearObj, Object quarterObj, Object monthObj) {
-		
+	public static Map<String, Date> getPeriodDates(Object yearObj, Object quarterObj, Object monthObj, Object month2Obj) {
 		// if the year is null, we don't have start and end dates, want to query from
 		// the beginning of time until today
 		boolean yearProvided = yearObj != null && !"".equals(yearObj);
 		boolean quarterProvided = quarterObj != null && !"".equals(quarterObj);
 		boolean monthProvided = monthObj != null && !"".equals(monthObj);
+		boolean month2Provided = month2Obj != null && !"".equals(month2Obj);
 		if (!(yearProvided || quarterProvided || monthProvided)) {
 			Map<String, Date> periodDates = new HashMap<>();
 			periodDates.put("startDate", null);
@@ -224,6 +224,7 @@ public class ReportUtil {
 		
 		Integer quarter;
 		Integer month;
+		Integer month2;
 		Integer year = Calendar.getInstance().get(Calendar.YEAR);
 		// Validate input and construct start and end months
 		int startMonth = 1;
@@ -252,6 +253,13 @@ public class ReportUtil {
 			startMonth = month;
 			endMonth = month;
 		}
+		if (month2Provided && month2Obj instanceof Integer) {
+			month2 = Integer.parseInt(String.valueOf(monthObj));
+			if (month2 < 1 || month2 > 12) {
+				throw new IllegalArgumentException("Please enter a valid month (1-12)");
+			}
+			endMonth = month2;
+		}
 		Map<String, Date> periodDates = new HashMap<>();
 		Calendar start = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
@@ -273,6 +281,10 @@ public class ReportUtil {
 		periodDates.put("startDate", start.getTime());
 		periodDates.put("endDate", end.getTime());
 		return periodDates;
+	}
+	
+	public static Map<String, Date> getPeriodDates(Object yearObj, Object quarterObj, Object monthObj) {
+		return getPeriodDates(yearObj, quarterObj, monthObj, monthObj);
 	}
 	
 	public static Map<String, CohortDefinition> getMdrtbOutcomesFilterSet(Date startDate, Date endDate) {

@@ -135,7 +135,7 @@ public class Form8Controller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		Map<String, Object> tableMap = getForm8TableMap(locList, year, quarterInt, monthInt);
+		Map<String, Object> tableMap = getForm8TableMap(locList, year, quarterInt, monthInt, monthInt);
 		
 		for (Entry<String, Object> table : tableMap.entrySet()) {
 			model.addAttribute(table.getKey(), table.getValue());
@@ -189,8 +189,8 @@ public class Form8Controller {
 		return "/module/mdrtb/reporting/form8Results";
 	}
 	
-	public static Map<String, Object> getForm8TableMap(List<Location> locList, Integer year, Integer quarter, Integer month) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	public static Map<String, Object> getForm8TableMap(List<Location> locList, Integer year, Integer quarter, Integer month, Integer month2) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		Integer ageAtRegistration = 0;
 		
 		Concept pulmonaryConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB);
@@ -490,7 +490,7 @@ public class Form8Controller {
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tf.getPatient(), null, tf.getPatientProgramId(), null, null, null);
+			    tf.getPatient(), null, tf.getPatientProgramId(), null, null, null, null);
 			
 			rural = fList.isEmpty() ? null : (fList.get(0).getLocationType().getConceptId().equals(ruralId) ? true : false);
 			
@@ -568,7 +568,7 @@ public class Form8Controller {
 			}
 			
 			fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(tf.getPatient(), null,
-			    tf.getPatientProgramId(), null, null, null);
+			    tf.getPatientProgramId(), null, null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				// No f89 - skip
@@ -2516,7 +2516,7 @@ public class Form8Controller {
 		}
 		
 		//Table 6
-		tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year - 1, quarter, month);
+		tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year - 1, quarter, month, month);
 		
 		for (TB03Form tf : tb03List) {//for (Integer i : idSet) {
 		

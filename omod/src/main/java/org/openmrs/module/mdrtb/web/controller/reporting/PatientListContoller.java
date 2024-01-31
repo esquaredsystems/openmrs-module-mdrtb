@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.openmrs.Concept;
 import org.openmrs.Location;
@@ -35,7 +34,6 @@ import org.openmrs.module.mdrtb.form.custom.TransferInForm;
 import org.openmrs.module.mdrtb.form.custom.XpertForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
-import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.reporting.custom.TB03Util;
 import org.openmrs.module.mdrtb.specimen.DstImpl;
 import org.openmrs.propertyeditor.ConceptEditor;
@@ -414,14 +412,15 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getAllCasesEnrolledTable(locList, year, quarterInt, monthInt, false);
+		String report = getAllCasesEnrolledTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 	}
 	
 	public static String getAllCasesEnrolledTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		Collections.sort(tb03s);
 		StringBuilder report = new StringBuilder();
 		
@@ -779,15 +778,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getDotsCasesByRegistrationGroupTable(locList, year, quarterInt, monthInt, false);
+		String report = getDotsCasesByRegistrationGroupTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getDotsCasesByRegistrationGroupTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Collections.sort(tb03s);
 		
@@ -1101,7 +1101,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getDotsCasesByAnatomicalSiteTable(locList, year, quarterInt, monthInt, false);
+		String report = getDotsCasesByAnatomicalSiteTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -1109,8 +1109,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getDotsCasesByAnatomicalSiteTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		Collections.sort(tb03s);
 		
 		//NEW CASES 
@@ -1252,15 +1253,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getDotsCasesByDrugResistanceTable(locList, year, quarterInt, monthInt, false);
+		String report = getDotsCasesByDrugResistanceTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getDotsCasesByDrugResistanceTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Collections.sort(tb03s);
 		
@@ -1714,15 +1716,16 @@ public class PatientListContoller {
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getDotsPulmonaryCasesByRegisrationGroupAndBacteriologicalStatusTable(locList, year, quarterInt,
-		    monthInt, false);
+		    monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getDotsPulmonaryCasesByRegisrationGroupAndBacteriologicalStatusTable(List<Location> locList,
-	        Integer year, Integer quarter, Integer month, boolean restfulLink) {
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	        Integer year, Integer quarter, Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		Collections.sort(tb03s);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_GROUP);
@@ -2166,15 +2169,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getMdrXdrPatientsWithNoTreatmentTable(locList, year, quarterInt, monthInt, false);
+		String report = getMdrXdrPatientsWithNoTreatmentTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getMdrXdrPatientsWithNoTreatmentTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		//NEW CASES 
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
@@ -2312,7 +2316,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getMdrSuccessfulTreatmentOutcomeTable(locList, year, quarterInt, monthInt, false);
+		String report = getMdrSuccessfulTreatmentOutcomeTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -2320,8 +2324,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getMdrSuccessfulTreatmentOutcomeTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME);
 		Concept curedConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CURED);
@@ -2417,17 +2422,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getMdrXdrPatientsTable(locList, year, quarterInt, monthInt, false);
+		String report = getMdrXdrPatientsTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getMdrXdrPatientsTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
-		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<TB03uForm> tb03s = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
 		Concept mdr = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB);
@@ -2559,7 +2563,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getWomenOfChildbearingAgeTable(locList, year, quarterInt, monthInt, false);
+		String report = getWomenOfChildbearingAgeTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -2567,8 +2571,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getWomenOfChildbearingAgeTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> forms = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> forms = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Collections.sort(forms);
 		
@@ -2669,7 +2674,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getMenOfConscriptAgeTable(locList, year, quarterInt, monthInt, false);
+		String report = getMenOfConscriptAgeTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -2677,8 +2682,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getMenOfConscriptAgeTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		Collections.sort(tb03List);
 		
 		//NEW CASES 
@@ -2779,7 +2785,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithConcamitantDiseasesTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithConcamitantDiseasesTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -2787,8 +2793,8 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesWithConcamitantDiseasesTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+			Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		Collections.sort(tb03List);
 		ArrayList<Form89> forms = new ArrayList<>();
 		Concept regGroup;
@@ -2807,7 +2813,7 @@ public class PatientListContoller {
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
+			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				continue;
@@ -3299,7 +3305,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithCancerTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithCancerTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -3307,8 +3313,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesWithCancerTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CANCER);
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
 		
@@ -3399,7 +3406,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesDetectedFromContactTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesDetectedFromContactTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -3407,8 +3414,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesDetectedFromContactTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Collections.sort(forms);
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION);
@@ -3504,7 +3512,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithCopdTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithCopdTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -3512,8 +3520,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesWithCopdTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CNSDL);
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
 		
@@ -3605,7 +3614,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithHypertensionTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithHypertensionTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -3613,8 +3622,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesWithHypertensionTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE);
@@ -3711,7 +3721,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithUlcerTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithUlcerTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -3719,8 +3729,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesWithUlcerTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ULCER);
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
@@ -3813,15 +3824,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithMentalDisorderTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithMentalDisorderTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getCasesWithMentalDisorderTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MENTAL_DISORDER);
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
@@ -3914,15 +3926,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithHivTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithHivTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getCasesWithHivTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ICD20);
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
@@ -4015,15 +4028,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithHepatitisTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithHepatitisTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getCasesWithHepatitisTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COMORBID_HEPATITIS);
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
@@ -4115,15 +4129,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithKidneyDiseaseTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithKidneyDiseaseTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getCasesWithKidneyDiseaseTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.KIDNEY_DISEASE);
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
@@ -4216,15 +4231,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesWithOtherDiseaseTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesWithOtherDiseaseTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getCasesWithOtherDiseaseTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
-		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month);
+	        Integer month2, boolean restfulLink) {
+		List<Form89> forms = Context.getService(MdrtbService.class).getForm89FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Concept groupConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_DISEASE);
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
@@ -4317,15 +4333,15 @@ public class PatientListContoller {
 		model.addAttribute("listName", getMessage(MDRTB_BY_SOC_PROF_STATUS));
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesBySocProfStatusTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesBySocProfStatusTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 	}
 	
-	public static String getCasesBySocProfStatusTable(List<Location> locList, Integer year, Integer quarter, Integer month,
+	public static String getCasesBySocProfStatusTable(List<Location> locList, Integer year, Integer quarter, Integer month, Integer month2,
 	        boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		
 		StringBuilder report = new StringBuilder();
 		Concept status;
@@ -4391,7 +4407,7 @@ public class PatientListContoller {
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
+			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				continue;
@@ -5016,7 +5032,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesByPopulationCategoryTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesByPopulationCategoryTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -5024,8 +5040,8 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByPopulationCategoryTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+			Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		
 		StringBuilder report = new StringBuilder();
 		Concept category = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POPULATION_CATEGORY);
@@ -5074,7 +5090,7 @@ public class PatientListContoller {
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
+			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				continue;
@@ -5440,16 +5456,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesByDwellingTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesByDwellingTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
-	public static String getCasesByDwellingTable(List<Location> locList, Integer year, Integer quarter, Integer month,
+	public static String getCasesByDwellingTable(List<Location> locList, Integer year, Integer quarter, Integer month, Integer month2,
 	        boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		Collections.sort(tb03List);
 		
 		Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_TYPE);
@@ -5480,7 +5496,7 @@ public class PatientListContoller {
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
+			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				continue;
@@ -5628,7 +5644,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesByPlaceOfDetectionTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesByPlaceOfDetectionTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -5636,8 +5652,8 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByPlaceOfDetectionTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+			Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		
 		Collections.sort(tb03List);
 		
@@ -5678,7 +5694,7 @@ public class PatientListContoller {
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
+			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				continue;
@@ -5915,16 +5931,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesByCircumstancesOfDetectionTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesByCircumstancesOfDetectionTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getCasesByCircumstancesOfDetectionTable(List<Location> locList, Integer year, Integer quarterInt,
-	        Integer monthInt, boolean restfulLink) {
+			Integer monthInt, Integer month2Int, boolean restfulLink) {
 		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
-		    monthInt);
+		    monthInt, month2Int);
 		Collections.sort(tb03List);
 		
 		ArrayList<Form89> selfRefList = new ArrayList<>();
@@ -5967,7 +5983,7 @@ public class PatientListContoller {
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
+			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				continue;
@@ -6253,7 +6269,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesByMethodOfDetectionTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesByMethodOfDetectionTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -6261,8 +6277,8 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByMethodOfDetectionTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+			Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		
 		ArrayList<Form89> fluorographyList = new ArrayList<>();
 		ArrayList<Form89> genexpertList = new ArrayList<>();
@@ -6312,7 +6328,7 @@ public class PatientListContoller {
 				continue;
 			}
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
+			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null, null);
 			if (fList == null || fList.size() != 1) {
 				continue;
 			}
@@ -6710,7 +6726,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesByPulmonaryLocationTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesByPulmonaryLocationTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -6718,8 +6734,8 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByPulmonaryLocationTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+			Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		
 		ArrayList<Form89> focalList = new ArrayList<>();
 		ArrayList<Form89> infilList = new ArrayList<>();
@@ -6774,7 +6790,7 @@ public class PatientListContoller {
 			}
 			
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
+			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
 				continue;
@@ -7259,7 +7275,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getCasesByExtraPulmonaryLocationTable(locList, year, quarterInt, monthInt, false);
+		String report = getCasesByExtraPulmonaryLocationTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -7267,8 +7283,8 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByExtraPulmonaryLocationTable(List<Location> locList, Integer year, Integer quarter,
-	        Integer month, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+			Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
 		
 		ArrayList<Form89> plevlList = new ArrayList<>();
 		ArrayList<Form89> ofLymphList = new ArrayList<>();
@@ -7322,7 +7338,7 @@ public class PatientListContoller {
 				continue;
 			}
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null);
+			    tb03.getPatient(), null, tb03.getPatientProgramId(), null, null, null, null);
 			if (fList == null || fList.size() != 1) {
 				continue;
 			}
@@ -7757,7 +7773,7 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getDrtbCasesTable(locList, year, quarterInt, monthInt, false);
+		String report = getDrtbCasesTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
@@ -7765,12 +7781,13 @@ public class PatientListContoller {
 	}
 	
 	public static String getDrtbCasesTable(List<Location> locList, Integer year, Integer quarter, Integer month,
-	        boolean restfulLink) {
+	        Integer month2, boolean restfulLink) {
 		
 		SimpleDateFormat sdf = Context.getDateFormat();
 		sdf.setLenient(false);
 		
-		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month);
+		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Collections.sort(tb03us);
 		
@@ -8149,7 +8166,8 @@ public class PatientListContoller {
 	        Integer month, boolean restfulLink) {
 		SimpleDateFormat sdf = Context.getDateFormat();
 		sdf.setLenient(false);
-		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+		List<TB03Form> tb03s = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month);
 		Collections.sort(tb03s);
 		
 		StringBuilder report = new StringBuilder();
@@ -8540,16 +8558,16 @@ public class PatientListContoller {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		String report = getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarterInt, monthInt, false);
+		String report = getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
 		return "/module/mdrtb/reporting/patientListsResults";
 		
 	}
 	
 	public static String getDrTbCasesWithSuccessfulTreatmentTable(List<Location> locList, Integer year, Integer quarterInt,
-	        Integer monthInt, boolean restfulLink) {
+	        Integer monthInt, Integer month2Int, boolean restfulLink) {
 		List<TB03uForm> tb03us = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarterInt,
-		    monthInt);
+		    monthInt, month2Int);
 		SimpleDateFormat sdf = Context.getDateFormat();
 		sdf.setLenient(false);
 		Collections.sort(tb03us);

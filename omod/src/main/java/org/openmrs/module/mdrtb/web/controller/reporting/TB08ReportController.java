@@ -121,7 +121,7 @@ public class TB08ReportController {
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		TB08Data table1 = getTB08PatientSet(year, quarterInt, monthInt, locList);
+		TB08Data table1 = getTB08PatientSet(year, quarterInt, monthInt, monthInt, locList);
 		
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarterInt, monthInt, "TB-08", ReportType.DOTSTB);
@@ -174,8 +174,10 @@ public class TB08ReportController {
 		return "/module/mdrtb/reporting/tb08Results";
 	}
 	
-	public static TB08Data getTB08PatientSet(Integer year, Integer quarter, Integer month, List<Location> locList) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
+	public static TB08Data getTB08PatientSet(Integer year, Integer quarter, Integer month, Integer month2,
+	        List<Location> locList) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		System.out.println("list size:" + tb03List.size());
 		
 		Integer ageAtRegistration = 0;

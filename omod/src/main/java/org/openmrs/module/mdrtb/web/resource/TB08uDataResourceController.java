@@ -2,12 +2,11 @@ package org.openmrs.module.mdrtb.web.resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.reporting.custom.TB08uData;
 import org.openmrs.module.mdrtb.web.controller.reporting.TB08uController;
 import org.openmrs.module.mdrtb.web.dto.SimpleTB08uData;
@@ -16,16 +15,12 @@ import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
-import org.openmrs.module.webservices.rest.web.resource.api.Searchable;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
-import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
-import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb08ureport", supportedClass = SimpleTB08uData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
-public class TB08uDataResourceController extends DelegatingCrudResource<SimpleTB08uData> implements Searchable {
+public class TB08uDataResourceController extends BaseReportResource<SimpleTB08uData> {
 	
 	/**
 	 * Logger for this class
@@ -311,54 +306,17 @@ public class TB08uDataResourceController extends DelegatingCrudResource<SimpleTB
 	}
 	
 	@Override
-	public DelegatingResourceDescription getCreatableProperties() {
-		DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
-		return delegatingResourceDescription;
-	}
-	
-	@Override
-	public SimpleTB08uData newDelegate() {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public SimpleTB08uData save(SimpleTB08uData delegate) {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public SimpleTB08uData getByUniqueId(String uniqueId) {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	protected void delete(SimpleTB08uData delegate, String reason, RequestContext context) throws ResponseException {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public void purge(SimpleTB08uData delegate, RequestContext context) throws ResponseException {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
 	protected PageableResult doSearch(RequestContext context) {
-		String yearStr = context.getRequest().getParameter("year");
-		String quarterStr = context.getRequest().getParameter("quarter");
-		String monthStr = context.getRequest().getParameter("month");
-		String locationUuid = context.getRequest().getParameter("location");
-		// If conditions don't meet
-		if (yearStr == null || locationUuid == null) {
+		final Map<String, Object> params = processParams(context);
+		if (params == null) {
 			return new EmptySearchResult();
 		}
-		// Get location by UUID
-		Location parent = Context.getLocationService().getLocationByUuid(locationUuid);
-		// Get all child locations
-		List<Location> locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent);
-		Integer year = Integer.parseInt(yearStr);
-		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
-		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		TB08uData tb08uData = TB08uController.getTB08uPatientSet(locList, year, quarter, month);
+		List<Location> locList = (List<Location>) params.get("locations");
+		Integer year = (Integer) params.get("year");
+		Integer quarter = (Integer) params.get("quarter");
+		Integer month = (Integer) params.get("month");
+		Integer month2 = (Integer) params.get("month2");
+		TB08uData tb08uData = TB08uController.getTB08uPatientSet(locList, year, quarter, month, month2);
 		List<SimpleTB08uData> list = new ArrayList<>();
 		list.add(new SimpleTB08uData(tb08uData));
 		return new NeedsPaging<>(list, context);

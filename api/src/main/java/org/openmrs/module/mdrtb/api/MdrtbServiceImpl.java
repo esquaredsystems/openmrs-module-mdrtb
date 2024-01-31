@@ -1717,7 +1717,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public List<Form89> getForm89FormsFilledForPatientProgram(Patient patient, Location location, Integer patientProgramId,
-	        Integer year, String quarter, String month) {
+	        Integer year, String quarter, String month, String month2) {
 		ArrayList<Form89> forms = new ArrayList<>();
 		Map<String, Date> dateMap = null;
 		if (year != null && (quarter != null || month != null))
@@ -1795,9 +1795,9 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			return null;
 	}
 	
-	public List<TB03uForm> getTB03uFormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month) {
+	public List<TB03uForm> getTB03uFormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month, Integer month2) {
 		ArrayList<TB03uForm> forms = new ArrayList<>();
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
 		ArrayList<EncounterType> typeList = new ArrayList<>();
@@ -1819,9 +1819,9 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<Form89> getForm89FormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month) {
+	public List<Form89> getForm89FormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month, Integer month2) {
 		ArrayList<Form89> forms = new ArrayList<>();
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
 		ArrayList<EncounterType> typeList = new ArrayList<>();
@@ -1843,7 +1843,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<TB03Form> getTB03FormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month) {
+	public List<TB03Form> getTB03FormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month, Integer month2) {
 		ArrayList<TB03Form> forms = new ArrayList<>();
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		Date startDate = (dateMap.get("startDate"));
@@ -2058,9 +2058,9 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<AdverseEventsForm> getAEFormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month) {
+	public List<AdverseEventsForm> getAEFormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month, Integer month2) {
 		ArrayList<AdverseEventsForm> forms = new ArrayList<>();
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
 		Calendar endCal = Calendar.getInstance();

@@ -615,19 +615,29 @@ public class TB08DataResourceController extends DelegatingCrudResource<SimpleTB0
 		String yearStr = context.getRequest().getParameter("year");
 		String quarterStr = context.getRequest().getParameter("quarter");
 		String monthStr = context.getRequest().getParameter("month");
+		String month2Str = context.getRequest().getParameter("month2");
 		String locationUuid = context.getRequest().getParameter("location");
 		// If conditions don't meet
-		if (yearStr == null || locationUuid == null) {
+		if (yearStr == null) {
 			return new EmptySearchResult();
 		}
 		// Get location by UUID
-		Location parent = Context.getLocationService().getLocationByUuid(locationUuid);
-		// Get all child locations
-		List<Location> locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent);
+		Location parent;
+		List<Location> locList = null;
+		if (locationUuid != null) {
+			parent = Context.getLocationService().getLocationByUuid(locationUuid);
+			// Get all child locations
+			locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent);
+		}
+		// Get all locations
+		else {
+			//locList = Context.getLocationService().getAllLocations(false);
+		}
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		TB08Data tb08Data = TB08ReportController.getTB08PatientSet(year, quarter, month, locList);
+		Integer month2 = month2Str == null ? null : Integer.parseInt(month2Str);
+		TB08Data tb08Data = TB08ReportController.getTB08PatientSet(year, quarter, month, month2, locList);
 		List<SimpleTB08Data> list = new ArrayList<>();
 		list.add(new SimpleTB08Data(tb08Data));
 		return new NeedsPaging<>(list, context);

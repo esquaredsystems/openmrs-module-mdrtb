@@ -86,6 +86,7 @@ public class TB03MissingDataResourceController extends DelegatingCrudResource<Si
 		String yearStr = context.getRequest().getParameter("year");
 		String quarterStr = context.getRequest().getParameter("quarter");
 		String monthStr = context.getRequest().getParameter("month");
+		String month2Str = context.getRequest().getParameter("month2");
 		String locationUuid = context.getRequest().getParameter("location");
 		// If conditions don't meet
 		if (yearStr == null) {
@@ -106,8 +107,8 @@ public class TB03MissingDataResourceController extends DelegatingCrudResource<Si
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		
-		Map<String, Object> map = MissingTb03Controller.getMissingTB03PatientMap(year, quarter, month, locList);
+		Integer month2 = month2Str == null ? null : Integer.parseInt(month2Str);
+		Map<String, Object> map = MissingTb03Controller.getMissingTB03PatientMap(year, quarter, month, month2, locList);
 		List<SimpleTB03MissingData> list = new ArrayList<>();
 		if (map.size() > 0) {
 			list.add(new SimpleTB03MissingData(map));

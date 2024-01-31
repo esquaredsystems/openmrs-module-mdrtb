@@ -147,7 +147,7 @@ public class TB07uController {
 		
 		Integer quarterInt = quarter == null ? null : Integer.parseInt(quarter);
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
-		TB07uData table1 = getTB07uPatientSet(locList, year, quarterInt, monthInt);
+		TB07uData table1 = getTB07uPatientSet(locList, year, quarterInt, monthInt, monthInt);
 		
 		model.addAttribute("table1", table1);
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
@@ -203,9 +203,10 @@ public class TB07uController {
 		
 	}
 	
-	public static TB07uData getTB07uPatientSet(List<Location> locList, Integer year, Integer quarter, Integer month) {
-		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class)
-		        .getTB03uFormsFilled(locList, year, quarter, month);
+	public static TB07uData getTB07uPatientSet(List<Location> locList, Integer year, Integer quarter, Integer month,
+	        Integer month2) {
+		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter,
+		    month, month2);
 		
 		List<RegimenForm> regList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year, quarter,
 		    month);
