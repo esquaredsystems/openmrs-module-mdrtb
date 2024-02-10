@@ -145,8 +145,10 @@ public class RegimenController {
 		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		List<Location> locList = Context.getService(MdrtbService.class).getLocations(region, district, facility);
+		Integer quarterInt = quarter == null ? null : Integer.valueOf(quarter);
+		Integer monthInt = month == null ? null : Integer.valueOf(month);
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsWithTreatmentStartedDuring(locList,
-		    year, quarter, month);
+		    year, quarterInt, monthInt, monthInt);
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		

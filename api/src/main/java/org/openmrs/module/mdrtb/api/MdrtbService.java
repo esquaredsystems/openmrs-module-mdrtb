@@ -867,7 +867,7 @@ public interface MdrtbService extends OpenmrsService {
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<Form89> getForm89FormsFilledForPatientProgram(Patient patient, Location location, Integer patientProgramId,
-	        Integer year, String quarter, String month, String month2);
+	        Integer year, Integer quarter, Integer month, Integer month2);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -894,7 +894,8 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<TransferInForm> getTransferInFormsFilled(List<Location> locations, Integer year, String quarter, String month);
+	public List<TransferInForm> getTransferInFormsFilled(List<Location> locations, Integer year, Integer quarter,
+	        Integer month, Integer month2);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -902,8 +903,8 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<TransferOutForm> getTransferOutFormsFilled(List<Location> locations, Integer year, String quarter,
-	        String month);
+	public List<TransferOutForm> getTransferOutFormsFilled(List<Location> locations, Integer year, Integer quarter,
+	        Integer month, Integer month2);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
@@ -911,8 +912,8 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<TB03uForm> getTB03uFormsWithTreatmentStartedDuring(List<Location> locations, Integer year, String quarter,
-	        String month);
+	public List<TB03uForm> getTB03uFormsWithTreatmentStartedDuring(List<Location> locations, Integer year, Integer quarter,
+	        Integer month, Integer month2);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)

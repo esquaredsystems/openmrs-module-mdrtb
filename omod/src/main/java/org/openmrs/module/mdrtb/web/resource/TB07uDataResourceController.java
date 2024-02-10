@@ -2,12 +2,11 @@ package org.openmrs.module.mdrtb.web.resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.reporting.custom.TB07uData;
 import org.openmrs.module.mdrtb.web.controller.reporting.TB07uController;
 import org.openmrs.module.mdrtb.web.dto.SimpleTB07uData;
@@ -16,16 +15,12 @@ import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
-import org.openmrs.module.webservices.rest.web.resource.api.Searchable;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
-import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
-import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb07ureport", supportedClass = SimpleTB07uData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
-public class TB07uDataResourceController extends DelegatingCrudResource<SimpleTB07uData> implements Searchable {
+public class TB07uDataResourceController extends BaseReportResource<SimpleTB07uData> {
 	
 	/**
 	 * Logger for this class
@@ -450,64 +445,18 @@ public class TB07uDataResourceController extends DelegatingCrudResource<SimpleTB
 		return description;
 	}
 	
-	@Override
-	public DelegatingResourceDescription getCreatableProperties() {
-		DelegatingResourceDescription delegatingResourceDescription = new DelegatingResourceDescription();
-		return delegatingResourceDescription;
-	}
-	
-	@Override
-	public SimpleTB07uData newDelegate() {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public SimpleTB07uData save(SimpleTB07uData delegate) {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public SimpleTB07uData getByUniqueId(String uniqueId) {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	protected void delete(SimpleTB07uData delegate, String reason, RequestContext context) throws ResponseException {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public void purge(SimpleTB07uData delegate, RequestContext context) throws ResponseException {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
-		String yearStr = context.getRequest().getParameter("year");
-		String quarterStr = context.getRequest().getParameter("quarter");
-		String monthStr = context.getRequest().getParameter("month");
-		String month2Str = context.getRequest().getParameter("month2");
-		String locationUuid = context.getRequest().getParameter("location");
-		// If conditions don't meet
-		if (yearStr == null) {
+		final Map<String, Object> params = processParams(context);
+		if (params == null) {
 			return new EmptySearchResult();
 		}
-		// Get location by UUID
-		Location parent;
-		List<Location> locList;
-		if (locationUuid != null) {
-			parent = Context.getLocationService().getLocationByUuid(locationUuid);
-			// Get all child locations
-			locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent);
-		}
-		// Get all locations
-		else {
-			locList = Context.getLocationService().getAllLocations(false);
-		}
-		Integer year = Integer.parseInt(yearStr);
-		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
-		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
-		Integer month2 = month2Str == null ? null : Integer.parseInt(month2Str);
+		List<Location> locList = (List<Location>) params.get("locations");
+		Integer year = (Integer) params.get("year");
+		Integer quarter = (Integer) params.get("quarter");
+		Integer month = (Integer) params.get("month");
+		Integer month2 = (Integer) params.get("month2");
 		TB07uData TB07uData = TB07uController.getTB07uPatientSet(locList, year, quarter, month, month2);
 		List<SimpleTB07uData> list = new ArrayList<>();
 		list.add(new SimpleTB07uData(TB07uData));

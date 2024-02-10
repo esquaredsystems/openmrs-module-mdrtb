@@ -16,15 +16,12 @@ import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.api.Searchable;
-import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingCrudResource;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
-import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
-import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/patientlist", supportedClass = SimpleDataObject.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
-public class PatientListResourceController extends DelegatingCrudResource<SimpleDataObject> implements Searchable {
+public class PatientListResourceController extends BaseReportResource<SimpleDataObject> implements Searchable {
 	
 	private static final String ALL_CASES_ENROLLED = "allenrolled";
 	
@@ -104,36 +101,6 @@ public class PatientListResourceController extends DelegatingCrudResource<Simple
 		description.addProperty("integerData");
 		description.addProperty("floatData");
 		return description;
-	}
-	
-	@Override
-	public DelegatingResourceDescription getCreatableProperties() {
-		return new DelegatingResourceDescription();
-	}
-	
-	@Override
-	public SimpleDataObject newDelegate() {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public SimpleDataObject save(SimpleDataObject delegate) {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public SimpleDataObject getByUniqueId(String uniqueId) {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public void delete(SimpleDataObject delegate, String reason, RequestContext context) throws ResponseException {
-		throw new ResourceDoesNotSupportOperationException();
-	}
-	
-	@Override
-	public void purge(SimpleDataObject delegate, RequestContext context) throws ResponseException {
-		throw new ResourceDoesNotSupportOperationException();
 	}
 	
 	@Override

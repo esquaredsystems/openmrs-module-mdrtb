@@ -644,9 +644,6 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		eSet.add(MdrtbConstants.ET_TB03_TB_INTAKE);
 		List<Encounter> encs = Context.getService(MdrtbService.class).getEncountersByPatientAndTypes(program.getPatient(),
 		    eSet);
-		if (encs != null) {
-			System.out.println("TB03 Encounters: " + encs.size());
-		}
 		ArrayList<Encounter> ret = new ArrayList<>();
 		
 		Obs temp = null;

@@ -232,16 +232,16 @@ public class DOTSDQController {
 		        .getConceptId();
 		
 		List<TransferOutForm> tofList = Context.getService(MdrtbService.class).getTransferOutFormsFilled(locList, year,
-		    String.valueOf(quarter), String.valueOf(month));
+		    quarter, month, month2);
 		List<TransferInForm> tifList = Context.getService(MdrtbService.class).getTransferInFormsFilled(locList, year,
-			String.valueOf(quarter), String.valueOf(month));
+		    quarter, month, month2);
 		List<TransferInForm> allTifs = null;
 		HashMap<Integer, Integer> dupMap = new HashMap<>();
 		HashMap<Integer, Integer> f89DupMap = new HashMap<>();
 		
 		int neww = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEW).getId();
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		
 		dateMap.get("startDate");
 		dateMap.get("endDate");
@@ -346,7 +346,7 @@ public class DOTSDQController {
 			else if (tf.getRegistrationGroup().getId() == (Context.getService(MdrtbService.class)
 			        .getConcept(MdrtbConcepts.NEW).getId().intValue())) {
 				List<Form89> f89 = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
-				    tf.getPatient(), null, tf.getPatientProgramId(), year, String.valueOf(quarter), String.valueOf(month), String.valueOf(month2));
+				    tf.getPatient(), null, tf.getPatientProgramId(), year, quarter, month, month2);
 				if (f89 == null || f89.isEmpty()) {
 					noForm89.add(dqi);
 					errorFlag = Boolean.TRUE;

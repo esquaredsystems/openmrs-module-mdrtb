@@ -305,6 +305,7 @@ public class TB08uDataResourceController extends BaseReportResource<SimpleTB08uD
 		return description;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		final Map<String, Object> params = processParams(context);

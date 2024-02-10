@@ -3,6 +3,7 @@ package org.openmrs.module.mdrtb.web.dto;
 import java.util.Date;
 
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.Patient;
 import org.openmrs.module.mdrtb.reporting.custom.Form89Data;
 
 public class SimpleForm89Data extends BaseOpenmrsData {
@@ -14,6 +15,8 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	private String form89Uuid;
 	
 	private String identifier;
+	
+	private Patient patient;
 	
 	private String tb03RegistrationDate;
 	
@@ -76,6 +79,7 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	private String hain2Lab;
 	
 	public SimpleForm89Data(Form89Data form89Data) {
+		this.patient = form89Data.getPatient();
 		this.patientUuid = form89Data.getPatient().getUuid();
 		this.form89Uuid = form89Data.getForm89().getEncounter().getUuid();
 		this.identifier = form89Data.getIdentifier();

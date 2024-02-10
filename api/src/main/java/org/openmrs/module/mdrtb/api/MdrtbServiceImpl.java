@@ -437,6 +437,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<TbPatientProgram> getAllTbPatientProgramsEnrolledInDateRangeAndLocations(List<Location> locations,
 	        Date startDate, Date endDate) {
+		// Handle null location (i.e. assume all locations)
+		if (locations == null) {
+			locations = getEnrollmentLocations();
+		}
 		// (program must have started before the end date of the period, and must not have ended before the start of the period)
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getTbProgram(),
 		    startDate, endDate, null, null, false);
@@ -1717,11 +1721,11 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public List<Form89> getForm89FormsFilledForPatientProgram(Patient patient, Location location, Integer patientProgramId,
-	        Integer year, String quarter, String month, String month2) {
+	        Integer year, Integer quarter, Integer month, Integer month2) {
 		ArrayList<Form89> forms = new ArrayList<>();
 		Map<String, Date> dateMap = null;
 		if (year != null && (quarter != null || month != null))
-			dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+			dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = null;
 		Date endDate = null;
 		if (dateMap != null) {
@@ -1870,9 +1874,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<TransferInForm> getTransferInFormsFilled(List<Location> locations, Integer year, String quarter, String month) {
+	public List<TransferInForm> getTransferInFormsFilled(List<Location> locations, Integer year, Integer quarter,
+			Integer month, Integer month2) {
 		ArrayList<TransferInForm> forms = new ArrayList<>();
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
 		ArrayList<EncounterType> typeList = new ArrayList<>();
@@ -1906,10 +1911,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<TransferOutForm> getTransferOutFormsFilled(List<Location> locations, Integer year, String quarter,
-	        String month) {
+	public List<TransferOutForm> getTransferOutFormsFilled(List<Location> locations, Integer year, Integer quarter,
+			Integer month, Integer month2) {
 		ArrayList<TransferOutForm> forms = new ArrayList<>();
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
 		EncounterType eType = MdrtbConstants.ET_TRANSFER_OUT;
@@ -1984,10 +1989,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return forms;
 	}
 	
-	public List<TB03uForm> getTB03uFormsWithTreatmentStartedDuring(List<Location> locations, Integer year, String quarter,
-	        String month) {
+	public List<TB03uForm> getTB03uFormsWithTreatmentStartedDuring(List<Location> locations, Integer year, Integer quarter,
+			Integer month, Integer month2) {
 		ArrayList<TB03uForm> forms = new ArrayList<>();
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
 		ArrayList<EncounterType> typeList = new ArrayList<>();
