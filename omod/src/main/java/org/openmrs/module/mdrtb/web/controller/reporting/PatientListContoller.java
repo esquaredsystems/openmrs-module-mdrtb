@@ -243,6 +243,7 @@ public class PatientListContoller {
 		int i = 0;
 		Person p = null;
 		for (TB03Form tf : tb03s) {
+			System.out.println("Generating data for Patient: " + tf.getPatient().getPatientIdentifier());
 			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			i++;
@@ -6610,17 +6611,17 @@ public class PatientListContoller {
 	        Integer month) {
 		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month);
 		
-		ArrayList<Form89> focalList = new ArrayList<Form89>();
-		ArrayList<Form89> infilList = new ArrayList<Form89>();
-		ArrayList<Form89> disList = new ArrayList<Form89>();
-		ArrayList<Form89> cavList = new ArrayList<Form89>();
-		ArrayList<Form89> fibCavList = new ArrayList<Form89>();
-		ArrayList<Form89> cirrList = new ArrayList<Form89>();
-		ArrayList<Form89> priCompList = new ArrayList<Form89>();
-		ArrayList<Form89> miliaryList = new ArrayList<Form89>();
-		ArrayList<Form89> tuberculomaList = new ArrayList<Form89>();
-		ArrayList<Form89> bronchiList = new ArrayList<Form89>();
-		Concept pulSite = null;
+		ArrayList<Form89> focalList = new ArrayList<>();
+		ArrayList<Form89> infilList = new ArrayList<>();
+		ArrayList<Form89> disList = new ArrayList<>();
+		ArrayList<Form89> cavList = new ArrayList<>();
+		ArrayList<Form89> fibCavList = new ArrayList<>();
+		ArrayList<Form89> cirrList = new ArrayList<>();
+		ArrayList<Form89> priCompList = new ArrayList<>();
+		ArrayList<Form89> miliaryList = new ArrayList<>();
+		ArrayList<Form89> tuberculomaList = new ArrayList<>();
+		ArrayList<Form89> bronchiList = new ArrayList<>();
+		Concept pulSite;
 		
 		String report = "";
 		//PULMONARY
@@ -6675,14 +6676,14 @@ public class PatientListContoller {
 			
 			f89 = fList.get(0);
 			
-			pulSite = f89.getPulSite();
+			anatomicalSite = f89.getAnatomicalSite();
 			
-			if (pulSite == null)
+			if (anatomicalSite == null)
 				continue;
 			
 			f89.setTB03(tb03);
 			
-			pulId = pulSite.getConceptId().intValue();
+			pulId = pulSite.getConceptId();
 			
 			if (pulId == focalId)
 				focalList.add(f89);
@@ -7183,7 +7184,7 @@ public class PatientListContoller {
 		ArrayList<Form89> cnsList = new ArrayList<Form89>();
 		ArrayList<Form89> liverList = new ArrayList<Form89>();
 		
-		Concept pulSite = null;
+		Concept pulSite;
 		
 		String report = "";
 		//PULMONARY
@@ -7208,9 +7209,9 @@ public class PatientListContoller {
 		Concept liverConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_LIVER);
 		int liverId = liverConcept.getConceptId().intValue();
 		
-		int pulId = 0;
-		Form89 f89 = null;
-		Concept regGroup = null;
+		int pulId;
+		Form89 f89;
+		Concept regGroup;
 		Collections.sort(tb03List);
 		
 		for (TB03Form tb03 : tb03List) {
@@ -7233,30 +7234,30 @@ public class PatientListContoller {
 				continue;
 			}
 			f89 = fList.get(0);
-			pulSite = f89.getEpLocation();
-			if (pulSite == null)
+			ptbLocation = f89.getEptbLocation();
+			if (ptbLocation == null)
 				continue;
 			f89.setTB03(tb03);
-			pulId = pulSite.getConceptId().intValue();
+			pulId = pulSite.getConceptId();
 			if (pulId == plevId)
 				plevlList.add(f89);
-			else if (pulId == ofLymphId)
+			else if (ptbId == ofLymphId)
 				ofLymphList.add(f89);
-			else if (pulId == osteoId)
+			else if (ptbId == osteoId)
 				osteoList.add(f89);
-			else if (pulId == uroId)
+			else if (ptbId == uroId)
 				uroList.add(f89);
-			else if (pulId == periLymphId)
+			else if (ptbId == periLymphId)
 				periLymphList.add(f89);
-			else if (pulId == abdId)
+			else if (ptbId == abdId)
 				abdList.add(f89);
-			else if (pulId == skinId)
+			else if (ptbId == skinId)
 				skinList.add(f89);
-			else if (pulId == eyeId)
+			else if (ptbId == eyeId)
 				eyeList.add(f89);
-			else if (pulId == cnsId)
+			else if (ptbId == cnsId)
 				cnsList.add(f89);
-			else if (pulId == liverId)
+			else if (ptbId == liverId)
 				liverList.add(f89);
 		}
 		

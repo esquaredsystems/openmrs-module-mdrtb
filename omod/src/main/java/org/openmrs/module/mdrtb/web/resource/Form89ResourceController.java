@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
@@ -78,13 +79,14 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 		description.addProperty("dateOfDecaySurvey");
 		description.addProperty("dateOfReturn");
 		description.addProperty("form89Date");
-		description.addProperty("anatomicalSite", representation);
 		description.addProperty("cancer", representation);
 		description.addProperty("circumstancesOfDetection", representation);
 		description.addProperty("cnsdl", representation);
 		description.addProperty("diabetes", representation);
-		description.addProperty("epLocation", representation);
-		description.addProperty("epSite", representation);
+		description.addProperty("anatomicalSite", representation);
+		description.addProperty("ptbLocation", representation);
+		description.addProperty("eptbLocation", representation);
+		description.addProperty("eptbSite", representation);
 		description.addProperty("hepatitis", representation);
 		description.addProperty("htHeartDisease", representation);
 		description.addProperty("ibc20", representation);
@@ -100,7 +102,6 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 		description.addProperty("prescribedTreatment", representation);
 		description.addProperty("presenceOfDecay", representation);
 		description.addProperty("profession", representation);
-		description.addProperty("pulSite", representation);
 		description.addProperty("ulcer", representation);
 		return description;
 	}
@@ -126,13 +127,14 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 			        .property("cmacDate", new DateProperty()).property("dateOfBirth", new DateProperty())
 			        .property("dateFirstSeekingHelp", new DateProperty()).property("dateOfDecaySurvey", new DateProperty())
 			        .property("dateOfReturn", new DateProperty()).property("form89Date", new DateProperty())
-			        .property("anatomicalSite", new RefProperty("#/definitions/ConceptGet"))
 			        .property("cancer", new RefProperty("#/definitions/ConceptGet"))
 			        .property("circumstancesOfDetection", new RefProperty("#/definitions/ConceptGet"))
 			        .property("cnsdl", new RefProperty("#/definitions/ConceptGet"))
 			        .property("diabetes", new RefProperty("#/definitions/ConceptGet"))
-			        .property("epLocation", new RefProperty("#/definitions/ConceptGet"))
-			        .property("epSite", new RefProperty("#/definitions/ConceptGet"))
+			        .property("anatomicalSite", new RefProperty("#/definitions/ConceptGet"))
+			        .property("ptbLocation", new RefProperty("#/definitions/ConceptGet"))
+			        .property("eptbLocation", new RefProperty("#/definitions/ConceptGet"))
+			        .property("eptbSite", new RefProperty("#/definitions/ConceptGet"))
 			        .property("hepatitis", new RefProperty("#/definitions/ConceptGet"))
 			        .property("htHeartDisease", new RefProperty("#/definitions/ConceptGet"))
 			        .property("ibc20", new RefProperty("#/definitions/ConceptGet"))
@@ -148,7 +150,6 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 			        .property("prescribedTreatment", new RefProperty("#/definitions/ConceptGet"))
 			        .property("presenceOfDecay", new RefProperty("#/definitions/ConceptGet"))
 			        .property("profession", new RefProperty("#/definitions/ConceptGet"))
-			        .property("pulSite", new RefProperty("#/definitions/ConceptGet"))
 			        .property("ulcer", new RefProperty("#/definitions/ConceptGet"));
 		}
 		return modelImpl;
@@ -219,7 +220,12 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 	@Override
 	public SimpleForm89 getByUniqueId(String uuid) {
 		Encounter encounter = Context.getEncounterService().getEncounterByUuid(uuid);
-		SimpleForm89 simpleForm89 = new SimpleForm89(new Form89(encounter));
+		if (encounter == null) {
+			throw new ResourceNotFoundException(uuid);
+		}
+		Form89 form89 = new Form89(encounter);
+		form89.initTB03(form89.getPatientProgramId());
+		SimpleForm89 simpleForm89 = new SimpleForm89(form89);
 		return simpleForm89;
 	}
 	
@@ -236,16 +242,19 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 		}
 		// If the Patient Program ID obs has null value, then fetch from Patient Program's UUID
 		Concept concept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
+		Integer patientProgramId = null;
 		Set<Obs> obsAtTopLevel = delegate.getEncounter().getObsAtTopLevel(false);
 		for (Obs obs : obsAtTopLevel) {
 			if (obs.getConcept().equals(concept)) {
 				PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgramByUuid(
 				    delegate.getPatientProgramUuid());
-				obs.setValueNumeric(patientProgram.getPatientProgramId().doubleValue());
+				patientProgramId = patientProgram.getPatientProgramId();
+				obs.setValueNumeric(patientProgramId.doubleValue());
 				break;
 			}
 		}
 		Form89 form89 = new Form89(delegate.getEncounter());
+		form89.initTB03(patientProgramId);
 		form89 = formService.processForm89(form89, null);
 		return new SimpleForm89(form89);
 	}

@@ -59,8 +59,6 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	
 	private Date form89Date;
 	
-	private Concept anatomicalSite;
-	
 	private Concept cancer;
 	
 	private Concept circumstancesOfDetection;
@@ -69,9 +67,13 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	
 	private Concept diabetes;
 	
-	private Concept epLocation;
+	private Concept anatomicalSite;
 	
-	private Concept epSite;
+	private Concept ptbLocation;
+	
+	private Concept eptbLocation;
+	
+	private Concept eptbSite;
 	
 	private Concept hepatitis;
 	
@@ -103,8 +105,6 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	
 	private Concept profession;
 	
-	private Concept pulSite;
-	
 	private Concept ulcer;
 	
 	public SimpleForm89() {
@@ -117,7 +117,6 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		setPatientProgramUuid(patientProgram.getUuid());
 		setAddress(form89.getAddress());
 		setAgeAtTB03Registration(form89.getAgeAtRegistration());
-		setAnatomicalSite(form89.getAnatomicalSite());
 		setCancer(form89.getCancer());
 		setCircumstancesOfDetection(form89.getCircumstancesOfDetection());
 		setCityOfOrigin(form89.getCityOfOrigin());
@@ -132,8 +131,10 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		setDateOfDecaySurvey(form89.getDateOfDecaySurvey());
 		setDateOfReturn(form89.getDateOfReturn());
 		setDiabetes(form89.getDiabetes());
-		setEpLocation(form89.getEpLocation());
-		setEpSite(form89.getEpSite());
+		setAnatomicalSite(form89.getAnatomicalSite());
+		setPtbLocation(form89.getPtbLocation());
+		setEptbLocation(form89.getEptbLocation());
+		setEptbSite(form89.getEptbSite());
 		setForm89Date(form89.getForm89Date());
 		setHepatitis(form89.getHepatitis());
 		setHtHeartDisease(form89.getHtHeartDisease());
@@ -156,7 +157,6 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		setPrescribedTreatment(form89.getPrescribedTreatment());
 		setPresenceOfDecay(form89.getPresenceOfDecay());
 		setProfession(form89.getProfession());
-		setPulSite(form89.getPulSite());
 		setRegistrationNumber(form89.getRegistrationNumber());
 		setUlcer(form89.getUlcer());
 		setYearOfTB03Registration(form89.getYearOfTB03Registration());
@@ -185,8 +185,9 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		form89.setDateOfDecaySurvey(getDateOfDecaySurvey());
 		form89.setDateOfReturn(getDateOfReturn());
 		form89.setDiabetes(getDiabetes());
-		form89.setEpLocation(getEpLocation());
-		form89.setEpSite(getEpSite());
+		form89.setPtbLocation(getPtbLocation());
+		form89.setEptbLocation(getEptbLocation());
+		form89.setEptbSite(getEptbSite());
 		form89.setForm89Date(getForm89Date());
 		form89.setHepatitis(getHepatitis());
 		form89.setHtHeartDisease(getHtHeartDisease());
@@ -205,7 +206,6 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		form89.setPrescribedTreatment(getPrescribedTreatment());
 		form89.setPresenceOfDecay(getPresenceOfDecay());
 		form89.setProfession(getProfession());
-		form89.setPulSite(getPulSite());
 		form89.setUlcer(getUlcer());
 		return form89;
 	}
@@ -404,14 +404,6 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		this.form89Date = form89Date;
 	}
 	
-	public Concept getAnatomicalSite() {
-		return anatomicalSite;
-	}
-	
-	public void setAnatomicalSite(Concept anatomicalSite) {
-		this.anatomicalSite = anatomicalSite;
-	}
-	
 	public Concept getCancer() {
 		return cancer;
 	}
@@ -444,20 +436,36 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		this.diabetes = diabetes;
 	}
 	
-	public Concept getEpLocation() {
-		return epLocation;
+	public Concept getAnatomicalSite() {
+		return anatomicalSite;
 	}
 	
-	public void setEpLocation(Concept epLocation) {
-		this.epLocation = epLocation;
+	public void setAnatomicalSite(Concept anatomicalSite) {
+		this.anatomicalSite = anatomicalSite;
 	}
 	
-	public Concept getEpSite() {
-		return epSite;
+	public Concept getPtbLocation() {
+		return ptbLocation;
 	}
 	
-	public void setEpSite(Concept epSite) {
-		this.epSite = epSite;
+	public void setPtbLocation(Concept ptbLocation) {
+		this.ptbLocation = ptbLocation;
+	}
+	
+	public Concept getEptbLocation() {
+		return eptbLocation;
+	}
+	
+	public void setEptbLocation(Concept eptbLocation) {
+		this.eptbLocation = eptbLocation;
+	}
+	
+	public Concept getEptbSite() {
+		return eptbSite;
+	}
+	
+	public void setEptbSite(Concept eptbSite) {
+		this.eptbSite = eptbSite;
 	}
 	
 	public Concept getHepatitis() {
@@ -570,14 +578,6 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	
 	public void setProfession(Concept profession) {
 		this.profession = profession;
-	}
-	
-	public Concept getPulSite() {
-		return pulSite;
-	}
-	
-	public void setPulSite(Concept pulSite) {
-		this.pulSite = pulSite;
 	}
 	
 	public Concept getUlcer() {

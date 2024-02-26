@@ -290,9 +290,9 @@ $(document).ready(function(){
 		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.methodOfDetection"/></th>
 		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.otherMethodOfDetection"/></th>
 		 <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.siteOfDisease"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.epSite"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.epLocation"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.pSite"/></th>
+		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.eptbSite"/></th>
+		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.eptbLocation"/></th>
+		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.ptbSite"/></th>
 		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.presenceOfDecay"/></th>
 		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.dateOfDecaySurvey"/></th>
 		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.complication"/></th>
@@ -375,9 +375,9 @@ $(document).ready(function(){
 	  <td>${row.form89.methodOfDetection.displayString}</td>
 	  <td>${row.form89.otherMethodOfDetection}</td>
 	  <td>${row.form89.anatomicalSite.displayString}</td>
-	  <td>${row.form89.epSite.displayString}</td>
-	  <td>${row.form89.epLocation.displayString}</td>
-	  <td>${row.form89.pulSite.displayString}</td>
+	  <td>${row.form89.eptbSite.displayString}</td>
+	  <td>${row.form89.eptbLocation.displayString}</td>
+	  <td>${row.form89.ptbLocation.displayString}</td>
 	  <td>${row.form89.presenceOfDecay.displayString}</td>
 	  <td>${row.dateOfDecaySurvey}</td>
 	  <td>${row.form89.complication}</td>

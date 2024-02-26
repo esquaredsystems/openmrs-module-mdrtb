@@ -1139,6 +1139,31 @@ inner join obs o3 on o3.obs_id = o.obs_group_id and o3.concept_id = 323
 inner join commonlabtest_attribute_type cat on cat.test_type_id = 5 and cat.group_name = 'HAIN' and cat.name = 'XPERT MTB BURDEN' 
 where o.concept_id = 318 and o.voided = 0;
 
+select cn.* from openmrs19.concept c 
+inner join openmrs19.concept_name cn on cn.concept_id = c.concept_id and cn.locale = 'en' and cn.concept_name_type = 'FULLY_SPECIFIED' 
+where name like '%RESISTANCE' 
+order by concept_name_id;
 
-select concept_id, value_text from openmrs19.tmp_obs 
-where concept_id = 191;
+select ca.test_attribute_id, ca.test_order_id, o.encounter_id, et.name as encounter_type, ca.attribute_type_id, cat.group_name, cat.name, ca.value_reference, get_concept_name(c.concept_id) as answer from commonlabtest_test ct 
+inner join commonlabtest_sample cs on cs.test_order_id = ct.test_order_id and cs.status IN ('ACCEPTED', 'PROCESSED') 
+inner join commonlabtest_attribute ca on ca.test_order_id = ct.test_order_id 
+inner join commonlabtest_attribute_type cat on cat.test_type_id = ct.test_type_id and cat.test_attribute_type_id = ca.attribute_type_id 
+inner join orders o on o.order_id = ct.test_order_id 
+inner join person p on p.person_id = o.patient_id 
+inner join encounter e on e.encounter_id = o.encounter_id 
+inner join encounter_type et on et.encounter_type_id = e.encounter_type 
+left join concept c on c.uuid = ca.value_reference 
+where p.person_id = 350489 
+;
+
+select * from patient_identifier pi2 where identifier = '26220058';
+select * from person where person_id = 349487;
+select * from person_name where person_id = 349487;
+select * from orders where patient_id = 349487;
+select * from commonlabtest_attribute_type where test_type_id = 5;
+select * from commonlabtest_test where test_order_id = 720887;
+select * from commonlabtest_sample where test_order_id = 720887;
+
+select * from commonlabtest_attribute_type cat where datatype_config = '9b246849-3928-11ee-9784-e86a64440f18';
+
+select * from person_address pa where year(date_created) = 2024;

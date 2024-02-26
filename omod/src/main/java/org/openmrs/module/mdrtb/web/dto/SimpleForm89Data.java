@@ -3,6 +3,9 @@ package org.openmrs.module.mdrtb.web.dto;
 import java.util.Date;
 
 import org.openmrs.BaseOpenmrsData;
+import org.openmrs.Concept;
+import org.openmrs.PersonAddress;
+import org.openmrs.PersonName;
 import org.openmrs.module.mdrtb.reporting.custom.Form89Data;
 
 public class SimpleForm89Data extends BaseOpenmrsData {
@@ -15,9 +18,12 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	private String identifier;
 	
+	private PersonName personName;
+	
+	private String gender;
+	
 	private String tb03RegistrationDate;
 	
-	private Integer ageAtTB03Registration;
 	
 	private String dateOfBirth;
 	
@@ -75,8 +81,104 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	private String hain2Lab;
 	
+	private Concept locationType;
+	
+	private Concept pregnant;
+	
+	private Concept profession;
+	
+	private Concept populationCategory;
+	
+	private Concept placeOfDetection;
+	
+	private Concept circumstancesOfDetection;
+	
+	private Concept methodOfDetection;
+	
+	private Concept anatomicalSite;
+	
+	private Concept eptbSite;
+	
+	private Concept ptbLocation;
+	
+	private Concept eptbLocation;
+	
+	private Concept presenceOfDecay;
+	
+	private Concept diabetes;
+	
+	private Concept cnsdl;
+	
+	private Concept htHeartDisease;
+	
+	private Concept ulcer;
+	
+	private Concept mentalDisorder;
+	
+	private Concept ibc20;
+	
+	private Concept cancer;
+	
+	private Concept hepatitis;
+	
+	private Concept kidneyDisease;
+	
+	private Concept noDisease;
+	
+	private String otherDisease;
+	
+	private String cmacNumber;
+	
+	private Concept prescribedTreatment;
+	
+	private String nameOfDoctor;
+	
+	private String countryOfOrigin;
+	
+	private Concept placeOfCommission;
+	
+	private String cityOfOrigin;
+	
+	private String otherMethodOfDetection;
+	
+	private String complication;
+	
 	public SimpleForm89Data(Form89Data form89Data) {
 		this.patientUuid = form89Data.getPatient().getUuid();
+		this.personName = form89Data.getPatient().getPersonName();
+		this.personAddress = form89Data.getPatient().getPersonAddress();
+		this.gender = form89Data.getGender();
+		this.locationType = form89Data.getForm89().getLocationType();
+		this.pregnant = form89Data.getForm89().getPregnant();
+		this.profession = form89Data.getForm89().getProfession();
+		this.populationCategory = form89Data.getForm89().getPopulationCategory();
+		this.placeOfDetection = form89Data.getForm89().getPlaceOfDetection();
+		this.circumstancesOfDetection = form89Data.getForm89().getCircumstancesOfDetection();
+		this.methodOfDetection = form89Data.getForm89().getMethodOfDetection();
+		this.anatomicalSite = form89Data.getForm89().getAnatomicalSite();
+		this.ptbLocation = form89Data.getForm89().getPtbLocation();
+		this.eptbSite = form89Data.getForm89().getEptbSite();
+		this.eptbLocation = form89Data.getForm89().getEptbLocation();
+		this.presenceOfDecay = form89Data.getForm89().getPresenceOfDecay();
+		this.diabetes = form89Data.getForm89().getDiabetes();
+		this.cnsdl = form89Data.getForm89().getCnsdl();
+		this.htHeartDisease = form89Data.getForm89().getHtHeartDisease();
+		this.ulcer = form89Data.getForm89().getUlcer();
+		this.mentalDisorder = form89Data.getForm89().getMentalDisorder();
+		this.ibc20 = form89Data.getForm89().getIbc20();
+		this.cancer = form89Data.getForm89().getCancer();
+		this.hepatitis = form89Data.getForm89().getHepatitis();
+		this.kidneyDisease = form89Data.getForm89().getKidneyDisease();
+		this.noDisease = form89Data.getForm89().getNoDisease();
+		this.otherDisease = form89Data.getForm89().getOtherDisease();
+		this.cmacNumber = form89Data.getForm89().getCmacNumber();
+		this.prescribedTreatment = form89Data.getForm89().getPrescribedTreatment();
+		this.nameOfDoctor = form89Data.getForm89().getNameOfDoctor();
+		this.countryOfOrigin = form89Data.getForm89().getCountryOfOrigin();
+		this.placeOfCommission = form89Data.getForm89().getPlaceOfCommission();
+		this.cityOfOrigin = form89Data.getForm89().getCityOfOrigin();
+		this.otherMethodOfDetection = form89Data.getForm89().getOtherMethodOfDetection();
+		this.complication = form89Data.getForm89().getComplication();
 		this.form89Uuid = form89Data.getForm89().getEncounter().getUuid();
 		this.identifier = form89Data.getIdentifier();
 		this.tb03RegistrationDate = form89Data.getTb03RegistrationDate();
@@ -111,6 +213,15 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 		this.hain2Lab = form89Data.getHain2Lab();
 	}
 	
+	@Override
+	public Integer getId() {
+		return -1;
+	}
+	
+	@Override
+	public void setId(Integer integer) {
+	}
+	
 	public String getPatientUuid() {
 		return patientUuid;
 	}
@@ -133,6 +244,30 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+	
+	public PersonName getPersonName() {
+		return personName;
+	}
+	
+	public void setPersonName(PersonName personName) {
+		this.personName = personName;
+	}
+	
+	public PersonAddress getPersonAddress() {
+		return personAddress;
+	}
+	
+	public void setPersonAddress(PersonAddress personAddress) {
+		this.personAddress = personAddress;
+	}
+	
+	public String getGender() {
+		return gender;
+	}
+	
+	public void setGender(String gender) {
+		this.gender = gender;
 	}
 	
 	public String getTb03RegistrationDate() {
@@ -331,8 +466,8 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 		return hain2MTBResult;
 	}
 	
-	public void setHain2MTBResult(String hain2MTBResult) {
-		this.hain2MTBResult = hain2MTBResult;
+	public void setHain2MTBResult(String hain2mtbResult) {
+		hain2MTBResult = hain2mtbResult;
 	}
 	
 	public String getHain2InjResult() {
@@ -375,12 +510,251 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 		this.hain2Lab = hain2Lab;
 	}
 	
-	@Override
-	public Integer getId() {
-		return -1;
+	public Concept getLocationType() {
+		return locationType;
 	}
 	
-	@Override
-	public void setId(Integer integer) {
+	public void setLocationType(Concept locationType) {
+		this.locationType = locationType;
+	}
+	
+	public Concept getPregnant() {
+		return pregnant;
+	}
+	
+	public void setPregnant(Concept pregnant) {
+		this.pregnant = pregnant;
+	}
+	
+	public Concept getProfession() {
+		return profession;
+	}
+	
+	public void setProfession(Concept profession) {
+		this.profession = profession;
+	}
+	
+	public Concept getPopulationCategory() {
+		return populationCategory;
+	}
+	
+	public void setPopulationCategory(Concept populationCategory) {
+		this.populationCategory = populationCategory;
+	}
+	
+	public Concept getPlaceOfDetection() {
+		return placeOfDetection;
+	}
+	
+	public void setPlaceOfDetection(Concept placeOfDetection) {
+		this.placeOfDetection = placeOfDetection;
+	}
+	
+	public Concept getCircumstancesOfDetection() {
+		return circumstancesOfDetection;
+	}
+	
+	public void setCircumstancesOfDetection(Concept circumstancesOfDetection) {
+		this.circumstancesOfDetection = circumstancesOfDetection;
+	}
+	
+	public Concept getMethodOfDetection() {
+		return methodOfDetection;
+	}
+	
+	public void setMethodOfDetection(Concept methodOfDetection) {
+		this.methodOfDetection = methodOfDetection;
+	}
+	
+	public Concept getAnatomicalSite() {
+		return anatomicalSite;
+	}
+	
+	public void setAnatomicalSite(Concept anatomicalSite) {
+		this.anatomicalSite = anatomicalSite;
+	}
+	
+	public Concept getEptbSite() {
+		return eptbSite;
+	}
+	
+	public void setEptbSite(Concept eptbSite) {
+		this.eptbSite = eptbSite;
+	}
+	
+	public Concept getPtbLocation() {
+		return ptbLocation;
+	}
+	
+	public void setPtbLocation(Concept ptbLocation) {
+		this.ptbLocation = ptbLocation;
+	}
+	
+	public Concept getEptbLocation() {
+		return eptbLocation;
+	}
+	
+	public void setEptbLocation(Concept eptbLocation) {
+		this.eptbLocation = eptbLocation;
+	}
+	
+	public Concept getPresenceOfDecay() {
+		return presenceOfDecay;
+	}
+	
+	public void setPresenceOfDecay(Concept presenceOfDecay) {
+		this.presenceOfDecay = presenceOfDecay;
+	}
+	
+	public Concept getDiabetes() {
+		return diabetes;
+	}
+	
+	public void setDiabetes(Concept diabetes) {
+		this.diabetes = diabetes;
+	}
+	
+	public Concept getCnsdl() {
+		return cnsdl;
+	}
+	
+	public void setCnsdl(Concept cnsdl) {
+		this.cnsdl = cnsdl;
+	}
+	
+	public Concept getHtHeartDisease() {
+		return htHeartDisease;
+	}
+	
+	public void setHtHeartDisease(Concept htHeartDisease) {
+		this.htHeartDisease = htHeartDisease;
+	}
+	
+	public Concept getUlcer() {
+		return ulcer;
+	}
+	
+	public void setUlcer(Concept ulcer) {
+		this.ulcer = ulcer;
+	}
+	
+	public Concept getMentalDisorder() {
+		return mentalDisorder;
+	}
+	
+	public void setMentalDisorder(Concept mentalDisorder) {
+		this.mentalDisorder = mentalDisorder;
+	}
+	
+	public Concept getIbc20() {
+		return ibc20;
+	}
+	
+	public void setIbc20(Concept ibc20) {
+		this.ibc20 = ibc20;
+	}
+	
+	public Concept getCancer() {
+		return cancer;
+	}
+	
+	public void setCancer(Concept cancer) {
+		this.cancer = cancer;
+	}
+	
+	public Concept getHepatitis() {
+		return hepatitis;
+	}
+	
+	public void setHepatitis(Concept hepatitis) {
+		this.hepatitis = hepatitis;
+	}
+	
+	public Concept getKidneyDisease() {
+		return kidneyDisease;
+	}
+	
+	public void setKidneyDisease(Concept kidneyDisease) {
+		this.kidneyDisease = kidneyDisease;
+	}
+	
+	public Concept getNoDisease() {
+		return noDisease;
+	}
+	
+	public void setNoDisease(Concept noDisease) {
+		this.noDisease = noDisease;
+	}
+	
+	public String getOtherDisease() {
+		return otherDisease;
+	}
+	
+	public void setOtherDisease(String otherDisease) {
+		this.otherDisease = otherDisease;
+	}
+	
+	public String getCmacNumber() {
+		return cmacNumber;
+	}
+	
+	public void setCmacNumber(String cmacNumber) {
+		this.cmacNumber = cmacNumber;
+	}
+	
+	public Concept getPrescribedTreatment() {
+		return prescribedTreatment;
+	}
+	
+	public void setPrescribedTreatment(Concept prescribedTreatment) {
+		this.prescribedTreatment = prescribedTreatment;
+	}
+	
+	public String getNameOfDoctor() {
+		return nameOfDoctor;
+	}
+	
+	public void setNameOfDoctor(String nameOfDoctor) {
+		this.nameOfDoctor = nameOfDoctor;
+	}
+	
+	public String getCountryOfOrigin() {
+		return countryOfOrigin;
+	}
+	
+	public void setCountryOfOrigin(String countryOfOrigin) {
+		this.countryOfOrigin = countryOfOrigin;
+	}
+	
+	public Concept getPlaceOfCommission() {
+		return placeOfCommission;
+	}
+	
+	public void setPlaceOfCommission(Concept placeOfCommission) {
+		this.placeOfCommission = placeOfCommission;
+	}
+	
+	public String getCityOfOrigin() {
+		return cityOfOrigin;
+	}
+	
+	public void setCityOfOrigin(String cityOfOrigin) {
+		this.cityOfOrigin = cityOfOrigin;
+	}
+	
+	public String getOtherMethodOfDetection() {
+		return otherMethodOfDetection;
+	}
+	
+	public void setOtherMethodOfDetection(String otherMethodOfDetection) {
+		this.otherMethodOfDetection = otherMethodOfDetection;
+	}
+	
+	public String getComplication() {
+		return complication;
+	}
+	
+	public void setComplication(String complication) {
+		this.complication = complication;
 	}
 }

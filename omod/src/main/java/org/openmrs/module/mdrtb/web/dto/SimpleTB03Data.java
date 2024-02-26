@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.PersonAddress;
+import org.openmrs.PersonName;
 import org.openmrs.module.mdrtb.reporting.custom.TB03Data;
 
 public class SimpleTB03Data extends BaseOpenmrsData {
@@ -14,11 +15,11 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 	
 	private String identifier;
 	
-	private String patientName;
+	private PersonName personName;
 	
 	private String gender;
 	
-	private String residentialAddress;
+	private PersonAddress personAddress;
 	
 	private String tb03RegistrationDate;
 	
@@ -166,18 +167,9 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 	
 	public SimpleTB03Data(TB03Data tb03Data) {
 		patientUuid = tb03Data.getPatient().getUuid();
-		patientName = tb03Data.getPatient().getPersonName().getFullName();
+		personName = tb03Data.getPatient().getPersonName();
+		personAddress = tb03Data.getPatient().getPersonAddress();
 		gender = tb03Data.getGender();
-		PersonAddress pa = tb03Data.getPatient().getPersonAddress();
-		if (pa != null) {
-			String address = pa.getCountry() + "," + pa.getStateProvince() + "," + pa.getCountyDistrict();
-			if (pa.getAddress1() != null && pa.getAddress1().length() != 0) {
-				address += "," + pa.getAddress1();
-				if (pa.getAddress2() != null && pa.getAddress2().length() != 0)
-					address += "," + pa.getAddress2();
-			}
-			residentialAddress = address;
-		}
 		identifier = tb03Data.getIdentifier();
 		tb03RegistrationDate = tb03Data.getTb03RegistrationDate();
 		ageAtTB03Registration = tb03Data.getAgeAtTB03Registration();
@@ -270,12 +262,12 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 		this.patientUuid = patientUuid;
 	}
 	
-	public String getPatientName() {
-		return patientName;
+	public PersonName getPersonName() {
+		return personName;
 	}
 	
-	public void setPatientName(String patientName) {
-		this.patientName = patientName;
+	public void setPersonName(PersonName patientName) {
+		this.personName = patientName;
 	}
 	
 	public String getGender() {
@@ -286,12 +278,12 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 		this.gender = gender;
 	}
 	
-	public String getResidentialAddress() {
-		return residentialAddress;
+	public PersonAddress getPersonAddress() {
+		return personAddress;
 	}
 	
-	public void setResidentialAddress(String residentialAddress) {
-		this.residentialAddress = residentialAddress;
+	public void setResidentialAddress(PersonAddress personAddress) {
+		this.personAddress = personAddress;
 	}
 	
 	public String getIdentifier() {

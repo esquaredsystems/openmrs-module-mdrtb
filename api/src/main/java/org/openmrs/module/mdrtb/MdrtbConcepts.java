@@ -802,6 +802,10 @@ public class MdrtbConcepts {
 	
 	public final static String SITE_OF_EPTB = "SITE OF EPTB";
 	
+	public final static String LOCATION_OF_EPTB = "LOCATION OF EXTRA PULMONARY TB";
+	
+	public final static String LOCATION_OF_PTB = "LOCATION OF PULMONARY TB";
+	
 	//public final static String PTB_SITE = "PTB SITE";
 	//public final static String EPTB_SITE = "EPTB SITE";
 	public final static String PRESENCE_OF_DECAY = "PRESENCE OF DECAY";
