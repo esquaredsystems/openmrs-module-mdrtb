@@ -18,7 +18,11 @@ public class Form89Data implements Comparable<Form89Data> {
 	
 	private String dateOfBirth;
 	
+	private String pulmonarySite;
+	
 	private String siteOfDisease;
+	
+	private String locationOfDisease;
 	
 	private String dateFirstSeekingHelp;
 	
@@ -115,12 +119,28 @@ public class Form89Data implements Comparable<Form89Data> {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
+	public String getPulmonarySite() {
+		return pulmonarySite;
+	}
+	
+	public void setPulmonarySite(String pulmonarySite) {
+		this.pulmonarySite = pulmonarySite;
+	}
+	
 	public String getSiteOfDisease() {
 		return siteOfDisease;
 	}
 	
 	public void setSiteOfDisease(String siteOfDisease) {
 		this.siteOfDisease = siteOfDisease;
+	}
+	
+	public String getLocationOfDisease() {
+		return locationOfDisease;
+	}
+	
+	public void setLocationOfDisease(String locationOfDisease) {
+		this.locationOfDisease = locationOfDisease;
 	}
 	
 	public String getDiagnosticSmearResult() {
@@ -156,17 +176,6 @@ public class Form89Data implements Comparable<Form89Data> {
 	}
 	
 	public String getXpertRIFResult() {
-		if (xpertRIFResult != null) {
-			if (xpertRIFResult.equals("+"))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifPosShort");
-			else if (xpertRIFResult.equals("-"))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifNegShort");
-			else if (xpertRIFResult.equals("U"))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifIndShort");
-			else
-				return "/" + xpertRIFResult;
-		}
-		
 		return xpertRIFResult;
 	}
 	
@@ -199,17 +208,6 @@ public class Form89Data implements Comparable<Form89Data> {
 	}
 	
 	public String getHainINHResult() {
-		if (hainINHResult != null) {
-			if (hainINHResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hainINHResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hainINHResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hainINHResult;
-		}
-		
 		return hainINHResult;
 	}
 	
@@ -218,18 +216,6 @@ public class Form89Data implements Comparable<Form89Data> {
 	}
 	
 	public String getHainRIFResult() {
-		
-		if (hainRIFResult != null) {
-			if (hainRIFResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hainRIFResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hainRIFResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hainRIFResult;
-		}
-		
 		return hainRIFResult;
 	}
 	
@@ -282,17 +268,6 @@ public class Form89Data implements Comparable<Form89Data> {
 	}
 	
 	public String getHain2InjResult() {
-		if (hain2InjResult != null) {
-			if (hain2InjResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hain2InjResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hain2InjResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hain2InjResult;
-		}
-		
 		return hain2InjResult;
 	}
 	
@@ -301,17 +276,6 @@ public class Form89Data implements Comparable<Form89Data> {
 	}
 	
 	public String getHain2FqResult() {
-		if (hain2FqResult != null) {
-			if (hain2FqResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hain2FqResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hain2FqResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hain2FqResult;
-		}
-		
 		return hain2FqResult;
 	}
 	

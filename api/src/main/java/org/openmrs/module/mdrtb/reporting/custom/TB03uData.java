@@ -1400,17 +1400,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getXpertRIFResult() {
-		if (xpertRIFResult != null) {
-			if (xpertRIFResult.equals("+"))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifPosShort");
-			else if (xpertRIFResult.equals("-"))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifNegShort");
-			else if (xpertRIFResult.equals("U"))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifIndShort");
-			else
-				return "/" + xpertRIFResult;
-		}
-		
 		return xpertRIFResult;
 	}
 	
@@ -1451,17 +1440,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getHainINHResult() {
-		if (hainINHResult != null) {
-			if (hainINHResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hainINHResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hainINHResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hainINHResult;
-		}
-		
 		return hainINHResult;
 	}
 	
@@ -1470,17 +1448,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getHainRIFResult() {
-		if (hainRIFResult != null) {
-			if (hainRIFResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hainRIFResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hainRIFResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hainRIFResult;
-		}
-		
 		return hainRIFResult;
 	}
 	
@@ -1521,17 +1488,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getHain2InjResult() {
-		if (hain2InjResult != null) {
-			if (hain2InjResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hain2InjResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hain2InjResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hain2InjResult;
-		}
-		
 		return hain2InjResult;
 	}
 	
@@ -1540,17 +1496,6 @@ public class TB03uData implements Comparable<TB03uData> {
 	}
 	
 	public String getHain2FqResult() {
-		if (hain2FqResult != null) {
-			if (hain2FqResult.equals("+"))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
-			else if (hain2FqResult.equals("-"))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
-			else if (hain2FqResult.equals("U"))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
-			else
-				return hain2FqResult;
-		}
-		
 		return hain2FqResult;
 	}
 	

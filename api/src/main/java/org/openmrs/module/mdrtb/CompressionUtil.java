@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -21,9 +22,9 @@ public class CompressionUtil {
 			return str;
 		}
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		GZIPOutputStream gzip = new GZIPOutputStream(out);
-		gzip.write(str.getBytes());
-		gzip.close();
+		try (GZIPOutputStream gzip = new GZIPOutputStream(out)) {
+	        gzip.write(str.getBytes(StandardCharsets.UTF_8));
+	    }
 		return (new Base64Encoder().encode(out.toByteArray()));
 	}
 	
@@ -32,8 +33,9 @@ public class CompressionUtil {
 			return str;
 		}
 		byte[] bytes = new Base64Encoder().decode(str);
-		GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
-		InputStreamReader reader = new InputStreamReader(gis, "UTF-8"); // Specify UTF-8 here
-		return IOUtils.toString(reader);
+		try (GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes))) {
+	        InputStreamReader reader = new InputStreamReader(gis, StandardCharsets.UTF_8);
+	        return IOUtils.toString(reader);
+	    }
 	}
 }

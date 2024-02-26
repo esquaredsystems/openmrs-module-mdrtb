@@ -432,21 +432,21 @@
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><spring:message code="mdrtb.form89.epSite" text="EP Site"/>:</td>
-<td>${form89.epSite.displayString}</td>
+<td><spring:message code="mdrtb.form89.eptbSite" text="EP Site"/>:</td>
+<td>${form89.eptbSite.displayString}</td>
 </tr>
 </c:if>
 
 <c:if test="${form89.isPulmonary eq true}">
 <tr>
-<td><spring:message code="mdrtb.form89.pSite" text="P Site"/>:</td>
-<td>${form89.pulSite.displayString}</td>
+<td><spring:message code="mdrtb.form89.ptbSite" text="P Site"/>:</td>
+<td>${form89.ptbLocation.displayString}</td>
 </tr>
 </c:if>
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><spring:message code="mdrtb.form89.epLocation" text="EP Location"/>:</td>
+<td><spring:message code="mdrtb.form89.eptbLocation" text="EP Location"/>:</td>
 <td>${form89.epLocation.displayString}</td>
 </tr>
 </c:if>
@@ -888,11 +888,11 @@
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><spring:message code="mdrtb.form89.epSite" text="EP Site"/>:</td>
-<td><select name="epSite">
+<td><spring:message code="mdrtb.form89.eptbSite" text="EP Site"/>:</td>
+<td><select name="eptbSite">
 <option value=""></option>
 <c:forEach var="p" items="${epsites}">
-	<option value="${p.answerConcept.id}" <c:if test="${form89.epSite == p.answerConcept}">selected</c:if> >${p.answerConcept.displayString}</option>
+	<option value="${p.answerConcept.id}" <c:if test="${form89.eptbSite == p.answerConcept}">selected</c:if> >${p.answerConcept.displayString}</option>
 </c:forEach>
 </select>
 </td>
@@ -901,11 +901,11 @@
 
 <c:if test="${form89.isPulmonary eq true}">
 <tr>
-<td><spring:message code="mdrtb.form89.pSite" text="P Site"/>:</td>
-<td><select name="pulSite">
+<td><spring:message code="mdrtb.form89.ptbSite" text="P Site"/>:</td>
+<td><select name="ptbLocation">
 <option value=""></option>
 <c:forEach var="p" items="${psites}">
-	<option value="${p.answerConcept.id}" <c:if test="${form89.pulSite == p.answerConcept}">selected</c:if> >${p.answerConcept.displayString}</option>
+	<option value="${p.answerConcept.id}" <c:if test="${form89.ptbLocation == p.answerConcept}">selected</c:if> >${p.answerConcept.displayString}</option>
 </c:forEach>
 </select>
 </td>
@@ -914,7 +914,7 @@
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><spring:message code="mdrtb.form89.epLocation" text="EP Location"/>:</td>
+<td><spring:message code="mdrtb.form89.eptbLocation" text="EP Location"/>:</td>
 <td><select name="epLocation">
 <option value=""></option>
 <c:forEach var="p" items="${eplocations}">

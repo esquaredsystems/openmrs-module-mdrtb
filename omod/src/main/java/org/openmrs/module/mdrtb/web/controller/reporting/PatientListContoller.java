@@ -6798,9 +6798,9 @@ public class PatientListContoller {
 			
 			f89 = fList.get(0);
 			
-			pulSite = f89.getPulSite();
+			anatomicalSite = f89.getAnatomicalSite();
 			
-			if (pulSite == null)
+			if (anatomicalSite == null)
 				continue;
 			
 			f89.setTB03(tb03);
@@ -7343,30 +7343,30 @@ public class PatientListContoller {
 				continue;
 			}
 			f89 = fList.get(0);
-			pulSite = f89.getEpLocation();
-			if (pulSite == null)
+			ptbLocation = f89.getEptbLocation();
+			if (ptbLocation == null)
 				continue;
 			f89.setTB03(tb03);
 			pulId = pulSite.getConceptId();
 			if (pulId == plevId)
 				plevlList.add(f89);
-			else if (pulId == ofLymphId)
+			else if (ptbId == ofLymphId)
 				ofLymphList.add(f89);
-			else if (pulId == osteoId)
+			else if (ptbId == osteoId)
 				osteoList.add(f89);
-			else if (pulId == uroId)
+			else if (ptbId == uroId)
 				uroList.add(f89);
-			else if (pulId == periLymphId)
+			else if (ptbId == periLymphId)
 				periLymphList.add(f89);
-			else if (pulId == abdId)
+			else if (ptbId == abdId)
 				abdList.add(f89);
-			else if (pulId == skinId)
+			else if (ptbId == skinId)
 				skinList.add(f89);
-			else if (pulId == eyeId)
+			else if (ptbId == eyeId)
 				eyeList.add(f89);
-			else if (pulId == cnsId)
+			else if (ptbId == cnsId)
 				cnsList.add(f89);
-			else if (pulId == liverId)
+			else if (ptbId == liverId)
 				liverList.add(f89);
 		}
 		

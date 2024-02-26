@@ -34,9 +34,9 @@ public class TB03DataResourceController extends BaseReportResource<SimpleTB03Dat
 		description.addSelfLink();
 		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
 		description.addProperty("patientUuid");
-		description.addProperty("patientName");
+		description.addProperty("personName");
+		description.addProperty("personAddress");
 		description.addProperty("gender");
-		description.addProperty("residentialAddress");
 		description.addProperty("identifier");
 		description.addProperty("tb03RegistrationDate");
 		description.addProperty("ageAtTB03Registration");

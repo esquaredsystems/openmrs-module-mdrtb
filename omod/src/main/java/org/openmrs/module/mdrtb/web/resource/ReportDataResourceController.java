@@ -176,7 +176,7 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 		Location region = Context.getLocationService().getLocationByUuid(regionUuid);
 		Location district = Context.getLocationService().getLocationByUuid(districtUuid);
 		Location facility = Context.getLocationService().getLocationByUuid(facilityUuid);
-		Integer year = yearStr == null ? null : Integer.parseInt(yearStr);
+		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);
 		List<ReportData> list = service.searchReportData(region, district, facility, year, quarter, month, reportName, reportType);

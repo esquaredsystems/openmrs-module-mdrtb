@@ -341,8 +341,8 @@ public class Form8Controller {
 		Concept hospConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOSPITAL);
 		int hospId = hospConcept.getConceptId();
 		
-		Concept pulSite = null;
-		Concept epulSite = null;
+		Concept anatomicalSite = null;
+		Concept epulLocation = null;
 		
 		int age = 0;
 		int resId = 0;
@@ -384,8 +384,8 @@ public class Form8Controller {
 			miliary = null;
 			resistant = null;
 			hivPositive = null;
-			pulSite = null;
-			epulSite = null;
+			anatomicalSite = null;
+			epulLocation = null;
 			
 			phcFacility = null;
 			phcWorker = null;
@@ -609,53 +609,53 @@ public class Form8Controller {
 				if (q.getConceptId().intValue() == pulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.TRUE;
 					
-					pulSite = f89.getPulSite();
-					if (pulSite != null && pulSite.getConceptId() == fibroCavId) {
+					anatomicalSite = f89.getAnatomicalSite();
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == fibroCavId) {
 						fibroCav = Boolean.TRUE;
 						table2.setFibrousTotal(table2.getFibrousTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId() == miliaryId) {
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == miliaryId) {
 						miliary = Boolean.TRUE;
 						table2.setMiliaryTotal(table2.getMiliaryTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId() == focalId) {
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == focalId) {
 						focal = Boolean.TRUE;
 						table2.setFocalTotal(table2.getFocalTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId() == infiltrativeId) {
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == infiltrativeId) {
 						infiltrative = Boolean.TRUE;
 						table2.setInfiltrativeTotal(table2.getInfiltrativeTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId() == disseminatedId) {
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == disseminatedId) {
 						disseminated = Boolean.TRUE;
 						table2.setDisseminatedTotal(table2.getDisseminatedTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId() == cavernousId) {
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == cavernousId) {
 						cavernous = Boolean.TRUE;
 						table2.setCavernousTotal(table2.getCavernousTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId() == cirrhoticId) {
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == cirrhoticId) {
 						cirrhotic = Boolean.TRUE;
 						table2.setCirrhoticTotal(table2.getCirrhoticTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId() == primaryComplexId) {
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == primaryComplexId) {
 						tbComplex = Boolean.TRUE;
 						table2.setTbComplexTotal(table2.getTbComplexTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId() == tuberculomaId) {
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == tuberculomaId) {
 						tuberculoma = Boolean.TRUE;
 						table2.setTuberculomaTotal(table2.getTuberculomaTotal() + 1);
 					}
 					
-					if (pulSite != null && pulSite.getConceptId() == bronchiId) {
+					if (anatomicalSite != null && anatomicalSite.getConceptId() == bronchiId) {
 						bronchi = Boolean.TRUE;
 						table2.setBronchiTotal(table2.getBronchiTotal() + 1);
 					}
@@ -663,55 +663,55 @@ public class Form8Controller {
 				
 				else if (q.getConceptId().intValue() == extrapulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.FALSE;
-					epulSite = f89.getEpLocation();
+					epulLocation = f89.getEptbLocation();
 					
-					if (epulSite != null) {
-						if (epulSite.getConceptId() == cnsId) {
+					if (epulLocation != null) {
+						if (epulLocation.getConceptId() == cnsId) {
 							cns = Boolean.TRUE;
 							table2.setNervousSystemTotal(table2.getNervousSystemTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId() == osteoArticularId) {
+						else if (epulLocation.getConceptId() == osteoArticularId) {
 							osteoArticular = Boolean.TRUE;
 							table2.setOsteoarticularTotal(table2.getOsteoarticularTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId() == urogenitalId) {
+						else if (epulLocation.getConceptId() == urogenitalId) {
 							urogenital = Boolean.TRUE;
 							table2.setUrogenitalTotal(table2.getUrogenitalTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId() == peripheralLymphNodesId) {
+						else if (epulLocation.getConceptId() == peripheralLymphNodesId) {
 							peripheralLymphNodes = Boolean.TRUE;
 							table2.setPeripheralLymphNodesTotal(table2.getPeripheralLymphNodesTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId() == abdominalId) {
+						else if (epulLocation.getConceptId() == abdominalId) {
 							abdominal = Boolean.TRUE;
 							table2.setAbdominalTotal(table2.getAbdominalTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId() == eyeId) {
+						else if (epulLocation.getConceptId() == eyeId) {
 							eye = Boolean.TRUE;
 							table2.setEyeTotal(table2.getEyeTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId() == plevId) {
+						else if (epulLocation.getConceptId() == plevId) {
 							plevritis = Boolean.TRUE;
 							table2.setPleurisyTotal(table2.getPleurisyTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId() == itLymphId) {
+						else if (epulLocation.getConceptId() == itLymphId) {
 							itLymph = Boolean.TRUE;
 							table2.setHilarLymphNodesTotal(table2.getHilarLymphNodesTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId() == liverId) {
+						else if (epulLocation.getConceptId() == liverId) {
 							liver = Boolean.TRUE;
 							table2.setLiverTotal(table2.getLiverTotal() + 1);
 						}
 						
-						else if (epulSite.getConceptId() == skinId) {
+						else if (epulLocation.getConceptId() == skinId) {
 							skin = Boolean.TRUE;
 							table2.setSkinTotal(table2.getSkinTotal() + 1);
 						}

@@ -80,19 +80,6 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		return p.getFamilyName() + "," + p.getGivenName();
 	}
 	
-	public Concept getAnatomicalSite() {
-		Obs obs = null;
-		if (tb03 != null)
-			obs = MdrtbUtil.getObsFromEncounter(
-			    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB), tb03.getEncounter());
-		
-		if (obs == null) {
-			return null;
-		} else {
-			return obs.getValueCoded();
-		}
-	}
-	
 	public Integer getAgeAtRegistration() {
 		return MdrtbUtil.calculateAge(getPatient().getBirthdate(), getEncounterDatetime());
 	}
@@ -141,22 +128,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_TYPE), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.LOCATION_TYPE), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -181,22 +163,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PROFESSION),
 		    encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PROFESSION), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -221,22 +198,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POPULATION_CATEGORY), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.POPULATION_CATEGORY), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -261,22 +233,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLACE_OF_DETECTION), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PLACE_OF_DETECTION), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -301,22 +268,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_FIRST_SEEKING_HELP), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && date == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueDatetime() == null || !obs.getValueDatetime().equals(date)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (date != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.DATE_FIRST_SEEKING_HELP), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -341,22 +303,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CIRCUMSTANCES_OF_DETECTION), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -381,22 +338,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.METHOD_OF_DETECTION), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.METHOD_OF_DETECTION), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -406,7 +358,15 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		}
 	}
 	
-	public Concept getEpSite() {
+	public Concept getAnatomicalSite() {
+		return tb03.getAnatomicalSite();
+	}
+	
+	public void setAnatomicalSite(Concept anatomicalSite) {
+		tb03.setAnatomicalSite(anatomicalSite);
+	}
+	
+	public Concept getEptbSite() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
 		
@@ -417,38 +377,33 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		}
 	}
 	
-	public void setEpSite(Concept site) {
+	public void setEptbSite(Concept eptbSite) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
-		if (obs == null && site == null) {
+		if (obs == null && eptbSite == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
+		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(eptbSite)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
-			if (site != null) {
+			if (eptbSite != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.SITE_OF_EPTB), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueCoded(site);
+				obs.setValueCoded(eptbSite);
 				encounter.addObs(obs);
 			}
 		}
 	}
 	
-	public Concept getPulSite() {
+	public Concept getPtbLocation() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB), encounter);
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_OF_PTB), encounter);
 		
 		if (obs == null) {
 			return null;
@@ -457,38 +412,33 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		}
 	}
 	
-	public void setPulSite(Concept site) {
+	public void setPtbLocation(Concept ptbLocation) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB), encounter);
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_OF_PTB), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
-		if (obs == null && site == null) {
+		if (obs == null && ptbLocation == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
+		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(ptbLocation)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
-			if (site != null) {
+			if (ptbLocation != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
-				    MdrtbConcepts.ANATOMICAL_SITE_OF_TB), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueCoded(site);
+				    MdrtbConcepts.LOCATION_OF_PTB), encounter.getEncounterDatetime(), encounter.getLocation());
+				obs.setValueCoded(ptbLocation);
 				encounter.addObs(obs);
 			}
 		}
 	}
 	
-	public Concept getEpLocation() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
+	public Concept getEptbLocation() {
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_OF_EPTB), encounter);
 		
 		if (obs == null) {
 			return null;
@@ -497,36 +447,30 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		}
 	}
 	
-	public void setEpLocation(Concept site) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.SITE_OF_EPTB), encounter);
+	public void setEptbLocation(Concept eptbLocation) {
+		Obs obs = MdrtbUtil.getObsFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_OF_EPTB), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
-		if (obs == null && site == null) {
+		if (obs == null && eptbLocation == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
+		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(eptbLocation)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
-			if (site != null) {
+			if (eptbLocation != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
-				    MdrtbConcepts.SITE_OF_EPTB), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueCoded(site);
+				    MdrtbConcepts.LOCATION_OF_EPTB), encounter.getEncounterDatetime(), encounter.getLocation());
+				obs.setValueCoded(eptbLocation);
 				encounter.addObs(obs);
 			}
 		}
 	}
 	
-	/////////////////
 	public Concept getPresenceOfDecay() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRESENCE_OF_DECAY), encounter);
@@ -542,22 +486,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PRESENCE_OF_DECAY), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PRESENCE_OF_DECAY), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -583,22 +522,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_DECAY_SURVEY), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && date == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueDatetime() == null || !obs.getValueDatetime().equals(date)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (date != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.DATE_OF_DECAY_SURVEY), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -623,22 +557,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIABETES),
 		    encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.DIABETES), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -663,22 +592,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CNSDL),
 		    encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(),
 				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CNSDL),
@@ -704,22 +628,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.HYPERTENSION_OR_HEART_DISEASE), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -744,22 +663,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ULCER),
 		    encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(),
 				        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ULCER),
@@ -785,22 +699,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MENTAL_DISORDER), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.MENTAL_DISORDER), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -849,22 +758,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CANCER),
 		    encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.CANCER), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -889,22 +793,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COMORBID_HEPATITIS), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.COMORBID_HEPATITIS), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -929,22 +828,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.KIDNEY_DISEASE), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.KIDNEY_DISEASE), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -979,7 +873,6 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		// changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(site)) {
 			
-			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
 			if (obs != null) {
@@ -987,7 +880,6 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.NO_DISEASE), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1013,22 +905,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_DISEASE), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && site == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(site)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (site != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.OTHER_DISEASE), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1053,22 +940,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CENTRAL_COMMISSION_DATE), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && date == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueDatetime() == null || !obs.getValueDatetime().equals(date)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (date != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CENTRAL_COMMISSION_DATE), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1093,22 +975,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CENTRAL_COMMISSION_NUMBER), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && number == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(number)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (number != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CENTRAL_COMMISSION_NUMBER), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1133,22 +1010,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FORM89_DATE), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && date == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueDatetime() == null || !obs.getValueDatetime().equals(date)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (date != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.FORM89_DATE), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1173,22 +1045,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENERAL_PRESCRIBED_TREATMENT), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.GENERAL_PRESCRIBED_TREATMENT), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1213,22 +1080,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && id == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueNumeric() == null || obs.getValueNumeric().intValue() != id) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (id != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1255,7 +1117,6 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 				}
 			}
 		}
-		
 		return ret;
 		
 	}
@@ -1357,22 +1218,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NAME_OF_DOCTOR), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && name == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(name)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (name != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.NAME_OF_DOCTOR), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1397,22 +1253,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.COUNTRY_OF_ORIGIN), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && name == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(name)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (name != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.COUNTRY_OF_ORIGIN), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1432,22 +1283,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PLACE_OF_CENTRAL_COMMISSION), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && place == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(place)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (place != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PLACE_OF_CENTRAL_COMMISSION), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1467,22 +1313,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CITY_OF_ORIGIN), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && name == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(name)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (name != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CITY_OF_ORIGIN), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1502,22 +1343,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER_METHOD_OF_DETECTION), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && name == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(name)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (name != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.OTHER_METHOD_OF_DETECTION), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1537,22 +1373,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.COMPLICATION), encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && name == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(name)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (name != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.COMPLICATION), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1582,7 +1413,6 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		// changed.
 		if (obs == null || obs.getValueDatetime() == null || !obs.getValueDatetime().equals(date)) {
 			
-			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
 			if (obs != null) {
@@ -1590,7 +1420,6 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter
 			if (date != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.DATE_OF_RETURN), encounter.getEncounterDatetime(), encounter.getLocation());
@@ -1640,22 +1469,17 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PREGNANT),
 		    encounter);
 		
-		// if this obs have not been created, and there is no data to add, do nothing
 		if (obs == null && type == null) {
 			return;
 		}
 		
-		// we only need to update this if this is a new obs or if the value has changed.
 		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
 			
-			// void the existing obs if it exists
-			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
 				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 			}
 			
-			// now create the new Obs and add it to the encounter	
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PREGNANT), encounter.getEncounterDatetime(), encounter.getLocation());

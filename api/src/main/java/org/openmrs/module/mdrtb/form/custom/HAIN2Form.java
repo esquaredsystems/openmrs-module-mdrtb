@@ -42,7 +42,9 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 	public String getSpecimenId() {
 		if (labTest != null) {
 			LabTestSample sample = CommonLabUtil.getService().getMostRecentAcceptedSample(labTest);
-			return sample.getSampleIdentifier();
+			// return sample.getSampleIdentifier();
+			return sample.getLabTestSampleId().toString();
+			
 		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);
@@ -312,7 +314,12 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.PATIENT_PROGRAM_ID);
 			if (attribute != null) {
-				return (Integer) attribute.getValue();
+				try {
+					return (Integer) attribute.getValue();
+				}
+				catch (ClassCastException e) {
+					return Integer.parseInt(attribute.getValueReference());
+				}
 			}
 		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
@@ -359,7 +366,12 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.MONTH_OF_TREATMENT);
 			if (attribute != null) {
-				return (Integer) attribute.getValue();
+				try {
+					return (Integer) attribute.getValue();
+				}
+				catch (ClassCastException e) {
+					return Integer.parseInt(attribute.getValueReference());
+				}
 			}
 		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(

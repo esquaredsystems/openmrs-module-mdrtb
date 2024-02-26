@@ -1108,8 +1108,7 @@ select * from orders where patient_id = 349487;
 select * from commonlabtest_attribute_type where test_type_id = 5;
 select * from commonlabtest_test where test_order_id = 720887;
 select * from commonlabtest_sample where test_order_id = 720887;
-select * from concept_name cn ;
 
-update concept_name set locale_preferred = 0 
-where locale_preferred = 1 and concept_name_type = 'FULLY_SPECIFIED' and locale <> 'en';
+select * from commonlabtest_attribute_type cat where datatype_config = '9b246849-3928-11ee-9784-e86a64440f18';
 
+select * from person_address pa where year(date_created) = 2024;
