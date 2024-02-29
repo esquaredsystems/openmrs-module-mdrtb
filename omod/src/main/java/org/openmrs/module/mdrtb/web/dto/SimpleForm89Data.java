@@ -20,10 +20,13 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	private PersonName personName;
 	
+	private PersonAddress personAddress;
+	
 	private String gender;
 	
 	private String tb03RegistrationDate;
 	
+	private Integer ageAtTB03Registration;
 	
 	private String dateOfBirth;
 	
@@ -144,7 +147,6 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	private String complication;
 	
 	public SimpleForm89Data(Form89Data form89Data) {
-		this.patient = form89Data.getPatient();
 		this.patientUuid = form89Data.getPatient().getUuid();
 		this.personName = form89Data.getPatient().getPersonName();
 		this.personAddress = form89Data.getPatient().getPersonAddress();

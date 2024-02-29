@@ -1,13 +1,16 @@
 package org.openmrs.module.mdrtb.reporting.custom;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.openmrs.module.commonlabtest.LabTest;
+import org.openmrs.module.commonlabtest.LabTestAttribute;
 import org.openmrs.module.commonlabtest.LabTestType;
 import org.openmrs.module.mdrtb.CommonLabUtil;
+import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
 import org.openmrs.module.mdrtb.form.custom.DSTForm;
 import org.openmrs.module.mdrtb.form.custom.HAIN2Form;
@@ -17,6 +20,7 @@ import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.form.custom.XpertForm;
 import org.openmrs.module.mdrtb.specimen.Dst;
 import org.openmrs.module.mdrtb.specimen.DstImpl;
+import org.openmrs.module.mdrtb.specimen.DstResult;
 import org.openmrs.module.mdrtb.specimen.Specimen;
 import org.openmrs.module.mdrtb.specimen.custom.HAIN;
 import org.openmrs.module.mdrtb.specimen.custom.HAIN2;
@@ -58,8 +62,12 @@ public class TB03uUtil {
 	public static Dst getDiagnosticDST(TB03uForm tf) {
 		List<DSTForm> dsts = tf.getDsts();
 		if (dsts != null && !dsts.isEmpty()) {
-			// Repeat until an encounter with associated lab order is found
+			// Search for diagnostic DST, i.e. where month of treatment = 0
 			for (DSTForm dstForm : dsts) {
+				if (dstForm.getMonthOfTreatment() == null)
+					continue;
+				if (dstForm.getMonthOfTreatment().intValue() != 0)
+					continue;
 				LabTest dstTest = CommonLabUtil.getService().getDstLabTestOrder(dstForm.getEncounter());
 				if (dstTest != null) {
 					return new DstImpl(dstTest);
@@ -67,6 +75,29 @@ public class TB03uUtil {
 			}
 		}
 		return null;
+	}
+	
+	public static List<DstResult> getDiagnosticDSTResults(TB03uForm tf) {
+		List<DSTForm> dsts = tf.getDsts();
+		if (dsts != null && !dsts.isEmpty()) {
+			for (DSTForm dstForm : dsts) {
+				if (dstForm.getMonthOfTreatment() == null)
+					continue;
+				if (dstForm.getMonthOfTreatment().intValue() != 0)
+					continue;
+				LabTest dstTest = CommonLabUtil.getService().getDstLabTestOrder(dstForm.getEncounter());
+				if (dstTest != null) {
+					LabTestAttribute rif = CommonLabUtil.getService().getCommonAttributeByTestAndName(dstTest,
+					    MdrtbConcepts.RIFAMPICIN_RESISTANCE);
+					LabTestAttribute iso = CommonLabUtil.getService().getCommonAttributeByTestAndName(dstTest,
+					    MdrtbConcepts.ISONIAZID_RESISTANCE);
+					if (rif != null || iso != null) {
+						return new DstImpl(dstTest).getResults();
+					}
+				}
+			}
+		}
+		return new ArrayList<>();
 	}
 	
 	//find out which date and before or after

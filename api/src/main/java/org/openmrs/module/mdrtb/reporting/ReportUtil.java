@@ -206,8 +206,7 @@ public class ReportUtil {
 	}
 	
 	public static Map<String, Date> getPeriodDates(Object yearObj, Object quarterObj, Object monthObj, Object month2Obj) {
-		// if the year is null, we don't have start and end dates, want to query from
-		// the beginning of time until today
+		// if year is null, we don't have start and end dates, want to query from the beginning of time until today
 		boolean yearProvided = yearObj != null && !"".equals(yearObj);
 		boolean quarterProvided = quarterObj != null && !"".equals(quarterObj);
 		boolean monthProvided = monthObj != null && !"".equals(monthObj);
@@ -218,13 +217,7 @@ public class ReportUtil {
 			periodDates.put("endDate", new Date());
 			return periodDates;
 		}
-		/*if (!quarterProvided && !monthProvided) {
-			throw new IllegalArgumentException("Please enter either a quarter or a month");
-		}*/
-		
-		Integer quarter;
-		Integer month;
-		Integer month2;
+		Integer quarter, month, month2;
 		Integer year = Calendar.getInstance().get(Calendar.YEAR);
 		// Validate input and construct start and end months
 		int startMonth = 1;
@@ -266,7 +259,6 @@ public class ReportUtil {
 		start.set(year, startMonth - 1, 1, 0, 0, 0);
 		end.set(year, endMonth - 1, end.getActualMaximum(Calendar.DATE), 23, 59, 59);
 		// Date alteration for Tajikistan (year starts from 26th Dec and ends on 25th Dec)
-		// Handle month change if necessary
 		if (start.get(Calendar.MONTH) != (startMonth - 1)) {
 			start.add(Calendar.MONTH, -1);
 			start.set(Calendar.DATE, start.getActualMaximum(Calendar.DATE));
@@ -276,8 +268,9 @@ public class ReportUtil {
 			end.set(Calendar.DATE, end.getActualMaximum(Calendar.DATE));
 		}
 		start.add(Calendar.DATE, -6);
-		start.add(Calendar.SECOND, -1);
 		end.add(Calendar.DATE, -6);
+		start.set(Calendar.DATE, 26);
+		end.set(Calendar.DATE, 25);
 		periodDates.put("startDate", start.getTime());
 		periodDates.put("endDate", end.getTime());
 		return periodDates;

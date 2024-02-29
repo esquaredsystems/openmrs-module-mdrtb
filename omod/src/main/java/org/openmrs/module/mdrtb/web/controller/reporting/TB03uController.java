@@ -272,21 +272,20 @@ public class TB03uController {
 			
 			//DST
 			Dst firstDst = TB03uUtil.getDiagnosticDST(tf);
+			List<DstResult> resList = TB03uUtil.getDiagnosticDSTResults(tf);
 			
 			if (firstDst != null) {
 				if (firstDst.getDateCollected() != null)
 					tb03uData.setDstCollectionDate(sdf.format(firstDst.getDateCollected()));
 				if (firstDst.getResultDate() != null)
 					tb03uData.setDstResultDate(sdf.format(firstDst.getResultDate()));
-				List<DstResult> resList = firstDst.getResults();
 				String drugName = null;
 				String result = null;
 				for (DstResult res : resList) {
 					if (res.getDrug() != null) {
 						drugName = res.getDrug().getShortestName(Context.getLocale(), false).toString();
-						result = res.getResult().getName(Context.getLocale()).getName();
+						result = res.getResult().getShortestName(Context.getLocale(), false).toString();
 						tb03uData.getDstResults().put(drugName, result);
-						
 					}
 				}
 			}

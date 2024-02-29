@@ -489,7 +489,7 @@ public class PatientListContoller {
 		int i = 0;
 		Person p;
 		for (TB03Form tf : tb03s) {
-			System.out.println("Generating data for Patient: " + tf.getPatient().getPatientIdentifier());
+			System.out.println("Processing: Patient#" + tf.getPatient().getPatientIdentifier());
 			if (tf.getPatient() == null || tf.getPatient().getVoided())
 				continue;
 			i++;
@@ -2793,8 +2793,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesWithConcamitantDiseasesTable(List<Location> locList, Integer year, Integer quarter,
-			Integer month, Integer month2, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		Collections.sort(tb03List);
 		ArrayList<Form89> forms = new ArrayList<>();
 		Concept regGroup;
@@ -2806,9 +2807,8 @@ public class PatientListContoller {
 			}
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null
-			        || regGroup.getConceptId() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			if (regGroup == null || regGroup.getConceptId() != Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				continue;
 			}
 			
@@ -2884,7 +2884,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : forms) {
 			
@@ -2927,7 +2927,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : forms) {
 			
@@ -2970,7 +2970,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : forms) {
 			
@@ -3013,7 +3013,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : forms) {
 			
@@ -3056,7 +3056,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : forms) {
 			
@@ -3099,7 +3099,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : forms) {
 			
@@ -3144,7 +3144,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : forms) {
 			
@@ -3187,7 +3187,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : forms) {
 			
@@ -3230,7 +3230,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : forms) {
 			
@@ -4339,9 +4339,10 @@ public class PatientListContoller {
 		return "/module/mdrtb/reporting/patientListsResults";
 	}
 	
-	public static String getCasesBySocProfStatusTable(List<Location> locList, Integer year, Integer quarter, Integer month, Integer month2,
-	        boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
+	public static String getCasesBySocProfStatusTable(List<Location> locList, Integer year, Integer quarter, Integer month,
+	        Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		StringBuilder report = new StringBuilder();
 		Concept status;
@@ -4397,12 +4398,11 @@ public class PatientListContoller {
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				continue;
 			}
-
+			
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null
-			        || regGroup.getConceptId() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			if (regGroup == null || regGroup.getConceptId() != Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				continue;
 			}
 			
@@ -4507,7 +4507,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : govtList) {
 			
@@ -4548,7 +4548,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : studentList) {
 			
@@ -4589,7 +4589,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : disabledList) {
 			
@@ -4630,7 +4630,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : unemployedList) {
 			
@@ -4671,7 +4671,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : phcList) {
 			
@@ -4712,7 +4712,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : militaryList) {
 			
@@ -4753,7 +4753,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : schoolList) {
 			
@@ -4794,7 +4794,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : tbWorkerList) {
 			
@@ -4834,7 +4834,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : privateList) {
 			
@@ -4875,7 +4875,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : housewifeList) {
 			
@@ -4916,7 +4916,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : preschoolList) {
 			
@@ -4957,7 +4957,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : pensionerList) {
 			
@@ -5040,8 +5040,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByPopulationCategoryTable(List<Location> locList, Integer year, Integer quarter,
-			Integer month, Integer month2, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		StringBuilder report = new StringBuilder();
 		Concept category = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POPULATION_CATEGORY);
@@ -5061,8 +5062,8 @@ public class PatientListContoller {
 		int otherId = otherConcept.getConceptId();
 		Concept foreignerConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FOREIGNER);
 		int foreignerId = foreignerConcept.getConceptId();
-		Concept welfareConcept = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.RESIDENT_SOCIAL_SECURITY_FACILITY);
+		Concept welfareConcept = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.RESIDENT_SOCIAL_SECURITY_FACILITY);
 		int welfareId = welfareConcept.getConceptId();
 		Concept homelessConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOMELESS);
 		int homelessId = homelessConcept.getConceptId();
@@ -5083,9 +5084,8 @@ public class PatientListContoller {
 			}
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null
-			        || regGroup.getConceptId() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			if (regGroup == null || regGroup.getConceptId() != Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				continue;
 			}
 			
@@ -5177,7 +5177,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : otherList) {
 			
@@ -5220,7 +5220,7 @@ public class PatientListContoller {
 		
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : foreignerList) {
 			
@@ -5262,7 +5262,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : welfareList) {
 			
@@ -5303,7 +5303,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : homelessList) {
 			
@@ -5344,7 +5344,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : prisonerList) {
 			
@@ -5386,7 +5386,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : investigationList) {
 			
@@ -5463,9 +5463,10 @@ public class PatientListContoller {
 		
 	}
 	
-	public static String getCasesByDwellingTable(List<Location> locList, Integer year, Integer quarter, Integer month, Integer month2,
-	        boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
+	public static String getCasesByDwellingTable(List<Location> locList, Integer year, Integer quarter, Integer month,
+	        Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		Collections.sort(tb03List);
 		
 		Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LOCATION_TYPE);
@@ -5489,9 +5490,8 @@ public class PatientListContoller {
 			}
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null
-			        || regGroup.getConceptId() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			if (regGroup == null || regGroup.getConceptId() != Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				continue;
 			}
 			
@@ -5573,7 +5573,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : villageList) {
 			
@@ -5652,8 +5652,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByPlaceOfDetectionTable(List<Location> locList, Integer year, Integer quarter,
-			Integer month, Integer month2, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		Collections.sort(tb03List);
 		
@@ -5683,12 +5684,11 @@ public class PatientListContoller {
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				continue;
 			}
-
+			
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null
-			        || regGroup.getConceptId() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			if (regGroup == null || regGroup.getConceptId() != Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				System.out.println("Not new - skipping ENC: " + tb03.getEncounter().getEncounterId());
 				continue;
 			}
@@ -5776,7 +5776,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : phcList) {
 			
@@ -5820,7 +5820,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : privateList) {
 			
@@ -5861,7 +5861,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : otherList) {
 			
@@ -5938,7 +5938,7 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByCircumstancesOfDetectionTable(List<Location> locList, Integer year, Integer quarterInt,
-			Integer monthInt, Integer month2Int, boolean restfulLink) {
+	        Integer monthInt, Integer month2Int, boolean restfulLink) {
 		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarterInt,
 		    monthInt, month2Int);
 		Collections.sort(tb03List);
@@ -5957,8 +5957,8 @@ public class PatientListContoller {
 		int selfRefId = selfRefConcept.getConceptId();
 		Concept baselineExamConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.BASELINE_EXAM);
 		int baselineExamId = baselineExamConcept.getConceptId();
-		Concept postmortemConcept = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.POSTMORTERM_IDENTIFICATION);
+		Concept postmortemConcept = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.POSTMORTERM_IDENTIFICATION);
 		int postMortemId = postmortemConcept.getConceptId();
 		Concept contactConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
 		int contactId = contactConcept.getConceptId();
@@ -5968,17 +5968,16 @@ public class PatientListContoller {
 		int circId;
 		Form89 f89;
 		Concept regGroup;
-
+		
 		for (TB03Form tb03 : tb03List) {
 			if (tb03.getPatient() == null || tb03.getPatient().getVoided()) {
 				continue;
 			}
-
+			
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null
-			        || regGroup.getConceptId() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			if (regGroup == null || regGroup.getConceptId() != Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				continue;
 			}
 			
@@ -6075,7 +6074,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : baselineExamList) {
 			
@@ -6114,7 +6113,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : postmortemList) {
 			
@@ -6152,7 +6151,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : contactList) {
 			
@@ -6195,7 +6194,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_FORM_89_DATE_OF_RETURN)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : migrantList) {
 			
@@ -6277,8 +6276,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByMethodOfDetectionTable(List<Location> locList, Integer year, Integer quarter,
-			Integer month, Integer month2, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		ArrayList<Form89> fluorographyList = new ArrayList<>();
 		ArrayList<Form89> genexpertList = new ArrayList<>();
@@ -6294,8 +6294,8 @@ public class PatientListContoller {
 		
 		StringBuilder report = new StringBuilder();
 		//METHOD
-		Concept fluorographyConcept = Context.getService(MdrtbService.class).getConcept(
-		    MdrtbConcepts.FLURORESCENT_MICROSCOPY);
+		Concept fluorographyConcept = Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.FLURORESCENT_MICROSCOPY);
 		int fluorographyId = fluorographyConcept.getConceptId();
 		Concept genexpertConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.GENEXPERT);
 		int genexpertId = genexpertConcept.getConceptId();
@@ -6322,9 +6322,8 @@ public class PatientListContoller {
 				continue;
 			}
 			regGroup = tb03.getRegistrationGroup();
-			if (regGroup == null
-			        || regGroup.getConceptId() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			if (regGroup == null || regGroup.getConceptId() != Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				continue;
 			}
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
@@ -6407,7 +6406,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : genexpertList) {
 			TB03Form tb03;
@@ -6443,7 +6442,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : microscopyList) {
 			TB03Form tb03;
@@ -6479,7 +6478,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : tuberculinList) {
 			TB03Form tb03;
@@ -6515,7 +6514,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : hainList) {
 			TB03Form tb03;
@@ -6551,7 +6550,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : cultureList) {
 			TB03Form tb03;
@@ -6587,7 +6586,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : histologyList) {
 			TB03Form tb03;
@@ -6623,7 +6622,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : cxrList) {
 			TB03Form tb03;
@@ -6659,7 +6658,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		
 		for (Form89 tf : otherList) {
@@ -6734,8 +6733,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByPulmonaryLocationTable(List<Location> locList, Integer year, Integer quarter,
-			Integer month, Integer month2, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		ArrayList<Form89> focalList = new ArrayList<>();
 		ArrayList<Form89> infilList = new ArrayList<>();
@@ -6747,7 +6747,7 @@ public class PatientListContoller {
 		ArrayList<Form89> miliaryList = new ArrayList<>();
 		ArrayList<Form89> tuberculomaList = new ArrayList<>();
 		ArrayList<Form89> bronchiList = new ArrayList<>();
-		Concept pulSite;
+		Concept anatomicalSite;
 		
 		StringBuilder report = new StringBuilder();
 		//PULMONARY
@@ -6783,9 +6783,8 @@ public class PatientListContoller {
 			}
 			regGroup = tb03.getRegistrationGroup();
 			
-			if (regGroup == null
-			        || regGroup.getConceptId() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			if (regGroup == null || regGroup.getConceptId() != Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				continue;
 			}
 			
@@ -6805,7 +6804,7 @@ public class PatientListContoller {
 			
 			f89.setTB03(tb03);
 			
-			pulId = pulSite.getConceptId();
+			pulId = anatomicalSite.getConceptId();
 			
 			if (pulId == focalId)
 				focalList.add(f89);
@@ -6882,7 +6881,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : infilList) {
 			
@@ -6922,7 +6921,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : disList) {
 			
@@ -6962,7 +6961,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : cavList) {
 			
@@ -7002,7 +7001,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : fibCavList) {
 			
@@ -7042,7 +7041,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : cirrList) {
 			
@@ -7082,7 +7081,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : priCompList) {
 			
@@ -7122,7 +7121,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : miliaryList) {
 			
@@ -7162,7 +7161,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : tuberculomaList) {
 			
@@ -7202,7 +7201,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : bronchiList) {
 			
@@ -7283,8 +7282,9 @@ public class PatientListContoller {
 	}
 	
 	public static String getCasesByExtraPulmonaryLocationTable(List<Location> locList, Integer year, Integer quarter,
-			Integer month, Integer month2, boolean restfulLink) {
-		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month, month2);
+	        Integer month, Integer month2, boolean restfulLink) {
+		List<TB03Form> tb03List = Context.getService(MdrtbService.class).getTB03FormsFilled(locList, year, quarter, month,
+		    month2);
 		
 		ArrayList<Form89> plevlList = new ArrayList<>();
 		ArrayList<Form89> ofLymphList = new ArrayList<>();
@@ -7297,7 +7297,7 @@ public class PatientListContoller {
 		ArrayList<Form89> cnsList = new ArrayList<>();
 		ArrayList<Form89> liverList = new ArrayList<>();
 		
-		Concept pulSite;
+		Concept ptbLocation;
 		
 		StringBuilder report = new StringBuilder();
 		//PULMONARY
@@ -7332,9 +7332,8 @@ public class PatientListContoller {
 				continue;
 			}
 			regGroup = tb03.getRegistrationGroup();
-			if (regGroup == null
-			        || regGroup.getConceptId() != Integer.parseInt(Context.getAdministrationService()
-			                .getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
+			if (regGroup == null || regGroup.getConceptId() != Integer
+			        .parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_NEW_CONCEPT_ID))) {
 				continue;
 			}
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
@@ -7347,26 +7346,26 @@ public class PatientListContoller {
 			if (ptbLocation == null)
 				continue;
 			f89.setTB03(tb03);
-			pulId = pulSite.getConceptId();
+			pulId = ptbLocation.getConceptId();
 			if (pulId == plevId)
 				plevlList.add(f89);
-			else if (ptbId == ofLymphId)
+			else if (pulId == ofLymphId)
 				ofLymphList.add(f89);
-			else if (ptbId == osteoId)
+			else if (pulId == osteoId)
 				osteoList.add(f89);
-			else if (ptbId == uroId)
+			else if (pulId == uroId)
 				uroList.add(f89);
-			else if (ptbId == periLymphId)
+			else if (pulId == periLymphId)
 				periLymphList.add(f89);
-			else if (ptbId == abdId)
+			else if (pulId == abdId)
 				abdList.add(f89);
-			else if (ptbId == skinId)
+			else if (pulId == skinId)
 				skinList.add(f89);
-			else if (ptbId == eyeId)
+			else if (pulId == eyeId)
 				eyeList.add(f89);
-			else if (ptbId == cnsId)
+			else if (pulId == cnsId)
 				cnsList.add(f89);
-			else if (ptbId == liverId)
+			else if (pulId == liverId)
 				liverList.add(f89);
 		}
 		
@@ -7419,7 +7418,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : ofLymphList) {
 			TB03Form tb03;
@@ -7455,7 +7454,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : osteoList) {
 			TB03Form tb03;
@@ -7491,7 +7490,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : uroList) {
 			TB03Form tb03;
@@ -7527,7 +7526,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : periLymphList) {
 			TB03Form tb03;
@@ -7563,7 +7562,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : abdList) {
 			TB03Form tb03;
@@ -7599,7 +7598,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : skinList) {
 			TB03Form tb03;
@@ -7635,7 +7634,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : eyeList) {
 			TB03Form tb03;
@@ -7671,7 +7670,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : cnsList) {
 			TB03Form tb03;
@@ -7707,7 +7706,7 @@ public class PatientListContoller {
 		report.append(ALIGN_LEFT_TAG).append(getMessage(MDRTB_TB_03_AGE_AT_REGISTRATION)).append(CLOSE_TD);
 		report.append(OPEN_CLOSE_TD);
 		report.append(CLOSE_TR);
-
+		
 		i = 0;
 		for (Form89 tf : liverList) {
 			TB03Form tb03;
