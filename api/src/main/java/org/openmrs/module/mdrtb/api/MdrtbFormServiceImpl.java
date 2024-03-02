@@ -15,6 +15,7 @@ import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.PatientProgram;
+import org.openmrs.PatientState;
 import org.openmrs.Program;
 import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
@@ -108,6 +109,11 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 		// Update Patient Program
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(
 		    tbPatientProgram.getPatientProgram().getPatientProgramId());
+		for (PatientState ps : pp.getCurrentStates()) {
+			if (ps.getStartDate() == null) {
+				ps.setEndDate(null);
+			}
+		}
 		Context.getProgramWorkflowService().savePatientProgram(pp);
 		
 		// Update Patient if there was an outcome
