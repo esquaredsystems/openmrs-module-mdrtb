@@ -203,15 +203,18 @@ public class RegimenFormResourceController extends DataDelegatingCrudResource<Si
 		// If the Patient Program ID obs has null value, then fetch from Patient Program's UUID
 		Concept concept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
 		Set<Obs> obsAtTopLevel = delegate.getEncounter().getObsAtTopLevel(false);
+		Double patientProgramId = null;
 		for (Obs obs : obsAtTopLevel) {
 			if (obs.getConcept().equals(concept)) {
 				PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgramByUuid(
 				    delegate.getPatientProgramUuid());
-				obs.setValueNumeric(patientProgram.getPatientProgramId().doubleValue());
+				patientProgramId = patientProgram.getPatientProgramId().doubleValue();
+				obs.setValueNumeric(patientProgramId);
 				break;
 			}
 		}
 		RegimenForm regimenForm = new RegimenForm(delegate.getEncounter());
+		regimenForm.setPatientProgramId(patientProgramId.intValue());
 		regimenForm = formService.processRegimenForm(regimenForm);
 		return new SimpleRegimenForm(regimenForm);
 	}

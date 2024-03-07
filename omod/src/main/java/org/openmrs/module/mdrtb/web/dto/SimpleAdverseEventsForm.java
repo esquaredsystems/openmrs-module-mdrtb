@@ -96,8 +96,6 @@ public class SimpleAdverseEventsForm extends BaseOpenmrsData {
 	
 	private Concept magnesiumDone;
 	
-	private Concept meddraCode;
-	
 	private Concept neuroInvestigationDone;
 	
 	private Concept otherTestDone;
@@ -128,63 +126,62 @@ public class SimpleAdverseEventsForm extends BaseOpenmrsData {
 	}
 	
 	public SimpleAdverseEventsForm(AdverseEventsForm aeForm) {
-		setEncounter(aeForm.getEncounter());
-		setUuid(getEncounter().getUuid());
+		this.encounter = aeForm.getEncounter();
+		setUuid(aeForm.getEncounter().getUuid());
 		PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgram(aeForm.getPatientProgramId());
-		setPatientProgramUuid(patientProgram.getUuid());
-		setActionOutcome(aeForm.getActionOutcome());
-		setActionTaken(aeForm.getActionTaken());
-		setActionTaken2(aeForm.getActionTaken2());
-		setActionTaken3(aeForm.getActionTaken3());
-		setActionTaken4(aeForm.getActionTaken4());
-		setActionTaken5(aeForm.getActionTaken5());
-		setActionTakenSummary(aeForm.getActionTakenSummary());
-		setAdvereEvent(aeForm.getAdverseEvent());
-		setAlbuminDone(aeForm.getAlbuminDone());
-		setAlkalinePhosphateDone(aeForm.getAlkalinePhosphataseDone());
-		setAltDone(aeForm.getAltDone());
-		setAmylaseDone(aeForm.getAmylaseDone());
-		setAstDone(aeForm.getAstDone());
-		setAudiogramDone(aeForm.getAudiogramDone());
-		setBilirubinDone(aeForm.getBilirubinDone());
-		setBloodGlucoseDone(aeForm.getBloodGlucoseDone());
-		setCalciumDone(aeForm.getCalciumDone());
-		setCasualityAssessmentResult(aeForm.getCausalityAssessmentResult1());
-		setCasualityAssessmentResult2(aeForm.getCausalityAssessmentResult2());
-		setCasualityAssessmentResult3(aeForm.getCausalityAssessmentResult3());
-		setCasualityDrug(aeForm.getCausalityDrug1());
-		setCasualityDrug2(aeForm.getCausalityDrug2());
-		setCasualityDrug3(aeForm.getCausalityDrug3());
-		setCbcDone(aeForm.getCbcDone());
-		setClinicianNotes(aeForm.getClinicianNotes());
-		setClinicalScreenDone(aeForm.getClinicalScreenDone());
-		setComments(aeForm.getComments());
-		setDiagnosticInvestigation(aeForm.getDiagnosticInvestigation());
-		setDiagnosticSummary(aeForm.getDiagnosticSummary());
-		setDrugRechallenge(aeForm.getDrugRechallenge());
-		setEcgDone(aeForm.getEcgDone());
-		setFacility(aeForm.getFacility());
-		setLink(aeForm.getLink());
-		setLipaseDone(aeForm.getLipaseDone());
-		setMagnesiumDone(aeForm.getMagnesiumDone());
-		setMeddraCode(aeForm.getMeddraCode());
-		setNeuroInvestigationDone(aeForm.getNeuroInvestigationDone());
-		setOtherTestDone(aeForm.getOtherTestDone());
-		setOutcomeDate(aeForm.getOutcomeDate());
-		setPotassiumDone(aeForm.getPotassiumDone());
-		setRequiresAncillaryDrugs(aeForm.getRequiresAncillaryDrugs());
-		setRequiresDoseChange(aeForm.getRequiresDoseChange());
-		setSerumCreatinineDone(aeForm.getSerumCreatnineDone());
-		setSimpleHearingTestDone(aeForm.getSimpleHearingTestDone());
-		setSuspectedDrug(aeForm.getSuspectedDrug());
-		setThyroidTestDone(aeForm.getThyroidTestDone());
-		setTreatmentRegimenAtOnset(aeForm.getTreatmentRegimenAtOnset());
-		setTypeOfEvent(aeForm.getTypeOfEvent());
-		setTypeOfSAE(aeForm.getTypeOfSAE());
-		setTypeOfSpecialEvent(aeForm.getTypeOfSpecialEvent());
-		setVisualAcuityDone(aeForm.getVisualAcuityDone());
-		setYellowCardDate(aeForm.getYellowCardDate());
-		setYgtDone(aeForm.getYgtDone());
+		this.patientProgramUuid = patientProgram.getUuid();
+		this.actionOutcome = aeForm.getActionOutcome();
+		this.actionTaken = aeForm.getActionTaken();
+		this.actionTaken2 = aeForm.getActionTaken2();
+		this.actionTaken3 = aeForm.getActionTaken3();
+		this.actionTaken4 = aeForm.getActionTaken4();
+		this.actionTaken5 = aeForm.getActionTaken5();
+		this.actionTakenSummary = aeForm.getActionTakenSummary();
+		this.advereEvent = aeForm.getAdverseEvent();
+		this.albuminDone = aeForm.getAlbuminDone();
+		this.alkalinePhosphateDone = aeForm.getAlkalinePhosphataseDone();
+		this.altDone = aeForm.getAltDone();
+		this.amylaseDone = aeForm.getAmylaseDone();
+		this.astDone = aeForm.getAstDone();
+		this.audiogramDone = aeForm.getAudiogramDone();
+		this.bilirubinDone = aeForm.getBilirubinDone();
+		this.bloodGlucoseDone = aeForm.getBloodGlucoseDone();
+		this.calciumDone = aeForm.getCalciumDone();
+		this.casualityAssessmentResult = aeForm.getCausalityAssessmentResult1();
+		this.casualityAssessmentResult2 = aeForm.getCausalityAssessmentResult2();
+		this.casualityAssessmentResult3 = aeForm.getCausalityAssessmentResult3();
+		this.casualityDrug = aeForm.getCausalityDrug1();
+		this.casualityDrug2 = aeForm.getCausalityDrug2();
+		this.casualityDrug3 = aeForm.getCausalityDrug3();
+		this.cbcDone = aeForm.getCbcDone();
+		this.clinicianNotes = aeForm.getClinicianNotes();
+		this.clinicalScreenDone = aeForm.getClinicalScreenDone();
+		this.comments = aeForm.getComments();
+		this.diagnosticInvestigation = aeForm.getDiagnosticInvestigation();
+		this.diagnosticSummary = aeForm.getDiagnosticSummary();
+		this.drugRechallenge = aeForm.getDrugRechallenge();
+		this.ecgDone = aeForm.getEcgDone();
+		this.facility = aeForm.getFacility();
+		this.link = aeForm.getLink();
+		this.lipaseDone = aeForm.getLipaseDone();
+		this.magnesiumDone = aeForm.getMagnesiumDone();
+		this.neuroInvestigationDone = aeForm.getNeuroInvestigationDone();
+		this.otherTestDone = aeForm.getOtherTestDone();
+		this.outcomeDate = aeForm.getOutcomeDate();
+		this.potassiumDone = aeForm.getPotassiumDone();
+		this.requiresAncillaryDrugs = aeForm.getRequiresAncillaryDrugs();
+		this.requiresDoseChange = aeForm.getRequiresDoseChange();
+		this.serumCreatinineDone = aeForm.getSerumCreatnineDone();
+		this.simpleHearingTestDone = aeForm.getSimpleHearingTestDone();
+		this.suspectedDrug = aeForm.getSuspectedDrug();
+		this.thyroidTestDone = aeForm.getThyroidTestDone();
+		this.treatmentRegimenAtOnset = aeForm.getTreatmentRegimenAtOnset();
+		this.typeOfEvent = aeForm.getTypeOfEvent();
+		this.typeOfSAE = aeForm.getTypeOfSAE();
+		this.typeOfSpecialEvent = aeForm.getTypeOfSpecialEvent();
+		this.visualAcuityDone = aeForm.getVisualAcuityDone();
+		this.yellowCardDate = aeForm.getYellowCardDate();
+		this.ygtDone = aeForm.getYgtDone();
 	}
 	
 	/**
@@ -226,7 +223,6 @@ public class SimpleAdverseEventsForm extends BaseOpenmrsData {
 		aeForm.setEcgDone(getEcgDone());
 		aeForm.setLipaseDone(getLipaseDone());
 		aeForm.setMagnesiumDone(getMagnesiumDone());
-		aeForm.setMeddraCode(getMeddraCode());
 		aeForm.setNeuroInvestigationDone(getNeuroInvestigationDone());
 		aeForm.setOtherTestDone(getOtherTestDone());
 		aeForm.setOutcomeDate(getOutcomeDate());
@@ -585,14 +581,6 @@ public class SimpleAdverseEventsForm extends BaseOpenmrsData {
 		this.magnesiumDone = magnesiumDone;
 	}
 	
-	public Concept getMeddraCode() {
-		return meddraCode;
-	}
-	
-	public void setMeddraCode(Concept meddraCode) {
-		this.meddraCode = meddraCode;
-	}
-	
 	public Concept getNeuroInvestigationDone() {
 		return neuroInvestigationDone;
 	}
@@ -696,4 +684,5 @@ public class SimpleAdverseEventsForm extends BaseOpenmrsData {
 	public void setYgtDone(Concept ygtDone) {
 		this.ygtDone = ygtDone;
 	}
+	
 }

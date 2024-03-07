@@ -1880,7 +1880,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 		q = getSerumCreatnineDone();
 		if (q != null && q.getId() == yesId) {
-			at += mss.getMessage("mdrtb.pv.serumCreatnine") + ", ";
+			at += mss.getMessage("mdrtb.pv.serumCreatinine") + ", ";
 		}
 		q = getAltDone();
 		if (q != null && q.getId() == yesId) {

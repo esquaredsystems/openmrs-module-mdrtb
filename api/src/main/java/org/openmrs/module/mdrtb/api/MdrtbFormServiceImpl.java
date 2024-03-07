@@ -19,6 +19,7 @@ import org.openmrs.PatientState;
 import org.openmrs.Program;
 import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
+import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
@@ -114,8 +115,12 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 				ps.setEndDate(null);
 			}
 		}
-		Context.getProgramWorkflowService().savePatientProgram(pp);
-		
+		try {
+			Context.getProgramWorkflowService().savePatientProgram(pp);
+		}
+		catch (Exception e) {
+			log.error(e.getMessage());
+		}
 		// Update Patient if there was an outcome
 		if (outcome != null
 		        && (outcome.getId() == Integer.parseInt(Context.getAdministrationService().getGlobalProperty(

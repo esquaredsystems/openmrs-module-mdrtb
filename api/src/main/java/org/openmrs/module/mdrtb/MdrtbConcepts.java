@@ -106,6 +106,7 @@ public class MdrtbConcepts {
 	
 	public final static String LINEZOLID = "LINEZOLID";
 	
+	@Deprecated
 	public final static String IMIPENEM = "IMIPENEM";
 	
 	public final static String QUINOLONES = "QUINOLONES";
@@ -740,6 +741,7 @@ public class MdrtbConcepts {
 	
 	public final static String UNKNOWN_RESULT = "UNKNOWN RESULT";
 	
+	@Deprecated
 	public final static String MEDDRA_CODE = "MEDDRA CODE";
 	
 	public final static String SKIN_DISORDER = "SKIN DISORDER";

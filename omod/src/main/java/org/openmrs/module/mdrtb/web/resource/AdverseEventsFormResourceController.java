@@ -21,7 +21,6 @@ import org.openmrs.module.mdrtb.api.MdrtbFormServiceImpl;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
 import org.openmrs.module.mdrtb.web.dto.SimpleAdverseEventsForm;
-import org.openmrs.module.mdrtb.web.dto.SimpleForm89;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -98,7 +97,6 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 		description.addProperty("ecgDone", representation);
 		description.addProperty("lipaseDone", representation);
 		description.addProperty("magnesiumDone", representation);
-		description.addProperty("meddraCode", representation);
 		description.addProperty("neuroInvestigationDone", representation);
 		description.addProperty("otherTestDone", representation);
 		description.addProperty("potassiumDone", representation);
@@ -160,7 +158,6 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 			        .property("ecgDone", new RefProperty("#/definitions/ConceptGet"))
 			        .property("lipaseDone", new RefProperty("#/definitions/ConceptGet"))
 			        .property("magnesiumDone", new RefProperty("#/definitions/ConceptGet"))
-			        .property("meddraCode", new RefProperty("#/definitions/ConceptGet"))
 			        .property("neuroInvestigationDone", new RefProperty("#/definitions/ConceptGet"))
 			        .property("otherTestDone", new RefProperty("#/definitions/ConceptGet"))
 			        .property("potassiumDone", new RefProperty("#/definitions/ConceptGet"))
@@ -203,7 +200,7 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 	}
 	
 	@PropertyGetter("display")
-	public String getDisplayString(SimpleForm89 simpleForm89s) {
+	public String getDisplayString(SimpleAdverseEventsForm simpleForm89s) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(simpleForm89s.getEncounter().getUuid());
 		sb.append(" ");
@@ -212,7 +209,7 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 	}
 	
 	@PropertySetter("obs")
-	public static void setObs(SimpleForm89 instance, Set<Obs> obs) {
+	public static void setObs(SimpleAdverseEventsForm instance, Set<Obs> obs) {
 		Encounter enc = instance.getEncounter();
 		enc.getAllObs(true).clear();
 		for (Obs o : obs)

@@ -455,7 +455,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.serumCreatnine" text="Sc"/>:</td>
+<td><spring:message code="mdrtb.pv.serumCreatinine" text="Sc"/>:</td>
 <td>${aeForm.serumCreatnineDone.displayString}</td>
 </tr>
 
@@ -827,7 +827,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.serumCreatnine" text="Sc"/>:</td>
+<td><spring:message code="mdrtb.pv.serumCreatinine" text="Sc"/>:</td>
 <td>
 <select name="serumCreatnineDone" id="serumCreatnineDone">
 <option value=""></option>
