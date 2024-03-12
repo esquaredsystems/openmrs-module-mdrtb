@@ -26,6 +26,8 @@ import org.openmrs.module.mdrtb.api.MdrtbService;
  */
 public class DstImpl extends TestImpl implements Dst {
 	
+	private static final String VOID_MESSAGE = "Voided by MDRTB module";
+	
 	DstTestType testMethod;
 	
 	LabTestType dstTestType;
@@ -62,7 +64,7 @@ public class DstImpl extends TestImpl implements Dst {
 		if (attribute != null) {
 			if (method == null) {
 				attribute.setVoided(true);
-				attribute.setVoidReason("Voided by MDRTB module");
+				attribute.setVoidReason(VOID_MESSAGE);
 			}
 			attribute.setValue(method);
 			test.setAttribute(attribute);
@@ -105,7 +107,7 @@ public class DstImpl extends TestImpl implements Dst {
 		if (attribute != null) {
 			if (direct == null) {
 				attribute.setVoided(true);
-				attribute.setVoidReason("Voided by MDRTB module");
+				attribute.setVoidReason(VOID_MESSAGE);
 			}
 			attribute.setValue(direct);
 			test.setAttribute(attribute);
@@ -133,7 +135,7 @@ public class DstImpl extends TestImpl implements Dst {
 		if (attribute != null) {
 			if (organismType == null) {
 				attribute.setVoided(true);
-				attribute.setVoidReason("Voided by MDRTB module");
+				attribute.setVoidReason(VOID_MESSAGE);
 			}
 			attribute.setValue(organismType);
 			test.setAttribute(attribute);
@@ -161,7 +163,7 @@ public class DstImpl extends TestImpl implements Dst {
 		if (attribute != null) {
 			if (organismType == null) {
 				attribute.setVoided(true);
-				attribute.setVoidReason("Voided by MDRTB module");
+				attribute.setVoidReason(VOID_MESSAGE);
 			}
 			attribute.setValue(organismType);
 			test.setAttribute(attribute);
@@ -189,7 +191,7 @@ public class DstImpl extends TestImpl implements Dst {
 		if (attribute != null) {
 			if (coloniesInControl == null) {
 				attribute.setVoided(true);
-				attribute.setVoidReason("Voided by MDRTB module");
+				attribute.setVoidReason(VOID_MESSAGE);
 			}
 			attribute.setValue(coloniesInControl);
 			test.setAttribute(attribute);

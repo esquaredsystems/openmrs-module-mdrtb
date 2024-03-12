@@ -17,6 +17,8 @@ import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 
 public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm> {
 	
+	private static final String VOID_MESSAGE = "voided by MDRTB module";
+	
 	private LabTest labTest;
 	
 	public HAINForm() {
@@ -71,7 +73,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -132,7 +134,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 				//				obsgroup.setVoided(true);
 				//				obsgroup.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -199,7 +201,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 				//				obsgroup.setVoided(true);
 				//				obsgroup.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -269,7 +271,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 				//				obsgroup.setVoided(true);
 				//				obsgroup.setVoidReason("voided by Mdr-tb module specimen tracking UI");
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -327,7 +329,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -379,7 +381,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			// now create the new Obs and add it to the encounter	

@@ -47,11 +47,11 @@ public class MdrtbQueryService {
 		        .getConceptId();
 		
 		StringBuilder q = new StringBuilder();
-		q.append("select 	p.patient_id ");
-		q.append("from 		patient p, obs o ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = " + resistant + " ");
+		q.append("select p.patient_id ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = " + resistant + " ");
 		addOptionalDateClause(q, "and o.obs_datetime >= ", minResultDate);
 		addOptionalDateClause(q, "and o.obs_datetime <= ", maxResultDate);
 		q.append("and o.value_coded in (");
@@ -122,15 +122,15 @@ public class MdrtbQueryService {
 		Integer resistant = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANT_TO_TB_DRUG).getId();
 		
 		StringBuilder q = new StringBuilder();
-		q.append("select 	p.patient_id, o.value_coded, n.name ");
-		q.append("from 		patient p, obs o, concept_name n ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and	 	o.value_coded = n.concept_id ");
-		q.append("and		o.concept_id = " + resistant + " ");
+		q.append("select p.patient_id, o.value_coded, n.name ");
+		q.append("from patient p, obs o, concept_name n ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.value_coded = n.concept_id ");
+		q.append("and o.concept_id = " + resistant + " ");
 		addOptionalDateClause(q, "and o.obs_datetime <= ", maxResultDate);
 		if (context.getBaseCohort() != null) {
-			q.append("and	p.patient_id in (" + MdrtbUtil.getCohortCommaSeparatedPatientIds(context.getBaseCohort()) + ")");
+			q.append("and p.patient_id in (" + MdrtbUtil.getCohortCommaSeparatedPatientIds(context.getBaseCohort()) + ")");
 		}
 		List<List<Object>> results = Context.getAdministrationService().executeSQL(q.toString(), true);
 		Map<Object, Map<Object, String>> patDrugs = new HashMap<>();
@@ -150,9 +150,7 @@ public class MdrtbQueryService {
 		}
 		
 		Comparator<String> dstComparator = new Comparator<String>() {
-			
 			final List<String> order = Arrays.asList(new String[] { "H", "R", "E", "Z", "S" });
-			
 			public int compare(String s1, String s2) {
 				int i1 = order.indexOf(s1);
 				String c1 = i1 == -1 ? s1 : "AAAA" + i1;
@@ -182,18 +180,16 @@ public class MdrtbQueryService {
 	 *      java.util.Date, Concept)
 	 */
 	public static Cohort getPatientsFirstStartingDrugs(EvaluationContext context, Date fromDate, Date toDate, Concept drugSet) {
-		
 		StringBuilder q = new StringBuilder();
-		q.append("select	o.patient_id ");
-		q.append("from		patient p, orders o, concept_set s ");
-		q.append("where		p.patient_id = o.patient_id ");
-		q.append("and		p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = s.concept_id and s.concept_set = " + drugSet.getConceptId() + " ");
-		q.append("group by	o.patient_id ");
-		q.append("having	1=1 ");
+		q.append("select o.patient_id ");
+		q.append("from patient p, orders o, concept_set s ");
+		q.append("where p.patient_id = o.patient_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = s.concept_id and s.concept_set = " + drugSet.getConceptId() + " ");
+		q.append("group by o.patient_id ");
+		q.append("having 1=1 ");
 		addOptionalDateClause(q, "and min(o.start_date) >= ", fromDate);
 		addOptionalDateClause(q, "and min(o.start_date) <= ", toDate);
-		
 		return executeQuery(q.toString(), context);
 	}
 	
@@ -204,13 +200,13 @@ public class MdrtbQueryService {
 		Map<Integer, Result> ret = new HashMap<>();
 		
 		StringBuilder q = new StringBuilder();
-		q.append("select	o.person_id, o.obs_datetime, o.value_coded, o.value_numeric, o.value_datetime ");
-		q.append("from		patient p, obs o ");
-		q.append("where		p.patient_id = o.person_id ");
-		q.append("and		p.voided = 0 and o.voided = 0 ");
-		q.append("and		(o.value_coded is not null or o.value_datetime is not null or o.value_numeric is not null) ");
-		q.append("and		o.concept_id = " + question.getConceptId() + " ");
-		q.append("order by	o.obs_datetime asc ");
+		q.append("select o.person_id, o.obs_datetime, o.value_coded, o.value_numeric, o.value_datetime ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and (o.value_coded is not null or o.value_datetime is not null or o.value_numeric is not null) ");
+		q.append("and o.concept_id = " + question.getConceptId() + " ");
+		q.append("order by o.obs_datetime asc ");
 		
 		for (List<Object> row : Context.getAdministrationService().executeSQL(q.toString(), true)) {
 			Integer patientId = (Integer) row.get(0);
@@ -232,17 +228,15 @@ public class MdrtbQueryService {
 	 */
 	public static Map<Integer, Result> getActiveState(Cohort cohort, ProgramWorkflow workflow) {
 		Map<Integer, Result> ret = new HashMap<>();
-		
 		StringBuilder q = new StringBuilder();
-		q.append("select	p.patient_id, s.concept_id, ps.start_date ");
-		q.append("from		patient p, patient_program pp, patient_state ps, program_workflow_state s ");
-		q.append("where		p.patient_id = pp.patient_id ");
-		q.append("and		pp.patient_program_id = ps.patient_program_id ");
-		q.append("and		ps.state = s.program_workflow_state_id ");
-		q.append("and		p.voided = 0 and pp.voided = 0 and ps.voided = 0 ");
-		q.append("and		s.program_workflow_id = " + workflow.getProgramWorkflowId() + " ");
-		q.append("and		ps.end_date is null ");
-		
+		q.append("select p.patient_id, s.concept_id, ps.start_date ");
+		q.append("from patient p, patient_program pp, patient_state ps, program_workflow_state s ");
+		q.append("where p.patient_id = pp.patient_id ");
+		q.append("and pp.patient_program_id = ps.patient_program_id ");
+		q.append("and ps.state = s.program_workflow_state_id ");
+		q.append("and p.voided = 0 and pp.voided = 0 and ps.voided = 0 ");
+		q.append("and s.program_workflow_id = " + workflow.getProgramWorkflowId() + " ");
+		q.append("and ps.end_date is null ");
 		for (List<Object> row : Context.getAdministrationService().executeSQL(q.toString(), true)) {
 			Integer patientId = (Integer) row.get(0);
 			Result r = new Result();
@@ -288,21 +282,18 @@ public class MdrtbQueryService {
 	/****** CUSTOM METHODS ******/
 	public static Cohort getPatientsWithAgeAtMDRRegistration(EvaluationContext context, Integer minAge, Integer maxAge,
 	        Date startDate, Date endDate) {
-		
 		Integer ageAtMdrRegistration = Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.AGE_AT_MDR_REGISTRATION).getConceptId();
-		
 		StringBuilder q = new StringBuilder();
-		q.append("select 	p.patient_id ");
-		q.append("from 		patient p, obs o ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = " + ageAtMdrRegistration + " ");
+		q.append("select p.patient_id ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = " + ageAtMdrRegistration + " ");
 		addOptionalDateClause(q, "and o.obs_datetime >= ", startDate);
 		addOptionalDateClause(q, "and o.obs_datetime <= ", endDate);
 		addOptionalNumericClause(q, "and o.value_numeric >= ", minAge);
 		addOptionalNumericClause(q, "and o.value_numeric <= ", maxAge);
-		
 		return executeQuery(q.toString(), context);
 	}
 	
@@ -334,18 +325,15 @@ public class MdrtbQueryService {
 				break;
 		}
 		StringBuilder q = new StringBuilder();
-		q.append("select 	p.patient_id ");
-		q.append("from 		patient p, obs o ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = " + resistanceType + " ");
-		
+		q.append("select p.patient_id ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = " + resistanceType + " ");
 		if (type != null)
-			q.append("and		o.value_coded = " + type + " ");
-		
+			q.append("and o.value_coded = " + type + " ");
 		addOptionalDateClause(q, "and o.obs_datetime >= ", minResultDate);
 		addOptionalDateClause(q, "and o.obs_datetime <= ", maxResultDate);
-		
 		return executeQuery(q.toString(), context);
 	}
 	
@@ -355,15 +343,13 @@ public class MdrtbQueryService {
 		        .getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE).getConceptId();
 		
 		StringBuilder q = new StringBuilder();
-		q.append("select 	p.patient_id ");
-		q.append("from 		patient p, obs o ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = " + mdrTreatmentStartDate + " ");
-		
+		q.append("select p.patient_id ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = " + mdrTreatmentStartDate + " ");
 		addOptionalDateClause(q, "and o.value_coded >= ", minResultDate);
 		addOptionalDateClause(q, "and o.value_coded <= ", maxResultDate);
-		
 		return executeQuery(q.toString(), context);
 	}
 	
@@ -374,15 +360,14 @@ public class MdrtbQueryService {
 		        .getConceptId();
 		
 		StringBuilder q = new StringBuilder();
-		q.append("select 	p.patient_id ");
-		q.append("from 		patient p, obs o ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = " + regimenType + " ");
-		q.append("and		o.value_coded = " + regType.getConceptId() + " ");
+		q.append("select p.patient_id ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = " + regimenType + " ");
+		q.append("and o.value_coded = " + regType.getConceptId() + " ");
 		addOptionalDateClause(q, "and o.obs_datetime >= ", startDate);
 		addOptionalDateClause(q, "and o.obs_datetime <= ", endDate);
-		
 		return executeQuery(q.toString(), context);
 	}
 	
@@ -392,16 +377,14 @@ public class MdrtbQueryService {
 	public static Cohort getPatientsWithDSTResults(EvaluationContext context, Date minResultDate, Date maxResultDate) {
 		
 		Integer dstResult = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DST_RESULT).getConceptId();
-		
 		StringBuilder q = new StringBuilder();
-		q.append("select 	p.patient_id ");
-		q.append("from 		patient p, obs o ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = " + dstResult + " ");
+		q.append("select p.patient_id ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = " + dstResult + " ");
 		addOptionalDateClause(q, "and o.obs_datetime >= ", minResultDate);
 		addOptionalDateClause(q, "and o.obs_datetime <= ", maxResultDate);
-		
 		return executeQuery(q.toString(), context);
 	}
 	
@@ -412,20 +395,17 @@ public class MdrtbQueryService {
 	        String testType) {
 		
 		Integer referral = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_REFERRAL).getConceptId();
-		
 		StringBuilder q = new StringBuilder();
-		q.append("select 	p.patient_id ");
-		q.append("from 		patient p, obs o ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = " + referral + " ");
+		q.append("select p.patient_id ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = " + referral + " ");
 		addOptionalDateClause(q, "and o.obs_datetime >= ", minReferralDate);
 		addOptionalDateClause(q, "and o.obs_datetime <= ", maxReferralDate);
-		
 		if (testType != null)
 			q.append("and o.value_coded = " + Context.getService(MdrtbService.class).getConcept(testType).getConceptId()
 			        + ")");
-		
 		return executeQuery(q.toString(), context);
 	}
 }

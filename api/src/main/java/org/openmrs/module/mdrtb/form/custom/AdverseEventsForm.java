@@ -951,9 +951,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		if (c != null
 		        && c.getId() != null
 		        && c.getId().intValue() != Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_CLASSIFIED)
-		                .getId().intValue())
-			;
-		{
+		                .getId().intValue()) {
 			if (d != null)
 				drugs.add(d);
 		}
@@ -963,9 +961,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		if (c != null
 		        && c.getId() != null
 		        && c.getId().intValue() != Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_CLASSIFIED)
-		                .getId().intValue())
-			;
-		{
+		                .getId().intValue()) {
 			if (d != null)
 				drugs.add(d);
 		}
@@ -975,13 +971,10 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		if (c != null
 		        && c.getId() != null
 		        && c.getId().intValue() != Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NOT_CLASSIFIED)
-		                .getId().intValue())
-			;
-		{
+		                .getId().intValue()) {
 			if (d != null)
 				drugs.add(d);
 		}
-		
 		return drugs;
 	}
 	

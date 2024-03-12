@@ -718,7 +718,7 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	public List<Location> getLocationsInHierarchy(Location parent);
+	public List<Location> getLocationsInHierarchy(Location parent, boolean includeRetired);
 	
 	/**
 	 * Should return the list of child locations based on the parameters. If only the region is

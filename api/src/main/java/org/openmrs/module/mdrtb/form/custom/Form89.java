@@ -22,6 +22,8 @@ import org.openmrs.module.mdrtb.program.TbPatientProgram;
 
 public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	
+	private static final String VOID_MESSAGE = "voided by Mdr-tb module specimen tracking UI";
+	
 	private TB03Form tb03;
 	
 	public Form89() {
@@ -136,7 +138,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (type != null) {
@@ -171,7 +173,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (type != null) {
@@ -206,7 +208,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (type != null) {
@@ -241,7 +243,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (type != null) {
@@ -276,7 +278,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (date != null) {
@@ -311,7 +313,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (type != null) {
@@ -346,7 +348,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (type != null) {
@@ -389,7 +391,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (eptbSite != null) {
@@ -424,7 +426,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (ptbLocation != null) {
@@ -459,7 +461,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (eptbLocation != null) {
@@ -494,7 +496,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (type != null) {
@@ -530,7 +532,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (date != null) {
@@ -565,7 +567,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -600,7 +602,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -636,7 +638,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -671,7 +673,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -707,7 +709,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -766,7 +768,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -801,7 +803,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -836,7 +838,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -877,7 +879,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -913,7 +915,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (site != null) {
@@ -948,7 +950,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (date != null) {
@@ -983,7 +985,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (number != null) {
@@ -1018,7 +1020,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (date != null) {
@@ -1053,7 +1055,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (type != null) {
@@ -1088,7 +1090,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (id != null) {
@@ -1226,7 +1228,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (name != null) {
@@ -1261,7 +1263,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (name != null) {
@@ -1291,7 +1293,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (place != null) {
@@ -1321,7 +1323,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (name != null) {
@@ -1351,7 +1353,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (name != null) {
@@ -1381,7 +1383,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (name != null) {
@@ -1417,7 +1419,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (date != null) {
@@ -1477,7 +1479,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_MESSAGE);
 			}
 			
 			if (type != null) {

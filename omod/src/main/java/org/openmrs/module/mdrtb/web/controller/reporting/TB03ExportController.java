@@ -114,14 +114,6 @@ public class TB03ExportController {
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
 		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/tb03", model);
 		
 	}
@@ -186,7 +178,6 @@ public class TB03ExportController {
 		
 		Integer regimenConceptId = null;
 		Integer codId = null;
-		//List<Obs> obsList = null;
 		
 		Concept reg1New = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REGIMEN_1_NEW);
 		Concept reg1Rtx = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.REGIMEN_1_RETREATMENT);
@@ -198,29 +189,27 @@ public class TB03ExportController {
 			Patient patient = tf.getPatient();
 			if (patient == null || patient.getVoided()) {
 				continue;
-				
 			}
-			
 			tb03Data.setPatient(patient);
 			
 			//PATIENT IDENTIFIER
-			/* tb03Data.setIdentifier(patient.getActiveIdentifiers().get(0).toString());*/
 			System.out.println("Processing: " + tf.getPatient().toString());
 			String identifier = TB03Util.getRegistrationNumber(tf);
 			tb03Data.setIdentifier(identifier);
 			
 			//DATE OF TB03 REGISTRATION
-			
 			Date encDate = tf.getEncounterDatetime();
-			
 			tb03Data.setTb03RegistrationDate(sdf.format(encDate));
+
+			// TB03 Location
+			tb03Data.setTb03Location(tf.getEncounter().getLocation());
 			
 			//FORMATTED DATE OF BIRTH
 			if (patient.getBirthdate() != null)
 				tb03Data.setDateOfBirth(sdf.format(patient.getBirthdate()));
 			
 			//AGE AT TB03 Registration
-			Integer age = tf.getAgeAtTB03Registration();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.AGE_AT_DOTS_REGISTRATION);
+			Integer age = tf.getAgeAtTB03Registration();
 			if (age != null)
 				tb03Data.setAgeAtTB03Registration(age);
 			
@@ -265,7 +254,6 @@ public class TB03ExportController {
 				tb03Data.setHivTestDate(sdf.format(hivTestDate));
 			/* conceptQuestionList.clear();
 			conceptQuestionList.add(q);
-			
 			obsList = Context.getObsService().getObservations(patientList, null, conceptQuestionList, null, null, null, null, null, null, startDate, endDate, false);
 			if(obsList.size()>0 && obsList.get(0)!=null)
 				tb03Data.setHivTestDate(sdf.format(obsList.get(0).getValueDatetime()));*/
@@ -416,7 +404,7 @@ public class TB03ExportController {
 			
 			//DRUG RESISTANCE
 			
-			q = tf.getResistanceType();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESISTANCE_TYPE);
+			q = tf.getResistanceType();
 			
 			if (q != null)
 				tb03Data.setDrugResistance(q.getName(Context.getLocale()).getName());

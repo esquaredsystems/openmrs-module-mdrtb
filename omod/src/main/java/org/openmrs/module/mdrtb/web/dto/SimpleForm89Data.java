@@ -26,6 +26,8 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	private String tb03RegistrationDate;
 	
+	private String tb03Facility;
+	
 	private Integer ageAtTB03Registration;
 	
 	private String dateOfBirth;
@@ -186,6 +188,10 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 		this.identifier = form89Data.getIdentifier();
 		this.tb03RegistrationDate = form89Data.getTb03RegistrationDate();
 		this.ageAtTB03Registration = form89Data.getAgeAtTB03Registration();
+		this.tb03Facility = null;
+		if (form89Data.getTb03Location() != null) {
+			this.tb03Facility = form89Data.getTb03Location().getName();
+		}
 		this.dateOfBirth = form89Data.getDateOfBirth();
 		this.siteOfDisease = form89Data.getSiteOfDisease();
 		this.dateFirstSeekingHelp = form89Data.getDateFirstSeekingHelp();
@@ -283,6 +289,14 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	public Integer getAgeAtTB03Registration() {
 		return ageAtTB03Registration;
+	}
+	
+	public String getTb03Facility() {
+		return tb03Facility;
+	}
+	
+	public void setTb03Facility(String tb03Facility) {
+		this.tb03Facility = tb03Facility;
 	}
 	
 	public void setAgeAtTB03Registration(Integer ageAtTB03Registration) {

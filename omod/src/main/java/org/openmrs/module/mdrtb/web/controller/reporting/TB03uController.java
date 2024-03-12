@@ -220,6 +220,9 @@ public class TB03uController {
 				tb03uData.setAgeAtTB03uRegistration(ageAtReg);
 			}
 			
+			// Get TB03u encounter location
+			tb03uData.setTb03uLocation(tf.getEncounter().getLocation());
+			
 			if (patient.getBirthdate() != null)
 				tb03uData.setDateOfBirth(sdf.format(patient.getBirthdate()));
 			

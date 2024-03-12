@@ -51,7 +51,6 @@ public class MdrtbActivator extends BaseModuleActivator {
 	@Override
 	public void started() {
 		log.info("Starting up MDR-TB module.");
-		//registerAddressTemplates();
 		performCustomMigrations();
 	}
 	

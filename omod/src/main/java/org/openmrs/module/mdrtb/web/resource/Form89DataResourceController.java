@@ -32,12 +32,14 @@ public class Form89DataResourceController extends BaseReportResource<SimpleForm8
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addSelfLink();
 		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
+		description.addProperty("patientUuid");
 		description.addProperty("identifier");
 		description.addProperty("personName");
 		description.addProperty("personAddress");
 		description.addProperty("gender");
 		description.addProperty("tb03RegistrationDate");
 		description.addProperty("ageAtTB03Registration");
+		description.addProperty("tb03Facility");
 		description.addProperty("dateOfBirth");
 		description.addProperty("siteOfDisease");
 		description.addProperty("dateFirstSeekingHelp");

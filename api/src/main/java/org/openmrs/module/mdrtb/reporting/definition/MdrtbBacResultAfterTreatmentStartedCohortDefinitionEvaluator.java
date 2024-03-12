@@ -61,7 +61,7 @@ public class MdrtbBacResultAfterTreatmentStartedCohortDefinitionEvaluator extend
 			List<MdrtbPatientProgram> programs = mdrtbPatientProgramsMap.get(id);
 			
 			// only continue if the patient was in a program during this time period
-			if (programs != null && programs.size() != 0) {
+			if (programs != null && !programs.isEmpty()) {
 				
 				// by convention, operate on the most recent program during the time period (there really should only ever be one program in a single period)
 				MdrtbPatientProgram program = programs.get(programs.size() - 1);

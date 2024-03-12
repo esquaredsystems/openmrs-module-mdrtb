@@ -23,6 +23,8 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 	
 	private String tb03RegistrationDate;
 	
+	private String tb03Facility;
+	
 	private Integer ageAtTB03Registration;
 	
 	private String dateOfBirth;
@@ -172,6 +174,10 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 		gender = tb03Data.getGender();
 		identifier = tb03Data.getIdentifier();
 		tb03RegistrationDate = tb03Data.getTb03RegistrationDate();
+		tb03Facility = null;
+		if (tb03Data.getTb03Location() != null) {
+			tb03Facility = tb03Data.getTb03Location().getName();
+		}
 		ageAtTB03Registration = tb03Data.getAgeAtTB03Registration();
 		dateOfBirth = tb03Data.getDateOfBirth();
 		intensivePhaseFacility = tb03Data.getIntensivePhaseFacility();
@@ -300,6 +306,14 @@ public class SimpleTB03Data extends BaseOpenmrsData {
 	
 	public void setTb03RegistrationDate(String tb03RegistrationDate) {
 		this.tb03RegistrationDate = tb03RegistrationDate;
+	}
+	
+	public String getTb03Facility() {
+		return tb03Facility;
+	}
+	
+	public void setTb03Facility(String tb03Facility) {
+		this.tb03Facility = tb03Facility;
 	}
 	
 	public Integer getAgeAtTB03Registration() {

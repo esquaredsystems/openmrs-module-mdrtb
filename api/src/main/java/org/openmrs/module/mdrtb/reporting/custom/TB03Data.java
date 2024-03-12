@@ -2,6 +2,7 @@ package org.openmrs.module.mdrtb.reporting.custom;
 
 import java.util.HashMap;
 
+import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConstants;
@@ -17,6 +18,8 @@ public class TB03Data implements Comparable<TB03Data> {
 	private Patient patient;
 	
 	private String identifier;
+	
+	private Location tb03Location;
 	
 	private String tb03RegistrationDate;
 	
@@ -180,6 +183,14 @@ public class TB03Data implements Comparable<TB03Data> {
 	
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+	
+	public Location getTb03Location() {
+		return tb03Location;
+	}
+	
+	public void setTb03Location(Location tb03Location) {
+		this.tb03Location = tb03Location;
 	}
 	
 	public String getTb03RegistrationDate() {

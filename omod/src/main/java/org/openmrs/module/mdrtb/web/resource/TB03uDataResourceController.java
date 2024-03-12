@@ -37,6 +37,7 @@ public class TB03uDataResourceController extends BaseReportResource<SimpleTB03uD
 		description.addProperty("identifierMDR");
 		description.addProperty("tb03uRegistrationDate");
 		description.addProperty("ageAtTB03uRegistration");
+		description.addProperty("tb03uFacility");
 		description.addProperty("dateOfBirth");
 		description.addProperty("reg2Number");
 		description.addProperty("siteOfDisease");

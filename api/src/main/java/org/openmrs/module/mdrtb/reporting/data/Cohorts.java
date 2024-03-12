@@ -62,6 +62,9 @@ import org.openmrs.module.reporting.common.SetComparator;
  */
 public class Cohorts {
 	
+	private Cohorts() {
+	}
+	
 	/**
 	 * @return the CohortDefinition for the Location
 	 */
@@ -224,9 +227,6 @@ public class Cohorts {
 	
 	public static CohortDefinition getConfirmedMdrInProgramAndStartedTreatmentFilter(Date startDate, Date endDate) {
 		CompositionCohortDefinition confirmed = new CompositionCohortDefinition();
-		
-		// TODO: this does not yet handle patient programs/relapses properly, as the MDR Detection filter start date is set to null,
-		// if a patient has multiple programs, it really should be set to the end date of the most recent previous program
 		confirmed.addSearch("inMdrProgram", getInMdrProgramEverDuring(startDate, endDate), null);
 		confirmed.addSearch("detectedWithMDR", getMdrDetectionFilter(null, endDate), null);
 		confirmed.addSearch("startedTreatment", getStartedTreatmentFilter(startDate, endDate), null);
@@ -236,9 +236,6 @@ public class Cohorts {
 	
 	public static CohortDefinition getSuspectedMdrInProgramAndStartedTreatmentFilter(Date startDate, Date endDate) {
 		CompositionCohortDefinition suspected = new CompositionCohortDefinition();
-		
-		// TODO: this does not yet handle patient programs/relapses properly, as the MDR Detection filter start date is set to null,
-		// if a patient has multiple programs, it really should be set to the end date of the most recent previous program
 		suspected.addSearch("inMdrProgram", getInMdrProgramEverDuring(startDate, endDate), null);
 		suspected.addSearch("detectedWithMDR", getMdrDetectionFilter(null, endDate), null);
 		suspected.addSearch("startedTreatment", getStartedTreatmentFilter(startDate, endDate), null);
@@ -327,19 +324,19 @@ public class Cohorts {
 	
 	public static CohortDefinition getFirstCulturePositiveDuring(Date startDate, Date endDate) {
 		StringBuilder q = new StringBuilder();
-		q.append("select 	o.person_id ");
-		q.append("from		obs o, (select person_id, concept_id, min(obs_datetime) as obs_datetime from obs where concept_id = "
+		q.append("select o.person_id ");
+		q.append("from obs o, (select person_id, concept_id, min(obs_datetime) as obs_datetime from obs where concept_id = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT).getId()
 		        + " group by person_id) d ");
-		q.append("where		o.concept_id = "
+		q.append("where o.concept_id = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_RESULT).getId() + " ");
-		q.append("and		o.obs_datetime = d.obs_datetime ");
-		q.append("and		o.value_coded in (" + convertIntegerSetToString(MdrtbUtil.getPositiveResultConceptIds()) + ") ");
+		q.append("and o.obs_datetime = d.obs_datetime ");
+		q.append("and o.value_coded in (" + convertIntegerSetToString(MdrtbUtil.getPositiveResultConceptIds()) + ") ");
 		if (startDate != null) {
-			q.append("and	o.obs_datetime >= '" + DateUtil.formatDate(startDate, "yyyy-MM-dd") + "' ");
+			q.append("and o.obs_datetime >= '" + DateUtil.formatDate(startDate, MdrtbConstants.SQL_DATE_FORMAT) + "' ");
 		}
 		if (endDate != null) {
-			q.append("and	o.obs_datetime <= '" + DateUtil.formatDate(endDate, "yyyy-MM-dd") + "' ");
+			q.append("and o.obs_datetime <= '" + DateUtil.formatDate(endDate, MdrtbConstants.SQL_DATE_FORMAT) + "' ");
 		}
 		return new SqlCohortDefinition(q.toString());
 	}
@@ -355,16 +352,14 @@ public class Cohorts {
 	
 	public static CohortDefinition getPendingCulturesOnDate(Date effectiveDate) {
 		StringBuilder q = new StringBuilder();
-		q.append("select 	o.person_id ");
-		q.append("from		obs o ");
-		q.append("where		o.concept_id = "
+		q.append("select o.person_id ");
+		q.append("from obs o ");
+		q.append("where o.concept_id = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CULTURE_CONSTRUCT) + " ");
-		//	q.append("and       o.voided='0' ");
-		q.append("and		o.obs_id not in ");
-		q.append("		(select obs_group_id from obs ");
-		q.append("		 where concept_id = "
-		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_RESULT_DATE)
-		        + " and value_datetime <= '" + DateUtil.formatDate(effectiveDate, "yyyy-MM-dd") + "') ");
+		q.append("and o.obs_id not in ");
+		q.append("(select obs_group_id from obs ");
+		q.append("where concept_id = " + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_RESULT_DATE)
+		        + " and value_datetime <= '" + DateUtil.formatDate(effectiveDate, MdrtbConstants.SQL_DATE_FORMAT) + "') ");
 		return new SqlCohortDefinition(q.toString());
 	}
 	
@@ -414,9 +409,6 @@ public class Cohorts {
 	
 	public static CohortDefinition getConfirmedMdrOnlyInProgramAndStartedTreatmentFilter(Date startDate, Date endDate) {
 		CompositionCohortDefinition confirmed = new CompositionCohortDefinition();
-		
-		// TODO: this does not yet handle patient programs/relapses properly, as the MDR Detection filter start date is set to null,
-		// if a patient has multiple programs, it really should be set to the end date of the most recent previous program
 		confirmed.addSearch("inMdrProgram", getInMdrProgramEverDuring(startDate, endDate), null);
 		confirmed.addSearch("detectedWithMDR", getMdrDetectionFilter(null, endDate), null);
 		confirmed.addSearch("startedTreatment", getStartedTreatmentFilter(startDate, endDate), null);
@@ -426,9 +418,6 @@ public class Cohorts {
 	
 	public static CohortDefinition getConfirmedXdrInProgramAndStartedTreatmentFilter(Date startDate, Date endDate) {
 		CompositionCohortDefinition confirmed = new CompositionCohortDefinition();
-		
-		// TODO: this does not yet handle patient programs/relapses properly, as the MDR Detection filter start date is set to null,
-		// if a patient has multiple programs, it really should be set to the end date of the most recent previous program
 		confirmed.addSearch("inMdrProgram", getInMdrProgramEverDuring(startDate, endDate), null);
 		confirmed.addSearch("detectedWithXDR", getXdrDetectionFilter(null, endDate), null);
 		confirmed.addSearch("startedTreatment", getStartedTreatmentFilter(startDate, endDate), null);
@@ -438,22 +427,22 @@ public class Cohorts {
 	
 	public static CohortDefinition getAllPulmonaryEver() {
 		StringBuilder q = new StringBuilder();
-		q.append("select 	o.person_id ");
-		q.append("from		obs o ");
-		q.append("where		o.concept_id = "
+		q.append("select o.person_id ");
+		q.append("from obs o ");
+		q.append("where o.concept_id = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
-		q.append("and		o.value_coded = "
+		q.append("and o.value_coded = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB).getId() + " ");
 		return new SqlCohortDefinition(q.toString());
 	}
 	
 	public static CohortDefinition getAllExtraPulmonaryEver() {
 		StringBuilder q = new StringBuilder();
-		q.append("select 	o.person_id ");
-		q.append("from		obs o ");
-		q.append("where		o.concept_id = "
+		q.append("select o.person_id ");
+		q.append("from obs o ");
+		q.append("where o.concept_id = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
-		q.append("and		o.value_coded = "
+		q.append("and o.value_coded = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB).getId() + " ");
 		return new SqlCohortDefinition(q.toString());
 	}
@@ -505,9 +494,9 @@ public class Cohorts {
 	
 	public static CohortDefinition getPatientsWithDistict(Location l) {
 		StringBuilder q = new StringBuilder();
-		q.append("select 	person_id ");
-		q.append("from		person_address ");
-		q.append("where		county_district = '" + l.getCountyDistrict() + "'");
+		q.append("select person_id ");
+		q.append("from person_address ");
+		q.append("where county_district = '" + l.getCountyDistrict() + "'");
 		return new SqlCohortDefinition(q.toString());
 	}
 	
@@ -551,34 +540,34 @@ public class Cohorts {
 	
 	public static CohortDefinition getAllPulmonaryDuring(Date startDate, Date endDate) {
 		StringBuilder q = new StringBuilder();
-		q.append("select 	o.person_id ");
-		q.append("from		obs o ");
-		q.append("where		o.concept_id = "
+		q.append("select o.person_id ");
+		q.append("from obs o ");
+		q.append("where o.concept_id = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
-		q.append("and		o.value_coded = "
+		q.append("and o.value_coded = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB).getId() + " ");
 		if (startDate != null) {
-			q.append("and	o.obs_datetime >= '" + DateUtil.formatDate(startDate, "yyyy-MM-dd") + "' ");
+			q.append("and o.obs_datetime >= '" + DateUtil.formatDate(startDate, MdrtbConstants.SQL_DATE_FORMAT) + "' ");
 		}
 		if (endDate != null) {
-			q.append("and	o.obs_datetime <= '" + DateUtil.formatDate(endDate, "yyyy-MM-dd") + "' ");
+			q.append("and o.obs_datetime <= '" + DateUtil.formatDate(endDate, MdrtbConstants.SQL_DATE_FORMAT) + "' ");
 		}
 		return new SqlCohortDefinition(q.toString());
 	}
 	
 	public static CohortDefinition getAllExtraPulmonaryDuring(Date startDate, Date endDate) {
 		StringBuilder q = new StringBuilder();
-		q.append("select 	o.person_id ");
-		q.append("from		obs o ");
-		q.append("where		o.concept_id = "
+		q.append("select o.person_id ");
+		q.append("from obs o ");
+		q.append("where o.concept_id = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANATOMICAL_SITE_OF_TB).getId() + " ");
-		q.append("and		o.value_coded = "
+		q.append("and o.value_coded = "
 		        + Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB).getId() + " ");
 		if (startDate != null) {
-			q.append("and	o.obs_datetime >= '" + DateUtil.formatDate(startDate, "yyyy-MM-dd") + "' ");
+			q.append("and o.obs_datetime >= '" + DateUtil.formatDate(startDate, MdrtbConstants.SQL_DATE_FORMAT) + "' ");
 		}
 		if (endDate != null) {
-			q.append("and	o.obs_datetime <= '" + DateUtil.formatDate(endDate, "yyyy-MM-dd") + "' ");
+			q.append("and o.obs_datetime <= '" + DateUtil.formatDate(endDate, MdrtbConstants.SQL_DATE_FORMAT) + "' ");
 		}
 		return new SqlCohortDefinition(q.toString());
 	}

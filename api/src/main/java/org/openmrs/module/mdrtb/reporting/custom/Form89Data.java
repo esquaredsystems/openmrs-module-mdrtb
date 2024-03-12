@@ -1,5 +1,6 @@
 package org.openmrs.module.mdrtb.reporting.custom;
 
+import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.form.custom.Form89;
@@ -15,6 +16,8 @@ public class Form89Data implements Comparable<Form89Data> {
 	private String tb03RegistrationDate;
 	
 	private Integer ageAtTB03Registration;
+	
+	private Location tb03Location;
 	
 	private String dateOfBirth;
 	
@@ -76,9 +79,6 @@ public class Form89Data implements Comparable<Form89Data> {
 	
 	private String hain2Lab;
 	
-	public Form89Data() {
-	}
-	
 	public Patient getPatient() {
 		return patient;
 	}
@@ -109,6 +109,14 @@ public class Form89Data implements Comparable<Form89Data> {
 	
 	public void setAgeAtTB03Registration(Integer ageAtTB03Registration) {
 		this.ageAtTB03Registration = ageAtTB03Registration;
+	}
+	
+	public Location getTb03Location() {
+		return tb03Location;
+	}
+	
+	public void setTb03Location(Location tb03Location) {
+		this.tb03Location = tb03Location;
 	}
 	
 	public String getDateOfBirth() {

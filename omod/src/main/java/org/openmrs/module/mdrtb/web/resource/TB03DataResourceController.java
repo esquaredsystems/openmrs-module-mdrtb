@@ -39,6 +39,7 @@ public class TB03DataResourceController extends BaseReportResource<SimpleTB03Dat
 		description.addProperty("gender");
 		description.addProperty("identifier");
 		description.addProperty("tb03RegistrationDate");
+		description.addProperty("tb03Facility");
 		description.addProperty("ageAtTB03Registration");
 		description.addProperty("dateOfBirth");
 		description.addProperty("intensivePhaseFacility");

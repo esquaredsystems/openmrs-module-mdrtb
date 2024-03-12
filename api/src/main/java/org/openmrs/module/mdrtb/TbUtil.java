@@ -43,7 +43,7 @@ public class TbUtil {
 				return pi.getIdentifier();
 			}
 		}
-		if (identifiers.size() > 0) {
+		if (!identifiers.isEmpty()) {
 			for (PatientIdentifier pi : identifiers) {
 				return pi.getIdentifier();
 			}
@@ -269,7 +269,7 @@ public class TbUtil {
 		        && StringUtils.isBlank(address.getAddress3()) && StringUtils.isBlank(address.getPostalCode())
 		        && StringUtils.isBlank(address.getAddress4()) && StringUtils.isBlank(address.getLatitude())
 		        && StringUtils.isBlank(address.getLongitude()) && StringUtils.isBlank(address.getAddress6())
-		        && StringUtils.isBlank(address.getAddress5()) && StringUtils.isBlank(address.getPostalCode());
+		        && StringUtils.isBlank(address.getAddress5());
 	}
 	
 	public static boolean areRussianStringsEqual(String s1, String s2) {

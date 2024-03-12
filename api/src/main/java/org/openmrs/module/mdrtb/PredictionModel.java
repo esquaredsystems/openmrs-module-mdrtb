@@ -35,7 +35,7 @@ public class PredictionModel {
 		public double getCoefficient() {
 			return coefficient;
 		}
-	};
+	}
 	
 	public static Map<RiskFactor, Boolean> getRiskFactors(Patient p) {
 		
@@ -64,7 +64,7 @@ public class PredictionModel {
 		}
 		double v = 100 / (1 + Math.exp(-1 * z));
 		log.debug("Result = " + v);
-		BigDecimal bd = new BigDecimal(v);
+		BigDecimal bd = BigDecimal.valueOf(v);
 		bd = bd.setScale(numDecimalPlaces, BigDecimal.ROUND_HALF_UP);
 		return bd.doubleValue();
 	}
@@ -75,12 +75,12 @@ public class PredictionModel {
 	 */
 	public static boolean hasAnyObsValue(Patient p, Integer conceptId, Integer... valueConceptIds) {
 		StringBuilder q = new StringBuilder();
-		q.append("select 	count(*) ");
-		q.append("from 		patient p, obs o ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	o.person_id = " + p.getPersonId() + " ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = " + conceptId + " ");
+		q.append("select count(*) ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and o.person_id = " + p.getPersonId() + " ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = " + conceptId + " ");
 		if (valueConceptIds != null && valueConceptIds.length > 0) {
 			q.append("and o.value_coded in (");
 			for (int i = 0; i < valueConceptIds.length; i++) {
@@ -100,16 +100,16 @@ public class PredictionModel {
 	 */
 	public static boolean hasBooleanObsValue(Patient p, Integer conceptId, boolean valueBoolean) {
 		StringBuilder q = new StringBuilder();
-		q.append("select 	count(*) ");
-		q.append("from 		patient p, obs o ");
-		q.append("where 	p.patient_id = o.person_id ");
-		q.append("and	 	o.person_id = " + p.getPersonId() + " ");
-		q.append("and	 	p.voided = 0 and o.voided = 0 ");
-		q.append("and		o.concept_id = " + conceptId + " ");
+		q.append("select count(*) ");
+		q.append("from patient p, obs o ");
+		q.append("where p.patient_id = o.person_id ");
+		q.append("and o.person_id = " + p.getPersonId() + " ");
+		q.append("and p.voided = 0 and o.voided = 0 ");
+		q.append("and o.concept_id = " + conceptId + " ");
 		if (valueBoolean) {
-			q.append("and		(o.value_numeric = 1 or o.value_coded in (1065,2257))");
+			q.append("and (o.value_numeric = 1 or o.value_coded in (1065,2257))");
 		} else {
-			q.append("and		(o.value_numeric = 0 or o.value_coded in (1066,2258))");
+			q.append("and (o.value_numeric = 0 or o.value_coded in (1066,2258))");
 		}
 		return !"0".equals(Context.getAdministrationService().executeSQL(q.toString(), true).get(0).get(0).toString());
 	}

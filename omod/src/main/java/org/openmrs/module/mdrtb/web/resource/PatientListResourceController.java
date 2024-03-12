@@ -118,7 +118,7 @@ public class PatientListResourceController extends BaseReportResource<SimpleData
 		// Get location by UUID
 		Location parent = Context.getLocationService().getLocationByUuid(locationUuid);
 		// Get all child locations
-		List<Location> locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent);
+		List<Location> locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent, true);
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);

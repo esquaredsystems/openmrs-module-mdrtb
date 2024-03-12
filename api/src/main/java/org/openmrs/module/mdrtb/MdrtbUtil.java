@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.proxy.HibernateProxy;
+import org.hibernate.proxy.HibernateProxyHelper;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.openmrs.Cohort;
@@ -72,6 +74,9 @@ import org.springframework.validation.Errors;
 
 public class MdrtbUtil {
 	
+	private MdrtbUtil() {
+	}
+	
 	protected static final Log log = LogFactory.getLog(MdrtbUtil.class);
 	
 	public static String getMdrtbPatientIdentifier(Patient p) {
@@ -125,8 +130,18 @@ public class MdrtbUtil {
 		Set<Obs> obsSet = encounter.getObsAtTopLevel(false);
 		if (obsSet != null) {
 			for (Obs obs : obsSet) {
+				if (obs.getVoided())
+					continue;
 				boolean equals = obs.getConcept().getUuid().equals(concept.getUuid());
-				if (!obs.getVoided() && equals) {
+				if (equals) {
+					if (obs.getValueCoded() != null && obs.getId() != null) {
+						try {
+							return Context.getObsService().getObs(obs.getId());
+						}
+						catch (Exception e) {
+							return Context.getObsService().getObsByUuid(obs.getUuid());
+						}
+					}
 					return obs;
 				}
 			}

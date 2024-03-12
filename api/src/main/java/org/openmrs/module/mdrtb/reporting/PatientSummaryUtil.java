@@ -120,7 +120,7 @@ public class PatientSummaryUtil {
 	
 	public static final String[] TEST_KEYS = { RESISTANCE_LIST };
 	
-	public static final Map<String, String> getAvailableKeys() {
+	public static Map<String, String> getAvailableKeys() {
 		Map<String, String> keys = new LinkedHashMap<>();
 		
 		for (String s : DEMOGRAPHICS_KEYS) {

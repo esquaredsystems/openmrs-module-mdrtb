@@ -195,6 +195,9 @@ public class Form89SingleExportController {
 				f89Data.setTb03RegistrationDate(sdf.format(encDate));
 			}
 			
+			// TB03 Location
+			f89Data.setTb03Location(f89.getTB03().getEncounter().getLocation());
+			
 			//FORMATTED DATE OF BIRTH
 			if (patient.getBirthdate() != null)
 				f89Data.setDateOfBirth(sdf.format(patient.getBirthdate()));

@@ -113,6 +113,8 @@ import org.openmrs.module.reporting.common.ObjectUtil;
 @SuppressWarnings("null")
 public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService {
 	
+	private static final String VOID_MESSAGE = "voided by MDRTB module";
+	
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	MdrtbDao dao;
@@ -750,7 +752,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			throw new APIException("Not a valid culture implementation for this service implementation");
 		}
 		// otherwise, go ahead and do the save
-		Context.getObsService().saveObs((Obs) culture.getTest(), "voided by MDRTB module");
+		Context.getObsService().saveObs((Obs) culture.getTest(), VOID_MESSAGE);
 	}
 	
 	public Specimen createSpecimen(Patient patient) {
@@ -861,7 +863,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		                .equals(this.getConcept(MdrtbConcepts.DST_CONSTRUCT)))) {
 			throw new APIException("Unable to delete specimen test: invalid test id " + testId);
 		} else {
-			Context.getObsService().voidObs(obs, "voided by MDRTB module");
+			Context.getObsService().voidObs(obs, VOID_MESSAGE);
 		}
 	}
 	
@@ -870,7 +872,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		if (encounter == null) {
 			throw new APIException("Unable to delete specimen: invalid specimen id " + specimenId);
 		} else {
-			Context.getEncounterService().voidEncounter(encounter, "voided by MDRTB module");
+			Context.getEncounterService().voidEncounter(encounter, VOID_MESSAGE);
 		}
 	}
 	
@@ -958,7 +960,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			throw new APIException("Not a valid xpert implementation for this service implementation");
 		}
 		// otherwise, go ahead and do the save
-		Context.getObsService().saveObs((Obs) xpert.getTest(), "voided by Mdr-tb module specimen tracking UI");
+		Context.getObsService().saveObs((Obs) xpert.getTest(), VOID_MESSAGE);
 	}
 	
 	public HAIN getHAIN(Obs obs) {
@@ -980,7 +982,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			throw new APIException("Not a valid hain implementation for this service implementation");
 		}
 		// otherwise, go ahead and do the save
-		Context.getObsService().saveObs((Obs) hain.getTest(), "voided by Mdr-tb module specimen tracking UI");
+		Context.getObsService().saveObs((Obs) hain.getTest(), VOID_MESSAGE);
 	}
 	
 	public HAIN2 getHAIN2(Obs obs) {
@@ -1002,7 +1004,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			throw new APIException("Not a valid hain implementation for this service implementation");
 		}
 		// otherwise, go ahead and do the save
-		Context.getObsService().saveObs((Obs) hain2.getTest(), "voided by Mdr-tb module specimen tracking UI");
+		Context.getObsService().saveObs((Obs) hain2.getTest(), VOID_MESSAGE);
 	}
 	
 	// TODO: Urgent! No new DSTs are being created without this method. How to create new cultures after upgrading to Lab module?
@@ -1027,7 +1029,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			throw new APIException("Not a valid dst implementation for this service implementation");
 		}
 		// otherwise, go ahead and do the save
-		Context.getObsService().saveObs((Obs) dst.getTest(), "voided by Mdr-tb module specimen tracking UI");
+		Context.getObsService().saveObs((Obs) dst.getTest(), VOID_MESSAGE);
 	}
 	
 	/***************/
@@ -1327,15 +1329,15 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	 * This should ideally be a recursive function. But for Tajikistan, we're limiting only to 3
 	 * levels
 	 */
-	public List<Location> getLocationsInHierarchy(Location parent) {
+	public List<Location> getLocationsInHierarchy(Location parent, boolean includeRetired) {
 		List<Location> locList = new ArrayList<>();
-		if (parent.getChildLocations().isEmpty()) {
+		Set<Location> childLocations = parent.getChildLocations(includeRetired);
+		if (childLocations.isEmpty()) {
 			locList.add(parent);
 		} 
 		// If there are child locations, fetch their list
 		else {
-			Set<Location> children = parent.getChildLocations();
-			for (Location child : children) {
+			for (Location child : childLocations) {
 				locList.add(child);
 				// If there are grand children, fetch them too
 				if (!child.getChildLocations().isEmpty()) {
@@ -1852,15 +1854,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
-		Calendar endCal = Calendar.getInstance();
-		endCal.setTimeInMillis(endDate.getTime());
-		endCal.add(Calendar.DATE, 1);
+		Calendar start = Calendar.getInstance();
+		start.setTime(startDate);
+		start.add(Calendar.SECOND, -1);
+		Calendar end = Calendar.getInstance();
+		end.setTime(endDate);
+
 		ArrayList<EncounterType> typeList = new ArrayList<>();
 		typeList.add(MdrtbConstants.ET_TB03_TB_INTAKE);
 		List<Encounter> temp = null;
 		if (locations != null && !locations.isEmpty()) {
 			for (Location l : locations) {
-				temp = getEncounters(null, l, startDate, endDate, typeList);
+				temp = getEncounters(null, l, start.getTime(), end.getTime(), typeList);
 				for (Encounter e : temp) {
 					forms.add(new TB03Form(e));
 				}
@@ -2249,6 +2254,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			throw new APIException("Not a valid scanned lab report implementation for this service implementation");
 		}
 		// otherwise, go ahead and do the save
-		Context.getObsService().saveObs((Obs) report.getScannedLabReport(), "voided by MDRTB module");
+		Context.getObsService().saveObs((Obs) report.getScannedLabReport(), VOID_MESSAGE);
 	}
 }

@@ -171,7 +171,6 @@ public class TB03uSingleController {
 		SimpleDateFormat rdateSDF = new SimpleDateFormat();
 		rdateSDF.applyPattern("dd.MM.yyyy HH:mm:ss");
 		for (TB03uForm tf : tb03uList) {
-			
 			TB03uData tb03uData = new TB03uData();
 			
 			Patient patient = tf.getPatient();
@@ -179,7 +178,6 @@ public class TB03uSingleController {
 				continue;
 				
 			}
-			
 			tb03uData.setPatient(patient);
 			
 			//PATIENT IDENTIFIER
@@ -201,6 +199,7 @@ public class TB03uSingleController {
 			
 			if (patient.getBirthdate() != null)
 				tb03uData.setDateOfBirth(sdf.format(patient.getBirthdate()));
+			
 			//SITE OF DISEASE (P/EP)
 			Concept q = tf.getAnatomicalSite();
 			

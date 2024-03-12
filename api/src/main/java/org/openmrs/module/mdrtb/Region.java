@@ -4,7 +4,7 @@ public class Region extends BaseLocation {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public static Integer HIERARCHY_LEVEL = 0;
+	public static final Integer HIERARCHY_LEVEL = 0;
 	
 	private BaseLocation parent;
 	

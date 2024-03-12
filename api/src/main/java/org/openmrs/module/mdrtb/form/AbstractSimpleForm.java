@@ -25,16 +25,16 @@ public abstract class AbstractSimpleForm implements SimpleForm {
 	
 	protected Encounter encounter;
 	
-	public AbstractSimpleForm() {
+	protected AbstractSimpleForm() {
 		this.encounter = new Encounter();
 	}
 	
-	public AbstractSimpleForm(Patient patient) {
+	protected AbstractSimpleForm(Patient patient) {
 		this.encounter = new Encounter();
 		this.encounter.setPatient(patient);
 	}
 	
-	public AbstractSimpleForm(Encounter encounter) {
+	protected AbstractSimpleForm(Encounter encounter) {
 		this.encounter = encounter;
 	}
 	

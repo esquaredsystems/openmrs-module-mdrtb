@@ -69,7 +69,7 @@ public abstract class BaseReportResource<T> extends DelegatingCrudResource<T> im
 		if (locationUuid != null) {
 			parent = Context.getLocationService().getLocationByUuid(locationUuid);
 			// Get all child locations
-			locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent);
+			locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent, true);
 		}
 		else {
 			// locList = Context.getLocationService().getAllLocations(false);
