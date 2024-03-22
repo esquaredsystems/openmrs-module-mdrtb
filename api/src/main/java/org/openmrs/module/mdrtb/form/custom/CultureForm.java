@@ -17,6 +17,8 @@ import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 
 public class CultureForm extends AbstractSimpleForm implements Comparable<CultureForm> {
 	
+	private static final String VOID_REASON = "voided by MDRTB module";
+	
 	private LabTest labTest;
 	
 	public CultureForm() {
@@ -72,7 +74,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -112,7 +114,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -173,9 +175,9 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 			if (obs != null) {
 				log.debug("Not null obs");
 				//				obsgroup.setVoided(true);
-				//				obsgroup.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				//				obsgroup.setVoidReason(VOID_REASON);
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -228,7 +230,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	

@@ -60,7 +60,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -104,7 +104,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -145,7 +145,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -185,7 +185,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -225,7 +225,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -265,7 +265,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -305,7 +305,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -349,7 +349,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -397,7 +397,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -445,7 +445,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -493,7 +493,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -541,7 +541,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -589,7 +589,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -637,7 +637,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -685,7 +685,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -733,7 +733,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -781,7 +781,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -831,7 +831,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -879,7 +879,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -927,7 +927,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -975,7 +975,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -1023,7 +1023,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -1071,7 +1071,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -1119,7 +1119,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -1167,7 +1167,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -1215,7 +1215,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -1259,7 +1259,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -1307,7 +1307,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -1351,7 +1351,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -1456,7 +1456,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	

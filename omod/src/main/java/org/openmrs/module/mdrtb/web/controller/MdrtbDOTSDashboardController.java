@@ -130,12 +130,12 @@ public class MdrtbDOTSDashboardController {
 		User mdrUser = Context.getAuthenticatedUser();
 		
 		if (!mdrUser.isSuperUser() && mdrUser.hasRole("Lab Tech")) {
-			return new Boolean(true);
+			return Boolean.TRUE;
 			
 		}
 		
 		else {
-			return new Boolean(false);
+			return Boolean.FALSE;
 			
 		}
 	}

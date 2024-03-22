@@ -35,7 +35,7 @@ public class LabCellTag extends TagSupport {
 		
 		// hack to remove the "Unknown Location" location if it exists
 		Location unknown = Context.getLocationService().getLocation("Unknown Location");
-		if (unknown != null && labs.contains(unknown)) {
+		if (unknown != null) {
 			labs.remove(unknown);
 		}
 		

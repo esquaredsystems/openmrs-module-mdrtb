@@ -428,7 +428,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.cptStartDate" text="PCT Start Date"/>:</td>
+<td><spring:message code="mdrtb.tb03.pctStartDate" text="PCT Start Date"/>:</td>
 <td><openmrs:formatDate date="${tb03.pctStartDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
@@ -887,7 +887,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.cptStartDate" text="PCT Start Date"/>:</td>
+<td><spring:message code="mdrtb.tb03.pctStartDate" text="PCT Start Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="pctStartDate" startValue="${tb03.pctStartDate}"/></td>
 </tr>
 

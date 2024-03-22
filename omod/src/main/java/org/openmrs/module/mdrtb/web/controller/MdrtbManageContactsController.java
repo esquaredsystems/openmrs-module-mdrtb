@@ -1,12 +1,7 @@
 package org.openmrs.module.mdrtb.web.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -91,14 +86,14 @@ public class MdrtbManageContactsController extends SimpleFormController {
 						
 						String deleteContactString = request.getParameter("deleteContact_" + contactId);
 						if (deleteContactString != null && !deleteContactString.equals("")) {
-							Integer testInt = Integer.valueOf(0);
+							Integer testInt = 0;
 							try {
 								testInt = Integer.valueOf(deleteContactString);
 							}
 							catch (Exception ignored) {}
 							if (testInt > 0) {
 								Relationship r = perS.getRelationship(testInt);
-								perS.voidRelationship(r, "voided by mdr-tb contacts module");
+								perS.voidRelationship(r, "voided by MDRTB contacts module");
 							}
 						} else if (testResultAction != null) {
 							if (testResultAction.equals("2") && testResultString != null && !testResultString.equals("")
@@ -239,8 +234,8 @@ public class MdrtbManageContactsController extends SimpleFormController {
 						        && !newRelationshipTypeString.equals("") && newGenderString != null
 						        && !newGenderString.equals("")) {
 							
-							String relationshipKey = newRelationshipTypeString.substring(
-							    newRelationshipTypeString.length() - 1, newRelationshipTypeString.length());
+							String relationshipKey = newRelationshipTypeString
+							        .substring(newRelationshipTypeString.length() - 1);
 							newRelationshipTypeString = newRelationshipTypeString.substring(0,
 							    newRelationshipTypeString.length() - 1);
 							
@@ -249,9 +244,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 							
 							Person contact = perS.getPerson(personIdTmp);
 							
-							boolean test = false;
-							if (familyNameString != null && !familyNameString.equals(""))
-								test = true;
+							boolean test = familyNameString != null && !familyNameString.equals("");
 							if (givenNameString != null && !givenNameString.equals(""))
 								test = true;
 							if (personIdTmp == 0 && test && contact == null) {
@@ -319,7 +312,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 									Concept cKnown = (Context.getService(MdrtbService.class)
 									        .getConcept(MdrtbConcepts.CONTACT_KNOWN_OR_CURRENT_MDR_CASE));
 									List<Obs> oList = os.getObservationsByPersonAndConcept(contact, cKnown);
-									if (oList != null && oList.size() > 0) {
+									if (oList != null && !oList.isEmpty()) {
 										Obs oInner = oList.get(oList.size() - 1);
 										oInner.setValueNumeric(newKnownMDR.doubleValue());
 										os.saveObs(oInner, "");
@@ -374,9 +367,9 @@ public class MdrtbManageContactsController extends SimpleFormController {
 			for (Relationship contact : ps.getRelationshipsByPerson(mp.getPatient())) {
 				//bi-directional:
 				Person contactTmp = null;
-				if (contact.getPersonB().getPersonId() != mp.getPatient().getPatientId())
+				if (!Objects.equals(contact.getPersonB().getPersonId(), mp.getPatient().getPatientId()))
 					contactTmp = contact.getPersonB();
-				else if (contact.getPersonA().getPersonId() != mp.getPatient().getPatientId())
+				else if (!Objects.equals(contact.getPersonA().getPersonId(), mp.getPatient().getPatientId()))
 					contactTmp = contact.getPersonA();
 				if (contactTmp != null && !contact.getRelationshipType().equals(rt)) {
 					MdrtbContactPerson mcp = new MdrtbContactPerson();
@@ -388,7 +381,7 @@ public class MdrtbManageContactsController extends SimpleFormController {
 						List<PatientProgram> ppsTmp = Context.getProgramWorkflowService().getPatientPrograms(
 						    Context.getPatientService().getPatient(contactTmp.getPersonId()), program, null, null, null,
 						    null, false);
-						if (ppsTmp != null && ppsTmp.size() > 0)
+						if (ppsTmp != null && !ppsTmp.isEmpty())
 							mcp.setIsTBPatient(true);
 					}
 					for (PersonAddress pa : contactTmp.getAddresses()) {
@@ -410,17 +403,19 @@ public class MdrtbManageContactsController extends SimpleFormController {
 					
 					List<Obs> oList = Context.getObsService().getObservationsByPersonAndConcept(mcp.getPerson(),
 					    (Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_CONTACT_TB_TEST_RESULT)));
-					if (oList != null && oList.size() > 0) {
+					if (oList != null && !oList.isEmpty()) {
 						for (Obs o : oList) {
 							for (Obs oInner : o.getGroupMembers()) {
 								//TODO: Useless code: oInner.getConcept().getName(Context.getLocale()).getName();
-								if (oInner.getConcept().getConceptId() == (Context.getService(MdrtbService.class)
-								        .getConcept(MdrtbConcepts.SIMPLE_TB_TEST_RESULT)).getConceptId()
+								if (Objects.equals(oInner.getConcept().getConceptId(), (Context
+								        .getService(MdrtbService.class).getConcept(MdrtbConcepts.SIMPLE_TB_TEST_RESULT))
+								        .getConceptId())
 								        && (mcp.getTestResult() == null || mcp.getTestResult().getObsDatetime().getTime() <= oInner
 								                .getObsDatetime().getTime()))
 									mcp.setTestResult(oInner);
-								if (oInner.getConcept().getConceptId() == (Context.getService(MdrtbService.class)
-								        .getConcept(MdrtbConcepts.SIMPLE_TB_TEST_TYPE)).getConceptId()
+								if (Objects.equals(oInner.getConcept().getConceptId(), (Context
+								        .getService(MdrtbService.class).getConcept(MdrtbConcepts.SIMPLE_TB_TEST_TYPE))
+								        .getConceptId())
 								        && (mcp.getTestType() == null || mcp.getTestType().getObsDatetime().getTime() <= oInner
 								                .getObsDatetime().getTime()))
 									mcp.setTestType(oInner);

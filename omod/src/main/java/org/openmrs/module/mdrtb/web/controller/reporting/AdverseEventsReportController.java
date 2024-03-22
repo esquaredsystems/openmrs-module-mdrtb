@@ -172,12 +172,12 @@ public class AdverseEventsReportController {
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("district", districtId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");
@@ -222,9 +222,7 @@ public class AdverseEventsReportController {
 		
 		Integer ancillaryDrugsId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ANCILLARY_DRUG_GIVEN)
 		        .getId();
-		//Integer actionId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT_ACTION).getId();
-		//Integer aeId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT).getId();
-		Integer nauseaId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NAUSEA).getId();
+        Integer nauseaId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NAUSEA).getId();
 		Integer diarrhoeaId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIARRHOEA).getId();
 		Integer arthalgiaId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ARTHALGIA).getId();
 		Integer dizzinessId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DIZZINESS).getId();
@@ -259,10 +257,8 @@ public class AdverseEventsReportController {
 		Integer saeId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SERIOUS).getId();
 		Integer specialInterestId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_SPECIAL_INTEREST)
 		        .getId();
-		//	Integer saeTypeId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SAE_TYPE).getId();
-		// 	Integer specialInterestTypeId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIAL_INTEREST_EVENT_TYPE).getId();
-		
-		Integer deathId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH).getId();
+
+        Integer deathId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH).getId();
 		Integer hospitilizationId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOSPITALIZATION_WORKFLOW)
 		        .getId();
 		Integer disabilityId = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DISABILITY).getId();
@@ -306,7 +302,7 @@ public class AdverseEventsReportController {
 				//get disease site
 				Concept q = rf.getSldRegimenType();
 				if (q != null) {
-					int intValue = q.getConceptId().intValue();
+					int intValue = q.getConceptId();
 					if (intValue == standardRegimenConceptId) {
 						table1.setStandardRegimenEver(table1.getStandardRegimenEver() + 1);
 						table1.setStandardRegimenStarting(table1.getStandardRegimenStarting() + 1);
@@ -390,20 +386,20 @@ public class AdverseEventsReportController {
 				}
 				
 				if (regimenTypeConceptId != null) {
-					int intValue = regimenTypeConceptId.intValue();
-					if (intValue == standardRegimenConceptId.intValue()) {
+					int intValue = regimenTypeConceptId;
+					if (intValue == standardRegimenConceptId) {
 						isStandard = true;
-					} else if (intValue == shortRegimenConceptId.intValue()) {
+					} else if (intValue == shortRegimenConceptId) {
 						isShort = true;
-					} else if (intValue == regimenWithBdqConceptId.intValue()) {
+					} else if (intValue == regimenWithBdqConceptId) {
 						isBdq = true;
-					} else if (intValue == regimenWithDlmConceptId.intValue()) {
+					} else if (intValue == regimenWithDlmConceptId) {
 						isDlm = true;
-					} else if (intValue == regimenWithBdqDlmConceptId.intValue()) {
+					} else if (intValue == regimenWithBdqDlmConceptId) {
 						isBdqDlm = true;
-					} else if (intValue == regimenWithCfzLzdConceptId.intValue()) {
+					} else if (intValue == regimenWithCfzLzdConceptId) {
 						isCfzLzd = true;
-					} else if (intValue == otherRegimenConceptId.intValue()) {
+					} else if (intValue == otherRegimenConceptId) {
 						isOther = true;
 					}
 				}
@@ -412,30 +408,30 @@ public class AdverseEventsReportController {
 				ArrayList<Concept> drugs = ae.getSuspectedDrugs();
 				if (drugs != null) {
 					for (Concept c : drugs) {
-						int intValue = c.getId().intValue();
-						if (intValue == bdqId.intValue()) {
+						int intValue = c.getId();
+						if (intValue == bdqId) {
 							isSuspBdq = true;
-						} else if (intValue == dlmId.intValue()) {
+						} else if (intValue == dlmId) {
 							isSuspDlm = true;
-						} else if (intValue == cfzId.intValue()) {
+						} else if (intValue == cfzId) {
 							isSuspCfz = true;
-						} else if (intValue == amId.intValue()) {
+						} else if (intValue == amId) {
 							isSuspAm = true;
-						} else if (intValue == cmId.intValue()) {
+						} else if (intValue == cmId) {
 							isSuspCm = true;
-						} else if (intValue == mfxId.intValue()) {
+						} else if (intValue == mfxId) {
 							isSuspMfx = true;
-						} else if (intValue == lzdId.intValue()) {
+						} else if (intValue == lzdId) {
 							isSuspLzd = true;
-						} else if (intValue == cycId.intValue()) {
+						} else if (intValue == cycId) {
 							isSuspCyc = true;
-						} else if (intValue == pasId.intValue()) {
+						} else if (intValue == pasId) {
 							isSuspPas = true;
-						} else if (intValue == ptoId.intValue()) {
+						} else if (intValue == ptoId) {
 							isSuspPto = true;
-						} else if (intValue == zId.intValue()) {
+						} else if (intValue == zId) {
 							isSuspZ = true;
-						} else if (intValue == eId.intValue()) {
+						} else if (intValue == eId) {
 							isSuspE = true;
 						}
 					}

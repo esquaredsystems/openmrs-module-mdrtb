@@ -208,8 +208,8 @@ public class ProgramController {
 		List<MdrtbPatientProgram> mdrtbPrograms = Context.getService(MdrtbService.class).getMdrtbPatientPrograms(patient);
 		List<TbPatientProgram> tbPrograms = Context.getService(MdrtbService.class).getTbPatientPrograms(patient);
 		
-		map.put("hasPrograms", ((mdrtbPrograms != null && mdrtbPrograms.size() != 0) || (tbPrograms != null && tbPrograms
-		        .size() != 0)) ? true : false);
+		map.put("hasPrograms", ((mdrtbPrograms != null && !mdrtbPrograms.isEmpty()) || (tbPrograms != null && !tbPrograms
+		        .isEmpty())) ? true : false);
 		map.put("mdrtbPrograms", mdrtbPrograms);
 		map.put("tbPrograms", tbPrograms);
 		
@@ -269,7 +269,7 @@ public class ProgramController {
 		Integer patientId = program.getPatient().getId();
 		
 		// now void the program
-		Context.getProgramWorkflowService().voidPatientProgram(program.getPatientProgram(), "voided by mdr-tb module");
+		Context.getProgramWorkflowService().voidPatientProgram(program.getPatientProgram(), "voided by MDRTB module");
 		
 		// clear the command object
 		status.setComplete();
@@ -297,7 +297,7 @@ public class ProgramController {
 		List<TbPatientProgram> tbPrograms = Context.getService(MdrtbService.class).getTbPatientPrograms(patient);
 		map.put("patientId", patientId);
 		map.put("hasPrograms",
-		    ((mdrtbPrograms != null && mdrtbPrograms.size() != 0) || (tbPrograms != null && tbPrograms.size() != 0)));
+		    ((mdrtbPrograms != null && !mdrtbPrograms.isEmpty()) || (tbPrograms != null && !tbPrograms.isEmpty())));
 		
 		map.put("mdrtbPrograms", mdrtbPrograms);
 		map.put("tbPrograms", tbPrograms);
@@ -347,7 +347,7 @@ public class ProgramController {
 					map.addAttribute("districts", Arrays.asList(locDist));
 					List<Facility> facilityList = Context.getService(MdrtbService.class).getFacilitiesByParent(
 					    locDist.getId());
-					if (facilityList.size() == 0) { // Maybe it's Dushanbe
+					if (facilityList.isEmpty()) { // Maybe it's Dushanbe
 						facilityList = Context.getService(MdrtbService.class).getFacilitiesByParent(locOb.getId());
 					}
 					if (facName != null) {
@@ -419,7 +419,7 @@ public class ProgramController {
 		
 		Location location = null;
 		
-		if (facilityId != null && facilityId.length() != 0)
+		if (facilityId != null && !facilityId.isEmpty())
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
 		else
@@ -465,9 +465,6 @@ public class ProgramController {
 		map.clear();
 		
 		// when we enroll in a program, we want to jump immediately to the intake for this patient
-		/* VisitStatus visitStatus = (VisitStatus) new VisitStatusCalculator(new DashboardVisitStatusRenderer()).calculateTb(program);
-		
-		return new ModelAndView("redirect:" + visitStatus.getNewIntakeVisit().getLink() + "&returnUrl=" + request.getContextPath() + "/module/mdrtb/dashboard/dashboard.form%3FpatientProgramId=" + program.getId());*/
 		
 		return new ModelAndView("redirect:/module/mdrtb/form/tb03.form?patientProgramId=" + program.getId()
 		        + "&encounterId=-1");
@@ -491,7 +488,7 @@ public class ProgramController {
 		if (patient == null) {
 			throw new RuntimeException("Show enroll called with invalid patient id " + patientId);
 		}
-		if (type == null || type.length() == 0) {
+		if (type == null || type.isEmpty()) {
 			throw new RuntimeException("No program type specified");
 		}
 		map.put("patientId", patientId);
@@ -563,7 +560,7 @@ public class ProgramController {
 		}
 		
 		Location location = null;
-		if (facilityId != null && facilityId.length() != 0)
+		if (facilityId != null && !facilityId.isEmpty())
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
 		else
@@ -676,7 +673,7 @@ public class ProgramController {
 			throw new RuntimeException("Process enroll called with invalid patient id " + patientId);
 		}
 		Location location = null;
-		if (facilityId != null && facilityId.length() != 0)
+		if (facilityId != null && !facilityId.isEmpty())
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
 		else

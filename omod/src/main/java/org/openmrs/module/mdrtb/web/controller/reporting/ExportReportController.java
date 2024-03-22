@@ -9,6 +9,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
@@ -28,6 +30,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ExportReportController {
+	
+	private static Log log = LogFactory.getLog(ExportReportController.class);
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -84,20 +88,20 @@ public class ExportReportController {
 				os.close();
 			}
 			
-			System.out.println("---POST EXPORT-----");
-			System.out.println("oblast: " + oblast);
-			System.out.println("location: " + location);
-			System.out.println("year: " + year);
-			System.out.println("quarter: " + quarter);
-			System.out.println("month: " + month);
-			System.out.println("reportDate: " + date);
-			System.out.println("formPath: " + formPath);
-			System.out.println("reportName: " + reportName);
-			System.out.println("\n\n\n");
-			
+			StringBuilder sb = new StringBuilder();
+			sb.append("---POST EXPORT-----\n");
+			sb.append("oblast: ").append(oblast).append("\n");
+			sb.append("location: ").append(location).append("\n");
+			sb.append("year: ").append(year).append("\n");
+			sb.append("quarter: ").append(quarter).append("\n");
+			sb.append("month: ").append(month).append("\n");
+			sb.append("reportDate: ").append(date).append("\n");
+			sb.append("formPath: ").append(formPath).append("\n");
+			sb.append("reportName: ").append(reportName).append("\n\n\n");
+			System.out.println(sb);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			model.addAttribute("ex", e);
 		}
 		return TB08uController.doTB08(oblastId, districtId, facilityId, year, quarter, month, model);

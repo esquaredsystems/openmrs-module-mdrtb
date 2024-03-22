@@ -2165,6 +2165,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public void saveSmear(Smear smear) {
+		// Not implemented
 	}
 	
 	/*******************/

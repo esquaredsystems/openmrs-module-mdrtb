@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Location;
@@ -43,6 +45,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @RequestMapping("/module/mdrtb/form/ae.form")
 public class AdverseEventsFormController {
+	
+	private final Log log = LogFactory.getLog(getClass());
 	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -94,11 +98,11 @@ public class AdverseEventsFormController {
 				model.addAttribute("aeForm", aeForm);
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				log.warn(e.getMessage());
 			}
 		}
 		model.addAttribute("encounterId", encounterId);
-		if (mode != null && mode.length() != 0) {
+		if (mode != null && !mode.isEmpty()) {
 			model.addAttribute("mode", mode);
 		}
 		return new ModelAndView("/module/mdrtb/form/ae", model);
@@ -280,10 +284,7 @@ public class AdverseEventsFormController {
 	
 	@ModelAttribute("cdOptions")
 	public Collection<ConceptAnswer> getCausalityDrugOptions() {
-		Collection<ConceptAnswer> ca = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_DRUG_1)
-		        .getAnswers();
-		return ca;
-		
+		return Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CAUSALITY_DRUG_1).getAnswers();
 	}
 	
 	@ModelAttribute("carOptions")

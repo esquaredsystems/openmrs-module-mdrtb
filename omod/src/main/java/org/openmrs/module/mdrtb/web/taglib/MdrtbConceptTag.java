@@ -62,8 +62,7 @@ public class MdrtbConceptTag extends BodyTagSupport {
 	}
 	
 	/**
-	 * @see Tag#doEndTag()
-	 */
+     */
 	public int doEndTag() throws JspException {
 		try {
 			if (getBodyContent() != null) {

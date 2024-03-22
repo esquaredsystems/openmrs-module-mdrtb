@@ -78,8 +78,8 @@ public class CloseReportChangesController {
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		Date startDate = dateMap.get("startDate");
+		Date endDate = dateMap.get("endDate");
 		Date closeDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(reportDate);
 		
 		System.out.println(startDate);
@@ -90,7 +90,7 @@ public class CloseReportChangesController {
 		Map<Integer, Obs> modifiedObs = new HashMap<>();
 		Map<Encounter, Patient> modifiedPatients = new HashMap<>();
 		
-		List<Encounter> encounters = (List<Encounter>) Context.getService(MdrtbService.class).getEncountersByEncounterTypes(
+		List<Encounter> encounters = Context.getService(MdrtbService.class).getEncountersByEncounterTypes(
 		    reportEncounterTypes, startDate, endDate, null);
 		if (encounters != null) {
 			for (Encounter encounter : encounters) {
@@ -196,10 +196,7 @@ public class CloseReportChangesController {
 			tempData.add(patient.getDateCreated().toString()); // patient date created
 			tempData.add(patient.getDateChanged().toString());
 			// patient date changed
-			/* tempData.add(Integer.toString(encounter.getId())); // encounter id
-			tempData.add(Integer.toString(encounter.getEncounterType().getId())); // encounter type id
-			tempData.add(encounter.getEncounterType().getName()); // encounter type name 
-			*/patientData.add(tempData);
+            patientData.add(tempData);
 			iterator1.remove();
 		}
 		

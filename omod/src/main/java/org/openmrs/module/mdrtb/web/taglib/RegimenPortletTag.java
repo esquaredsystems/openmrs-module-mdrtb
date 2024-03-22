@@ -29,7 +29,7 @@ import org.openmrs.util.OpenmrsUtil;
 
 public class RegimenPortletTag extends ImportSupport {
 	
-	public static final long serialVersionUID = 21L;
+	public static final long serialVersionUID = 1L;
 	
 	protected final static Log log = LogFactory.getLog(RegimenPortletTag.class);
 	

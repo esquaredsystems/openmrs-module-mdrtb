@@ -17,6 +17,8 @@ import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 
 public class SmearForm extends AbstractSimpleForm implements Comparable<SmearForm> {
 	
+	private static final String VOID_REASON = "voided by MDRTB module";
+	
 	private LabTest labTest;
 	
 	public SmearForm() {
@@ -77,7 +79,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -117,7 +119,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -174,7 +176,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -227,7 +229,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	

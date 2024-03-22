@@ -22,6 +22,8 @@ import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 
 public class TB03uXDRForm extends AbstractSimpleForm {
 	
+	private static final String VOID_REASON = "voided by MDRTB module";
+	
 	public TB03uXDRForm() {
 		super();
 		this.encounter.setEncounterType(MdrtbConstants.ET_TB03U_XDRTB_INTAKE);
@@ -91,7 +93,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -174,7 +176,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -220,7 +222,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -258,7 +260,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -295,7 +297,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -330,7 +332,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -365,7 +367,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -400,7 +402,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -435,7 +437,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -470,7 +472,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -505,7 +507,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -540,7 +542,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -575,7 +577,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -610,7 +612,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -645,7 +647,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -680,7 +682,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -715,7 +717,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -769,7 +771,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -805,7 +807,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -840,7 +842,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -875,7 +877,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -910,7 +912,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -996,7 +998,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -1031,7 +1033,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	

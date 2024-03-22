@@ -22,7 +22,7 @@ import org.openmrs.module.mdrtb.program.TbPatientProgram;
 
 public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	
-	private static final String VOID_MESSAGE = "voided by Mdr-tb module specimen tracking UI";
+	private static final String VOID_MESSAGE = "voided by MDRTB module";
 	
 	private TB03Form tb03;
 	

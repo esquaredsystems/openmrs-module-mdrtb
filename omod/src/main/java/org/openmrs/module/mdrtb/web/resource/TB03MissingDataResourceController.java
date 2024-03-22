@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.module.mdrtb.web.controller.reporting.MissingTb03Controller;
 import org.openmrs.module.mdrtb.web.dto.SimpleTB03MissingData;
@@ -26,11 +24,6 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
  */
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb03missingreport", supportedClass = SimpleTB03MissingData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class TB03MissingDataResourceController extends BaseReportResource<SimpleTB03MissingData> {
-	
-	/**
-	 * Logger for this class
-	 */
-	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
@@ -64,7 +57,7 @@ public class TB03MissingDataResourceController extends BaseReportResource<Simple
 		Integer month2 = (Integer) params.get("month2");
 		Map<String, Object> map = MissingTb03Controller.getMissingTB03PatientMap(year, quarter, month, month2, locList);
 		List<SimpleTB03MissingData> list = new ArrayList<>();
-		if (map.size() > 0) {
+		if (!map.isEmpty()) {
 			list.add(new SimpleTB03MissingData(map));
 		}
 		return new NeedsPaging<>(list, context);

@@ -102,16 +102,15 @@ public class CohortBuilderController implements Controller {
 			List<Shortcut> shortcuts = new ArrayList<>();
 			String shortcutProperty = Context.getAdministrationService().getGlobalProperty(
 			    MdrtbConstants.GP_COHORT_COHORT_BUILDER_SHORTCUTS);
-			if (shortcutProperty != null && shortcutProperty.length() > 0) {
+			if (shortcutProperty != null && !shortcutProperty.isEmpty()) {
 				String[] shortcutSpecs = shortcutProperty.split(";");
-				for (int i = 0; i < shortcutSpecs.length; ++i) {
-					try {
-						shortcuts.add(new Shortcut(shortcutSpecs[i]));
-					}
-					catch (Exception ex) {
-						log.error("Exception trying to create filter from shortcut", ex);
-					}
-				}
+                for (String shortcutSpec : shortcutSpecs) {
+                    try {
+                        shortcuts.add(new Shortcut(shortcutSpec));
+                    } catch (Exception ex) {
+                        log.error("Exception trying to create filter from shortcut", ex);
+                    }
+                }
 			}
 			
 			ConceptService cs = Context.getConceptService();
@@ -128,7 +127,7 @@ public class CohortBuilderController implements Controller {
 			
 			List<Concept> genericDrugs = Context.getConceptService().getConceptsWithDrugsInFormulary();
 			Collections.sort(genericDrugs, new Comparator<Concept>() {
-				
+
 				public int compare(Concept left, Concept right) {
 					return left.getName().getName().compareTo(right.getName().getName());
 				}
@@ -202,7 +201,7 @@ public class CohortBuilderController implements Controller {
 				String s = spec.substring(spec.indexOf('(') + 1, spec.lastIndexOf(')'));
 				String[] t = s.split(",");
 				for (String arg : t) {
-					if (arg.trim().length() == 0)
+					if (arg.trim().isEmpty())
 						continue;
 					if (arg.startsWith("\'") && arg.endsWith("\'")) {
 						temp.add(new ArgHolder(null, arg.substring(1, arg.length() - 1), null));
@@ -231,7 +230,7 @@ public class CohortBuilderController implements Controller {
 						}
 					}
 				}
-				if (temp.size() > 0) {
+				if (!temp.isEmpty()) {
 					setArgs(temp);
 					StringBuilder sb = new StringBuilder();
 					for (ArgHolder arg : temp)
@@ -317,7 +316,7 @@ public class CohortBuilderController implements Controller {
 	
 	public ModelAndView addFilter(HttpServletRequest request, HttpServletResponse response) {
 		if (Context.isAuthenticated()) {
-			ReportObjectService rs = (ReportObjectService) Context.getService(ReportObjectService.class);
+			ReportObjectService rs = Context.getService(ReportObjectService.class);
 			CohortSearchHistory history = getMySearchHistory(request);
 			String temp = request.getParameter("filter_id");
 			if (temp != null) {
@@ -413,7 +412,7 @@ public class CohortBuilderController implements Controller {
 		
 		public boolean hasValue() {
 			return argValue != null
-			        && ((argValue instanceof String && ((String) argValue).length() > 0) || (argValue instanceof String[] && ((String[]) argValue).length > 0));
+			        && ((argValue instanceof String && !((String) argValue).isEmpty()) || (argValue instanceof String[] && ((String[]) argValue).length > 0));
 		}
 		
 		public String toString() {
@@ -437,7 +436,7 @@ public class CohortBuilderController implements Controller {
 			
 			for (String arg : args) {
 				log.debug("looking at: " + arg);
-				if (arg.trim().length() == 0)
+				if (arg.trim().isEmpty())
 					continue;
 				String[] u = arg.split("#");
 				if (u.length != 2) {
@@ -475,9 +474,9 @@ public class CohortBuilderController implements Controller {
 				Object val = arg.getArgValue();
 				if (val instanceof String[]) {
 					String[] valArray = (String[]) val;
-					for (int i = 0; i < valArray.length; ++i)
-						if (StringUtils.hasText(valArray[i]))
-							search.addArgument(arg.getArgName(), valArray[i], arg.getArgClass());
+                    for (String s : valArray)
+                        if (StringUtils.hasText(s))
+                            search.addArgument(arg.getArgName(), s, arg.getArgClass());
 				} else {
 					if (StringUtils.hasText((String) val))
 						search.addArgument(arg.getArgName(), (String) val, arg.getArgClass());
@@ -506,7 +505,7 @@ public class CohortBuilderController implements Controller {
 				throw new RuntimeException("Re-saving histories is not yet implemented");
 			history.setName(name);
 			history.setDescription(description);
-			ReportObjectService rs = (ReportObjectService) Context.getService(ReportObjectService.class);
+			ReportObjectService rs = Context.getService(ReportObjectService.class);
 			rs.saveSearchHistory(history);
 		}
 		return new ModelAndView(new RedirectView(getSuccessView()));

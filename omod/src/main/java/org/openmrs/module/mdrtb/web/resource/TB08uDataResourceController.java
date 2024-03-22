@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.module.mdrtb.reporting.custom.TB08uData;
 import org.openmrs.module.mdrtb.web.controller.reporting.TB08uController;
@@ -21,11 +19,6 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb08ureport", supportedClass = SimpleTB08uData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class TB08uDataResourceController extends BaseReportResource<SimpleTB08uData> {
-	
-	/**
-	 * Logger for this class
-	 */
-	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {

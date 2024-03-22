@@ -175,10 +175,8 @@ public class MdrtbActivator extends BaseModuleActivator {
 		setGlobalProperty(MdrtbConstants.GP_HAIN_FORM_ID, "15", "Form ID of HAIN test", null);
 		setGlobalProperty(MdrtbConstants.GP_SMEAR_FORM_ID, "8", "Form ID of Smear test", null);
 		setGlobalProperty(MdrtbConstants.GP_XPERT_FORM_ID, "14", "Form ID of GeneXpert test", null);
-		setGlobalProperty(MdrtbConstants.GP_BACTERIOLOGY_ENTRY_FORM_ID, "", "", null);
 		
 		/** Miscellaneous **/
-		//TODO: Put in TB patient ID instead of OpenMRS Identification Number
 		setGlobalProperty(MdrtbConstants.GP_OPENMRS_PRIMARY_IDENTIFIER_TYPE, "OpenMRS Identification Number");
 		setGlobalProperty(MdrtbConstants.GP_MDRTB_PROGRAM_NAME, "MDR-TB PROGRAM", "", null);
 		setGlobalProperty(MdrtbConstants.GP_DOTS_PROGRAM_NAME, "DOTS PROGRAM", "", null);

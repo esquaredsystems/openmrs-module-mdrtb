@@ -174,7 +174,7 @@ public class MdrtbTSAdmListController extends SimpleFormController {
 			PersonAttributeType pat = ps.getPersonAttributeTypeByName(treatSupAttributeTypeString);
 			List<Person> persons = ps.getPeople("%", false);
 			for (Person p : persons) {
-				if (p.getActiveAttributes().size() > 0) {
+				if (!p.getActiveAttributes().isEmpty()) {
 					for (PersonAttribute patTmp : p.getActiveAttributes()) {
 						if (patTmp.getAttributeType().getPersonAttributeTypeId().intValue() == pat
 						        .getPersonAttributeTypeId().intValue() && !p.getDead() && !p.getPersonVoided()) {

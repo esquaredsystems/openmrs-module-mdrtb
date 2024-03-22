@@ -27,7 +27,7 @@ public class MdrtbSubheaderPortletController extends PortletController {
 		
 		// get the program we are currently viewing	
 		if (StringUtils.isNotBlank((String) model.get("patientProgramId"))
-		        && Integer.valueOf((String) model.get("patientProgramId")) != -1) {
+		        && Integer.parseInt((String) model.get("patientProgramId")) != -1) {
 			MdrtbPatientProgram patientProgram = Context.getService(MdrtbService.class).getMdrtbPatientProgram(
 			    Integer.valueOf((String) model.get("patientProgramId")));
 			model.put("patientProgram", patientProgram);

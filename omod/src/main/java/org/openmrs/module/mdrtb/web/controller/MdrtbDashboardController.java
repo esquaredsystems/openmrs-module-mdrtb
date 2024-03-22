@@ -142,12 +142,12 @@ public class MdrtbDashboardController {
 		User mdrUser = Context.getAuthenticatedUser();
 		
 		if (!mdrUser.isSuperUser() && mdrUser.hasRole("Lab Tech")) {
-			return new Boolean(true);
+			return Boolean.TRUE;
 			
 		}
 		
 		else {
-			return new Boolean(false);
+			return Boolean.FALSE;
 			
 		}
 	}
@@ -245,7 +245,7 @@ public class MdrtbDashboardController {
 			    MdrtbConcepts.DRUG_RESISTANCE_DURING_TREATMENT);
 			List<DrugResistanceDuringTreatmentForm> drdts = Context.getService(MdrtbService.class).getDrdtForms(
 			    program.getId());
-			if (drdts != null && drdts.size() != 0) {
+			if (drdts != null && !drdts.isEmpty()) {
 				for (DrugResistanceDuringTreatmentForm drdt : drdts) {
 					Obs temp = MdrtbUtil.getObsFromEncounter(resDuringTx, drdt.getEncounter());
 					if (temp != null) {

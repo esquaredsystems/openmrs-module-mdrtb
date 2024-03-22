@@ -199,7 +199,6 @@ public class Form8Controller {
 		Concept negativeConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE);
 		
 		String gender = null;
-		
 		Boolean pulmonary = null;
 		Boolean bacPositive = null;
 		Boolean cured = null;
@@ -211,10 +210,8 @@ public class Form8Controller {
 		Boolean transferOut = null;
 		Boolean canceled = null;
 		Boolean sld = null;
-		
 		Boolean male = null;
 		Boolean female = null;
-		
 		Boolean hospitalised = null;
 		
 		Form8Table1Data table1 = new Form8Table1Data();
@@ -232,9 +229,6 @@ public class Form8Controller {
 		int ruralId = ruralConcept.getConceptId();
 		Concept locationType = null;
 		
-		/*Boolean bacEx = null;
-		Boolean phc = null;
-		*/
 		Boolean miliary = null;
 		Boolean focal = null;
 		Boolean infiltrative = null;
@@ -363,97 +357,35 @@ public class Form8Controller {
 			}
 			System.out.println("Processing: " + tf.getPatient().toString());
 			ageAtRegistration = -1;
-			pulmonary = null;
-			bacPositive = null;
+			
 			gender = null;
-			male = null;
-			female = null;
-			regGroup = null;
-			rural = null;
-			locationType = null;
-			plevritis = null;
-			itLymph = null;
-			
-			fibroCav = null;
-			cns = null;
-			osteoArticular = null;
-			urogenital = null;
-			peripheralLymphNodes = null;
-			abdominal = null;
-			eye = null;
-			miliary = null;
-			resistant = null;
-			hivPositive = null;
-			anatomicalSite = null;
-			epulLocation = null;
-			
-			phcFacility = null;
-			phcWorker = null;
-			tbFacility = null;
-			tbServicesWorker = null;
-			migrant = null;
-			contact = null;
-			otherFacility = null;
-			privateSectorFacility = null;
-			focal = null;
-			infiltrative = null;
-			disseminated = null;
-			cavernous = null;
-			cirrhotic = null;
-			tbComplex = null;
-			tuberculoma = null;
-			bronchi = null;
-			skin = null;
-			liver = null;
-			
-			phcFacility = null;
-			tbFacility = null;
-			privateSectorFacility = null;
-			otherFacility = null;
-			
-			phcWorker = null;
-			tbServicesWorker = null;
-			contact = null;
-			migrant = null;
-			pregnant = null;
-			
-			detectedAt = null;
-			circOf = null;
-			prof = null;
-			
-			decay = null;
-			
-			hospitalised = null;
+			regGroup = locationType = anatomicalSite = epulLocation = detectedAt = circOf = prof = null;
+			pulmonary = bacPositive = male = female = rural = plevritis = itLymph = fibroCav = cns = osteoArticular 
+					= urogenital = peripheralLymphNodes = abdominal = eye = miliary = resistant = hivPositive = phcFacility 
+					= phcWorker = tbFacility = tbServicesWorker = migrant = contact = otherFacility = privateSectorFacility 
+					= focal = infiltrative = disseminated = cavernous = cirrhotic = tbComplex = tuberculoma = bronchi 
+					= skin = liver = pregnant = hospitalised = null;
 						
 			ageAtRegistration = tf.getAgeAtTB03Registration();
 			age = ageAtRegistration;
-			
 			bacPositive = MdrtbUtil.isDiagnosticBacPositive(tf);
-			
 			regGroup = tf.getRegistrationGroup();
 			
 			if ((tf.getTreatmentSiteIP() != null && tf.getTreatmentSiteIP().getConceptId() == hospId)
 			        || (tf.getTreatmentSiteCP() != null && tf.getTreatmentSiteCP().getConceptId() == hospId)) {
 				hospitalised = Boolean.TRUE;
-				
 				table4.setHospitalised(table4.getHospitalised() + 1);
 				table4.setInHospital(table4.getInHospital() + 1);
-				
 				if (age >= 0 && age < 15) {
 					table4.setHospitalised014(table4.getHospitalised014() + 1);
 					table4.setInHospital014(table4.getInHospital014() + 1);
-				}
-				
-				else if (age >= 15 && age < 18) {
+				} else if (age >= 15 && age < 18) {
 					table4.setHospitalised1517(table4.getHospitalised1517() + 1);
 					table4.setInHospital1517(table4.getInHospital1517() + 1);
-				}
-				
-				else if (age >= 18 && age < 19) {
+				} else if (age >= 18 && age < 19) {
 					table4.setHospitalised1819(table4.getHospitalised1819() + 1);
 					table4.setInHospital1819(table4.getInHospital1819() + 1);
 				}
-				
 				if (regGroup != null
 				        && regGroup.getConceptId().equals(
 				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
@@ -492,7 +424,9 @@ public class Form8Controller {
 			List<Form89> fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(
 			    tf.getPatient(), null, tf.getPatientProgramId(), null, null, null, null);
 			
-			rural = fList.isEmpty() ? null : (fList.get(0).getLocationType().getConceptId().equals(ruralId) ? true : false);
+			if (!fList.isEmpty()) {
+				rural = fList.get(0).getLocationType().getConceptId().equals(ruralId) ? true : false;
+			}
 			
 			Concept q = tf.getAnatomicalSite();
 			
@@ -525,81 +459,48 @@ public class Form8Controller {
 			        || !regGroup.getConceptId().equals(
 			            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 			                MdrtbConstants.GP_NEW_CONCEPT_ID)))) {
-				
-				if (regGroup != null
-				        && ((regGroup.getConceptId() == Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))) || (regGroup
-                        .getConceptId() == Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))))) {
-					
+				if (regGroup != null && 
+						(regGroup.getConceptId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_AFTER_RELAPSE1_CONCEPT_ID))))) {
 					table2.setRelapseCount(table2.getRelapseCount() + 1);
 					table3.setGroup2To1(table3.getGroup2To1() + 1);
 					table3.setRelapse(table3.getRelapse() + 1);
-				}
-				
-				else if (regGroup != null
-				        && ((regGroup.getConceptId() == Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))) || (regGroup
-                        .getConceptId() == Integer.parseInt(Context.getAdministrationService()
+				} else if (regGroup != null && 
+						(regGroup.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
 				                .getGlobalProperty(MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID))))) {
-					
 					table2.setFailCount(table2.getFailCount() + 1);
 					table3.setGroup2To1(table3.getGroup2To1() + 1);
-				}
-				
-				else if (regGroup != null
-				        && ((regGroup.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))) || (regGroup
-				                .getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
-				                .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))))) {
-					
+				} else if (regGroup != null && 
+						(regGroup.getConceptId().equals(Integer.parseInt(Context.getAdministrationService()
+				                .getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID))))) {
 					table2.setLtfuCount(table2.getLtfuCount() + 1);
 					table3.setGroup2To1(table3.getGroup2To1() + 1);
-				}
-				
-				else {
+				} else {
 					table2.setOtherCount(table2.getOtherCount() + 1);
 					table3.setGroup2To1(table3.getGroup2To1() + 1);
 				}
-				
-				// Patient not new - skip
 				continue;
-				
 			}
 			
 			fList = Context.getService(MdrtbService.class).getForm89FormsFilledForPatientProgram(tf.getPatient(), null,
 			    tf.getPatientProgramId(), null, null, null, null);
 			
 			if (fList == null || fList.size() != 1) {
-				// No f89 - skip
 				continue;
 			}
-			
 			f89 = fList.get(0);
-			
+			f89.setTB03(tf);
 			locationType = f89.getLocationType();
-			if (locationType != null && locationType.getConceptId() == ruralId) {
+			if (locationType != null && locationType.getConceptId().equals(ruralId)) {
 				rural = Boolean.TRUE;
-			}
-			
-			else if (locationType != null) {
+			} else if (locationType != null) {
 				rural = Boolean.FALSE;
-			}
-			
-			else {
-				rural = null;
 			}
 			
 			gender = tf.getPatient().getGender();
 			if ("M".equals(gender)) {
 				male = Boolean.TRUE;
-			}
-			else if ("F".equals(gender)) {
+			} else if ("F".equals(gender)) {
 				female = Boolean.TRUE;
-			}
-			else {
-				male = null;
-				female = null;
 			}
 			
 			//get disease site
@@ -608,53 +509,43 @@ public class Form8Controller {
 			if (q != null) {
 				if (q.getConceptId().intValue() == pulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.TRUE;
-					
 					anatomicalSite = f89.getAnatomicalSite();
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == fibroCavId) {
 						fibroCav = Boolean.TRUE;
 						table2.setFibrousTotal(table2.getFibrousTotal() + 1);
 					}
-					
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == miliaryId) {
 						miliary = Boolean.TRUE;
 						table2.setMiliaryTotal(table2.getMiliaryTotal() + 1);
 					}
-					
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == focalId) {
 						focal = Boolean.TRUE;
 						table2.setFocalTotal(table2.getFocalTotal() + 1);
 					}
-					
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == infiltrativeId) {
 						infiltrative = Boolean.TRUE;
 						table2.setInfiltrativeTotal(table2.getInfiltrativeTotal() + 1);
 					}
-					
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == disseminatedId) {
 						disseminated = Boolean.TRUE;
 						table2.setDisseminatedTotal(table2.getDisseminatedTotal() + 1);
 					}
-					
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == cavernousId) {
 						cavernous = Boolean.TRUE;
 						table2.setCavernousTotal(table2.getCavernousTotal() + 1);
 					}
-					
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == cirrhoticId) {
 						cirrhotic = Boolean.TRUE;
 						table2.setCirrhoticTotal(table2.getCirrhoticTotal() + 1);
 					}
-					
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == primaryComplexId) {
 						tbComplex = Boolean.TRUE;
 						table2.setTbComplexTotal(table2.getTbComplexTotal() + 1);
 					}
-					
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == tuberculomaId) {
 						tuberculoma = Boolean.TRUE;
 						table2.setTuberculomaTotal(table2.getTuberculomaTotal() + 1);
 					}
-					
 					if (anatomicalSite != null && anatomicalSite.getConceptId() == bronchiId) {
 						bronchi = Boolean.TRUE;
 						table2.setBronchiTotal(table2.getBronchiTotal() + 1);
@@ -664,88 +555,55 @@ public class Form8Controller {
 				else if (q.getConceptId().intValue() == extrapulmonaryConcept.getConceptId().intValue()) {
 					pulmonary = Boolean.FALSE;
 					epulLocation = f89.getEptbLocation();
-					
 					if (epulLocation != null) {
 						if (epulLocation.getConceptId() == cnsId) {
 							cns = Boolean.TRUE;
 							table2.setNervousSystemTotal(table2.getNervousSystemTotal() + 1);
-						}
-						
-						else if (epulLocation.getConceptId() == osteoArticularId) {
+						} else if (epulLocation.getConceptId() == osteoArticularId) {
 							osteoArticular = Boolean.TRUE;
 							table2.setOsteoarticularTotal(table2.getOsteoarticularTotal() + 1);
-						}
-						
-						else if (epulLocation.getConceptId() == urogenitalId) {
+						} else if (epulLocation.getConceptId() == urogenitalId) {
 							urogenital = Boolean.TRUE;
 							table2.setUrogenitalTotal(table2.getUrogenitalTotal() + 1);
-						}
-						
-						else if (epulLocation.getConceptId() == peripheralLymphNodesId) {
+						} else if (epulLocation.getConceptId() == peripheralLymphNodesId) {
 							peripheralLymphNodes = Boolean.TRUE;
 							table2.setPeripheralLymphNodesTotal(table2.getPeripheralLymphNodesTotal() + 1);
-						}
-						
-						else if (epulLocation.getConceptId() == abdominalId) {
+						} else if (epulLocation.getConceptId() == abdominalId) {
 							abdominal = Boolean.TRUE;
 							table2.setAbdominalTotal(table2.getAbdominalTotal() + 1);
-						}
-						
-						else if (epulLocation.getConceptId() == eyeId) {
+						} else if (epulLocation.getConceptId() == eyeId) {
 							eye = Boolean.TRUE;
 							table2.setEyeTotal(table2.getEyeTotal() + 1);
-						}
-						
-						else if (epulLocation.getConceptId() == plevId) {
+						} else if (epulLocation.getConceptId() == plevId) {
 							plevritis = Boolean.TRUE;
 							table2.setPleurisyTotal(table2.getPleurisyTotal() + 1);
-						}
-						
-						else if (epulLocation.getConceptId() == itLymphId) {
+						} else if (epulLocation.getConceptId() == itLymphId) {
 							itLymph = Boolean.TRUE;
 							table2.setHilarLymphNodesTotal(table2.getHilarLymphNodesTotal() + 1);
-						}
-						
-						else if (epulLocation.getConceptId() == liverId) {
+						} else if (epulLocation.getConceptId() == liverId) {
 							liver = Boolean.TRUE;
 							table2.setLiverTotal(table2.getLiverTotal() + 1);
-						}
-						
-						else if (epulLocation.getConceptId() == skinId) {
+						} else if (epulLocation.getConceptId() == skinId) {
 							skin = Boolean.TRUE;
 							table2.setSkinTotal(table2.getSkinTotal() + 1);
 						}
-						
 					}
-					
-				}
-				
-				else {
+				} else {
 					pulmonary = null;
 				}
 			}
 			
-			/* if(pulmonary!=null && !pulmonary) {
-			   Concept epLoc = f89.getEpLocation();
-			 }*/
-			
-			q = tf.getHivStatus();//Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.RESULT_OF_HIV_TEST);
+			q = tf.getHivStatus();
 			
 			if (q != null) {
 				if (q.getConceptId().intValue() == positiveConcept.getConceptId().intValue()) {
 					hivPositive = Boolean.TRUE;
-				}
-				
-				else if (q.getConceptId().intValue() == negativeConcept.getConceptId().intValue()) {
+				} else if (q.getConceptId().intValue() == negativeConcept.getConceptId().intValue()) {
+					hivPositive = Boolean.FALSE;
+				} else {
 					hivPositive = Boolean.FALSE;
 				}
-				
-				else {
-					hivPositive = Boolean.FALSE;
-				}
-			}
-			
-			else {
+			} else {
 				hivPositive = Boolean.FALSE;
 			}
 			
@@ -753,77 +611,46 @@ public class Form8Controller {
 			
 			if (q != null) {
 				resId = q.getConceptId();
-				
 				if (resId != noResId && resId != unknownId && resId != monoId) {
 					resistant = Boolean.TRUE;
-				}
-				
-				else if (resId == noResId) {
+				} else if (resId == noResId) {
 					resistant = Boolean.FALSE;
 				}
-				
-				else {
-					resistant = null;
-				}
-				
-			}
-			
-			else {
-				resistant = null;
 			}
 			
 			detectedAt = f89.getPlaceOfDetection();
 			if (detectedAt != null) {
 				int detId = detectedAt.getConceptId();
-				
 				table2.setDetectedByRoutineCheckups(table2.getDetectedByRoutineCheckups() + 1);
-				
 				if (age >= 0 && age < 15) {
 					table2.setRoutine014(table2.getRoutine014() + 1);
-				}
-				
-				else if (age >= 15 && age < 18) {
+				} else if (age >= 15 && age < 18) {
 					table2.setRoutine1517(table2.getRoutine1517() + 1);
-				}
-				
-				else if (age >= 18 && age < 20) {
+				} else if (age >= 18 && age < 20) {
 					table2.setRoutine1819(table2.getRoutine1819() + 1);
 				}
-				
 				if (detId == phcFacilityId) {
 					table2.setDetectedBySpecialistsTotal(table2.getDetectedBySpecialistsTotal() + 1);
 					phcFacility = Boolean.TRUE;
-					
-				}
-				
-				else if (detId == tbFacilityId) {
+				} else if (detId == tbFacilityId) {
 					table2.setDetectedBySpecialistsTotal(table2.getDetectedByTBDoctors() + 1);
 					tbFacility = Boolean.TRUE;
-					
-				}
-				
-				else if (detId == privateSectorFacilityId) {
+				} else if (detId == privateSectorFacilityId) {
 					table2.setDetectedBySpecialistsTotal(table2.getDetectedBySpecialistsTotal() + 1);
 					privateSectorFacility = Boolean.TRUE;
-				}
-				
-				else if (detId == otherFacilityId) {
+				} else if (detId == otherFacilityId) {
 					table2.setDetectedByOtherSpecialists(table2.getDetectedByOtherSpecialists() + 1);
 					otherFacility = Boolean.TRUE;
 				}
-				
 			}
 			
 			circOf = f89.getCircumstancesOfDetection();
 			if (circOf != null) {
 				int circId = circOf.getConceptId();
-				
 				if (circId == contactId) {
 					contact = Boolean.TRUE;
 					table2.setContact(table2.getContact() + 1);
-				}
-				
-				else if (circId == migrantId) {
+				} else if (circId == migrantId) {
 					migrant = Boolean.TRUE;
 					table2.setMigrants(table2.getMigrants() + 1);
 				}
@@ -837,9 +664,7 @@ public class Form8Controller {
 				if (profId == phcWorkerId) {
 					phcWorker = Boolean.TRUE;
 					table2.setPhcWorkers(table2.getPhcWorkers() + 1);
-				}
-				
-				else if (profId == tbWorkerId) {
+				} else if (profId == tbWorkerId) {
 					tbServicesWorker = Boolean.TRUE;
 					table2.setTbServiceWorkers(table2.getTbServiceWorkers() + 1);
 				}
@@ -854,25 +679,17 @@ public class Form8Controller {
 			//decay
 			if (f89.getPresenceOfDecay() != null) {
 				if (f89.getPresenceOfDecay().getConceptId() == yesId) {
-					
 					table2.setDecayPhaseTotal(table2.getDecayPhaseTotal() + 1);
-					
 					if (phcFacility != null && phcFacility) {
 						table2.setDecayPhasePHCTotal(table2.getDecayPhasePHCTotal() + 1);
 					}
-					
 					if (age >= 0 && age < 15) {
 						table2.setDecayPhase014(table2.getDecayPhase014() + 1);
-					}
-					
-					else if (age >= 15 && age < 18) {
+					} else if (age >= 15 && age < 18) {
 						table2.setDecayPhase1517(table2.getDecayPhase1517() + 1);
-					}
-					
-					else if (age >= 18 && age < 20) {
+					} else if (age >= 18 && age < 20) {
 						table2.setDecayPhase1819(table2.getDecayPhase1819() + 1);
 					}
-					
 				}
 			}
 			
@@ -4531,9 +4348,6 @@ public class Form8Controller {
 				
 				//FAILURE
 				else if (q.getId().equals(
-				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				        MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))
-				        || q.getId().equals(
 				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
 				                MdrtbConstants.GP_AFTER_FAILURE1_CONCEPT_ID)))) {
 					tb08TableData.setFailureAllDetected(tb08TableData.getFailureAllDetected() + 1);
@@ -4731,449 +4545,340 @@ public class Form8Controller {
 						else if (canceled != null && canceled) {
 							tb08TableData.setFailureAllCanceled(tb08TableData.getFailureAllCanceled() + 1);
 							tb08TableData.setFailureExtrapulmonaryCanceled(tb08TableData.getFailureExtrapulmonaryCanceled() + 1);
-							
 						}
-						
 						else if (sld != null && sld) {
 							tb08TableData.setFailureAllSLD(tb08TableData.getFailureAllSLD() + 1);
 							tb08TableData.setFailureExtrapulmonarySLD(tb08TableData.getFailureExtrapulmonarySLD() + 1);
-							
 						}
-						
 					}
 				}
-				
-				else if (q.getId().equals(
-				    Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				        MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))
-				        || q.getId().equals(
-				            Integer.parseInt(Context.getAdministrationService().getGlobalProperty(
-				                MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))) {
+				else if (q.getId().equals(Integer.parseInt(Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_AFTER_DEFAULT1_CONCEPT_ID)))) {
 					tb08TableData.setDefaultAllDetected(tb08TableData.getDefaultAllDetected() + 1);
 					
-					//P
 					if (pulmonary != null && pulmonary) {
-						
-						//BC
 						if (bacPositive) {
-							
 							tb08TableData.setDefaultPulmonaryBCDetected(tb08TableData.getDefaultPulmonaryBCDetected() + 1);
-							
 							if (cured != null && cured) {
 								tb08TableData.setDefaultAllCured(tb08TableData.getDefaultAllCured() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryBCCured(tb08TableData.getDefaultPulmonaryBCCured() + 1);
 								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
-							
 							else if (txCompleted != null && txCompleted) {
 								tb08TableData.setDefaultAllCompleted(tb08TableData.getDefaultAllCompleted() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryBCCompleted(tb08TableData.getDefaultPulmonaryBCCompleted() + 1);
 								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
-							
 							else if (diedTB != null && diedTB) {
 								tb08TableData.setDefaultAllDiedTB(tb08TableData.getDefaultAllDiedTB() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryBCDiedTB(tb08TableData.getDefaultPulmonaryBCDiedTB() + 1);
 								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
-							
 							else if (diedNotTB != null && diedNotTB) {
 								tb08TableData.setDefaultAllDiedNotTB(tb08TableData.getDefaultAllDiedNotTB() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryBCDiedNotTB(tb08TableData.getDefaultPulmonaryBCDiedNotTB() + 1);
 								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
-							
 							else if (failed != null && failed) {
 								tb08TableData.setDefaultAllFailed(tb08TableData.getDefaultAllFailed() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryBCFailed(tb08TableData.getDefaultPulmonaryBCFailed() + 1);
 								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
-							
 							else if (defaulted != null && defaulted) {
 								tb08TableData.setDefaultAllDefaulted(tb08TableData.getDefaultAllDefaulted() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryBCDefaulted(tb08TableData.getDefaultPulmonaryBCDefaulted() + 1);
 								tb08TableData.setDefaultPulmonaryBCEligible(tb08TableData.getDefaultPulmonaryBCEligible() + 1);
 							}
-							
 							else if (transferOut != null && transferOut) {
 								tb08TableData.setDefaultAllTransferOut(tb08TableData.getDefaultAllTransferOut() + 1);
 								tb08TableData.setDefaultPulmonaryBCTransferOut(tb08TableData.getDefaultPulmonaryBCTransferOut() + 1);
-								
 							}
-							
 							else if (canceled != null && canceled) {
 								tb08TableData.setDefaultAllCanceled(tb08TableData.getDefaultAllCanceled() + 1);
 								tb08TableData.setDefaultPulmonaryBCCanceled(tb08TableData.getDefaultPulmonaryBCCanceled() + 1);
-								
 							}
-							
 							else if (sld != null && sld) {
 								tb08TableData.setDefaultAllSLD(tb08TableData.getDefaultAllSLD() + 1);
 								tb08TableData.setDefaultPulmonaryBCSLD(tb08TableData.getDefaultPulmonaryBCSLD() + 1);
-								
 							}
 						}
-						
 						//CD
 						else {
-							
 							tb08TableData.setDefaultPulmonaryCDDetected(tb08TableData.getDefaultPulmonaryCDDetected() + 1);
-							
 							if (cured != null && cured) {
 								tb08TableData.setDefaultAllCured(tb08TableData.getDefaultAllCured() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryCDCured(tb08TableData.getDefaultPulmonaryCDCured() + 1);
 								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
-							
 							else if (txCompleted != null && txCompleted) {
 								tb08TableData.setDefaultAllCompleted(tb08TableData.getDefaultAllCompleted() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryCDCompleted(tb08TableData.getDefaultPulmonaryCDCompleted() + 1);
 								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
-							
 							else if (diedTB != null && diedTB) {
 								tb08TableData.setDefaultAllDiedTB(tb08TableData.getDefaultAllDiedTB() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryCDDiedTB(tb08TableData.getDefaultPulmonaryCDDiedTB() + 1);
 								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
-							
 							else if (diedNotTB != null && diedNotTB) {
 								tb08TableData.setDefaultAllDiedNotTB(tb08TableData.getDefaultAllDiedNotTB() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryCDDiedNotTB(tb08TableData.getDefaultPulmonaryCDDiedNotTB() + 1);
 								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
-							
 							else if (failed != null && failed) {
 								tb08TableData.setDefaultAllFailed(tb08TableData.getDefaultAllFailed() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryCDFailed(tb08TableData.getDefaultPulmonaryCDFailed() + 1);
 								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
-							
 							else if (defaulted != null && defaulted) {
 								tb08TableData.setDefaultAllDefaulted(tb08TableData.getDefaultAllDefaulted() + 1);
 								tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 								tb08TableData.setDefaultPulmonaryCDDefaulted(tb08TableData.getDefaultPulmonaryCDDefaulted() + 1);
 								tb08TableData.setDefaultPulmonaryCDEligible(tb08TableData.getDefaultPulmonaryCDEligible() + 1);
 							}
-							
 							else if (transferOut != null && transferOut) {
 								tb08TableData.setDefaultAllTransferOut(tb08TableData.getDefaultAllTransferOut() + 1);
 								tb08TableData.setDefaultPulmonaryCDTransferOut(tb08TableData.getDefaultPulmonaryCDTransferOut() + 1);
-								
 							}
-							
 							else if (canceled != null && canceled) {
 								tb08TableData.setDefaultAllCanceled(tb08TableData.getDefaultAllCanceled() + 1);
 								tb08TableData.setDefaultPulmonaryCDCanceled(tb08TableData.getDefaultPulmonaryCDCanceled() + 1);
-								
 							}
-							
 							else if (sld != null && sld) {
 								tb08TableData.setDefaultAllSLD(tb08TableData.getDefaultAllSLD() + 1);
 								tb08TableData.setDefaultPulmonaryCDSLD(tb08TableData.getDefaultPulmonaryCDSLD() + 1);
-								
 							}
-							
 						}
 					}
 					
 					//EP
 					else if (pulmonary != null && !pulmonary) {
-						
 						tb08TableData.setDefaultExtrapulmonaryDetected(tb08TableData.getDefaultExtrapulmonaryDetected() + 1);
-						
 						if (cured != null && cured) {
 							tb08TableData.setDefaultAllCured(tb08TableData.getDefaultAllCured() + 1);
 							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 							tb08TableData.setDefaultExtrapulmonaryCured(tb08TableData.getDefaultExtrapulmonaryCured() + 1);
 							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (txCompleted != null && txCompleted) {
 							tb08TableData.setDefaultAllCompleted(tb08TableData.getDefaultAllCompleted() + 1);
 							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 							tb08TableData.setDefaultExtrapulmonaryCompleted(tb08TableData.getDefaultExtrapulmonaryCompleted() + 1);
 							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (diedTB != null && diedTB) {
 							tb08TableData.setDefaultAllDiedTB(tb08TableData.getDefaultAllDiedTB() + 1);
 							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 							tb08TableData.setDefaultExtrapulmonaryDiedTB(tb08TableData.getDefaultExtrapulmonaryDiedTB() + 1);
 							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (diedNotTB != null && diedNotTB) {
 							tb08TableData.setDefaultAllDiedNotTB(tb08TableData.getDefaultAllDiedNotTB() + 1);
 							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 							tb08TableData.setDefaultExtrapulmonaryDiedNotTB(tb08TableData.getDefaultExtrapulmonaryDiedNotTB() + 1);
 							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (failed != null && failed) {
 							tb08TableData.setDefaultAllFailed(tb08TableData.getDefaultAllFailed() + 1);
 							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 							tb08TableData.setDefaultExtrapulmonaryFailed(tb08TableData.getDefaultExtrapulmonaryFailed() + 1);
 							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (defaulted != null && defaulted) {
 							tb08TableData.setDefaultAllDefaulted(tb08TableData.getDefaultAllDefaulted() + 1);
 							tb08TableData.setDefaultAllEligible(tb08TableData.getDefaultAllEligible() + 1);
 							tb08TableData.setDefaultExtrapulmonaryDefaulted(tb08TableData.getDefaultExtrapulmonaryDefaulted() + 1);
 							tb08TableData.setDefaultExtrapulmonaryEligible(tb08TableData.getDefaultExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (transferOut != null && transferOut) {
 							tb08TableData.setDefaultAllTransferOut(tb08TableData.getDefaultAllTransferOut() + 1);
 							tb08TableData.setDefaultExtrapulmonaryTransferOut(tb08TableData.getDefaultExtrapulmonaryTransferOut() + 1);
-							
 						}
-						
 						else if (canceled != null && canceled) {
 							tb08TableData.setDefaultAllCanceled(tb08TableData.getDefaultAllCanceled() + 1);
 							tb08TableData.setDefaultExtrapulmonaryCanceled(tb08TableData.getDefaultExtrapulmonaryCanceled() + 1);
-							
 						}
-						
 						else if (sld != null && sld) {
 							tb08TableData.setDefaultAllSLD(tb08TableData.getDefaultAllSLD() + 1);
 							tb08TableData.setDefaultExtrapulmonarySLD(tb08TableData.getDefaultExtrapulmonarySLD() + 1);
-							
 						}
-						
 					}
-					
 				}
-				
 				//OTHER
 				else if (q.getId().equals(
 				    Integer.parseInt(Context.getAdministrationService()
 				            .getGlobalProperty(MdrtbConstants.GP_OTHER_CONCEPT_ID)))) {
 					tb08TableData.setOtherAllDetected(tb08TableData.getOtherAllDetected() + 1);
-					
-					//P
 					if (pulmonary != null && pulmonary) {
-						
-						//BC
 						if (bacPositive) {
-							
 							tb08TableData.setOtherPulmonaryBCDetected(tb08TableData.getOtherPulmonaryBCDetected() + 1);
-							
 							if (cured != null && cured) {
 								tb08TableData.setOtherAllCured(tb08TableData.getOtherAllCured() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryBCCured(tb08TableData.getOtherPulmonaryBCCured() + 1);
 								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
-							
 							else if (txCompleted != null && txCompleted) {
 								tb08TableData.setOtherAllCompleted(tb08TableData.getOtherAllCompleted() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryBCCompleted(tb08TableData.getOtherPulmonaryBCCompleted() + 1);
 								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
-							
 							else if (diedTB != null && diedTB) {
 								tb08TableData.setOtherAllDiedTB(tb08TableData.getOtherAllDiedTB() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryBCDiedTB(tb08TableData.getOtherPulmonaryBCDiedTB() + 1);
 								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
-							
 							else if (diedNotTB != null && diedNotTB) {
 								tb08TableData.setOtherAllDiedNotTB(tb08TableData.getOtherAllDiedNotTB() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryBCDiedNotTB(tb08TableData.getOtherPulmonaryBCDiedNotTB() + 1);
 								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
-							
 							else if (failed != null && failed) {
 								tb08TableData.setOtherAllFailed(tb08TableData.getOtherAllFailed() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryBCFailed(tb08TableData.getOtherPulmonaryBCFailed() + 1);
 								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
-							
 							else if (defaulted != null && defaulted) {
 								tb08TableData.setOtherAllDefaulted(tb08TableData.getOtherAllDefaulted() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryBCDefaulted(tb08TableData.getOtherPulmonaryBCDefaulted() + 1);
 								tb08TableData.setOtherPulmonaryBCEligible(tb08TableData.getOtherPulmonaryBCEligible() + 1);
 							}
-							
 							else if (transferOut != null && transferOut) {
 								tb08TableData.setOtherAllTransferOut(tb08TableData.getOtherAllTransferOut() + 1);
 								tb08TableData.setOtherPulmonaryBCTransferOut(tb08TableData.getOtherPulmonaryBCTransferOut() + 1);
-								
 							}
-							
 							else if (canceled != null && canceled) {
 								tb08TableData.setOtherAllCanceled(tb08TableData.getOtherAllCanceled() + 1);
 								tb08TableData.setOtherPulmonaryBCCanceled(tb08TableData.getOtherPulmonaryBCCanceled() + 1);
-								
 							}
-							
 							else if (sld != null && sld) {
 								tb08TableData.setOtherAllSLD(tb08TableData.getOtherAllSLD() + 1);
 								tb08TableData.setOtherPulmonaryBCSLD(tb08TableData.getOtherPulmonaryBCSLD() + 1);
-								
 							}
 						}
-						
 						//CD
 						else {
-							
 							tb08TableData.setOtherPulmonaryCDDetected(tb08TableData.getOtherPulmonaryCDDetected() + 1);
-							
 							if (cured != null && cured) {
 								tb08TableData.setOtherAllCured(tb08TableData.getOtherAllCured() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryCDCured(tb08TableData.getOtherPulmonaryCDCured() + 1);
 								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
-							
 							else if (txCompleted != null && txCompleted) {
 								tb08TableData.setOtherAllCompleted(tb08TableData.getOtherAllCompleted() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryCDCompleted(tb08TableData.getOtherPulmonaryCDCompleted() + 1);
 								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
-							
 							else if (diedTB != null && diedTB) {
 								tb08TableData.setOtherAllDiedTB(tb08TableData.getOtherAllDiedTB() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryCDDiedTB(tb08TableData.getOtherPulmonaryCDDiedTB() + 1);
 								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
-							
 							else if (diedNotTB != null && diedNotTB) {
 								tb08TableData.setOtherAllDiedNotTB(tb08TableData.getOtherAllDiedNotTB() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryCDDiedNotTB(tb08TableData.getOtherPulmonaryCDDiedNotTB() + 1);
 								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
-							
 							else if (failed != null && failed) {
 								tb08TableData.setOtherAllFailed(tb08TableData.getOtherAllFailed() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryCDFailed(tb08TableData.getOtherPulmonaryCDFailed() + 1);
 								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
-							
 							else if (defaulted != null && defaulted) {
 								tb08TableData.setOtherAllDefaulted(tb08TableData.getOtherAllDefaulted() + 1);
 								tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 								tb08TableData.setOtherPulmonaryCDDefaulted(tb08TableData.getOtherPulmonaryCDDefaulted() + 1);
 								tb08TableData.setOtherPulmonaryCDEligible(tb08TableData.getOtherPulmonaryCDEligible() + 1);
 							}
-							
 							else if (transferOut != null && transferOut) {
 								tb08TableData.setOtherAllTransferOut(tb08TableData.getOtherAllTransferOut() + 1);
 								tb08TableData.setOtherPulmonaryCDTransferOut(tb08TableData.getOtherPulmonaryCDTransferOut() + 1);
-								
 							}
-							
 							else if (canceled != null && canceled) {
 								tb08TableData.setOtherAllCanceled(tb08TableData.getOtherAllCanceled() + 1);
 								tb08TableData.setOtherPulmonaryCDCanceled(tb08TableData.getOtherPulmonaryCDCanceled() + 1);
-								
 							}
-							
 							else if (sld != null && sld) {
 								tb08TableData.setOtherAllSLD(tb08TableData.getOtherAllSLD() + 1);
 								tb08TableData.setOtherPulmonaryCDSLD(tb08TableData.getOtherPulmonaryCDSLD() + 1);
-								
 							}
-							
 						}
 					}
-					
 					//EP
 					else if (pulmonary != null && !pulmonary) {
-						
 						tb08TableData.setOtherExtrapulmonaryDetected(tb08TableData.getOtherExtrapulmonaryDetected() + 1);
-						
 						if (cured != null && cured) {
 							tb08TableData.setOtherAllCured(tb08TableData.getOtherAllCured() + 1);
 							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 							tb08TableData.setOtherExtrapulmonaryCured(tb08TableData.getOtherExtrapulmonaryCured() + 1);
 							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (txCompleted != null && txCompleted) {
 							tb08TableData.setOtherAllCompleted(tb08TableData.getOtherAllCompleted() + 1);
 							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 							tb08TableData.setOtherExtrapulmonaryCompleted(tb08TableData.getOtherExtrapulmonaryCompleted() + 1);
 							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (diedTB != null && diedTB) {
 							tb08TableData.setOtherAllDiedTB(tb08TableData.getOtherAllDiedTB() + 1);
 							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 							tb08TableData.setOtherExtrapulmonaryDiedTB(tb08TableData.getOtherExtrapulmonaryDiedTB() + 1);
 							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (diedNotTB != null && diedNotTB) {
 							tb08TableData.setOtherAllDiedNotTB(tb08TableData.getOtherAllDiedNotTB() + 1);
 							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 							tb08TableData.setOtherExtrapulmonaryDiedNotTB(tb08TableData.getOtherExtrapulmonaryDiedNotTB() + 1);
 							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (failed != null && failed) {
 							tb08TableData.setOtherAllFailed(tb08TableData.getOtherAllFailed() + 1);
 							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 							tb08TableData.setOtherExtrapulmonaryFailed(tb08TableData.getOtherExtrapulmonaryFailed() + 1);
 							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (defaulted != null && defaulted) {
 							tb08TableData.setOtherAllDefaulted(tb08TableData.getOtherAllDefaulted() + 1);
 							tb08TableData.setOtherAllEligible(tb08TableData.getOtherAllEligible() + 1);
 							tb08TableData.setOtherExtrapulmonaryDefaulted(tb08TableData.getOtherExtrapulmonaryDefaulted() + 1);
 							tb08TableData.setOtherExtrapulmonaryEligible(tb08TableData.getOtherExtrapulmonaryEligible() + 1);
 						}
-						
 						else if (transferOut != null && transferOut) {
 							tb08TableData.setOtherAllTransferOut(tb08TableData.getOtherAllTransferOut() + 1);
 							tb08TableData.setOtherExtrapulmonaryTransferOut(tb08TableData.getOtherExtrapulmonaryTransferOut() + 1);
-							
 						}
-						
 						else if (canceled != null && canceled) {
 							tb08TableData.setOtherAllCanceled(tb08TableData.getOtherAllCanceled() + 1);
 							tb08TableData.setOtherExtrapulmonaryCanceled(tb08TableData.getOtherExtrapulmonaryCanceled() + 1);
-							
 						}
-						
 						else if (sld != null && sld) {
 							tb08TableData.setOtherAllSLD(tb08TableData.getOtherAllSLD() + 1);
 							tb08TableData.setOtherExtrapulmonarySLD(tb08TableData.getOtherExtrapulmonarySLD() + 1);
-							
 						}
 					}
 				}
 			}
-			//}
-			
-			//fin.add(f8Table6);
-			
-			//TOTALS
 		}
-		
 		
 		Map<String, Object> tables = new HashMap<>();
 		tables.put("table1", table1);

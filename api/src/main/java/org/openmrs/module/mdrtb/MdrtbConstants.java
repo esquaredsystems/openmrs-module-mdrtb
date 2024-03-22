@@ -22,11 +22,11 @@ public class MdrtbConstants {
 	
 	public static final String ROLES_TO_REDIRECT_GLOBAL_PROPERTY = moduleName + ".roles_to_redirect_from_openmrs_homepage";
 	
-	public static enum TbClassification {
+	public enum TbClassification {
 		MONO_RESISTANT_TB, POLY_RESISTANT_TB, MDR_TB, XDR_TB, RIF_RESISTANT_TB, PRE_XDR_TB
-	};
+	}
 	
-	public static enum TreatmentState {
+	public enum TreatmentState {
 		NOT_ON_TREATMENT, ON_TREATMENT
 	}
 	
@@ -127,9 +127,6 @@ public class MdrtbConstants {
 	
 	public static final String GP_MDRTB_FORM_ID_TO_ATTACH_TO_BACTERIOLOGY_ENTRY = "mdrtb.formIdToAttachToBacteriologyEntry";
 	
-	@Deprecated
-	public static final String GP_BACTERIOLOGY_ENTRY_FORM_ID = "mdrtb.formIdToAttachToBacteriologyEntry";
-	
 	/** Encounters **/
 	public static final String GP_ENCOUNTER_TYPE_ADVERSE_EVENT = "mdrtb.encounterType.adverseEvent";
 	
@@ -154,19 +151,10 @@ public class MdrtbConstants {
 	public static final String GP_ENCOUNTER_TYPE_PV_REGIMEN = "mdrtb.encounterType.pvRegimen";
 	
 	@Deprecated
-	public static final String GP_TEST_RESULT_ENCOUNTER_TYPE_DST = "mdrtb.testResultEncounterTypeDST";
-	
-	@Deprecated
-	public static final String GP_TEST_RESULT_ENCOUNTER_TYPE_BACTERIOLOGY = "mdrtb.testResultEncounterTypeBacteriology";
-	
-	@Deprecated
 	public static final String GP_TREATMENT_SUPPORTER_PERSON_ATTRIBUTE_TYPE = "mdrtb.treatmentSupporterPersonAttributeType";
 	
 	@Deprecated
 	public static final String GP_PATIENT_IDENTIFIER_TYPE_LIST = "mdrtb.patient_identifier_type_list";
-	
-	@Deprecated
-	public static final String GP_CULTURE_LAB_IDS = "mdrtb.culturelabs";
 	
 	@Deprecated
 	public static final String GP_LAB_ENTRY_IDS = "mdrtb.lab_entry_ids";
@@ -217,10 +205,6 @@ public class MdrtbConstants {
 	
 	public static EncounterType ET_PV_REGIMEN = Context.getEncounterService().getEncounterType(
 	    Context.getAdministrationService().getGlobalProperty(GP_ENCOUNTER_TYPE_PV_REGIMEN));
-	
-	@Deprecated
-	public static EncounterType MDRTB_BACTERIOLOGY_RESULT_ENCOUNTER_TYPE = Context.getEncounterService().getEncounterType(
-	    Context.getAdministrationService().getGlobalProperty(GP_TEST_RESULT_ENCOUNTER_TYPE_BACTERIOLOGY));
 	
 	/** Identifier Types **/
 	public static final PatientIdentifierType MDRTB_ID_TYPE = Context.getPatientService().getPatientIdentifierTypeByName(

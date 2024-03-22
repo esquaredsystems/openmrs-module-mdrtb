@@ -64,21 +64,26 @@ public class SpecimenReportPortletController extends PortletController {
 		if (StringUtils.isNotBlank((String) model.get("report"))) {
 			String report = (String) model.get("report");
 			
-			if (report.equals("specimensWithNoResults")) {
-				results = SpecimenReportingTools.getSpecimensWithNoResults(startDateCollected, endDateCollected);
-				model.put("name", "mdrtb.specimensWithNoResults");
-			} else if (report.equals("specimensWithPositiveCultureButNoDstResults")) {
-				results = SpecimenReportingTools.getSpecimensWithPositiveCultureButNoDstResults(startDateCollected,
-				    endDateCollected, daysSinceCulture, (labs.length != 0 ? labs : null));
-				model.put("name", "mdrtb.specimensWithPositiveCultureButNoDstResults");
-			} else if (report.equals("specimensWithPositiveSmearButNoCultureResults")) {
-				results = SpecimenReportingTools.getSpecimensWithPositiveSmearButNoCultureResults(startDateCollected,
-				    endDateCollected, daysSinceSmear, (labs.length != 0 ? labs : null));
-				model.put("name", "mdrtb.specimensWithPositiveSmearButNoCultureResults");
-			} else if (report.equals("specimensWithContaminatedTest")) {
-				results = SpecimenReportingTools.getSpecimensWithContaminatedTests(startDateCollected, endDateCollected,
-				    (labs.length != 0 ? labs : null));
-				model.put("name", "mdrtb.specimensWithContaminatedTests");
+			switch (report) {
+				case "specimensWithNoResults":
+					results = SpecimenReportingTools.getSpecimensWithNoResults(startDateCollected, endDateCollected);
+					model.put("name", "mdrtb.specimensWithNoResults");
+					break;
+				case "specimensWithPositiveCultureButNoDstResults":
+					results = SpecimenReportingTools.getSpecimensWithPositiveCultureButNoDstResults(startDateCollected,
+					    endDateCollected, daysSinceCulture, (labs.length != 0 ? labs : null));
+					model.put("name", "mdrtb.specimensWithPositiveCultureButNoDstResults");
+					break;
+				case "specimensWithPositiveSmearButNoCultureResults":
+					results = SpecimenReportingTools.getSpecimensWithPositiveSmearButNoCultureResults(startDateCollected,
+					    endDateCollected, daysSinceSmear, (labs.length != 0 ? labs : null));
+					model.put("name", "mdrtb.specimensWithPositiveSmearButNoCultureResults");
+					break;
+				case "specimensWithContaminatedTest":
+					results = SpecimenReportingTools.getSpecimensWithContaminatedTests(startDateCollected, endDateCollected,
+					    (labs.length != 0 ? labs : null));
+					model.put("name", "mdrtb.specimensWithContaminatedTests");
+					break;
 			}
 			
 			model.put("results", results);

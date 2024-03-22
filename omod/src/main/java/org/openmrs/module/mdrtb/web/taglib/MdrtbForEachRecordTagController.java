@@ -66,176 +66,198 @@ public class MdrtbForEachRecordTagController extends BodyTagSupport {
 		records = null;
 		
 		Locale locale = Context.getLocale();
+
+        switch (name) {
+            case "patientIdentifierType": {
+
+                PatientService ps = Context.getPatientService();
+                List<PatientIdentifierType> pitsOut = new ArrayList<>();
+                List<PatientIdentifierType> pits = Context.getPatientService().getAllPatientIdentifierTypes();
+
+                //records = ps.getPatientIdentifierTypes().iterator();
+                if (filterList != null && !filterList.equals("")) {
+                    try {
+                        for (StringTokenizer st = new StringTokenizer(filterList, "|"); st.hasMoreTokens(); ) {
+                            String s = st.nextToken();
+                            PatientIdentifierType pitGlobalProp = ps.getPatientIdentifierTypeByName(s);
+                            if (pitGlobalProp != null) {
+                                for (PatientIdentifierType p : pits) {
+                                    if (p.equals(pitGlobalProp))
+                                        pitsOut.add(p);
+                                }
+                            }
+
+                            if (pitsOut.isEmpty())
+                                pitsOut = pits;
+
+                        }
+                    } catch (Exception e) {
+                        log.error("PatientIdentifierTypes in global properties are invalid.");
+                    }
+                } else {
+                    pitsOut = pits;
+                }
+                records = pitsOut.iterator();
+                break;
+            }
+            case "relationshipType": {
+                PersonService ps = Context.getPersonService();
+                records = ps.getAllRelationshipTypes().iterator();
+                break;
+            }
+            case "encounterType":
+                EncounterService es = Context.getEncounterService();
+                records = es.getAllEncounterTypes().iterator();
+                break;
+            case "location":
+                List<Location> locationOut = new ArrayList<>();
+                List<Location> locations = Context.getLocationService().getAllLocations(false);
+
+                if (filterList != null && !filterList.equals("")) {
+                    try {
+                        for (StringTokenizer st = new StringTokenizer(filterList, "|"); st.hasMoreTokens(); ) {
+                            String s = st.nextToken();
+                            Location locGlobalProp = Context.getLocationService().getLocation(s);
+                            if (locGlobalProp != null) {
+                                for (Location l : locations) {
+                                    if (l.equals(locGlobalProp))
+                                        locationOut.add(l);
+                                }
+                            }
+
+                        }
+                    } catch (Exception e) {
+                        log.error("PatientIdentifierTypes in global properties are invalid.");
+                    }
+                } else {
+                    locationOut = locations;
+                }
+                records = locationOut.iterator();
+                break;
+            //        else if (name.equals("tribe")) {
+            //            PatientService ps = Context.getPatientService();
+            //            records = ps.getTribes().iterator();
+            //        }
+            case "cohort":
+                List<Cohort> cohorts = Context.getCohortService().getAllCohorts();
+                records = cohorts.iterator();
+                break;
+            case "form":
+                List<Form> forms = Context.getFormService().getAllForms();
+                records = forms.iterator();
+                break;
+            case "civilStatus": {
+                ConceptService cs = Context.getConceptService();
+                Concept civilStatus = cs.getConcept(OpenmrsConstants.CIVIL_STATUS_CONCEPT_ID);
+                if (civilStatus == null)
+                    log.error("OpenmrsConstants.CIVIL_STATUS_CONCEPT_ID is defined incorrectly.");
+
+                records = civilStatus.getAnswers().iterator();
+
+                Map<String, String> opts = new HashMap<>();
+                for (ConceptAnswer a : civilStatus.getAnswers()) {
+                    opts.put(a.getAnswerConcept().getConceptId().toString(), a.getAnswerConcept().getName(locale, false)
+                            .getName());
+                }
+                records = opts.entrySet().iterator();
+                if (select != null)
+                    select = select + "=" + opts.get(select);
+                break;
+            }
+            case "gender": {
+                Map<String, String> opts = OpenmrsConstants.GENDER();
+                records = opts.entrySet().iterator();
+                if (select != null)
+                    select = select + "=" + opts.get(select);
+                break;
+            }
+            case "workflowProgram": {
+                List<Program> ret = Context.getProgramWorkflowService().getAllPrograms();
+                records = ret.iterator();
+                break;
+            }
+            case "workflow": {
+                List<ProgramWorkflow> workflows = new ArrayList<>();
+                Program p = Context.getProgramWorkflowService().getProgramByName(programName);
+                if (StringUtils.hasText(workflowNames)) {
+                    for (StringTokenizer st = new StringTokenizer(workflowNames, "|"); st.hasMoreTokens(); ) {
+                        String workflowName = st.nextToken();
+                        workflows.add(p.getWorkflowByName(workflowName));
+                    }
+                } else {
+                    workflows.addAll(p.getAllWorkflows());
+                }
+                records = workflows.iterator();
+                break;
+            }
+            case "state": {
+                List<ProgramWorkflowState> filteredStates = new ArrayList<>();
+                Program p = Context.getProgramWorkflowService().getProgramByName(programName);
+                if (StringUtils.hasText(workflowNames)) {
+                    for (StringTokenizer st = new StringTokenizer(workflowNames, "|"); st.hasMoreTokens(); ) {
+                        String workflowName = st.nextToken();
+                        ProgramWorkflow wf = p.getWorkflowByName(workflowName);
+                        filteredStates.addAll(wf.getStates());
+                    }
+                }
+                records = filteredStates.iterator();
+                break;
+            }
+            case "role": {
+                List<Role> ret = Context.getUserService().getAllRoles();
+                records = ret.iterator();
+                break;
+            }
+            case "user":
+                List<User> users = new ArrayList<>();
+                if (StringUtils.hasText(filterList)) {
+                    for (StringTokenizer st = new StringTokenizer(filterList, "|"); st.hasMoreTokens(); ) {
+                        String r = st.nextToken();
+                        Role role = Context.getUserService().getRole(r);
+                        if (role == null) {
+                            throw new IllegalArgumentException("An invalid role of " + r + " was specified.");
+                        }
+                        users.addAll(Context.getUserService().getUsersByRole(role));
+                    }
+                } else {
+                    users.addAll(Context.getUserService().getAllUsers());
+                }
+                users.sort(new Comparator<User>() {
+
+                    public int compare(User u1, User u2) {
+                        return u1.getPersonName().compareTo(u2.getPersonName());
+                    }
+                });
+                records = users.iterator();
+                break;
+            case "conceptSet": {
+                if (conceptSet == null)
+                    throw new IllegalArgumentException("Must specify conceptSet");
+                Concept c = Context.getConceptService().getConcept(conceptSet);
+                if (c == null)
+                    throw new IllegalArgumentException("Can't find conceptSet " + conceptSet);
+                List<Concept> list = Context.getConceptService().getConceptsByConceptSet(c);
+                records = list.iterator();
+                break;
+            }
+            case "answer": {
+                if (concept == null)
+                    throw new IllegalArgumentException("Must specify concept");
+                Concept c = Context.getConceptService().getConcept(concept);
+                if (c == null)
+                    throw new IllegalArgumentException("Can't find concept " + concept);
+                if (c.getAnswers() != null)
+                    records = c.getAnswers().iterator();
+                else
+                    records = new ArrayList<Concept>().iterator();
+                break;
+            }
+            default:
+                log.error(name + " not found in ForEachRecord list");
+                break;
+        }
 		
-		if (name.equals("patientIdentifierType")) {
-			
-			PatientService ps = Context.getPatientService();
-			List<PatientIdentifierType> pitsOut = new ArrayList<>();
-			List<PatientIdentifierType> pits = Context.getPatientService().getAllPatientIdentifierTypes();
-			
-			//records = ps.getPatientIdentifierTypes().iterator();
-			if (filterList != null && filterList.equals("") == false) {
-				try {
-					for (StringTokenizer st = new StringTokenizer(filterList, "|"); st.hasMoreTokens();) {
-						String s = st.nextToken();
-						PatientIdentifierType pitGlobalProp = ps.getPatientIdentifierTypeByName(s);
-						if (pitGlobalProp != null) {
-							for (PatientIdentifierType p : pits) {
-								if (p.equals(pitGlobalProp))
-									pitsOut.add(p);
-							}
-						}
-						
-						if (pitsOut.size() == 0)
-							pitsOut = pits;
-						
-					}
-				}
-				catch (Exception e) {
-					log.error("PatientIdentifierTypes in global properties are invalid.");
-				}
-			} else {
-				pitsOut = pits;
-			}
-			records = pitsOut.iterator();
-		} else if (name.equals("relationshipType")) {
-			PersonService ps = Context.getPersonService();
-			records = ps.getAllRelationshipTypes().iterator();
-		} else if (name.equals("encounterType")) {
-			EncounterService es = Context.getEncounterService();
-			records = es.getAllEncounterTypes().iterator();
-		} else if (name.equals("location")) {
-			List<Location> locationOut = new ArrayList<>();
-			List<Location> locations = Context.getLocationService().getAllLocations(false);
-			
-			if (filterList != null && filterList.equals("") == false) {
-				try {
-					for (StringTokenizer st = new StringTokenizer(filterList, "|"); st.hasMoreTokens();) {
-						String s = st.nextToken();
-						Location locGlobalProp = Context.getLocationService().getLocation(s);
-						if (locGlobalProp != null) {
-							for (Location l : locations) {
-								if (l.equals(locGlobalProp))
-									locationOut.add(l);
-							}
-						}
-						
-					}
-				}
-				catch (Exception e) {
-					log.error("PatientIdentifierTypes in global properties are invalid.");
-				}
-			} else {
-				locationOut = locations;
-			}
-			records = locationOut.iterator();
-		}
-		//        else if (name.equals("tribe")) {
-		//            PatientService ps = Context.getPatientService();
-		//            records = ps.getTribes().iterator();
-		//        }
-		else if (name.equals("cohort")) {
-			List<Cohort> cohorts = Context.getCohortService().getAllCohorts();
-			records = cohorts.iterator();
-		} else if (name.equals("form")) {
-			List<Form> forms = Context.getFormService().getAllForms();
-			records = forms.iterator();
-		}
-		
-		else if (name.equals("civilStatus")) {
-			ConceptService cs = Context.getConceptService();
-			Concept civilStatus = cs.getConcept(OpenmrsConstants.CIVIL_STATUS_CONCEPT_ID);
-			if (civilStatus == null)
-				log.error("OpenmrsConstants.CIVIL_STATUS_CONCEPT_ID is defined incorrectly.");
-			
-			records = civilStatus.getAnswers().iterator();
-			
-			Map<String, String> opts = new HashMap<>();
-			for (ConceptAnswer a : civilStatus.getAnswers()) {
-				opts.put(a.getAnswerConcept().getConceptId().toString(), a.getAnswerConcept().getName(locale, false)
-				        .getName());
-			}
-			records = opts.entrySet().iterator();
-			if (select != null)
-				select = select.toString() + "=" + opts.get(select);
-		} else if (name.equals("gender")) {
-			Map<String, String> opts = OpenmrsConstants.GENDER();
-			records = opts.entrySet().iterator();
-			if (select != null)
-				select = select.toString() + "=" + opts.get(select);
-		} else if (name.equals("workflowProgram")) {
-			List<org.openmrs.Program> ret = Context.getProgramWorkflowService().getAllPrograms();
-			records = ret.iterator();
-		} else if (name.equals("workflow")) {
-			List<ProgramWorkflow> workflows = new ArrayList<>();
-			Program p = Context.getProgramWorkflowService().getProgramByName(programName);
-			if (StringUtils.hasText(workflowNames)) {
-				for (StringTokenizer st = new StringTokenizer(workflowNames, "|"); st.hasMoreTokens();) {
-					String workflowName = st.nextToken();
-					workflows.add(p.getWorkflowByName(workflowName));
-				}
-			} else {
-				workflows.addAll(p.getAllWorkflows());
-			}
-			records = workflows.iterator();
-		} else if (name.equals("state")) {
-			List<ProgramWorkflowState> filteredStates = new ArrayList<>();
-			Program p = Context.getProgramWorkflowService().getProgramByName(programName);
-			if (StringUtils.hasText(workflowNames)) {
-				for (StringTokenizer st = new StringTokenizer(workflowNames, "|"); st.hasMoreTokens();) {
-					String workflowName = st.nextToken();
-					ProgramWorkflow wf = p.getWorkflowByName(workflowName);
-					filteredStates.addAll(wf.getStates());
-				}
-			}
-			records = filteredStates.iterator();
-		} else if (name.equals("role")) {
-			List<Role> ret = Context.getUserService().getAllRoles();
-			records = ret.iterator();
-		} else if (name.equals("user")) {
-			List<User> users = new ArrayList<>();
-			if (StringUtils.hasText(filterList)) {
-				for (StringTokenizer st = new StringTokenizer(filterList, "|"); st.hasMoreTokens();) {
-					String r = st.nextToken();
-					Role role = Context.getUserService().getRole(r);
-					if (role == null) {
-						throw new IllegalArgumentException("An invalid role of " + r + " was specified.");
-					}
-					users.addAll(Context.getUserService().getUsersByRole(role));
-				}
-			} else {
-				users.addAll(Context.getUserService().getAllUsers());
-			}
-			Collections.sort(users, new Comparator<User>() {
-				
-				public int compare(User u1, User u2) {
-					return u1.getPersonName().compareTo(u2.getPersonName());
-				}
-			});
-			records = users.iterator();
-		} else if (name.equals("conceptSet")) {
-			if (conceptSet == null)
-				throw new IllegalArgumentException("Must specify conceptSet");
-			Concept c = Context.getConceptService().getConcept(conceptSet);
-			if (c == null)
-				throw new IllegalArgumentException("Can't find conceptSet " + conceptSet);
-			List<Concept> list = Context.getConceptService().getConceptsByConceptSet(c);
-			records = list.iterator();
-		} else if (name.equals("answer")) {
-			if (concept == null)
-				throw new IllegalArgumentException("Must specify concept");
-			Concept c = Context.getConceptService().getConcept(concept);
-			if (c == null)
-				throw new IllegalArgumentException("Can't find concept " + concept);
-			if (c.getAnswers() != null)
-				records = c.getAnswers().iterator();
-			else
-				records = new ArrayList<Concept>().iterator();
-		} else {
-			log.error(name + " not found in ForEachRecord list");
-		}
-		
-		if (records == null || records.hasNext() == false) {
+		if (records == null || !records.hasNext()) {
 			records = null;
 			return SKIP_BODY;
 		} else

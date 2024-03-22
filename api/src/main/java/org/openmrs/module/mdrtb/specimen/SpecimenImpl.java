@@ -39,7 +39,6 @@ import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
  * An implementation of the MdrtbSpecimen. This wraps an Encounter and provides access to the
  * various specimen-related data in Encounter
  */
-/// TODO: Replace with LabTestSample
 public class SpecimenImpl implements Specimen {
 	
 	// TODO: could potentially cache all the get/set variables in private instance variables here...
@@ -50,6 +49,8 @@ public class SpecimenImpl implements Specimen {
 	// this is all that would be required to "detach" this object from the business-layer (i think... for 
 	// instance if we wanted to pass this object as a web service?)  (of course, not sure exactly how lazy loading would
 	// affect this)
+	
+	private static final String VOID_REASON = "voided by MDRTB module";
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
@@ -368,7 +369,7 @@ public class SpecimenImpl implements Specimen {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -397,7 +398,7 @@ public class SpecimenImpl implements Specimen {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -435,7 +436,7 @@ public class SpecimenImpl implements Specimen {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter
@@ -518,7 +519,7 @@ public class SpecimenImpl implements Specimen {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter

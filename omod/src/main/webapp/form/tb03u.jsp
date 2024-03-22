@@ -528,7 +528,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.cptStartDate" text="PCT Start Date"/>:</td>
+<td><spring:message code="mdrtb.tb03.pctStartDate" text="PCT Start Date"/>:</td>
 <td><openmrs:formatDate date="${tb03u.pctStartDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 

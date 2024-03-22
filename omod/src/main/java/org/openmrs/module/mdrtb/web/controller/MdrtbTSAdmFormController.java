@@ -109,7 +109,7 @@ public class MdrtbTSAdmFormController extends SimpleFormController {
 			for (ConceptAnswer c : cons) {
 				activityAnswers.add(c.getAnswerConcept());
 			}
-			if (activityAnswers == null || activityAnswers.size() == 0)
+			if (activityAnswers.isEmpty())
 				log.warn("No concept answers found for treatment supporter activity.");
 			map.put("activityAnswers", activityAnswers);
 		}
@@ -249,7 +249,7 @@ public class MdrtbTSAdmFormController extends SimpleFormController {
 				}
 			}
 			
-			if (p.getPhoneNumbers().size() == 0) {
+			if (p.getPhoneNumbers().isEmpty()) {
 				Obs o = new Obs();
 				o.setConcept(phoneConcept);
 				o.setCreator(Context.getAuthenticatedUser());

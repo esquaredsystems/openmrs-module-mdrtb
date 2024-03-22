@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
@@ -48,8 +46,6 @@ import io.swagger.models.properties.StringProperty;
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb03u", supportedClass = SimpleTB03uForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class TB03uFormResourceController extends DataDelegatingCrudResource<SimpleTB03uForm> {
 	
-	protected final Log log = LogFactory.getLog(getClass());
-	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -86,6 +82,7 @@ public class TB03uFormResourceController extends DataDelegatingCrudResource<Simp
 		return description;
 	}
 	
+	@Override
 	public Model getGETModel(Representation rep) {
 		ModelImpl modelImpl = (ModelImpl) super.getGETModel(rep);
 		if (rep instanceof DefaultRepresentation) {

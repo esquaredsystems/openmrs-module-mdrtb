@@ -173,12 +173,12 @@ public class DOTSDQController {
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("district", districtId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");
@@ -218,7 +218,7 @@ public class DOTSDQController {
 		Calendar tCal = null;
 		Calendar nowCal = null;
 		long timeDiff = 0;
-		double diffInWeeks = 0;
+		long diffInWeeks = 0;
 		
 		SmearForm diagnosticSmear = null;
 		XpertForm firstXpert = null;
@@ -520,7 +520,7 @@ public class DOTSDQController {
 		map.put("noTrasnferIn", noTifAfterTransferOut);
 		map.put("noTransferOut", noTofBeforeTransferIn);
 		map.put("errorCount", new Integer(errorCount));
-		map.put("errorPercentage", errorPercentage.toString() + "%");
+		map.put("errorPercentage", errorPercentage + "%");
 		return map;
 	}
 }

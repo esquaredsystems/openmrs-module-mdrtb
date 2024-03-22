@@ -5,13 +5,18 @@ package org.openmrs.module.mdrtb.web.dto;
 
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Location;
 import org.openmrs.module.mdrtb.ReportData;
 import org.openmrs.module.mdrtb.ReportStatus;
 import org.openmrs.module.mdrtb.ReportType;
+import org.openmrs.module.mdrtb.web.controller.reporting.ExportReportController;
 
 public class SimpleReportData extends BaseOpenmrsData {
+	
+	private static Log log = LogFactory.getLog(SimpleReportData.class);
 	
 	private static final long serialVersionUID = 5041302170784578174L;
 	
@@ -60,7 +65,7 @@ public class SimpleReportData extends BaseOpenmrsData {
 				setTableData(html);
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 		}
 	}
@@ -81,7 +86,7 @@ public class SimpleReportData extends BaseOpenmrsData {
 			reportData.setTableData(tableData);
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		return reportData;
 	}

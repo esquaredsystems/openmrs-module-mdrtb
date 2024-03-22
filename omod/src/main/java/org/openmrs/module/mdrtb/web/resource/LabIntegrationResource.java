@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
@@ -35,8 +33,6 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
  */
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/lab", supportedClass = LabTest.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class LabIntegrationResource extends DataDelegatingCrudResource<LabTest> implements Searchable {
-	
-	protected final Log log = LogFactory.getLog(getClass());
 	
 	private CommonLabTestService commonLabService = CommonLabUtil.getService().getCommonLabService();
 	
@@ -68,7 +64,7 @@ public class LabIntegrationResource extends DataDelegatingCrudResource<LabTest> 
 		sb.append(labTest.getLabReferenceNumber());
 		sb.append(", ");
 		sb.append(labTest.getOrder().getPatient().getPersonName().getFullName());
-		return "";
+		return sb.toString();
 	}
 	
 	@Override

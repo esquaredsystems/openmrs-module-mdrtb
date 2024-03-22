@@ -62,7 +62,7 @@ public class CloseReportController {
 		District district = Context.getService(MdrtbService.class).getDistrict(districtId);
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		Integer quarter = q == null ? null : Integer.parseInt(q.replace("\"", ""));
-		Integer month = (m != null && m.length() != 0) ? null : Integer.parseInt(m.replace("\"", ""));
+		Integer month = (m != null && !m.isEmpty()) ? null : Integer.parseInt(m.replace("\"", ""));
 		Date reportDate = null;
 		
 		ReportStatus reportStatus = ReportStatus.UNLOCKED;
@@ -82,7 +82,7 @@ public class CloseReportController {
 			        .append("Facility: ").append(facility).append("Year: ").append(year).append("Quarter: ").append(quarter)
 			        .append("Month: ").append(month).append("Report Name: ").append(reportName).append("Report Status: ")
 			        .append(reportStatus).append("Report Date: ").append(reportDate).append("Form Path: ").append(formPath);
-			System.out.println(sb.toString());
+			System.out.println(sb);
 			
 			ReportData reportData = new ReportData();
 			reportData.setLocation(facility);
@@ -104,7 +104,6 @@ public class CloseReportController {
 				}
 				catch (Exception ee) {
 					System.out.println("Caught in inner catch:" + ee.getMessage());
-					ee.printStackTrace();
 					model.addAttribute("ex", ee);
 					model.addAttribute("reportStatus", reportStatus);
 				}
@@ -116,32 +115,39 @@ public class CloseReportController {
 		}
 		catch (Exception e) {
 			System.out.println("Caught in outer catch:" + e.getMessage());
-			e.printStackTrace();
-			
 			model.addAttribute("ex", e);
 			model.addAttribute("reportStatus", false);
 		}
 		
 		String url = "";
-		if (formPath.equals("tb08uResults")) {
-			url = TB08uController.doTB08(district.getId(), region.getId(), facility.getId(), year, q, m, model);
-		} else if (formPath.equals("tb07uResults")) {
-			url = TB07uController.doTB07u(district.getId(), region.getId(), facility.getId(), year, q, m, model);
-		} else if (formPath.equals("dquResults")) {
-			url = MDRDQController.doDQ(district.getId(), region.getId(), facility.getId(), year, q, m, model);
-		} else if (formPath.equals("dqResults")) {
-			url = DOTSDQController.doDQ(district.getId(), region.getId(), facility.getId(), year, q, m, model);
-		} else if (formPath.equals("tb07Results")) {
-			url = TB07ReportController.doTB07(district.getId(), region.getId(), facility.getId(), year, q, m, model);
-		} else if (formPath.equals("tb08Results")) {
-			url = TB08ReportController.doTB08(district.getId(), region.getId(), facility.getId(), year, q, m, model);
-			System.out.println("URL:" + url);
-		} else if (formPath.equals("tb03Results")) {
-			url = TB03ExportController.doTB03(district.getId(), region.getId(), facility.getId(), year, q, m, model);
-			System.out.println("URL:" + url);
-		} else if (formPath.equals("tb03uResults")) {
-			url = TB03uController.doTB03(district.getId(), region.getId(), facility.getId(), year, q, m, model);
-			System.out.println("URL:" + url);
+		switch (formPath) {
+			case "tb08uResults":
+				url = TB08uController.doTB08(district.getId(), region.getId(), facility.getId(), year, q, m, model);
+				break;
+			case "tb07uResults":
+				url = TB07uController.doTB07u(district.getId(), region.getId(), facility.getId(), year, q, m, model);
+				break;
+			case "dquResults":
+				url = MDRDQController.doDQ(district.getId(), region.getId(), facility.getId(), year, q, m, model);
+				break;
+			case "dqResults":
+				url = DOTSDQController.doDQ(district.getId(), region.getId(), facility.getId(), year, q, m, model);
+				break;
+			case "tb07Results":
+				url = TB07ReportController.doTB07(district.getId(), region.getId(), facility.getId(), year, q, m, model);
+				break;
+			case "tb08Results":
+				url = TB08ReportController.doTB08(district.getId(), region.getId(), facility.getId(), year, q, m, model);
+				System.out.println("URL:" + url);
+				break;
+			case "tb03Results":
+				url = TB03ExportController.doTB03(district.getId(), region.getId(), facility.getId(), year, q, m, model);
+				System.out.println("URL:" + url);
+				break;
+			case "tb03uResults":
+				url = TB03uController.doTB03(district.getId(), region.getId(), facility.getId(), year, q, m, model);
+				System.out.println("URL:" + url);
+				break;
 		}
 		System.out.println("url: " + url);
 		return url;

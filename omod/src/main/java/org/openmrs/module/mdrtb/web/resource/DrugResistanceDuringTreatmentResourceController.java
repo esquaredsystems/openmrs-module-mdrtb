@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
@@ -43,8 +41,6 @@ import io.swagger.models.properties.StringProperty;
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/drugresistance", supportedClass = SimpleDrugResistanceDuringTreatmentForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class DrugResistanceDuringTreatmentResourceController extends DataDelegatingCrudResource<SimpleDrugResistanceDuringTreatmentForm> {
 	
-	protected final Log log = LogFactory.getLog(getClass());
-	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -57,6 +53,7 @@ public class DrugResistanceDuringTreatmentResourceController extends DataDelegat
 		return description;
 	}
 	
+	@Override
 	public Model getGETModel(Representation rep) {
 		ModelImpl modelImpl = (ModelImpl) super.getGETModel(rep);
 		modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())

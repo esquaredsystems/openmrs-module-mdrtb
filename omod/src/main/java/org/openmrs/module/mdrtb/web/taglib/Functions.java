@@ -144,7 +144,7 @@ public class Functions {
 			return null;
 		}
 		try {
-			return new SimpleDateFormat(format, Context.getLocale()).parse(s.toString());
+			return new SimpleDateFormat(format, Context.getLocale()).parse(s);
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);

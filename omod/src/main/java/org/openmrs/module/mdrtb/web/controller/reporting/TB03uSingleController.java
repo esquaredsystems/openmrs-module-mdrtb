@@ -119,12 +119,12 @@ public class TB03uSingleController {
 		}
 		
 		model.addAttribute("yearSelected", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("monthSelected", month.replace("\"", ""));
 		else
 			model.addAttribute("monthSelected", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarterSelected", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarterSelected", "");
@@ -325,11 +325,11 @@ public class TB03uSingleController {
 				
 				Location loc = firstHAIN2.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+					if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 						tb03uData.setHain2Lab(loc.getAddress6());
 					}
 					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+					else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 						tb03uData.setHain2Lab(loc.getCountyDistrict());
 					}
 				}
@@ -757,11 +757,8 @@ public class TB03uSingleController {
 			
 			if (q != null) {
 				codId = q.getConceptId();
-				if (codId
-				        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH_BY_TB).getConceptId()))
-					tb03uData.setDiedOfTB(true);
-				else
-					tb03uData.setDiedOfTB(false);
+                tb03uData.setDiedOfTB(codId
+                        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH_BY_TB).getConceptId()));
 			}
 			
 			else
@@ -820,12 +817,12 @@ public class TB03uSingleController {
 		model.addAttribute("district", districtId);
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");

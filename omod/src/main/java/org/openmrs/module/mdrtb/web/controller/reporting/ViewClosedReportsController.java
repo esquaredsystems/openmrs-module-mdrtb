@@ -7,6 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
@@ -31,6 +33,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ViewClosedReportsController {
+	
+	private static Log log = LogFactory.getLog(ViewClosedReportsController.class);
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -131,7 +135,7 @@ public class ViewClosedReportsController {
 	        @RequestParam("formAction") String formAction, @RequestParam("reportType") String reportType, ModelMap model) {
 		Facility facility = Context.getService(MdrtbService.class).getFacility(facilityId);
 		Integer quarter = q == null ? null : Integer.parseInt(q.replace("\"", ""));
-		Integer month = (m != null && m.length() != 0) ? null : Integer.parseInt(m.replace("\"", ""));
+		Integer month = (m != null && !m.isEmpty()) ? null : Integer.parseInt(m.replace("\"", ""));
 		String html = "";
 		String returnStr = "";
 		try {
@@ -153,7 +157,7 @@ public class ViewClosedReportsController {
 				List<String> allReports = Context.getService(MdrtbService.class).readTableData(oblastId, districtId,
 				    facilityId, year, quarter, month, reportName, null);
 				
-				if (allReports.isEmpty() && allReports.size() == 0) {
+				if (allReports.isEmpty()) {
 					html = "<p>No Data Found</p>";
 				} else {
 					html = CompressionUtil.decompressCode(allReports.get(0));
@@ -172,7 +176,7 @@ public class ViewClosedReportsController {
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 			model.addAttribute("ex", e);
 		}
 		return new ModelAndView(returnStr, model);

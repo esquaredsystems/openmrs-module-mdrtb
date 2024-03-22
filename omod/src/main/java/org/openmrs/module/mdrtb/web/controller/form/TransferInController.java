@@ -8,6 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.PatientProgram;
@@ -45,6 +47,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("/module/mdrtb/form/transferIn.form")
 @SessionAttributes("transferIn")
 public class TransferInController {
+	
+	private static Log log = LogFactory.getLog(TransferInController.class);
 	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -113,7 +117,7 @@ public class TransferInController {
 					form = getTransferInForm(-1, patientProgramId);
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					log.warn(e.getMessage());
 				}
 			}
 			
@@ -156,7 +160,7 @@ public class TransferInController {
 			oblasts = Context.getService(MdrtbService.class).getRegions();
 			districts = Context.getService(MdrtbService.class).getDistrictsByParent(Integer.parseInt(oblast));
 			facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(Integer.parseInt(district));
-			if (facilities.size() == 0) { // Maybe it's for Dushanbe
+			if (facilities.isEmpty()) { // Maybe it's for Dushanbe
 				facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(Integer.parseInt(oblast));
 			}
 			model.addAttribute("oblastSelected", oblast);
@@ -166,7 +170,7 @@ public class TransferInController {
 			model.addAttribute("facilities", facilities);
 		}
 		model.addAttribute("encounterId", encounterId);
-		if (mode != null && mode.length() != 0) {
+		if (mode != null && !mode.isEmpty()) {
 			model.addAttribute("mode", mode);
 		}
 		return new ModelAndView("/module/mdrtb/form/transferIn", model);
@@ -183,7 +187,7 @@ public class TransferInController {
 		
 		Location location = null;
 		
-		if (facilityId != null && facilityId.length() != 0)
+		if (facilityId != null && !facilityId.isEmpty())
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
 		else

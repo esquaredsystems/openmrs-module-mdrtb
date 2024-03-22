@@ -19,7 +19,7 @@ import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 @SuppressWarnings("null")
 public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<AdverseEventsForm> {
 	
-	private static final String VOID_REASON = "voided by Mdr-tb module specimen tracking UI";
+	private static final String VOID_REASON = "voided by MDRTB module";
 	
 	public AdverseEventsForm() {
 		super();

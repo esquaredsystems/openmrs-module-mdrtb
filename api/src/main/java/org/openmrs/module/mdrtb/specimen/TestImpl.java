@@ -106,111 +106,26 @@ public abstract class TestImpl implements Test {
 		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
 		    MdrtbConcepts.TEST_DATE_RECEIVED);
 		attribute.setValue(dateReceived);
-		/*
-		Obs obs = MdrtbUtil.getObsFromObsGroup(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_DATE_RECEIVED), test);
-		// if this obs have not been created, and there is no data to add, do nothing
-		if (obs == null && dateReceived == null) {
-			return;
-		}
-		// if we are trying to set the obs to null, simply void the obs
-		if (dateReceived == null) {
-			obs.setVoided(true);
-			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
-			return;
-		}
-		// create a new obs if needed
-		if (obs == null) {
-			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(
-			    MdrtbConcepts.TEST_DATE_RECEIVED), test.getObsDatetime(), test.getLocation());
-			obs.setEncounter(test.getEncounter());
-			test.addGroupMember(obs);
-		}
-		// now set the value
-		obs.setValueDatetime(dateReceived);
-		*/
 	}
 	
 	public void setLab(Location location) {
 		test.getOrder().getEncounter().setLocation(location);
-		/*
-		test.setLocation(location);
-		// also propagate this location to the all the child obs
-		if (test.getGroupMembers() != null) {
-			for (Obs obs : test.getGroupMembers()) {
-				if (!obs.getVoided()) {
-					obs.setLocation(location);
-				}
-			}
-		}
-		*/
 	}
 	
 	public void setResultDate(Date resultDate) {
 		LabTestSample testSample = CommonLabUtil.getService().getMostRecentAcceptedSample(test);
 		testSample.setProcessedDate(resultDate);
-		/*
-		Obs obs = MdrtbUtil.getObsFromObsGroup(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_RESULT_DATE), test);
-		// if this obs have not been created, and there is no data to add, do nothing
-		if (obs == null && resultDate == null) {
-			return;
-		}
-		// if we are trying to set the obs to null, simply void the obs
-		if (resultDate == null) {
-			obs.setVoided(true);
-			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
-			return;
-		}
-		// create a new obs if needed
-		if (obs == null) {
-			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class)
-			        .getConcept(MdrtbConcepts.TEST_RESULT_DATE), test.getObsDatetime(), test.getLocation());
-			obs.setEncounter(test.getEncounter());
-			test.addGroupMember(obs);
-		}
-		// now set the value
-		obs.setValueDatetime(resultDate);
-		*/
 	}
 	
 	public void setStartDate(Date startDate) {
 		LabTestSample testSample = CommonLabUtil.getService().getMostRecentAcceptedSample(test);
 		testSample.setProcessedDate(startDate);
-		/*
-		Obs obs = MdrtbUtil.getObsFromObsGroup(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_START_DATE), test);
-		// if this obs have not been created, and there is no data to add, do nothing
-		if (obs == null && startDate == null) {
-			return;
-		}
-		// if we are trying to set the obs to null, simply void the obs
-		if (startDate == null) {
-			obs.setVoided(true);
-			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
-			return;
-		}
-		// create a new obs if needed
-		if (obs == null) {
-			obs = new Obs(test.getPerson(),
-			        Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_START_DATE), test.getObsDatetime(),
-			        test.getLocation());
-			obs.setEncounter(test.getEncounter());
-			test.addGroupMember(obs);
-		}
-		// now set the value
-		obs.setValueDatetime(startDate);
-		*/
 	}
 	
 	public String getErrorCode() {
 		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
 		    MdrtbConcepts.ERROR_CODE);
 		return attribute.getValueReference();
-		/*
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ERROR_CODE), test);
-		return (obs == null || obs.getValueText() == null) ? null : obs.getValueText();
-		*/
 	}
 	
 	public void setErrorCode(String code) {
@@ -218,31 +133,6 @@ public abstract class TestImpl implements Test {
 		    MdrtbConcepts.ERROR_CODE);
 		attribute.setValue(code);
 		test.setAttribute(attribute);
-		/*
-		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ERROR_CODE),
-		    test);
-		// if this obs have not been created, and there is no data to add, do nothing
-		if (obs == null && code == null) {
-			return;
-		}
-		
-		// if we are trying to set the obs to null, simply void the obs
-		if (code == null) {
-			obs.setVoided(true);
-			obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
-			return;
-		}
-		
-		// initialize the obs if needed
-		if (obs == null) {
-			obs = new Obs(test.getPerson(), Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ERROR_CODE),
-			        test.getObsDatetime(), test.getOrder().getEncounter().getLocation());
-			obs.setEncounter(test.getOrder().getEncounter());
-			test.addGroupMember(obs);
-		}
-		// now set the value
-		obs.setValueText(code);
-		*/
 	}
 	
 	/**
@@ -265,17 +155,6 @@ public abstract class TestImpl implements Test {
 	public int compareTo(Test test1) {
 		Date recent0 = oldestDate(this);
 		Date recent1 = oldestDate(test1);
-		
-		/*
-		if (recent0 == null) {
-			// use the actual obs datetime if there are no value dates
-			recent0 = this.getObs().getObsDatetime();
-		}
-		if (recent1 == null) {
-			recent1 = this.getObs().getObsDatetime();
-		}
-		*/
-		
 		return recent0.compareTo(recent1);
 	}
 	

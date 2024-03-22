@@ -38,7 +38,7 @@ public class SelectFormController {
 		}
 		
 		// if we don't have any custom forms here, then just redirect to the simple form
-		if (forms.size() == 0) {
+		if (forms.isEmpty()) {
 			if (formType.equals("intake")) {
 				return new ModelAndView("redirect:/module/mdrtb/form/intake.form?patientId=" + patientId
 				        + "&patientProgramId=" + patientProgramId + "&returnUrl=" + returnUrl + "&encounterId=-1");

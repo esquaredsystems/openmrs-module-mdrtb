@@ -135,7 +135,7 @@ public class ProgramController_original {
 		Integer patientId = program.getPatient().getId();
 		
 		// now void the program
-		Context.getProgramWorkflowService().voidPatientProgram(program.getPatientProgram(), "voided by mdr-tb module");
+		Context.getProgramWorkflowService().voidPatientProgram(program.getPatientProgram(), "voided by MDRTB module");
 		
 		// clear the command object
 		status.setComplete();

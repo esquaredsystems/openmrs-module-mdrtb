@@ -8,6 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Location;
 import org.openmrs.PatientProgram;
@@ -46,6 +48,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("/module/mdrtb/form/transferOut.form")
 @SessionAttributes("transferOut")
 public class TransferOutController {
+	
+	private static Log log = LogFactory.getLog(TransferOutController.class);
 	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -115,7 +119,7 @@ public class TransferOutController {
 					form = getTransferOutForm(-1, patientProgramId);
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					log.warn(e.getMessage());
 				}
 			}
 			
@@ -166,7 +170,7 @@ public class TransferOutController {
 			model.addAttribute("facilities", facilities);
 		}
 		model.addAttribute("encounterId", encounterId);
-		if (mode != null && mode.length() != 0) {
+		if (mode != null && !mode.isEmpty()) {
 			model.addAttribute("mode", mode);
 		}
 		return new ModelAndView("/module/mdrtb/form/transferOut", model);

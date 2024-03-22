@@ -71,9 +71,6 @@ public abstract class BaseReportResource<T> extends DelegatingCrudResource<T> im
 			// Get all child locations
 			locList = Context.getService(MdrtbService.class).getLocationsInHierarchy(parent, true);
 		}
-		else {
-			// locList = Context.getLocationService().getAllLocations(false);
-		}
 		Integer year = Integer.parseInt(yearStr);
 		Integer quarter = quarterStr == null ? null : Integer.parseInt(quarterStr);
 		Integer month = monthStr == null ? null : Integer.parseInt(monthStr);

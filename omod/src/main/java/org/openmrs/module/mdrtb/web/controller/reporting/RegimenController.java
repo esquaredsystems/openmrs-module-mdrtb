@@ -13,6 +13,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
@@ -54,6 +56,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class RegimenController {
+	
+	static final Log log = LogFactory.getLog(RegimenController.class);
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
@@ -153,7 +157,7 @@ public class RegimenController {
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
 		//		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		Date endDate = dateMap.get("endDate");
 		
 		MdrtbService ms = Context.getService(MdrtbService.class);
 		ArrayList<RegimenReportRow> rows = new ArrayList<>();
@@ -241,7 +245,7 @@ public class RegimenController {
 			out = new FileOutputStream(System.getProperty("user.home") + File.separator + "regimenReport.xls");
 		}
 		catch (FileNotFoundException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -550,7 +554,7 @@ public class RegimenController {
 			out.close();
 		}
 		catch (IOException e1) {
-			e1.printStackTrace();
+			log.error(e1.getMessage());
 		}
 		finally {
 			wb.close();
@@ -587,12 +591,12 @@ public class RegimenController {
 		String[] rgb = colorStr.split(",");
 		System.out.println(colorStr + "--------------");
 		
-		Integer red = Integer.parseInt(rgb[0]);
-		Integer green = Integer.parseInt(rgb[1]);
-		Integer blue = Integer.parseInt(rgb[2]);
+		int red = Integer.parseInt(rgb[0]);
+		int green = Integer.parseInt(rgb[1]);
+		int blue = Integer.parseInt(rgb[2]);
 		
 		HSSFPalette palette = wb.getCustomPalette();
-		HSSFColor color = palette.findColor(red.byteValue(), green.byteValue(), blue.byteValue());
+		HSSFColor color = palette.findColor((byte) red, (byte) green, (byte) blue);
 		
 		if (color != null) {
 			index = color.getIndex();

@@ -119,12 +119,12 @@ public class TB03uController {
 		}
 		
 		model.addAttribute("yearSelected", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("monthSelected", month.replace("\"", ""));
 		else
 			model.addAttribute("monthSelected", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarterSelected", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarterSelected", "");
@@ -154,9 +154,6 @@ public class TB03uController {
 		model.addAttribute("patientSet", patientSet);
 		
 		// TO CHECK WHETHER REPORT IS CLOSED OR NOT
-		//		Integer report_oblast = null;
-		//		Integer report_quarter = null;
-		//		Integer report_month = null;
 		
 		boolean reportStatus = Context.getService(MdrtbService.class).getReportArchived(oblastId, districtId, facilityId,
 		    year, quarterInt, monthInt, "TB-03u", ReportType.MDRTB);
@@ -165,12 +162,12 @@ public class TB03uController {
 		model.addAttribute("district", districtId);
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");
@@ -751,11 +748,8 @@ public class TB03uController {
 			
 			if (q != null) {
 				codId = q.getConceptId();
-				if (codId
-				        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH_BY_TB).getConceptId()))
-					tb03uData.setDiedOfTB(true);
-				else
-					tb03uData.setDiedOfTB(false);
+                tb03uData.setDiedOfTB(codId
+                        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH_BY_TB).getConceptId()));
 			}
 			
 			else

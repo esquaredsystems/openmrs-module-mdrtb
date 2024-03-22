@@ -11,6 +11,6 @@ public interface CohortBuilderLinkProvider {
 	 *         u l t Report" which is url to submit to : message to localize for the label :
 	 *         parameter to submit to url, in addition to patientIds
 	 */
-	public List<String> getLinkSpecifications();
+	List<String> getLinkSpecifications();
 	
 }

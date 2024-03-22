@@ -43,6 +43,9 @@ import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
 
 public class TB03Util {
 	
+	private TB03Util() {
+	}
+	
 	public static Culture getDiagnosticCulture(TB03Form tf) {
 		Culture c = null;
 		for (CultureForm cf : tf.getCultures()) {
@@ -189,7 +192,8 @@ public class TB03Util {
 				Obs monthOfTreatment = MdrtbUtil.getObsFromEncounter(monthConcept, dstForm.getEncounter());
 				if (monthOfTreatment != null && monthOfTreatment.getValueNumeric().equals(0D)) {
 					LabTest dst = CommonLabUtil.getService().getDstLabTestOrder(dstForm.getEncounter());
-					monthZeroDsts.add(dst);
+					if (dst != null)
+						monthZeroDsts.add(dst);
 				}
 			}
 		}

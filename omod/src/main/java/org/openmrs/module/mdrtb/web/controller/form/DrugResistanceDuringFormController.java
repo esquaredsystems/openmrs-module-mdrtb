@@ -8,6 +8,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Location;
@@ -41,6 +43,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("/module/mdrtb/form/resistanceDuringTx.form")
 @SessionAttributes("drdt")
 public class DrugResistanceDuringFormController {
+	
+	private static Log log = LogFactory.getLog(DrugResistanceDuringFormController.class);
 	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -96,13 +100,14 @@ public class DrugResistanceDuringFormController {
 				drdt = getDrdtForm(-1, patientProgramId);
 			}
 			catch (Exception e) {
-				e.printStackTrace();
+				log.warn(e.getMessage());
 			}
 		}
 		
 		model.addAttribute("encounterId", encounterId);
+		model.addAttribute("drdt", drdt);
 		model.addAttribute("returnUrl", returnUrl);
-		if (mode != null && mode.length() != 0) {
+		if (mode != null && !mode.isEmpty()) {
 			model.addAttribute("mode", mode);
 		}
 		return new ModelAndView("/module/mdrtb/form/resistanceDuringTx", model);

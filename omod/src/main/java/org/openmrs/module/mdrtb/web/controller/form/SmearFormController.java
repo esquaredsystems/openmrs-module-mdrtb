@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Location;
@@ -49,6 +51,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("/module/mdrtb/form/smear.form")
 @SessionAttributes("smear")
 public class SmearFormController {
+	
+	private static Log log = LogFactory.getLog(SmearFormController.class);
 	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -117,7 +121,7 @@ public class SmearFormController {
 					smear = getSmearForm(-1, patientProgramId);
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					log.warn(e.getMessage());
 				}
 			}
 			oblasts = Context.getService(MdrtbService.class).getRegions();
@@ -166,7 +170,7 @@ public class SmearFormController {
 			model.addAttribute("facilities", facilities);
 		}
 		model.addAttribute("encounterId", encounterId);
-		if (mode != null && mode.length() != 0) {
+		if (mode != null && !mode.isEmpty()) {
 			model.addAttribute("mode", mode);
 		}
 		return new ModelAndView("/module/mdrtb/form/smear", model);
@@ -182,7 +186,7 @@ public class SmearFormController {
 	        HttpServletRequest request, ModelMap map) {
 		
 		Location location = null;
-		if (facilityId != null && facilityId.length() != 0)
+		if (facilityId != null && !facilityId.isEmpty())
 			location = Context.getService(MdrtbService.class).getLocation(Integer.parseInt(oblastId),
 			    Integer.parseInt(districtId), Integer.parseInt(facilityId));
 		else

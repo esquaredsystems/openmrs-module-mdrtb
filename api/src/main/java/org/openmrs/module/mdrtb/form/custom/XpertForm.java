@@ -66,7 +66,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -124,7 +124,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -189,7 +189,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -245,7 +245,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -297,7 +297,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason("voided by MDRTB module");
 			}
 			
 			// now create the new Obs and add it to the encounter	

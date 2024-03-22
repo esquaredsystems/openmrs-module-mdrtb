@@ -31,22 +31,6 @@ public class DateDiffTag extends TagSupport {
 				if (format == null)
 					format = "D";
 				
-				//        long diff = toDate.getTime() - fromDate.getTime(); //milliseconds
-				//           
-				//            int numerator = (1000*60*60*24); //days
-				//            
-				//                if (format.equals("M"))
-				//                    numerator = numerator * 30;
-				//                if (format.equals("Y"))
-				//                    numerator = numerator * 365;
-				//                if (format.equals("h"))
-				//                    numerator = numerator / 24;
-				//                if (format.equals("m"))
-				//                    numerator = numerator / (24*60);
-				//            
-				//float diffF = (float) diff / numerator;
-				//int ret = (int) diffF;
-				
 				Calendar calFrom = Calendar.getInstance();
 				Calendar calTo = Calendar.getInstance();
 				

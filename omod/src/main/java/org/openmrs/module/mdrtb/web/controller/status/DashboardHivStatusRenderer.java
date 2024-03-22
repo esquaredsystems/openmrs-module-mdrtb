@@ -42,7 +42,7 @@ public class DashboardHivStatusRenderer implements HivStatusRenderer {
 			Obs result = (Obs) mostRecentTestResult.getValue();
 			
 			DateFormat df = new SimpleDateFormat(MdrtbConstants.DATE_FORMAT_DISPLAY, Context.getLocale());
-			String params[] = { result.getValueCoded().getDisplayString(), df.format(result.getObsDatetime()) };
+			String[] params = { result.getValueCoded().getDisplayString(), df.format(result.getObsDatetime()) };
 			
 			mostRecentTestResult.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.testResultsStatus",
 			    params, "{0} on {1}", Context.getLocale()));

@@ -162,12 +162,12 @@ public class AdverseEventsRegisterController {
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("district", districtId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");

@@ -379,8 +379,6 @@ public class MdrtbConcepts {
 	public static final String CULTURE_STATUS = "MULTI-DRUG RESISTANT TUBERCULOSIS CULTURE STATUS";
 	
 	// Custom concepts for Tajikistan
-	// TODO: Find the right place and groups for these
-	
 	public static final String PREGNANT = "PREGNANT";
 	
 	public static final String FIRST_LINE_DRUGS = "FIRST LINE DRUGS";
@@ -1164,8 +1162,7 @@ public class MdrtbConcepts {
 		Set<String[]> ret = new TreeSet<>();
 		for (Field f : MdrtbConcepts.class.getFields()) {
 			
-			// TODO: make sure this array reflection works--this has not yet been used or tested
-			
+			// make sure this array reflection works
 			if (f.getType() == Array.class) {
 				int modifier = f.getModifiers();
 				if (Modifier.isFinal(modifier) && Modifier.isStatic(modifier) && Modifier.isPublic(modifier)) {

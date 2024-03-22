@@ -34,9 +34,9 @@ public class SimpleDQItem extends BaseOpenmrsData {
 		PersonAddress pa = dqItem.getPatient().getPersonAddress();
 		if (pa != null) {
 			String address = pa.getCountry() + "," + pa.getStateProvince() + "," + pa.getCountyDistrict();
-			if (pa.getAddress1() != null && pa.getAddress1().length() != 0) {
+			if (pa.getAddress1() != null && !pa.getAddress1().isEmpty()) {
 				address += "," + pa.getAddress1();
-				if (pa.getAddress2() != null && pa.getAddress2().length() != 0)
+				if (pa.getAddress2() != null && !pa.getAddress2().isEmpty())
 					address += "," + pa.getAddress2();
 			}
 			setResidentialAddress(address);

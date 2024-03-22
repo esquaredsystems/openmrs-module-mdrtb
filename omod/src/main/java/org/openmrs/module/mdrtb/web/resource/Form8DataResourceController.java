@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.module.mdrtb.reporting.custom.Form8Table1Data;
 import org.openmrs.module.mdrtb.reporting.custom.Form8Table2Data;
@@ -28,11 +26,6 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/form8report", supportedClass = SimpleForm8Data.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class Form8DataResourceController extends BaseReportResource<SimpleForm8Data> {
-	
-	/**
-	 * Logger for this class
-	 */
-	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {

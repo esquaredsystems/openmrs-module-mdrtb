@@ -107,24 +107,24 @@ public class MetadataResourceController extends DataDelegatingCrudResource<Simpl
 		} 
 		else if (resource.equalsIgnoreCase("message")) {
 			String[] resources = {"messages.properties", "messages_ru.properties", "messages_tj.properties"};
-			for (int i = 0; i < resources.length; i++) {
-				InputStream stream = OpenmrsClassLoader.getInstance().getResourceAsStream(resources[i]);
-				try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
-			        ArrayList<String> lines = reader.lines().collect(Collectors.toCollection(ArrayList::new));
-			        Map<String, String> map = new HashMap<>();
-			        for (String line : lines) {
-			        	String[] parts = line.split("\\=", 2);
-			        	if (parts.length == 2 &&  (parts[0].startsWith("mdrtb.") || parts[0].startsWith("commonlabtest."))) {
-								map.put(parts[0], parts[1]);
-			        		
-			        	}
-					}
-			        SimpleObject object = new SimpleObject();
-			        object.add(resources[i], map);
-			        objects.add(object);
-			    } catch (IOException ignored) {
-			    }
-			}
+            for (String s : resources) {
+                InputStream stream = OpenmrsClassLoader.getInstance().getResourceAsStream(s);
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+                    ArrayList<String> lines = reader.lines().collect(Collectors.toCollection(ArrayList::new));
+                    Map<String, String> map = new HashMap<>();
+                    for (String line : lines) {
+                        String[] parts = line.split("\\=", 2);
+                        if (parts.length == 2 && (parts[0].startsWith("mdrtb.") || parts[0].startsWith("commonlabtest."))) {
+                            map.put(parts[0], parts[1]);
+
+                        }
+                    }
+                    SimpleObject object = new SimpleObject();
+                    object.add(s, map);
+                    objects.add(object);
+                } catch (IOException ignored) {
+                }
+            }
 		}
 		return new NeedsPaging<>(objects, context);
 	}

@@ -270,10 +270,8 @@ public class TB03SingleExportController {
 				if (loc != null) {
 					tb03Data.setDiagnosticSmearLab(loc.getName());
 				}
-				
-				//				System.out.println(tb03Data.getDiagnosticSmearResult() + "," + tb03Data.getDiagnosticSmearDate() + ","
-				//				        + tb03Data.getDiagnosticSmearTestNumber());
-			}
+
+            }
 			
 			XpertForm firstXpert = TB03Util.getFirstXpertForm(tf);
 			if (firstXpert != null) {
@@ -307,11 +305,11 @@ public class TB03SingleExportController {
 				
 				Location loc = firstHAIN.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+					if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 						tb03Data.setHainLab(loc.getAddress6());
 					}
 					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+					else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 						tb03Data.setHainLab(loc.getCountyDistrict());
 					}
 				}
@@ -331,11 +329,11 @@ public class TB03SingleExportController {
 				tb03Data.setHain2TestNumber(firstHAIN2.getSpecimenId());
 				Location loc = firstHAIN2.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+					if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 						tb03Data.setHain2Lab(loc.getAddress6());
 					}
 					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+					else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 						tb03Data.setHain2Lab(loc.getCountyDistrict());
 					}
 				}
@@ -352,11 +350,11 @@ public class TB03SingleExportController {
 				
 				Location loc = diagnosticCulture.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+					if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 						tb03Data.setCultureLab(loc.getAddress6());
 					}
 					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+					else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 						tb03Data.setCultureLab(loc.getCountyDistrict());
 					}
 				}
@@ -415,11 +413,11 @@ public class TB03SingleExportController {
 						tb03Data.setMonth2TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+							if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 								tb03Data.setMonth2TestLab(loc.getAddress6());
 							}
 							
-							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+							else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 								tb03Data.setMonth2TestLab(loc.getCountyDistrict());
 							}
 						}
@@ -436,11 +434,11 @@ public class TB03SingleExportController {
 						tb03Data.setMonth3TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+							if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 								tb03Data.setMonth3TestLab(loc.getAddress6());
 							}
 							
-							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+							else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 								tb03Data.setMonth3TestLab(loc.getCountyDistrict());
 							}
 						}
@@ -457,11 +455,11 @@ public class TB03SingleExportController {
 						tb03Data.setMonth5TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+							if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 								tb03Data.setMonth5TestLab(loc.getAddress6());
 							}
 							
-							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+							else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 								tb03Data.setMonth5TestLab(loc.getCountyDistrict());
 							}
 						}
@@ -478,11 +476,11 @@ public class TB03SingleExportController {
 						tb03Data.setMonth6TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+							if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 								tb03Data.setMonth6TestLab(loc.getAddress6());
 							}
 							
-							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+							else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 								tb03Data.setMonth6TestLab(loc.getCountyDistrict());
 							}
 						}
@@ -502,11 +500,11 @@ public class TB03SingleExportController {
 						tb03Data.setMonth3TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+							if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 								tb03Data.setMonth3TestLab(loc.getAddress6());
 							}
 							
-							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+							else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 								tb03Data.setMonth3TestLab(loc.getCountyDistrict());
 							}
 						}
@@ -523,11 +521,11 @@ public class TB03SingleExportController {
 						tb03Data.setMonth4TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+							if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 								tb03Data.setMonth4TestLab(loc.getAddress6());
 							}
 							
-							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+							else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 								tb03Data.setMonth4TestLab(loc.getCountyDistrict());
 							}
 						}
@@ -544,11 +542,11 @@ public class TB03SingleExportController {
 						tb03Data.setMonth5TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+							if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 								tb03Data.setMonth5TestLab(loc.getAddress6());
 							}
 							
-							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+							else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 								tb03Data.setMonth5TestLab(loc.getCountyDistrict());
 							}
 						}
@@ -565,11 +563,11 @@ public class TB03SingleExportController {
 						tb03Data.setMonth8TestNumber(followupSmear.getSpecimenId());
 						Location loc = followupSmear.getLocation();
 						if (loc != null) {
-							if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+							if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 								tb03Data.setMonth8TestLab(loc.getAddress6());
 							}
 							
-							else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+							else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 								tb03Data.setMonth8TestLab(loc.getCountyDistrict());
 							}
 						}
@@ -584,11 +582,8 @@ public class TB03SingleExportController {
 			
 			if (q != null) {
 				codId = q.getConceptId();
-				if (codId
-				        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH_BY_TB).getConceptId()))
-					tb03Data.setDiedOfTB(true);
-				else
-					tb03Data.setDiedOfTB(false);
+                tb03Data.setDiedOfTB(codId
+                        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DEATH_BY_TB).getConceptId()));
 			}
 			
 			else
@@ -633,12 +628,12 @@ public class TB03SingleExportController {
 		model.addAttribute("district", districtId);
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");

@@ -52,6 +52,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class PatientListContoller {
 	
+	private static final String RETURN_LINK = "/module/mdrtb/reporting/patientListsResults";
+	
 	static final String OPEN_TR = "<tr>";
 	
 	static final String CLOSE_TR = "</tr>";
@@ -414,7 +416,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getAllCasesEnrolledTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 	}
 	
 	public static String getAllCasesEnrolledTable(List<Location> locList, Integer year, Integer quarter, Integer month,
@@ -780,7 +782,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getDotsCasesByRegistrationGroupTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -1104,7 +1106,7 @@ public class PatientListContoller {
 		String report = getDotsCasesByAnatomicalSiteTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -1255,7 +1257,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getDotsCasesByDrugResistanceTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -1718,7 +1720,7 @@ public class PatientListContoller {
 		String report = getDotsPulmonaryCasesByRegisrationGroupAndBacteriologicalStatusTable(locList, year, quarterInt,
 		    monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -2171,7 +2173,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getMdrXdrPatientsWithNoTreatmentTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -2319,7 +2321,7 @@ public class PatientListContoller {
 		String report = getMdrSuccessfulTreatmentOutcomeTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -2424,7 +2426,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getMdrXdrPatientsTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -2566,7 +2568,7 @@ public class PatientListContoller {
 		String report = getWomenOfChildbearingAgeTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -2677,7 +2679,7 @@ public class PatientListContoller {
 		String report = getMenOfConscriptAgeTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -2788,7 +2790,7 @@ public class PatientListContoller {
 		String report = getCasesWithConcamitantDiseasesTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -3308,7 +3310,7 @@ public class PatientListContoller {
 		String report = getCasesWithCancerTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -3409,7 +3411,7 @@ public class PatientListContoller {
 		String report = getCasesDetectedFromContactTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -3515,7 +3517,7 @@ public class PatientListContoller {
 		String report = getCasesWithCopdTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -3617,7 +3619,7 @@ public class PatientListContoller {
 		String report = getCasesWithHypertensionTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -3724,7 +3726,7 @@ public class PatientListContoller {
 		String report = getCasesWithUlcerTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -3826,7 +3828,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getCasesWithMentalDisorderTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -3928,7 +3930,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getCasesWithHivTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -4030,7 +4032,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getCasesWithHepatitisTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -4131,7 +4133,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getCasesWithKidneyDiseaseTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -4233,7 +4235,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getCasesWithOtherDiseaseTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -4336,7 +4338,7 @@ public class PatientListContoller {
 		String report = getCasesBySocProfStatusTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 	}
 	
 	public static String getCasesBySocProfStatusTable(List<Location> locList, Integer year, Integer quarter, Integer month,
@@ -5035,7 +5037,7 @@ public class PatientListContoller {
 		String report = getCasesByPopulationCategoryTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -5459,7 +5461,7 @@ public class PatientListContoller {
 		String report = getCasesByDwellingTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -5647,7 +5649,7 @@ public class PatientListContoller {
 		String report = getCasesByPlaceOfDetectionTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -5933,7 +5935,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getCasesByCircumstancesOfDetectionTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -6271,7 +6273,7 @@ public class PatientListContoller {
 		String report = getCasesByMethodOfDetectionTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -6728,7 +6730,7 @@ public class PatientListContoller {
 		String report = getCasesByPulmonaryLocationTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -7277,7 +7279,7 @@ public class PatientListContoller {
 		String report = getCasesByExtraPulmonaryLocationTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -7775,7 +7777,7 @@ public class PatientListContoller {
 		String report = getDrtbCasesTable(locList, year, quarterInt, monthInt, monthInt, false);
 		
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -7878,7 +7880,7 @@ public class PatientListContoller {
 			
 			//XPERT
 			List<XpertForm> xperts = tf.getXperts();
-			if (xperts != null && xperts.size() != 0) {
+			if (xperts != null && !xperts.isEmpty()) {
 				Collections.sort(xperts);
 				
 				XpertForm dx = xperts.get(0);
@@ -7928,7 +7930,7 @@ public class PatientListContoller {
 			
 			//HAIN 1	
 			List<HAINForm> hains = tf.getHains();
-			if (hains != null && hains.size() != 0) {
+			if (hains != null && !hains.isEmpty()) {
 				Collections.sort(hains);
 				
 				HAINForm h = hains.get(0);
@@ -7963,7 +7965,7 @@ public class PatientListContoller {
 			
 			//HAIN 2
 			List<HAIN2Form> hain2s = tf.getHain2s();
-			if (hain2s != null && hain2s.size() != 0) {
+			if (hain2s != null && !hain2s.isEmpty()) {
 				Collections.sort(hain2s);
 				
 				HAIN2Form h = hain2s.get(0);
@@ -8000,7 +8002,7 @@ public class PatientListContoller {
 			
 			//CULTURE
 			List<CultureForm> cultures = tf.getCultures();
-			if (cultures != null && cultures.size() != 0) {
+			if (cultures != null && !cultures.isEmpty()) {
 				Collections.sort(cultures);
 				
 				CultureForm dc = cultures.get(0);
@@ -8157,7 +8159,7 @@ public class PatientListContoller {
 		
 		String report = getDrTbPatientsWithoutTreatmentTable(locList, year, quarterInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -8254,7 +8256,7 @@ public class PatientListContoller {
 			//find mdrtb program with TB03 same as this form
 			List<MdrtbPatientProgram> mdrtbPrograms = Context.getService(MdrtbService.class).getMdrtbPatientPrograms(
 			    tf.getPatient());
-			if (mdrtbPrograms != null && mdrtbPrograms.size() != 0) {
+			if (mdrtbPrograms != null && !mdrtbPrograms.isEmpty()) {
 				for (MdrtbPatientProgram mpp : mdrtbPrograms) {
 					TB03uForm tuf = mpp.getTb03u();
 					if (tuf != null) {
@@ -8291,7 +8293,7 @@ public class PatientListContoller {
 			
 			//XPERT
 			List<XpertForm> xperts = tf.getXperts();
-			if (xperts != null && xperts.size() != 0) {
+			if (xperts != null && !xperts.isEmpty()) {
 				Collections.sort(xperts);
 				
 				XpertForm dx = xperts.get(0);
@@ -8352,7 +8354,7 @@ public class PatientListContoller {
 			
 			//HAIN 1	
 			List<HAINForm> hains = tf.getHains();
-			if (hains != null && hains.size() != 0) {
+			if (hains != null && !hains.isEmpty()) {
 				Collections.sort(hains);
 				
 				HAINForm h = hains.get(0);
@@ -8389,7 +8391,7 @@ public class PatientListContoller {
 			
 			//HAIN 2
 			List<HAIN2Form> hain2s = tf.getHain2s();
-			if (hain2s != null && hain2s.size() != 0) {
+			if (hain2s != null && !hain2s.isEmpty()) {
 				Collections.sort(hain2s);
 				
 				HAIN2Form h = hain2s.get(0);
@@ -8426,7 +8428,7 @@ public class PatientListContoller {
 			
 			//CULTURE
 			List<CultureForm> cultures = tf.getCultures();
-			if (cultures != null && cultures.size() != 0) {
+			if (cultures != null && !cultures.isEmpty()) {
 				Collections.sort(cultures);
 				
 				CultureForm dc = cultures.get(0);
@@ -8559,7 +8561,7 @@ public class PatientListContoller {
 		Integer monthInt = month == null ? null : Integer.parseInt(month);
 		String report = getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarterInt, monthInt, monthInt, false);
 		model.addAttribute("report", report);
-		return "/module/mdrtb/reporting/patientListsResults";
+		return RETURN_LINK;
 		
 	}
 	
@@ -8657,7 +8659,7 @@ public class PatientListContoller {
 			
 			//XPERT
 			List<XpertForm> xperts = tuf.getXperts();
-			if (xperts != null && xperts.size() != 0) {
+			if (xperts != null && !xperts.isEmpty()) {
 				Collections.sort(xperts);
 				
 				XpertForm dx = xperts.get(0);
@@ -8718,7 +8720,7 @@ public class PatientListContoller {
 			
 			//HAIN 1	
 			List<HAINForm> hains = tuf.getHains();
-			if (hains != null && hains.size() != 0) {
+			if (hains != null && !hains.isEmpty()) {
 				Collections.sort(hains);
 				
 				HAINForm h = hains.get(0);
@@ -8931,7 +8933,7 @@ public class PatientListContoller {
 	private static String getRegistrationNumber(TB03Form form) {
 		String val;
 		val = form.getRegistrationNumber();
-		if (val == null || val.length() == 0) {
+		if (val == null || val.isEmpty()) {
 			val = getMessage(MDRTB_UNASSIGNED);
 		}
 		return val;

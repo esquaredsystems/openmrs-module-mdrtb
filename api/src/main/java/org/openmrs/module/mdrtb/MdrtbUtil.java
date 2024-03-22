@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.proxy.HibernateProxy;
-import org.hibernate.proxy.HibernateProxyHelper;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 import org.openmrs.Cohort;
@@ -88,7 +86,7 @@ public class MdrtbUtil {
 				return pi.getIdentifier();
 			}
 		}
-		if (identifiers.size() > 0) {
+		if (!identifiers.isEmpty()) {
 			for (PatientIdentifier pi : identifiers) {
 				return pi.getIdentifier();
 			}
@@ -99,7 +97,7 @@ public class MdrtbUtil {
 	public static Obs getMostRecentObs(Integer conceptId, Patient p) {
 		Concept c = Context.getConceptService().getConcept(conceptId);
 		List<Obs> oList = Context.getObsService().getObservationsByPersonAndConcept(p, c);
-		if (oList.size() > 0)
+		if (!oList.isEmpty())
 			return oList.get(oList.size() - 1);
 		return null;
 	}
@@ -114,7 +112,7 @@ public class MdrtbUtil {
 		if (group.getGroupMembers() != null) {
 			for (Obs obs : group.getGroupMembers()) {
 				// need to check for voided obs here because getGroupMembers returns voided obs
-				if (!obs.getVoided() && obs.getConcept().equals(concept)) {
+				if (Boolean.TRUE.equals(!obs.getVoided()) && obs.getConcept().equals(concept)) {
 					return obs;
 				}
 			}
@@ -128,22 +126,23 @@ public class MdrtbUtil {
 	 */
 	public static Obs getObsFromEncounter(Concept concept, Encounter encounter) {
 		Set<Obs> obsSet = encounter.getObsAtTopLevel(false);
-		if (obsSet != null) {
-			for (Obs obs : obsSet) {
-				if (obs.getVoided())
-					continue;
-				boolean equals = obs.getConcept().getUuid().equals(concept.getUuid());
-				if (equals) {
-					if (obs.getValueCoded() != null && obs.getId() != null) {
-						try {
-							return Context.getObsService().getObs(obs.getId());
-						}
-						catch (Exception e) {
-							return Context.getObsService().getObsByUuid(obs.getUuid());
-						}
+		if (obsSet == null) {
+			return null;
+		}
+		for (Obs obs : obsSet) {
+			if (Boolean.TRUE.equals(obs.getVoided())) {
+				continue;
+			}
+			if (obs.getConcept().getUuid().equals(concept.getUuid())) {
+				if (obs.getValueCoded() != null && obs.getId() != null) {
+					try {
+						return Context.getObsService().getObs(obs.getId());
 					}
-					return obs;
+					catch (Exception e) {
+						return Context.getObsService().getObsByUuid(obs.getUuid());
+					}
 				}
+				return obs;
 			}
 		}
 		return null;
@@ -334,6 +333,7 @@ public class MdrtbUtil {
 	/**
 	 * Given a concept, locale, and a string that represents a concept name tag, returns the first
 	 * concept name for that concept that matches the language and is tagged with the specified tag
+	 * @deprecated use getConcept.getName() instead
 	 */
 	@Deprecated
 	public static ConceptName getConceptName(Concept concept, String language, String conceptNameTag) {
@@ -570,7 +570,7 @@ public class MdrtbUtil {
 		        && StringUtils.isBlank(address.getAddress3()) && StringUtils.isBlank(address.getPostalCode())
 		        && StringUtils.isBlank(address.getAddress4()) && StringUtils.isBlank(address.getLatitude())
 		        && StringUtils.isBlank(address.getLongitude()) && StringUtils.isBlank(address.getAddress6())
-		        && StringUtils.isBlank(address.getAddress5()) && StringUtils.isBlank(address.getPostalCode());
+		        && StringUtils.isBlank(address.getAddress5());
 	}
 	
 	public static Cohort nullSafeIntersect(Cohort c1, Cohort c2) {
@@ -612,8 +612,8 @@ public class MdrtbUtil {
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		Date startDate = (dateMap.get("startDate"));
+		Date endDate = (dateMap.get("endDate"));
 		
 		CohortDefinition drtb = Cohorts.getEnrolledInMDRProgramDuring(startDate, endDate);
 		
@@ -679,8 +679,6 @@ public class MdrtbUtil {
 			ageatEnrollmentCohort.setStartDate(startDate);
 			ageatEnrollmentCohort.setEndDate(endDate);
 			
-			;
-			
 			// eval.evaluate(ageatEnrollmentCohort, context)
 			try {
 				ageCohort = Context.getService(CohortDefinitionService.class).evaluate(ageatEnrollmentCohort,
@@ -745,8 +743,8 @@ public class MdrtbUtil {
 		
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month));
 		
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		Date startDate = (dateMap.get("startDate"));
+		Date endDate = (dateMap.get("endDate"));
 		
 		CohortDefinition drtb = Cohorts.getEnrolledInMDRProgramDuring(startDate, endDate);
 		
@@ -937,7 +935,6 @@ public class MdrtbUtil {
 		for (XpertForm xf : xperts) {
 			
 			if (xf.getMonthOfTreatment() != null && xf.getMonthOfTreatment() == 0) {
-				resultObs = null;
 				constructObs = MdrtbUtil.getObsFromEncounter(xpertConstructs, xf.getEncounter());
 				if (constructObs != null) {
 					resultObs = MdrtbUtil.getObsFromObsGroup(mtbResult, constructObs);
@@ -952,12 +949,8 @@ public class MdrtbUtil {
 		List<HAINForm> hains = tf.getHains();
 		
 		Concept hainConstructs = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT);
-		constructObs = null;
-		resultObs = null;
 		for (HAINForm hf : hains) {
 			if (hf.getMonthOfTreatment() != null && hf.getMonthOfTreatment() == 0) {
-				
-				resultObs = null;
 				constructObs = MdrtbUtil.getObsFromEncounter(hainConstructs, hf.getEncounter());
 				if (constructObs != null) {
 					resultObs = MdrtbUtil.getObsFromObsGroup(mtbResult, constructObs);
@@ -966,20 +959,14 @@ public class MdrtbUtil {
 						return true;
 					}
 				}
-				
 			}
-			
 		}
 		
 		List<HAIN2Form> hain2s = tf.getHain2s();
 		
 		Concept hain2Constructs = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN2_CONSTRUCT);
-		constructObs = null;
-		resultObs = null;
 		for (HAIN2Form hf : hain2s) {
 			if (hf.getMonthOfTreatment() != null && hf.getMonthOfTreatment() == 0) {
-				
-				resultObs = null;
 				constructObs = MdrtbUtil.getObsFromEncounter(hain2Constructs, hf.getEncounter());
 				if (constructObs != null) {
 					resultObs = MdrtbUtil.getObsFromObsGroup(mtbResult, constructObs);
@@ -1066,9 +1053,12 @@ public class MdrtbUtil {
 			}
 		}
 	}
-	
-	public static double timeDiffInWeeks(long milli) {
-		// return milli * 1000 * 60 * 24 * 7;
+
+	/**
+	 * @param milli
+	 * @return milli * 1000 * 60 * 24 * 7;
+	 */
+	public static long timeDiffInWeeks(long milli) {
 		return milli * 10080000;
 	}
 	
@@ -1137,8 +1127,7 @@ public class MdrtbUtil {
 	 * Returns Ids of all members of the given {@link Cohort}
 	 */
 	public static List<Integer> getcohortMembershipIds(Cohort cohort) {
-		List<Integer> ids = cohort.getMemberships().stream().map(m -> m.getCohortMemberId()).collect(Collectors.toList());
-		return ids;
+		return cohort.getMemberships().stream().map(m -> m.getCohortMemberId()).collect(Collectors.toList());
 	}
 	
 	public static String getCohortCommaSeparatedPatientIds(Cohort cohort) {

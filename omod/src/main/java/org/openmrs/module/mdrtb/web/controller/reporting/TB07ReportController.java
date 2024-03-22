@@ -113,14 +113,6 @@ public class TB07ReportController {
 		model.addAttribute("monthSelected", month);
 		model.addAttribute("quarterSelected", quarter);
 		
-		/*List<Location> locations = Context.getLocationService().getAllLocations(false);// Context.getLocationService().getAllLocations();//ms = (MdrtbDrugForecastService) Context.getService(MdrtbDrugForecastService.class);
-		List<Region> oblasts = Context.getService(MdrtbService.class).getOblasts();
-		//drugSets =  ms.getMdrtbDrugs();
-		
-		
-		
-		model.addAttribute("locations", locations);
-		model.addAttribute("oblasts", oblasts);*/
 		return new ModelAndView("/module/mdrtb/reporting/tb07", model);
 		
 	}
@@ -152,12 +144,12 @@ public class TB07ReportController {
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("district", districtId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");
@@ -178,11 +170,6 @@ public class TB07ReportController {
 		Concept extrapulmonaryConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB);
 		Concept positiveConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.POSITIVE);
 		Concept negativeConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.NEGATIVE);
-		/*
-		Concept hivDateConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_HIV_TEST);
-		Concept artStartConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_ART_TREATMENT_START);
-		Concept pctStartConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_PCT_TREATMENT_START);
-		*/
 		Concept contact = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.CONTACT_INVESTIGATION);
 		Concept migrant = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MIGRANT);
 		Concept phcWorker = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PHC_WORKER);
@@ -488,7 +475,7 @@ public class TB07ReportController {
 						}
 						
 						//EP
-						else if (pulmonary != null && pulmonary == Boolean.FALSE) {
+						else if (pulmonary == Boolean.FALSE) {
 							
 							table1.setNewMaleExtrapulmonary(table1.getNewMaleExtrapulmonary() + 1);
 							
@@ -1563,7 +1550,6 @@ public class TB07ReportController {
 				}
 			} else {
 				System.out.println("NO GROUP:" + tf.getEncounter().getEncounterId());
-				continue;
 			}
 			
 		}
@@ -1687,9 +1673,6 @@ public class TB07ReportController {
 		table1.setTotalMaleHIV(table1.getNewMaleHIV() + table1.getRelapseMaleHIV() + table1.getRetreatmentMaleHIV());
 		table1.setTotalFemaleHIV(table1.getNewFemaleHIV() + table1.getRelapseFemaleHIV() + table1.getRetreatmentFemaleHIV());
 		table1.setTotalAllHIV(table1.getTotalMaleHIV() + table1.getTotalFemaleHIV());
-		
-		//table1.setTotalAll(table1.getTotalMale() + getTotalFemale());
-		//fin.add(table1);
 		
 		return table1;
 	}

@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
@@ -47,8 +45,6 @@ import io.swagger.models.properties.StringProperty;
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/adverseevents", supportedClass = SimpleAdverseEventsForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class AdverseEventsFormResourceController extends DataDelegatingCrudResource<SimpleAdverseEventsForm> {
-	
-	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
@@ -113,6 +109,7 @@ public class AdverseEventsFormResourceController extends DataDelegatingCrudResou
 		return description;
 	}
 	
+	@Override
 	public Model getGETModel(Representation rep) {
 		ModelImpl modelImpl = (ModelImpl) super.getGETModel(rep);
 		if (rep instanceof DefaultRepresentation) {

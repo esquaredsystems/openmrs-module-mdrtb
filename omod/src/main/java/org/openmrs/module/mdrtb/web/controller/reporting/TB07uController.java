@@ -183,12 +183,12 @@ public class TB07uController {
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("district", districtId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", ""));
 		else
 			model.addAttribute("quarter", "");
@@ -3064,8 +3064,7 @@ public class TB07uController {
 				}
 			}
 			
-			else
-				continue;
+			else {}
 			
 		}
 		
@@ -3094,10 +3093,10 @@ public class TB07uController {
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
 		
 		//Date startDate = (Date)(dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		Date endDate = dateMap.get("endDate");
 		
 		if (latest == null) {
-			Patient p = Context.getPatientService().getPatient(new Integer(patientId));
+			Patient p = Context.getPatientService().getPatient(patientId);
 			RegimenForm previous = Context.getService(MdrtbService.class).getPreviousRegimenForm(p, locList, endDate);
 			if (previous != null) {
 				latest = previous;

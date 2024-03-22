@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.module.mdrtb.reporting.custom.TB08Data;
 import org.openmrs.module.mdrtb.web.controller.reporting.TB08ReportController;
@@ -22,11 +20,6 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb08report", supportedClass = SimpleTB08Data.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class TB08DataResourceController extends BaseReportResource<SimpleTB08Data> implements Searchable {
-	
-	/**
-	 * Logger for this class
-	 */
-	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {

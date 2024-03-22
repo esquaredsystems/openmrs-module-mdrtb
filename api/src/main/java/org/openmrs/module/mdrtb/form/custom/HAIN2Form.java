@@ -141,7 +141,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 			if (obs != null) {
 				log.debug("not null obs");
 				//				obsgroup.setVoided(true);
-				//				obsgroup.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				//				obsgroup.setVoidReason(VOID_MESSAGE);
 				obs.setVoided(true);
 				obs.setVoidReason(VOID_MESSAGE);
 			}
@@ -216,7 +216,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 			if (obs != null) {
 				log.debug("not null obs");
 				//				obsgroup.setVoided(true);
-				//				obsgroup.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				//				obsgroup.setVoidReason(VOID_MESSAGE);
 				obs.setVoided(true);
 				obs.setVoidReason(VOID_MESSAGE);
 			}
@@ -290,7 +290,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 			if (obs != null) {
 				log.debug("not null obs");
 				//				obsgroup.setVoided(true);
-				//				obsgroup.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				//				obsgroup.setVoidReason(VOID_MESSAGE);
 				obs.setVoided(true);
 				obs.setVoidReason(VOID_MESSAGE);
 			}

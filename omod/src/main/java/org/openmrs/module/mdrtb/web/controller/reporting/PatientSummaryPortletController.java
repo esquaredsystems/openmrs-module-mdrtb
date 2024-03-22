@@ -67,27 +67,27 @@ public class PatientSummaryPortletController extends PortletController {
 			model.put("patient", data.get(0));
 		}
 		
-		Collections.sort(data, new Comparator<Map<String, Object>>() {
-			
-			public int compare(Map<String, Object> left, Map<String, Object> right) {
-				Object l = left.get(sort);
-				Object r = right.get(sort);
-				if (l == null) {
-					if (r == null) {
-						return 0;
-					}
-					return 1;
-				} else {
-					if (r == null) {
-						return -1;
-					}
-					if (l instanceof Comparable && r instanceof Comparable) {
-						return ((Comparable<Comparable<?>>) l).compareTo((Comparable<?>) r);
-					}
-					return l.toString().compareTo(r.toString());
-				}
-			}
-		});
+		data.sort(new Comparator<Map<String, Object>>() {
+
+            public int compare(Map<String, Object> left, Map<String, Object> right) {
+                Object l = left.get(sort);
+                Object r = right.get(sort);
+                if (l == null) {
+                    if (r == null) {
+                        return 0;
+                    }
+                    return 1;
+                } else {
+                    if (r == null) {
+                        return -1;
+                    }
+                    if (l instanceof Comparable && r instanceof Comparable) {
+                        return ((Comparable<Comparable<?>>) l).compareTo((Comparable<?>) r);
+                    }
+                    return l.toString().compareTo(r.toString());
+                }
+            }
+        });
 		model.put("data", data);
 		model.put("runDate", runDate);
 	}

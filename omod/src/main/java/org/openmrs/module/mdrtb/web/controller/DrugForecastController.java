@@ -51,7 +51,6 @@ public class DrugForecastController {
 		List<Concept> drugSets = new ArrayList<>();
 		{
 			Concept tb = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOSIS_DRUGS);
-			tb.getConceptSets();
 			drugSets.add(tb);
 		}
 		
@@ -108,7 +107,6 @@ public class DrugForecastController {
 		List<Concept> drugSets = new ArrayList<>();
 		{
 			Concept tb = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TUBERCULOSIS_DRUGS);
-			tb.getConceptSets();
 			drugSets.add(tb);
 		}
 		model.addAttribute(cohort);
@@ -157,7 +155,7 @@ public class DrugForecastController {
 			endDate = new Date();
 		
 		GregorianCalendar gc = new GregorianCalendar();
-		gc.set(1900, 0, 1, 0, 0, 1);
+		gc.set(1900, Calendar.JANUARY, 1, 0, 0, 1);
 		
 		if (startDate == null) {
 			startDate = gc.getTime();

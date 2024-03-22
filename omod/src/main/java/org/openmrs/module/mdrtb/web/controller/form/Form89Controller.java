@@ -149,7 +149,7 @@ public class Form89Controller {
 			}
 			if (dist != null) {
 				facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(dist.getId());
-				if (facilities.size() == 0) { // Maybe it's for Dushanbe
+				if (facilities.isEmpty()) { // Maybe it's for Dushanbe
 					facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(ob.getId());
 				}
 				model.addAttribute("facilities", facilities);
@@ -172,7 +172,7 @@ public class Form89Controller {
 			oblasts = Context.getService(MdrtbService.class).getRegions();
 			districts = Context.getService(MdrtbService.class).getRegDistricts(Integer.parseInt(oblast));
 			facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(Integer.parseInt(district));
-			if (facilities.size() == 0) { // Maybe it's for Dushanbe
+			if (facilities.isEmpty()) { // Maybe it's for Dushanbe
 				facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(Integer.parseInt(oblast));
 			}
 			model.addAttribute("oblastSelected", oblast);
@@ -182,7 +182,7 @@ public class Form89Controller {
 			model.addAttribute("facilities", facilities);
 		}
 		model.addAttribute("encounterId", encounterId);
-		if (mode != null && mode.length() != 0) {
+		if (mode != null && !mode.isEmpty()) {
 			model.addAttribute("mode", mode);
 		}
 		return new ModelAndView("/module/mdrtb/form/form89", model);

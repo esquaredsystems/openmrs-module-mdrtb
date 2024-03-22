@@ -162,12 +162,12 @@ public class MissingTb03uController {
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("district", districtId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");
@@ -187,8 +187,8 @@ public class MissingTb03uController {
 
 		SimpleDateFormat sdf = Context.getDateFormat();
 		DQItem dqi = null;
-		Date startDate = (Date) (dateMap.get("startDate"));
-		Date endDate = (Date) (dateMap.get("endDate"));
+		Date startDate = dateMap.get("startDate");
+		Date endDate = dateMap.get("endDate");
 		Integer totalCount = 0;
 		Integer errorCount = 0;
 		
@@ -205,7 +205,7 @@ public class MissingTb03uController {
 			dqi.setDateOfBirth(sdf.format(patient.getBirthdate()));
 		}
 		
-		if (progList.size() > 0) {
+		if (!progList.isEmpty()) {
 			// For each Patient Program, search whether the patient has a TB03 form in the master list
 			for (MdrtbPatientProgram p : progList) {
 				totalCount++;

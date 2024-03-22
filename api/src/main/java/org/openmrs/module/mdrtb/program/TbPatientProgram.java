@@ -276,7 +276,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 	public void removeHospitalization(PatientState hospitalizations) {
 		// void this state
 		hospitalizations.setVoided(true);
-		hospitalizations.setVoidReason("voided by mdr-tb module");
+		hospitalizations.setVoidReason("voided by MDRTB module");
 	}
 	
 	/**
@@ -558,7 +558,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		for (PatientState state : this.program.getStates()) {
 			if (state.getState().getProgramWorkflow().getConcept().equals(workflowConcept)) {
 				state.setVoided(true);
-				state.setVoidReason("voided by mdr-tb module");
+				state.setVoidReason("voided by MDRTB module");
 			}
 		}
 	}

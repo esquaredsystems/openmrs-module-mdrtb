@@ -1076,8 +1076,7 @@ where o.person_id in (select pi2.patient_id from patient_identifier pi2 where pi
 
 select e.*, o.concept_id, get_concept_name(o.concept_id) as q, o.value_numeric, o.value_coded, get_concept_name(o.value_coded) as a from encounter e 
 inner join obs o on o.encounter_id = e.encounter_id 
-where e.encounter_id = 679497 and e.voided = 0 
-;
+where e.encounter_id = 866886 and e.voided = 0;
 
 select cat.name, ca.* from commonlabtest_attribute ca 
 inner join commonlabtest_attribute_type cat on cat.test_attribute_type_id = ca.attribute_type_id 
@@ -1101,14 +1100,22 @@ left join concept c on c.uuid = ca.value_reference
 where p.person_id = 350489 
 ;
 
-select * from patient_identifier pi2 where identifier = '26220058';
-select * from person where person_id = 349487;
+select * from patient_identifier pi2 where identifier = '20240305';
+select * from patient_program pp where pp.patient_id = 2277;
+select * from patient_state ps where ps.patient_program_id = 94667;
+select * from person where uuid = 'a6c53369-432d-419b-a624-1243bc985c41';
 select * from person_name where person_id = 349487;
-select * from orders where patient_id = 349487;
-select * from commonlabtest_attribute_type where test_type_id = 5;
-select * from commonlabtest_test where test_order_id = 720887;
+select * from person_address where person_id >= 406084;
+select * from orders where patient_id = 425715;
+select * from commonlabtest_type;
+select * from commonlabtest_attribute_type where uuid = '41fd3be8-c38a-f56a-93e0-651efa6eb8a8';
+select * from commonlabtest_test where test_order_id = 786424;
 select * from commonlabtest_sample where test_order_id = 720887;
 
-select * from commonlabtest_attribute_type cat where datatype_config = '9b246849-3928-11ee-9784-e86a64440f18';
+select * from obs where encounter_id in (select encounter_id from encounter where person_id = 406090);
+select * from encounter where patient_id = 406090;
 
-select * from person_address pa where year(date_created) = 2024;
+delete from patient_program pp where pp.patient_id = 406088;
+delete from patient_state ps where ps.patient_program_id = 94666;
+delete ignore from obs where encounter_id in (select encounter_id from encounter where person_id = 406088);
+delete ignore from encounter where patient_id = 406088;

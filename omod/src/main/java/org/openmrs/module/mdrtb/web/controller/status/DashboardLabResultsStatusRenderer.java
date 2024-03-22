@@ -32,7 +32,7 @@ import org.openmrs.module.mdrtb.status.StatusItem;
 
 public class DashboardLabResultsStatusRenderer implements LabResultsStatusRenderer {
 	
-	private DateFormat df = new SimpleDateFormat(MdrtbConstants.DATE_FORMAT_DISPLAY, Context.getLocale());
+	private final DateFormat df = new SimpleDateFormat(MdrtbConstants.DATE_FORMAT_DISPLAY, Context.getLocale());
 	
 	public void renderSmear(StatusItem item, LabResultsStatus status) {
 		
@@ -167,7 +167,7 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 	}
 	
 	public String renderConversion(StatusItem cultureConversion) {
-		if (((Boolean) cultureConversion.getValue()) == false) {
+		if (!((Boolean) cultureConversion.getValue())) {
 			return Context.getMessageSourceService().getMessage("mdrtb.notConverted");
 		} else {
 			String[] params = { df.format(cultureConversion.getDate()) };
@@ -317,7 +317,7 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 					}
 					sb.append(name.getName());
 					sb.append("; ");
-					results.append(sb.toString());
+					results.append(sb);
 				}
 			}
 		}

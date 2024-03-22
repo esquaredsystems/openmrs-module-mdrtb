@@ -252,7 +252,7 @@ public class MdrtbEditPatientController {
 			} else if (StringUtils.isNotBlank(addAge)) {
 				Calendar currentDate = Calendar.getInstance();
 				currentDate.setTime(new Date());
-				birthYear = currentDate.get(Calendar.YEAR) - Integer.valueOf(addAge);
+				birthYear = currentDate.get(Calendar.YEAR) - Integer.parseInt(addAge);
 			}
 			
 			Set<Person> similarPersons = Context.getPersonService().getSimilarPeople(addName, birthYear, addGender);
@@ -277,7 +277,7 @@ public class MdrtbEditPatientController {
 				}
 			}
 			
-			if (similarPatients.size() > 0) {
+			if (!similarPatients.isEmpty()) {
 				map.put("patients", similarPatients);
 				
 				// add the request params to the map so that we can pass them on
@@ -325,7 +325,7 @@ public class MdrtbEditPatientController {
 		
 		// handle patient identifiers
 		if (identifierValue != null) {
-			for (Integer i = 0; i < identifierValue.length; i++) {
+			for (int i = 0; i < identifierValue.length; i++) {
 				
 				//  if this identifier is blank and the idgen module is installed, see if we need to auto-generate this identifier
 				if (StringUtils.isBlank(identifierValue[i]) && ModuleFactory.getStartedModulesMap().containsKey("idgen")) {
@@ -423,7 +423,7 @@ public class MdrtbEditPatientController {
 		
 		String returnUrl;
 		
-		if (add == null || add.length() == 0) {
+		if (add == null || add.isEmpty()) {
 			returnUrl = "redirect:/module/mdrtb/program/enrollment.form?patientId=" + patient.getId();
 		}
 		returnUrl = "redirect:" + successUrl + (successUrl.contains("?") ? "&" : "?") + "patientId=" + patient.getId()

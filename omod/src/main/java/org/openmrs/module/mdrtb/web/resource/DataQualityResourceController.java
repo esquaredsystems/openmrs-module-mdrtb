@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.module.mdrtb.reporting.custom.DQItem;
 import org.openmrs.module.mdrtb.web.controller.reporting.DOTSDQController;
@@ -24,11 +22,6 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/dataquality", supportedClass = SimpleObject.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class DataQualityResourceController extends BaseReportResource<SimpleObject> {
-	
-	/**
-	 * Logger for this class
-	 */
-	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {

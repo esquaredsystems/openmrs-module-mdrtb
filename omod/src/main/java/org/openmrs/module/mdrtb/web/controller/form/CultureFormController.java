@@ -105,14 +105,8 @@ public class CultureFormController {
 		
 		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		if (pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
-		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue()) {
-			mdr = true;
-		}
-		
-		else {
-			mdr = false;
-		}
+		mdr = pp.getProgram().getConcept().getId().intValue() == Context.getService(MdrtbService.class)
+		        .getConcept(MdrtbConcepts.MDR_TB_PROGRAM).getId().intValue();
 		
 		// save the actual update
 		Context.getEncounterService().saveEncounter(culture.getEncounter());

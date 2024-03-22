@@ -21,6 +21,8 @@ import org.openmrs.module.mdrtb.specimen.DstResult;
 
 public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	
+	private static final String VOID_REASON = "voided by MDRTB module";
+	
 	public DstImpl di;
 	
 	private LabTest labTest;
@@ -103,7 +105,7 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -155,7 +157,7 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	
@@ -207,7 +209,7 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
 				obs.setVoided(true);
-				obs.setVoidReason("voided by Mdr-tb module specimen tracking UI");
+				obs.setVoidReason(VOID_REASON);
 			}
 			
 			// now create the new Obs and add it to the encounter	

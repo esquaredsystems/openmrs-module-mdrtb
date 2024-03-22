@@ -85,21 +85,8 @@ public class RegimenFormController {
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId,
 	        @RequestParam(required = true, value = "encounterId") Integer encounterId,
 	        @RequestParam(required = false, value = "mode") String mode, ModelMap model) {
-		/*
-		RegimenForm regimenForm = null;
-		if (encounterId != -1) { //we are editing an existing encounter
-			regimenForm = new RegimenForm(Context.getEncounterService().getEncounter(encounterId));
-		} else {
-			try {
-				regimenForm = getRegimenForm(-1, patientProgramId);
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		*/
 		model.addAttribute("encounterId", encounterId);
-		if (mode != null && mode.length() != 0) {
+		if (mode != null && !mode.isEmpty()) {
 			model.addAttribute("mode", mode);
 		}
 		

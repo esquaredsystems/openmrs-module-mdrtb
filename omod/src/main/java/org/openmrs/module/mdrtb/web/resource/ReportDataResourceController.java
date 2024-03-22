@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
@@ -36,8 +34,6 @@ import io.swagger.models.properties.StringProperty;
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/reportdata", supportedClass = SimpleReportData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class ReportDataResourceController extends DataDelegatingCrudResource<SimpleReportData> implements Searchable {
 	
-	protected final Log log = LogFactory.getLog(getClass());
-	
 	private MdrtbService service = Context.getService(MdrtbService.class);
 	
 	@Override
@@ -62,6 +58,7 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 		return description;
 	}
 	
+	@Override
 	public Model getGETModel(Representation rep) {
 		ModelImpl modelImpl = (ModelImpl) super.getGETModel(rep);
 		modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())

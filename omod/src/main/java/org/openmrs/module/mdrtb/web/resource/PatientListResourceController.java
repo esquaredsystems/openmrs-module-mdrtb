@@ -3,8 +3,6 @@ package org.openmrs.module.mdrtb.web.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.MdrtbService;
@@ -86,11 +84,6 @@ public class PatientListResourceController extends BaseReportResource<SimpleData
 	private static final String DRTB_PATIENTS_WITHOUT_TREATMENT = "drtbpatientswithouttreatment";
 	
 	private static final String DRTB_PATIENTS_WITH_SUCCESSFUL_TREATMENT = "drtbpatientswithsuccessfultreatment";
-	
-	/**
-	 * Logger for this class
-	 */
-	protected final Log log = LogFactory.getLog(getClass());
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
@@ -225,6 +218,8 @@ public class PatientListResourceController extends BaseReportResource<SimpleData
 			case DRTB_PATIENTS_WITH_SUCCESSFUL_TREATMENT:
 				htmlTable = PatientListContoller.getDrTbCasesWithSuccessfulTreatmentTable(locList, year, quarter, month, month2,
 				    true);
+				break;
+			default:
 				break;
 		}
 		tableData.add(new SimpleDataObject(htmlTable, null, null));

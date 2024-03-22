@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Location;
@@ -47,6 +49,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 @RequestMapping("/module/mdrtb/form/tb03.form")
 public class TB03FormController {
+	
+	private static Log log = LogFactory.getLog(TB03FormController.class);
 	
 	@InitBinder
 	public void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) {
@@ -112,7 +116,7 @@ public class TB03FormController {
 					tb03 = getTB03Form(-1, patientProgramId);
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					log.warn(e.getMessage());
 				}
 			}
 			
@@ -153,7 +157,7 @@ public class TB03FormController {
 			}
 			if (dist != null) {
 				facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(dist.getId());
-				if (facilities.size() == 0) { // Maybe it's for Dushanbe
+				if (facilities.isEmpty()) { // Maybe it's for Dushanbe
 					facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(ob.getId());
 				}
 				model.addAttribute("facilities", facilities);
@@ -176,7 +180,7 @@ public class TB03FormController {
 			oblasts = Context.getService(MdrtbService.class).getRegions();
 			districts = Context.getService(MdrtbService.class).getDistrictsByParent(Integer.parseInt(oblast));
 			facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(Integer.parseInt(district));
-			if (facilities.size() == 0) { // Maybe it's for Dushanbe
+			if (facilities.isEmpty()) { // Maybe it's for Dushanbe
 				facilities = Context.getService(MdrtbService.class).getFacilitiesByParent(Integer.parseInt(oblast));
 			}
 			model.addAttribute("oblastSelected", oblast);
@@ -186,7 +190,7 @@ public class TB03FormController {
 			model.addAttribute("facilities", facilities);
 		}
 		model.addAttribute("encounterId", encounterId);
-		if (mode != null && mode.length() != 0) {
+		if (mode != null && !mode.isEmpty()) {
 			model.addAttribute("mode", mode);
 		}
 		return new ModelAndView("/module/mdrtb/form/tb03", model);

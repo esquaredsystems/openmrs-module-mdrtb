@@ -152,12 +152,12 @@ public class Form89SingleExportController {
 		model.addAttribute("district", districtId);
 		model.addAttribute("facility", facilityId);
 		model.addAttribute("year", year);
-		if (month != null && month.length() != 0)
+		if (month != null && !month.isEmpty())
 			model.addAttribute("month", month.replace("\"", ""));
 		else
 			model.addAttribute("month", "");
 		
-		if (quarter != null && quarter.length() != 0)
+		if (quarter != null && !quarter.isEmpty())
 			model.addAttribute("quarter", quarter.replace("\"", "'"));
 		else
 			model.addAttribute("quarter", "");
@@ -235,7 +235,7 @@ public class Form89SingleExportController {
 			List<SmearForm> smears = f89.getSmears();
 			SmearForm diagnosticSmear = null;
 			
-			if (smears != null && smears.size() != 0) {
+			if (smears != null && !smears.isEmpty()) {
 				diagnosticSmear = smears.get(0);
 			}
 			
@@ -259,7 +259,7 @@ public class Form89SingleExportController {
 			
 			XpertForm firstXpert = null;
 			
-			if (xperts != null && xperts.size() != 0)
+			if (xperts != null && !xperts.isEmpty())
 				firstXpert = xperts.get(0);
 			if (firstXpert != null) {
 				if (firstXpert.getMtbResult() != null)
@@ -279,7 +279,7 @@ public class Form89SingleExportController {
 			
 			List<HAINForm> hains = f89.getHains();
 			HAINForm firstHAIN = null;
-			if (hains != null && hains.size() != 0)
+			if (hains != null && !hains.isEmpty())
 				firstHAIN = hains.get(0);
 			
 			if (firstHAIN != null) {
@@ -296,11 +296,11 @@ public class Form89SingleExportController {
 				
 				Location loc = firstHAIN.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+					if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 						f89Data.setHainLab(loc.getAddress6());
 					}
 					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+					else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 						f89Data.setHainLab(loc.getCountyDistrict());
 					}
 				}
@@ -310,7 +310,7 @@ public class Form89SingleExportController {
 			
 			HAIN2Form firstHAIN2 = null;
 			
-			if (hain2s != null && hain2s.size() != 0)
+			if (hain2s != null && !hain2s.isEmpty())
 				firstHAIN2 = hain2s.get(0);
 			
 			if (firstHAIN2 != null) {
@@ -326,17 +326,15 @@ public class Form89SingleExportController {
 				f89Data.setHain2TestNumber(firstHAIN2.getSpecimenId());
 				Location loc = firstHAIN2.getLocation();
 				if (loc != null) {
-					if (loc.getAddress6() != null && loc.getAddress6().length() != 0) {
+					if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 						f89Data.setHain2Lab(loc.getAddress6());
 					}
 					
-					else if (loc.getCountyDistrict() != null && loc.getCountyDistrict().length() != 0) {
+					else if (loc.getCountyDistrict() != null && !loc.getCountyDistrict().isEmpty()) {
 						f89Data.setHain2Lab(loc.getCountyDistrict());
 					}
 				}
 			}
-			
-			q = null;
 			patientSet.add(f89Data);
 			
 		}

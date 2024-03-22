@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.User;
 import org.openmrs.api.UserService;
+import org.openmrs.api.context.Context;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -34,9 +35,6 @@ public class MdrtbController {
 	
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
-	
-	@Autowired
-	UserService userService;
 	
 	/** Success form view name */
 	private final String VIEW = "/module/${rootArtifactid}/${rootArtifactid}";
@@ -57,11 +55,6 @@ public class MdrtbController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String onPost(HttpSession httpSession, @ModelAttribute("anyRequestObject") Object anyRequestObject,
 	        BindingResult errors) {
-		
-		if (errors.hasErrors()) {
-			// return error view
-		}
-		
 		return VIEW;
 	}
 	
@@ -72,8 +65,7 @@ public class MdrtbController {
 	 */
 	@ModelAttribute("users")
 	protected List<User> getUsers() {
-		List<User> users = userService.getAllUsers();
-		return users;
+		return Context.getUserService().getAllUsers();
 	}
 	
 }
