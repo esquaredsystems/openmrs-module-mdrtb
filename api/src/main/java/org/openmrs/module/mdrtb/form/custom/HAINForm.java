@@ -5,10 +5,10 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.commonlabtest.LabTest;
-import org.openmrs.module.commonlabtest.LabTestAttribute;
-import org.openmrs.module.commonlabtest.LabTestSample;
-import org.openmrs.module.mdrtb.CommonLabUtil;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.lab.LabTestSample;
+import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
@@ -42,7 +42,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public String getSpecimenId() {
 		if (getLabTest() != null) {
-			LabTestSample sample = CommonLabUtil.getService().getMostRecentAcceptedSample(getLabTest());
+			LabTestSample sample = LabUtil.getService().getMostRecentAcceptedSample(getLabTest());
 			// return sample.getSampleIdentifier();
 			return sample.getLabTestSampleId().toString();
 			
@@ -88,7 +88,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Concept getMtbResult() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = CommonLabUtil.getService().getHainAttributeByTestAndName(getLabTest(),
+			LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(getLabTest(),
 			    MdrtbConcepts.MTB_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
@@ -155,7 +155,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Concept getRifResult() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = CommonLabUtil.getService().getHainAttributeByTestAndName(getLabTest(),
+			LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(getLabTest(),
 			    MdrtbConcepts.RIFAMPICIN_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
@@ -222,7 +222,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Concept getInhResult() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(getLabTest(),
+			LabTestAttribute attribute = LabUtil.getService().getXpertAttributeByTestAndName(getLabTest(),
 			    MdrtbConcepts.ISONIAZID_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
@@ -292,7 +292,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Integer getPatientProgramId() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(getLabTest(),
+			LabTestAttribute attribute = LabUtil.getService().getXpertAttributeByTestAndName(getLabTest(),
 			    MdrtbConcepts.PATIENT_PROGRAM_ID);
 			if (attribute != null) {
 				try {
@@ -344,7 +344,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Integer getMonthOfTreatment() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(getLabTest(),
+			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(getLabTest(),
 			    MdrtbConcepts.MONTH_OF_TREATMENT);
 			if (attribute != null) {
 				try {

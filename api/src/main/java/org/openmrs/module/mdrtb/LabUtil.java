@@ -15,19 +15,19 @@ import org.openmrs.Order.Urgency;
 import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.commonlabtest.LabTest;
-import org.openmrs.module.commonlabtest.LabTestAttribute;
-import org.openmrs.module.commonlabtest.LabTestAttributeType;
-import org.openmrs.module.commonlabtest.LabTestGroup;
-import org.openmrs.module.commonlabtest.LabTestSample;
-import org.openmrs.module.commonlabtest.LabTestSampleStatus;
-import org.openmrs.module.commonlabtest.LabTestType;
-import org.openmrs.module.commonlabtest.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.lab.LabTestAttributeType;
+import org.openmrs.module.mdrtb.lab.LabTestGroup;
+import org.openmrs.module.mdrtb.lab.LabTestSample;
+import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
+import org.openmrs.module.mdrtb.lab.LabTestType;
+import org.openmrs.module.mdrtb.api.LabServiceImpl;
 import org.openmrs.module.mdrtb.specimen.DstTestType;
 
-public class CommonLabUtil {
+public class LabUtil {
 	
-	protected static final Log log = LogFactory.getLog(CommonLabUtil.class);
+	protected static final Log log = LogFactory.getLog(LabUtil.class);
 	
 	List<LabTestType> types = new ArrayList<>();
 	
@@ -47,20 +47,20 @@ public class CommonLabUtil {
 	
 	List<LabTestAttributeType> dstLjAttributeTypes = new ArrayList<>();
 	
-	private CommonLabTestService service;
-	
-	public static CommonLabUtil getService() {
-		return new CommonLabUtil();
+	private LabServiceImpl service;
+
+	public static LabUtil getService() {
+		return new LabUtil();
 	}
 	
-	public CommonLabTestService getCommonLabService() {
+	public LabServiceImpl getCommonLabService() {
 		return service;
 	}
 	
-	public CommonLabUtil() {
+	public LabUtil() {
 		// Try to Initialize service
 		try {
-			service = Context.getService(CommonLabTestService.class);
+			service = Context.getService(LabServiceImpl.class);
 			if (service != null) {
 				if (types.isEmpty()) {
 					types = service.getAllLabTestTypes(false);
@@ -136,7 +136,7 @@ public class CommonLabUtil {
 		}
 		List<LabTest> labTests = service.getLabTests(patient, false);
 		for (LabTest labTest : labTests) {
-			List<LabTestAttribute> attributes = CommonLabUtil.getService().getCommonLabService().getLabTestAttributes(labTest.getTestOrderId());
+			List<LabTestAttribute> attributes = LabUtil.getService().getCommonLabService().getLabTestAttributes(labTest.getTestOrderId());
 			labTest.setAttributes(new HashSet<>(attributes));
 		}
 		return labTests;
@@ -148,7 +148,7 @@ public class CommonLabUtil {
 		}
 		List<LabTest> labTests = service.getLabTests(labTestType, patient, null, null, null, null, null, null, false);
 		for (LabTest labTest : labTests) {
-			List<LabTestAttribute> attributes = CommonLabUtil.getService().getCommonLabService().getLabTestAttributes(labTest.getTestOrderId());
+			List<LabTestAttribute> attributes = LabUtil.getService().getCommonLabService().getLabTestAttributes(labTest.getTestOrderId());
 			labTest.setAttributes(new HashSet<>(attributes));
 		}
 		return labTests;
@@ -287,7 +287,7 @@ public class CommonLabUtil {
 				orders = target.getOrders();
 			}
 		}
-		CommonLabTestService labTestService = service;
+		LabServiceImpl labTestService = service;
 		for (Order o : orders) {
 			// Does this order have a LabTest object of either LJ or MGIT DST?
 			LabTest existing = labTestService.getLabTest(o.getOrderId());
@@ -335,7 +335,7 @@ public class CommonLabUtil {
 				orders = target.getOrders();
 			}
 		}
-		CommonLabTestService labTestService = service;
+		LabServiceImpl labTestService = service;
 		LabTestType ljType = getDstLjTestType();
 		LabTestType mgitType = getDstMgitTestType();
 		for (Order o : orders) {

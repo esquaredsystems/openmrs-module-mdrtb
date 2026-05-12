@@ -1,9 +1,9 @@
 package org.openmrs.module.mdrtb.specimen;
 
 import org.openmrs.Concept;
-import org.openmrs.module.commonlabtest.LabTest;
-import org.openmrs.module.commonlabtest.LabTestAttribute;
-import org.openmrs.module.mdrtb.CommonLabUtil;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 
 /**
@@ -54,7 +54,7 @@ public class SmearImpl extends TestImpl implements Smear {
 	}
 	
 	public Integer getBacilli() {
-		LabTestAttribute attribute = CommonLabUtil.getService().getSmearAttributeByTestAndName(test, MdrtbConcepts.BACILLI);
+		LabTestAttribute attribute = LabUtil.getService().getSmearAttributeByTestAndName(test, MdrtbConcepts.BACILLI);
 		return (Integer) attribute.getValue();
 		/*
 		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.BACILLI), test);
@@ -63,7 +63,7 @@ public class SmearImpl extends TestImpl implements Smear {
 	}
 	
 	public void setBacilli(Integer bacilli) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getSmearAttributeByTestAndName(test, MdrtbConcepts.BACILLI);
+		LabTestAttribute attribute = LabUtil.getService().getSmearAttributeByTestAndName(test, MdrtbConcepts.BACILLI);
 		attribute.setValue(bacilli);
 		test.setAttribute(attribute);
 	}
@@ -77,27 +77,23 @@ public class SmearImpl extends TestImpl implements Smear {
 	}
 	
 	public Concept getMethod() {
-		LabTestAttribute attribute = CommonLabUtil.getService().getSmearAttributeByTestAndName(test,
-		    MdrtbConcepts.SMEAR_METHOD);
+		LabTestAttribute attribute = LabUtil.getService().getSmearAttributeByTestAndName(test, MdrtbConcepts.SMEAR_METHOD);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setMethod(Concept method) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getSmearAttributeByTestAndName(test,
-		    MdrtbConcepts.SMEAR_METHOD);
+		LabTestAttribute attribute = LabUtil.getService().getSmearAttributeByTestAndName(test, MdrtbConcepts.SMEAR_METHOD);
 		attribute.setValue(method);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getResult() {
-		LabTestAttribute attribute = CommonLabUtil.getService().getSmearAttributeByTestAndName(test,
-		    MdrtbConcepts.SMEAR_RESULT);
+		LabTestAttribute attribute = LabUtil.getService().getSmearAttributeByTestAndName(test, MdrtbConcepts.SMEAR_RESULT);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setResult(Concept result) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getSmearAttributeByTestAndName(test,
-		    MdrtbConcepts.SMEAR_RESULT);
+		LabTestAttribute attribute = LabUtil.getService().getSmearAttributeByTestAndName(test, MdrtbConcepts.SMEAR_RESULT);
 		attribute.setValue(result);
 		test.setAttribute(attribute);
 	}

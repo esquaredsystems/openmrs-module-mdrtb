@@ -5,10 +5,10 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.commonlabtest.LabTest;
-import org.openmrs.module.commonlabtest.LabTestAttribute;
-import org.openmrs.module.commonlabtest.LabTestSample;
-import org.openmrs.module.mdrtb.CommonLabUtil;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.lab.LabTestSample;
+import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
@@ -42,7 +42,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	
 	public Integer getMonthOfTreatment() {
 		if (labTest != null) {
-			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.MONTH_OF_TREATMENT);
 			if (attribute != null) {
 				try {
@@ -89,7 +89,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	
 	public String getSpecimenId() {
 		if (labTest != null) {
-			LabTestSample sample = CommonLabUtil.getService().getMostRecentAcceptedSample(labTest);
+			LabTestSample sample = LabUtil.getService().getMostRecentAcceptedSample(labTest);
 			// return sample.getSampleIdentifier();
 			return sample.getLabTestSampleId().toString();
 		}
@@ -129,7 +129,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	
 	public Concept getCultureResult() {
 		if (labTest != null) {
-			LabTestAttribute attribute = CommonLabUtil.getService().getCultureAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(labTest,
 			    MdrtbConcepts.CULTURE_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
@@ -198,7 +198,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 	
 	public Integer getPatientProgramId() {
 		if (labTest != null) {
-			LabTestAttribute attribute = CommonLabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.PATIENT_PROGRAM_ID);
 			if (attribute != null) {
 				try {

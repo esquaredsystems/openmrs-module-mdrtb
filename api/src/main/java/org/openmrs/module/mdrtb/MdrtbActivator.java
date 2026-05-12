@@ -10,6 +10,7 @@
 
 package org.openmrs.module.mdrtb;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -35,6 +36,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.layout.address.AddressSupport;
 import org.openmrs.layout.address.AddressTemplate;
 import org.openmrs.module.BaseModuleActivator;
+import org.openmrs.util.OpenmrsConstants;
+import org.openmrs.util.OpenmrsUtil;
 
 /**
  * This class contains the logic that is run every time this module is either started or shutdown
@@ -45,6 +48,11 @@ public class MdrtbActivator extends BaseModuleActivator {
 	
 	private Log log = LogFactory.getLog(this.getClass());
 	
+	ConceptService conceptService;
+	
+	File dir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(Context.getAdministrationService().getGlobalProperty(
+	    OpenmrsConstants.GLOBAL_PROPERTY_COMPLEX_OBS_DIR));
+	
 	/**
 	 * @see #started()
 	 */
@@ -52,6 +60,7 @@ public class MdrtbActivator extends BaseModuleActivator {
 	public void started() {
 		log.info("Starting up MDR-TB module.");
 		performCustomMigrations();
+		contextRefreshed();
 	}
 	
 	/**
@@ -117,6 +126,15 @@ public class MdrtbActivator extends BaseModuleActivator {
 		setGlobalProperty("mdrtb.fileExtensions", FILE_EXTENSIONS_NAMES);
 		
 		/** Encounter Types **/
+		File path = new File(dir.getPath() + "/commonLabTestFiles");
+		if (!(path.exists() && path.isDirectory())) {
+			try {
+				path.mkdir();
+			}
+			catch (Exception e) {
+				log.error(e.getMessage());
+			}
+		}
 		setGlobalProperty(MdrtbConstants.GP_ENCOUNTER_TYPE_ADVERSE_EVENT, "Adverse Event",
 		    "EXACT name of the encounter type for Adverse events", null);
 		setGlobalProperty(MdrtbConstants.GP_ENCOUNTER_TYPE_TRANSFER_IN, "Transfer In",
@@ -139,7 +157,19 @@ public class MdrtbActivator extends BaseModuleActivator {
 		    "EXACT name of the encounter type to record drug resistance during treatment", null);
 		setGlobalProperty(MdrtbConstants.GP_ENCOUNTER_TYPE_PV_REGIMEN, "PV Regimen",
 		    "EXACT name of the encounter type for PV Regimen", null);
-		
+
+		/** Lab Properties **/
+		setGlobalProperty(LabConstants.UPLOAD_FILE_DIRECTORY, path.toString(), "", null);
+		setGlobalProperty(LabConstants.SPECIMEN_TYPE_CONCEPT_UUID, "162476AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				"The UUID of a concept representing a group or set of different types of specimen, e.g. Saliva, Blood, Pus, etc.", null);
+		setGlobalProperty(LabConstants.SPECIMEN_SITE_CONCEPT_UUID, "159959AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				"The UUID of a concept representing a group or set of anatomical source site from where the specimen is obtained, e.g. Bone, Tissue, etc.", null);
+		setGlobalProperty(LabConstants.TEST_UNITS_CONCEPT_UUID, "162384AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+				"The UUID of a concept representing a group or set of various measurement units (also used to measure dosage quantity).", null);
+		setGlobalProperty(LabConstants.UPLOAD_FILE_EXTENSIONS, FILE_EXTENSIONS_NAMES);
+		setGlobalProperty(LabConstants.LAB_ORDER_TYPE_UUID, "33ccfcc6-0370-102d-b0e3-001ec94a0cc1",
+				"The UUID of the Order type representing a Lab Test Order.", null);
+
 		/** Concepts **/
 		ConceptService conceptService = Context.getConceptService();
 		Map<String, String> globalPropertyConceptMap = new HashMap<>();

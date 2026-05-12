@@ -10,11 +10,11 @@ import java.util.List;
 import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.commonlabtest.LabTest;
-import org.openmrs.module.commonlabtest.LabTestSample;
-import org.openmrs.module.commonlabtest.LabTestSampleStatus;
-import org.openmrs.module.commonlabtest.api.CommonLabTestService;
-import org.openmrs.module.mdrtb.CommonLabUtil;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestSample;
+import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
+import org.openmrs.module.mdrtb.api.LabServiceImpl;
+import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -34,7 +34,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/lab", supportedClass = LabTest.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class LabIntegrationResource extends DataDelegatingCrudResource<LabTest> implements Searchable {
 	
-	private CommonLabTestService commonLabService = CommonLabUtil.getService().getCommonLabService();
+	private LabServiceImpl commonLabService = LabUtil.getService().getCommonLabService();
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
@@ -85,7 +85,7 @@ public class LabIntegrationResource extends DataDelegatingCrudResource<LabTest> 
 				throw new ResourceDoesNotSupportOperationException("No associated Lab Order was found.");
 			}
 			// Fetch an accepted Sample
-			LabTestSample acceptedSample = CommonLabUtil.getService().getMostRecentAcceptedSample(labTest);
+			LabTestSample acceptedSample = LabUtil.getService().getMostRecentAcceptedSample(labTest);
 			if (acceptedSample == null) {
 				// An accepted sample must exist
 				throw new ResourceDoesNotSupportOperationException(

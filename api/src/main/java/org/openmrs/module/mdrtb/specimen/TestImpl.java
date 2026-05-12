@@ -5,10 +5,10 @@ import java.util.Date;
 import org.openmrs.Encounter;
 import org.openmrs.Location;
 import org.openmrs.Obs;
-import org.openmrs.module.commonlabtest.LabTest;
-import org.openmrs.module.commonlabtest.LabTestAttribute;
-import org.openmrs.module.commonlabtest.LabTestSample;
-import org.openmrs.module.mdrtb.CommonLabUtil;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.lab.LabTestSample;
+import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.specimen.SpecimenConstants.TestStatus;
 
@@ -42,7 +42,7 @@ public abstract class TestImpl implements Test {
 	
 	public Date getDateCollected() {
 		try {
-			LabTestSample testSample = CommonLabUtil.getService().getMostRecentAcceptedSample(test);
+			LabTestSample testSample = LabUtil.getService().getMostRecentAcceptedSample(test);
 			return testSample.getCollectionDate();
 		}
 		catch (Exception e) {
@@ -76,7 +76,7 @@ public abstract class TestImpl implements Test {
 	
 	public Date getResultDate() {
 		// Get Sample processed date
-		LabTestSample testSample = CommonLabUtil.getService().getMostRecentAcceptedSample(test);
+		LabTestSample testSample = LabUtil.getService().getMostRecentAcceptedSample(test);
 		if (testSample != null) {
 			return testSample.getProcessedDate();
 		}
@@ -87,7 +87,7 @@ public abstract class TestImpl implements Test {
 	
 	public Date getStartDate() {
 		// Get Sample processed date
-		LabTestSample testSample = CommonLabUtil.getService().getMostRecentAcceptedSample(test);
+		LabTestSample testSample = LabUtil.getService().getMostRecentAcceptedSample(test);
 		return testSample.getProcessedDate();
 		// Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_START_DATE), test);
 		// return (obs == null) ? null : obs.getValueDatetime();
@@ -103,7 +103,7 @@ public abstract class TestImpl implements Test {
 	}
 	
 	public void setDateReceived(Date dateReceived) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
+		LabTestAttribute attribute = LabUtil.getService().getXpertAttributeByTestAndName(test,
 		    MdrtbConcepts.TEST_DATE_RECEIVED);
 		attribute.setValue(dateReceived);
 	}
@@ -113,24 +113,22 @@ public abstract class TestImpl implements Test {
 	}
 	
 	public void setResultDate(Date resultDate) {
-		LabTestSample testSample = CommonLabUtil.getService().getMostRecentAcceptedSample(test);
+		LabTestSample testSample = LabUtil.getService().getMostRecentAcceptedSample(test);
 		testSample.setProcessedDate(resultDate);
 	}
 	
 	public void setStartDate(Date startDate) {
-		LabTestSample testSample = CommonLabUtil.getService().getMostRecentAcceptedSample(test);
+		LabTestSample testSample = LabUtil.getService().getMostRecentAcceptedSample(test);
 		testSample.setProcessedDate(startDate);
 	}
 	
 	public String getErrorCode() {
-		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
-		    MdrtbConcepts.ERROR_CODE);
+		LabTestAttribute attribute = LabUtil.getService().getXpertAttributeByTestAndName(test, MdrtbConcepts.ERROR_CODE);
 		return attribute.getValueReference();
 	}
 	
 	public void setErrorCode(String code) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getXpertAttributeByTestAndName(test,
-		    MdrtbConcepts.ERROR_CODE);
+		LabTestAttribute attribute = LabUtil.getService().getXpertAttributeByTestAndName(test, MdrtbConcepts.ERROR_CODE);
 		attribute.setValue(code);
 		test.setAttribute(attribute);
 	}

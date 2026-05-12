@@ -89,11 +89,6 @@
   			<type>pom</type>
 			<scope>provided</scope>
         </dependency>
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>commonlabtest-api</artifactId>
-			<version>${openmrs.commonlabtest.version}</version>
-		</dependency>
 	</dependencies>
 	
 </project>

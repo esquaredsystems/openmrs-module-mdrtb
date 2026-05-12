@@ -1,9 +1,9 @@
 package org.openmrs.module.mdrtb.specimen.custom;
 
 import org.openmrs.Concept;
-import org.openmrs.module.commonlabtest.LabTest;
-import org.openmrs.module.commonlabtest.LabTestAttribute;
-import org.openmrs.module.mdrtb.CommonLabUtil;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.specimen.TestImpl;
 
@@ -62,66 +62,64 @@ public class HAIN2Impl extends TestImpl implements HAIN2 {
 	}
 	
 	public Concept getResult() {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
-		    MdrtbConcepts.MTB_RESULT);
+		LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(test, MdrtbConcepts.MTB_RESULT);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setResult(Concept mtbResult) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
-		    MdrtbConcepts.MTB_RESULT);
+		LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(test, MdrtbConcepts.MTB_RESULT);
 		attribute.setValue(mtbResult);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getInhResistance() {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
+		LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(test,
 		    MdrtbConcepts.ISONIAZID_RESULT);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setInhResistance(Concept inhResistance) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
+		LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(test,
 		    MdrtbConcepts.ISONIAZID_RESULT);
 		attribute.setValue(inhResistance);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getRifResistance() {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
+		LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(test,
 		    MdrtbConcepts.RIFAMPICIN_RESULT);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setRifResistance(Concept rifResistance) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
+		LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(test,
 		    MdrtbConcepts.RIFAMPICIN_RESULT);
 		attribute.setValue(rifResistance);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getMtbBurden() {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
+		LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(test,
 		    MdrtbConcepts.XPERT_MTB_BURDEN);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setMtbBurden(Concept mtbBurden) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
+		LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(test,
 		    MdrtbConcepts.XPERT_MTB_BURDEN);
 		attribute.setValue(mtbBurden);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getMethod() {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
-		    MdrtbConcepts.HAIN2_CONSTRUCT);
+		LabTestAttribute attribute = LabUtil.getService()
+		        .getHain2AttributeByTestAndName(test, MdrtbConcepts.HAIN2_CONSTRUCT);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setMethod(Concept method) {
-		LabTestAttribute attribute = CommonLabUtil.getService().getHain2AttributeByTestAndName(test,
-		    MdrtbConcepts.HAIN2_CONSTRUCT);
+		LabTestAttribute attribute = LabUtil.getService()
+		        .getHain2AttributeByTestAndName(test, MdrtbConcepts.HAIN2_CONSTRUCT);
 		attribute.setValue(method);
 		test.setAttribute(attribute);
 	}

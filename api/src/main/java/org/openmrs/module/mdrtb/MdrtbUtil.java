@@ -333,6 +333,7 @@ public class MdrtbUtil {
 	/**
 	 * Given a concept, locale, and a string that represents a concept name tag, returns the first
 	 * concept name for that concept that matches the language and is tagged with the specified tag
+	 * 
 	 * @deprecated use getConcept.getName() instead
 	 */
 	@Deprecated
@@ -1053,7 +1054,7 @@ public class MdrtbUtil {
 			}
 		}
 	}
-
+	
 	/**
 	 * @param milli
 	 * @return milli * 1000 * 60 * 24 * 7;

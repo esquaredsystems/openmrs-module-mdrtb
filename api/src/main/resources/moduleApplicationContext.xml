@@ -24,6 +24,7 @@
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
     <context:component-scan base-package="org.openmrs.module.mdrtb" />
+    <context:component-scan base-package="org.openmrs.module.commonlabtest" />
 
     <!-- Wraps MdrtbService methods in DB transactions and OpenMRS interceptors,
     which set audit info like dateCreated, changedBy, etc.-->
@@ -45,6 +46,26 @@
         </property>
     </bean>
 
+    <!-- Wraps CommonLabTestService methods in DB transactions and OpenMRS interceptors, which set audit info like dateCreated, changedBy,
+		etc. -->
+    <bean id="commonlabtest.CommonLabTestService"
+            class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager" />
+        </property>
+        <property name="target">
+            <bean class="org.openmrs.module.mdrtb.api.LabServiceImpl">
+				<property name="dao" ref="mdrtb.LabDao" />
+            </bean>
+        </property>
+        <property name="preInterceptors">
+            <ref bean="serviceInterceptors" />
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="transactionAttributeSource" />
+        </property>
+    </bean>
+
     <!-- Adds MdrtbService to OpenMRS context so it can be accessed
     calling Context.getService(MdrtbService.class) -->
     <bean parent="serviceContext">
@@ -52,6 +73,8 @@
             <list>
                 <value>org.openmrs.module.mdrtb.api.MdrtbService</value>
                 <ref bean="mdrtb.MdrtbService" />
+                <value>org.openmrs.module.mdrtb.api.LabServiceImpl</value>
+                <ref bean="commonlabtest.CommonLabTestService" />
             </list>
         </property>
     </bean>
