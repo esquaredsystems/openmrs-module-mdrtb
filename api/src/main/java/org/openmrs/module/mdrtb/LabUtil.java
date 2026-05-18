@@ -22,7 +22,7 @@ import org.openmrs.module.mdrtb.lab.LabTestGroup;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
 import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.api.LabServiceImpl;
+import org.openmrs.module.mdrtb.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.specimen.DstTestType;
 
 public class LabUtil {
@@ -47,20 +47,20 @@ public class LabUtil {
 	
 	List<LabTestAttributeType> dstLjAttributeTypes = new ArrayList<>();
 	
-	private LabServiceImpl service;
+	private CommonLabTestService service;
 
 	public static LabUtil getService() {
 		return new LabUtil();
 	}
 	
-	public LabServiceImpl getCommonLabService() {
+	public CommonLabTestService getCommonLabService() {
 		return service;
 	}
 	
 	public LabUtil() {
 		// Try to Initialize service
 		try {
-			service = Context.getService(LabServiceImpl.class);
+			service = Context.getService(CommonLabTestService.class);
 			if (service != null) {
 				if (types.isEmpty()) {
 					types = service.getAllLabTestTypes(false);
@@ -287,7 +287,7 @@ public class LabUtil {
 				orders = target.getOrders();
 			}
 		}
-		LabServiceImpl labTestService = service;
+		CommonLabTestService labTestService = service;
 		for (Order o : orders) {
 			// Does this order have a LabTest object of either LJ or MGIT DST?
 			LabTest existing = labTestService.getLabTest(o.getOrderId());
@@ -335,7 +335,7 @@ public class LabUtil {
 				orders = target.getOrders();
 			}
 		}
-		LabServiceImpl labTestService = service;
+		CommonLabTestService labTestService = service;
 		LabTestType ljType = getDstLjTestType();
 		LabTestType mgitType = getDstMgitTestType();
 		for (Order o : orders) {

@@ -54,7 +54,7 @@
             <ref bean="transactionManager" />
         </property>
         <property name="target">
-            <bean class="org.openmrs.module.mdrtb.api.LabServiceImpl">
+            <bean class="org.openmrs.module.mdrtb.api.CommonLabTestService">
 				<property name="dao" ref="mdrtb.LabDao" />
             </bean>
         </property>
@@ -73,7 +73,7 @@
             <list>
                 <value>org.openmrs.module.mdrtb.api.MdrtbService</value>
                 <ref bean="mdrtb.MdrtbService" />
-                <value>org.openmrs.module.mdrtb.api.LabServiceImpl</value>
+                <value>org.openmrs.module.mdrtb.api.CommonLabTestService</value>
                 <ref bean="commonlabtest.CommonLabTestService" />
             </list>
         </property>

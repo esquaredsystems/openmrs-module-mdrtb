@@ -25,7 +25,6 @@
 	<!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/> -->
 	<context:component-scan base-package="org.openmrs.module.mdrtb.web" />
 
-	
 	<bean id="MdrtbMappings"
 		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="order">

@@ -12,6 +12,7 @@ package org.openmrs.module.mdrtb;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 import java.util.Map;
@@ -33,7 +34,7 @@ public class AdminListExtensionTest {
 		AdminList ext = new AdminList();
 		Map<String, String> links = ext.getLinks();
 		assertThat(links, is(notNullValue()));
-		assertThat(links.size(), is(not(0)));
+		assertFalse(links.isEmpty());
 	}
 	
 	/**
@@ -44,5 +45,4 @@ public class AdminListExtensionTest {
 		AdminList ext = new AdminList();
 		assertThat(ext.getMediaType(), is(Extension.MEDIA_TYPE.html));
 	}
-	
 }

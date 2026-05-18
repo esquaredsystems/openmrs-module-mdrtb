@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  * Contains module's config.
  */
 @Component("commonlabtest.CommonLabTestConfig")
-public class LabTConfig {
+public class LabConfig {
 	
 	public static final String ADD_LAB_TEST_METADATA_PRIVILEGE = "Add CommonLabTest Metadata";
 	

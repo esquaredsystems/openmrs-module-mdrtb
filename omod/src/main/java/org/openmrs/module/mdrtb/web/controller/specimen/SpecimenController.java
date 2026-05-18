@@ -17,7 +17,7 @@ import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.MdrtbUtil;
-import org.openmrs.module.mdrtb.api.LabServiceImpl;
+import org.openmrs.module.mdrtb.api.CommonLabTestService;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.specimen.Culture;
 import org.openmrs.module.mdrtb.specimen.CultureImpl;
@@ -99,7 +99,7 @@ public class SpecimenController extends AbstractSpecimenController {
 			// cultureId != -1 is means "this is a new culture"
 			if (cultureId != -1) {
 				// Expect a LabTest against this Id
-				LabTest labTest = Context.getService(LabServiceImpl.class).getLabTest(cultureId);
+				LabTest labTest = Context.getService(CommonLabTestService.class).getLabTest(cultureId);
 				culture = new CultureImpl(labTest);
 				// culture = Context.getService(MdrtbService.class).getCulture(cultureId);
 			}
@@ -127,7 +127,7 @@ public class SpecimenController extends AbstractSpecimenController {
 			// dstId != -1 is means "this is a new dst"
 			if (dstId != -1) {
 				// Expect a LabTest against this Id
-				LabTest labTest = Context.getService(LabServiceImpl.class).getLabTest(dstId);
+				LabTest labTest = Context.getService(CommonLabTestService.class).getLabTest(dstId);
 				dst = new DstImpl(labTest);
 				// culture = Context.getService(MdrtbService.class).getCulture(cultureId);
 			}

@@ -28,11 +28,6 @@ public class HibernateMdrtbDAOTest extends MdrtbTestBase {
 		super.initTestData();
 	}
 	
-	/**
-	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getLocationsWithAnyProgramEnrollments()}
-	 * .
-	 */
 	@Test
 	public final void testGetLocationsWithAnyProgramEnrollments() {
 		List<Location> list = dao.getLocationsWithAnyProgramEnrollments();
@@ -40,11 +35,6 @@ public class HibernateMdrtbDAOTest extends MdrtbTestBase {
 		assertTrue(list.contains(diagonAlley));
 	}
 	
-	/**
-	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getPatientIdentifierById(java.lang.Integer)}
-	 * .
-	 */
 	@Test
 	public final void testGetPatientIdentifierById() {
 		Context.clearSession();
@@ -52,11 +42,6 @@ public class HibernateMdrtbDAOTest extends MdrtbTestBase {
 		assertEquals(identifier.getPatient(), harry);
 	}
 	
-	/**
-	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getEncountersByEncounterTypes(java.util.List)}
-	 * .
-	 */
 	@Test
 	public final void testGetEncountersByEncounterTypes() {
 		List<String> encounterTypeNames = Arrays.asList(owlExam.getName(), transferIn.getName(), transferOut.getName());
@@ -66,11 +51,6 @@ public class HibernateMdrtbDAOTest extends MdrtbTestBase {
 		assertTrue(list.contains(encounter));
 	}
 	
-	/**
-	 * Test method for
-	 * {@link org.openmrs.module.mdrtb.service.db.HibernateMdrtbDAO#getEncountersByEncounterTypes(java.util.List, java.util.Date, java.util.Date, java.util.Date)}
-	 * .
-	 */
 	@Test
 	public final void testGetEncountersByEncounterTypesAndDates() {
 		List<String> encounterTypeNames = Arrays.asList(owlExam.getName(), transferIn.getName(), transferOut.getName());

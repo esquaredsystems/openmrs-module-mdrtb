@@ -34,8 +34,7 @@ import org.openmrs.Attributable;
 import org.openmrs.BaseCustomizableData;
 import org.openmrs.Order;
 import org.openmrs.api.context.Context;
-import org.openmrs.api.OpenmrsService;
-import org.openmrs.module.mdrtb.api.LabServiceImpl;
+import org.openmrs.module.mdrtb.api.CommonLabTestService;
 
 /**
  * This entity represents main Lab test, which manages test order. A Lab Test has a LabTestType, has
@@ -139,7 +138,7 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	@Deprecated
 	public List<LabTest> findPossibleValues(String referenceNumber) {
 		try {
-			return Context.getService(LabServiceImpl.class).getLabTests(referenceNumber, false);
+			return Context.getService(CommonLabTestService.class).getLabTests(referenceNumber, false);
 		}
 		catch (Exception e) {
 			return Collections.emptyList();
@@ -175,7 +174,7 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	@Override
 	public LabTest hydrate(String uuid) {
 		try {
-			LabServiceImpl labTestService = Context.getService(LabServiceImpl.class);
+			CommonLabTestService labTestService = Context.getService(CommonLabTestService.class);
 			LabTest labTest = labTestService.getLabTestByUuid(uuid);
 			if (labTest == null) {
 				throw new Exception();
@@ -196,7 +195,7 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	 */
 	public LabTest hydrate(Integer labTestId) {
 		try {
-			LabServiceImpl labTestService = Context.getService(LabServiceImpl.class);
+			CommonLabTestService labTestService = Context.getService(CommonLabTestService.class);
 			LabTest labTest = labTestService.getLabTest(labTestId);
 			if (labTest == null) {
 				throw new Exception();
