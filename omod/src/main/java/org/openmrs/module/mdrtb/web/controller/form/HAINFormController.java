@@ -25,7 +25,6 @@ import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.form.custom.HAINForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
-import org.openmrs.module.mdrtb.web.controller.reporting.ExportReportController;
 import org.openmrs.module.mdrtb.web.util.MdrtbWebUtil;
 import org.openmrs.propertyeditor.ConceptEditor;
 import org.openmrs.propertyeditor.LocationEditor;

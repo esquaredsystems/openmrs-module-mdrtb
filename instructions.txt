@@ -1,0 +1,10 @@
+This project is an Openmrs module
+The code in branch omrs2-upgrade-tjk-2.4 was working well on Openmrs version 2.4 with some bugs
+This is now being upgraded to work with Openmrs 2.8
+There used to be a dependency called commonlab module. That entire code has been copied into this project now. So all Lab-rated entities and services are from over there
+The Openmnrs instance is working on local Docker
+This module has not been installed in the Openmrs instance yet
+The task is to install and run it on the Openmrs
+If there is a significant change needed, ask the user
+Whatever changes you make, maintain a file called changes.txt and record there as if adding comments for Github
+You can access the test Database (openmrs_28) locally deployed at localhost:3306 using username root and password jingle94

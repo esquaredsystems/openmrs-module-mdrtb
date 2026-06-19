@@ -28,13 +28,11 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.search.annotations.ContainedIn;
-import org.hibernate.search.annotations.Field;
 import org.openmrs.Attributable;
 import org.openmrs.BaseCustomizableData;
 import org.openmrs.Order;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 
 /**
  * This entity represents main Lab test, which manages test order. A Lab Test has a LabTestType, has
@@ -43,8 +41,8 @@ import org.openmrs.module.mdrtb.api.CommonLabTestService;
  * 
  * @author owais.hussain@ihsinformatics.com
  */
-@Entity(name = "commonlabtest.LabTest")
-@Table(name = "commonlabtest_test")
+@Entity(name = "labtest.LabTest")
+@Table(name = "labtest_test")
 public class LabTest extends BaseCustomizableData<LabTestAttribute> implements java.io.Serializable, Attributable<LabTest> {
 	
 	private static final long serialVersionUID = 2561859108258402721L;
@@ -61,7 +59,6 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	@JoinColumn(name = "test_type_id")
 	private LabTestType labTestType;
 	
-	@Field
 	@Column(name = "lab_reference_number", length = 255)
 	private String labReferenceNumber;
 	
@@ -74,7 +71,6 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	@Column(name = "result_comments")
 	private String resultComments;
 	
-	@ContainedIn
 	private transient Set<LabTestSample> labTestSamples = new HashSet<LabTestSample>(0);
 	
 	/**
@@ -93,7 +89,7 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	}
 	
 	/**
-	 * @see org.openmrs.Order#getOrderId()
+	 * @see Order#getOrderId()
 	 */
 	@Override
 	public Integer getId() {
@@ -101,7 +97,7 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	}
 	
 	/**
-	 * @see org.openmrs.Order#setOrderId(java.lang.Integer)
+	 * @see Order#setOrderId(Integer)
 	 */
 	@Override
 	public void setId(Integer id) {
@@ -138,7 +134,7 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	@Deprecated
 	public List<LabTest> findPossibleValues(String referenceNumber) {
 		try {
-			return Context.getService(CommonLabTestService.class).getLabTests(referenceNumber, false);
+			return Context.getService(LabTestService.class).getLabTests(referenceNumber, false);
 		}
 		catch (Exception e) {
 			return Collections.emptyList();
@@ -174,7 +170,7 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	@Override
 	public LabTest hydrate(String uuid) {
 		try {
-			CommonLabTestService labTestService = Context.getService(CommonLabTestService.class);
+			LabTestService labTestService = Context.getService(LabTestService.class);
 			LabTest labTest = labTestService.getLabTestByUuid(uuid);
 			if (labTest == null) {
 				throw new Exception();
@@ -195,7 +191,7 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	 */
 	public LabTest hydrate(Integer labTestId) {
 		try {
-			CommonLabTestService labTestService = Context.getService(CommonLabTestService.class);
+			LabTestService labTestService = Context.getService(LabTestService.class);
 			LabTest labTest = labTestService.getLabTest(labTestId);
 			if (labTest == null) {
 				throw new Exception();
@@ -208,7 +204,7 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	}
 	
 	/**
-	 * @see org.openmrs.Attributable#serialize()
+	 * @see Attributable#serialize()
 	 */
 	@Override
 	public String serialize() {
@@ -220,11 +216,11 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	}
 	
 	/**
-	 * Returns the first non-voided commonlabtest attribute matching a commonlabtest attribute type. <br>
+	 * Returns the first non-voided labtest attribute matching a labtest attribute type. <br>
 	 * <br>
-	 * Returns null if this commonlabtest has no non-voided {@link LabTestAttribute} with the given
-	 * {@link LabTestAttributeType}, the given {@link LabTestAttributeType} is null, or this
-	 * commonlabtest has no attributes.
+	 * Returns null if this labtest has no non-voided {@link LabTestAttribute} with the given
+	 * {@link LabTestAttributeType}, the given {@link LabTestAttributeType} is null, or this labtest
+	 * has no attributes.
 	 * 
 	 * @param lat the LabTestAttributeType to look for {@link LabTestAttributeType#equals(Object)}
 	 * @return LabTestAttribute that matches the given type

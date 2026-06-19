@@ -219,7 +219,7 @@ public class MdrtbConstants {
 	/*******************************/
 	/** START - Common Lab Module **/
 	
-	public static final String GP_MDRTB_TEST_TYPE_UUID = "commonlabtest.mdrtbTestTypeUuid";
+	public static final String GP_MDRTB_TEST_TYPE_UUID = "labtest.mdrtbTestTypeUuid";
 	
 	public static final String DST_MGIT_TEST_NAME = "DST MGIT";
 	

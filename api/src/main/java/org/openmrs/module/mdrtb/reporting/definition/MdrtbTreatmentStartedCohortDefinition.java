@@ -42,7 +42,7 @@ public class MdrtbTreatmentStartedCohortDefinition extends BaseCohortDefinition 
 	//***** INSTANCE METHODS *****
 	
 	/**
-	 * @see java.lang.Object#toString()
+	 * @see Object#toString()
 	 */
 	public String toString() {
 		return super.toString();

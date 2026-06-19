@@ -27,7 +27,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.Field;
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Concept;
 import org.openmrs.Provider;
@@ -39,8 +38,8 @@ import org.openmrs.Provider;
  * 
  * @author owais.hussain@ihsinformatics.com
  */
-@Entity(name = "commonlabtest.LabTestSample")
-@Table(name = "commonlabtest_sample")
+@Entity(name = "labtest.LabTestSample")
+@Table(name = "labtest_sample")
 public class LabTestSample extends BaseOpenmrsData {
 	
 	private static final long serialVersionUID = 1169373793251683587L;
@@ -70,7 +69,6 @@ public class LabTestSample extends BaseOpenmrsData {
 	@JoinColumn(name = "collector")
 	private Provider collector;
 	
-	@Field
 	@Column(name = "quantity")
 	private Double quantity;
 	
@@ -119,7 +117,7 @@ public class LabTestSample extends BaseOpenmrsData {
 	}
 	
 	/**
-	 * @see org.openmrs.OpenmrsObject#setId(java.lang.Integer)
+	 * @see org.openmrs.OpenmrsObject#setId(Integer)
 	 */
 	@Override
 	public void setId(Integer id) {

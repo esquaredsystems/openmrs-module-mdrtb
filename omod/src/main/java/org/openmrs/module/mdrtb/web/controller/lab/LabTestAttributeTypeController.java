@@ -12,7 +12,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.customdatatype.CustomDatatypeUtil;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestAttributeType;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -31,7 +31,7 @@ public class LabTestAttributeTypeController {
 	
 	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestAttributeType";
 	
-	CommonLabTestService commonLabTestService;
+	LabTestService LabTestService;
 	
 	@ModelAttribute("datatypes")
 	public Collection<String> getDatatypes() {
@@ -46,21 +46,20 @@ public class LabTestAttributeTypeController {
 	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/addLabTestAttributeType.form")
 	public String showForm(ModelMap model, @RequestParam(value = "error", required = false) String error,
 	        @RequestParam(value = "uuid", required = false) String uuid) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		LabTestAttributeType attributeType;
 		if (uuid == null || uuid.equalsIgnoreCase("")) {
 			attributeType = new LabTestAttributeType();
 		} else {
-			attributeType = commonLabTestService.getLabTestAttributeTypeByUuid(uuid);
-			List<LabTestAttribute> labTestAttributes = commonLabTestService.getLabTestAttributes(attributeType,
-			    Boolean.FALSE);
+			attributeType = LabTestService.getLabTestAttributeTypeByUuid(uuid);
+			List<LabTestAttribute> labTestAttributes = LabTestService.getLabTestAttributes(attributeType, Boolean.FALSE);
 			if (labTestAttributes.size() > 0) {
 				model.addAttribute("available", Boolean.TRUE);
 			} else {
 				model.addAttribute("available", Boolean.FALSE);
 			}
 		}
-		model.addAttribute("listTestType", commonLabTestService.getAllLabTestTypes(Boolean.FALSE));
+		model.addAttribute("listTestType", LabTestService.getAllLabTestTypes(Boolean.FALSE));
 		model.addAttribute("attributeType", attributeType);
 		model.addAttribute("error", error);
 		return SUCCESS_ADD_FORM_VIEW;
@@ -70,7 +69,7 @@ public class LabTestAttributeTypeController {
 	public String onSubmit(ModelMap model, HttpSession httpSession,
 	        @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
 	        @ModelAttribute("attributeType") LabTestAttributeType attributeType, BindingResult result) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		String status = "";
 		try {
 			if (result.hasErrors()) {
@@ -82,7 +81,7 @@ public class LabTestAttributeTypeController {
 					return "redirect:addLabTestAttributeType.form?uuid=" + attributeType.getUuid();
 				}
 			} else {
-				commonLabTestService.saveLabTestAttributeType(attributeType);
+				LabTestService.saveLabTestAttributeType(attributeType);
 				StringBuilder subString = new StringBuilder();
 				subString.append("Lab Test Attribute with Uuid :");
 				subString.append(attributeType.getUuid());
@@ -108,9 +107,8 @@ public class LabTestAttributeTypeController {
 	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/retirelabtestattributetype.form")
 	public String onRetire(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("uuid") String uuid, @RequestParam("retireReason") String retireReason) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTestAttributeType attributeType = Context.getService(CommonLabTestService.class).getLabTestAttributeTypeByUuid(
-		    uuid);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTestAttributeType attributeType = Context.getService(LabTestService.class).getLabTestAttributeTypeByUuid(uuid);
 		String status = "";
 		if (Context.getAuthenticatedUser() == null) {
 			return "redirect:../../login.htm";
@@ -119,7 +117,7 @@ public class LabTestAttributeTypeController {
 			return "redirect:../../login.htm";
 		}
 		try {
-			commonLabTestService.retireLabTestAttributeType(attributeType, retireReason);
+			LabTestService.retireLabTestAttributeType(attributeType, retireReason);
 			StringBuilder subString = new StringBuilder();
 			subString.append("Lab Test Attribute with Uuid :");
 			subString.append(attributeType.getUuid());
@@ -144,14 +142,14 @@ public class LabTestAttributeTypeController {
 	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/deletelabtestattributetype.form")
 	public String onDelete(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("uuid") String uuid) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTestAttributeType attributeType = commonLabTestService.getLabTestAttributeTypeByUuid(uuid);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTestAttributeType attributeType = LabTestService.getLabTestAttributeTypeByUuid(uuid);
 		String status;
 		if (Context.getAuthenticatedUser() == null) {
 			return "redirect:../../login.htm";
 		}
 		try {
-			commonLabTestService.deleteLabTestAttributeType(attributeType, true);
+			LabTestService.deleteLabTestAttributeType(attributeType, true);
 			StringBuilder subString = new StringBuilder();
 			subString.append("Lab Test Attribute with Uuid :");
 			subString.append(attributeType.getUuid());

@@ -22,7 +22,7 @@ import org.openmrs.api.EncounterService;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.aop.AfterOrderVoidAdvice;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.lab.*;
 
 /**
@@ -34,7 +34,7 @@ public class OrderVoidAdvisorTest extends AOPContextSensitiveTest {
 	
 	private OrderService orderService;
 	
-	private CommonLabTestService commonLabTestService;
+	private LabTestService labTestService;
 	
 	private static final int DEMO_ENCOUNTER_ID = 1000;
 	
@@ -66,8 +66,7 @@ public class OrderVoidAdvisorTest extends AOPContextSensitiveTest {
 	public void setUp() throws Exception {
 		encounterService = Context.getEncounterService();
 		orderService = Context.getOrderService();
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		
+		labTestService = Context.getService(LabTestService.class);
 	}
 	
 	@Test
@@ -76,10 +75,10 @@ public class OrderVoidAdvisorTest extends AOPContextSensitiveTest {
 		Encounter encounter = encounterService.getEncounter(DEMO_ENCOUNTER_ID);
 		Order order1 = orderService.getOrder(DEMO_ORDER1_ID);
 		Order order2 = orderService.getOrder(DEMO_ORDER2_ID);
-		LabTest labTest = commonLabTestService.getLabTest(DEMO_LAB_TEST_ID);
-		LabTestSample labTestSample = commonLabTestService.getLabTestSample(DEMO_LAB_TEST_SAMPLE_ID);
-		LabTestAttribute labTestAttribute1 = commonLabTestService.getLabTestAttribute(DEMO_LAB_TEST_ATTRIBUTE1_ID);
-		LabTestAttribute labTestAttribute2 = commonLabTestService.getLabTestAttribute(DEMO_LAB_TEST_ATTRIBUTE2_ID);
+		LabTest labTest = labTestService.getLabTest(DEMO_LAB_TEST_ID);
+		LabTestSample labTestSample = labTestService.getLabTestSample(DEMO_LAB_TEST_SAMPLE_ID);
+		LabTestAttribute labTestAttribute1 = labTestService.getLabTestAttribute(DEMO_LAB_TEST_ATTRIBUTE1_ID);
+		LabTestAttribute labTestAttribute2 = labTestService.getLabTestAttribute(DEMO_LAB_TEST_ATTRIBUTE2_ID);
 		
 		Encounter encounter1 = encounterService.voidEncounter(encounter, "Testing AOP");
 		assertNotNull(encounter1);
@@ -104,10 +103,10 @@ public class OrderVoidAdvisorTest extends AOPContextSensitiveTest {
 		Encounter encounter = encounterService.getEncounter(DEMO_ENCOUNTER_ID);
 		Order order1 = orderService.getOrder(DEMO_ORDER1_ID);
 		Order order2 = orderService.getOrder(DEMO_ORDER2_ID);
-		LabTest labTest = commonLabTestService.getLabTest(DEMO_LAB_TEST_ID);
-		LabTestSample labTestSample = commonLabTestService.getLabTestSample(DEMO_LAB_TEST_SAMPLE_ID);
-		LabTestAttribute labTestAttribute1 = commonLabTestService.getLabTestAttribute(DEMO_LAB_TEST_ATTRIBUTE1_ID);
-		LabTestAttribute labTestAttribute2 = commonLabTestService.getLabTestAttribute(DEMO_LAB_TEST_ATTRIBUTE2_ID);
+		LabTest labTest = labTestService.getLabTest(DEMO_LAB_TEST_ID);
+		LabTestSample labTestSample = labTestService.getLabTestSample(DEMO_LAB_TEST_SAMPLE_ID);
+		LabTestAttribute labTestAttribute1 = labTestService.getLabTestAttribute(DEMO_LAB_TEST_ATTRIBUTE1_ID);
+		LabTestAttribute labTestAttribute2 = labTestService.getLabTestAttribute(DEMO_LAB_TEST_ATTRIBUTE2_ID);
 		
 		Encounter encounter1 = encounterService.unvoidEncounter(encounter);
 		assertNotNull(encounter1);

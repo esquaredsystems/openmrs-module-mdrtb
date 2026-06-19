@@ -235,7 +235,7 @@ public class LabResultsStatusCalculator {
 			
 			if (firstNegative.before(lastNegative)) {
 				// we have a successful conversion
-				conversion.setValue(new Boolean(true));
+				conversion.setValue(true);
 				
 				// determine what the conversion date should be reported as
 				Collections.sort(negativeDates, Collections.reverseOrder());
@@ -250,7 +250,7 @@ public class LabResultsStatusCalculator {
 		}
 		
 		// if we've got here, not converted
-		conversion.setValue(new Boolean(false));
+		conversion.setValue(false);
 		conversion.setDisplayString(renderer.renderConversion(conversion));
 		
 		return conversion;

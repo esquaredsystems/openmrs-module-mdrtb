@@ -1000,8 +1000,7 @@ public class MdrtbUtil {
 	/**
 	 * Validates a PatientIdentifier.
 	 * 
-	 * @see org.springframework.validation.Validator#validate(java.lang.Object,
-	 *      org.springframework.validation.Errors)
+	 * @see org.springframework.validation.Validator#validate(Object, Errors)
 	 */
 	public static void validateIdentifier(PatientIdentifier pi, Errors errors) throws PatientIdentifierException {
 		// Validate that the identifier is non-null

@@ -36,7 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * standardTestDataset.xml in openmrs-api. All test methods are executed in transactions, which are
  * rolled back by the end of each test method.
  */
-public class CommonLabTestDAOTest extends CommonLabTestBase {
+public class LabTestDAOTest extends LabTestBase {
 	
 	@Autowired
 	LabDao dao;

@@ -14,8 +14,7 @@ import org.openmrs.logic.rule.RuleParameterInfo;
 public class GetLatestEnrollmentDateRule implements Rule {
 	
 	/**
-	 * @see org.openmrs.logic.Rule#eval(org.openmrs.logic.LogicContext, org.openmrs.Patient,
-	 *      java.util.Map)
+	 * @see Rule#eval(LogicContext, Patient, Map)
 	 */
 	public Result eval(LogicContext context, Patient patient, Map<String, Object> parameters) throws LogicException {
 		
@@ -29,28 +28,28 @@ public class GetLatestEnrollmentDateRule implements Rule {
 	}
 	
 	/**
-	 * @see org.openmrs.logic.Rule#getChildRules()
+	 * @see Rule#getChildRules()
 	 */
 	public String[] getDependencies() {
 		return null;
 	}
 	
 	/**
-	 * @see org.openmrs.logic.Rule#getDefaultDatatype()
+	 * @see Rule#getDefaultDatatype()
 	 */
 	public Datatype getDefaultDatatype() {
 		return null;
 	}
 	
 	/**
-	 * @see org.openmrs.logic.Rule#getParameterList()
+	 * @see Rule#getParameterList()
 	 */
 	public Set<RuleParameterInfo> getParameterList() {
 		return null;
 	}
 	
 	/**
-	 * @see org.openmrs.logic.Rule#getTTL()
+	 * @see Rule#getTTL()
 	 */
 	public int getTTL() {
 		return 0;

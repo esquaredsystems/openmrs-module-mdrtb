@@ -22,7 +22,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.Field;
 import org.openmrs.attribute.AttributeType;
 import org.openmrs.attribute.BaseAttributeType;
 
@@ -32,8 +31,8 @@ import org.openmrs.attribute.BaseAttributeType;
  * 
  * @author owais.hussain@ihsinformatics.com
  */
-@Entity(name = "commonlabtest.LabTestAttributeType")
-@Table(name = "commonlabtest_attribute_type")
+@Entity(name = "labtest.LabTestAttributeType")
+@Table(name = "labtest_attribute_type")
 public class LabTestAttributeType extends BaseAttributeType<LabTest> implements AttributeType<LabTest> {
 	
 	private static final long serialVersionUID = -5724984364122528275L;
@@ -47,19 +46,15 @@ public class LabTestAttributeType extends BaseAttributeType<LabTest> implements 
 	@JoinColumn(name = "test_type_id")
 	private LabTestType labTestType;
 	
-	@Field
 	@Column(name = "sort_weight")
 	private Double sortWeight;
 	
-	@Field
 	@Column(name = "hint")
 	private String hint;
 	
-	@Field
 	@Column(name = "multiset_name")
 	private String multisetName;
 	
-	@Field
 	@Column(name = "group_name")
 	private String groupName;
 	

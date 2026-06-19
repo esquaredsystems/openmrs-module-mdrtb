@@ -19,7 +19,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.LabConfig;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,17 +36,17 @@ public class LabTestOrderController {
 	
 	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestOrder";
 	
-	CommonLabTestService commonLabTestService;
+	LabTestService LabTestService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/addLabTestOrder.form")
 	public String showForm(@RequestParam(required = true) Integer patientId,
 	        @RequestParam(required = false) Integer testOrderId, @RequestParam(required = false) String error, ModelMap model) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		LabTest labTest;
 		if (testOrderId == null) {
 			labTest = new LabTest();
 		} else {
-			labTest = commonLabTestService.getLabTest(testOrderId);
+			labTest = LabTestService.getLabTest(testOrderId);
 		}
 		List<Encounter> encounterList = Context.getEncounterService().getEncountersByPatientId(patientId);
 		if (encounterList.size() > 0) {
@@ -58,10 +58,10 @@ public class LabTestOrderController {
 				}
 			});
 		}
-		List<LabTestType> testType = commonLabTestService.getAllLabTestTypes(Boolean.FALSE);
+		List<LabTestType> testType = LabTestService.getAllLabTestTypes(Boolean.FALSE);
 		List<LabTestType> labTestTypeHavingAttributes = new ArrayList<LabTestType>();
 		for (LabTestType labTestTypeIt : testType) {
-			if (commonLabTestService.getLabTestAttributeTypes(labTestTypeIt, Boolean.FALSE).size() > 0) {
+			if (LabTestService.getLabTestAttributeTypes(labTestTypeIt, Boolean.FALSE).size() > 0) {
 				labTestTypeHavingAttributes.add(labTestTypeIt);
 			}
 		}
@@ -90,7 +90,7 @@ public class LabTestOrderController {
 	public String onSubmit(ModelMap model, HttpSession httpSession,
 	        @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
 	        @ModelAttribute("labTest") LabTest labTest, BindingResult result) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		String status = "";
 		if (Context.getAuthenticatedUser() == null) {
 			return "redirect:../../login.htm";
@@ -104,7 +104,7 @@ public class LabTestOrderController {
 					testParentOrder.setDateActivated(labTest.getOrder().getEncounter().getEncounterDatetime());
 					labTest.setOrder(testParentOrder);
 				}
-				commonLabTestService.saveLabTest(labTest);
+				LabTestService.saveLabTest(labTest);
 			}
 		}
 		catch (Exception e) {
@@ -125,15 +125,15 @@ public class LabTestOrderController {
 	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/voidlabtestorder.form")
 	public String onVoid(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("uuid") String uuid, @RequestParam("voidReason") String voidReason) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTest labTest = commonLabTestService.getLabTestByUuid(uuid);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTest labTest = LabTestService.getLabTestByUuid(uuid);
 		String status = "";
 		// if user not login the redirect to login page...
 		if (Context.getAuthenticatedUser() == null) {
 			return "redirect:../../login.htm";
 		}
 		try {
-			commonLabTestService.voidLabTest(labTest, voidReason);
+			LabTestService.voidLabTest(labTest, voidReason);
 		}
 		catch (Exception e) {
 			status = "could not void Lab Test Order";

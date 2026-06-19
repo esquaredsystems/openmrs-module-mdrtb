@@ -22,7 +22,7 @@ public class PatientValidator implements Validator {
 	 * Returns whether or not this validator supports validating a given class.
 	 * 
 	 * @param c The class to check for support.
-	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
+	 * @see Validator#supports(Class)
 	 */
 	public boolean supports(Class<?> c) {
 		return Patient.class.isAssignableFrom(c);
@@ -32,8 +32,7 @@ public class PatientValidator implements Validator {
 	 * Validates the given Patient. Currently just checks for errors in identifiers.
 	 * 
 	 * @param obj The patient to validate.
-	 * @see org.springframework.validation.Validator#validate(java.lang.Object,
-	 *      org.springframework.validation.Errors)
+	 * @see Validator#validate(Object, Errors)
 	 */
 	public void validate(Object obj, Errors errors) {
 		Patient patient = (Patient) obj;

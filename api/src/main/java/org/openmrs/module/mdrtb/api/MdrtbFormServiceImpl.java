@@ -19,7 +19,6 @@ import org.openmrs.PatientState;
 import org.openmrs.Program;
 import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
-import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
@@ -127,7 +126,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 		            MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID)))) {
 			Patient patient = tbPatientProgram.getPatient();
 			if (!patient.getDead()) {
-				patient.setDead(new Boolean(true));
+				patient.setDead(true);
 				patient.setCauseOfDeath(tb03.getCauseOfDeath());
 			}
 			Context.getPatientService().savePatient(patient);
@@ -211,7 +210,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 		            MdrtbConstants.GP_OUTCOME_DIED_CONCEPT_ID)))) {
 			Patient patient = mdrtbPatientProgram.getPatient();
 			if (!patient.getDead()) {
-				patient.setDead(new Boolean(true));
+				patient.setDead(true);
 				patient.setCauseOfDeath(tb03u.getCauseOfDeath());
 			}
 			Context.getPatientService().savePatient(patient);

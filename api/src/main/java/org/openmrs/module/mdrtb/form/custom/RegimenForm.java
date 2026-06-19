@@ -232,7 +232,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (id != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(id));
+				obs.setValueNumeric(id.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -356,7 +356,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CM_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -404,7 +404,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.AM_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -452,7 +452,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.MFX_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -500,7 +500,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.LFX_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -548,7 +548,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PTO_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -596,7 +596,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CS_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -644,7 +644,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PAS_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -692,7 +692,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.Z_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -740,7 +740,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.E_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -788,7 +788,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.H_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -838,7 +838,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.LZD_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -886,7 +886,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CFZ_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -934,7 +934,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.BDQ_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -982,7 +982,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.DLM_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -1030,7 +1030,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.IMP_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -1078,7 +1078,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.HR_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -1126,7 +1126,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.HRZE_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -1174,7 +1174,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.S_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -1222,7 +1222,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.OTHER_DRUG_1_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -1314,7 +1314,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.AMX_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(dose));
+				obs.setValueNumeric(dose.doubleValue());
 				encounter.addObs(obs);
 			}
 		}

@@ -60,14 +60,14 @@ public class SheetHelper {
 			skipCell(style);
 		} else if (o instanceof BigDecimal || o instanceof Double) {
 			addCell((Number) o, style);
-		} else if (o instanceof java.util.Date) {
-			addCell((java.util.Date) o, style);
+		} else if (o instanceof Date) {
+			addCell((Date) o, style);
 		} else if (o instanceof java.sql.Date) {
 			java.sql.Date d = (java.sql.Date) o;
-			addCell(new java.util.Date(d.getTime()), style);
+			addCell(new Date(d.getTime()), style);
 		} else if (o instanceof java.sql.Timestamp) {
 			java.sql.Timestamp d = (java.sql.Timestamp) o;
-			addCell(new java.util.Date(d.getTime()), style);
+			addCell(new Date(d.getTime()), style);
 		} else {
 			addCell(o.toString(), style);
 		}
@@ -104,11 +104,11 @@ public class SheetHelper {
 		}
 	}
 	
-	public void addCell(java.util.Date date) {
+	public void addCell(Date date) {
 		addCell(date, null);
 	}
 	
-	public void addCell(java.util.Date date, HSSFCellStyle style) {
+	public void addCell(Date date, HSSFCellStyle style) {
 		if (currentRow == null) {
 			currentRow = sheet.createRow(rowNum);
 		}

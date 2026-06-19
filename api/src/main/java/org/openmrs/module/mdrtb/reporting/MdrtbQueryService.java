@@ -168,7 +168,7 @@ public class MdrtbQueryService {
 			if (c == null) {
 				c = new Cohort();
 			}
-			c.addMember(new Integer(pId.toString()));
+			c.addMember(Integer.parseInt(pId.toString()));
 			ret.put(s, c);
 		}
 		
@@ -176,8 +176,8 @@ public class MdrtbQueryService {
 	}
 	
 	/**
-	 * @see org.openmrs.module.mdrtb.db.MdrtbCohortDAO#getPatientsFirstStartingDrugs(java.util.Date,
-	 *      java.util.Date, Concept)
+	 * @see org.openmrs.module.mdrtb.db.MdrtbCohortDAO#getPatientsFirstStartingDrugs(Date, Date,
+	 *      Concept)
 	 */
 	public static Cohort getPatientsFirstStartingDrugs(EvaluationContext context, Date fromDate, Date toDate, Concept drugSet) {
 		StringBuilder q = new StringBuilder();

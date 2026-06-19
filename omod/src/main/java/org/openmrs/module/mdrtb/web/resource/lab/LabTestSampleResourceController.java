@@ -10,7 +10,7 @@ import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.webservices.rest.web.ConversionUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -36,16 +36,16 @@ public class LabTestSampleResourceController extends DataDelegatingCrudResource<
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private CommonLabTestService commonLabTestService = Context.getService(CommonLabTestService.class);
+	private LabTestService LabTestService = Context.getService(LabTestService.class);
 	
 	@Override
 	public LabTestSample getByUniqueId(String s) {
-		return commonLabTestService.getLabTestSampleByUuid(s);
+		return LabTestService.getLabTestSampleByUuid(s);
 	}
 	
 	@Override
 	protected void delete(LabTestSample labTestSample, String s, RequestContext requestContext) throws ResponseException {
-		commonLabTestService.voidLabTestSample(labTestSample, s);
+		LabTestService.voidLabTestSample(labTestSample, s);
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class LabTestSampleResourceController extends DataDelegatingCrudResource<
 	
 	@Override
 	public LabTestSample save(LabTestSample labTestSample) {
-		return commonLabTestService.saveLabTestSample(labTestSample);
+		return LabTestService.saveLabTestSample(labTestSample);
 	}
 	
 	@Override
@@ -151,11 +151,11 @@ public class LabTestSampleResourceController extends DataDelegatingCrudResource<
 		String dateTo = context.getRequest().getParameter("to");
 		Date fromDate = dateFrom != null ? (Date) ConversionUtil.convert(dateFrom, Date.class) : null;
 		Date toDate = dateTo != null ? (Date) ConversionUtil.convert(dateTo, Date.class) : null;
-		LabTest labTest = labUuid != null ? commonLabTestService.getLabTestByUuid(labUuid) : null;
+		LabTest labTest = labUuid != null ? LabTestService.getLabTestByUuid(labUuid) : null;
 		Patient patient = patientUuid != null ? Context.getPatientService().getPatientByUuid(patientUuid) : null;
 		Provider provider = collectorUuid != null ? Context.getProviderService().getProviderByUuid(collectorUuid) : null;
-		List<LabTestSample> list = commonLabTestService.getLabTestSamples(labTest, patient, null, sampleIdentifier,
-		    provider, fromDate, toDate, false);
+		List<LabTestSample> list = LabTestService.getLabTestSamples(labTest, patient, null, sampleIdentifier, provider,
+		    fromDate, toDate, false);
 		return new NeedsPaging<LabTestSample>(list, context);
 	}
 }

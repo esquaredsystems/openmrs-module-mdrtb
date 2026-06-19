@@ -2,7 +2,6 @@ package org.openmrs.module.mdrtb.web.controller.reporting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;

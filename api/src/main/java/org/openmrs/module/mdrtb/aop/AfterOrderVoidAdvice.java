@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import org.openmrs.Encounter;
 import org.openmrs.Order;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.springframework.aop.AfterReturningAdvice;
 
@@ -36,7 +36,7 @@ public class AfterOrderVoidAdvice implements AfterReturningAdvice {
 	@Override
 	public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
 		
-		CommonLabTestService commonLabTestService;
+		LabTestService labTestService;
 		
 		if (method.getName().equalsIgnoreCase("voidEncounter")) {
 			if (returnValue != null) {
@@ -48,10 +48,10 @@ public class AfterOrderVoidAdvice implements AfterReturningAdvice {
 					if (o.getVoided()) {
 						Logger.getAnonymousLogger().info(" ==== > Order # " + o.getOrderId() + " Voided: " + o.getVoided());
 						// void corresponding LabTest entity that has one to one mapping to this Order
-						commonLabTestService = Context.getService(CommonLabTestService.class);
-						LabTest labTest = commonLabTestService.getLabTest(o.getOrderId());
+						labTestService = Context.getService(LabTestService.class);
+						LabTest labTest = labTestService.getLabTest(o.getOrderId());
 						if (labTest != null) {
-							commonLabTestService.voidLabTest(labTest, o.getVoidReason());
+							labTestService.voidLabTest(labTest, o.getVoidReason());
 							Logger.getAnonymousLogger().info(
 							    " ==== > Lab Test # " + labTest.getTestOrderId() + " Voided: " + labTest.getVoided());
 						}
@@ -69,10 +69,10 @@ public class AfterOrderVoidAdvice implements AfterReturningAdvice {
 					if (!o.getVoided()) {
 						Logger.getAnonymousLogger().info(" ==== > Order # " + o.getOrderId() + " Voided: " + o.getVoided());
 						// unvoid corresponding LabTest entity that has one to one mapping to this Order
-						commonLabTestService = Context.getService(CommonLabTestService.class);
-						LabTest labTest = commonLabTestService.getLabTest(o.getOrderId());
+						labTestService = Context.getService(LabTestService.class);
+						LabTest labTest = labTestService.getLabTest(o.getOrderId());
 						if (labTest != null) {
-							commonLabTestService.unvoidLabTest(labTest);
+							labTestService.unvoidLabTest(labTest);
 							Logger.getAnonymousLogger().info(
 							    " ==== > Lab Test # " + labTest.getTestOrderId() + " Voided: " + labTest.getVoided());
 						}

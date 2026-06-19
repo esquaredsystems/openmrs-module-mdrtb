@@ -13,7 +13,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
@@ -34,7 +34,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/lab", supportedClass = LabTest.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
 public class LabIntegrationResource extends DataDelegatingCrudResource<LabTest> implements Searchable {
 	
-	private CommonLabTestService commonLabService = LabUtil.getService().getCommonLabService();
+	private LabTestService commonLabService = LabUtil.getService().getCommonLabService();
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {

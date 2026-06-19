@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTestAttributeType;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +25,8 @@ public class ManageLabTestAttributeTypesController {
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String showLabTestAttributeTypes(@RequestParam(required = false) String save, ModelMap model) {
-		List<LabTestAttributeType> list = Context.getService(CommonLabTestService.class).getAllLabTestAttributeTypes(
-		    Boolean.FALSE);
+		List<LabTestAttributeType> list = Context.getService(LabTestService.class)
+		        .getAllLabTestAttributeTypes(Boolean.FALSE);
 		model.put("labTestAttributeTypes", list);
 		model.addAttribute("status", save);
 		return SUCCESS_FORM_VIEW;

@@ -18,7 +18,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestGroup;
 import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -39,12 +39,12 @@ public class LabTestRequestController {
 	
 	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestRequest";
 	
-	CommonLabTestService commonLabTestService;
+	LabTestService LabTestService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/addLabTestRequest.form")
 	public String showForm(HttpServletRequest request, @RequestParam(required = false) String error,
 	        @RequestParam(required = false) Integer patientId, ModelMap model) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		if (Context.getAuthenticatedUser() == null) {
 			return "redirect:../../login.htm";
 		}
@@ -61,7 +61,7 @@ public class LabTestRequestController {
 		for (LabTestGroup labTestGroup : labTestGroupList) {
 			JsonObject labTestGroupObj = new JsonObject();
 			JsonArray jsonChildArray = new JsonArray();
-			List<LabTestType> labTestTypeList = commonLabTestService.getLabTestTypes(null, null, labTestGroup, null, null,
+			List<LabTestType> labTestTypeList = LabTestService.getLabTestTypes(null, null, labTestGroup, null, null,
 			    Boolean.FALSE);
 			if (!(labTestTypeList.size() > 0) || labTestTypeList.isEmpty() || labTestTypeList.isEmpty()) {
 				continue; // skip the current iteration.
@@ -117,7 +117,7 @@ public class LabTestRequestController {
 	@ResponseBody
 	public boolean onSubmit(ModelMap model, HttpSession httpSession, HttpServletRequest request, @RequestBody String json,
 	        @RequestParam(required = false) Integer patientId) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		String status = "";
 		boolean boolStatus = Boolean.TRUE;
 		try {
@@ -136,7 +136,7 @@ public class LabTestRequestController {
 				order.setOrderType(Context.getOrderService().getOrderType(3));
 				order.setDateActivated(encounter.getEncounterDatetime());
 				order.setPatient(Context.getPatientService().getPatient(patientId));
-				LabTestType labTestType = commonLabTestService.getLabTestType(jsonObject.get("testTypeId").getAsInt());
+				LabTestType labTestType = LabTestService.getLabTestType(jsonObject.get("testTypeId").getAsInt());
 				order.setConcept(labTestType.getReferenceConcept());
 				labTest.setOrder(order);
 				labTest.setLabInstructions(jsonObject.get("labInstructions").getAsString());
@@ -145,7 +145,7 @@ public class LabTestRequestController {
 				labTestArray.add(labTest);
 			}
 			for (LabTest labTest : labTestArray) {
-				commonLabTestService.saveLabTest(labTest);
+				LabTestService.saveLabTest(labTest);
 			}
 		}
 		catch (Exception e) {

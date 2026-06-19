@@ -7,7 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.customdatatype.NotYetPersistedException;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -33,7 +33,7 @@ public class LabTestAttributeResourceController extends DataDelegatingCrudResour
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private CommonLabTestService commonLabTestService = Context.getService(CommonLabTestService.class);
+	private LabTestService LabTestService = Context.getService(LabTestService.class);
 	
 	/**
 	 * @see DelegatingCrudResource#getRepresentationDescription(Representation)
@@ -83,7 +83,7 @@ public class LabTestAttributeResourceController extends DataDelegatingCrudResour
 	@Override
 	protected void delete(LabTestAttribute labTestAttribute, String s, RequestContext requestContext)
 	        throws ResponseException {
-		commonLabTestService.voidLabTestAttribute(labTestAttribute, s);
+		LabTestService.voidLabTestAttribute(labTestAttribute, s);
 	}
 	
 	@Override
@@ -93,12 +93,12 @@ public class LabTestAttributeResourceController extends DataDelegatingCrudResour
 	
 	@Override
 	public LabTestAttribute save(LabTestAttribute labTestAttribute) {
-		return commonLabTestService.saveLabTestAttribute(labTestAttribute);
+		return LabTestService.saveLabTestAttribute(labTestAttribute);
 	}
 	
 	@Override
 	public LabTestAttribute getByUniqueId(String uuid) {
-		LabTestAttribute labTestAttribute = commonLabTestService.getLabTestAttributeByUuid(uuid);
+		LabTestAttribute labTestAttribute = LabTestService.getLabTestAttributeByUuid(uuid);
 		return labTestAttribute;
 	}
 	
@@ -110,7 +110,7 @@ public class LabTestAttributeResourceController extends DataDelegatingCrudResour
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		String testId = context.getRequest().getParameter("testOrderId");
-		List<LabTestAttribute> attributes = commonLabTestService.getLabTestAttributes(Integer.parseInt(testId));
+		List<LabTestAttribute> attributes = LabTestService.getLabTestAttributes(Integer.parseInt(testId));
 		return new NeedsPaging<LabTestAttribute>(attributes, context);
 	}
 	

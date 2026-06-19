@@ -23,7 +23,7 @@ import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestAttributeType;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -43,7 +43,7 @@ public class LabTestResultController {
 	
 	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestResult";
 	
-	CommonLabTestService commonLabTestService;
+	LabTestService LabTestService;
 	
 	public static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -51,8 +51,8 @@ public class LabTestResultController {
 	public String showForm(HttpServletRequest request, @RequestParam(required = false) Integer testOrderId,
 	        @RequestParam(required = false) Integer patientId, ModelMap model) {
 		
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTest labTest = commonLabTestService.getLabTest(testOrderId);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTest labTest = LabTestService.getLabTest(testOrderId);
 		
 		if (labTest == null) {
 			request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Test Order does not exist");
@@ -63,7 +63,7 @@ public class LabTestResultController {
 		}
 		
 		List<LabTestAttributeType> attributeTypeList = new ArrayList<LabTestAttributeType>();
-		attributeTypeList = commonLabTestService.getLabTestAttributeTypes(labTest.getLabTestType(), Boolean.FALSE);
+		attributeTypeList = LabTestService.getLabTestAttributeTypes(labTest.getLabTestType(), Boolean.FALSE);
 		Collections.sort(attributeTypeList, new Comparator<LabTestAttributeType>() {
 			
 			@Override
@@ -73,7 +73,7 @@ public class LabTestResultController {
 			}
 		});
 		
-		List<LabTestAttribute> labTestAttributes = commonLabTestService.getLabTestAttributes(testOrderId);
+		List<LabTestAttribute> labTestAttributes = LabTestService.getLabTestAttributes(testOrderId);
 		JsonArray resultantAttributeTypeList = getAttributeTypeList(attributeTypeList, testOrderId, labTestAttributes);
 		
 		if (!labTestAttributes.isEmpty() && !attributeTypeList.isEmpty()) {
@@ -114,16 +114,16 @@ public class LabTestResultController {
 	        @RequestParam(required = false) Integer testAttributeId,
 	        @RequestParam(required = false) MultipartFile documentTypeFile, @RequestParam(required = false) Boolean update) {
 		
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		
 		if (Context.getAuthenticatedUser() == null) {
 			return "redirect:../../login.htm";
 		}
-		LabTest labTest = commonLabTestService.getLabTest(testOrderId);
-		List<LabTestAttributeType> attributeTypeList = Context.getService(CommonLabTestService.class)
-		        .getLabTestAttributeTypes(labTest.getLabTestType(), false);
+		LabTest labTest = LabTestService.getLabTest(testOrderId);
+		List<LabTestAttributeType> attributeTypeList = Context.getService(LabTestService.class).getLabTestAttributeTypes(
+		    labTest.getLabTestType(), false);
 		
-		List<LabTestAttribute> existingLabTestAttributes = commonLabTestService.getLabTestAttributes(testOrderId);
+		List<LabTestAttribute> existingLabTestAttributes = LabTestService.getLabTestAttributes(testOrderId);
 		String testAtrrId;
 		String status;
 		try {
@@ -136,7 +136,7 @@ public class LabTestResultController {
 				testAtrrId = request.getParameter("testAttributeId." + labTestAttributeType.getId());
 				
 				if (update && testAtrrId != null && !testAtrrId.equals("undefined") && !testAtrrId.isEmpty()) {
-					testAttribute = commonLabTestService.getLabTestAttribute(Integer.parseInt(testAtrrId));
+					testAttribute = LabTestService.getLabTestAttribute(Integer.parseInt(testAtrrId));
 				} else {
 					testAttribute.setLabTest(labTest);
 					testAttribute.setAttributeType(labTestAttributeType);
@@ -262,23 +262,23 @@ public class LabTestResultController {
 					        + documentTypeFile.getOriginalFilename().replace(" ", "-")));
 					String name = documentTypeFile.getOriginalFilename().replace(" ", "-");
 					labTest.setFilePath(fileDirectory + "/" + name);
-					Context.getService(CommonLabTestService.class).saveLabTest(labTest); // need to review this lines
+					Context.getService(LabTestService.class).saveLabTest(labTest); // need to review this lines
 				}
 				catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 			// change the sample status ...
-			List<LabTestSample> labTestSampleList = commonLabTestService.getLabTestSamples(labTest, Boolean.FALSE);
+			List<LabTestSample> labTestSampleList = LabTestService.getLabTestSamples(labTest, Boolean.FALSE);
 			for (LabTestSample labTestSample : labTestSampleList) {
 				if (labTestSample.getStatus().equals(LabTestSampleStatus.ACCEPTED)) {
 					labTestSample.setStatus(LabTestSampleStatus.PROCESSED);
 					labTestSample.setProcessedDate(new Date());
-					Context.getService(CommonLabTestService.class).saveLabTestSample(labTestSample);
+					Context.getService(LabTestService.class).saveLabTestSample(labTestSample);
 				}
 			}
 			
-			commonLabTestService.saveLabTestAttributes(labTestAttributes);
+			LabTestService.saveLabTestAttributes(labTestAttributes);
 		}
 		catch (Exception e) {
 			status = "Could not save Lab Test Result";
@@ -294,14 +294,14 @@ public class LabTestResultController {
 	        @RequestParam("testOrderId") Integer testOrderId, @RequestParam("patientId") Integer patientId,
 	        @RequestParam("voidReason") String voidReason) {
 		
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		String status;
 		if (Context.getAuthenticatedUser() == null) {
 			return "redirect:../../login.htm";
 		}
 		try {
-			LabTest labTest = commonLabTestService.getLabTest(testOrderId);
-			commonLabTestService.voidLabTestAttributes(labTest, voidReason);
+			LabTest labTest = LabTestService.getLabTest(testOrderId);
+			LabTestService.voidLabTestAttributes(labTest, voidReason);
 		}
 		catch (Exception e) {
 			status = "Could not void Lab Test Result";

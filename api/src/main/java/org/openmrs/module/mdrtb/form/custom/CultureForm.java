@@ -81,7 +81,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 			if (month != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.MONTH_OF_TREATMENT), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(month));
+				obs.setValueNumeric(month.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -237,7 +237,7 @@ public class CultureForm extends AbstractSimpleForm implements Comparable<Cultur
 			if (id != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(id));
+				obs.setValueNumeric(id.doubleValue());
 				encounter.addObs(obs);
 			}
 		}

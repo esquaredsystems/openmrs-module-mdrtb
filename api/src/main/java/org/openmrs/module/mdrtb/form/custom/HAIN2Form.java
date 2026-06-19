@@ -357,7 +357,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 			if (id != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(id));
+				obs.setValueNumeric(id.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -409,7 +409,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 			if (month != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.MONTH_OF_TREATMENT), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(month));
+				obs.setValueNumeric(month.doubleValue());
 				encounter.addObs(obs);
 			}
 		}

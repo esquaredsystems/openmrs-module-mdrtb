@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
@@ -38,20 +38,19 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private CommonLabTestService commonLabTestService = Context.getService(CommonLabTestService.class);
+	private LabTestService LabTestService = Context.getService(LabTestService.class);
 	
 	@Override
 	public LabTest getByUniqueId(String s) {
-		LabTest labTest = commonLabTestService.getLabTestByUuid(s);
-		labTest.setLabTestSamples(new HashSet<LabTestSample>(commonLabTestService.getLabTestSamples(labTest, false)));
-		labTest.setAttributes(new HashSet<LabTestAttribute>(commonLabTestService.getLabTestAttributes(labTest
-		        .getTestOrderId())));
+		LabTest labTest = LabTestService.getLabTestByUuid(s);
+		labTest.setLabTestSamples(new HashSet<LabTestSample>(LabTestService.getLabTestSamples(labTest, false)));
+		labTest.setAttributes(new HashSet<LabTestAttribute>(LabTestService.getLabTestAttributes(labTest.getTestOrderId())));
 		return labTest;
 	}
 	
 	@Override
 	protected void delete(LabTest labTest, String s, RequestContext requestContext) throws ResponseException {
-		commonLabTestService.voidLabTest(labTest, s);
+		LabTestService.voidLabTest(labTest, s);
 	}
 	
 	@Override
@@ -84,7 +83,7 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 			} else {
 				labTest.setOrder(existing);
 			}
-			return commonLabTestService.saveLabTest(labTest, labTestSample, labTestAttributes);
+			return LabTestService.saveLabTest(labTest, labTestSample, labTestAttributes);
 		}
 		catch (Exception e) {
 			throw new ResourceDoesNotSupportOperationException("Test Order was not saved", e);
@@ -170,8 +169,8 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 	@PropertySetter("attributes")
 	public void setAttributes(LabTest instance, List<LabTestAttribute> attributes) {
 		for (LabTestAttribute attr : attributes) {
-			LabTestAttribute existingAttribute = instance.getAttribute(commonLabTestService
-			        .getLabTestAttributeTypeByUuid(attr.getAttributeType().getUuid()));
+			LabTestAttribute existingAttribute = instance.getAttribute(LabTestService.getLabTestAttributeTypeByUuid(attr
+			        .getAttributeType().getUuid()));
 			if (existingAttribute != null) {
 				if (attr.getValue() == null) {
 					instance.removeLabTestAttribute(existingAttribute);
@@ -201,6 +200,6 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 	protected PageableResult doSearch(RequestContext context) {
 		String uuid = context.getRequest().getParameter("patient");
 		Patient patient = Context.getPatientService().getPatientByUuid(uuid);
-		return new NeedsPaging<LabTest>(commonLabTestService.getLabTests(patient, false), context);
+		return new NeedsPaging<LabTest>(LabTestService.getLabTests(patient, false), context);
 	}
 }

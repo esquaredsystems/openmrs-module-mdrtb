@@ -30,9 +30,9 @@ import org.openmrs.test.BaseModuleContextSensitiveTest;
 /**
  * @author owais.hussain@ihsinformatics.com
  */
-public class CommonLabTestBase extends BaseModuleContextSensitiveTest {
+public class LabTestBase extends BaseModuleContextSensitiveTest {
 	
-	protected static final String DATA_XML = "CommonLabTestService-initialData.xml";
+	protected static final String DATA_XML = "LabService-initialData.xml";
 	
 	protected Provider owais;
 	
@@ -268,6 +268,7 @@ public class CommonLabTestBase extends BaseModuleContextSensitiveTest {
 		harryCartridgeId.setUuid("2c9737d9-47c2-11e8-943c-40b034c3cfee");
 		
 		harryMtbResult = new LabTestAttribute();
+		harryMtbResult.setId(2);
 		harryMtbResult.setLabTest(harryGxp);
 		harryMtbResult.setAttributeType(mtbResult);
 		harryMtbResult.setValueReferenceInternal("MTB DETECTED");

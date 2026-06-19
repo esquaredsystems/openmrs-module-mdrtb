@@ -62,7 +62,7 @@ public class TransferOutForm extends AbstractSimpleForm {
 			if (id != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(id));
+				obs.setValueNumeric(id.doubleValue());
 				encounter.addObs(obs);
 			}
 		}

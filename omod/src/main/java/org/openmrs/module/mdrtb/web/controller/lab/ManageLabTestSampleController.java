@@ -12,7 +12,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,17 +27,17 @@ public class ManageLabTestSampleController {
 	
 	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/manageLabTestSamples";
 	
-	CommonLabTestService commonLabTestService;
+	LabTestService LabTestService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/manageLabTestSamples.form")
 	public String showLabTestSample(HttpServletRequest request, @RequestParam(required = true) Integer patientId,
 	        @RequestParam(required = false) Integer testOrderId, @RequestParam(required = false) String save, ModelMap model) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		List<LabTestSample> testSample;
 		if (testOrderId == null) {
 			testSample = new ArrayList<LabTestSample>();
 		} else {
-			LabTest labTest = commonLabTestService.getLabTest(testOrderId);
+			LabTest labTest = LabTestService.getLabTest(testOrderId);
 			if (labTest == null) {
 				request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Test Order does not exist");
 				return "redirect:../../patientDashboard.form?patientId=" + patientId;
@@ -45,8 +45,8 @@ public class ManageLabTestSampleController {
 				request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Test Order is not found");
 				return "redirect:../../patientDashboard.form?patientId=" + patientId;
 			}
-			testSample = commonLabTestService.getLabTestSamples(labTest, Boolean.FALSE);// need to check this get sample
-			                                                                            // method...
+			testSample = LabTestService.getLabTestSamples(labTest, Boolean.FALSE);// need to check this get sample
+			                                                                      // method...
 		}
 		
 		for (LabTestSample labTestSample : testSample) {
@@ -70,8 +70,8 @@ public class ManageLabTestSampleController {
 	        @RequestParam("uuid") String uuid, @RequestParam("patientId") String patientId,
 	        @RequestParam(value = "rejectedReason", required = false) String rejectedReason,
 	        @RequestParam(value = "isAccepted", required = false) String isAccepted) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTestSample labTestSample = commonLabTestService.getLabTestSampleByUuid(uuid);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTestSample labTestSample = LabTestService.getLabTestSampleByUuid(uuid);
 		String status;
 		try {
 			if (isAccepted.equals("1")) {
@@ -82,7 +82,7 @@ public class ManageLabTestSampleController {
 				labTestSample.setStatus(LabTestSampleStatus.REJECTED);
 				labTestSample.setComments(rejectedReason);
 			}
-			commonLabTestService.saveLabTestSample(labTestSample);
+			LabTestService.saveLabTestSample(labTestSample);
 			StringBuilder sb = new StringBuilder();
 			sb.append("Lab Test Sample is updated");
 			status = sb.toString();

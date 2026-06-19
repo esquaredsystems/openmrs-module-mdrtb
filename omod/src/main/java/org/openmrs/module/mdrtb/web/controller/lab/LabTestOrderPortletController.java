@@ -10,7 +10,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.web.controller.PortletController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +35,7 @@ public class LabTestOrderPortletController extends PortletController {
 			Patient patient = Context.getPatientService().getPatient(id);
 			JsonArray orderJsonArray = new JsonArray();
 			if (patient != null) {
-				List<LabTest> testList = Context.getService(CommonLabTestService.class).getLabTests(patient, false);
+				List<LabTest> testList = Context.getService(LabTestService.class).getLabTests(patient, false);
 				if (testList != null && !testList.isEmpty()) {
 					for (LabTest labTest : testList) {
 						JsonObject childJsonObject = new JsonObject();
@@ -56,7 +56,7 @@ public class LabTestOrderPortletController extends PortletController {
 						childJsonObject.addProperty("changedBy", (labTest.getChangedBy() == null) ? "" : labTest
 						        .getChangedBy().getUsername());
 						childJsonObject.addProperty("uuid", labTest.getUuid());
-						List<LabTestAttribute> labTestAttribute = Context.getService(CommonLabTestService.class)
+						List<LabTestAttribute> labTestAttribute = Context.getService(LabTestService.class)
 						        .getLabTestAttributes(labTest.getTestOrderId());
 						if (labTestAttribute != null && labTestAttribute.size() > 0) {
 							childJsonObject.addProperty("resultFilled", Boolean.TRUE);

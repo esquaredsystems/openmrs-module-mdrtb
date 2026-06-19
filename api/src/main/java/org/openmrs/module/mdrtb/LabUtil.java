@@ -22,7 +22,7 @@ import org.openmrs.module.mdrtb.lab.LabTestGroup;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
 import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.specimen.DstTestType;
 
 public class LabUtil {
@@ -47,20 +47,20 @@ public class LabUtil {
 	
 	List<LabTestAttributeType> dstLjAttributeTypes = new ArrayList<>();
 	
-	private CommonLabTestService service;
+	private LabTestService service;
 
 	public static LabUtil getService() {
 		return new LabUtil();
 	}
 	
-	public CommonLabTestService getCommonLabService() {
+	public LabTestService getCommonLabService() {
 		return service;
 	}
 	
 	public LabUtil() {
 		// Try to Initialize service
 		try {
-			service = Context.getService(CommonLabTestService.class);
+			service = Context.getService(LabTestService.class);
 			if (service != null) {
 				if (types.isEmpty()) {
 					types = service.getAllLabTestTypes(false);
@@ -115,7 +115,7 @@ public class LabUtil {
 	}
 
 	private List<LabTestType> getLabTestTypesViaSql() {
-		String sql = "select test_type_id, name, short_name, test_group, requires_specimen, reference_concept_id, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid from commonlabtest_type from ";
+		String sql = "select test_type_id, name, short_name, test_group, requires_specimen, reference_concept_id, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid from labtest_type from ";
 		List<List<Object>> list = Context.getAdministrationService().executeSQL(sql, true);
 		List<LabTestType> testTypes = new ArrayList<>();
 		for (List<Object> row : list) {
@@ -287,7 +287,7 @@ public class LabUtil {
 				orders = target.getOrders();
 			}
 		}
-		CommonLabTestService labTestService = service;
+		LabTestService labTestService = service;
 		for (Order o : orders) {
 			// Does this order have a LabTest object of either LJ or MGIT DST?
 			LabTest existing = labTestService.getLabTest(o.getOrderId());
@@ -335,7 +335,7 @@ public class LabUtil {
 				orders = target.getOrders();
 			}
 		}
-		CommonLabTestService labTestService = service;
+		LabTestService labTestService = service;
 		LabTestType ljType = getDstLjTestType();
 		LabTestType mgitType = getDstMgitTestType();
 		for (Order o : orders) {

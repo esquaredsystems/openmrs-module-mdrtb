@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -30,11 +30,11 @@ public class LabTestTypeResourceController extends MetadataDelegatingCrudResourc
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private CommonLabTestService commonLabTestService = Context.getService(CommonLabTestService.class);
+	private LabTestService LabTestService = Context.getService(LabTestService.class);
 	
 	@Override
 	public LabTestType getByUniqueId(String s) {
-		return commonLabTestService.getLabTestTypeByUuid(s);
+		return LabTestService.getLabTestTypeByUuid(s);
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class LabTestTypeResourceController extends MetadataDelegatingCrudResourc
 	
 	@Override
 	public LabTestType save(LabTestType labTestType) {
-		return commonLabTestService.saveLabTestType(labTestType);
+		return LabTestService.saveLabTestType(labTestType);
 	}
 	
 	@Override
@@ -100,7 +100,7 @@ public class LabTestTypeResourceController extends MetadataDelegatingCrudResourc
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
-		List<LabTestType> list = commonLabTestService.getAllLabTestTypes(false);
+		List<LabTestType> list = LabTestService.getAllLabTestTypes(false);
 		return new NeedsPaging<LabTestType>(list, context);
 	}
 	

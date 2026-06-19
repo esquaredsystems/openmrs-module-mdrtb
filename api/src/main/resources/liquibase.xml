@@ -73,16 +73,16 @@
 
 	</changeSet>
 
-	<changeSet id="commonlabtest-2018-05-08-1" author="owais.hussain">
+	<changeSet id="labtest.-2018-05-08-1" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<tableExists tableName="commonlabtest_type" />
+				<tableExists tableName="labtest_type" />
 			</not>
 		</preConditions>
 		<comment>
-			Creating the commonlabtest_test_type table
+			Creating the labtest_test_type table
 		</comment>
-		<createTable tableName="commonlabtest_type">
+		<createTable tableName="labtest_type">
 			<column name="test_type_id" type="int" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
@@ -123,29 +123,29 @@
 				<constraints nullable="false" unique="true"></constraints>
 			</column>
 		</createTable>
-		<addForeignKeyConstraint constraintName="commonlabtest_type_creator_fk"
-			baseTableName="commonlabtest_type" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_type_reference_concept_fk"
-			baseTableName="commonlabtest_type" baseColumnNames="reference_concept_id" referencedTableName="concept"
+		<addForeignKeyConstraint constraintName="labtest_type_creator_fk"
+			baseTableName="labtest_type" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="labtest_type_reference_concept_fk"
+			baseTableName="labtest_type" baseColumnNames="reference_concept_id" referencedTableName="concept"
 			referencedColumnNames="concept_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_type_changed_by_fk"
-			baseTableName="commonlabtest_type" baseColumnNames="changed_by" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_type_changed_by_fk"
+			baseTableName="labtest_type" baseColumnNames="changed_by" referencedTableName="users"
 			referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_type_retired_by_fk"
-			baseTableName="commonlabtest_type" baseColumnNames="retired_by" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_type_retired_by_fk"
+			baseTableName="labtest_type" baseColumnNames="retired_by" referencedTableName="users"
 			referencedColumnNames="user_id" />
 	</changeSet>
 
-	<changeSet id="commonlabtest-2018-05-08-2" author="owais.hussain">
+	<changeSet id="labtest-2018-05-08-2" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<tableExists tableName="commonlabtest_attribute_type" />
+				<tableExists tableName="labtest_attribute_type" />
 			</not>
 		</preConditions>
 		<comment>
-			Creating the commonlabtest_attribute_type table
+			Creating the labtest_attribute_type table
 		</comment>
-		<createTable tableName="commonlabtest_attribute_type">
+		<createTable tableName="labtest_attribute_type">
 			<column name="test_attribute_type_id" type="int" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
@@ -187,30 +187,30 @@
 				<constraints nullable="false" unique="true"></constraints>
 			</column>
 		</createTable>
-		<addForeignKeyConstraint constraintName="commonlabtest_attribute_type_test_type_fk"
-			baseTableName="commonlabtest_attribute_type" baseColumnNames="test_type_id" referencedTableName="commonlabtest_type"
+		<addForeignKeyConstraint constraintName="labtest_attribute_type_test_type_fk"
+			baseTableName="labtest_attribute_type" baseColumnNames="test_type_id" referencedTableName="labtest_type"
 			referencedColumnNames="test_type_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_attribute_type_creator_fk"
-			baseTableName="commonlabtest_attribute_type" baseColumnNames="creator" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_attribute_type_creator_fk"
+			baseTableName="labtest_attribute_type" baseColumnNames="creator" referencedTableName="users"
 			referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_attribute_type_changed_by_fk"
-			baseTableName="commonlabtest_attribute_type" baseColumnNames="changed_by" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_attribute_type_changed_by_fk"
+			baseTableName="labtest_attribute_type" baseColumnNames="changed_by" referencedTableName="users"
 			referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_attribute_type_retired_by_fk"
-			baseTableName="commonlabtest_attribute_type" baseColumnNames="retired_by" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_attribute_type_retired_by_fk"
+			baseTableName="labtest_attribute_type" baseColumnNames="retired_by" referencedTableName="users"
 			referencedColumnNames="user_id" />
 	</changeSet>
 
-	<changeSet id="commonlabtest-2018-05-08-3" author="owais.hussain">
+	<changeSet id="labtest-2018-05-08-3" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<tableExists tableName="commonlabtest_test" />
+				<tableExists tableName="labtest_test" />
 			</not>
 		</preConditions>
 		<comment>
-			Creating the commonlabtest_test table
+			Creating the labtest_test table
 		</comment>
-		<createTable tableName="commonlabtest_test">
+		<createTable tableName="labtest_test">
 			<column name="test_order_id" type="int">
 				<!-- A lab test has one-to-one mapping with orders -->
 				<constraints primaryKey="true" nullable="false" />
@@ -237,31 +237,31 @@
 				<constraints nullable="false" unique="true"></constraints>
 			</column>
 		</createTable>
-		<addForeignKeyConstraint constraintName="commonlabtest_test_orders_fk"
-			baseTableName="commonlabtest_test" baseColumnNames="test_order_id" referencedTableName="orders"
+		<addForeignKeyConstraint constraintName="labtest_test_orders_fk"
+			baseTableName="labtest_test" baseColumnNames="test_order_id" referencedTableName="orders"
 			referencedColumnNames="order_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_test_type_fk"
-			baseTableName="commonlabtest_test" baseColumnNames="test_type_id" referencedTableName="commonlabtest_type"
+		<addForeignKeyConstraint constraintName="labtest_test_type_fk"
+			baseTableName="labtest_test" baseColumnNames="test_type_id" referencedTableName="labtest_type"
 			referencedColumnNames="test_type_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_test_creator_fk"
-			baseTableName="commonlabtest_test" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_test_changed_by_fk"
-			baseTableName="commonlabtest_test" baseColumnNames="changed_by" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_test_creator_fk"
+			baseTableName="labtest_test" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="labtest_test_changed_by_fk"
+			baseTableName="labtest_test" baseColumnNames="changed_by" referencedTableName="users"
 			referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_test_voided_by_fk"
-			baseTableName="commonlabtest_test" baseColumnNames="voided_by" referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="labtest_test_voided_by_fk"
+			baseTableName="labtest_test" baseColumnNames="voided_by" referencedTableName="users" referencedColumnNames="user_id" />
 	</changeSet>
 
-	<changeSet id="commonlabtest-2018-05-08-4" author="owais.hussain">
+	<changeSet id="labtest-2018-05-08-4" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<tableExists tableName="commonlabtest_attribute" />
+				<tableExists tableName="labtest_attribute" />
 			</not>
 		</preConditions>
 		<comment>
-			Creating the commonlabtest_attribute table
+			Creating the labtest_attribute table
 		</comment>
-		<createTable tableName="commonlabtest_attribute">
+		<createTable tableName="labtest_attribute">
 			<column name="test_attribute_id" type="int" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
@@ -290,33 +290,33 @@
 				<constraints nullable="false" unique="true"></constraints>
 			</column>
 		</createTable>
-		<addForeignKeyConstraint constraintName="commonlabtest_attribute_test_fk"
-			baseTableName="commonlabtest_attribute" baseColumnNames="test_order_id" referencedTableName="commonlabtest_test"
+		<addForeignKeyConstraint constraintName="labtest_attribute_test_fk"
+			baseTableName="labtest_attribute" baseColumnNames="test_order_id" referencedTableName="labtest_test"
 			referencedColumnNames="test_order_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_attribute_attribute_type_fk"
-			baseTableName="commonlabtest_attribute" baseColumnNames="attribute_type_id"
-			referencedTableName="commonlabtest_attribute_type" referencedColumnNames="test_attribute_type_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_attribute_creator_fk"
-			baseTableName="commonlabtest_attribute" baseColumnNames="creator" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_attribute_attribute_type_fk"
+			baseTableName="labtest_attribute" baseColumnNames="attribute_type_id"
+			referencedTableName="labtest_attribute_type" referencedColumnNames="test_attribute_type_id" />
+		<addForeignKeyConstraint constraintName="labtest_attribute_creator_fk"
+			baseTableName="labtest_attribute" baseColumnNames="creator" referencedTableName="users"
 			referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_attribute_changed_by_fk"
-			baseTableName="commonlabtest_attribute" baseColumnNames="changed_by" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_attribute_changed_by_fk"
+			baseTableName="labtest_attribute" baseColumnNames="changed_by" referencedTableName="users"
 			referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_attribute_voided_by_fk"
-			baseTableName="commonlabtest_attribute" baseColumnNames="voided_by" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_attribute_voided_by_fk"
+			baseTableName="labtest_attribute" baseColumnNames="voided_by" referencedTableName="users"
 			referencedColumnNames="user_id" />
 	</changeSet>
 
-	<changeSet id="commonlabtest-2018-05-08-5" author="owais.hussain">
+	<changeSet id="labtest-2018-05-08-5" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<tableExists tableName="commonlabtest_sample" />
+				<tableExists tableName="labtest_sample" />
 			</not>
 		</preConditions>
 		<comment>
-			Creating the commonlabtest_sample table
+			Creating the labtest_sample table
 		</comment>
-		<createTable tableName="commonlabtest_sample">
+		<createTable tableName="labtest_sample">
 			<!-- This column is renamed to test_sample_id in later changeset -->
 			<column name="test_attribute_id" type="int" autoIncrement="true">
 				<constraints primaryKey="true" nullable="false" />
@@ -359,97 +359,97 @@
 				<constraints nullable="false" unique="true"></constraints>
 			</column>
 		</createTable>
-		<addForeignKeyConstraint constraintName="commonlabtest_sample_test_fk"
-			baseTableName="commonlabtest_sample" baseColumnNames="test_order_id" referencedTableName="commonlabtest_test"
+		<addForeignKeyConstraint constraintName="labtest_sample_test_fk"
+			baseTableName="labtest_sample" baseColumnNames="test_order_id" referencedTableName="labtest_test"
 			referencedColumnNames="test_order_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_sample_specimen_type_fk"
-			baseTableName="commonlabtest_sample" baseColumnNames="specimen_type" referencedTableName="concept"
+		<addForeignKeyConstraint constraintName="labtest_sample_specimen_type_fk"
+			baseTableName="labtest_sample" baseColumnNames="specimen_type" referencedTableName="concept"
 			referencedColumnNames="concept_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_sample_specimen_site_fk"
-			baseTableName="commonlabtest_sample" baseColumnNames="specimen_site" referencedTableName="concept"
+		<addForeignKeyConstraint constraintName="labtest_sample_specimen_site_fk"
+			baseTableName="labtest_sample" baseColumnNames="specimen_site" referencedTableName="concept"
 			referencedColumnNames="concept_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_sample_collector_fk"
-			baseTableName="commonlabtest_sample" baseColumnNames="collector" referencedTableName="provider"
+		<addForeignKeyConstraint constraintName="labtest_sample_collector_fk"
+			baseTableName="labtest_sample" baseColumnNames="collector" referencedTableName="provider"
 			referencedColumnNames="provider_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_sample_creator_fk"
-			baseTableName="commonlabtest_sample" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_sample_changed_by_fk"
-			baseTableName="commonlabtest_sample" baseColumnNames="changed_by" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_sample_creator_fk"
+			baseTableName="labtest_sample" baseColumnNames="creator" referencedTableName="users" referencedColumnNames="user_id" />
+		<addForeignKeyConstraint constraintName="labtest_sample_changed_by_fk"
+			baseTableName="labtest_sample" baseColumnNames="changed_by" referencedTableName="users"
 			referencedColumnNames="user_id" />
-		<addForeignKeyConstraint constraintName="commonlabtest_sample_voided_by_fk"
-			baseTableName="commonlabtest_sample" baseColumnNames="voided_by" referencedTableName="users"
+		<addForeignKeyConstraint constraintName="labtest_sample_voided_by_fk"
+			baseTableName="labtest_sample" baseColumnNames="voided_by" referencedTableName="users"
 			referencedColumnNames="user_id" />
 	</changeSet>
 
-	<!-- Adding missing column in commonlabtest_attribute_type table -->
-	<changeSet id="commonlabtest-2018-07-12-1" author="shujaat">
+	<!-- Adding missing column in labtest_attribute_type table -->
+	<changeSet id="labtest-2018-07-12-1" author="shujaat">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_attribute_type" columnName="preferred_handler" />
+				<columnExists tableName="labtest_attribute_type" columnName="preferred_handler" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_attribute_type">
+		<addColumn tableName="labtest_attribute_type">
 			<column name="preferred_handler" type="varchar(255)">
 			</column>
 		</addColumn>
 
 	</changeSet>
 
-	<!-- Renaming the primary key in commonlabtest_sample table -->
-	<changeSet id="commonlabtest-2018-07-16-1" author="tahira.niazi">
+	<!-- Renaming the primary key in labtest_sample table -->
+	<changeSet id="labtest-2018-07-16-1" author="tahira.niazi">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_sample" columnName="test_sample_id" />
+				<columnExists tableName="labtest_sample" columnName="test_sample_id" />
 			</not>
 		</preConditions>
-		<renameColumn tableName="commonlabtest_sample" oldColumnName="test_attribute_id"
+		<renameColumn tableName="labtest_sample" oldColumnName="test_attribute_id"
 			newColumnName="test_sample_id" columnDataType="int" />
 	</changeSet>
 
-	<!-- Adding missing columns in commonlabtest_sample table -->
-	<changeSet id="commonlabtest-2018-08-07-1" author="owais.hussain">
+	<!-- Adding missing columns in labtest_sample table -->
+	<changeSet id="labtest-2018-08-07-1" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_sample" columnName="collection_date" />
+				<columnExists tableName="labtest_sample" columnName="collection_date" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_sample">
+		<addColumn tableName="labtest_sample">
 			<column name="collection_date" type="datetime" />
 		</addColumn>
 	</changeSet>
-	<changeSet id="commonlabtest-2018-08-07-2" author="owais.hussain">
+	<changeSet id="labtest-2018-08-07-2" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_sample" columnName="processed_date" />
+				<columnExists tableName="labtest_sample" columnName="processed_date" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_sample">
+		<addColumn tableName="labtest_sample">
 			<column name="processed_date" type="datetime" />
 		</addColumn>
 	</changeSet>
-	<changeSet id="commonlabtest-2018-08-07-3" author="owais.hussain">
+	<changeSet id="labtest-2018-08-07-3" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_sample" columnName="quantity" />
+				<columnExists tableName="labtest_sample" columnName="quantity" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_sample">
+		<addColumn tableName="labtest_sample">
 			<column name="quantity" type="double" />
 		</addColumn>
 	</changeSet>
-	<changeSet id="commonlabtest-2018-08-07-4" author="owais.hussain">
+	<changeSet id="labtest-2018-08-07-4" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_sample" columnName="units" />
+				<columnExists tableName="labtest_sample" columnName="units" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_sample">
+		<addColumn tableName="labtest_sample">
 			<column name="units" type="varchar(255)" />
 		</addColumn>
 	</changeSet>
 
-	<!-- Inserting mandatory concept and (for) Unknwon test type in commonlabtest_type table -->
-	<changeSet id="commonlabtest-2018-08-07-5" author="owais.hussain">
+	<!-- Inserting mandatory concept and (for) Unknwon test type in labtest_type table -->
+	<changeSet id="labtest-2018-08-07-5" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<sqlCheck expectedResult="0">select count(*) from concept where short_name = 'UNKNOWN LAB TEST TYPE'</sqlCheck>
 		</preConditions>
@@ -458,7 +458,7 @@
 			<column name="short_name">UNKNOWN LAB TEST TYPE</column>
 			<column name="description">Assigned to laboratory tests which are not known, for example if respective
 				information is purged. This
-				is inserted by, and used in CommonLabTest module
+				is inserted by, and used in labtest module
 			</column>
 			<column name="datatype_id">4</column>
 			<column name="class_id">8</column>
@@ -468,13 +468,13 @@
 			<column name="uuid">b095450e-9ad0-11e8-844c-448a5b471032</column>
 		</insert>
 	</changeSet>
-	<changeSet id="commonlabtest-2018-08-07-6" author="owais.hussain">
+	<changeSet id="labtest-2018-08-07-6" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
 			<!-- Execute only when the above is successful -->
-			<changeSetExecuted id="commonlabtest-2018-08-07-5" author="owais.hussain" changeLogFile="liquibase.xml" />
-			<sqlCheck expectedResult="0">select count(*) from commonlabtest_type where name='Unknown Test Type'</sqlCheck>
+			<changeSetExecuted id="labtest-2018-08-07-5" author="owais.hussain" changeLogFile="liquibase.xml" />
+			<sqlCheck expectedResult="0">select count(*) from labtest_type where name='Unknown Test Type'</sqlCheck>
 		</preConditions>
-		<insert tableName="commonlabtest_type">
+		<insert tableName="labtest_type">
 			<column name="test_type_id">0</column>
 			<column name="name">Unknown Test Type</column>
 			<column name="short_name">UNKNOWN</column>
@@ -489,219 +489,219 @@
 			<column name="uuid">ee9b140e-9a29-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<sql>
-			UPDATE commonlabtest_type SET reference_concept_id=(SELECT concept_id FROM concept WHERE
+			UPDATE labtest_type SET reference_concept_id=(SELECT concept_id FROM concept WHERE
 			uuid='b095450e-9ad0-11e8-844c-448a5b471032')
 			<comment>This command sets the correct concept to reference, because there was no straight way to fetch the last
-				autoincrement ID of the concept inserted in changeset # commonlabtest-2018-08-07-5
+				autoincrement ID of the concept inserted in changeset # labtest-2018-08-07-5
 			</comment>
 		</sql>
 	</changeSet>
 
-	<changeSet id="commonlabtest-2018-08-07-7" author="owais.hussain">
+	<changeSet id="labtest-2018-08-07-7" author="owais.hussain">
 		<preConditions onFail="MARK_RAN">
-			<sqlCheck expectedResult="0">select count(*) from privilege where privilege like '%CommonLabTest%'</sqlCheck>
+			<sqlCheck expectedResult="0">select count(*) from privilege where privilege like '%labtest%'</sqlCheck>
 		</preConditions>
 		<insert tableName="privilege">
-			<column name="privilege">Add CommonLabTest Metadata</column>
+			<column name="privilege">Add labtest Metadata</column>
 			<column name="description">Access to create new LabTest and LabTestAttributeType objects</column>
 			<column name="uuid">774f26c5-9a3e-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Edit CommonLabTest Metadata</column>
+			<column name="privilege">Edit labtest Metadata</column>
 			<column name="description">Access to change existing LabTest and LabTestAttributeType objects</column>
 			<column name="uuid">f492181f-9a3e-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Delete CommonLabTest Metadata</column>
+			<column name="privilege">Delete labtest Metadata</column>
 			<column name="description">Access to delete or retire LabTest and LabTestAttributeType objects</column>
 			<column name="uuid">fa0025da-9a3e-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">View CommonLabTest Metadata</column>
+			<column name="privilege">View labtest Metadata</column>
 			<column name="description">Access to view LabTest and LabTestAttributeType objects</column>
 			<column name="uuid">fec867c9-9a3e-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Add CommonLabTest Samples</column>
+			<column name="privilege">Add labtest Samples</column>
 			<column name="description">Access to create new LabTestSample objects</column>
 			<column name="uuid">0ca672e1-9a3f-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Edit CommonLabTest Samples</column>
+			<column name="privilege">Edit labtest Samples</column>
 			<column name="description">Access to change new LabTestSample objects</column>
 			<column name="uuid">0ca6734e-9a3f-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Delete CommonLabTest Samples</column>
+			<column name="privilege">Delete labtest Samples</column>
 			<column name="description">Access to delete or void LabTestSample objects</column>
 			<column name="uuid">0ca67391-9a3f-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">View CommonLabTest Samples</column>
+			<column name="privilege">View labtest Samples</column>
 			<column name="description">Access to view LabTestSample objects</column>
 			<column name="uuid">0ca673e9-9a3f-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Add CommonLabTest Orders</column>
+			<column name="privilege">Add labtest Orders</column>
 			<column name="description">Access to create new LabTest objects</column>
 			<column name="uuid">448289f0-9a3f-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Edit CommonLabTest Orders</column>
+			<column name="privilege">Edit labtest Orders</column>
 			<column name="description">Access to change new LabTest objects</column>
 			<column name="uuid">44828a6b-9a3f-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Delete CommonLabTest Orders</column>
+			<column name="privilege">Delete labtest Orders</column>
 			<column name="description">Access to delete or void LabTest objects</column>
 			<column name="uuid">44828a80-9a3f-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">View CommonLabTest Orders</column>
+			<column name="privilege">View labtest Orders</column>
 			<column name="description">Access to view LabTest objects</column>
 			<column name="uuid">44828a9c-9a3f-11e8-a296-40b034c3cfee</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Add CommonLabTest results</column>
+			<column name="privilege">Add labtest results</column>
 			<column name="description">Access to add LabResult objects</column>
 			<column name="uuid">f8eaa25f-033a-4b2b-b23a-55295b7890bf</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Edit CommonLabTest results</column>
+			<column name="privilege">Edit labtest results</column>
 			<column name="description">Access to edit LabResult objects</column>
 			<column name="uuid">3a0d03bb-6649-4a51-fbe9-689edd3499c7</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">View CommonLabTest results</column>
+			<column name="privilege">View labtest results</column>
 			<column name="description">Access to view LabResult objects</column>
 			<column name="uuid">55ef129a-6439-44c4-f3b6-466c19732433</column>
 		</insert>
 		<insert tableName="privilege">
-			<column name="privilege">Delete CommonLabTest results</column>
+			<column name="privilege">Delete labtest results</column>
 			<column name="description">Access to delete LabResult objects</column>
 			<column name="uuid">de85c1fa-ab3c-4141-b381-45d90b5f7634</column>
 		</insert>
 	</changeSet>
 
-	<changeSet id="commonlabtest-2018-08-16-2" author="tahira.niazi">
+	<changeSet id="labtest-2018-08-16-2" author="tahira.niazi">
 		<preConditions onFail="MARK_RAN">
-			<columnExists tableName="commonlabtest_sample" columnName="test_sample_id" />
+			<columnExists tableName="labtest_sample" columnName="test_sample_id" />
 		</preConditions>
-		<comment>Adding auto increment property to commonlabtest_sample.test_sample_id</comment>
-		<addAutoIncrement tableName="commonlabtest_sample" columnName="test_sample_id" columnDataType="int" />
+		<comment>Adding auto increment property to labtest_sample.test_sample_id</comment>
+		<addAutoIncrement tableName="labtest_sample" columnName="test_sample_id" columnDataType="int" />
 	</changeSet>
-	<changeSet id="commonlabtest-2018-08-16-3" author="mahmed14">
+	<changeSet id="labtest-2018-08-16-3" author="mahmed14">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_test" columnName="instructions" />
+				<columnExists tableName="labtest_test" columnName="instructions" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_test">
+		<addColumn tableName="labtest_test">
 			<column name="instructions" type="varchar(512)" />
 		</addColumn>
 	</changeSet>
-	<changeSet id="commonlabtest-2018-08-16-4" author="mahmed14">
+	<changeSet id="labtest-2018-08-16-4" author="mahmed14">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_test" columnName="report_file_path" />
+				<columnExists tableName="labtest_test" columnName="report_file_path" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_test">
+		<addColumn tableName="labtest_test">
 			<column name="report_file_path" type="varchar(1024)" />
 		</addColumn>
 	</changeSet>
-	<changeSet id="commonlabtest-2018-09-05-5" author="shujaat.ali">
+	<changeSet id="labtest-2018-09-05-5" author="shujaat.ali">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_test" columnName="result_comments" />
+				<columnExists tableName="labtest_test" columnName="result_comments" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_test">
+		<addColumn tableName="labtest_test">
 			<column name="result_comments" type="varchar(1024)" />
 		</addColumn>
 	</changeSet>
-	<changeSet id="commonlabtest-2018-09-24-6" author="shujaat.ali">
+	<changeSet id="labtest-2018-09-24-6" author="shujaat.ali">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_attribute_type" columnName="hint" />
+				<columnExists tableName="labtest_attribute_type" columnName="hint" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_attribute_type">
+		<addColumn tableName="labtest_attribute_type">
 			<column name="hint" type="varchar(1024)" />
 		</addColumn>
 	</changeSet>
-	<changeSet id="commonlabtest-2018-10-2-8" author="shujaat.ali">
+	<changeSet id="labtest-2018-10-2-8" author="shujaat.ali">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_attribute_type" columnName="group_name" />
+				<columnExists tableName="labtest_attribute_type" columnName="group_name" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_attribute_type">
+		<addColumn tableName="labtest_attribute_type">
 			<column name="group_name" type="varchar(255)" />
 		</addColumn>
 	</changeSet>
-	<changeSet id="commonlabtest-2018-2018-11-27-9" author="shujaat.ali">
+	<changeSet id="labtest-2018-2018-11-27-9" author="shujaat.ali">
 		<preConditions onFail="MARK_RAN">
 			<not>
-				<columnExists tableName="commonlabtest_attribute_type" columnName="multiset_name" />
+				<columnExists tableName="labtest_attribute_type" columnName="multiset_name" />
 			</not>
 		</preConditions>
-		<addColumn tableName="commonlabtest_attribute_type">
+		<addColumn tableName="labtest_attribute_type">
 			<column name="multiset_name" type="varchar(255)" />
 		</addColumn>
 	</changeSet>
 
    <!--
-	<changeSet author="shujaat.ali" id="commonlabtest-2019-2019-9-4-10">
+	<changeSet author="shujaat.ali" id="labtest-2019-2019-9-4-10">
 	    <update tableName="role_privilege">
-	        <column name="privilege" value='Add CommonLabTest Results'/>
-	        <where>privilege='Add CommonLabTest results'</where>
+	        <column name="privilege" value='Add labtest Results'/>
+	        <where>privilege='Add labtest results'</where>
 	    </update>
     </changeSet> -->
 
-    <changeSet author="shujaat.ali" id="commonlabtest-2019-2019-9-5-11">
+    <changeSet author="shujaat.ali" id="labtest-2019-2019-9-5-11">
 		<sql>
 			SET foreign_key_checks = 0;
 			UPDATE privilege p LEFT JOIN role_privilege rp ON p.privilege = rp.privilege
-			SET p.privilege = 'Add CommonLabTest Results' , rp.privilege ='Add CommonLabTest Results'
-			WHERE p.privilege ='Add CommonLabTest results';
+			SET p.privilege = 'Add LabTest Results' , rp.privilege ='Add LabTest Results'
+			WHERE p.privilege ='Add LabTest results';
 			SET foreign_key_checks = 1;
 		</sql>
 	</changeSet>
 
-	   <changeSet author="shujaat.ali" id="commonlabtest-2019-2019-9-5-12">
+	   <changeSet author="shujaat.ali" id="labtest-2019-2019-9-5-12">
 		<sql>
 			SET foreign_key_checks = 0;
 			UPDATE privilege p LEFT JOIN role_privilege rp ON p.privilege = rp.privilege
-			SET p.privilege = 'View CommonLabTest Results' , rp.privilege ='View CommonLabTest Results'
-			WHERE p.privilege ='View CommonLabTest results';
+			SET p.privilege = 'View LabTest Results' , rp.privilege ='View LabTest Results'
+			WHERE p.privilege ='View LabTest results';
 			SET foreign_key_checks = 1;
 		</sql>
 	</changeSet>
 
-	   <changeSet author="shujaat.ali" id="commonlabtest-2019-2019-9-5-13">
+	   <changeSet author="shujaat.ali" id="labtest-2019-2019-9-5-13">
 		<sql>
 			SET foreign_key_checks = 0;
 			UPDATE privilege p LEFT JOIN role_privilege rp ON p.privilege = rp.privilege
-			SET p.privilege = 'Edit CommonLabTest Results' , rp.privilege ='Edit CommonLabTest Results'
-			WHERE p.privilege ='Edit CommonLabTest results';
+			SET p.privilege = 'Edit LabTest Results' , rp.privilege ='Edit LabTest Results'
+			WHERE p.privilege ='Edit LabTest results';
 			SET foreign_key_checks = 1;
 		</sql>
 	</changeSet>
 
-	<changeSet author="shujaat.ali" id="commonlabtest-2019-2019-9-5-14">
+	<changeSet author="shujaat.ali" id="labtest-2019-2019-9-5-14">
 		<sql>
 			SET foreign_key_checks = 0;
 			UPDATE privilege p LEFT JOIN role_privilege rp ON p.privilege = rp.privilege
-			SET p.privilege = 'Delete CommonLabTest Results' , rp.privilege ='Delete CommonLabTest Results'
-			WHERE p.privilege ='Delete CommonLabTest results';
+			SET p.privilege = 'Delete LabTest Results' , rp.privilege ='Delete LabTest Results'
+			WHERE p.privilege ='Delete LabTest results';
 			SET foreign_key_checks = 1;
 		</sql>
 	</changeSet>
 
-	<changeSet id="commonlabtest-2020-10-15-1" author="tahira.niazi">
+	<changeSet id="labtest-2020-10-15-1" author="tahira.niazi">
 		<dropNotNullConstraint columnDataType="text"
-            columnName="description" tableName="commonlabtest_attribute_type"/>
+            columnName="description" tableName="labtest_attribute_type"/>
 	</changeSet>
 
 </databaseChangeLog>

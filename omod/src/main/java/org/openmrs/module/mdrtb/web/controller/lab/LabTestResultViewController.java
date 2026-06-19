@@ -13,7 +13,7 @@ import org.openmrs.module.mdrtb.lab.LabTestAttributeType;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
 import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,21 +28,21 @@ public class LabTestResultViewController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	CommonLabTestService commonLabTestService;
+	LabTestService LabTestService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/getTestResults.form")
 	@ResponseBody
 	public String getLabTestResult(@RequestParam Integer testOrderId) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTest labTest = commonLabTestService.getLabTest(testOrderId);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTest labTest = LabTestService.getLabTest(testOrderId);
 		List<LabTestSample> testSample;
-		List<LabTestAttribute> testAttributes = commonLabTestService.getLabTestAttributes(testOrderId);
+		List<LabTestAttribute> testAttributes = LabTestService.getLabTestAttributes(testOrderId);
 		JsonObject testResultList = new JsonObject();
 		JsonArray testSampleArray = new JsonArray();
 		JsonArray testResultArray = new JsonArray();
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		try {
-			for (LabTestAttributeType attribut : commonLabTestService.getLabTestAttributeTypes(labTest.getLabTestType(),
+			for (LabTestAttributeType attribut : LabTestService.getLabTestAttributeTypes(labTest.getLabTestType(),
 			    Boolean.TRUE)) {
 				for (int i = 0; i < testAttributes.size(); i++) {
 					if (!testAttributes.get(i).getVoided()) {
@@ -53,7 +53,7 @@ public class LabTestResultViewController {
 					}
 				}
 			}
-			testSample = commonLabTestService.getLabTestSamples(labTest, Boolean.FALSE);
+			testSample = LabTestService.getLabTestSamples(labTest, Boolean.FALSE);
 			for (LabTestSample labTestSample : testSample) {
 				JsonObject objTestSample = new JsonObject();
 				objTestSample.addProperty("testOrderId", testOrderId);
@@ -64,7 +64,7 @@ public class LabTestResultViewController {
 			}
 			if (testAttributes != null && !testAttributes.isEmpty()) {
 				LabTestAttributeType labTestAttributeType = testAttributes.get(0).getAttributeType();
-				List<LabTestAttributeType> labTestAttributeTypes = commonLabTestService.getLabTestAttributeTypes(
+				List<LabTestAttributeType> labTestAttributeTypes = LabTestService.getLabTestAttributeTypes(
 				    labTestAttributeType.getLabTestType(), Boolean.FALSE);
 				testResultArray = getAttributeTypeList(labTestAttributeTypes, testOrderId, testAttributes);
 			}
@@ -81,10 +81,10 @@ public class LabTestResultViewController {
 	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/getTestSampleStatus.form")
 	@ResponseBody
 	public Boolean getLabTestSampleStatus(@RequestParam Integer testOrderId) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTest labTest = commonLabTestService.getLabTest(testOrderId);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTest labTest = LabTestService.getLabTest(testOrderId);
 		List<LabTestSample> testSample;
-		testSample = commonLabTestService.getLabTestSamples(labTest, Boolean.FALSE);
+		testSample = LabTestService.getLabTestSamples(labTest, Boolean.FALSE);
 		for (LabTestSample labTestSample : testSample) {
 			if (labTestSample.getStatus().equals(LabTestSampleStatus.ACCEPTED)
 			        || labTestSample.getStatus().equals(LabTestSampleStatus.PROCESSED)) {
@@ -97,11 +97,11 @@ public class LabTestResultViewController {
 	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/getTestSampleAcceptedStatus.form")
 	@ResponseBody
 	public Boolean getLabTestSampleAcceptedStatus(@RequestParam Integer testOrderId) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTest labTest = commonLabTestService.getLabTest(testOrderId);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTest labTest = LabTestService.getLabTest(testOrderId);
 		List<LabTestSample> testSample;
 		int count = 1;
-		testSample = commonLabTestService.getLabTestSamples(labTest, Boolean.FALSE);
+		testSample = LabTestService.getLabTestSamples(labTest, Boolean.FALSE);
 		for (LabTestSample labTestSample : testSample) {
 			if (labTestSample.getStatus().equals(LabTestSampleStatus.ACCEPTED)) {
 				count++;
@@ -116,10 +116,10 @@ public class LabTestResultViewController {
 	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/getTestAttributeTypeSortWeight.form")
 	@ResponseBody
 	public String getLabTestAttributeType(@RequestParam Integer testTypeId) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTestType labTestType = commonLabTestService.getLabTestType(testTypeId);
-		List<LabTestAttributeType> labTestAttributeType = commonLabTestService.getLabTestAttributeTypes(labTestType,
-		    Boolean.FALSE);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTestType labTestType = LabTestService.getLabTestType(testTypeId);
+		List<LabTestAttributeType> labTestAttributeType = LabTestService
+		        .getLabTestAttributeTypes(labTestType, Boolean.FALSE);
 		
 		JsonObject testAttributeList = new JsonObject();
 		JsonArray testAttributeArray = new JsonArray();

@@ -312,7 +312,7 @@ public class MDRDQController {
 		map.put("missingOutcomes", missingOutcomes);
 		map.put("noMDRId", noMDRId);
 		map.put("noSite", noSite);
-		map.put("errorCount", new Integer(errorCount));
+		map.put("errorCount", errorCount);
 		map.put("errorPercentage", errorPercentage + "%");
 		return map;
 	}

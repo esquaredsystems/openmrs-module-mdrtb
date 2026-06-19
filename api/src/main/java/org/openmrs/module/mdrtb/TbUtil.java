@@ -281,7 +281,7 @@ public class TbUtil {
 		if (s1.length() == 0 || s2.length() == 0)
 			return false;
 		
-		java.text.Collator collator = java.text.Collator.getInstance();
+		Collator collator = Collator.getInstance();
 		collator.setStrength(Collator.SECONDARY);
 		
 		int compResult = collator.compare(s1, s2);

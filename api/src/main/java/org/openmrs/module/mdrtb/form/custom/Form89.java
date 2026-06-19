@@ -1096,7 +1096,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			if (id != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(id));
+				obs.setValueNumeric(id.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -1193,10 +1193,10 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		if (site != null) {
 			
 			if (site.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB)))
-				result = new Boolean(true);
+				result = true;
 			
 			else if (site.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB)))
-				result = new Boolean(false);
+				result = false;
 		}
 		return result;
 	}
@@ -1205,7 +1205,7 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		Boolean result = false;
 		
 		if (encounter.getPatient().getGender().equals("F") && getAgeAtRegistration() >= 15 && getAgeAtRegistration() <= 49) {
-			result = new Boolean(true);
+			result = true;
 		}
 		return result;
 	}

@@ -9,38 +9,20 @@
  */
 package org.openmrs.module.mdrtb.api.dao;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.CacheMode;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
-import org.openmrs.Cohort;
-import org.openmrs.Concept;
-import org.openmrs.DrugOrder;
-import org.openmrs.Encounter;
-import org.openmrs.Location;
-import org.openmrs.LocationAttributeType;
-import org.openmrs.PatientIdentifier;
+import org.openmrs.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.DAOException;
-import org.openmrs.module.mdrtb.BaseLocation;
-import org.openmrs.module.mdrtb.LocationHierarchy;
-import org.openmrs.module.mdrtb.MdrtbConstants;
-import org.openmrs.module.mdrtb.ReportData;
-import org.openmrs.module.mdrtb.ReportType;
+import org.openmrs.module.mdrtb.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Repository("mdrtb.MdrtbDao")
 public class MdrtbDao {
@@ -98,15 +80,15 @@ public class MdrtbDao {
 		Map<Integer, List<DrugOrder>> ret = new HashMap<>();
 		if (patients != null && patients.size() == 0)
 			return ret;
-		
+
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DrugOrder.class);
 		criteria.setFetchMode("patient", FetchMode.JOIN);
 		criteria.setCacheMode(CacheMode.IGNORE);
-		
+
 		// only include this where clause if patients were passed in
 		if (patients != null)
 			criteria.add(Restrictions.in("patient.personId", patients.getMemberIds()));
-		
+
 		if (drugConcepts != null)
 			criteria.add(Restrictions.in("concept", drugConcepts));
 		criteria.add(Restrictions.eq("voided", false));
@@ -142,7 +124,7 @@ public class MdrtbDao {
 	
 	@SuppressWarnings("unchecked")
 	public List<ReportData> searchReportData(Location region, Location district, Location facility, Integer year, Integer quarter,
-	        Integer month, String reportName, ReportType reportType) {
+	                                         Integer month, String reportName, ReportType reportType) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReportData.class);
 		criteria.add(Restrictions.eq("year", year));
 		if (reportType != null) {
@@ -187,26 +169,26 @@ public class MdrtbDao {
 					locationList.add(f);
 				}
 			}
-		}		
+		}
 		criteria.add(Restrictions.in("location", locationList.toArray()));
 		return criteria.list();
 	}
 	
 	public List<String> getReportDataAsList(Integer regionId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
-	        Integer month, String reportName, ReportType reportType) {
+	                                        Integer month, String reportName, ReportType reportType) {
 		Location region = regionId != null ? Context.getLocationService().getLocation(regionId) : null;
 		Location district = districtId != null ? Context.getLocationService().getLocation(districtId) : null;
 		Location facility = facilityId != null ? Context.getLocationService().getLocation(facilityId) : null;
 		List<ReportData> reports = searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
 		List<String> list = new ArrayList<>();
 		for (ReportData report : reports) {
-            try {
+			try {
 				list.add(report.getTableData());
 			}
 			catch (IOException e) {
 				e.printStackTrace();
 			}
-        }
+		}
 		return list;
 	}
 	
@@ -226,7 +208,7 @@ public class MdrtbDao {
 	@SuppressWarnings("unchecked")
 	/* TODO: Remove unused closeDate parameter */
 	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames, Date startDate, Date endDate,
-	        Date closeDate) {
+	                                                     Date closeDate) {
 		SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<Integer> encounterIds = new ArrayList<>();
 		List<Integer> tempList = new ArrayList<>();
@@ -234,22 +216,22 @@ public class MdrtbDao {
 		Session session = sessionFactory.getCurrentSession();
 		for (String encounterTypeName : encounterTypeNames) {
 			sql = "select e.encounter_id from encounter e inner join encounter_type et where e.encounter_type=et.encounter_type_id and et.name='"
-			        + encounterTypeName + "' and e.voided=0";
-			
+					+ encounterTypeName + "' and e.voided=0";
+
 			if (startDate != null && endDate != null) {
 				sql += " and e.encounter_datetime between '" + dbDateFormat.format(startDate) + "' and '"
-				        + dbDateFormat.format(endDate) + "'";
+						+ dbDateFormat.format(endDate) + "'";
 			}
 			sql += ";";
 			tempList = (List<Integer>) session.createSQLQuery(sql).list();
-			
+
 			for (Integer encounterId : tempList) {
 				if (!(encounterIds.contains(encounterId))) {
 					encounterIds.add(encounterId);
 				}
 			}
 		}
-		
+
 		List<Encounter> encounters = new ArrayList<>();
 		Encounter encounter = new Encounter();
 		for (Integer encounterId : encounterIds) {
@@ -269,7 +251,7 @@ public class MdrtbDao {
 	public List<BaseLocation> getLocationsByHierarchyLevel(LocationHierarchy level) {
 		Map<LocationAttributeType, Object> attributeValues = new HashMap<>();
 		LocationAttributeType key = Context.getLocationService().getLocationAttributeTypeByName(
-		    MdrtbConstants.LOCATION_ATTRIBUTE_TYPE_LEVEL);
+				MdrtbConstants.LOCATION_ATTRIBUTE_TYPE_LEVEL);
 		attributeValues.put(key, level.toString());
 		List<Location> list = Context.getLocationService().getLocations(null, null, attributeValues, false, null, null);
 		List<BaseLocation> locations = new ArrayList<>();
@@ -289,10 +271,7 @@ public class MdrtbDao {
 			case SUBREGION:
 				childLevel = LocationHierarchy.DISTRICT;
 				break;
-			case DISTRICT:
-				childLevel = LocationHierarchy.FACILITY;
-				break;
-			default:
+            default:
 				childLevel = LocationHierarchy.FACILITY;
 		}
 		for (Location location : parent.getChildLocations()) {

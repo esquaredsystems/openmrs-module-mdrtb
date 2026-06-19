@@ -48,7 +48,7 @@ public class CloseReportChangesController {
 		System.out.println("-----View Closed Report Changes GET-----");
 	}
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "deprecation" })
 	@RequestMapping(method = RequestMethod.POST)
 	//, value="/module/mdrtb/reporting/viewClosedReportChanges"
 	public ModelAndView viewClosedReportsPost(HttpServletRequest request, HttpServletResponse response,
@@ -187,7 +187,6 @@ public class CloseReportChangesController {
 		while (iterator1.hasNext()) {
 			ArrayList<String> tempData = new ArrayList<>();
 			Map.Entry patientMap = (Map.Entry) iterator1.next();
-			Encounter encounter = (Encounter) patientMap.getKey();
 			Patient patient = (Patient) patientMap.getValue();
 			
 			tempData.add(Integer.toString(patient.getId())); // patient id
@@ -195,6 +194,7 @@ public class CloseReportChangesController {
 			tempData.add(Integer.toString(patient.getAge())); // patient age
 			tempData.add(patient.getDateCreated().toString()); // patient date created
 			tempData.add(patient.getDateChanged().toString());
+			
 			// patient date changed
             patientData.add(tempData);
 			iterator1.remove();
@@ -204,7 +204,6 @@ public class CloseReportChangesController {
 		while (iterator2.hasNext()) {
 			ArrayList<String> tempData = new ArrayList<>();
 			Map.Entry obsMap = (Map.Entry) iterator2.next();
-			Integer id = (Integer) obsMap.getKey();
 			
 			Obs obs = (Obs) obsMap.getValue();
 			Encounter encounter = obs.getEncounter();

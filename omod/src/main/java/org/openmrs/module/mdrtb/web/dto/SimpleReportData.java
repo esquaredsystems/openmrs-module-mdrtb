@@ -12,7 +12,6 @@ import org.openmrs.Location;
 import org.openmrs.module.mdrtb.ReportData;
 import org.openmrs.module.mdrtb.ReportStatus;
 import org.openmrs.module.mdrtb.ReportType;
-import org.openmrs.module.mdrtb.web.controller.reporting.ExportReportController;
 
 public class SimpleReportData extends BaseOpenmrsData {
 	

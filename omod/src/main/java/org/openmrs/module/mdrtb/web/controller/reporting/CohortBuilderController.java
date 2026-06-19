@@ -31,7 +31,6 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
-import org.openmrs.cohort.CohortSearchHistory;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.reporting.PatientFilter;
 import org.openmrs.reporting.PatientSearch;
@@ -320,7 +319,7 @@ public class CohortBuilderController implements Controller {
 			CohortSearchHistory history = getMySearchHistory(request);
 			String temp = request.getParameter("filter_id");
 			if (temp != null) {
-				Integer filterId = new Integer(temp);
+				Integer filterId = Integer.parseInt(temp);
 				PatientFilter pf = rs.getPatientFilterById(filterId);
 				if (pf != null)
 					history.addSearchItem(PatientSearch.createSavedFilterReference(filterId));
@@ -329,7 +328,7 @@ public class CohortBuilderController implements Controller {
 			}
 			temp = request.getParameter("search_id");
 			if (temp != null) {
-				Integer searchId = new Integer(temp);
+				Integer searchId = Integer.parseInt(temp);
 				PatientSearchReportObject ro = (PatientSearchReportObject) rs.getReportObject(searchId);
 				if (ro != null)
 					history.addSearchItem(PatientSearch.createSavedSearchReference(searchId));
@@ -338,7 +337,7 @@ public class CohortBuilderController implements Controller {
 			}
 			temp = request.getParameter("cohort_id");
 			if (temp != null) {
-				Integer cohortId = new Integer(temp);
+				Integer cohortId = Integer.parseInt(temp);
 				Cohort c = Context.getCohortService().getCohort(cohortId);
 				if (c != null) {
 					history.addSearchItem(PatientSearch.createSavedCohortReference(cohortId));
@@ -362,14 +361,14 @@ public class CohortBuilderController implements Controller {
 			CohortSearchHistory history = getMySearchHistory(request);
 			String temp = request.getParameter("index");
 			if (temp != null) {
-				Integer index = new Integer(temp);
+				Integer index = Integer.parseInt(temp);
 				history.removeSearchItem(index);
 			}
 		}
 		return new ModelAndView(new RedirectView(getSuccessView()));
 	}
 	
-	public class ArgHolder {
+	public static class ArgHolder {
 		
 		private Class<?> argClass;
 		
@@ -483,7 +482,7 @@ public class CohortBuilderController implements Controller {
 				}
 			}
 			log.debug("Created PatientSearch: " + search);
-			
+
 			if (search != null) {
 				CohortSearchHistory history = getMySearchHistory(request);
 				history.addSearchItem(search);
@@ -505,8 +504,8 @@ public class CohortBuilderController implements Controller {
 				throw new RuntimeException("Re-saving histories is not yet implemented");
 			history.setName(name);
 			history.setDescription(description);
-			ReportObjectService rs = Context.getService(ReportObjectService.class);
-			rs.saveSearchHistory(history);
+//			ReportObjectService rs = Context.getService(ReportObjectService.class);
+//			rs.saveSearchHistory(history);
 		}
 		return new ModelAndView(new RedirectView(getSuccessView()));
 	}
@@ -519,7 +518,7 @@ public class CohortBuilderController implements Controller {
 		return ret;
 	}
 	
-	public class LinkArg {
+	public static class LinkArg {
 		
 		String name;
 		
@@ -556,7 +555,7 @@ public class CohortBuilderController implements Controller {
 		}
 	}
 	
-	public class LinkSpec {
+	public static class LinkSpec {
 		
 		String label;
 		

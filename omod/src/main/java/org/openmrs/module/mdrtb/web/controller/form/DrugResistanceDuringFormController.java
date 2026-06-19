@@ -67,7 +67,6 @@ public class DrugResistanceDuringFormController {
 	        @RequestParam(required = true, value = "patientProgramId") Integer patientProgramId) throws SecurityException,
 	        IllegalArgumentException {
 		
-		boolean mdr = false;
 		PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		
 		// if no form is specified, create a new one

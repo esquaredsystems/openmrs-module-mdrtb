@@ -18,13 +18,13 @@ import org.junit.Before;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.AdvicePoint;
-import org.openmrs.module.mdrtb.lab.CommonLabTestBase;
+import org.openmrs.module.mdrtb.lab.LabTestBase;
 import org.springframework.aop.AfterReturningAdvice;
 
 /**
  * @author tahira.niazi@ihsinformatics.com
  */
-public abstract class AOPContextSensitiveTest extends CommonLabTestBase implements TestAOP {
+public abstract class AOPContextSensitiveTest extends LabTestBase implements TestAOP {
 	
 	private Class<?> adviceClass;
 	

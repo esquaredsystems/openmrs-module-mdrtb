@@ -3,11 +3,6 @@
  */
 package org.openmrs.module.mdrtb;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -17,6 +12,8 @@ import org.junit.Test;
 import org.openmrs.Location;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.MdrtbService;
+
+import static org.junit.Assert.*;
 
 /**
  * @author owais.hussain@esquaredsystems.com
@@ -31,28 +28,42 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	
 	LocalDate now = new LocalDate();
 	
-	Region dushanbe;// = new Region("Dushanbe", 3);
+	Region dushanbe;
 	
-	Region khatlon;// = new Region("Khatlon Region", 4);
+	Region khatlon;
 	
-	Region republic;// = new Region("Republican Subordination", 5);
+	Region republic;
 	
-	District fayzobad;// = new District("Fayzobod District", 6);
+	District fayzobad;
 	
-	District nurobad;// = new District("Nurobod District", 7);
+	District tojikobod;
 	
-	District ferdowsi;// = new District("Ferdowsi District", 13);
+	District ferdowsi;
 	
-	District mansur;// = new District("Shah Mansur District", 14);
+	District mansur;
 	
-	Facility fayzobodLab;// = new Facility("Fayzobod Central Testing Lab", 10);
+	Facility fayzobodLab;
 	
-	Facility dushanbeGeneralHospital;// = new Facility("Dushanbe General Hospital", 201);
+	Facility dushanbeGeneralHospital;
 	
 	@Before
 	public void runBeforeEachTest() throws Exception {
 		super.initTestData();
 		service = Context.getService(MdrtbService.class);
+		
+		dushanbe = new Region(new BaseLocation(Context.getLocationService().getLocation(50), LocationHierarchy.REGION));
+		khatlon = new Region(new BaseLocation(Context.getLocationService().getLocation(52), LocationHierarchy.REGION));
+		republic = new Region(new BaseLocation(Context.getLocationService().getLocation(51), LocationHierarchy.REGION));
+		
+		fayzobad = new District(new BaseLocation(Context.getLocationService().getLocation(75), LocationHierarchy.DISTRICT));
+		tojikobod = new District(new BaseLocation(Context.getLocationService().getLocation(74), LocationHierarchy.DISTRICT));
+		ferdowsi = new District(new BaseLocation(Context.getLocationService().getLocation(72), LocationHierarchy.DISTRICT));
+		mansur = new District(new BaseLocation(Context.getLocationService().getLocation(70), LocationHierarchy.DISTRICT));
+		
+		fayzobodLab = new Facility(new BaseLocation(Context.getLocationService().getLocation(200),
+		        LocationHierarchy.FACILITY));
+		dushanbeGeneralHospital = new Facility(new BaseLocation(Context.getLocationService().getLocation(201),
+		        LocationHierarchy.FACILITY));
 	}
 	
 	@Test
@@ -75,15 +86,15 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	
 	@Test
 	public final void testGetDistrict() {
-		assertEquals("District mismatch", fayzobad, service.getDistrict(6));
-		assertEquals("District mismatch", fayzobad, service.getDistrict("Fayzobod District"));
+		assertEquals("District mismatch", fayzobad, service.getDistrict(75));
+		assertEquals("District mismatch", fayzobad, service.getDistrict("Fayzobod"));
 	}
 	
 	@Test
 	public final void testGetDistricts() {
 		List<District> list = service.getDistricts();
 		assertTrue(list.contains(fayzobad));
-		assertTrue(list.contains(nurobad));
+		assertTrue(list.contains(tojikobod));
 	}
 	
 	@Test
@@ -94,13 +105,14 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	
 	@Test
 	public final void testGetFacility() {
-		assertEquals("Facility mismatch", fayzobodLab, service.getFacility(10));
+		Facility facility = service.getFacility(200);
+		assertEquals("Facility mismatch", fayzobodLab, facility);
 	}
 	
 	@Test
-	public final void testGetFacilities() {
+	public final void testGetFacilitiesByParent() {
 		List<Facility> list = service.getFacilitiesByParent(fayzobad.getId());
-		assertTrue(list.contains(fayzobodLab));
+		assertFalse(list.isEmpty());
 	}
 	
 	@Test

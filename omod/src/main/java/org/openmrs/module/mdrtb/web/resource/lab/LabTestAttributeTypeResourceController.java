@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.lab.LabTestAttributeType;
 import org.openmrs.module.mdrtb.lab.LabTestType;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -31,11 +31,11 @@ public class LabTestAttributeTypeResourceController extends MetadataDelegatingCr
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private CommonLabTestService commonLabTestService = Context.getService(CommonLabTestService.class);
+	private LabTestService LabTestService = Context.getService(LabTestService.class);
 	
 	@Override
 	public LabTestAttributeType getByUniqueId(String s) {
-		return commonLabTestService.getLabTestAttributeTypeByUuid(s);
+		return LabTestService.getLabTestAttributeTypeByUuid(s);
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class LabTestAttributeTypeResourceController extends MetadataDelegatingCr
 	
 	@Override
 	public LabTestAttributeType save(LabTestAttributeType labTestAttributeType) {
-		return commonLabTestService.saveLabTestAttributeType(labTestAttributeType);
+		return LabTestService.saveLabTestAttributeType(labTestAttributeType);
 	}
 	
 	@Override
@@ -56,8 +56,8 @@ public class LabTestAttributeTypeResourceController extends MetadataDelegatingCr
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		String testTypeUuid = context.getRequest().getParameter("testTypeUuid");
-		LabTestType labTestType = commonLabTestService.getLabTestTypeByUuid(testTypeUuid);
-		List<LabTestAttributeType> attributeTypes = commonLabTestService.getLabTestAttributeTypes(labTestType, true);
+		LabTestType labTestType = LabTestService.getLabTestTypeByUuid(testTypeUuid);
+		List<LabTestAttributeType> attributeTypes = LabTestService.getLabTestAttributeTypes(labTestType, true);
 		return new NeedsPaging<LabTestAttributeType>(attributeTypes, context);
 	}
 	
@@ -132,7 +132,7 @@ public class LabTestAttributeTypeResourceController extends MetadataDelegatingCr
 	
 	@Override
 	protected PageableResult doGetAll(RequestContext context) throws ResponseException {
-		List<LabTestAttributeType> list = commonLabTestService.getAllLabTestAttributeTypes(false);
+		List<LabTestAttributeType> list = LabTestService.getAllLabTestAttributeTypes(false);
 		return new NeedsPaging<LabTestAttributeType>(list, context);
 	}
 	

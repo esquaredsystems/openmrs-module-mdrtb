@@ -1,122 +1,38 @@
-/**
- * This Source Code Form is subject to the terms of the Mozilla Public License,
- * v. 2.0. If a copy of the MPL was not distributed with this file, You can
- * obtain one at http://mozilla.org/MPL/2.0/. OpenMRS is also distributed under
- * the terms of the Healthcare Disclaimer located at http://openmrs.org/license.
- *
- * Copyright (C) OpenMRS Inc. OpenMRS is a registered trademark and the OpenMRS
- * graphic logo is a trademark of OpenMRS Inc.
- */
 package org.openmrs.module.mdrtb.api;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Cohort;
-import org.openmrs.Concept;
-import org.openmrs.ConceptAnswer;
-import org.openmrs.ConceptName;
-import org.openmrs.ConceptNameTag;
-import org.openmrs.ConceptSet;
-import org.openmrs.DrugOrder;
-import org.openmrs.Encounter;
-import org.openmrs.EncounterType;
-import org.openmrs.Location;
-import org.openmrs.LocationTag;
-import org.openmrs.Obs;
-import org.openmrs.Order;
-import org.openmrs.OrderType;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PatientIdentifierType;
-import org.openmrs.PatientProgram;
-import org.openmrs.PatientState;
-import org.openmrs.Person;
-import org.openmrs.Program;
-import org.openmrs.ProgramWorkflow;
-import org.openmrs.ProgramWorkflowState;
-import org.openmrs.Provider;
+import org.openmrs.*;
 import org.openmrs.api.APIException;
 import org.openmrs.api.OrderContext;
 import org.openmrs.api.UserService;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
-import org.openmrs.module.mdrtb.lab.LabTest;
-import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.BaseLocation;
-import org.openmrs.module.mdrtb.LabUtil;
-import org.openmrs.module.mdrtb.District;
-import org.openmrs.module.mdrtb.Facility;
-import org.openmrs.module.mdrtb.LocationHierarchy;
-import org.openmrs.module.mdrtb.MdrtbConcepts;
-import org.openmrs.module.mdrtb.MdrtbConstants;
-import org.openmrs.module.mdrtb.MdrtbUtil;
-import org.openmrs.module.mdrtb.Region;
-import org.openmrs.module.mdrtb.ReportData;
-import org.openmrs.module.mdrtb.ReportStatus;
-import org.openmrs.module.mdrtb.ReportType;
-import org.openmrs.module.mdrtb.TbUtil;
+import org.openmrs.module.mdrtb.*;
 import org.openmrs.module.mdrtb.api.dao.MdrtbDao;
 import org.openmrs.module.mdrtb.comparator.PatientProgramComparator;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
-import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
-import org.openmrs.module.mdrtb.form.custom.CultureForm;
-import org.openmrs.module.mdrtb.form.custom.DSTForm;
-import org.openmrs.module.mdrtb.form.custom.DrugResistanceDuringTreatmentForm;
-import org.openmrs.module.mdrtb.form.custom.Form89;
-import org.openmrs.module.mdrtb.form.custom.HAIN2Form;
-import org.openmrs.module.mdrtb.form.custom.HAINForm;
-import org.openmrs.module.mdrtb.form.custom.RegimenForm;
-import org.openmrs.module.mdrtb.form.custom.SmearForm;
-import org.openmrs.module.mdrtb.form.custom.TB03Form;
-import org.openmrs.module.mdrtb.form.custom.TB03uForm;
-import org.openmrs.module.mdrtb.form.custom.TransferInForm;
-import org.openmrs.module.mdrtb.form.custom.TransferOutForm;
-import org.openmrs.module.mdrtb.form.custom.XpertForm;
-import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
-import org.openmrs.module.mdrtb.program.TbPatientProgram;
+import org.openmrs.module.mdrtb.form.custom.*;
+import org.openmrs.module.mdrtb.lab.*;
+import org.openmrs.module.mdrtb.program.*;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
-import org.openmrs.module.mdrtb.specimen.Culture;
-import org.openmrs.module.mdrtb.specimen.Dst;
-import org.openmrs.module.mdrtb.specimen.ScannedLabReport;
-import org.openmrs.module.mdrtb.specimen.Smear;
-import org.openmrs.module.mdrtb.specimen.SmearImpl;
-import org.openmrs.module.mdrtb.specimen.Specimen;
-import org.openmrs.module.mdrtb.specimen.SpecimenImpl;
-import org.openmrs.module.mdrtb.specimen.custom.HAIN;
-import org.openmrs.module.mdrtb.specimen.custom.HAIN2;
-import org.openmrs.module.mdrtb.specimen.custom.HAIN2Impl;
-import org.openmrs.module.mdrtb.specimen.custom.HAINImpl;
-import org.openmrs.module.mdrtb.specimen.custom.Xpert;
-import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
+import org.openmrs.module.mdrtb.specimen.*;
+import org.openmrs.module.mdrtb.specimen.custom.*;
 import org.openmrs.module.reporting.cohort.query.service.CohortQueryService;
 import org.openmrs.module.reporting.common.ObjectUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@SuppressWarnings("null")
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService {
 	
 	private static final String VOID_MESSAGE = "voided by MDRTB module";
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
+	@Autowired
 	MdrtbDao dao;
 	
 	UserService userService;
@@ -124,6 +40,11 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	MdrtbConcepts conceptMap = new MdrtbConcepts();
 	
 	Map<Integer, String> colorMapCache = null;
+	
+	@Override
+	public void onStartup() {
+		log.info("MDRTB Service starting up");
+	}
 	
 	/**
 	 * Injected in moduleApplicationContext.xml
@@ -231,13 +152,13 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	private Map<Integer, String> loadCache(String mapAsString) {
 		Map<Integer, String> map = new HashMap<>();
-		
+
 		if (StringUtils.isNotBlank(mapAsString)) {
 			for (String mapping : mapAsString.split("\\|")) {
 				String[] mappingFields = mapping.split(":");
-				
+
 				Integer conceptId = null;
-				
+
 				// if this is a mapping code, need to convert it to the concept id
 				if (!MdrtbUtil.isInteger(mappingFields[0])) {
 					Concept concept = getConcept(mappingFields[0]);
@@ -251,13 +172,13 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				else {
 					conceptId = Integer.valueOf(mappingFields[0]);
 				}
-				
+
 				map.put(conceptId, mappingFields[1]);
 			}
 		} else {
 			throw new RuntimeException("Unable to load cache, cache string is null. Is required global property missing?");
 		}
-		
+
 		return map;
 	}
 	
@@ -281,6 +202,11 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			}
 			// Next try precise name
 			try {
+				Concept concept = Context.getConceptService().getConceptByName(lookup);
+				if (concept != null) {
+					initializeEverythingAboutConcept(concept);
+					return concept;
+				}
 				List<Concept> list = Context.getConceptService().getConceptsByName(lookup, Locale.ENGLISH, false);
 				// If there is exactly 1 object, then return it
 				if (list.size() == 1) {
@@ -371,7 +297,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				drugConcepts.add(cs.getConcept());
 			}
 		}
-		
+
 		Map<Integer, List<DrugOrder>> drugOrders = dao.getDrugOrders(cohort, drugConcepts);
 		return drugOrders;
 	}
@@ -438,14 +364,14 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public List<TbPatientProgram> getAllTbPatientProgramsEnrolledInDateRangeAndLocations(List<Location> locations,
-	        Date startDate, Date endDate) {
+	                                                                                     Date startDate, Date endDate) {
 		// Handle null location (i.e. assume all locations)
 		if (locations == null) {
 			locations = getEnrollmentLocations();
 		}
 		// (program must have started before the end date of the period, and must not have ended before the start of the period)
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getTbProgram(),
-		    startDate, endDate, null, null, false);
+				startDate, endDate, null, null, false);
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
 		List<TbPatientProgram> tbPrograms = new LinkedList<>();
@@ -455,7 +381,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			temp = new TbPatientProgram(program);
 			for (Location l : locations) {
 				if (temp.getLocation() != null
-				        && (temp.getLocation().getLocationId().intValue() == l.getLocationId().intValue())) {
+						&& (temp.getLocation().getLocationId().intValue() == l.getLocationId().intValue())) {
 					tbPrograms.add(new TbPatientProgram(program));
 					break;
 				}
@@ -492,7 +418,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<TbPatientProgram> getTbPatientPrograms(Patient patient) {
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(patient, getTbProgram(),
-		    null, null, null, null, false);
+				null, null, null, null, false);
 		TbPatientProgram temp = null;
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
@@ -514,8 +440,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<TbPatientProgram> programs = new LinkedList<>();
 		for (TbPatientProgram program : getTbPatientPrograms(patient)) {
 			if ((endDate == null || program.getDateEnrolled().before(endDate))
-			        && (program.getDateCompleted() == null || startDate == null || !program.getDateCompleted().before(
-			            startDate))) {
+					&& (program.getDateCompleted() == null || startDate == null || !program.getDateCompleted().before(
+					startDate))) {
 				programs.add(program);
 			}
 		}
@@ -536,7 +462,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// (program must have started before the end date of the period, and must not
 		// have ended before the start of the period)
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getMdrtbProgram(),
-		    startDate, endDate, null, null, false);
+				startDate, endDate, null, null, false);
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
 		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<>();
@@ -556,7 +482,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// (program must have started before the end date of the period, and must not
 		// have ended before the start of the period)
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getMdrtbProgram(),
-		    startDate, endDate, null, null, false);
+				startDate, endDate, null, null, false);
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
 		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<>();
@@ -568,10 +494,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public List<MdrtbPatientProgram> getAllMdrtbPatientProgramsEnrolledInDateRangeAndLocations(List<Location> locations,
-	        Date startDate, Date endDate) {
+	                                                                                           Date startDate, Date endDate) {
 		// (program must have started before the end date of the period, and must not have ended before the start of the period)
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getMdrtbProgram(),
-		    startDate, endDate, null, null, false);
+				startDate, endDate, null, null, false);
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
 		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<>();
@@ -579,10 +505,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// convert to mdrtb patient programs
 		for (PatientProgram program : programs) {
 			temp = new MdrtbPatientProgram(program);
-			
+
 			for (Location l : locations) {
 				if (temp.getLocation() != null
-				        && (temp.getLocation().getLocationId().intValue() == l.getLocationId().intValue())) {
+						&& (temp.getLocation().getLocationId().intValue() == l.getLocationId().intValue())) {
 					mdrtbPrograms.add(new MdrtbPatientProgram(program));
 					break;
 				}
@@ -593,11 +519,11 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<MdrtbPatientProgram> getMdrtbPatientProgramsInDateRange(Patient patient, Date startDate, Date endDate) {
 		List<MdrtbPatientProgram> programs = new LinkedList<>();
-		
+
 		for (MdrtbPatientProgram program : getMdrtbPatientPrograms(patient)) {
 			if ((endDate == null || program.getDateEnrolled().before(endDate))
-			        && (program.getDateCompleted() == null || startDate == null || !program.getDateCompleted().before(
-			            startDate))) {
+					&& (program.getDateCompleted() == null || startDate == null || !program.getDateCompleted().before(
+					startDate))) {
 				programs.add(program);
 			}
 		}
@@ -634,7 +560,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<MdrtbPatientProgram> getMdrtbPatientPrograms(Patient patient) {
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(patient, getMdrtbProgram(),
-		    null, null, null, null, false);
+				null, null, null, null, false);
 		// sort the programs so oldest is first and most recent is last
 		Collections.sort(programs, new PatientProgramComparator());
 		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<>();
@@ -792,7 +718,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<Specimen> getSpecimens(Patient patient, Integer programId) {
 		List<Specimen> specimens = new LinkedList<>();
 		List<Encounter> specimenEncounters = new LinkedList<>();
-		
+
 		// create the specific specimen encounter types
 		List<EncounterType> specimenEncounterTypes = new LinkedList<>();
 		specimenEncounterTypes.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
@@ -803,27 +729,27 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == programId)
 				specimens.add(new SpecimenImpl(encounter));
 		}
-		
+
 		Collections.sort(specimens);
 		return specimens;
 	}
 	
 	public List<Specimen> getSpecimens(Patient patient, Date startDateCollected, Date endDateCollected,
-	        Location locationCollected) {
+	                                   Location locationCollected) {
 		List<Specimen> specimens = new LinkedList<>();
 		List<Encounter> specimenEncounters = new LinkedList<>();
-		
+
 		// create the specific specimen encounter types
 		List<EncounterType> specimenEncounterTypes = new LinkedList<>();
 		specimenEncounterTypes.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
-		
+
 		specimenEncounters = getEncounters(patient, locationCollected, startDateCollected, endDateCollected,
-		    specimenEncounterTypes);
-		
+				specimenEncounterTypes);
+
 		for (Encounter encounter : specimenEncounters) {
 			specimens.add(new SpecimenImpl(encounter));
 		}
-		
+
 		Collections.sort(specimens);
 		return specimens;
 	}
@@ -1334,7 +1260,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Set<Location> childLocations = parent.getChildLocations(includeRetired);
 		if (childLocations.isEmpty()) {
 			locList.add(parent);
-		} 
+		}
 		// If there are child locations, fetch their list
 		else {
 			for (Location child : childLocations) {
@@ -1517,7 +1443,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<XpertForm> getXpertForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
-		ArrayList<XpertForm> xperts = new ArrayList<>();		
+		ArrayList<XpertForm> xperts = new ArrayList<>();
 		// Fallback to Lab module
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
@@ -1698,7 +1624,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgramId) {
+					&& idObs.getValueNumeric().intValue() == patientProgramId) {
 				forms.add(new TB03Form(e));
 			}
 		}
@@ -1715,7 +1641,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgramId) {
+					&& idObs.getValueNumeric().intValue() == patientProgramId) {
 				forms.add(new Form89(e));
 			}
 		}
@@ -1723,7 +1649,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public List<Form89> getForm89FormsFilledForPatientProgram(Patient patient, Location location, Integer patientProgramId,
-	        Integer year, Integer quarter, Integer month, Integer month2) {
+	                                                          Integer year, Integer quarter, Integer month, Integer month2) {
 		ArrayList<Form89> forms = new ArrayList<>();
 		Map<String, Date> dateMap = null;
 		if (year != null && (quarter != null || month != null))
@@ -1743,7 +1669,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				Obs ppObs = MdrtbUtil.getObsFromEncounter(ppid, e);
 				if (ppObs != null) {
 					if (ppObs.getValueNumeric() != null
-					        && (ppObs.getValueNumeric().intValue() == patientProgramId)) {
+							&& (ppObs.getValueNumeric().intValue() == patientProgramId)) {
 						forms.add(new Form89(e));
 					}
 				}
@@ -1880,7 +1806,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public List<TransferInForm> getTransferInFormsFilled(List<Location> locations, Integer year, Integer quarter,
-			Integer month, Integer month2) {
+	                                                     Integer month, Integer month2) {
 		ArrayList<TransferInForm> forms = new ArrayList<>();
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
@@ -1917,7 +1843,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public List<TransferOutForm> getTransferOutFormsFilled(List<Location> locations, Integer year, Integer quarter,
-			Integer month, Integer month2) {
+	                                                       Integer month, Integer month2) {
 		ArrayList<TransferOutForm> forms = new ArrayList<>();
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
@@ -1959,15 +1885,15 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		TB03uForm form = null;
 		ArrayList<EncounterType> typeList = new ArrayList<>();
 		typeList.add(MdrtbConstants.ET_TB03U_MDRTB_INTAKE);
-		
+
 		List<Encounter> temp = null;
 		Concept idConcept = getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
 		temp = getEncountersByPatientAndTypes(p, typeList);
-		
+
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgId) {
+					&& idObs.getValueNumeric().intValue() == patientProgId) {
 				form = new TB03uForm(e);
 				break;
 			}
@@ -1985,7 +1911,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgId) {
+					&& idObs.getValueNumeric().intValue() == patientProgId) {
 				forms.add(new RegimenForm(e));
 			}
 		}
@@ -1995,7 +1921,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public List<TB03uForm> getTB03uFormsWithTreatmentStartedDuring(List<Location> locations, Integer year, Integer quarter,
-			Integer month, Integer month2) {
+	                                                               Integer month, Integer month2) {
 		ArrayList<TB03uForm> forms = new ArrayList<>();
 		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
@@ -2003,16 +1929,16 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		ArrayList<EncounterType> typeList = new ArrayList<>();
 		typeList.add(MdrtbConstants.ET_TB03U_MDRTB_INTAKE);
 		List<Encounter> temp = null;
-		
+
 		// CHECK
 		if (locations == null || locations.isEmpty()) {
 			temp = getEncounters(null, null, null, null, typeList);
 			for (Encounter e : temp) {
 				Obs o = MdrtbUtil.getObsFromEncounter(
-				    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE), e);
+						Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE), e);
 				if (o != null && o.getValueDatetime() != null
-				        && (o.getValueDatetime().equals(startDate) || o.getValueDatetime().after(startDate))
-				        && (o.getValueDatetime().equals(endDate) || o.getValueDatetime().before(endDate))) {
+						&& (o.getValueDatetime().equals(startDate) || o.getValueDatetime().after(startDate))
+						&& (o.getValueDatetime().equals(endDate) || o.getValueDatetime().before(endDate))) {
 					forms.add(new TB03uForm(e));
 				}
 			}
@@ -2021,10 +1947,10 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				temp = getEncounters(null, l, null, null, typeList);
 				for (Encounter e : temp) {
 					Obs o = MdrtbUtil.getObsFromEncounter(
-					    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE), e);
+							Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TREATMENT_START_DATE), e);
 					if (o != null && o.getValueDatetime() != null
-					        && (o.getValueDatetime().equals(startDate) || o.getValueDatetime().after(startDate))
-					        && (o.getValueDatetime().equals(endDate) || o.getValueDatetime().before(endDate))) {
+							&& (o.getValueDatetime().equals(startDate) || o.getValueDatetime().after(startDate))
+							&& (o.getValueDatetime().equals(endDate) || o.getValueDatetime().before(endDate))) {
 						forms.add(new TB03uForm(e));
 					}
 				}
@@ -2043,7 +1969,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == mdrtbProgramId) {
+					&& idObs.getValueNumeric().intValue() == mdrtbProgramId) {
 				forms.add(new TB03uForm(e));
 			}
 		}
@@ -2060,7 +1986,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			Obs idObs = MdrtbUtil.getObsFromEncounter(idConcept, e);
 			if (idObs != null && idObs.getValueNumeric() != null
-			        && idObs.getValueNumeric().intValue() == patientProgId) {
+					&& idObs.getValueNumeric().intValue() == patientProgId) {
 				forms.add(new AdverseEventsForm(e));
 			}
 		}
@@ -2208,14 +2134,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return dao.searchReportData(region, district, facility, year, quarter, month, reportName, reportType);
 	}
 	
-	public void unlockReport(ReportData reportData) {
-		if (reportData.getVoided()) {
-			throw new APIException("Cannot unlock a voided report");
-		}
-		reportData.setReportStatus(ReportStatus.UNLOCKED);
-		dao.saveReportData(reportData);
-	}
-	
 	public boolean getReportArchived(Integer region, Integer district, Integer facility, Integer year, Integer quarter,
 	        Integer month, String name, ReportType reportType) {
 		return dao.getReportArchived(region, district, facility, year, quarter, month, name, reportType);
@@ -2240,6 +2158,14 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				log.debug(e.getMessage());
 			}
 		}
+	}
+	
+	public void unlockReport(ReportData reportData) {
+		if (reportData.getVoided()) {
+			throw new APIException("Cannot unlock a voided report");
+		}
+		reportData.setReportStatus(ReportStatus.UNLOCKED);
+		dao.saveReportData(reportData);
 	}
 	
 	@Override

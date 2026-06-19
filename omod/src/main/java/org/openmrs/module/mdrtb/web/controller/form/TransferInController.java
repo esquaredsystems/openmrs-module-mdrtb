@@ -211,7 +211,6 @@ public class TransferInController {
 		// save the actual update
 		Context.getEncounterService().saveEncounter(tif.getEncounter());
 		
-		boolean programModified = false;
 		// clears the command object from the session
 		status.setComplete();
 		map.clear();

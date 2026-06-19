@@ -70,6 +70,7 @@ public class LabDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<LabTestAttributeType> getAllLabTestAttributeTypes(boolean includeRetired) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttributeType.class);
 		criteria.addOrder(Order.asc("name"));
 		if (!includeRetired) {
@@ -84,6 +85,7 @@ public class LabDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<LabTestType> getAllLabTestTypes(boolean includeRetired) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestType.class);
 		criteria.addOrder(Order.asc("name"));
 		if (!includeRetired) {
@@ -103,6 +105,7 @@ public class LabDao {
 	@SuppressWarnings("unchecked")
 	public List<LabTestType> getLabTestTypes(String name, String shortName, LabTestGroup testGroup,
 	        Concept referenceConcept, boolean includeRetired) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestType.class);
 		if (name != null) {
 			criteria.add(Restrictions.ilike("name", name, MatchMode.START));
@@ -128,6 +131,7 @@ public class LabDao {
 	 * @return {@link LabTest} object by matching given {@link org.openmrs.Order} object
 	 */
 	public LabTest getLabTest(org.openmrs.Order order) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTest.class);
 		criteria.add(Restrictions.eq("testOrderId", order.getId()));
 		return (LabTest) criteria.uniqueResult();
@@ -154,6 +158,7 @@ public class LabDao {
 	 * @return {@link LabTestAttribute} object
 	 */
 	public LabTestAttribute getLabTestAttributeByUuid(String uuid) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttribute.class);
 		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
 		return (LabTestAttribute) criteria.uniqueResult();
@@ -165,6 +170,7 @@ public class LabDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<LabTestAttribute> getLabTestAttributes(Integer testOrderId) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttribute.class);
 		criteria.add(Restrictions.eq("labTest.testOrderId", testOrderId));
 		return criteria.list();
@@ -181,6 +187,7 @@ public class LabDao {
 	@SuppressWarnings("unchecked")
 	public List<LabTestAttribute> getLabTestAttributes(LabTestAttributeType labTestAttributeType, String valueReference,
 	        Date from, Date to, boolean includeVoided) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttribute.class);
 		if (labTestAttributeType != null) {
 			criteria.add(Restrictions.eqOrIsNull("attributeType.labTestAttributeTypeId", labTestAttributeType.getId()));
@@ -203,7 +210,7 @@ public class LabDao {
 	 * @param includeVoided include retired objects
 	 * @return {@link LabTestAttribute} object(s)
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<LabTestAttribute> getLabTestAttributes(Patient patient, LabTestAttributeType labTestAttributeType,
 	        boolean includeVoided) {
 		StringBuilder queryString = new StringBuilder();
@@ -236,6 +243,7 @@ public class LabDao {
 	 * @return {@link LabTestAttributeType} object
 	 */
 	public LabTestAttributeType getLabTestAttributeTypeByUuid(String uuid) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttributeType.class);
 		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
 		return (LabTestAttributeType) criteria.uniqueResult();
@@ -249,6 +257,7 @@ public class LabDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<LabTestAttributeType> getLabTestAttributeTypes(String name, String datatypeClassname, boolean includeRetired) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttributeType.class);
 		if (name != null) {
 			criteria.add(Restrictions.ilike("name", name, MatchMode.START));
@@ -272,6 +281,7 @@ public class LabDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<LabTestAttributeType> getLabTestAttributeTypes(LabTestType labTestType, boolean includeRetired) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttributeType.class);
 		criteria.add(Restrictions.eq("labTestType", labTestType));
 		if (!includeRetired) {
@@ -286,6 +296,7 @@ public class LabDao {
 	 * @return {@link LabTest} object
 	 */
 	public LabTest getLabTestByUuid(String uuid) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTest.class);
 		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
 		return (LabTest) criteria.uniqueResult();
@@ -306,6 +317,7 @@ public class LabDao {
 	@SuppressWarnings("unchecked")
 	public List<LabTest> getLabTests(LabTestType labTestType, Patient patient, String orderNumber, String referenceNumber,
 	        Concept orderConcept, Provider orderer, Date from, Date to, boolean includeVoided) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTest.class);
 		criteria.createAlias("order", "o");
 		if (labTestType != null) {
@@ -349,6 +361,7 @@ public class LabDao {
 	 * @return {@link LabTestSample} object
 	 */
 	public LabTestSample getLabTestSampleByUuid(String uuid) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
 		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
 		return (LabTestSample) criteria.uniqueResult();
@@ -361,6 +374,7 @@ public class LabDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<LabTestSample> getLabTestSamples(LabTest labTest, boolean includeVoided) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
 		criteria.add(Restrictions.eq("labTest.testOrderId", labTest.getId()));
 		if (!includeVoided) {
@@ -404,6 +418,7 @@ public class LabDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<LabTestSample> getLabTestSamples(Provider collector, boolean includeVoided) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
 		criteria.add(Restrictions.eq("collector.providerId", collector.getProviderId()));
 		if (!includeVoided) {
@@ -434,6 +449,7 @@ public class LabDao {
 		if (labTest == null && patient == null && sampleIdentifier == null) {
 			return null;
 		}
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
 		if (labTest != null) {
 			criteria.add(Restrictions.eq("labTest.testOrderId", labTest.getTestOrderId()));
@@ -478,6 +494,7 @@ public class LabDao {
 	 * @return {@link LabTestType} object
 	 */
 	public LabTestType getLabTestTypeByUuid(String uuid) {
+		@SuppressWarnings("deprecation")
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestType.class);
 		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
 		return (LabTestType) criteria.uniqueResult();

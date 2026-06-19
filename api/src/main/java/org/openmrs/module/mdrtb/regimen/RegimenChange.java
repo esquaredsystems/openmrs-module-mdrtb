@@ -32,7 +32,7 @@ public class RegimenChange implements Comparable<RegimenChange> {
 	//***** INSTANCE METHODS *****
 	
 	/**
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 * @see Comparable#compareTo(Object)
 	 */
 	public int compareTo(RegimenChange o) {
 		return this.getChangeDate().compareTo(o.getChangeDate());

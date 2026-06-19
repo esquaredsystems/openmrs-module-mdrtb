@@ -24,7 +24,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.search.annotations.Field;
 import org.openmrs.BaseOpenmrsMetadata;
 import org.openmrs.Concept;
 
@@ -34,8 +33,8 @@ import org.openmrs.Concept;
  * 
  * @author owais.hussain@ihsinformatics.com
  */
-@Entity(name = "commonlabtest.LabTestType")
-@Table(name = "commonlabtest_type")
+@Entity(name = "labtest.LabTestType")
+@Table(name = "labtest_type")
 public class LabTestType extends BaseOpenmrsMetadata {
 	
 	private static final long serialVersionUID = -4734826044571156784L;
@@ -47,7 +46,6 @@ public class LabTestType extends BaseOpenmrsMetadata {
 	@Column(name = "test_type_id")
 	private Integer labTestTypeId;
 	
-	@Field
 	@Column(name = "short_name", length = 50)
 	private String shortName;
 	
@@ -55,7 +53,6 @@ public class LabTestType extends BaseOpenmrsMetadata {
 	@Column(name = "test_group", length = 50)
 	private LabTestGroup testGroup;
 	
-	@Field
 	@Column(name = "requires_specimen", nullable = false)
 	private Boolean requiresSpecimen = Boolean.FALSE;
 	

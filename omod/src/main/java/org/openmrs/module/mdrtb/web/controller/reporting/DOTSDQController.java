@@ -519,7 +519,7 @@ public class DOTSDQController {
 		map.put("noSite", noSite);
 		map.put("noTrasnferIn", noTifAfterTransferOut);
 		map.put("noTransferOut", noTofBeforeTransferIn);
-		map.put("errorCount", new Integer(errorCount));
+		map.put("errorCount", errorCount);
 		map.put("errorPercentage", errorPercentage + "%");
 		return map;
 	}

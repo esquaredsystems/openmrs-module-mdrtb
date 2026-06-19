@@ -17,7 +17,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.web.WebConstants;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -37,7 +37,7 @@ public class LabTestSampleController {
 	
 	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestSample";
 	
-	CommonLabTestService commonLabTestService;
+	LabTestService LabTestService;
 	
 	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
@@ -50,10 +50,10 @@ public class LabTestSampleController {
 	public String showForm(HttpServletRequest request, ModelMap model, @RequestParam(required = true) Integer patientId,
 	        @RequestParam(required = false) Integer testSampleId, @RequestParam(required = false) Integer orderId,
 	        @RequestParam(required = false) String error) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		String orderDate = "";
 		if (orderId != null) {
-			LabTest labTest = commonLabTestService.getLabTest(orderId);
+			LabTest labTest = LabTestService.getLabTest(orderId);
 			if (labTest == null) {
 				request.getSession().setAttribute(WebConstants.OPENMRS_ERROR_ATTR, "Test Order does not exist");
 				return "redirect:../../patientDashboard.form?patientId=" + patientId;
@@ -68,7 +68,7 @@ public class LabTestSampleController {
 		if (testSampleId == null) {
 			labTestSample = new LabTestSample();
 		} else {
-			labTestSample = commonLabTestService.getLabTestSample(testSampleId);
+			labTestSample = LabTestService.getLabTestSample(testSampleId);
 		}
 		
 		// get Specimen Type .
@@ -87,7 +87,7 @@ public class LabTestSampleController {
 			Collection<ConceptAnswer> specimenSiteConcepts = specimenSiteSet.getAnswers();
 			List<ConceptAnswer> specimenSiteConceptlist;
 			if (specimenSiteConcepts instanceof List)
-				specimenSiteConceptlist = (List) specimenSiteConcepts;
+				specimenSiteConceptlist = (List<ConceptAnswer>) specimenSiteConcepts;
 			else
 				specimenSiteConceptlist = new ArrayList<ConceptAnswer>(specimenSiteConcepts);
 			
@@ -102,7 +102,7 @@ public class LabTestSampleController {
 			Collection<ConceptAnswer> testUnitsConcepts = testUnitsUuid.getAnswers();
 			List<ConceptAnswer> testUnitsConceptlist;
 			if (testUnitsConcepts instanceof List)
-				testUnitsConceptlist = (List) testUnitsConcepts;
+				testUnitsConceptlist = (List<ConceptAnswer>) testUnitsConcepts;
 			else
 				testUnitsConceptlist = new ArrayList<ConceptAnswer>(testUnitsConcepts);
 			model.put("testUnits", testUnitsConceptlist);
@@ -123,7 +123,7 @@ public class LabTestSampleController {
 	public String onSubmit(ModelMap model, HttpSession httpSession,
 	        @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
 	        @ModelAttribute("testSample") LabTestSample labTestSample, BindingResult result) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
+		LabTestService = Context.getService(LabTestService.class);
 		String status = "";
 		if (Context.getAuthenticatedUser() == null) {
 			return "redirect:../../login.htm";
@@ -146,7 +146,7 @@ public class LabTestSampleController {
 				// labTest.set
 				if (labTestSample.getId() == null)
 					labTestSample.setStatus(LabTestSampleStatus.COLLECTED);
-				commonLabTestService.saveLabTestSample(labTestSample);
+				LabTestService.saveLabTestSample(labTestSample);
 				StringBuilder sb = new StringBuilder();
 				sb.append("Lab Test Sample with Uuid :");
 				sb.append(labTestSample.getUuid());
@@ -178,14 +178,14 @@ public class LabTestSampleController {
 	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/voidlabtestsample.form")
 	public String onVoid(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("uuid") String uuid, @RequestParam("voidReason") String voidReason) {
-		commonLabTestService = Context.getService(CommonLabTestService.class);
-		LabTestSample labTestSample = commonLabTestService.getLabTestSampleByUuid(uuid);
+		LabTestService = Context.getService(LabTestService.class);
+		LabTestSample labTestSample = LabTestService.getLabTestSampleByUuid(uuid);
 		String status;
 		if (Context.getAuthenticatedUser() == null) {
 			return "redirect:../../login.htm";
 		}
 		try {
-			commonLabTestService.voidLabTestSample(labTestSample, voidReason);
+			LabTestService.voidLabTestSample(labTestSample, voidReason);
 			StringBuilder sb = new StringBuilder();
 			sb.append("Lab Test Sample with Uuid :");
 			sb.append(labTestSample.getUuid());

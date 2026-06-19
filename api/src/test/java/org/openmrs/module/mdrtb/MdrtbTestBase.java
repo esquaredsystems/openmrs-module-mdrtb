@@ -25,6 +25,7 @@ import org.openmrs.PatientIdentifierType;
 import org.openmrs.PatientProgram;
 import org.openmrs.Program;
 import org.openmrs.Provider;
+import org.openmrs.api.AdministrationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.dao.MdrtbDao;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
@@ -100,6 +101,17 @@ public class MdrtbTestBase extends BaseModuleContextSensitiveTest {
 		for (String dataFile : DATASETS) {
 			executeDataSet(dataFile);
 		}
+		
+		AdministrationService administrationService = Context.getAdministrationService();
+		administrationService.setGlobalProperty(MdrtbConstants.GP_MDRTB_PROGRAM_NAME, "MDR-TB PROGRAM");
+		administrationService.setGlobalProperty(MdrtbConstants.GP_DOTS_PROGRAM_NAME, "DOTS Program");
+		administrationService.setGlobalProperty("visits.assignmentHandler",
+		    "org.openmrs.api.handler.ExistingVisitAssignmentHandler");
+		administrationService.setGlobalProperty("visits.enabled", "true");
+		administrationService
+		        .setGlobalProperty(
+		            MdrtbConstants.GP_COLOR_MAP,
+		            "CONTAMINATED:lightgrey|UNSATISFACTORY SAMPLE:lightgrey|STRONGLY POSITIVE:lightcoral|WEAKLY POSITIVE:lightcoral|WAITING FOR TEST RESULTS:lightgrey|SCANTY:khaki|NEGATIVE:lightgreen|POSITIVE:lightcoral|SUSCEPTIBLE TO TUBERCULOSIS DRUG:lightgreen|INDETERMINATE TO TUBERCULOSIS DRUG:khaki|RESISTANT TO TUBERCULOSIS DRUG:lightcoral");
 		
 		owais = Context.getProviderService().getProvider(300);
 		

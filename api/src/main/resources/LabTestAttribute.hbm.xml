@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 
-<hibernate-mapping package="org.openmrs.module.commonlabtest">
+<hibernate-mapping package="org.openmrs.module.labtest">
 
-	<class name="org.openmrs.module.mdrtb.lab.LabTestAttribute" table="commonlabtest_attribute" lazy="false">
+	<class name="org.openmrs.module.mdrtb.lab.LabTestAttribute" table="labtest_attribute" lazy="false">
 
 		<id name="labTestAttributeId" type="int" column="test_attribute_id">
 			<generator class="native">

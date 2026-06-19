@@ -22,7 +22,7 @@ import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.api.CommonLabTestService;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
@@ -534,7 +534,7 @@ public class SpecimenImpl implements Specimen {
 	
 	public List<Culture> getCultures() {
 		List<Culture> cultures = new LinkedList<>();
-		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
 			LabTestAttribute cultureResult = LabUtil.getService().getCultureAttributeByTestAndName(labTest,
@@ -560,7 +560,7 @@ public class SpecimenImpl implements Specimen {
 	
 	public List<Dst> getDsts() {
 		List<Dst> dsts = new LinkedList<>();
-		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if any of the DST results is present
 			LabTestAttribute dstLj = LabUtil.getService().getDstAttributeByTestAndName(labTest,
@@ -587,7 +587,7 @@ public class SpecimenImpl implements Specimen {
 	
 	public List<Smear> getSmears() {
 		List<Smear> smears = new LinkedList<>();
-		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
 			LabTestAttribute smearResult = LabUtil.getService().getSmearAttributeByTestAndName(labTest,
@@ -613,7 +613,7 @@ public class SpecimenImpl implements Specimen {
 	
 	public List<Xpert> getXperts() {
 		List<Xpert> xperts = new LinkedList<>();
-		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
 			LabTestAttribute xpertResult = LabUtil.getService().getXpertAttributeByTestAndName(labTest,
@@ -639,7 +639,7 @@ public class SpecimenImpl implements Specimen {
 	
 	public List<HAIN> getHAINs() {
 		List<HAIN> hains = new LinkedList<>();
-		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
 			LabTestAttribute hainResult = LabUtil.getService().getHainAttributeByTestAndName(labTest,
@@ -664,7 +664,7 @@ public class SpecimenImpl implements Specimen {
 	
 	public List<HAIN2> getHAIN2s() {
 		List<HAIN2> hains = new LinkedList<>();
-		List<LabTest> labTests = Context.getService(CommonLabTestService.class).getLabTests(encounter.getPatient(), false);
+		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
 			LabTestAttribute hain2Result = LabUtil.getService().getHain2AttributeByTestAndName(labTest,

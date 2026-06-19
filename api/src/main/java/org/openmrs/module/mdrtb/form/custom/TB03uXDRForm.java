@@ -849,7 +849,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			if (month != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.RELAPSE_MONTH), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(month));
+				obs.setValueNumeric(month.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
@@ -919,7 +919,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 			if (id != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PATIENT_PROGRAM_ID), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(new Double(id));
+				obs.setValueNumeric(id.doubleValue());
 				encounter.addObs(obs);
 			}
 		}
