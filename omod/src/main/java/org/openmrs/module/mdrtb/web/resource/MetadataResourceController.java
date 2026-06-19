@@ -32,7 +32,7 @@ import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOp
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 import org.openmrs.util.OpenmrsClassLoader;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/metadata", supportedClass = SimpleReportData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/metadata", supportedClass = SimpleReportData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class MetadataResourceController extends DataDelegatingCrudResource<SimpleReportData> implements Searchable {
 	
 	@Override

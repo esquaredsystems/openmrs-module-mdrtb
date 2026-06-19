@@ -48,8 +48,7 @@ public class CloseReportController {
 		model.addAttribute("oblasts", oblasts);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
-	//value="/module/mdrtb/reporting/closeReport"
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/reporting/closeReport")
 	public String closeReportPost(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("district") Integer districtId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,

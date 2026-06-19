@@ -38,7 +38,7 @@ import io.swagger.models.ModelImpl;
 import io.swagger.models.properties.RefProperty;
 import io.swagger.models.properties.StringProperty;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/drugresistance", supportedClass = SimpleDrugResistanceDuringTreatmentForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/drugresistance", supportedClass = SimpleDrugResistanceDuringTreatmentForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class DrugResistanceDuringTreatmentResourceController extends DataDelegatingCrudResource<SimpleDrugResistanceDuringTreatmentForm> {
 	
 	@Override

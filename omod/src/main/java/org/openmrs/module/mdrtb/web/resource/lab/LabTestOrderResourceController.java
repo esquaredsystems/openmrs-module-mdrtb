@@ -30,7 +30,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 import org.openmrs.module.webservices.rest.web.response.ResourceDoesNotSupportOperationException;
 import org.openmrs.module.webservices.rest.web.response.ResponseException;
 
-@Resource(name = RestConstants.VERSION_1 + "/commonlab/labtestorder", supportedClass = LabTest.class, supportedOpenmrsVersions = { "2.0.*, 2.1.*, 2.2.*, 2.3.*" })
+@Resource(name = RestConstants.VERSION_1 + "/commonlab/labtestorder", supportedClass = LabTest.class, supportedOpenmrsVersions = { "2.0.*, 2.1.*, 2.2.*, 2.3.*, 2.8.*" })
 public class LabTestOrderResourceController extends DataDelegatingCrudResource<LabTest> {
 	
 	/**

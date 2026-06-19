@@ -27,15 +27,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * This class configured as controller using annotation and mapped with the URL of
  * 'module/${rootArtifactid}/${rootArtifactid}Link.form'.
  */
-@Controller("${rootrootArtifactid}.MdrtbController")
-@RequestMapping(value = "module/${rootArtifactid}/${rootArtifactid}.form")
+@Controller("mdrtb.MdrtbController")
+@RequestMapping(value = "module/mdrtb/mdrtb.form")
 public class MdrtbController {
 	
 	/** Logger for this class and subclasses */
 	protected final Log log = LogFactory.getLog(getClass());
 	
 	/** Success form view name */
-	private final String VIEW = "/module/${rootArtifactid}/${rootArtifactid}";
+	private final String VIEW = "/module/mdrtb/mdrtb";
 	
 	/**
 	 * Initially called after the getUsers method to get the landing form name

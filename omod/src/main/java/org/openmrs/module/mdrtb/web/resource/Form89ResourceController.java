@@ -43,7 +43,7 @@ import io.swagger.models.properties.IntegerProperty;
 import io.swagger.models.properties.RefProperty;
 import io.swagger.models.properties.StringProperty;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/form89", supportedClass = SimpleForm89.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/form89", supportedClass = SimpleForm89.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class Form89ResourceController extends DataDelegatingCrudResource<SimpleForm89> {
 	
 	@Override

@@ -17,7 +17,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb08ureport", supportedClass = SimpleTB08uData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/tb08ureport", supportedClass = SimpleTB08uData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class TB08uDataResourceController extends BaseReportResource<SimpleTB08uData> {
 	
 	@Override

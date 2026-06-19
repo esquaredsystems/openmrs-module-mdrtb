@@ -49,8 +49,7 @@ public class CloseReportChangesController {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "deprecation" })
-	@RequestMapping(method = RequestMethod.POST)
-	//, value="/module/mdrtb/reporting/viewClosedReportChanges"
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/reporting/viewClosedReportChanges")
 	public ModelAndView viewClosedReportsPost(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam("oblast") Integer oblast, @RequestParam("district") Integer district,
 	        @RequestParam("facility") Integer facility, @RequestParam("year") Integer year,

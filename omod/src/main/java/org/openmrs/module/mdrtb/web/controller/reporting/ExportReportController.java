@@ -49,7 +49,7 @@ public class ExportReportController {
 		model.addAttribute("oblasts", oblasts);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/reporting/exportReport")
 	public String exportReportPost(HttpServletRequest request, HttpServletResponse response,
 	        @RequestParam("oblast") Integer oblastId, @RequestParam("district") Integer districtId,
 	        @RequestParam("facility") Integer facilityId, @RequestParam("year") Integer year,

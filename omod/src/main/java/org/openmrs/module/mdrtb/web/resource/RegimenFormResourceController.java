@@ -42,7 +42,7 @@ import io.swagger.models.properties.ObjectProperty;
 import io.swagger.models.properties.RefProperty;
 import io.swagger.models.properties.StringProperty;
 
-@Resource(name = RestConstants.VERSION_1 + "/mdrtb/regimen", supportedClass = SimpleRegimenForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*" })
+@Resource(name = RestConstants.VERSION_1 + "/mdrtb/regimen", supportedClass = SimpleRegimenForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class RegimenFormResourceController extends DataDelegatingCrudResource<SimpleRegimenForm> {
 	
 	@Override
