@@ -17,8 +17,7 @@ import java.util.Map;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * This test validates the AdminList extension class
@@ -32,7 +31,7 @@ public class AdminListExtensionTest {
 	public void testValidatesLinks() {
 		AdminList ext = new AdminList();
 		Map<String, String> links = ext.getLinks();
-		assertThat(links, is(notNullValue()));
+		assertNotNull(links);
 		assertFalse(links.isEmpty());
 	}
 	
@@ -42,6 +41,6 @@ public class AdminListExtensionTest {
 	@Test
 	public void testMediaTypeIsHtml() {
 		AdminList ext = new AdminList();
-		assertThat(ext.getMediaType(), is(Extension.MEDIA_TYPE.html));
+		assertEquals(Extension.MEDIA_TYPE.html, ext.getMediaType());
 	}
 }
