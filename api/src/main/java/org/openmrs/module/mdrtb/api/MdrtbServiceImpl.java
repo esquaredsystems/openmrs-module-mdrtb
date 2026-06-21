@@ -1112,6 +1112,16 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return facilities;
 	}
 	
+	public List<Facility> getFacilitiesByTag(String tag) {
+		LocationTag locationTag = Context.getLocationService().getLocationTagByName(tag);
+		List<Location> locations = Context.getLocationService().getLocationsByTag(locationTag);
+		List<Facility> facilities = new ArrayList<>();
+		for (Location location : locations) {
+			facilities.add(new Facility(new BaseLocation(location, LocationHierarchy.FACILITY)));
+		}
+		return facilities;
+	}
+	
 	public List<Facility> getRegFacilities(Integer parentId) {
 		List<Facility> facilities = getFacilitiesByParent(parentId);
 		Set<Facility> filtered = new HashSet<>();

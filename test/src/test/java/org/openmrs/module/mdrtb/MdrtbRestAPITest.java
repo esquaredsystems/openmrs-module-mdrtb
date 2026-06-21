@@ -20,7 +20,7 @@ public class MdrtbRestAPITest {
 	static {
 		RestAssured.baseURI = "http://localhost:8080/openmrs/ws/rest/v1"; // OpenMRS server must be running
 		USERNAME = "admin";
-		PASSWORD = "Admin1234";
+		PASSWORD = "Admin123";
 		UUID_REGEX = "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}";
 	}
 	

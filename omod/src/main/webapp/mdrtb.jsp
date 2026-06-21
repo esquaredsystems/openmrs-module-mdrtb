@@ -19,10 +19,13 @@
   }
 </style>
 
-<script type="text/javascript">
+<script>
   window.onload = function() {
     var link = document.getElementById("webappUrl");
-    link.click();
+    var target = link && link.href;
+    if (target && window.location.href !== target) {
+      window.location.href = target;
+    }
   };
 </script>
 

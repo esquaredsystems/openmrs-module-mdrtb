@@ -125,49 +125,43 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	@Test
 	@Ignore
 	public final void testGetLocationListForDushanbe() {
+		fail("Not yet implemented");
 	}
 	
 	@Test
-	@Ignore
 	public final void testGetLocationsFromDistrict() {
-		service.getLocationsFromDistrict(fayzobad);
-	}
-	
-	@Test
-	@Ignore
-	public final void testGetLocationsFromFacility() {
-		List<Location> list = service.getLocationsFromFacility(dushanbeGeneralHospital);
-		Location expected = Context.getLocationService().getLocation(dushanbeGeneralHospital.getId());
+		List<Location> list = service.getLocationsFromDistrict(fayzobad);
+		Location expected = Context.getLocationService().getLocation(fayzobodLab.getId());
 		assertTrue(list.contains(expected));
 	}
 	
 	@Test
-	@Ignore
+	public final void testGetLocationsFromFacility() {
+		List<Location> list = service.getLocationsFromFacility(fayzobodLab);
+		Location expected = Context.getLocationService().getLocation(fayzobodLab.getId());
+		assertTrue(list.contains(expected));
+	}
+	
+	@Test
 	public final void testGetLocationsFromRegion() {
-		fail("Not yet implemented");
+		List<Location> list = service.getLocationsFromRegion(republic);
+		Location expected = Context.getLocationService().getLocation(fayzobodLab.getId());
+		assertTrue("Expected location missing from region", list.contains(expected));
 	}
 	
 	@Test
-	@Ignore
 	public final void testGetRegDistricts() {
-		fail("Not yet implemented");
+		Context.getAdministrationService().setGlobalProperty(MdrtbConstants.GP_LAB_ENTRY_IDS,
+		    String.valueOf(fayzobad.getId()));
+		List<District> list = service.getRegDistricts();
+		assertTrue(list.contains(fayzobad));
 	}
 	
 	@Test
-	@Ignore
-	public final void testGetRegDistrictsInt() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	@Ignore
 	public final void testGetRegFacilities() {
-		fail("Not yet implemented");
-	}
-	
-	@Test
-	@Ignore
-	public final void testGetRegFacilitiesInt() {
-		fail("Not yet implemented");
+		Context.getAdministrationService().setGlobalProperty(MdrtbConstants.GP_LAB_ENTRY_IDS,
+		    String.valueOf(fayzobodLab.getId()));
+		List<Facility> list = service.getRegFacilities();
+		assertTrue(list.contains(fayzobodLab));
 	}
 }
