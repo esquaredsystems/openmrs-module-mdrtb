@@ -3,38 +3,70 @@
  */
 package org.openmrs.module.mdrtb;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.Ignore;
+import java.lang.reflect.Field;
+import java.util.Map;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.openmrs.Concept;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.exception.MissingConceptException;
 
 /**
  * @author owais
  */
 public class MdrtbConceptsTest extends MdrtbTestBase {
 	
+	private MdrtbConcepts concepts;
+	
+	@Before
+	public void setUp() throws Exception {
+		super.initTestData();
+		concepts = new MdrtbConcepts();
+	}
+	
 	@Test
-	@Ignore
 	public final void testGetAllConceptMappings() {
-		fail("Not yet implemented");
+		assertTrue("MdrtbConcepts currently declares mappings as String constants, not String arrays", concepts
+		        .getAllConceptMappings().isEmpty());
 	}
 	
 	@Test
-	@Ignore
 	public final void testInitializeEverythingAboutConcept() {
-		fail("Not yet implemented");
+		Concept concept = Context.getConceptService().getConcept(12);
+		
+		concepts.initializeEverythingAboutConcept(concept);
+		
+		assertNotNull(concept.getDatatype());
+		assertFalse(concept.getNames().isEmpty());
+		assertFalse(concept.getAnswers().isEmpty());
+		assertNotNull(concept.getAnswers().iterator().next().getAnswerConcept().getNames());
 	}
 	
-	@Test
-	@Ignore
+	@Test(expected = MissingConceptException.class)
 	public final void testLookup() {
-		fail("Not yet implemented");
+		concepts.lookup("NONEXISTENT MDRTB CONCEPT");
 	}
 	
 	@Test
-	@Ignore
-	public final void testResetCache() {
-		fail("Not yet implemented");
+	public final void testResetCache() throws Exception {
+		getCache().put(MdrtbConcepts.YES, yesConcept);
+		assertTrue(getCache().containsKey(MdrtbConcepts.YES));
+		
+		concepts.resetCache();
+		
+		assertTrue(getCache().isEmpty());
+	}
+	
+	@SuppressWarnings("unchecked")
+	private Map<String, Concept> getCache() throws Exception {
+		Field cache = MdrtbConcepts.class.getDeclaredField("cache");
+		cache.setAccessible(true);
+		return (Map<String, Concept>) cache.get(concepts);
 	}
 	
 }
