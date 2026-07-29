@@ -3,14 +3,7 @@ package org.openmrs.module.mdrtb.reporting;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,23 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.openmrs.Cohort;
-import org.openmrs.Concept;
-import org.openmrs.ConceptName;
-import org.openmrs.ConceptNameTag;
-import org.openmrs.Location;
-import org.openmrs.Obs;
-import org.openmrs.OpenmrsMetadata;
-import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PatientIdentifierType;
-import org.openmrs.Person;
-import org.openmrs.PersonAddress;
-import org.openmrs.PersonAttribute;
-import org.openmrs.PersonAttributeType;
-import org.openmrs.PersonName;
-import org.openmrs.Program;
-import org.openmrs.ProgramWorkflow;
+import org.openmrs.*;
 import org.openmrs.api.ConceptNameType;
 import org.openmrs.api.context.Context;
 import org.openmrs.logic.result.Result;
@@ -167,8 +144,8 @@ public class PatientSummaryUtil {
 	public static Cohort getCohort(Location location) {
 		Date now = new Date();
 		Program mdrProgram = Context.getService(MdrtbService.class).getMdrtbProgram();
-		Cohort cohort = Context.getService(CohortQueryService.class).getPatientsInProgram(Arrays.asList(mdrProgram), now,
-		    now);
+		Cohort cohort = Context.getService(CohortQueryService.class).getPatientsInProgram(
+		    Collections.singletonList(mdrProgram), now, now);
 		
 		if (location != null) {
 			CohortDefinition cd = Cohorts.getLocationFilter(location, now, now);
@@ -202,11 +179,7 @@ public class PatientSummaryUtil {
 		
 		List<Patient> patients = Context.getService(MdrtbService.class)
 		        .getPatients(MdrtbUtil.getcohortMembershipIds(cohort));
-		List<Person> persons = new ArrayList<>();
-		for (Patient p : patients) {
-			persons.add(p);
-		}
-		
+
 		EvaluationContext context = new EvaluationContext();
 		context.setBaseCohort(cohort);
 		Program mdrProgram = Context.getService(MdrtbService.class).getMdrtbProgram();
@@ -220,13 +193,9 @@ public class PatientSummaryUtil {
 		
 		for (Patient p : patients) {
 			log.debug("Evaluating: " + p.getPatientId());
-			Map<String, Object> map = byPatient.get(p.getPatientId());
-			if (map == null) {
-				map = new HashMap<>();
-				byPatient.put(p.getPatientId(), map);
-			}
-			
-			map.put(PATIENT_ID, p.getPatientId());
+            Map<String, Object> map = byPatient.computeIfAbsent(p.getPatientId(), k -> new HashMap<>());
+
+            map.put(PATIENT_ID, p.getPatientId());
 			
 			if (ObjectUtil.containsAny(columns, FULL_NAME, FIRST_NAME, LAST_NAME)) {
 				PersonName pn = p.getPersonName();
@@ -348,21 +317,6 @@ public class PatientSummaryUtil {
 		return byPatient;
 	}
 	
-	public static String getConceptDisplay(Concept c, ConceptNameTag tag) {
-		String s = c.getDisplayString();
-		ConceptName name = null;
-		if (tag != null) {
-			name = c.findNameTaggedWith(tag);
-		}
-		if (name == null) {
-			name = MdrtbUtil.getConceptName(c, Context.getLocale().getLanguage(), ConceptNameType.SHORT);
-		}
-		if (name != null) {
-			s = name.getName();
-		}
-		return s;
-	}
-	
 	public static void outputToExcel(HttpServletResponse response, Cohort c, List<String> columnList) throws IOException {
 		
 		Date runDate = new Date();
@@ -389,7 +343,7 @@ public class PatientSummaryUtil {
 		for (Map<String, Object> row : data.values()) {
 			for (String column : columnList) {
 				Object val = row.get(column);
-				if (val != null && val instanceof Date) {
+				if (val instanceof Date) {
 					sh.addCell((Date) val, helper.getStyle("date"));
 				} else {
 					sh.addCell(formatObject(val, ""));
@@ -414,14 +368,8 @@ public class PatientSummaryUtil {
 		if (c == null) {
 			return "";
 		}
-		return MdrtbUtil.getConceptName(c, Context.getLocale().getLanguage(), ConceptNameType.SHORT).getName();
-	}
-	
-	public static int compareDates(Date d1, Date d2, String format) {
-		DateFormat df = new SimpleDateFormat(format, Context.getLocale());
-		String s1 = df.format(d1);
-		String s2 = df.format(d2);
-		return s1.compareTo(s2);
+		return Objects.requireNonNull(MdrtbUtil.getConceptName(c, Context.getLocale().getLanguage(), ConceptNameType.SHORT))
+		        .getName();
 	}
 	
 	public static String formatObject(Object o, String defaultVal) {
@@ -432,7 +380,7 @@ public class PatientSummaryUtil {
 			return formatDate((Date) o, null, null);
 		}
 		if (o instanceof Regimen) {
-			return RegimenUtils.formatRegimenGenerics((Regimen) o, " + ", defaultVal);
+			return RegimenUtils.formatRegimenGenerics(o, " + ", defaultVal);
 		}
 		if (o instanceof Obs) {
 			return formatObject(((Obs) o).getValueCoded(), defaultVal);

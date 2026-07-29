@@ -85,7 +85,7 @@ public interface MdrtbService extends OpenmrsService {
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	String getColorForConcept(Concept concept);
-	
+
 	/**
 	 * Resets the concept map cache
 	 */
@@ -931,4 +931,11 @@ public interface MdrtbService extends OpenmrsService {
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	void saveScannedLabReport(ScannedLabReport report);
 	
+	/**
+	 * Returns patient summary of given patient
+	 * 
+	 * @param patient
+	 * @return
+	 */
+	PatientSummary getPatientSummary(Patient patient);
 }
