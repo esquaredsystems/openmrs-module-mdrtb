@@ -30,6 +30,8 @@ import org.openmrs.api.APIException;
 import org.openmrs.api.UnchangeablePropertyException;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
+import org.openmrs.module.mdrtb.MdrtbActivator;
+import org.openmrs.module.mdrtb.MdrtbConfig;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestAttributeType;
@@ -38,7 +40,6 @@ import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
 import org.openmrs.module.mdrtb.lab.LabTestType;
 import org.openmrs.module.mdrtb.specimen.DstTestType;
-import org.openmrs.module.mdrtb.LabConfig;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.api.dao.LabDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("labtest.LabTestService")
 public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestService {
-	
+
 	@Autowired
 	LabDao dao;
 	
@@ -60,19 +61,19 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		this.dao = dao;
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestAttributeType> getAllLabTestAttributeTypes(boolean includeRetired) throws APIException {
 		return dao.getAllLabTestAttributeTypes(includeRetired);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestType> getAllLabTestTypes(boolean includeRetired) throws APIException {
 		return dao.getAllLabTestTypes(includeRetired);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTest getEarliestLabTest(Patient patient) throws APIException {
 		List<LabTest> labTests = dao.getNLabTests(patient, 1, true, false, false);
@@ -82,7 +83,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		return null;
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestSample getEarliestLabTestSample(Patient patient, LabTestSampleStatus status) throws APIException {
 		List<LabTestSample> labTestSamples = dao.getNLabTestSamples(patient, status, 1, true, false, false);
@@ -92,147 +93,147 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		return null;
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTest getLabTest(Integer labTestId) throws APIException {
 		return dao.getLabTest(labTestId);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestAttribute getLabTestAttribute(Integer labTestAttributeId) throws APIException {
 		return dao.getLabTestAttribute(labTestAttributeId);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestAttribute getLabTestAttributeByUuid(String uuid) throws APIException {
 		return dao.getLabTestAttributeByUuid(uuid);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestAttribute> getLabTestAttributes(LabTestAttributeType labTestAttributeType, String valueReference,
 	        Date from, Date to, boolean includeVoided) throws APIException {
 		return dao.getLabTestAttributes(labTestAttributeType, valueReference, from, to, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestAttribute> getLabTestAttributes(LabTestAttributeType labTestAttributeType, boolean includeVoided)
 	        throws APIException {
 		return getLabTestAttributes(labTestAttributeType, null, null, null, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestAttribute> getLabTestAttributes(Integer testOrderId) throws APIException {
 		return dao.getLabTestAttributes(testOrderId);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestAttribute> getLabTestAttributes(Patient patient, boolean includeVoided) throws APIException {
 		return dao.getLabTestAttributes(patient, null, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestAttribute> getLabTestAttributes(Patient patient, LabTestAttributeType labTestAttributeType,
 	        boolean includeVoided) throws APIException {
 		return dao.getLabTestAttributes(patient, labTestAttributeType, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestAttributeType getLabTestAttributeType(Integer labTestAttributeTypeId) throws APIException {
 		return dao.getLabTestAttributeType(labTestAttributeTypeId);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestAttributeType getLabTestAttributeTypeByUuid(String uuid) throws APIException {
 		return dao.getLabTestAttributeTypeByUuid(uuid);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestAttributeType> getLabTestAttributeTypes(String name, String datatypeClassname, boolean includeRetired)
 	        throws APIException {
 		return dao.getLabTestAttributeTypes(name, datatypeClassname, includeRetired);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestAttributeType> getLabTestAttributeTypes(LabTestType labTestType, boolean includeRetired)
 	        throws APIException {
 		return dao.getLabTestAttributeTypes(labTestType, includeRetired);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTest getLabTestByUuid(String uuid) throws APIException {
 		return dao.getLabTestByUuid(uuid);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTest getLabTest(Order order) throws APIException {
 		return dao.getLabTest(order);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestSample getLabTestSample(Integer labTestSampleId) throws APIException {
 		return dao.getLabTestSample(labTestSampleId);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestSample getLabTestSampleByUuid(String uuid) throws APIException {
 		return dao.getLabTestSampleByUuid(uuid);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestSample> getLabTestSamples(LabTest labTest, Patient patient, LabTestSampleStatus status,
 	        String labSampleIdentifier, Provider collector, Date from, Date to, boolean includeVoided) throws APIException {
 		return getLabTestSamples(labTest, patient, labSampleIdentifier, null, status, collector, from, to, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestSample> getLabTestSamples(String labSampleIdentifier, String orderNumber, String labReferenceNumber,
 	        boolean includeVoided) throws APIException {
 		return getLabTestSamples(null, null, null, labSampleIdentifier, null, null, null, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestSample> getLabTestSamples(LabTest labTest, boolean includeVoided) throws APIException {
 		return dao.getLabTestSamples(labTest, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestSample> getLabTestSamples(Patient patient, boolean includeVoided) throws APIException {
 		return dao.getLabTestSamples(patient, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestSample> getLabTestSamples(Provider collector, boolean includeVoided) throws APIException {
 		return dao.getLabTestSamples(collector, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestSample> getLabTestSamples(LabTestSampleStatus status, Date from, Date to, boolean includeVoided)
 	        throws APIException {
 		return getLabTestSamples(null, null, status, null, null, from, to, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestSample> getLabTestSamples(LabTest labTest, Patient patient, String sampleIdentifier,
 	        Concept specimenType, LabTestSampleStatus status, Provider collector, Date from, Date to, boolean includeVoided) {
@@ -240,19 +241,19 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		    includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestType getLabTestType(Integer labTestTypeId) throws APIException {
 		return dao.getLabTestType(labTestTypeId);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestType getLabTestTypeByUuid(String uuid) throws APIException {
 		return dao.getLabTestTypeByUuid(uuid);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTestType> getLabTestTypes(String name, String shortName, LabTestGroup testGroup,
 	        final Boolean isSpecimenRequired, Concept referenceConcept, boolean includeRetired) throws APIException {
@@ -268,7 +269,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		return labTestTypes;
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTest> getLabTests(LabTestType labTestType, Patient patient, String orderNumber, String referenceNumber,
 	        Concept orderConcept, Provider orderer, Date from, Date to, boolean includeVoided) throws APIException {
@@ -276,31 +277,31 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		    includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTest> getLabTests(LabTestType labTestType, boolean includeVoided) throws APIException {
 		return getLabTests(labTestType, null, null, null, null, null, null, null, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTest> getLabTests(Concept orderConcept, boolean includeVoided) throws APIException {
 		return getLabTests(null, null, null, null, orderConcept, null, null, null, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTest> getLabTests(Provider orderer, boolean includeVoided) throws APIException {
 		return getLabTests(null, null, null, null, null, orderer, null, null, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTest> getLabTests(Patient patient, boolean includeVoided) throws APIException {
 		return getLabTests(null, patient, null, null, null, null, null, null, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTest> getLabTests(String referenceNumber, boolean includeVoided) throws APIException {
 		if (referenceNumber.length() < 4) {
@@ -309,7 +310,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		return getLabTests(null, null, null, referenceNumber, null, null, null, null, includeVoided);
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTest getLatestLabTest(Patient patient) throws APIException {
 		List<LabTest> labTests = dao.getNLabTests(patient, 1, false, true, false);
@@ -319,7 +320,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		return null;
 	}
 	
-	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public LabTestSample getLatestLabTestSample(Patient patient, LabTestSampleStatus status) throws APIException {
 		List<LabTestSample> labTestSamples = dao.getNLabTestSamples(patient, status, 1, false, true, false);
@@ -329,13 +330,13 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		return null;
 	}
 	
-	@Authorized(LabConfig.ADD_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.ADD_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public LabTest saveLabTest(LabTest labTest) throws APIException {
 		return saveLabTest(labTest, null, null);
 	}
 	
-	@Authorized(LabConfig.ADD_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.ADD_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public LabTest saveLabTest(LabTest labTest, LabTestSample labTestSample, Collection<LabTestAttribute> labTestAttributes)
 	        throws APIException {
@@ -367,13 +368,13 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		return savedLabTest;
 	}
 	
-	@Authorized(LabConfig.ADD_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.ADD_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public LabTestAttribute saveLabTestAttribute(LabTestAttribute labTestAttribute) throws APIException {
 		return dao.saveLabTestAttribute(labTestAttribute);
 	}
 	
-	@Authorized(LabConfig.ADD_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.ADD_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public List<LabTestAttribute> saveLabTestAttributes(List<LabTestAttribute> labTestAttributes) throws APIException {
 		for (LabTestAttribute labTestAttribute : labTestAttributes) {
@@ -382,19 +383,19 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		return labTestAttributes;
 	}
 	
-	@Authorized(LabConfig.ADD_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.ADD_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public LabTestAttributeType saveLabTestAttributeType(LabTestAttributeType labTestAttributeType) throws APIException {
 		return dao.saveLabTestAttributeType(labTestAttributeType);
 	}
 	
-	@Authorized(LabConfig.ADD_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.ADD_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional
 	public LabTestSample saveLabTestSample(LabTestSample labTestSample) throws APIException {
 		return dao.saveLabTestSample(labTestSample);
 	}
 	
-	@Authorized(LabConfig.ADD_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.ADD_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public LabTestType saveLabTestType(LabTestType labTestType) throws APIException {
 		handleUnknownTestTypeOperation(labTestType);
@@ -408,7 +409,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		}
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public void retireLabTestType(LabTestType labTestType, String retireReason) throws APIException {
 		handleUnknownTestTypeOperation(labTestType);
@@ -421,7 +422,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTestType(labTestType);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public void retireLabTestAttributeType(LabTestAttributeType labTestAttributeType, String retireReason)
 	        throws APIException {
@@ -434,7 +435,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTestAttributeType(labTestAttributeType);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public void unretireLabTestType(LabTestType labTestType) throws APIException {
 		labTestType.setRetired(Boolean.FALSE);
@@ -443,7 +444,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTestType(labTestType);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public void unretireLabTestAttributeType(LabTestAttributeType labTestAttributeType) throws APIException {
 		labTestAttributeType.setRetired(Boolean.FALSE);
@@ -451,7 +452,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTestAttributeType(labTestAttributeType);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public void voidLabTest(LabTest labTest, String voidReason) throws APIException {
 		List<LabTestSample> labTestSamples = dao.getLabTestSamples(labTest, Boolean.FALSE);
@@ -473,7 +474,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTest(labTest);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public void voidLabTestAttribute(LabTestAttribute labTestAttribute, String voidReason) throws APIException {
 		labTestAttribute.setVoided(true);
@@ -483,7 +484,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTestAttribute(labTestAttribute);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public void voidLabTestAttributes(LabTest labTest, String voidReason) throws APIException {
 		List<LabTestSample> labTestSamples = getLabTestSamples(labTest, true);
@@ -504,7 +505,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		}
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional
 	public void voidLabTestSample(LabTestSample labTestSample, String voidReason) throws APIException {
 		labTestSample.setVoided(true);
@@ -514,7 +515,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTestSample(labTestSample);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public void unvoidLabTest(LabTest labTest) throws APIException {
 		List<LabTestSample> labTestSamples = dao.getLabTestSamples(labTest, Boolean.TRUE);
@@ -529,7 +530,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTest(labTest);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public void unvoidLabTestAttribute(LabTestAttribute labTestAttribute) throws APIException {
 		labTestAttribute.setVoided(false);
@@ -537,7 +538,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTestAttribute(labTestAttribute);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_SAMPLE_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_SAMPLE_PRIVILEGE)
 	@Transactional
 	public void unvoidLabTestSample(LabTestSample labTestSample) throws APIException {
 		labTestSample.setVoided(false);
@@ -545,25 +546,25 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.saveLabTestSample(labTestSample);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public void deleteLabTest(LabTest labTest) throws APIException {
 		dao.purgeLabTest(labTest);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public void deleteLabTestAttribute(LabTestAttribute labTestAttribute) throws APIException {
 		dao.purgeLabTestAttribute(labTestAttribute);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public void deleteLabTestAttributeType(LabTestAttributeType labTestAttributeType) throws APIException {
 		deleteLabTestAttributeType(labTestAttributeType, false);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public void deleteLabTestAttributeType(LabTestAttributeType labTestAttributeType, boolean cascade) throws APIException {
 		if (cascade) {
@@ -580,19 +581,19 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		dao.purgeLabTestAttributeType(labTestAttributeType);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_PRIVILEGE)
 	@Transactional
 	public void deleteLabTestSample(LabTestSample labTestSample) throws APIException {
 		dao.purgeLabTestSample(labTestSample);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public void deleteLabTestType(LabTestType labTestType) throws APIException {
 		deleteLabTestType(labTestType, null);
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	@Deprecated
 	public void deleteLabTestType(LabTestType labTestType, boolean cascade) throws APIException {
@@ -609,7 +610,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		}
 	}
 	
-	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
+	@Authorized(MdrtbConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	@Transactional
 	public void deleteLabTestType(LabTestType labTestType, LabTestType newObjectForCascade) throws APIException {
 		if (newObjectForCascade == null) {
@@ -673,7 +674,15 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 	
 	@Transactional(readOnly = true)
 	public LabTestType getCommonTestType() {
-		return getLabTestTypeByUuid(MdrtbConstants.MDRTB_TEST_TYPE_UUID);
+		// Try with UUID first
+		LabTestType testType = getLabTestTypeByUuid(MdrtbActivator.MDRTB_TEST_TYPE_UUID);
+		if (testType == null) {
+			List<LabTestType> testTypes = getLabTestTypes("COMMON TEST", null, null, null, null, false);
+			if (!testTypes.isEmpty()) {
+				return testTypes.stream().findFirst().get();
+			}
+		}
+		return testType;
 	}
 	
 	@Transactional(readOnly = true)
@@ -748,7 +757,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 	public LabTestAttribute getCommonAttributeByTestAndName(LabTest labTest, String name) {
 		List<LabTestAttributeType> commonAttributeTypes = new ArrayList<>();
 		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
-			if (at.getLabTestType() != null && at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
+			if (at.getLabTestType() != null && at.getLabTestType().getUuid().equals(MdrtbActivator.MDRTB_TEST_TYPE_UUID)) {
 				if (at.getGroupName() == null) {
 					commonAttributeTypes.add(at);
 				}
@@ -762,8 +771,8 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		List<LabTestAttributeType> xpertAttributeTypes = new ArrayList<>();
 		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
 			if (at.getLabTestType() != null && at.getGroupName() != null
-					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
-				if (at.getGroupName().equalsIgnoreCase("XPERT")) {
+					&& at.getLabTestType().getUuid().equals(MdrtbActivator.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase(MdrtbConstants.XPERT_TEST_GROUP)) {
 					xpertAttributeTypes.add(at);
 				}
 			}
@@ -776,8 +785,8 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		List<LabTestAttributeType> cultureAttributeTypes = new ArrayList<>();
 		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
 			if (at.getLabTestType() != null && at.getGroupName() != null
-					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
-				if (at.getGroupName().equalsIgnoreCase("CULTURE")) {
+					&& at.getLabTestType().getUuid().equals(MdrtbActivator.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase(MdrtbConstants.CULTURE_TEST_GROUP)) {
 					cultureAttributeTypes.add(at);
 				}
 			}
@@ -790,8 +799,8 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		List<LabTestAttributeType> hainAttributeTypes = new ArrayList<>();
 		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
 			if (at.getLabTestType() != null && at.getGroupName() != null
-					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
-				if (at.getGroupName().equalsIgnoreCase("HAIN")) {
+					&& at.getLabTestType().getUuid().equals(MdrtbActivator.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase(MdrtbConstants.HAIN_TEST_GROUP)) {
 					hainAttributeTypes.add(at);
 				}
 			}
@@ -804,8 +813,8 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		List<LabTestAttributeType> hain2AttributeTypes = new ArrayList<>();
 		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
 			if (at.getLabTestType() != null && at.getGroupName() != null
-					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
-				if (at.getGroupName().equalsIgnoreCase("HAIN2")) {
+					&& at.getLabTestType().getUuid().equals(MdrtbActivator.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase(MdrtbConstants.HAIN_2_TEST_GROUP)) {
 					hain2AttributeTypes.add(at);
 				}
 			}
@@ -818,8 +827,8 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		List<LabTestAttributeType> smearAttributeTypes = new ArrayList<>();
 		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
 			if (at.getLabTestType() != null && at.getGroupName() != null
-					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
-				if (at.getGroupName().equalsIgnoreCase("SMEAR")) {
+					&& at.getLabTestType().getUuid().equals(MdrtbActivator.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase(MdrtbConstants.SMEAR_TEST_GROUP)) {
 					smearAttributeTypes.add(at);
 				}
 			}

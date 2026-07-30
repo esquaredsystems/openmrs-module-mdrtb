@@ -102,6 +102,25 @@
 		requires_specimen="false" reference_concept_id="600" description="Lung function test using spirometer" creator="1"
 		date_created="2018-05-10 16:36:43" retired="false" uuid="65813584-5445-11e8-906e-02002e520001" />
 
+	<!-- =====================================================================================
+	     MDR-TB module specific COMMONLAB fixtures (added so MDRTB lab methods work in tests).
+	     COMMON TEST is the MDR-TB "common" lab test type. Its uuid is deliberately set to the
+	     literal value of MdrtbActivator.MDRTB_TEST_TYPE_UUID ("commonlabtest.mdrtbTestTypeUuid"):
+	     getCommonTestType() and the get<Group>AttributeByTestAndName() methods compare against that
+	     constant directly, so the type's uuid must equal it for both to resolve. getCommonTestType()
+	     additionally matches this type by its name "COMMON TEST" (its fallback lookup).
+	     ===================================================================================== -->
+	<labtest_type test_type_id="10" name="COMMON TEST" short_name="COMMON" test_group="BACTERIOLOGY"
+		requires_specimen="true" reference_concept_id="500"
+		description="MDR-TB common lab test grouping Smear/Culture/Xpert/HAIN results"
+		creator="1" date_created="2023-03-01 00:00:00" retired="false" uuid="commonlabtest.mdrtbTestTypeUuid" />
+	<labtest_type test_type_id="11" name="DST MGIT" short_name="DSTMGIT" test_group="BACTERIOLOGY"
+		requires_specimen="true" reference_concept_id="500" description="Drug Susceptibility Test (MGIT method)"
+		creator="1" date_created="2023-03-01 00:00:00" retired="false" uuid="7b9a3f1e-1111-4b22-9c33-0155d694c001" />
+	<labtest_type test_type_id="12" name="DST LJ" short_name="DSTLJ" test_group="BACTERIOLOGY"
+		requires_specimen="true" reference_concept_id="500" description="Drug Susceptibility Test (LJ method)"
+		creator="1" date_created="2023-03-01 00:00:00" retired="false" uuid="7b9a3f1e-2222-4b22-9c33-0155d694c002" />
+
 	<!-- Test Attribute Types for GeneXpert -->
 	<labtest_attribute_type test_attribute_type_id="1" test_type_id="2" name="Cartridge ID"
 		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="1" max_occurs="1" datatype_config="[0-9]{9,12}"
@@ -137,6 +156,52 @@
 		datatype="org.openmrs.customdatatype.datatype.BooleanDatatype" min_occurs="1" max_occurs="1" sort_weight="2"
 		description="The X-Ray image was printed on film." creator="1" date_created="2018-04-24 12:12:30" retired="1"
 		retire_reason="Printing has been outsourced." date_retired="2018-05-05 12:00:00" uuid="ee261470-478e-11e8-943c-40b034c3cfee" />
+
+	<!-- MDR-TB COMMON TEST attribute types (test_type_id=10). group_name buckets each one for the
+	     get<Group>AttributeByTestAndName() service methods; a missing/null group_name means "common". -->
+	<labtest_attribute_type test_attribute_type_id="20" test_type_id="10" name="Specimen ID"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" sort_weight="1"
+		description="Common specimen identifier (no group)." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca20" />
+	<labtest_attribute_type test_attribute_type_id="21" test_type_id="10" name="Smear Result"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" group_name="SMEAR"
+		sort_weight="2" description="Sputum smear microscopy result." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca21" />
+	<labtest_attribute_type test_attribute_type_id="22" test_type_id="10" name="Culture Result"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" group_name="CULTURE"
+		sort_weight="3" description="Culture growth result." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca22" />
+	<labtest_attribute_type test_attribute_type_id="23" test_type_id="10" name="Xpert MTB Result"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" group_name="XPERT"
+		sort_weight="4" description="GeneXpert MTB detection result." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca23" />
+	<labtest_attribute_type test_attribute_type_id="24" test_type_id="10" name="HAIN RIF Result"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" group_name="HAIN"
+		sort_weight="5" description="HAIN (line probe) rifampicin result." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca24" />
+	<labtest_attribute_type test_attribute_type_id="25" test_type_id="10" name="HAIN2 FLQ Result"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" group_name="HAIN2"
+		sort_weight="6" description="HAIN2 second-line (fluoroquinolone) result." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca25" />
+
+	<!-- DST attribute types, grouped by their parent test type NAME ("DST MGIT" / "DST LJ"); used by
+	     getDstAttributeByTestAndName(labTest, name, DstTestType). -->
+	<labtest_attribute_type test_attribute_type_id="26" test_type_id="11" name="Isoniazid Resistance"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" sort_weight="1"
+		description="MGIT isoniazid susceptibility." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca26" />
+	<labtest_attribute_type test_attribute_type_id="27" test_type_id="11" name="Rifampicin Resistance"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" sort_weight="2"
+		description="MGIT rifampicin susceptibility." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca27" />
+	<labtest_attribute_type test_attribute_type_id="28" test_type_id="12" name="Isoniazid Resistance"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" sort_weight="1"
+		description="LJ isoniazid susceptibility." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca28" />
+	<labtest_attribute_type test_attribute_type_id="29" test_type_id="12" name="Rifampicin Resistance"
+		datatype="org.openmrs.customdatatype.datatype.FreeTextDatatype" min_occurs="0" max_occurs="1" sort_weight="2"
+		description="LJ rifampicin susceptibility." creator="1" date_created="2023-03-01 00:00:00" retired="false"
+		uuid="c0117a01-0155-4b22-9c33-0155d694ca29" />
 
 	<!-- Encounters and Providers -->
 	<encounter encounter_id="1000" encounter_type="2" patient_id="1000" encounter_datetime="2018-05-01 00:00:00.0"

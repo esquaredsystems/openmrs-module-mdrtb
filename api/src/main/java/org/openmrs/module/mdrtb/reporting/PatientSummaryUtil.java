@@ -358,7 +358,7 @@ public class PatientSummaryUtil {
 	
 	public static String formatDate(Date d, Boolean estimated, String emptyMessage) {
 		if (d != null) {
-			DateFormat df = new SimpleDateFormat("dd/MMM/yyyy", Context.getLocale());
+			DateFormat df = new SimpleDateFormat(MdrtbConstants.DATE_FORMAT_DISPLAY, Context.getLocale());
 			return (estimated == Boolean.TRUE ? "~" : "") + df.format(d);
 		}
 		return (emptyMessage == null ? "" : MessageUtil.translate(emptyMessage));

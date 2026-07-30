@@ -16,7 +16,7 @@ import org.openmrs.Order;
 import org.openmrs.Provider;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.LabConfig;
+import org.openmrs.module.mdrtb.MdrtbConfig;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestType;
 import org.openmrs.module.mdrtb.api.LabTestService;
@@ -85,7 +85,7 @@ public class LabTestOrderController {
 		return SUCCESS_ADD_FORM_VIEW;
 	}
 	
-	@Authorized(LabConfig.ADD_LAB_TEST_PRIVILEGE)
+	@Authorized(MdrtbConfig.ADD_LAB_TEST_PRIVILEGE)
 	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/addLabTestOrder.form")
 	public String onSubmit(ModelMap model, HttpSession httpSession,
 	        @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,

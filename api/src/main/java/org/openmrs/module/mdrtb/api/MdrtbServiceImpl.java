@@ -12,6 +12,7 @@ import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.mdrtb.*;
 import org.openmrs.module.mdrtb.api.dao.MdrtbDao;
 import org.openmrs.module.mdrtb.comparator.PatientProgramComparator;
+import org.openmrs.module.mdrtb.exception.InvalidImplementationException;
 import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.form.custom.*;
 import org.openmrs.module.mdrtb.lab.*;
@@ -190,7 +191,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			}
 			catch (Exception ignored) {}
 			// Next try UUID
-			if (lookup.length() == 36 && lookup.matches(MdrtbConstants.UUID_REGEX)) {
+			if (lookup.matches(MdrtbConstants.UUID_REGEX)) {
 				try {
 					Concept c = Context.getConceptService().getConceptByUuid(lookup);
 					if (c != null) {
@@ -674,7 +675,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// (i.e., that this service implementation is using the specimen implementation
 		// that it expects, which should return a observation)
 		if (!(culture.getTest() instanceof Obs)) {
-			throw new APIException("Not a valid culture implementation for this service implementation");
+			throw new InvalidImplementationException(Culture.class);
 		}
 		// otherwise, go ahead and do the save
 		Context.getObsService().saveObs((Obs) culture.getTest(), VOID_MESSAGE);
@@ -762,7 +763,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// (i.e., that this service implementation is using the specimen implementation
 		// that it expects, which should an encounter)
 		if (!(specimen.getSpecimen() instanceof Encounter)) {
-			throw new APIException("Not a valid specimen implementation for this service implementation.");
+			throw new InvalidImplementationException(Specimen.class);
 		}
 		// We need the specimen encounters to potentially be viewable by a bacteriology
 		// htmlform:
@@ -882,7 +883,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// (i.e., that this service implementation is using the specimen implementation
 		// that it expects, which should return a observation)
 		if (!(xpert.getTest() instanceof Obs)) {
-			throw new APIException("Not a valid xpert implementation for this service implementation");
+			throw new InvalidImplementationException(Xpert.class);
 		}
 		// otherwise, go ahead and do the save
 		Context.getObsService().saveObs((Obs) xpert.getTest(), VOID_MESSAGE);
@@ -892,7 +893,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
 		LabTest hain = Context.getService(LabTestService.class).getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new HAINImpl(hain);
-		// return new HAINImpl(obs);
 	}
 	
 	public void saveHAIN(HAIN hain) {
@@ -904,7 +904,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// (i.e., that this service implementation is using the specimen implementation
 		// that it expects, which should return a observation)
 		if (!(hain.getTest() instanceof Obs)) {
-			throw new APIException("Not a valid hain implementation for this service implementation");
+			throw new InvalidImplementationException(HAIN.class);
 		}
 		// otherwise, go ahead and do the save
 		Context.getObsService().saveObs((Obs) hain.getTest(), VOID_MESSAGE);
@@ -926,7 +926,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// that it expects, which should return a observation)
 		
 		if (!(hain2.getTest() instanceof Obs)) {
-			throw new APIException("Not a valid hain implementation for this service implementation");
+			throw new InvalidImplementationException(HAIN2.class);
 		}
 		// otherwise, go ahead and do the save
 		Context.getObsService().saveObs((Obs) hain2.getTest(), VOID_MESSAGE);
@@ -951,7 +951,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// (i.e., that this service implementation is using the specimen implementation
 		// that it expects, which should return a observation)
 		if (!(dst.getTest() instanceof Obs)) {
-			throw new APIException("Not a valid dst implementation for this service implementation");
+			throw new InvalidImplementationException(Dst.class);
 		}
 		// otherwise, go ahead and do the save
 		Context.getObsService().saveObs((Obs) dst.getTest(), VOID_MESSAGE);
@@ -2187,7 +2187,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// (i.e., that this service implementation is using the specimen implementation
 		// that it expects, which should return a observation)
 		if (!(report.getScannedLabReport() instanceof Obs)) {
-			throw new APIException("Not a valid scanned lab report implementation for this service implementation");
+			throw new InvalidImplementationException(ScannedLabReport.class);
 		}
 		// otherwise, go ahead and do the save
 		Context.getObsService().saveObs((Obs) report.getScannedLabReport(), VOID_MESSAGE);

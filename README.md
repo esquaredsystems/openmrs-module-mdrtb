@@ -65,7 +65,7 @@ mvn -pl omod package -P deploy-web -DdeployPath=<path-to-deployed-module-dir>
 - **Lab infrastructure** (`lab/`) — generic `LabTest`, `LabTestSample`, `LabTestType`, `LabTestAttribute(Type)`, `LabTestGroup`, and a `LabTestSampleStatus` workflow (`COLLECTED → PROCESSED → REJECTED`), built on top of the external `labtest` module.
 - **Regimens & drugs** (`regimen/`, `drugneeds/`) — `Regimen`, `RegimenChange`, `RegimenHistory`, `RegimenType`, `DrugSuggestion`, and `DrugForecastUtil` for inventory/usage forecasting.
 - **Clinical forms** (`form/`) — `AbstractSimpleForm`/`SimpleForm` base classes with concrete forms under `form/custom/`: `SmearForm`, `CultureForm`, `DSTForm`, `XpertForm`, `HAINForm`/`HAIN2Form`, `AdverseEventsForm`, `TransferInForm`/`TransferOutForm`, `DrugResistanceDuringTreatmentForm`, and WHO reporting forms `Form89`, `TB03Form`, `TB03uForm`.
-- **Config & shared types** — `MdrtbConfig`, `MdrtbConstants`, `MdrtbConcepts` (cached concept lookups), `LabConfig`, `MdrtbPatient`, geo-hierarchy helpers `Region`/`District`/`Facility`, and `ReportData`/`ReportType` for persisted report metadata.
+- **Config & shared types** — `MdrtbConfig`, `MdrtbConstants`, `MdrtbConcepts` (cached concept lookups), `MdrtbPatient`, geo-hierarchy helpers `Region`/`District`/`Facility`, and `ReportData`/`ReportType` for persisted report metadata.
 
 ### Service layer
 

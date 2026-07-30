@@ -13,6 +13,7 @@ import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientProgram;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.api.MdrtbService;
@@ -208,7 +209,7 @@ public class TB03Util {
 			Set<LabTestAttribute> attributes = labTest.getAttributes();
 			// Any DST-related stuff?
 			for (LabTestAttribute attribute : attributes) {
-				if("DST".equalsIgnoreCase(attribute.getAttributeType().getGroupName())) {
+				if(MdrtbConstants.DST_TEST_GROUP.equalsIgnoreCase(attribute.getAttributeType().getGroupName())) {
 					return new DstImpl(labTest);
 				}
 			}
