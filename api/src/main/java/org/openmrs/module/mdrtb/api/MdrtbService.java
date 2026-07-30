@@ -631,10 +631,6 @@ public interface MdrtbService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	@Transactional(readOnly = true)
-	List<Location> getLocationsFromFacility(Facility facility);
-	
-	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
-	@Transactional(readOnly = true)
 	List<District> getDistrictsByParent(Integer parentId);
 	
 	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)

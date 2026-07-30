@@ -136,13 +136,6 @@ public class MdrtbServiceLocationTest extends MdrtbTestBase {
 	}
 	
 	@Test
-	public final void testGetLocationsFromFacility() {
-		List<Location> list = service.getLocationsFromFacility(fayzobodLab);
-		Location expected = Context.getLocationService().getLocation(fayzobodLab.getId());
-		assertTrue(list.contains(expected));
-	}
-	
-	@Test
 	public final void testGetLocationsFromRegion() {
 		List<Location> list = service.getLocationsFromRegion(republic);
 		Location expected = Context.getLocationService().getLocation(fayzobodLab.getId());

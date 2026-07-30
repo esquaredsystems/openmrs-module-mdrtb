@@ -28,11 +28,11 @@ import java.util.*;
  * This class contains the logic that is run every time this module is either started or shutdown
  */
 public class MdrtbActivator extends BaseModuleActivator {
-
+	
 	/***************************/
-
+	
 	private final Log log = LogFactory.getLog(this.getClass());
-
+	
 	private static final String DEFAULT = "default";
 	
 	public static final String SPECIMEN_TYPE_CONCEPT_UUID = "commonlabtest.specimenTypeConceptUuid";
@@ -48,9 +48,9 @@ public class MdrtbActivator extends BaseModuleActivator {
 	public static final String FILE_EXTENSIONS_NAMES = ".bmp ,.jpg ,.jpeg,.jfif,.GIF,.png,.bat,.BPG,.FLV,.AVI,.MOV,.M4P,.MPG,.WMV,.3gp,.RM,.SWF,.3GP,.ACT,.AIFF,.MP3,.WAV,.OGG,.FLAC,.AU,.RAW,.docx,.docm,.dotx,.docb,.dotm,.pdf";
 	
 	public static final String LAB_ORDER_TYPE_UUID = "commonlabtest.labOrderTypeUuid";
-
+	
 	public static final String MDRTB_TEST_TYPE_UUID = "commonlabtest.mdrtbTestTypeUuid";
-
+	
 	ConceptService conceptService;
 	
 	File dir = OpenmrsUtil.getDirectoryInApplicationDataDirectory(Context.getAdministrationService().getGlobalProperty(
@@ -101,7 +101,10 @@ public class MdrtbActivator extends BaseModuleActivator {
 		setGlobalProperty(administrationService, UPLOAD_FILE_DIRECTORY, path.toString(), "");
 		setGlobalProperty(administrationService, SPECIMEN_TYPE_CONCEPT_UUID, "2da61322-bcc5-4c32-b412-1b1ef37f4a25",
 		    "The UUID of a concept representing a group or set of different types of specimen, e.g. Saliva, Blood, Pus, etc.");
-		setGlobalProperty(administrationService, SPECIMEN_SITE_CONCEPT_UUID, "31bf065e-0370-102d-b0e3-001ec94a0cc1",
+		setGlobalProperty(
+		    administrationService,
+		    SPECIMEN_SITE_CONCEPT_UUID,
+		    "31bf065e-0370-102d-b0e3-001ec94a0cc1",
 		    "The UUID of a concept representing a group or set of anatomical source site from where the specimen is obtained, e.g. Bone, Tissue, etc.");
 		setGlobalProperty(administrationService, TEST_UNITS_CONCEPT_UUID, "5f21ab43-ec32-44b2-88e5-bc4ed2b93fba",
 		    "The UUID of a concept representing a group or set of various measurement units (also used to measure dosage quantity).");
@@ -109,6 +112,6 @@ public class MdrtbActivator extends BaseModuleActivator {
 		setGlobalProperty(administrationService, LAB_ORDER_TYPE_UUID, "33ccfcc6-0370-102d-b0e3-001ec94a0cc1",
 		    "The UUID of the Order type representing a Lab Test Order.");
 		setGlobalProperty(administrationService, MDRTB_TEST_TYPE_UUID, "4e81d04f-bdc0-11ed-9c1c-00155d694c4d",
-				"The UUID of the Order type representing a Lab Test Order.");
+		    "The UUID of the Order type representing a Lab Test Order.");
 	}
 }

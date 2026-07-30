@@ -20,7 +20,7 @@ public class MdrtbConstants {
 	public static final String PATIENT_CHART_REGIMEN_CELL_COLOR = "lightblue";
 	
 	public static final String ROLES_TO_REDIRECT_GLOBAL_PROPERTY = moduleName + ".roles_to_redirect_from_openmrs_homepage";
-
+	
 	public enum TbClassification {
 		MONO_RESISTANT_TB, POLY_RESISTANT_TB, MDR_TB, XDR_TB, RIF_RESISTANT_TB, PRE_XDR_TB
 	}
@@ -157,32 +157,31 @@ public class MdrtbConstants {
 	
 	@Deprecated
 	public static final String GP_LAB_ENTRY_IDS = "mdrtb.lab_entry_ids";
-
+	
 	/** END - Global Properties **/
 	/*****************************/
-
+	
 	/************************/
 	/** START - Common Lab **/
 	public static final String DST_MGIT_TEST_NAME = "DST MGIT";
-
+	
 	public static final String DST_LJ_TEST_NAME = "DST LJ";
-
+	
 	public static final String XPERT_TEST_GROUP = "XPERT";
-
+	
 	public static final String CULTURE_TEST_GROUP = "CULTURE";
-
+	
 	public static final String HAIN_TEST_GROUP = "HAIN";
-
+	
 	public static final String HAIN_2_TEST_GROUP = "HAIN2";
-
+	
 	public static final String SMEAR_TEST_GROUP = "SMEAR";
-
+	
 	public static final String DST_TEST_GROUP = "DST";
-
+	
 	/** END - Common Lab **/
 	/**********************/
-
-
+	
 	/***************************/
 	/** START - Message Codes **/
 	public static final String MESSAGE_CODE_NO = "mdrtb.no";

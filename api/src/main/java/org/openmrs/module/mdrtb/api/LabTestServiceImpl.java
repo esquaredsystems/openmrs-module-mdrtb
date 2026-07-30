@@ -48,7 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("labtest.LabTestService")
 public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestService {
-
+	
 	@Autowired
 	LabDao dao;
 	

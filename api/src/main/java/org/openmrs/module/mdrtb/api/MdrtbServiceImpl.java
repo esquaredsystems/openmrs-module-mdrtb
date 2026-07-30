@@ -960,6 +960,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	/***************/
 	/** LOCATIONS **/
 	/***************/
+	//TODO: Move all these location-specific methods to a spearte LocationService
 	public Location getLocation(Integer regionId, Integer districtId, Integer facilityId) {
 		if (regionId == null || districtId == null)
 			return null;
@@ -979,8 +980,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			if (!districtFlag) {
 				continue;
 			}
-			boolean stateFlag = f == null ? true : loc.getAddress4().equalsIgnoreCase(f.getName());
-			if (regionFlag && districtFlag && stateFlag) {
+			boolean stateFlag = f == null || loc.getAddress4().equalsIgnoreCase(f.getName());
+			if (districtFlag && stateFlag) {
 				return loc;
 			}
 		}
@@ -1148,18 +1149,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			}
 		}
 		return null;
-	}
-	
-	public List<Location> getLocationsFromFacility(Facility facility) {
-		List<Location> locationList = new ArrayList<>();
-		List<Location> locations = Context.getLocationService().getAllLocations(false);
-		for (Location loc : locations) {
-			if (loc.getAddress6() != null) {
-				if (loc.getAddress6().equals(facility.getName()))
-					locationList.add(loc);
-			}
-		}
-		return locationList;
 	}
 	
 	public List<District> getDistrictsByParent(Integer parentId) {
@@ -1706,7 +1695,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				}
 			}
 		}
-		if (forms != null && !forms.isEmpty()) {
+		if (!forms.isEmpty()) {
 			Collections.sort(forms);
 			return forms.get(forms.size() - 1);
 		} else
@@ -1729,7 +1718,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		for (Encounter e : temp) {
 			forms.add(new RegimenForm(e));
 		}
-		if (forms != null && !forms.isEmpty()) {
+		if (!forms.isEmpty()) {
 			Collections.sort(forms);
 			return forms.get(forms.size() - 1);
 		} else
@@ -1860,7 +1849,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		EncounterType eType = MdrtbConstants.ET_TRANSFER_OUT;
 		ArrayList<EncounterType> typeList = new ArrayList<>();
 		typeList.add(eType);
-		List<Encounter> temp = null;
+		List<Encounter> temp;
 		if (locations == null || locations.isEmpty()) {
 			temp = getEncounters(null, null, startDate, endDate, typeList);
 			for (Encounter e : temp) {
@@ -1882,7 +1871,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		EncounterType eType = MdrtbConstants.ET_TRANSFER_OUT;
 		ArrayList<EncounterType> typeList = new ArrayList<>();
 		typeList.add(eType);
-		List<Encounter> temp = null;
+		List<Encounter> temp;
 		temp = getEncountersByPatientAndTypes(patient, typeList);
 		for (Encounter e : temp) {
 			forms.add(new TransferOutForm(e));
@@ -2069,7 +2058,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Cohort patientsInStates = Context.getService(CohortQueryService.class).getPatientsInStates(stateList, fromDate,
 		    toDate);
 		List<PatientProgram> list = Context.getProgramWorkflowService().getPatientPrograms(patientsInStates,
-		    Arrays.asList(program));
+		    Collections.singletonList(program));
 		return new Cohort(list);
 	}
 	
@@ -2208,7 +2197,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		// All non-voided programs for this patient, most recent enrollment first.
 		List<PatientProgram> patientPrograms = new ArrayList<>(
 		    Context.getProgramWorkflowService().getPatientPrograms(patient, null, null, null, null, null, false));
-		Collections.sort(patientPrograms, new PatientProgramComparator()); // oldest enrollment first
+		patientPrograms.sort(new PatientProgramComparator()); // oldest enrollment first
 		Collections.reverse(patientPrograms); // latest enrollment first
 
 		// Load the patient's observations and lab tests once; scope each to a program window below.
@@ -2259,20 +2248,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		if (start != null && date.before(start)) {
 			return false;
 		}
-		if (end != null && date.after(end)) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * Best-effort date for a lab test: the encounter datetime of the test's order, or {@code null}
-	 * when the order or its encounter is missing.
-	 */
-	private Date getLabTestDate(LabTest labTest) {
-		if (labTest != null && labTest.getOrder() != null && labTest.getOrder().getEncounter() != null) {
-			return labTest.getOrder().getEncounter().getEncounterDatetime();
-		}
-		return null;
+		return end == null || !date.after(end);
 	}
 }

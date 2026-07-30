@@ -18,21 +18,38 @@ import org.springframework.stereotype.Component;
 public class MdrtbConfig {
 	
 	public final static String MODULE_PRIVILEGE = "Edit DOTS-MDR Data";
+	
 	public static final String ADD_LAB_TEST_METADATA_PRIVILEGE = "Add LabTest Metadata";
+	
 	public static final String EDIT_LAB_TEST_METADATA_PRIVILEGE = "Edit LabTest Metadata";
+	
 	public static final String DELETE_LAB_TEST_METADATA_PRIVILEGE = "Delete LabTest Metadata";
+	
 	public static final String VIEW_LAB_TEST_METADATA_PRIVILEGE = "View LabTest Metadata";
+	
 	public static final String ADD_LAB_TEST_SAMPLE_PRIVILEGE = "Add LabTest Samples";
+	
 	public static final String EDIT_LAB_TEST_SAMPLE_PRIVILEGE = "Edit LabTest Samples";
+	
 	public static final String VIEW_LAB_TEST_SAMPLE_PRIVILEGE = "View LabTest Samples";
+	
 	public static final String DELETE_LAB_TEST_SAMPLE_PRIVILEGE = "Delete LabTest Samples";
+	
 	public static final String ADD_LAB_TEST_PRIVILEGE = "Add LabTest Orders";
+	
 	public static final String EDIT_LAB_TEST_PRIVILEGE = "Edit LabTest Orders";
+	
 	public static final String VIEW_LAB_TEST_PRIVILEGE = "View LabTest Orders";
+	
 	public static final String DELETE_LAB_TEST_PRIVILEGE = "Delete LabTest Orders";
+	
 	public static final String ADD_LAB_RESULT_PRIVILEGE = "Add LabTest Results";
+	
 	public static final String EDIT_LAB_RESULT_PRIVILEGE = "Edit LabTest Results";
+	
 	public static final String VIEW_LAB_RESULT_PRIVILEGE = "View LabTest Results";
+	
 	public static final String DELETE_LAB_RESULT_PRIVILEGE = "Delete LabTest Results";
+	
 	public static final Boolean AUTO_VOID_REJECTED_SAMPLES = Boolean.TRUE;
 }
