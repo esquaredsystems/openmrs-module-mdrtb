@@ -23,7 +23,6 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.api.LabTestService;
-import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
@@ -537,7 +536,7 @@ public class SpecimenImpl implements Specimen {
 		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
-			LabTestAttribute cultureResult = LabUtil.getService().getCultureAttributeByTestAndName(labTest,
+			LabTestAttribute cultureResult = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(labTest,
 			    MdrtbConcepts.CULTURE_RESULT);
 			if (cultureResult != null) {
 				cultures.add(new CultureImpl(labTest));
@@ -563,9 +562,9 @@ public class SpecimenImpl implements Specimen {
 		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if any of the DST results is present
-			LabTestAttribute dstLj = LabUtil.getService().getDstAttributeByTestAndName(labTest,
+			LabTestAttribute dstLj = Context.getService(LabTestService.class).getDstAttributeByTestAndName(labTest,
 			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST_LJ);
-			LabTestAttribute dstMgit = LabUtil.getService().getDstAttributeByTestAndName(labTest,
+			LabTestAttribute dstMgit = Context.getService(LabTestService.class).getDstAttributeByTestAndName(labTest,
 			    MdrtbConcepts.COLONIES_IN_CONTROL, DstTestType.DST_MGIT);
 			if (dstLj != null || dstMgit != null) {
 				dsts.add(new DstImpl(labTest));
@@ -590,7 +589,7 @@ public class SpecimenImpl implements Specimen {
 		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
-			LabTestAttribute smearResult = LabUtil.getService().getSmearAttributeByTestAndName(labTest,
+			LabTestAttribute smearResult = Context.getService(LabTestService.class).getSmearAttributeByTestAndName(labTest,
 			    MdrtbConcepts.SMEAR_RESULT);
 			if (smearResult != null) {
 				smears.add(new SmearImpl(labTest));
@@ -616,7 +615,7 @@ public class SpecimenImpl implements Specimen {
 		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
-			LabTestAttribute xpertResult = LabUtil.getService().getXpertAttributeByTestAndName(labTest,
+			LabTestAttribute xpertResult = Context.getService(LabTestService.class).getXpertAttributeByTestAndName(labTest,
 			    MdrtbConcepts.MTB_RESULT);
 			if (xpertResult != null) {
 				xperts.add(new XpertImpl(labTest));
@@ -642,7 +641,7 @@ public class SpecimenImpl implements Specimen {
 		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
-			LabTestAttribute hainResult = LabUtil.getService().getHainAttributeByTestAndName(labTest,
+			LabTestAttribute hainResult = Context.getService(LabTestService.class).getHainAttributeByTestAndName(labTest,
 			    MdrtbConcepts.MTB_RESULT);
 			if (hainResult != null) {
 				hains.add(new HAINImpl(labTest));
@@ -667,7 +666,7 @@ public class SpecimenImpl implements Specimen {
 		List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(encounter.getPatient(), false);
 		for (LabTest labTest : labTests) {
 			// Add only if the culture results are present
-			LabTestAttribute hain2Result = LabUtil.getService().getHain2AttributeByTestAndName(labTest,
+			LabTestAttribute hain2Result = Context.getService(LabTestService.class).getHain2AttributeByTestAndName(labTest,
 			    MdrtbConcepts.MTB_RESULT);
 			if (hain2Result != null) {
 				hains.add(new HAIN2Impl(labTest));

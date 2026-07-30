@@ -862,14 +862,14 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public Xpert getXpert(Integer obsId) {
 		Obs obs = Context.getObsService().getObs(obsId);
-		LabTestType labTestType = LabUtil.getService().getCommonTestType();
-		LabTest xpert = LabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
+		LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+		LabTest xpert = Context.getService(LabTestService.class).getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new XpertImpl(xpert);
 	}
 	
 	public Smear getSmear(Obs obs) {
-		LabTestType labTestType = LabUtil.getService().getCommonTestType();
-		LabTest smear = LabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
+		LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+		LabTest smear = Context.getService(LabTestService.class).getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new SmearImpl(smear);
 	}
 	
@@ -889,8 +889,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public HAIN getHAIN(Obs obs) {
-		LabTestType labTestType = LabUtil.getService().getCommonTestType();
-		LabTest hain = LabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
+		LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+		LabTest hain = Context.getService(LabTestService.class).getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new HAINImpl(hain);
 		// return new HAINImpl(obs);
 	}
@@ -911,8 +911,8 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public HAIN2 getHAIN2(Obs obs) {
-		LabTestType labTestType = LabUtil.getService().getCommonTestType();
-		LabTest hain = LabUtil.getService().getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
+		LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+		LabTest hain = Context.getService(LabTestService.class).getMdrtbLabTestOrder(obs.getEncounter(), labTestType);
 		return new HAIN2Impl(hain);
 	}
 	
@@ -1403,7 +1403,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		}
 		// Search in Lab Tests
 		if (smears.isEmpty()) {
-			List<LabTest> labTests = LabUtil.getService().getLabTests(tpp.getPatient(), LabUtil.getService().getCommonTestType());
+			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
 			if (!labTests.isEmpty()) {
 				for (LabTest labTest : labTests) {
 					Encounter e = labTest.getOrder().getEncounter();
@@ -1436,7 +1436,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		}
 		// Search in Lab Tests
 		if (cultures.isEmpty()) {
-			List<LabTest> labTests = LabUtil.getService().getLabTests(tpp.getPatient(), LabUtil.getService().getCommonTestType());
+			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
 			if (!labTests.isEmpty()) {
 				for (LabTest labTest : labTests) {
 					Encounter e = labTest.getOrder().getEncounter();
@@ -1469,7 +1469,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		}
 		// Search in Lab Tests
 		if (xperts.isEmpty()) {
-			List<LabTest> labTests = LabUtil.getService().getLabTests(tpp.getPatient(), LabUtil.getService().getCommonTestType());
+			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
 			if (!labTests.isEmpty()) {
 				for (LabTest labTest : labTests) {
 					Encounter e = labTest.getOrder().getEncounter();
@@ -1502,7 +1502,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		}
 		// Search in Lab Tests
 		if (hains.isEmpty()) {
-			List<LabTest> labTests = LabUtil.getService().getLabTests(tpp.getPatient(), LabUtil.getService().getCommonTestType());
+			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
 			if (!labTests.isEmpty()) {
 				for (LabTest labTest : labTests) {
 					Encounter e = labTest.getOrder().getEncounter();
@@ -1535,7 +1535,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		}
 		// Search in Lab Tests
 		if (hains.isEmpty()) {
-			List<LabTest> labTests = LabUtil.getService().getLabTests(tpp.getPatient(), LabUtil.getService().getCommonTestType());
+			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
 			if (!labTests.isEmpty()) {
 				for (LabTest labTest : labTests) {
 					Encounter e = labTest.getOrder().getEncounter();
@@ -1572,7 +1572,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		}
 		// Search in Lab Tests
 		if (dsts.isEmpty()) {
-			List<LabTest> labTests = LabUtil.getService().getLabTests(tpp.getPatient(), LabUtil.getService().getCommonTestType());
+			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
 			if (!labTests.isEmpty()) {
 				for (LabTest labTest : labTests) {
 					Encounter e = labTest.getOrder().getEncounter();
@@ -2213,7 +2213,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 
 		// Load the patient's observations and lab tests once; scope each to a program window below.
 		List<Obs> allObs = Context.getObsService().getObservationsByPerson(patient);
-		List<LabTest> allLabTests = LabUtil.getService().getLabTests(patient, LabUtil.getService().getCommonTestType());
+		List<LabTest> allLabTests = Context.getService(LabTestService.class).getLabTests(patient, Context.getService(LabTestService.class).getCommonTestType());
 		if (allLabTests == null) {
 			allLabTests = new ArrayList<>();
 		}

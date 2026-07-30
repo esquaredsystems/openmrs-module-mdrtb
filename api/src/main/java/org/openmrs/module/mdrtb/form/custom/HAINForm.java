@@ -5,15 +5,15 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.lab.LabTest;
-import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.lab.LabTestSample;
-import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.lab.LabTestSample;
 
 public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm> {
 	
@@ -42,7 +42,7 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public String getSpecimenId() {
 		if (getLabTest() != null) {
-			LabTestSample sample = LabUtil.getService().getMostRecentAcceptedSample(getLabTest());
+			LabTestSample sample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(getLabTest());
 			// return sample.getSampleIdentifier();
 			return sample.getLabTestSampleId().toString();
 			
@@ -88,8 +88,8 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Concept getMtbResult() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(getLabTest(),
-			    MdrtbConcepts.MTB_RESULT);
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(
+			    getLabTest(), MdrtbConcepts.MTB_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
 			}
@@ -155,8 +155,8 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Concept getRifResult() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(getLabTest(),
-			    MdrtbConcepts.RIFAMPICIN_RESULT);
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(
+			    getLabTest(), MdrtbConcepts.RIFAMPICIN_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
 			}
@@ -222,8 +222,8 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Concept getInhResult() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = LabUtil.getService().getXpertAttributeByTestAndName(getLabTest(),
-			    MdrtbConcepts.ISONIAZID_RESULT);
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getXpertAttributeByTestAndName(
+			    getLabTest(), MdrtbConcepts.ISONIAZID_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
 			}
@@ -292,8 +292,8 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Integer getPatientProgramId() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = LabUtil.getService().getXpertAttributeByTestAndName(getLabTest(),
-			    MdrtbConcepts.PATIENT_PROGRAM_ID);
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getXpertAttributeByTestAndName(
+			    getLabTest(), MdrtbConcepts.PATIENT_PROGRAM_ID);
 			if (attribute != null) {
 				try {
 					return (Integer) attribute.getValue();
@@ -344,8 +344,8 @@ public class HAINForm extends AbstractSimpleForm implements Comparable<HAINForm>
 	
 	public Integer getMonthOfTreatment() {
 		if (getLabTest() != null) {
-			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(getLabTest(),
-			    MdrtbConcepts.MONTH_OF_TREATMENT);
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getCommonAttributeByTestAndName(
+			    getLabTest(), MdrtbConcepts.MONTH_OF_TREATMENT);
 			if (attribute != null) {
 				try {
 					return (Integer) attribute.getValue();

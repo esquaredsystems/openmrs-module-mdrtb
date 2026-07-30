@@ -6,10 +6,11 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
 import org.openmrs.module.mdrtb.form.custom.DSTForm;
@@ -68,7 +69,7 @@ public class TB03uUtil {
 					continue;
 				if (dstForm.getMonthOfTreatment().intValue() != 0)
 					continue;
-				LabTest dstTest = LabUtil.getService().getDstLabTestOrder(dstForm.getEncounter());
+				LabTest dstTest = Context.getService(LabTestService.class).getDstLabTestOrder(dstForm.getEncounter());
 				if (dstTest != null) {
 					return new DstImpl(dstTest);
 				}
@@ -85,11 +86,11 @@ public class TB03uUtil {
 					continue;
 				if (dstForm.getMonthOfTreatment().intValue() != 0)
 					continue;
-				LabTest dstTest = LabUtil.getService().getDstLabTestOrder(dstForm.getEncounter());
+				LabTest dstTest = Context.getService(LabTestService.class).getDstLabTestOrder(dstForm.getEncounter());
 				if (dstTest != null) {
-					LabTestAttribute rif = LabUtil.getService().getCommonAttributeByTestAndName(dstTest,
+					LabTestAttribute rif = Context.getService(LabTestService.class).getCommonAttributeByTestAndName(dstTest,
 					    MdrtbConcepts.RIFAMPICIN_RESISTANCE);
-					LabTestAttribute iso = LabUtil.getService().getCommonAttributeByTestAndName(dstTest,
+					LabTestAttribute iso = Context.getService(LabTestService.class).getCommonAttributeByTestAndName(dstTest,
 					    MdrtbConcepts.ISONIAZID_RESISTANCE);
 					if (rif != null || iso != null) {
 						return new DstImpl(dstTest).getResults();
@@ -151,8 +152,9 @@ public class TB03uUtil {
 		Xpert c = null;
 		List<XpertForm> xperts = tf.getXperts();
 		if (xperts != null && !xperts.isEmpty()) {
-			LabTestType labTestType = LabUtil.getService().getCommonTestType();
-			LabTest xpert = LabUtil.getService().getMdrtbLabTestOrder(xperts.get(0).getEncounter(), labTestType);
+			LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+			LabTest xpert = Context.getService(LabTestService.class).getMdrtbLabTestOrder(xperts.get(0).getEncounter(),
+			    labTestType);
 			c = new XpertImpl(xpert);
 		}
 		return c;
@@ -173,8 +175,9 @@ public class TB03uUtil {
 		HAIN c = null;
 		List<HAINForm> hains = tf.getHains();
 		if (hains != null && !hains.isEmpty()) {
-			LabTestType labTestType = LabUtil.getService().getCommonTestType();
-			LabTest hain = LabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+			LabTest hain = Context.getService(LabTestService.class).getMdrtbLabTestOrder(hains.get(0).getEncounter(),
+			    labTestType);
 			c = new HAINImpl(hain);
 		}
 		
@@ -196,8 +199,9 @@ public class TB03uUtil {
 		HAIN2 c = null;
 		List<HAIN2Form> hains = tf.getHain2s();
 		if (hains != null && !hains.isEmpty()) {
-			LabTestType labTestType = LabUtil.getService().getCommonTestType();
-			LabTest hain = LabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+			LabTest hain = Context.getService(LabTestService.class).getMdrtbLabTestOrder(hains.get(0).getEncounter(),
+			    labTestType);
 			c = new HAIN2Impl(hain);
 		}
 		

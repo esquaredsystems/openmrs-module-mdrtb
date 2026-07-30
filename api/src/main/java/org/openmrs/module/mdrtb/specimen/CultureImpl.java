@@ -1,10 +1,11 @@
 package org.openmrs.module.mdrtb.specimen;
 
 import org.openmrs.Concept;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.LabUtil;
-import org.openmrs.module.mdrtb.MdrtbConcepts;
 
 /**
  * An implementaton of a MdrtbCulture. This wraps an ObsGroup and provides access to culture data
@@ -54,7 +55,8 @@ public class CultureImpl extends TestImpl implements Culture {
 	}
 	
 	public Integer getColonies() {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test, MdrtbConcepts.COLONIES);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
+		    MdrtbConcepts.COLONIES);
 		return (Integer) attribute.getValue();
 		/*
 		Obs obs = MdrtbUtil.getObsFromObsGroup(
@@ -64,7 +66,8 @@ public class CultureImpl extends TestImpl implements Culture {
 	}
 	
 	public void setColonies(Integer colonies) {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test, MdrtbConcepts.COLONIES);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
+		    MdrtbConcepts.COLONIES);
 		attribute.setValue(colonies);
 		test.setAttribute(attribute);
 	}
@@ -78,64 +81,65 @@ public class CultureImpl extends TestImpl implements Culture {
 	}
 	
 	public Integer getDaysToPositivity() {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
 		    MdrtbConcepts.DAYS_TO_POSITIVITY);
 		return (Integer) attribute.getValue();
 	}
 	
 	public void setDaysToPositivity(Integer daysToPositivity) {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
 		    MdrtbConcepts.DAYS_TO_POSITIVITY);
 		attribute.setValue(daysToPositivity);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getOrganismType() {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
 		    MdrtbConcepts.TYPE_OF_ORGANISM);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setOrganismType(Concept organismType) {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
 		    MdrtbConcepts.TYPE_OF_ORGANISM);
 		attribute.setValue(organismType);
 		test.setAttribute(attribute);
 	}
 	
 	public String getOrganismTypeNonCoded() {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
 		    MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED);
 		return (String) attribute.getValue();
 	}
 	
 	public void setOrganismTypeNonCoded(String organismType) {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
 		    MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED);
 		attribute.setValue(organismType);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getMethod() {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test, MdrtbConcepts.COLONIES);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
+		    MdrtbConcepts.COLONIES);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setMethod(Concept method) {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
 		    MdrtbConcepts.CULTURE_METHOD);
 		attribute.setValue(method);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getResult() {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
 		    MdrtbConcepts.CULTURE_RESULT);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setResult(Concept result) {
-		LabTestAttribute attribute = LabUtil.getService().getCultureAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getCultureAttributeByTestAndName(test,
 		    MdrtbConcepts.CULTURE_RESULT);
 		attribute.setValue(result);
 		test.setAttribute(attribute);

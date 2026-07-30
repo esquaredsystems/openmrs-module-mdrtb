@@ -7,15 +7,15 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.lab.LabTest;
-import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.lab.LabTestSample;
-import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.specimen.DstImpl;
 import org.openmrs.module.mdrtb.specimen.DstResult;
 
@@ -30,15 +30,15 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	public DSTForm(Patient patient) {
 		super(patient);
 		this.encounter.setEncounterType(MdrtbConstants.ET_SPECIMEN_COLLECTION);
-		LabTest dst = LabUtil.getService().getDstLabTestOrder(this.encounter);
+		LabTest dst = Context.getService(LabTestService.class).getDstLabTestOrder(this.encounter);
 		di = new DstImpl(dst);
 	}
 	
 	public DSTForm(Encounter encounter) {
 		super(encounter);
-		LabTest dst = LabUtil.getService().getDstLabTestOrder(this.encounter);
+		LabTest dst = Context.getService(LabTestService.class).getDstLabTestOrder(this.encounter);
 		if (dst == null) {
-			dst = LabUtil.getService().createDstLabTestOrder(this.encounter);
+			dst = Context.getService(LabTestService.class).createDstLabTestOrder(this.encounter);
 		}
 		di = new DstImpl(dst);
 	}
@@ -79,7 +79,7 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	
 	public String getSpecimenId() {
 		if (labTest != null) {
-			LabTestSample sample = LabUtil.getService().getMostRecentAcceptedSample(labTest);
+			LabTestSample sample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(labTest);
 			// return sample.getSampleIdentifier();
 			return sample.getLabTestSampleId().toString();
 			
@@ -120,7 +120,7 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	
 	public Integer getPatientProgramId() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.PATIENT_PROGRAM_ID);
 			if (attribute != null) {
 				try {
@@ -172,7 +172,7 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	
 	public Integer getMonthOfTreatment() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.MONTH_OF_TREATMENT);
 			if (attribute != null) {
 				try {

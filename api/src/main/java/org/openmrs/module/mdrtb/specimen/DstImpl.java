@@ -13,12 +13,12 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptName;
 import org.openmrs.api.context.Context;
 import org.openmrs.customdatatype.datatype.ConceptDatatype;
+import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.api.LabTestService;
+import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.LabUtil;
-import org.openmrs.module.mdrtb.MdrtbConcepts;
-import org.openmrs.module.mdrtb.api.MdrtbService;
 
 /**
  * An implementation of a MdrtbDst. This wraps an ObsGroup and provides access to dst data within
@@ -43,24 +43,24 @@ public class DstImpl extends TestImpl implements Dst {
 		}
 		test = dst;
 		dstTestType = test.getLabTestType();
-		if (test.getLabTestType().equals(LabUtil.getService().getDstLjTestType())) {
+		if (test.getLabTestType().equals(Context.getService(LabTestService.class).getDstLjTestType())) {
 			testMethod = DstTestType.DST_LJ;
-		} else if (test.getLabTestType().equals(LabUtil.getService().getDstMgitTestType())) {
+		} else if (test.getLabTestType().equals(Context.getService(LabTestService.class).getDstMgitTestType())) {
 			testMethod = DstTestType.DST_MGIT;
 		}
 	}
 	
 	@Override
 	public Concept getMethod() {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test, MdrtbConcepts.DST_METHOD,
-		    testMethod);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
+		    MdrtbConcepts.DST_METHOD, testMethod);
 		return (Concept) attribute.getValue();
 	}
 	
 	@Override
 	public void setMethod(Concept method) {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test, MdrtbConcepts.DST_METHOD,
-		    testMethod);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
+		    MdrtbConcepts.DST_METHOD, testMethod);
 		if (attribute != null) {
 			if (method == null) {
 				attribute.setVoided(true);
@@ -72,38 +72,38 @@ public class DstImpl extends TestImpl implements Dst {
 		}
 		// Initialize if needed
 		attribute = new LabTestAttribute();
-		attribute.setAttributeType(LabUtil.getService().getLabTestAttributeTypeByTestTypeAndName(dstTestType,
-		    MdrtbConcepts.DIRECT_INDIRECT));
+		attribute.setAttributeType(Context.getService(LabTestService.class).getLabTestAttributeTypeByTestTypeAndName(
+		    dstTestType, MdrtbConcepts.DIRECT_INDIRECT));
 		attribute.setValue(method);
 		test.addAttribute(attribute);
 	}
 	
 	@Override
 	public Concept getResult() {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test, MdrtbConcepts.DST_RESULT,
-		    testMethod);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
+		    MdrtbConcepts.DST_RESULT, testMethod);
 		return (Concept) attribute.getValue();
 	}
 	
 	@Override
 	public void setResult(Concept result) {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test, MdrtbConcepts.DST_METHOD,
-		    testMethod);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
+		    MdrtbConcepts.DST_METHOD, testMethod);
 		attribute.setValue(result);
 		test.setAttribute(attribute);
 	}
 	
 	@Override
 	public Boolean getDirect() {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test, MdrtbConcepts.DIRECT_INDIRECT,
-		    testMethod);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
+		    MdrtbConcepts.DIRECT_INDIRECT, testMethod);
 		return (Boolean) attribute.getValue();
 	}
 	
 	@Override
 	public void setDirect(Boolean direct) {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test, MdrtbConcepts.DIRECT_INDIRECT,
-		    testMethod);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
+		    MdrtbConcepts.DIRECT_INDIRECT, testMethod);
 		if (attribute != null) {
 			if (direct == null) {
 				attribute.setVoided(true);
@@ -115,23 +115,23 @@ public class DstImpl extends TestImpl implements Dst {
 		}
 		// Initialize if needed
 		attribute = new LabTestAttribute();
-		attribute.setAttributeType(LabUtil.getService().getLabTestAttributeTypeByTestTypeAndName(dstTestType,
-		    MdrtbConcepts.DIRECT_INDIRECT));
+		attribute.setAttributeType(Context.getService(LabTestService.class).getLabTestAttributeTypeByTestTypeAndName(
+		    dstTestType, MdrtbConcepts.DIRECT_INDIRECT));
 		attribute.setValue(direct);
 		test.addAttribute(attribute);
 	}
 	
 	@Override
 	public Concept getOrganismType() {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test, MdrtbConcepts.TYPE_OF_ORGANISM,
-		    testMethod);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
+		    MdrtbConcepts.TYPE_OF_ORGANISM, testMethod);
 		return (Concept) attribute.getValue();
 	}
 	
 	@Override
 	public void setOrganismType(Concept organismType) {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test, MdrtbConcepts.TYPE_OF_ORGANISM,
-		    testMethod);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
+		    MdrtbConcepts.TYPE_OF_ORGANISM, testMethod);
 		if (attribute != null) {
 			if (organismType == null) {
 				attribute.setVoided(true);
@@ -143,22 +143,22 @@ public class DstImpl extends TestImpl implements Dst {
 		}
 		// Initialize if needed
 		attribute = new LabTestAttribute();
-		attribute.setAttributeType(LabUtil.getService().getLabTestAttributeTypeByTestTypeAndName(dstTestType,
-		    MdrtbConcepts.TYPE_OF_ORGANISM));
+		attribute.setAttributeType(Context.getService(LabTestService.class).getLabTestAttributeTypeByTestTypeAndName(
+		    dstTestType, MdrtbConcepts.TYPE_OF_ORGANISM));
 		attribute.setValue(organismType);
 		test.addAttribute(attribute);
 	}
 	
 	@Override
 	public String getOrganismTypeNonCoded() {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
 		    MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED, testMethod);
 		return (String) attribute.getValue();
 	}
 	
 	@Override
 	public void setOrganismTypeNonCoded(String organismType) {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
 		    MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED, testMethod);
 		if (attribute != null) {
 			if (organismType == null) {
@@ -171,22 +171,22 @@ public class DstImpl extends TestImpl implements Dst {
 		}
 		// Initialize if needed
 		attribute = new LabTestAttribute();
-		attribute.setAttributeType(LabUtil.getService().getLabTestAttributeTypeByTestTypeAndName(dstTestType,
-		    MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED));
+		attribute.setAttributeType(Context.getService(LabTestService.class).getLabTestAttributeTypeByTestTypeAndName(
+		    dstTestType, MdrtbConcepts.TYPE_OF_ORGANISM_NON_CODED));
 		attribute.setValue(organismType);
 		test.addAttribute(attribute);
 	}
 	
 	@Override
 	public Integer getColoniesInControl() {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
 		    MdrtbConcepts.COLONIES_IN_CONTROL, testMethod);
 		return (Integer) attribute.getValue();
 	}
 	
 	@Override
 	public void setColoniesInControl(Integer coloniesInControl) {
-		LabTestAttribute attribute = LabUtil.getService().getDstAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getDstAttributeByTestAndName(test,
 		    MdrtbConcepts.COLONIES_IN_CONTROL, testMethod);
 		if (attribute != null) {
 			if (coloniesInControl == null) {
@@ -199,8 +199,8 @@ public class DstImpl extends TestImpl implements Dst {
 		}
 		// Initialize if needed
 		attribute = new LabTestAttribute();
-		attribute.setAttributeType(LabUtil.getService().getLabTestAttributeTypeByTestTypeAndName(dstTestType,
-		    MdrtbConcepts.COLONIES_IN_CONTROL));
+		attribute.setAttributeType(Context.getService(LabTestService.class).getLabTestAttributeTypeByTestTypeAndName(
+		    dstTestType, MdrtbConcepts.COLONIES_IN_CONTROL));
 		attribute.setValue(coloniesInControl);
 		test.addAttribute(attribute);
 	}

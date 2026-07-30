@@ -5,15 +5,15 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.lab.LabTest;
-import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.lab.LabTestSample;
-import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.lab.LabTestSample;
 
 public class SmearForm extends AbstractSimpleForm implements Comparable<SmearForm> {
 	
@@ -42,7 +42,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 	
 	public Integer getMonthOfTreatment() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.MONTH_OF_TREATMENT);
 			if (attribute != null) {
 				try {
@@ -94,7 +94,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 	
 	public String getSpecimenId() {
 		if (labTest != null) {
-			LabTestSample sample = LabUtil.getService().getMostRecentAcceptedSample(labTest);
+			LabTestSample sample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(labTest);
 			// return sample.getSampleIdentifier();
 			return sample.getLabTestSampleId().toString();
 		}
@@ -134,7 +134,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 	
 	public Concept getSmearResult() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getSmearAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getSmearAttributeByTestAndName(labTest,
 			    MdrtbConcepts.SMEAR_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
@@ -197,7 +197,7 @@ public class SmearForm extends AbstractSimpleForm implements Comparable<SmearFor
 	
 	public Integer getPatientProgramId() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.PATIENT_PROGRAM_ID);
 			if (attribute != null) {
 				return (Integer) attribute.getValue();

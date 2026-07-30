@@ -9,6 +9,7 @@
  */
 package org.openmrs.module.mdrtb.api;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -17,9 +18,13 @@ import java.util.List;
 import java.util.Set;
 
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
 import org.openmrs.Order;
+import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
+import org.openmrs.Order.Action;
+import org.openmrs.Order.Urgency;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
 import org.openmrs.api.UnchangeablePropertyException;
@@ -32,7 +37,9 @@ import org.openmrs.module.mdrtb.lab.LabTestGroup;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
 import org.openmrs.module.mdrtb.lab.LabTestType;
+import org.openmrs.module.mdrtb.specimen.DstTestType;
 import org.openmrs.module.mdrtb.LabConfig;
+import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.api.dao.LabDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -636,5 +643,322 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 				retireLabTestAttributeType(attributeType, voidMessage);
 			}
 		}
+	}
+	
+	@Transactional(readOnly = true)
+	public List<LabTest> getLabTests(Patient patient) {
+		if (patient == null) {
+			return null;
+		}
+		List<LabTest> labTests = getLabTests(patient, false);
+		for (LabTest labTest : labTests) {
+			List<LabTestAttribute> attributes = getLabTestAttributes(labTest.getTestOrderId());
+			labTest.setAttributes(new HashSet<>(attributes));
+		}
+		return labTests;
+	}
+	
+	@Transactional(readOnly = true)
+	public List<LabTest> getLabTests(Patient patient, LabTestType labTestType) {
+		if (patient == null) {
+			return null;
+		}
+		List<LabTest> labTests = getLabTests(labTestType, patient, null, null, null, null, null, null, false);
+		for (LabTest labTest : labTests) {
+			List<LabTestAttribute> attributes = getLabTestAttributes(labTest.getTestOrderId());
+			labTest.setAttributes(new HashSet<>(attributes));
+		}
+		return labTests;
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestType getCommonTestType() {
+		return getLabTestTypeByUuid(MdrtbConstants.MDRTB_TEST_TYPE_UUID);
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestType getDstMgitTestType() {
+		List<LabTestType> testType = getLabTestTypes(MdrtbConstants.DST_MGIT_TEST_NAME, null, null, null, null, false);
+		return testType.isEmpty() ? null : testType.get(0);
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestType getDstLjTestType() {
+		List<LabTestType> testType = getLabTestTypes(MdrtbConstants.DST_LJ_TEST_NAME, null, null, null, null, false);
+		return testType.isEmpty() ? null : testType.get(0);
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestSample getMostRecentAcceptedSample(LabTest labTest) {
+		List<LabTestSample> samples = getLabTestSamples(labTest, false);
+		LabTestSample mostRecent = null;
+		for (LabTestSample labTestSample : samples) {
+			if (labTestSample.getStatus() == LabTestSampleStatus.ACCEPTED
+			        || labTestSample.getStatus() == LabTestSampleStatus.PROCESSED) {
+				if (mostRecent == null) {
+					mostRecent = labTestSample;
+				} else {
+					if (mostRecent.getDateCreated().before(labTestSample.getDateCreated())) {
+						mostRecent = labTestSample;
+					}
+				}
+			}
+		}
+		return mostRecent;
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestAttributeType getLabTestAttributeTypeByName(String name) {
+		List<LabTestAttributeType> list = getLabTestAttributeTypes(name, null, false);
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+		return null;
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestAttributeType getLabTestAttributeTypeByTestTypeAndName(LabTestType testType, String name) {
+		List<LabTestAttributeType> list = getLabTestAttributeTypes(testType, false);
+		for (LabTestAttributeType type : list) {
+			if (type.getName().equalsIgnoreCase(name)) {
+				return type;
+			}
+		}
+		return null;
+	}
+	
+	private LabTestAttribute getAttributeByTestAndNameFromAttributeTypeSubset(LabTest labTest, String name,
+	        List<LabTestAttributeType> attributeTypeSubset) {
+		Collection<LabTestAttribute> attributes = labTest.getActiveAttributes();
+		LabTestAttributeType targetAttributeType = null;
+		for (LabTestAttributeType type : attributeTypeSubset) {
+			if (type.getName().equalsIgnoreCase(name)) {
+				targetAttributeType = type;
+			}
+		}
+		for (LabTestAttribute attribute : attributes) {
+			if (attribute.getAttributeType().equals(targetAttributeType)) {
+				return attribute;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestAttribute getCommonAttributeByTestAndName(LabTest labTest, String name) {
+		List<LabTestAttributeType> commonAttributeTypes = new ArrayList<>();
+		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
+			if (at.getLabTestType() != null && at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName() == null) {
+					commonAttributeTypes.add(at);
+				}
+			}
+		}
+		return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, commonAttributeTypes);
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestAttribute getXpertAttributeByTestAndName(LabTest labTest, String name) {
+		List<LabTestAttributeType> xpertAttributeTypes = new ArrayList<>();
+		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
+			if (at.getLabTestType() != null && at.getGroupName() != null
+					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase("XPERT")) {
+					xpertAttributeTypes.add(at);
+				}
+			}
+		}
+		return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, xpertAttributeTypes);
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestAttribute getCultureAttributeByTestAndName(LabTest labTest, String name) {
+		List<LabTestAttributeType> cultureAttributeTypes = new ArrayList<>();
+		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
+			if (at.getLabTestType() != null && at.getGroupName() != null
+					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase("CULTURE")) {
+					cultureAttributeTypes.add(at);
+				}
+			}
+		}
+		return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, cultureAttributeTypes);
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestAttribute getHainAttributeByTestAndName(LabTest labTest, String name) {
+		List<LabTestAttributeType> hainAttributeTypes = new ArrayList<>();
+		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
+			if (at.getLabTestType() != null && at.getGroupName() != null
+					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase("HAIN")) {
+					hainAttributeTypes.add(at);
+				}
+			}
+		}
+		return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, hainAttributeTypes);
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestAttribute getHain2AttributeByTestAndName(LabTest labTest, String name) {
+		List<LabTestAttributeType> hain2AttributeTypes = new ArrayList<>();
+		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
+			if (at.getLabTestType() != null && at.getGroupName() != null
+					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase("HAIN2")) {
+					hain2AttributeTypes.add(at);
+				}
+			}
+		}
+		return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, hain2AttributeTypes);
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestAttribute getSmearAttributeByTestAndName(LabTest labTest, String name) {
+		List<LabTestAttributeType> smearAttributeTypes = new ArrayList<>();
+		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
+			if (at.getLabTestType() != null && at.getGroupName() != null
+					&& at.getLabTestType().getUuid().equals(MdrtbConstants.MDRTB_TEST_TYPE_UUID)) {
+				if (at.getGroupName().equalsIgnoreCase("SMEAR")) {
+					smearAttributeTypes.add(at);
+				}
+			}
+		}
+		return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, smearAttributeTypes);
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTestAttribute getDstAttributeByTestAndName(LabTest labTest, String name, DstTestType dstTestType) {
+		List<LabTestAttributeType> dstMgitAttributeTypes = new ArrayList<>();
+		List<LabTestAttributeType> dstLjAttributeTypes = new ArrayList<>();
+		for (LabTestAttributeType at : getAllLabTestAttributeTypes(false)) {
+			if (at.getLabTestType() == null) {
+				continue;
+			}
+			if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST_MGIT_TEST_NAME)) {
+				dstMgitAttributeTypes.add(at);
+			}
+			if (at.getLabTestType().getName().equalsIgnoreCase(MdrtbConstants.DST_LJ_TEST_NAME)) {
+				dstLjAttributeTypes.add(at);
+			}
+		}
+		switch (dstTestType) {
+			case DST_LJ:
+				return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, dstLjAttributeTypes);
+			case DST_MGIT:
+				return getAttributeByTestAndNameFromAttributeTypeSubset(labTest, name, dstMgitAttributeTypes);
+		}
+		return null;
+	}
+	
+	/**
+	 * Searches for a Lab Test order against given {@link Encounter} and creates if one doesn't
+	 * exist, otherwise returns existing one.
+	 */
+	@Transactional(readOnly = true)
+	public LabTest getMdrtbLabTestOrder(Encounter encounter, LabTestType labTestType) {
+		// Check if an order already exists
+		Set<Order> orders = encounter.getOrders();
+		if (orders.isEmpty()) {
+			Encounter target = null;
+			List<Encounter> allEncounters = Context.getEncounterService().getEncountersByPatient(encounter.getPatient());
+			for (Encounter enc : allEncounters) {
+				if (enc.getEncounterType().equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {
+					if (target == null) {
+						target = enc;
+					} else {
+						// Match the date, we're interested in the encounter closest to the function parameter
+						long diff = Math.abs(encounter.getEncounterDatetime().getTime() - enc.getEncounterDatetime().getTime());
+						if (diff < Math.abs(encounter.getEncounterDatetime().getTime() - target.getEncounterDatetime().getTime())) {
+							target = enc;
+						}
+					}
+				}
+			}
+			if (target != null) {
+				orders = target.getOrders();
+			}
+		}
+		for (Order o : orders) {
+			// Does this order have a LabTest object of either LJ or MGIT DST?
+			LabTest existing = getLabTest(o.getOrderId());
+			if (existing != null) {
+				List<LabTestAttribute> attributes = getLabTestAttributes(existing.getTestOrderId());
+				existing.setAttributes(new HashSet<>(attributes));
+				return existing;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional
+	public LabTest createMdrtbLabTestOrder(Encounter encounter, LabTestType labTestType) {
+		Order order = new Order();
+		order.setEncounter(encounter);
+		order.setAction(Action.NEW);
+		OrderType orderType = Context.getOrderService().getOrderTypeByUuid(OrderType.TEST_ORDER_TYPE_UUID);
+		order.setOrderType(orderType);
+		order.setUrgency(Urgency.ROUTINE);
+		LabTest labTest = new LabTest(order);
+		labTest.setLabTestType(labTestType);
+		return labTest;
+	}
+	
+	@Transactional(readOnly = true)
+	public LabTest getDstLabTestOrder(Encounter encounter) {
+		// Check if an order already exists
+		Set<Order> orders = encounter.getOrders();
+		if (orders.isEmpty()) {
+			Encounter target = null;
+			List<Encounter> allEncounters = Context.getEncounterService().getEncountersByPatient(encounter.getPatient());
+			for (Encounter enc : allEncounters) {
+				if (enc.getEncounterType().equals(MdrtbConstants.ET_SPECIMEN_COLLECTION)) {
+					if (target == null) {
+						target = enc;
+					} else {
+						// Match the date, we're interested in the encounter closest to the function parameter
+						long diff = Math.abs(encounter.getEncounterDatetime().getTime() - enc.getEncounterDatetime().getTime());
+						if (diff < Math.abs(encounter.getEncounterDatetime().getTime() - target.getEncounterDatetime().getTime())) {
+							target = enc;
+						}
+					}
+				}
+			}
+			if (target != null) {
+				orders = target.getOrders();
+			}
+		}
+		LabTestType ljType = getDstLjTestType();
+		LabTestType mgitType = getDstMgitTestType();
+		for (Order o : orders) {
+			// Does this order have a LabTest object of either LJ or MGIT DST?
+			LabTest existing = getLabTest(o.getOrderId());
+			if (existing != null) {
+				List<LabTestAttribute> attributes = getLabTestAttributes(existing.getTestOrderId());
+				existing.setAttributes(new HashSet<>(attributes));
+				if (existing.getLabTestType().equals(mgitType)) {
+					return existing;
+				}
+				if (existing.getLabTestType().equals(ljType)) {
+					return existing;
+				}
+				return existing;
+			}
+		}
+		return null;
+	}
+	
+	@Transactional
+	public LabTest createDstLabTestOrder(Encounter encounter) {
+		LabTestType mgitType = getDstMgitTestType();
+		Order order = new Order();
+		order.setEncounter(encounter);
+		order.setAction(Action.NEW);
+		OrderType orderType = Context.getOrderService().getOrderTypeByUuid(OrderType.TEST_ORDER_TYPE_UUID);
+		order.setOrderType(orderType);
+		order.setUrgency(Urgency.ROUTINE);
+		LabTest labTest = new LabTest(order);
+		labTest.setLabTestType(mgitType);
+		return labTest;
 	}
 }

@@ -14,7 +14,6 @@ import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
 import org.openmrs.module.mdrtb.api.LabTestService;
-import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
@@ -34,7 +33,7 @@ import org.openmrs.module.webservices.rest.web.response.ResponseException;
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/lab", supportedClass = LabTest.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class LabIntegrationResource extends DataDelegatingCrudResource<LabTest> implements Searchable {
 	
-	private LabTestService commonLabService = LabUtil.getService().getCommonLabService();
+	private LabTestService commonLabService = Context.getService(LabTestService.class);
 	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
@@ -85,7 +84,7 @@ public class LabIntegrationResource extends DataDelegatingCrudResource<LabTest> 
 				throw new ResourceDoesNotSupportOperationException("No associated Lab Order was found.");
 			}
 			// Fetch an accepted Sample
-			LabTestSample acceptedSample = LabUtil.getService().getMostRecentAcceptedSample(labTest);
+			LabTestSample acceptedSample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(labTest);
 			if (acceptedSample == null) {
 				// An accepted sample must exist
 				throw new ResourceDoesNotSupportOperationException(

@@ -12,12 +12,9 @@ import org.openmrs.Obs;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientProgram;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.lab.LabTest;
-import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.lab.LabTestType;
-import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbUtil;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.CultureForm;
 import org.openmrs.module.mdrtb.form.custom.DSTForm;
@@ -27,6 +24,9 @@ import org.openmrs.module.mdrtb.form.custom.SmearForm;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;
 import org.openmrs.module.mdrtb.form.custom.TB03uForm;
 import org.openmrs.module.mdrtb.form.custom.XpertForm;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.lab.LabTestType;
 import org.openmrs.module.mdrtb.specimen.Culture;
 import org.openmrs.module.mdrtb.specimen.CultureImpl;
 import org.openmrs.module.mdrtb.specimen.Dst;
@@ -50,8 +50,9 @@ public class TB03Util {
 		Culture c = null;
 		for (CultureForm cf : tf.getCultures()) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0) {
-				LabTestType labTestType = LabUtil.getService().getCommonTestType();
-				LabTest culture = LabUtil.getService().getMdrtbLabTestOrder(cf.getEncounter(), labTestType);
+				LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+				LabTest culture = Context.getService(LabTestService.class).getMdrtbLabTestOrder(cf.getEncounter(),
+				    labTestType);
 				c = new CultureImpl(culture);
 				break;
 			}
@@ -74,8 +75,9 @@ public class TB03Util {
 		Xpert c = null;
 		List<XpertForm> xperts = tf.getXperts();
 		if (xperts != null && !xperts.isEmpty()) {
-			LabTestType labTestType = LabUtil.getService().getCommonTestType();
-			LabTest xpert = LabUtil.getService().getMdrtbLabTestOrder(xperts.get(0).getEncounter(), labTestType);
+			LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+			LabTest xpert = Context.getService(LabTestService.class).getMdrtbLabTestOrder(xperts.get(0).getEncounter(),
+			    labTestType);
 			c = new XpertImpl(xpert);
 		}
 		return c;
@@ -94,8 +96,9 @@ public class TB03Util {
 		HAIN c = null;
 		List<HAINForm> hains = tf.getHains();
 		if (hains != null && !hains.isEmpty()) {
-			LabTestType labTestType = LabUtil.getService().getCommonTestType();
-			LabTest hain = LabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+			LabTest hain = Context.getService(LabTestService.class).getMdrtbLabTestOrder(hains.get(0).getEncounter(),
+			    labTestType);
 			c = new HAINImpl(hain);
 		}
 		return c;
@@ -114,8 +117,9 @@ public class TB03Util {
 		HAIN2 c = null;
 		List<HAIN2Form> hains = tf.getHain2s();
 		if (hains != null && !hains.isEmpty()) {
-			LabTestType labTestType = LabUtil.getService().getCommonTestType();
-			LabTest hain = LabUtil.getService().getMdrtbLabTestOrder(hains.get(0).getEncounter(), labTestType);
+			LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+			LabTest hain = Context.getService(LabTestService.class).getMdrtbLabTestOrder(hains.get(0).getEncounter(),
+			    labTestType);
 			c = new HAIN2Impl(hain);
 		}
 		return c;
@@ -135,8 +139,9 @@ public class TB03Util {
 		Smear c = null;
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == 0) {
-				LabTestType labTestType = LabUtil.getService().getCommonTestType();
-				LabTest smear = LabUtil.getService().getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
+				LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+				LabTest smear = Context.getService(LabTestService.class)
+				        .getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
 				c = new SmearImpl(smear);
 				c.setResult(sf.getSmearResult());
 				c.setResultDate(sf.getEncounterDatetime());
@@ -161,8 +166,9 @@ public class TB03Util {
 		Smear c = null;
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == month.intValue()) {
-				LabTestType labTestType = LabUtil.getService().getCommonTestType();
-				LabTest smear = LabUtil.getService().getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
+				LabTestType labTestType = Context.getService(LabTestService.class).getCommonTestType();
+				LabTest smear = Context.getService(LabTestService.class)
+				        .getMdrtbLabTestOrder(sf.getEncounter(), labTestType);
 				c = new SmearImpl(smear);
 				break;
 			}
@@ -191,7 +197,7 @@ public class TB03Util {
 				// Which one is diagnostic? The one with Month = 0
 				Obs monthOfTreatment = MdrtbUtil.getObsFromEncounter(monthConcept, dstForm.getEncounter());
 				if (monthOfTreatment != null && monthOfTreatment.getValueNumeric().equals(0D)) {
-					LabTest dst = LabUtil.getService().getDstLabTestOrder(dstForm.getEncounter());
+					LabTest dst = Context.getService(LabTestService.class).getDstLabTestOrder(dstForm.getEncounter());
 					if (dst != null)
 						monthZeroDsts.add(dst);
 				}

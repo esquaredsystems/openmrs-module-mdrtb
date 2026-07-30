@@ -5,15 +5,15 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.lab.LabTest;
-import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.lab.LabTestSample;
-import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
+import org.openmrs.module.mdrtb.lab.LabTest;
+import org.openmrs.module.mdrtb.lab.LabTestAttribute;
+import org.openmrs.module.mdrtb.lab.LabTestSample;
 
 public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2Form> {
 	
@@ -43,7 +43,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 	
 	public String getSpecimenId() {
 		if (labTest != null) {
-			LabTestSample sample = LabUtil.getService().getMostRecentAcceptedSample(labTest);
+			LabTestSample sample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(labTest);
 			// return sample.getSampleIdentifier();
 			return sample.getLabTestSampleId().toString();
 			
@@ -89,7 +89,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 	
 	public Concept getMtbResult() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getHain2AttributeByTestAndName(labTest,
 			    MdrtbConcepts.MTB_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
@@ -164,7 +164,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 	
 	public Concept getFqResult() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getHain2AttributeByTestAndName(labTest,
 			    MdrtbConcepts.FLUOROQUINOLONE_RESULT);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
@@ -239,7 +239,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 	
 	public Concept getInjResult() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getHain2AttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getHain2AttributeByTestAndName(labTest,
 			    MdrtbConcepts.INJECTABLE_RESISTANCE);
 			if (attribute != null) {
 				return (Concept) attribute.getValue();
@@ -313,7 +313,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 	
 	public Integer getPatientProgramId() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.PATIENT_PROGRAM_ID);
 			if (attribute != null) {
 				try {
@@ -365,7 +365,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 	
 	public Integer getMonthOfTreatment() {
 		if (labTest != null) {
-			LabTestAttribute attribute = LabUtil.getService().getCommonAttributeByTestAndName(labTest,
+			LabTestAttribute attribute = Context.getService(LabTestService.class).getCommonAttributeByTestAndName(labTest,
 			    MdrtbConcepts.MONTH_OF_TREATMENT);
 			if (attribute != null) {
 				try {

@@ -1,10 +1,11 @@
 package org.openmrs.module.mdrtb.specimen.custom;
 
 import org.openmrs.Concept;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
-import org.openmrs.module.mdrtb.LabUtil;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
+import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.specimen.TestImpl;
 
 /**
@@ -79,7 +80,8 @@ public class HAINImpl extends TestImpl implements HAIN {
 	}
 	
 	public Concept getResult() {
-		LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(test, MdrtbConcepts.MTB_RESULT);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
+		    MdrtbConcepts.MTB_RESULT);
 		return (Concept) attribute.getValue();
 		/*
 		Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_RESULT), test);
@@ -88,57 +90,60 @@ public class HAINImpl extends TestImpl implements HAIN {
 	}
 	
 	public void setResult(Concept mtbResult) {
-		LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(test, MdrtbConcepts.MTB_RESULT);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
+		    MdrtbConcepts.MTB_RESULT);
 		attribute.setValue(mtbResult);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getInhResistance() {
-		LabTestAttribute attribute = LabUtil.getService()
-		        .getHainAttributeByTestAndName(test, MdrtbConcepts.ISONIAZID_RESULT);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
+		    MdrtbConcepts.ISONIAZID_RESULT);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setInhResistance(Concept inhResistance) {
-		LabTestAttribute attribute = LabUtil.getService()
-		        .getHainAttributeByTestAndName(test, MdrtbConcepts.ISONIAZID_RESULT);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
+		    MdrtbConcepts.ISONIAZID_RESULT);
 		attribute.setValue(inhResistance);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getRifResistance() {
-		LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
 		    MdrtbConcepts.RIFAMPICIN_RESULT);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setRifResistance(Concept rifResistance) {
-		LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(test,
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
 		    MdrtbConcepts.RIFAMPICIN_RESULT);
 		attribute.setValue(rifResistance);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getMtbBurden() {
-		LabTestAttribute attribute = LabUtil.getService()
-		        .getHainAttributeByTestAndName(test, MdrtbConcepts.XPERT_MTB_BURDEN);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
+		    MdrtbConcepts.XPERT_MTB_BURDEN);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setMtbBurden(Concept mtbBurden) {
-		LabTestAttribute attribute = LabUtil.getService()
-		        .getHainAttributeByTestAndName(test, MdrtbConcepts.XPERT_MTB_BURDEN);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
+		    MdrtbConcepts.XPERT_MTB_BURDEN);
 		attribute.setValue(mtbBurden);
 		test.setAttribute(attribute);
 	}
 	
 	public Concept getMethod() {
-		LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(test, MdrtbConcepts.HAIN_CONSTRUCT);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
+		    MdrtbConcepts.HAIN_CONSTRUCT);
 		return (Concept) attribute.getValue();
 	}
 	
 	public void setMethod(Concept method) {
-		LabTestAttribute attribute = LabUtil.getService().getHainAttributeByTestAndName(test, MdrtbConcepts.HAIN_CONSTRUCT);
+		LabTestAttribute attribute = Context.getService(LabTestService.class).getHainAttributeByTestAndName(test,
+		    MdrtbConcepts.HAIN_CONSTRUCT);
 		attribute.setValue(method);
 		test.setAttribute(attribute);
 	}

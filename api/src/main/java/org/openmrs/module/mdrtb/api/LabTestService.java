@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
 import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
@@ -27,6 +28,7 @@ import org.openmrs.module.mdrtb.lab.LabTestGroup;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.lab.LabTestSampleStatus;
 import org.openmrs.module.mdrtb.lab.LabTestType;
+import org.openmrs.module.mdrtb.specimen.DstTestType;
 import org.openmrs.module.mdrtb.LabConfig;
 
 public interface LabTestService extends OpenmrsService {
@@ -234,4 +236,65 @@ public interface LabTestService extends OpenmrsService {
 	
 	@Authorized(LabConfig.DELETE_LAB_TEST_METADATA_PRIVILEGE)
 	void deleteLabTestType(LabTestType labTestType, LabTestType newObjectForCascade) throws APIException;
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	List<LabTest> getLabTests(Patient patient);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	List<LabTest> getLabTests(Patient patient, LabTestType labTestType);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	LabTestType getCommonTestType();
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	LabTestType getDstMgitTestType();
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	LabTestType getDstLjTestType();
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_SAMPLE_PRIVILEGE)
+	LabTestSample getMostRecentAcceptedSample(LabTest labTest);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	LabTestAttributeType getLabTestAttributeTypeByName(String name);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
+	LabTestAttributeType getLabTestAttributeTypeByTestTypeAndName(LabTestType testType, String name);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	LabTestAttribute getCommonAttributeByTestAndName(LabTest labTest, String name);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	LabTestAttribute getXpertAttributeByTestAndName(LabTest labTest, String name);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	LabTestAttribute getCultureAttributeByTestAndName(LabTest labTest, String name);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	LabTestAttribute getHainAttributeByTestAndName(LabTest labTest, String name);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	LabTestAttribute getHain2AttributeByTestAndName(LabTest labTest, String name);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	LabTestAttribute getSmearAttributeByTestAndName(LabTest labTest, String name);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	LabTestAttribute getDstAttributeByTestAndName(LabTest labTest, String name, DstTestType dstTestType);
+	
+	/**
+	 * Searches for a Lab Test order against given {@link Encounter} and creates if one doesn't
+	 * exist, otherwise returns existing one.
+	 */
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	LabTest getMdrtbLabTestOrder(Encounter encounter, LabTestType labTestType);
+	
+	@Authorized(LabConfig.ADD_LAB_TEST_PRIVILEGE)
+	LabTest createMdrtbLabTestOrder(Encounter encounter, LabTestType labTestType);
+	
+	@Authorized(LabConfig.VIEW_LAB_TEST_PRIVILEGE)
+	LabTest getDstLabTestOrder(Encounter encounter);
+	
+	@Authorized(LabConfig.ADD_LAB_TEST_PRIVILEGE)
+	LabTest createDstLabTestOrder(Encounter encounter);
 }
