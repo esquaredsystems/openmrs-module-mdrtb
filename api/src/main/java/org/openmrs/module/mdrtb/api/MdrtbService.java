@@ -933,5 +933,6 @@ public interface MdrtbService extends OpenmrsService {
 	 * @param patient
 	 * @return
 	 */
+	@Authorized(MdrtbConfig.MODULE_PRIVILEGE)
 	PatientSummary getPatientSummary(Patient patient);
 }

@@ -1,7 +1,11 @@
 package org.openmrs.module.mdrtb;
 
-import org.openmrs.*;
+import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
+import org.openmrs.PersonName;
+
 import java.util.List;
+import java.util.Set;
 
 public class PatientSummary {
 	
@@ -9,17 +13,14 @@ public class PatientSummary {
 	
 	private PersonName personName;
 	
-	private PersonAddress personAddress;
-	
-	private List<PatientIdentifier> patientIdentifiers;
+	private Set<PatientIdentifier> patientIdentifiers;
 	
 	private List<PatientProgramSummary> patientProgramSummaries;
 	
-	public PatientSummary(Patient patient, PersonName personName, PersonAddress personAddress,
-	    List<PatientIdentifier> patientIdentifiers, List<PatientProgramSummary> patientProgramSummaries) {
+	public PatientSummary(Patient patient, PersonName personName, Set<PatientIdentifier> patientIdentifiers,
+	    List<PatientProgramSummary> patientProgramSummaries) {
 		this.patient = patient;
 		this.personName = personName;
-		this.personAddress = personAddress;
 		this.patientIdentifiers = patientIdentifiers;
 		this.patientProgramSummaries = patientProgramSummaries;
 	}
@@ -40,19 +41,11 @@ public class PatientSummary {
 		this.personName = personName;
 	}
 	
-	public PersonAddress getPersonAddress() {
-		return personAddress;
-	}
-	
-	public void setPersonAddress(PersonAddress personAddress) {
-		this.personAddress = personAddress;
-	}
-	
-	public List<PatientIdentifier> getPatientIdentifiers() {
+	public Set<PatientIdentifier> getPatientIdentifiers() {
 		return patientIdentifiers;
 	}
 	
-	public void setPatientIdentifiers(List<PatientIdentifier> patientIdentifiers) {
+	public void setPatientIdentifiers(Set<PatientIdentifier> patientIdentifiers) {
 		this.patientIdentifiers = patientIdentifiers;
 	}
 	
