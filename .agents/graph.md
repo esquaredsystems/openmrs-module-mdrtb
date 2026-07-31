@@ -1,5 +1,5 @@
 # openmrs-module-mdrtb — Module Knowledge Graph
-# Java OpenMRS module v1.3.6 (Maven). Packaged as modules/mdrtb-1.3.6.omod. Requires OpenMRS ≥2.3.1.
+# Java OpenMRS module v1.4.1 (Maven). Packaged as modules/mdrtb-1.4.1.omod. Requires OpenMRS ≥2.3.1.
 # Shared facts (domain model, concept/encounter-type/identifier UUIDs, topology): ../.agents/graph.md
 # Usage + notation legend + maintenance rules: ../.agents/instructions.md
 # Last updated: 2026-07-02
