@@ -2166,7 +2166,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		dao.saveReportData(reportData);
 	}
 	
-	@Override
 	public void saveScannedLabReport(ScannedLabReport report) {
 		if (report == null) {
 			log.warn("Unable to save DST: DST object is null");
@@ -2182,35 +2181,30 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		Context.getObsService().saveObs((Obs) report.getScannedLabReport(), VOID_MESSAGE);
 	}
 	
-	@Override
 	public PatientSummary getPatientSummary(Patient patient) {
 		if (patient == null) {
 			return null;
 		}
-		// Preferred name if the patient has one, otherwise the first name on file.
-		PersonName personName = patient.getNames().stream()
-		        .filter(PersonName::getPreferred)
-		        .findFirst()
-		        .orElse(patient.getNames().stream().findFirst().orElse(null));
-		List<PatientIdentifier> patientIdentifiers = new ArrayList<>(patient.getIdentifiers());
+		// Preferred name if the patient has one, otherwise the first name.
+		PersonName personName = patient.getPerson().getNames().stream()
+				.filter(PersonName::getPreferred)
+				.findFirst()
+				.orElse(patient.getPerson().getNames().stream().findFirst().orElse(null));
+		Set<PatientIdentifier> patientIdentifiers = patient.getIdentifiers();
 
-		// All non-voided programs for this patient, most recent enrollment first.
-		List<PatientProgram> patientPrograms = new ArrayList<>(
-		    Context.getProgramWorkflowService().getPatientPrograms(patient, null, null, null, null, null, false));
-		patientPrograms.sort(new PatientProgramComparator()); // oldest enrollment first
-		Collections.reverse(patientPrograms); // latest enrollment first
-
-		// Load the patient's observations and lab tests once; scope each to a program window below.
+		List<PatientProgram> patientPrograms = Context.getProgramWorkflowService().getPatientPrograms(patient, null, null, null, null, null, false);
 		List<Obs> allObs = Context.getObsService().getObservationsByPerson(patient);
-		List<LabTest> allLabTests = Context.getService(LabTestService.class).getLabTests(patient, Context.getService(LabTestService.class).getCommonTestType());
-		if (allLabTests == null) {
+
+		LabTestType commonTestType = Context.getService(LabTestService.class).getCommonTestType();
+		List<LabTest> allLabTests = Context.getService(LabTestService.class).getLabTests(patient, commonTestType);
+		if (allLabTests.isEmpty()) {
 			allLabTests = new ArrayList<>();
 		}
 
-		List<PatientProgramSummary> programSummaries = new ArrayList<>();
+		List<PatientProgramSummary> programSummaries = new  ArrayList<>();
 		for (PatientProgram patientProgram : patientPrograms) {
 			Date start = patientProgram.getDateEnrolled();
-			Date end = patientProgram.getDateCompleted(); // null while the program is still open
+			Date end = patientProgram.getDateEnrolled(); // null while the program is still open
 
 			List<Obs> programObs = new ArrayList<>();
 			for (Obs obs : allObs) {
@@ -2218,28 +2212,25 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 					programObs.add(obs);
 				}
 			}
-
-			List<LabTest> programLabTests = new ArrayList<>();
+			List<LabTest> progamLabTests = new  ArrayList<>();
 			for (LabTest labTest : allLabTests) {
-				Date encounterDate = null;
-				if (labTest != null && labTest.getOrder() != null && labTest.getOrder().getEncounter() != null) {
-					encounterDate = labTest.getOrder().getEncounter().getEncounterDatetime();
+				Date targetDate;
+				if (labTest.getOrder() != null && labTest.getOrder().getEncounter() != null) {
+					targetDate = labTest.getOrder().getEncounter().getEncounterDatetime();
+				} else {
+					targetDate = labTest.getDateCreated();
 				}
-				if (isWithinProgramWindow(encounterDate, start, end)) {
-					programLabTests.add(labTest);
+				if(isWithinProgramWindow(targetDate, start, end)) {
+					progamLabTests.add(labTest);
 				}
 			}
-			programSummaries.add(new PatientProgramSummary(patientProgram, programObs, programLabTests));
+			programSummaries.add(new PatientProgramSummary(patientProgram, programObs, progamLabTests));
 		}
-
-		return new PatientSummary(patient, personName, patient.getPersonAddress(), patientIdentifiers, programSummaries);
+        return new PatientSummary(patient, personName, patientIdentifiers, programSummaries);
 	}
 	
 	/**
-	 * True when {@code date} falls inside a program's enrollment window. A null {@code start} or
-	 * {@code end} leaves that side of the window open (e.g. a program that is still running). An
-	 * undated record ({@code date} is null) is excluded, because it cannot be safely attributed to
-	 * a single program.
+	 * Returns true if the date lies within start and end (with null check
 	 */
 	private boolean isWithinProgramWindow(Date date, Date start, Date end) {
 		if (date == null) {
