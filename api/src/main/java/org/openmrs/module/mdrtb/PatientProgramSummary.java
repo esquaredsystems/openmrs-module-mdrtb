@@ -3,6 +3,8 @@ package org.openmrs.module.mdrtb;
 import org.openmrs.Concept;
 import org.openmrs.Obs;
 import org.openmrs.PatientProgram;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.lab.LabTest;
 
 import java.util.ArrayList;
@@ -56,8 +58,13 @@ public class PatientProgramSummary {
      */
     public Obs getTreatmentOutcome() {
         Concept outcomesConcept = patientProgram.getProgram().getOutcomesConcept();
+        Concept tbOutcome = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TB_TREATMENT_OUTCOME);
+        Concept mdrtbOutcome = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MDR_TB_TREATMENT_OUTCOME);
         for (Obs obs : observations) {
             if (obs.getConcept() != null && outcomesConcept.equals(obs.getConcept())) {
+                return obs;
+            }
+            if (obs.getConcept() != null && (tbOutcome.equals(obs.getConcept()) || mdrtbOutcome.equals(obs.getConcept()) )) {
                 return obs;
             }
         }

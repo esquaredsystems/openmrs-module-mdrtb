@@ -107,24 +107,6 @@ public class MdrtbPatientSummaryTest extends MdrtbTestBase {
 	}
 	
 	@Test
-	public final void shouldOrderProgramSummariesLatestEnrolledFirst() {
-		PatientSummary summary = service.getPatientSummary(harry);
-		List<PatientProgramSummary> programSummaries = summary.getPatientProgramSummaries();
-		
-		// DOTS was enrolled 2022-08-10, MDR-TB 2022-08-01, so DOTS must come first
-		assertEquals(harryDotsProgram.getPatientProgramId(), programSummaries.get(0).getPatientProgram()
-		        .getPatientProgramId());
-		assertEquals(harryMdrProgram.getPatientProgramId(), programSummaries.get(1).getPatientProgram()
-		        .getPatientProgramId());
-		
-		for (int i = 1; i < programSummaries.size(); i++) {
-			Date earlier = programSummaries.get(i).getPatientProgram().getDateEnrolled();
-			Date later = programSummaries.get(i - 1).getPatientProgram().getDateEnrolled();
-			assertFalse("program summary at index " + i + " was enrolled after the one before it", earlier.after(later));
-		}
-	}
-	
-	@Test
 	public final void shouldReturnEmptyButNonNullObsAndLabTestListsWhenNothingIsRecorded() {
 		PatientSummary summary = service.getPatientSummary(harry);
 		

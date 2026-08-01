@@ -2204,7 +2204,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<PatientProgramSummary> programSummaries = new  ArrayList<>();
 		for (PatientProgram patientProgram : patientPrograms) {
 			Date start = patientProgram.getDateEnrolled();
-			Date end = patientProgram.getDateEnrolled(); // null while the program is still open
+			Date end = patientProgram.getDateCompleted(); // null while the program is still open
 
 			List<Obs> programObs = new ArrayList<>();
 			for (Obs obs : allObs) {

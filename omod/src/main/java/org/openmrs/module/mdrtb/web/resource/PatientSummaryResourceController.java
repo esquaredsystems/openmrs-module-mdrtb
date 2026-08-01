@@ -13,26 +13,29 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/patientsummary", supportedClass = SimplePatientSummaryData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class PatientSummaryResourceController extends BaseReportResource<SimplePatientSummaryData> implements Searchable {
-
-    @Override
-    public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
-        DelegatingResourceDescription description = new DelegatingResourceDescription();
-        description.addSelfLink();
-        description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
-        description.addProperty("patientUuid");
-        description.addProperty("personName");
-        description.addProperty("personAddress");
-        description.addProperty("gender");
-        return description;
-    }
-
-    @Override
-    public SimplePatientSummaryData getByUniqueId(String patientUuid) {
-        Patient patient = Context.getPatientService().getPatientByUuid(patientUuid);
-        if (patient == null) {
-            return null;
-        }
-        PatientSummary patientSummary = Context.getService(MdrtbService.class).getPatientSummary(patient);
-        return new SimplePatientSummaryData(patientSummary);
-    }
+	
+	@Override
+	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
+		DelegatingResourceDescription description = new DelegatingResourceDescription();
+		description.addSelfLink();
+		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
+		description.addProperty("patientUuid");
+		description.addProperty("personName", rep);
+		description.addProperty("personAddress", rep);
+		description.addProperty("gender");
+		description.addProperty("dateOfBirth");
+		description.addProperty("patientIdentifiers", rep);
+		description.addProperty("patientPrograms");
+		return description;
+	}
+	
+	@Override
+	public SimplePatientSummaryData getByUniqueId(String patientUuid) {
+		Patient patient = Context.getPatientService().getPatientByUuid(patientUuid);
+		if (patient == null) {
+			return null;
+		}
+		PatientSummary patientSummary = Context.getService(MdrtbService.class).getPatientSummary(patient);
+		return new SimplePatientSummaryData(patientSummary);
+	}
 }
