@@ -75,7 +75,7 @@ legend.scheduler-border {
 			<a style="text-decoration: none"
 				onclick="navigatedToPatientDashboard();" id="addTestSamples"
 				class="hvr-icon-back"><i
-				class="fa fa-chevron-circle-left hvr-icon"></i> <spring:message
+				class="fa fa-chevron-circle-left hvr-icon"></i> <mdrtb:message
 					code="general.backToDashboard" /> </a>
 		</div>
 		<div class="col-md-2">
@@ -85,7 +85,7 @@ legend.scheduler-border {
 						<a
 							style="text-decoration: none; pointer-events: none; cursor: default;"
 							onclick="navigatedToLabTestSample();" id="addTestSamples"
-							class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <spring:message
+							class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <mdrtb:message
 								code="commonlabtest.labtestsample.add" /> </a>
 					</openmrs:hasPrivilege>
 				</c:when>
@@ -93,7 +93,7 @@ legend.scheduler-border {
 					<openmrs:hasPrivilege privilege="Add CommonLabTest Samples">
 						<a style="text-decoration: none"
 							onclick="navigatedToLabTestSample();" id="addTestSamples"
-							class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <spring:message
+							class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <mdrtb:message
 								code="commonlabtest.labtestsample.add" /> </a>
 					</openmrs:hasPrivilege>
 				</c:otherwise>
@@ -110,7 +110,7 @@ legend.scheduler-border {
 	<div id="alert_placeholder"></div>
 	<!--List of Test Order  -->
 	<div class=" boxHeader" style="background-color: #1aac9b">
-		<span></span> <b> <spring:message
+		<span></span> <b> <mdrtb:message
 				code="commonlabtest.labtestsample.list" /></b>
 	</div>
 	<div class="box">
@@ -270,7 +270,7 @@ $(document).ready(function () {
 
 function showalert(message, alerttype) {
     //alertType : .alert-success, .alert-info, .alert-warning & .alert-danger
-    $('#alert_placeholder').append('<div id="alertdiv" class="alert ' + alerttype + '"><a class="close" data-dismiss="alert">×</a><span>' + message + '</span></div>')
+    $('#alert_placeholder').append('<div id="alertdiv" class="alert ' + alerttype + '"><a class="close" data-dismiss="alert">Ã—</a><span>' + message + '</span></div>')
     autoHide();
 }
 

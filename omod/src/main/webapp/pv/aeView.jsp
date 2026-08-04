@@ -26,31 +26,31 @@
 
 <div> <!-- start of page div -->
 
-<a href="${pageContext.request.contextPath}/module/mdrtb/form/ae.form?encounterId=-1&patientId=${patientId}&patientProgramId=${patientProgramId}"><spring:message code="mdrtb.pv.addAE" text="newz"/></a>
+<a href="${pageContext.request.contextPath}/module/mdrtb/form/ae.form?encounterId=-1&patientId=${patientId}&patientProgramId=${patientProgramId}"><mdrtb:message code="mdrtb.pv.addAE" text="newz"/></a>
 
 <table border="1" width="100%">
 <tr>
-	<th><spring:message code="mdrtb.pv.serialNumber" text="serialz"/></th>
-	<th><spring:message code="mdrtb.pv.adverseEvent" text="aez"/></th>
-	<th><spring:message code="mdrtb.pv.onsetDate" text="datez"/></th>
-	<th><spring:message code="mdrtb.pv.diagnosticInvestigation" text="diz"/></th>
-	<th><spring:message code="mdrtb.pv.suspectedDrug" text="drugz"/></th>
-	<th><spring:message code="mdrtb.pv.treatmentRegimenAtOnset" text="regimenz"/></th>
-	<th><spring:message code="mdrtb.pv.typeOfEvent" text="typez"/></th>
-	<th><spring:message code="mdrtb.pv.yellowCardDate" text="Yellowz"/></th>
-	<th><spring:message code="mdrtb.pv.causalityDrug1" text="cd1"/></th>
-	<th><spring:message code="mdrtb.pv.causalityAssessmentResult1" text="car1"/></th>
-	<th><spring:message code="mdrtb.pv.causalityDrug2" text="cd2"/></th>
-	<th><spring:message code="mdrtb.pv.causalityAssessmentResult2" text="car2"/></th>
-	<th><spring:message code="mdrtb.pv.causalityDrug3" text="cd3"/></th>
-	<th><spring:message code="mdrtb.pv.causalityAssessmentResult3" text="car3"/></th>
-	<th><spring:message code="mdrtb.pv.actionTaken" text="actionz"/></th>
-	<th><spring:message code="mdrtb.pv.actionOutcome" text="outcomez"/></th>
-	<th><spring:message code="mdrtb.pv.outcomeDate" text="datez"/></th>
-	<th><spring:message code="mdrtb.pv.eventOnsetLocation" text="placez"/></th>
-	<th><spring:message code="mdrtb.pv.meddraCode" text="codez"/></th>
-	<th><spring:message code="mdrtb.pv.drugRechallenge" text="rcz"/></th>
-	<th><spring:message code="mdrtb.pv.comments" text="Commentz"/></th>
+	<th><mdrtb:message code="mdrtb.pv.serialNumber" text="serialz"/></th>
+	<th><mdrtb:message code="mdrtb.pv.adverseEvent" text="aez"/></th>
+	<th><mdrtb:message code="mdrtb.pv.onsetDate" text="datez"/></th>
+	<th><mdrtb:message code="mdrtb.pv.diagnosticInvestigation" text="diz"/></th>
+	<th><mdrtb:message code="mdrtb.pv.suspectedDrug" text="drugz"/></th>
+	<th><mdrtb:message code="mdrtb.pv.treatmentRegimenAtOnset" text="regimenz"/></th>
+	<th><mdrtb:message code="mdrtb.pv.typeOfEvent" text="typez"/></th>
+	<th><mdrtb:message code="mdrtb.pv.yellowCardDate" text="Yellowz"/></th>
+	<th><mdrtb:message code="mdrtb.pv.causalityDrug1" text="cd1"/></th>
+	<th><mdrtb:message code="mdrtb.pv.causalityAssessmentResult1" text="car1"/></th>
+	<th><mdrtb:message code="mdrtb.pv.causalityDrug2" text="cd2"/></th>
+	<th><mdrtb:message code="mdrtb.pv.causalityAssessmentResult2" text="car2"/></th>
+	<th><mdrtb:message code="mdrtb.pv.causalityDrug3" text="cd3"/></th>
+	<th><mdrtb:message code="mdrtb.pv.causalityAssessmentResult3" text="car3"/></th>
+	<th><mdrtb:message code="mdrtb.pv.actionTaken" text="actionz"/></th>
+	<th><mdrtb:message code="mdrtb.pv.actionOutcome" text="outcomez"/></th>
+	<th><mdrtb:message code="mdrtb.pv.outcomeDate" text="datez"/></th>
+	<th><mdrtb:message code="mdrtb.pv.eventOnsetLocation" text="placez"/></th>
+	<th><mdrtb:message code="mdrtb.pv.meddraCode" text="codez"/></th>
+	<th><mdrtb:message code="mdrtb.pv.drugRechallenge" text="rcz"/></th>
+	<th><mdrtb:message code="mdrtb.pv.comments" text="Commentz"/></th>
 </tr>
 
 <c:forEach var="form" items="${forms}" varStatus="loop">

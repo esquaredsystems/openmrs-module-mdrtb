@@ -4,14 +4,14 @@
 <openmrs:htmlInclude file="/scripts/calendar/calendar.js" />
 
 <form method="post">
-	<h2><spring:message code="mdrtb.sldreport.title"/></h2>
+	<h2><mdrtb:message code="mdrtb.sldreport.title"/></h2>
 	
 	<br/>
 	
 	<table>
 		
 		<tr>
-			<td><spring:message code="mdrtb.sldreport.district"/></td>
+			<td><mdrtb:message code="mdrtb.sldreport.district"/></td>
 			<td>
 				
 				<select name="location">
@@ -26,11 +26,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><spring:message code="mdrtb.sldreport.startDate"/>:</td>
+			<td align="right"><mdrtb:message code="mdrtb.sldreport.startDate"/>:</td>
 			<td><input name="startDate" type="text" size="10" onClick="showCalendar(this)"/></td>
 		</tr>
 		<tr>
-			<td align="right"><spring:message code="mdrtb.sldreport.endDate"/>:</td>
+			<td align="right"><mdrtb:message code="mdrtb.sldreport.endDate"/>:</td>
 			<td><input name="endDate" type="text" size="10" onClick="showCalendar(this)"/></td>
 		</tr>
 <%--
@@ -45,7 +45,7 @@
 --%>
 		<tr>
 			<td align="right"></td>
-			<td>&nbsp;<br/><input type="submit" value="<spring:message code="mdrtb.sldreport.calculate"/>"/></td>
+			<td>&nbsp;<br/><input type="submit" value="<mdrtb:message code="mdrtb.sldreport.calculate"/>"/></td>
 		</tr>
 	</table>
 	

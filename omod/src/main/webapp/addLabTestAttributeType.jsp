@@ -95,7 +95,7 @@ legend.scheduler-border {
 					otherwise="/login.htm"
 					redirect="/module/commonlabtest/addLabTestAttributeType.form" />
 				<legend class="scheduler-border">
-					<spring:message code="commonlabtest.labtestattributetype.add" />
+					<mdrtb:message code="commonlabtest.labtestattributetype.add" />
 				</legend>
 			</c:if>
 			<c:if test="${not empty testAttributeType.name}">
@@ -103,7 +103,7 @@ legend.scheduler-border {
 					otherwise="/login.htm"
 					redirect="/module/commonlabtest/addLabTestAttributeType.form" />
 				<legend class="scheduler-border">
-					<spring:message code="commonlabtest.labtestattributetype.edit" />
+					<mdrtb:message code="commonlabtest.labtestattributetype.edit" />
 				</legend>
 			</c:if>
 			<form:form commandName="attributeType"
@@ -113,7 +113,7 @@ legend.scheduler-border {
 						<form:input path="labTestAttributeTypeId" hidden="true"
 							id="labTestAttributeTypeId"></form:input>
 						<form:label path="labTestType.labTestTypeId" class="control-label">
-							<spring:message code="general.labTestType" />
+							<mdrtb:message code="general.labTestType" />
 							<span class="text-danger required">*</span>
 						</form:label>
 					</div>
@@ -132,7 +132,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label path="name" class="control-label">
-							<spring:message code="general.name" />
+							<mdrtb:message code="general.name" />
 							<span class="text-danger required">*</span>
 						</form:label>
 					</div>
@@ -146,7 +146,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label path="description" class="control-label">
-							<spring:message code="general.description" />
+							<mdrtb:message code="general.description" />
 							<span class="text-danger required">*</span>
 						</form:label>
 					</div>
@@ -159,7 +159,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label path="multisetName" class="control-label">
-							<spring:message
+							<mdrtb:message
 								code="commonlabtest.labtestattributetype.multisetName" />
 						</form:label>
 					</div>
@@ -173,7 +173,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label path="groupName" class="control-label">
-							<spring:message
+							<mdrtb:message
 								code="commonlabtest.labtestattributetype.groupName" />
 						</form:label>
 					</div>
@@ -187,7 +187,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label path="minOccurs" class="control-label">
-							<spring:message code="general.minOccurs" />
+							<mdrtb:message code="general.minOccurs" />
 							<span class="text-danger required">*</span>
 						</form:label>
 					</div>
@@ -201,7 +201,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label path="maxOccurs" class="control-label">
-							<spring:message code="general.maxOccurs" />
+							<mdrtb:message code="general.maxOccurs" />
 							<span class="text-danger required">*</span>
 						</form:label>
 					</div>
@@ -215,7 +215,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label path="sortWeight" class="control-label">
-							<spring:message code="general.sortWeight" />
+							<mdrtb:message code="general.sortWeight" />
 							<span class="text-danger required">*</span>
 						</form:label>
 					</div>
@@ -235,7 +235,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label path="datatypeClassname" class="control-label">
-							<spring:message code="general.dataType" />
+							<mdrtb:message code="general.dataType" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -294,7 +294,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-sm-2 col-md-2 col-lg-2">
 						<form:label path="datatypeConfig" class="control-label">
-							<spring:message code="general.datatypeConfiguration" />
+							<mdrtb:message code="general.datatypeConfiguration" />
 						</form:label>
 					</div>
 					<div class="col-sm-6 col-md-6 col-lg-6">
@@ -314,7 +314,7 @@ legend.scheduler-border {
 				<div class="row" id="hint_field">
 					<div class="col-md-2">
 						<form:label path="hint" class="control-label">
-							<spring:message code="general.hint" />
+							<mdrtb:message code="general.hint" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -328,7 +328,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label path="preferredHandlerClassname" class="control-label">
-							<spring:message code="general.preferredHandler" />
+							<mdrtb:message code="general.preferredHandler" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -336,7 +336,7 @@ legend.scheduler-border {
 							id="preferred_handler_name">
 							<option value=""><openmrs:message code="general.default" /></option>
 							<c:forEach items="${handlers}" var="handler">
-								<%-- 											<option value="${handler}" <c:if test="${handler == status.value}">selected</c:if>><spring:message code="${handler}.name"/></option>
+								<%-- 											<option value="${handler}" <c:if test="${handler == status.value}">selected</c:if>><mdrtb:message code="${handler}.name"/></option>
  --%>
 								<form:option item="${handler}" value="${handler}">
 									<c:out value="${handler}.name" />
@@ -352,7 +352,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="handlerConfig">
-							<spring:message code="general.handlerConfiguration" />
+							<mdrtb:message code="general.handlerConfiguration" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -364,7 +364,7 @@ legend.scheduler-border {
 					<div class="row">
 						<div class="col-md-2">
 							<form:label path="creator">
-								<spring:message code="general.createdBy" />
+								<mdrtb:message code="general.createdBy" />
 							</form:label>
 						</div>
 						<div class="col-md-6">
@@ -375,7 +375,7 @@ legend.scheduler-border {
 					</div>
 					<div class="row">
 						<div class="col-md-2">
-							<font color="#D0D0D0"><sub><spring:message
+							<font color="#D0D0D0"><sub><mdrtb:message
 										code="general.uuid" /></sub></font>
 						</div>
 						<div class="col-md-6">
@@ -388,7 +388,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-3">
 						<input type="submit"
-							value="<spring:message code="commonlabtest.labtestattributetype.save" />"></input>
+							value="<mdrtb:message code="commonlabtest.labtestattributetype.save" />"></input>
 					</div>
 					<div class="col-md-2">
 						<input type="button"
@@ -403,7 +403,7 @@ legend.scheduler-border {
 			<c:if test="${not empty testAttributeType.name}">
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">
-						<spring:message code="general.test.retire" />
+						<mdrtb:message code="general.test.retire" />
 					</legend>
 					<form class="form-horizontal" method="post"
 						action="${pageContext.request.contextPath}/module/commonlabtest/retirelabtestattributetype.form"
@@ -413,7 +413,7 @@ legend.scheduler-border {
 							<div class="col-md-2">
 								<input value="${testAttributeType.uuid}" hidden="true" id="uuid"
 									name="uuid"></input> <label class="control-label"
-									path="retireReason"><spring:message
+									path="retireReason"><mdrtb:message
 										code="general.retireReason" /><span
 									class="text-danger required">*</span></label>
 							</div>
@@ -429,7 +429,7 @@ legend.scheduler-border {
 						<div class="row">
 							<div class="col-md-2">
 								<input type="submit"
-									value="<spring:message code="general.test.retire" />"></input>
+									value="<mdrtb:message code="general.test.retire" />"></input>
 							</div>
 						</div>
 					</form>
@@ -448,7 +448,7 @@ legend.scheduler-border {
 					<p class="heading lead white-text">Sort Weight Order</p>
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
-						<span aria-hidden="true" class="white-text">×</span>
+						<span aria-hidden="true" class="white-text">Ã—</span>
 					</button>
 				</div>
 				<div class="modal-body">
@@ -668,7 +668,7 @@ legend.scheduler-border {
 		var dataType = document.getElementById('data_type_name');
 		
 		///error message and regex
-		var  reText = new RegExp("^[A-Za-z][ A-Za-z0-9_()?/µ.%\\-]*$");
+		var  reText = new RegExp("^[A-Za-z][ A-Za-z0-9_()?/Âµ.%\\-]*$");
 		var regInt =new RegExp("^[0-9]+$");
         var regErrorMesssage ="Text contains Invalid characters. Test Attribute name only accepts Alpha-Numeric value with _ -().% special characters. Please remove if there are any white spaces at the start of name";
 		var numericErrorMessage ="Only interger values are allowed";

@@ -26,38 +26,38 @@
 
 <div> <!-- start of page div -->
 
-<a href="${pageContext.request.contextPath}/module/mdrtb/form/regimen.form?encounterId=-1&patientId=${patientId}&patientProgramId=${patientProgramId}"><spring:message code="mdrtb.pv.addRegimen" text="newz"/></a>
+<a href="${pageContext.request.contextPath}/module/mdrtb/form/regimen.form?encounterId=-1&patientId=${patientId}&patientProgramId=${patientProgramId}"><mdrtb:message code="mdrtb.pv.addRegimen" text="newz"/></a>
 
 <table border="1" width="100%">
 <tr>
-		<th><spring:message code="mdrtb.pv.serialNumber" text="serialz"/></th>
-		<th><spring:message code="mdrtb.pv.cmacDate" text="datez"/></th>
-		<th><spring:message code="mdrtb.form89.cmacNumber" text="numberz"/></th>
-		<th><spring:message code="mdrtb.form89.placeOfCommission" text="placez"/></th>
-		<th><spring:message code="mdrtb.tb03.resistanceType" text="typez"/></th>
-		<th><spring:message code="mdrtb.pv.sldRegimenType" text="typez"/></th>
-		<th><spring:message code="mdrtb.pv.cmDose" text="cmDose"/></th>
-		<th><spring:message code="mdrtb.pv.amDose" text="amDose"/></th>
-		<th><spring:message code="mdrtb.pv.mfxDose" text="mfxDose"/></th>
-		<th><spring:message code="mdrtb.pv.lfxDose" text="lfxDose"/></th>
-		<th><spring:message code="mdrtb.pv.ptoDose" text="ptoDose"/></th>
-		<th><spring:message code="mdrtb.pv.csDose" text="csDose"/></th>
-		<th><spring:message code="mdrtb.pv.pasDose" text="pasDose"/></th>
-		<th><spring:message code="mdrtb.pv.zDose" text="zDose"/></th>
-		<th><spring:message code="mdrtb.pv.eDose" text="eDose"/></th>
-		<th><spring:message code="mdrtb.pv.hDose" text="hDose"/></th>
-		<th><spring:message code="mdrtb.pv.lzdDose" text="lzdDose"/></th>
-		<th><spring:message code="mdrtb.pv.cfzDose" text="cfzDose"/></th>
-		<th><spring:message code="mdrtb.pv.bdqDose" text="bdqDose"/></th>
-		<th><spring:message code="mdrtb.pv.dlmDose" text="dlmDose"/></th>
-		<th><spring:message code="mdrtb.pv.impDose" text="impDose"/></th>
-		<th><spring:message code="mdrtb.pv.amxDose" text="amxDose"/></th>
-		<th><spring:message code="mdrtb.pv.hrDose" text="hrDose"/></th>
-		<th><spring:message code="mdrtb.pv.hrzeDose" text="hrzeDose"/></th>
-		<th><spring:message code="mdrtb.pv.sDose" text="sDose"/></th>
-		<th><spring:message code="mdrtb.pv.otherDrug1Dose" text="otherDrug1Dose"/></th>
-		<!-- <th><spring:message code="mdrtb.pv.otherDrug2Dose" text="otherDrug2Dose"/></th> -->
-		<th><spring:message code="mdrtb.pv.fundingSource" text="fundingz"/></th>
+		<th><mdrtb:message code="mdrtb.pv.serialNumber" text="serialz"/></th>
+		<th><mdrtb:message code="mdrtb.pv.cmacDate" text="datez"/></th>
+		<th><mdrtb:message code="mdrtb.form89.cmacNumber" text="numberz"/></th>
+		<th><mdrtb:message code="mdrtb.form89.placeOfCommission" text="placez"/></th>
+		<th><mdrtb:message code="mdrtb.tb03.resistanceType" text="typez"/></th>
+		<th><mdrtb:message code="mdrtb.pv.sldRegimenType" text="typez"/></th>
+		<th><mdrtb:message code="mdrtb.pv.cmDose" text="cmDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.amDose" text="amDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.mfxDose" text="mfxDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.lfxDose" text="lfxDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.ptoDose" text="ptoDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.csDose" text="csDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.pasDose" text="pasDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.zDose" text="zDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.eDose" text="eDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.hDose" text="hDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.lzdDose" text="lzdDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.cfzDose" text="cfzDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.bdqDose" text="bdqDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.dlmDose" text="dlmDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.impDose" text="impDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.amxDose" text="amxDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.hrDose" text="hrDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.hrzeDose" text="hrzeDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.sDose" text="sDose"/></th>
+		<th><mdrtb:message code="mdrtb.pv.otherDrug1Dose" text="otherDrug1Dose"/></th>
+		<!-- <th><mdrtb:message code="mdrtb.pv.otherDrug2Dose" text="otherDrug2Dose"/></th> -->
+		<th><mdrtb:message code="mdrtb.pv.fundingSource" text="fundingz"/></th>
 		
 </tr>
 

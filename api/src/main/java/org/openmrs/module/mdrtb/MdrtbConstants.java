@@ -158,6 +158,13 @@ public class MdrtbConstants {
 	@Deprecated
 	public static final String GP_LAB_ENTRY_IDS = "mdrtb.lab_entry_ids";
 	
+	/** Properties referenced only from JSP views (legacy UI) **/
+	public static final String GP_FIND_PATIENT_NUM_RESULTS = "mdrtb.findPatientNumResults";
+	
+	public static final String GP_DRUG_DOSE_UNITS = "mdrtb.drugDoseUnits";
+	
+	public static final String GP_PATIENT_IDENTIFIER_TYPE = "mdrtb.patient_identifier_type";
+	
 	/** END - Global Properties **/
 	/*****************************/
 	

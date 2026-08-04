@@ -23,6 +23,8 @@ import org.openmrs.module.reporting.report.ReportData;
 import org.openmrs.module.reporting.report.definition.ReportDefinition;
 import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
 import org.openmrs.module.reporting.report.renderer.RenderingMode;
+import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class WHOForm06 implements ReportSpecification {
 	
@@ -30,14 +32,14 @@ public class WHOForm06 implements ReportSpecification {
 	 * @see ReportSpecification#getName()
 	 */
 	public String getName() {
-		return Context.getMessageSourceService().getMessage("mdrtb.form06");
+		return Context.getService(MessagePropertyService.class).getMessage("mdrtb.form06");
 	}
 	
 	/**
 	 * @see ReportSpecification#getDescription()
 	 */
 	public String getDescription() {
-		return Context.getMessageSourceService().getMessage("mdrtb.form06.title");
+		return Context.getService(MessagePropertyService.class).getMessage("mdrtb.form06.title");
 	}
 	
 	/**
@@ -45,9 +47,9 @@ public class WHOForm06 implements ReportSpecification {
 	 */
 	public List<Parameter> getParameters() {
 		List<Parameter> l = new ArrayList<>();
-		l.add(new Parameter("location", Context.getMessageSourceService().getMessage("mdrtb.facility"), Location.class));
-		l.add(new Parameter("year", Context.getMessageSourceService().getMessage("mdrtb.year"), Integer.class));
-		l.add(new Parameter("quarter", Context.getMessageSourceService().getMessage("mdrtb.quarter"), Integer.class));
+		l.add(new Parameter("location", Context.getService(MessagePropertyService.class).getMessage("mdrtb.facility"), Location.class));
+		l.add(new Parameter("year", Context.getService(MessagePropertyService.class).getMessage("mdrtb.year"), Integer.class));
+		l.add(new Parameter("quarter", Context.getService(MessagePropertyService.class).getMessage("mdrtb.quarter"), Integer.class));
 		return l;
 	}
 	
@@ -71,7 +73,7 @@ public class WHOForm06 implements ReportSpecification {
 		Integer year = (Integer) parameters.get("year");
 		Integer quarter = (Integer) parameters.get("quarter");
 		if (quarter == null) {
-			throw new IllegalArgumentException(Context.getMessageSourceService().getMessage(
+			throw new IllegalArgumentException(Context.getService(MessagePropertyService.class).getMessage(
 			    "mdrtb.error.pleaseEnterAQuarter"));
 		}
 		context.getParameterValues().putAll(ReportUtil.getPeriodDates(year, quarter, null));

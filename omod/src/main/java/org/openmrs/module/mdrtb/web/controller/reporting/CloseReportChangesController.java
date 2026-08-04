@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 @Controller
 public class CloseReportChangesController {
@@ -71,7 +72,7 @@ public class CloseReportChangesController {
 			reportEncounterTypes.add("TB03");
 		
 		reportEncounterTypes.add("Specimen Collection");
-		if (quarter.equals(Context.getMessageSourceService().getMessage("mdrtb.annual"))) {
+		if (quarter.equals(Context.getService(MessagePropertyService.class).getMessage("mdrtb.annual"))) {
 			quarter = null;
 		}
 		

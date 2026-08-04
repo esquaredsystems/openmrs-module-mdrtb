@@ -15,12 +15,14 @@ import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.regimen.Regimen;
 import org.openmrs.module.mdrtb.status.HivStatusRenderer;
 import org.openmrs.module.mdrtb.status.StatusItem;
+import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class DashboardHivStatusRenderer implements HivStatusRenderer {
 	
 	public void renderCd4Count(StatusItem cd4Count) {
 		if (cd4Count.getValue() == null || ((Obs) cd4Count.getValue()).getValueNumeric() == null) {
-			cd4Count.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.unknown"));
+			cd4Count.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.unknown"));
 		} else {
 			cd4Count.setDisplayString(((Obs) cd4Count.getValue()).getValueNumeric().toString());
 		}
@@ -28,7 +30,7 @@ public class DashboardHivStatusRenderer implements HivStatusRenderer {
 	
 	public void renderHivStatus(StatusItem hivStatus) {
 		if (hivStatus.getValue() == null) {
-			hivStatus.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.unknown"));
+			hivStatus.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.unknown"));
 		} else {
 			hivStatus.setDisplayString(((Concept) hivStatus.getValue()).getDisplayString());
 		}
@@ -37,15 +39,16 @@ public class DashboardHivStatusRenderer implements HivStatusRenderer {
 	
 	public void renderMostRecentTestResult(StatusItem mostRecentTestResult) {
 		if (mostRecentTestResult.getValue() == null || ((Obs) mostRecentTestResult.getValue()).getValueCoded() == null) {
-			mostRecentTestResult.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.unknown"));
+			mostRecentTestResult.setDisplayString(Context.getService(MessagePropertyService.class).getMessage(
+			    "mdrtb.unknown"));
 		} else {
 			Obs result = (Obs) mostRecentTestResult.getValue();
 			
 			DateFormat df = new SimpleDateFormat(MdrtbConstants.DATE_FORMAT_DISPLAY, Context.getLocale());
 			String[] params = { result.getValueCoded().getDisplayString(), df.format(result.getObsDatetime()) };
 			
-			mostRecentTestResult.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.testResultsStatus",
-			    params, "{0} on {1}", Context.getLocale()));
+			mostRecentTestResult.setDisplayString(Context.getService(MessagePropertyService.class).getMessage(
+			    "mdrtb.testResultsStatus", params, "{0} on {1}"));
 		}
 	}
 	
@@ -70,7 +73,7 @@ public class DashboardHivStatusRenderer implements HivStatusRenderer {
 	// just need to handle the null case here, since the base regimen rendering has been handled in "renderRegimen" method
 	public void renderCurrentRegimen(StatusItem regimenItem) {
 		if (regimenItem.getValue() == null) {
-			regimenItem.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.none"));
+			regimenItem.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.none"));
 		}
 	}
 	
@@ -79,18 +82,18 @@ public class DashboardHivStatusRenderer implements HivStatusRenderer {
 		List<StatusItem> regimens = (List<StatusItem>) artTreatment.getValue();
 		
 		if (regimens == null || regimens.isEmpty()) {
-			artTreatment.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.notOnTreatment"));
+			artTreatment.setDisplayString(Context.getService(MessagePropertyService.class)
+			        .getMessage("mdrtb.notOnTreatment"));
 		} else {
 			// remember, the regimen list is in reverse order
 			Date startDate = ((Regimen) regimens.get(regimens.size() - 1).getValue()).getStartDate();
 			Date endDate = ((Regimen) regimens.get(0).getValue()).getStartDate();
 			
 			DateFormat df = new SimpleDateFormat(MdrtbConstants.DATE_FORMAT_DISPLAY, Context.getLocale());
-			artTreatment
-			        .setDisplayString(df.format(startDate)
-			                + " - "
-			                + (endDate == null ? df.format(endDate) : Context.getMessageSourceService().getMessage(
-			                    "mdrtb.present")));
+			artTreatment.setDisplayString(df.format(startDate)
+			        + " - "
+			        + (endDate == null ? df.format(endDate) : Context.getService(MessagePropertyService.class).getMessage(
+			            "mdrtb.present")));
 		}
 	}
 }

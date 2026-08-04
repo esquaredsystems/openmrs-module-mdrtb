@@ -32,13 +32,13 @@
 		$j('#errorDisplay').html('');
 		
 		if (location == '') {
-			$j('#errorDisplay').append("<li><spring:message code='mdrtb.specimen.errors.noLocation' text='Please specify a location.'/></li>");
+			$j('#errorDisplay').append("<li><mdrtb:message code='mdrtb.specimen.errors.noLocation' text='Please specify a location.'/></li>");
 		}
 		if (provider == '') {
-			$j('#errorDisplay').append("<li><spring:message code='mdrtb.specimen.errors.noCollector' text='Please specify who collected this sample.'/></li>");
+			$j('#errorDisplay').append("<li><mdrtb:message code='mdrtb.specimen.errors.noCollector' text='Please specify who collected this sample.'/></li>");
 		}
 		if (lab == '') {
-			$j('#errorDisplay').append("<li><spring:message code='mdrtb.specimen.errors.noLab' text='Please specify a laboratory.'/></li>");
+			$j('#errorDisplay').append("<li><mdrtb:message code='mdrtb.specimen.errors.noLab' text='Please specify a laboratory.'/></li>");
 		}
 
 		// check all the individual tests
@@ -53,7 +53,7 @@
 			// date collected is only required parameter (unless an entire row is blank)
 			if ((identifier != '' | type != '' | appearance !='' | result !='') &&
 				dateCollected == '') {
-					$j('#errorDisplay').append("<li><spring:message code='mdrtb.specimen.errors.noDateCollected' text='Please specify the date collected.'/></li>");
+					$j('#errorDisplay').append("<li><mdrtb:message code='mdrtb.specimen.errors.noDateCollected' text='Please specify the date collected.'/></li>");
 			}
 		}
 		
@@ -65,7 +65,7 @@
 
 </script>
 
-<b class="boxHeader"><spring:message code="mdrtb.add${testType}Results"/></b>
+<b class="boxHeader"><mdrtb:message code="mdrtb.add${testType}Results"/></b>
 <!-- display the proper header depending on whether we were adding a specimen, or a smear/culture -->
 
 <div class="box">
@@ -77,7 +77,7 @@
 <table>
 <tr>
 <th>
-<!--<spring:message code="mdrtb.locationCollected" text="Location Collected"/>-->
+<!--<mdrtb:message code="mdrtb.locationCollected" text="Location Collected"/>-->
 </th>
 <td>
 <select id="location" name="location">
@@ -90,7 +90,7 @@
 </tr>
 
 <tr>
-<th><spring:message code="mdrtb.collectedBy" text="Collected By"/>:</th>
+<th><mdrtb:message code="mdrtb.collectedBy" text="Collected By"/>:</th>
 <td>
 <select id="provider" name="provider">
 <option value=""/>
@@ -102,7 +102,7 @@
 </tr>
 
 <tr>
-<th><spring:message code="mdrtb.lab" text="Lab"/>:</th>
+<th><mdrtb:message code="mdrtb.lab" text="Lab"/>:</th>
 <td><select id="lab" name="lab">
 <option value=""></option>
 <c:forEach var="location" items="${locations}">
@@ -116,26 +116,26 @@
 
 <table>
 <tr>
-<th><spring:message code="mdrtb.dateCollected" text="Date Collected"/>:</th>
-<th><spring:message code="mdrtb.sampleid" text="Sample ID"/>:</th>
-<th><spring:message code="mdrtb.sampleType" text="Sample Type"/>:</th>
-<th><spring:message code="mdrtb.appearance" text="Appearance"/>:</th>
+<th><mdrtb:message code="mdrtb.dateCollected" text="Date Collected"/>:</th>
+<th><mdrtb:message code="mdrtb.sampleid" text="Sample ID"/>:</th>
+<th><mdrtb:message code="mdrtb.sampleType" text="Sample Type"/>:</th>
+<th><mdrtb:message code="mdrtb.appearance" text="Appearance"/>:</th>
 <c:if test="${testType eq 'xpert' || testType eq 'hain' || testType eq 'smear' || testType eq 'culture'}" >
-<th><spring:message code="mdrtb.dateCompleted" text="Date Completed"/>:</th>
-<th><spring:message code="mdrtb.result" text="Result"/>:</th>
+<th><mdrtb:message code="mdrtb.dateCompleted" text="Date Completed"/>:</th>
+<th><mdrtb:message code="mdrtb.result" text="Result"/>:</th>
 </c:if>
 <c:if test="${testType eq 'xpert' || testType eq 'hain'}" >
-<th><spring:message code="mdrtb.rifResistance" text="RIF Resistance"/>:</th>
+<th><mdrtb:message code="mdrtb.rifResistance" text="RIF Resistance"/>:</th>
 
 <c:if test="${testType eq 'hain'}" >
-<th><spring:message code="mdrtb.inhResistance" text="INH Resistance"/>:</th>
+<th><mdrtb:message code="mdrtb.inhResistance" text="INH Resistance"/>:</th>
 </c:if>
 <!-- 
 <c:if test="${testType eq 'xpert'}" >
-<th><spring:message code="mdrtb.mtbBurden" text="MTB Burden"/>:</th>
+<th><mdrtb:message code="mdrtb.mtbBurden" text="MTB Burden"/>:</th>
 </c:if>
 
-<th><spring:message code="mdrtb.errorCode" text="Error Code"/>:</th>
+<th><mdrtb:message code="mdrtb.errorCode" text="Error Code"/>:</th>
 -->
 </c:if>
 </tr>
@@ -233,7 +233,7 @@
 
 <br/>
 
-<button type="button" onclick="validateAndSubmit();" ><spring:message code="mdrtb.save" text="Save"/></button><a style="text-decoration:none" href="${pageContext.request.contextPath}/module/mdrtb/specimen/specimen.form?patientId=${patientId}&patientProgramId=${patientProgramId}"><button type="button"><spring:message code="mdrtb.cancel" text="Cancel"/></button></a>
+<button type="button" onclick="validateAndSubmit();" ><mdrtb:message code="mdrtb.save" text="Save"/></button><a style="text-decoration:none" href="${pageContext.request.contextPath}/module/mdrtb/specimen/specimen.form?patientId=${patientId}&patientProgramId=${patientProgramId}"><button type="button"><mdrtb:message code="mdrtb.cancel" text="Cancel"/></button></a>
 
 </form>
 </div>

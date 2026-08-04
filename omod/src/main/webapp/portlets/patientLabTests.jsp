@@ -75,10 +75,10 @@ tbody.collapse.in {
    <div class="row">
 	<openmrs:hasPrivilege privilege="Add CommonLabTest Orders">
 		  <div class="col-sm-4 col-md-2">
-		 	 <a style="text-decoration:none" href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestOrder.form?patientId=${model.patient.patientId}" class="hvr-icon-grow"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/plus.png"> <span> </span> <spring:message code="commonlabtest.order.add" /> </a>
+		 	 <a style="text-decoration:none" href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestOrder.form?patientId=${model.patient.patientId}" class="hvr-icon-grow"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/plus.png"> <span> </span> <mdrtb:message code="commonlabtest.order.add" /> </a>
 		  </div>
 		   <div class="col-sm-4 col-md-2">
-		   	 <a style="text-decoration:none" href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestRequest.form?patientId=${model.patient.patientId}" class="hvr-icon-grow"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/plus.png"> <span> </span>  <spring:message code="commonlabtest.request.add" /> </a>
+		   	 <a style="text-decoration:none" href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestRequest.form?patientId=${model.patient.patientId}" class="hvr-icon-grow"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/plus.png"> <span> </span>  <mdrtb:message code="commonlabtest.request.add" /> </a>
 		  </div>
 	  </openmrs:hasPrivilege>
 	</div>
@@ -86,7 +86,7 @@ tbody.collapse.in {
 	<br>
 	<!--List of Test Order  -->
 	<div class=" boxHeader" style="background-color: #1aac9b">
-			<span></span> <b><spring:message code="commonlabtest.order.list" /></b>
+			<span></span> <b><mdrtb:message code="commonlabtest.order.list" /></b>
 	 </div>
 	 <div class="box">
 		 <table id="testOrderTable" class="table table-striped table-bordered" style="width:100%">
@@ -132,7 +132,7 @@ tbody.collapse.in {
             <div class="modal-body">
             
                <fieldset  class="scheduler-border">
-      	 		  <legend  class="scheduler-border"><spring:message code="commonlabtest.order.detail" /></legend>
+      	 		  <legend  class="scheduler-border"><mdrtb:message code="commonlabtest.order.detail" /></legend>
 	     			 <div id="orderContainerView" style="overflow: auto">
 	     			 
 	     			 </div>
@@ -140,7 +140,7 @@ tbody.collapse.in {
   			 <openmrs:hasPrivilege privilege="View CommonLabTest Samples">
                <!--Test Sample Details -->
                <fieldset  class="scheduler-border">
-      	 		  <legend  class="scheduler-border"><spring:message code="commonlabtest.labtestsample.detail" /></legend>
+      	 		  <legend  class="scheduler-border"><mdrtb:message code="commonlabtest.labtestsample.detail" /></legend>
 			       <div id="sampleDetailContainer">
 			       
 			       </div>
@@ -149,7 +149,7 @@ tbody.collapse.in {
        		<openmrs:hasPrivilege privilege="View CommonLabTest Results">	 
        			  <!--Test Result Details -->
                <fieldset  class="scheduler-border">
-      	 		  <legend  class="scheduler-border"><spring:message code="commonlabtest.result.detail" /></legend>
+      	 		  <legend  class="scheduler-border"><mdrtb:message code="commonlabtest.result.detail" /></legend>
        			  	 <div id ="resultDetailContainer"></div>	
        			 </fieldset>
           	</openmrs:hasPrivilege>	 
@@ -196,7 +196,7 @@ jQuery(document).ready(function () {
 });
 	function showalert(message,alerttype) {
 		//alertType : .alert-success, .alert-info, .alert-warning & .alert-danger
-	    jQuery('#alert_placeholder').append('<div id="alertdiv" class="alert ' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
+	    jQuery('#alert_placeholder').append('<div id="alertdiv" class="alert ' +  alerttype + '"><a class="close" data-dismiss="alert">Ã—</a><span>'+message+'</span></div>')
 	     autoHide();
 	  } 
 	function getTestOrderList(){
@@ -352,52 +352,52 @@ function autoHide(){
 	    // console.log("resultsItems : "+resultsItems);
 	     resultsItems = resultsItems.concat(' <form id="form">');
 		     resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="commonlabtest.order.id" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="commonlabtest.order.id" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-4">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.id+'</sub></font></label>');			 
 			 resultsItems = resultsItems.concat('</div></div>');
 			 resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="general.testGroup" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="general.testGroup" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-4">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.testGroup+'</sub></font></label>');
 			 resultsItems = resultsItems.concat('</div></div>');
 			 resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="general.testType" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="general.testType" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-4">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.testTypeName+'</sub></font></label>');
 			 resultsItems = resultsItems.concat('</div></div>');
 			 resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="general.encounterType" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="general.encounterType" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-4">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.encounterType+'</sub></font></label>');
 			 resultsItems = resultsItems.concat('</div></div>');
 			 resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="commonlabtest.order.labReferenceNo" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="commonlabtest.order.labReferenceNo" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-4">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.labReferenceNumber+'</sub></font></label>');
 			 resultsItems = resultsItems.concat('</div></div>');
 			 resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="general.requiresSpecimen" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="general.requiresSpecimen" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-4">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.requiredSpecimen+'</sub></font></label>');
 			 resultsItems = resultsItems.concat('</div></div>');
 			 resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="general.createdBy" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="general.createdBy" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-4">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.createdBy+'</sub></font></label>');
 			 resultsItems = resultsItems.concat('</div></div>');
 			 resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="general.changedBy" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="general.changedBy" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-4">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.changedBy+'</sub></font></label>');
 			 resultsItems = resultsItems.concat('</div></div>');
 			 resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="general.dateCreated" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="general.dateCreated" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-4">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.dateCreated+'</sub></font></label>');
 			 resultsItems = resultsItems.concat('</div></div>');
 			 resultsItems = resultsItems.concat('<div class="row"><div class="col-md-3">');
-			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><spring:message code="general.uuid" /></sub></font></label>');
+			 resultsItems = resultsItems.concat('<label ><font color="#17202A"><sub><mdrtb:message code="general.uuid" /></sub></font></label>');
 			 resultsItems = resultsItems.concat('</div><div class ="col-md-8">');
 			 resultsItems = resultsItems.concat('<label ><font color="#5D6D7E"><sub>'+testOrderArr.uuid+'</sub></font></label>');
 			 resultsItems =resultsItems.concat('</div></div>');

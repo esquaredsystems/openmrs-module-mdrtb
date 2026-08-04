@@ -9,7 +9,7 @@
 
 <c:choose>
 <c:when test="${empty model.chart.records}">
-	<spring:message code="mdrtb.noChart" text="No test results or regimen information available for this patient program."/>
+	<mdrtb:message code="mdrtb.noChart" text="No test results or regimen information available for this patient program."/>
 </c:when>
 
 <c:otherwise>
@@ -22,26 +22,26 @@
 <td class="chartCell" colspan="3">&nbsp;</td>
 <td class="spacerCell"></td>
 <!--  colspan changed to 2 to hide Bacteria column for Tajikistan. Change to 3 to bring back -->
-<td class="chartCell" colspan="2" align="center" style="font-weight:bold"><spring:message code="mdrtb.bacteriologies" text="Bacteriologies"/></td>
+<td class="chartCell" colspan="2" align="center" style="font-weight:bold"><mdrtb:message code="mdrtb.bacteriologies" text="Bacteriologies"/></td>
 <td class="spacerCell"></td>
-<td class="chartCell" colspan="2" align="center" style="font-weight:bold"><spring:message code="mdrtb.pcr" text="PCR"/></td>
+<td class="chartCell" colspan="2" align="center" style="font-weight:bold"><mdrtb:message code="mdrtb.pcr" text="PCR"/></td>
 <td class="spacerCell"></td>
-<td class="chartCell" colspan="${fn:length(model.chart.drugTypes)}" align="center" style="font-weight:bold"><spring:message code="mdrtb.dsts" text="DSTs"/></td>
+<td class="chartCell" colspan="${fn:length(model.chart.drugTypes)}" align="center" style="font-weight:bold"><mdrtb:message code="mdrtb.dsts" text="DSTs"/></td>
 </tr>
 
 <tr>
-<td class="chartCell" style="font-weight:bold"><spring:message code="mdrtb.month" text="Month"/></td>
-<td class="chartCell" style="font-weight:bold"><spring:message code="mdrtb.dateCollected" text="Date collected"/></td>
-<td class="chartCell" style="font-weight:bold"><spring:message code="mdrtb.lab" text="Lab"/></td>
+<td class="chartCell" style="font-weight:bold"><mdrtb:message code="mdrtb.month" text="Month"/></td>
+<td class="chartCell" style="font-weight:bold"><mdrtb:message code="mdrtb.dateCollected" text="Date collected"/></td>
+<td class="chartCell" style="font-weight:bold"><mdrtb:message code="mdrtb.lab" text="Lab"/></td>
 <td class="spacerCell"></td>
-<td class="chartCell" style="width:60px;font-weight:bold"><spring:message code="mdrtb.smears" text="Smears"/></td>
-<td class="chartCell" style="width:60px;font-weight:bold"><spring:message code="mdrtb.cultures" text="Cultures"/></td>
+<td class="chartCell" style="width:60px;font-weight:bold"><mdrtb:message code="mdrtb.smears" text="Smears"/></td>
+<td class="chartCell" style="width:60px;font-weight:bold"><mdrtb:message code="mdrtb.cultures" text="Cultures"/></td>
 <!--  COMMENTED OUT FOR TAJIKISTAN -->
-<!--  <td class="chartCell" style="font-weight:bold"><spring:message code="mdrtb.bacteria" text="Bacteria"/></td> -->
+<!--  <td class="chartCell" style="font-weight:bold"><mdrtb:message code="mdrtb.bacteria" text="Bacteria"/></td> -->
 <td class="spacerCell"></td>
 
-<td class="chartCell" style="width:60px;font-weight:bold"><spring:message code="mdrtb.xperts" text="GeneXperts"/></td>
-<td class="chartCell" style="width:60px;font-weight:bold"><spring:message code="mdrtb.hains" text="HAINS"/></td>
+<td class="chartCell" style="width:60px;font-weight:bold"><mdrtb:message code="mdrtb.xperts" text="GeneXperts"/></td>
+<td class="chartCell" style="width:60px;font-weight:bold"><mdrtb:message code="mdrtb.hains" text="HAINS"/></td>
 
 <td class="spacerCell"></td>
 <c:forEach var="drugType" items="${model.chart.drugTypes}">

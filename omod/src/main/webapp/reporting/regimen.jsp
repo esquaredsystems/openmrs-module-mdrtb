@@ -74,7 +74,7 @@ $(document).ready(function(){
 </script>
 
 <form method="post">
-	<h2><spring:message code="mdrtb.reportParameters" /></h2>
+	<h2><mdrtb:message code="mdrtb.reportParameters" /></h2>
 	
 	<br/>
 	
@@ -83,7 +83,7 @@ $(document).ready(function(){
 		<table>
 		
 		<tr id="oblastDiv">
-			<td align="right"><spring:message code="mdrtb.oblast" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.oblast" /></td>
 			<td><select name="oblast" id="oblast" onchange="fun1()">
 					<option value=""></option>
 					<c:forEach var="o" items="${oblasts}">
@@ -95,7 +95,7 @@ $(document).ready(function(){
 			<td>&nbsp;</td>
 		</tr>
 		<tr id="districtDiv">
-			<td align="right"><spring:message code="mdrtb.district" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.district" /></td>
 			<td><select name="district" id="district" onchange="fun2()">
 					<option value=""></option>
 					<c:forEach var="dist" items="${districts}">
@@ -107,7 +107,7 @@ $(document).ready(function(){
 			<td>&nbsp;</td>
 		</tr>
 		<tr id="facilityDiv">
-			<td align="right"><spring:message code="mdrtb.facility" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.facility" /></td>
 			<td><select name="facility" id="facility" onchange="fun3()">
 					<option value=""></option>
 					<c:forEach var="f" items="${facilities}">
@@ -117,25 +117,25 @@ $(document).ready(function(){
 		<tr>
 		<tr><td>&nbsp;</td></tr>
 		<tr>
-			<td align="right"><spring:message code="mdrtb.year" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.year" /></td>
 			<td><input name="year" id="year" type="text" size="4"/></td>
 		</tr>
 		<tr><td>&nbsp;</td></tr>
 		<tr>
-			<td align="right"><spring:message code="mdrtb.quarter" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.quarter" /></td>
 			<td><input name="quarter" id="quarter" type="text" size="7"/></td>
 		</tr>
 		 <tr>
-		    <td align="right"><spring:message code="mdrtb.or" /></td>
+		    <td align="right"><mdrtb:message code="mdrtb.or" /></td>
 		    </tr>
 		<tr>
-			<td align="right"><spring:message code="mdrtb.month" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.month" /></td>
 			<td><input name="month" id="month" type="text" size="7"/></td>
 		</tr>
 
 		<tr>
 			<td align="right"></td>
-			<td>&nbsp;<br/><input type="submit" value="<spring:message code="mdrtb.display" />"/></td>
+			<td>&nbsp;<br/><input type="submit" value="<mdrtb:message code="mdrtb.display" />"/></td>
 		</tr>
 	</table>
 

@@ -49,6 +49,7 @@ import org.openmrs.module.reporting.report.ReportData;
 import org.openmrs.module.reporting.report.definition.ReportDefinition;
 import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
 import org.openmrs.module.reporting.report.renderer.RenderingMode;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 /**
  * Outcome Report which reports on patient outcome by registration group
@@ -59,14 +60,14 @@ public class TB08TJK implements ReportSpecification {
 	 * @see ReportSpecification#getName()
 	 */
 	public String getName() {
-		return Context.getMessageSourceService().getMessage("mdrtb.tb08");
+		return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb08");
 	}
 	
 	/**
 	 * @see ReportSpecification#getDescription()
 	 */
 	public String getDescription() {
-		return Context.getMessageSourceService().getMessage("mdrtb.tb08.title");
+		return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb08.title");
 	}
 	
 	/**
@@ -74,11 +75,11 @@ public class TB08TJK implements ReportSpecification {
 	 */
 	public List<Parameter> getParameters() {
 		List<Parameter> l = new ArrayList<>();
-		l.add(new Parameter("location", Context.getMessageSourceService().getMessage("mdrtb.facility"), Location.class));
-		l.add(new Parameter("year", Context.getMessageSourceService().getMessage("mdrtb.yearOfTreatmentStart"),
+		l.add(new Parameter("location", Context.getService(MessagePropertyService.class).getMessage("mdrtb.facility"), Location.class));
+		l.add(new Parameter("year", Context.getService(MessagePropertyService.class).getMessage("mdrtb.yearOfTreatmentStart"),
 		        Integer.class));
-		l.add(new Parameter("quarter", Context.getMessageSourceService().getMessage("mdrtb.quarterOptional"), String.class));
-		l.add(new Parameter("month", Context.getMessageSourceService().getMessage("mdrtb.monthOptional"), String.class));
+		l.add(new Parameter("quarter", Context.getService(MessagePropertyService.class).getMessage("mdrtb.quarterOptional"), String.class));
+		l.add(new Parameter("month", Context.getService(MessagePropertyService.class).getMessage("mdrtb.monthOptional"), String.class));
 		return l;
 	}
 	
@@ -105,7 +106,7 @@ public class TB08TJK implements ReportSpecification {
 		String quarter = (String) parameters.get("quarter");
 		String month = (String) parameters.get("month");
 		if (quarter == null && month == null) {
-			throw new IllegalArgumentException(Context.getMessageSourceService().getMessage(
+			throw new IllegalArgumentException(Context.getService(MessagePropertyService.class).getMessage(
 			    "mdrtb.error.pleaseEnterAQuarterOrMonth"));
 		}
 		context.getParameterValues().putAll(

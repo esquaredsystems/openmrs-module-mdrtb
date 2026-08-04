@@ -68,7 +68,7 @@ body {
 <body>
 	<div>
 		<h2>
-			<b><spring:message
+			<b><mdrtb:message
 					code="commonlabtest.labtestattributetype.manage" /></b>
 		</h2>
 	</div>
@@ -82,13 +82,13 @@ body {
 	<openmrs:hasPrivilege privilege="Add CommonLabTest Metadata">
 		<div>
 			<a style="text-decoration: none" href="addLabTestAttributeType.form"
-				class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <spring:message
+				class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <mdrtb:message
 					code="commonlabtest.labtestattributetype.add" /> </a>
 		</div>
 	</openmrs:hasPrivilege>
 	<br>
 	<div class="boxHeader" style="background-color: #1aac9b">
-		<span><i class="fa fa-list"></i> </span> <b><spring:message
+		<span><i class="fa fa-list"></i> </span> <b><mdrtb:message
 				code="commonlabtest.labtestattributetype.list" /></b>
 	</div>
 	<div class="box">

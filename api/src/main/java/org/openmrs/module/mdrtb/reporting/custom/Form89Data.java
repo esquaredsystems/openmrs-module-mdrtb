@@ -4,6 +4,8 @@ import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.form.custom.Form89;
+import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class Form89Data implements Comparable<Form89Data> {
 	
@@ -257,9 +259,9 @@ public class Form89Data implements Comparable<Form89Data> {
 	
 	public String getGender() {
 		if (patient.getGender().equals("M"))
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.male");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.male");
 		else if (patient.getGender().equals("F"))
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.female");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.female");
 		
 		return "";
 	}

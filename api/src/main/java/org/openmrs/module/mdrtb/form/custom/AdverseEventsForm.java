@@ -9,12 +9,12 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
-import org.openmrs.messagesource.MessageSourceService;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.MdrtbUtil;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 @SuppressWarnings("null")
 public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<AdverseEventsForm> {
@@ -1849,7 +1849,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		String at = "";
 		Concept yes = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.YES);
 		int yesId = yes.getId();
-		MessageSourceService mss = Context.getMessageSourceService();
+		MessagePropertyService mss = Context.getService(MessagePropertyService.class);
 		
 		Concept q = getClinicalScreenDone();
 		if (q != null && q.getId() == yesId) {

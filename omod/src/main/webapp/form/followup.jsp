@@ -39,7 +39,7 @@
 	function validateForm(submitIfNoErrors) {
 		
 		var errors = false;
-		var requiredText = '<spring:message code="mdrtb.required"/>';
+		var requiredText = '<mdrtb:message code="mdrtb.required"/>';
 		jQuery("#dateError").html(requiredText).hide();
 		jQuery("#locationError").html(requiredText).hide();
 		jQuery("#providerError").html(requiredText).hide();
@@ -67,60 +67,60 @@
 
 <div> <!-- start of page div -->
 
-&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><spring:message code="mdrtb.back" text="Back"/></a>
+&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><mdrtb:message code="mdrtb.back" text="Back"/></a>
 <br/><br/>
 
 <!-- VIEW BOX -->
 <div id="viewVisit" <c:if test="${(empty followup.id) || (followup.id == -1) || fn:length(errors.allErrors) > 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.followupForm" text="Follow-Up Form"/>
-<span style="position: absolute; right:30px;"><a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><spring:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${followup.id}&patientProgramId=${patientProgramId}" class="delete" onclick="return confirm('<spring:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><spring:message code="mdrtb.delete" text="delete"/></a></span>
+<b class="boxHeader"><mdrtb:message code="mdrtb.followupForm" text="Follow-Up Form"/>
+<span style="position: absolute; right:30px;"><a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><mdrtb:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${followup.id}&patientProgramId=${patientProgramId}" class="delete" onclick="return confirm('<mdrtb:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><mdrtb:message code="mdrtb.delete" text="delete"/></a></span>
 </b>
 <div class="box">
 
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.date" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.date" text="Date"/>:</td>
 <td><openmrs:formatDate date="${followup.encounterDatetime}" format="${_dateFormatDisplay}"/></td>
 </tr>
  
 <tr>
-<td><spring:message code="mdrtb.location" text="Location"/>:</td>
+<td><mdrtb:message code="mdrtb.location" text="Location"/>:</td>
 <td>${followup.location.displayString}</td>
 </tr>
  
 <tr>
-<td><spring:message code="mdrtb.provider" text="Provider"/>:</td>
+<td><mdrtb:message code="mdrtb.provider" text="Provider"/>:</td>
 <td>${followup.provider.personName}</td>
 </tr>
 
 <tr>
-<td><spring:message code="Patient.weight" text="Weight"/>:</td>
+<td><mdrtb:message code="Patient.weight" text="Weight"/>:</td>
 <td>${followup.weight} ${!empty followup.weight ? 'kg' : ''}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.temperature" text="Temperature"/>:</td>
+<td><mdrtb:message code="mdrtb.temperature" text="Temperature"/>:</td>
 <td>${followup.temperature} ${!empty followup.temperature ? 'C' : ''}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pulse" text="Pulse"/>:</td>
+<td><mdrtb:message code="mdrtb.pulse" text="Pulse"/>:</td>
 <td>${followup.pulse}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.systolicBloodPressure" text="Systolic Blood Pressure"/>:</td>
+<td><mdrtb:message code="mdrtb.systolicBloodPressure" text="Systolic Blood Pressure"/>:</td>
 <td>${followup.systolicBloodPressure} ${!empty followup.systolicBloodPressure ? 'mmHg' : ''}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.respiratoryRate" text="Respiratory Rate"/>:</td>
+<td><mdrtb:message code="mdrtb.respiratoryRate" text="Respiratory Rate"/>:</td>
 <td>${followup.respiratoryRate}</td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.clinicianNotes" text="Clinician Notes"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.clinicianNotes" text="Clinician Notes"/>:</td>
 <td><mdrtb:format obj="${followup.clinicianNotes}"/></td>
 </tr>
 
@@ -132,14 +132,14 @@
 
 <!-- EDIT BOX -->
 <div id="editVisit" <c:if test="${(!empty followup.id) && (followup.id != -1) && fn:length(errors.allErrors) == 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.followupForm" text="Follow-Up Form"/></b>
+<b class="boxHeader"><mdrtb:message code="mdrtb.followupForm" text="Follow-Up Form"/></b>
 <div class="box">
 
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
 		<c:if test="${error.code != 'methodInvocation'}">
-			<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+			<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 		</c:if>
 	</c:forEach>
 	<br/>
@@ -151,12 +151,12 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.date" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.date" text="Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="encounterDatetime" startValue="${followup.encounterDatetime}"/><span class="error" id="dateError"></span></td>
 </tr>
  
 <tr>
-<td><spring:message code="mdrtb.location" text="Location"/>:</td>
+<td><mdrtb:message code="mdrtb.location" text="Location"/>:</td>
 <td>
 <select name="location" id="locationField">
 <option value=""></option>
@@ -169,7 +169,7 @@
 </tr>
  
 <tr>
-<td><spring:message code="mdrtb.provider" text="Provider"/>:</td>
+<td><mdrtb:message code="mdrtb.provider" text="Provider"/>:</td>
 <td>
 <select name="provider" id="providerField">
 <option value=""></option>
@@ -182,39 +182,39 @@
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="Patient.weight" text="Weight"/>:</td>
+<td valign="top"><mdrtb:message code="Patient.weight" text="Weight"/>:</td>
 <td><input name="weight" size="8" value="${followup.weight}"/> kg</td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.temperature" text="Temperature"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.temperature" text="Temperature"/>:</td>
 <td><input name="temperature" size="8" value="${followup.temperature}"/> C</td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.pulse" text="Pulse"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.pulse" text="Pulse"/>:</td>
 <td><input name="pulse" size="8" value="${followup.pulse}"/></td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.systolicBloodPressure" text="Systolic Blood Pressure"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.systolicBloodPressure" text="Systolic Blood Pressure"/>:</td>
 <td><input name="systolicBloodPressure" size="8" value="${followup.systolicBloodPressure}"/> mmHg</td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.respiratoryRate" text="Respiratory Rate"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.respiratoryRate" text="Respiratory Rate"/>:</td>
 <td><input name="respiratoryRate" size="8" value="${followup.respiratoryRate}"/></td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.clinicianNotes" text="Clinician Notes"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.clinicianNotes" text="Clinician Notes"/>:</td>
 <td><textarea  cols="100" rows="15" name="clinicianNotes">${followup.clinicianNotes}</textarea></td>
 </tr>
 
 
 </table>
 
-<input type="button" value="<spring:message code="mdrtb.save" text="Save"/>" onclick="validateForm(true);"> <input id="cancel" type="reset" value="<spring:message code="mdrtb.cancel" text="Cancel"/>"/>
+<input type="button" value="<mdrtb:message code="mdrtb.save" text="Save"/>" onclick="validateForm(true);"> <input id="cancel" type="reset" value="<mdrtb:message code="mdrtb.cancel" text="Cancel"/>"/>
 
 </form>
 </div>

@@ -145,9 +145,9 @@
 	function printForm() {
 		var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-	    mywindow.document.write('<html><head><title><spring:message code="mdrtb.form89" text="Form89"/></title>');
+	    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.form89" text="Form89"/></title>');
 	    mywindow.document.write('</head><body >');
-	    mywindow.document.write('<h1><spring:message code="mdrtb.form89" text="Form89"/></h1>');
+	    mywindow.document.write('<h1><mdrtb:message code="mdrtb.form89" text="Form89"/></h1>');
 	    mywindow.document.write(document.getElementById("form89").innerHTML);
 	    
 	    mywindow.document.write('</body></html>');
@@ -217,12 +217,12 @@
 		var encDate = document.getElementById("encounterDatetime").value;
 		var errorText = "";
 		if(encDate=="") {
-			errorText = ""  + '<spring:message code="mdrtb.error.missingRegistrationDate"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.error.missingRegistrationDate"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		if (dateInFuture(encDate)) {
-			errorText = ""  + '<spring:message code="mdrtb.error.registrationDateInFuture"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.error.registrationDateInFuture"/>' + "";
 			alert(errorText);
 			return false;
 		}
@@ -230,7 +230,7 @@
 		var now = new Date();
 		
 		if(regDate.getTime() > now.getTime()) {
-			errorText = ""  + '<spring:message code="mdrtb.error.registrationDateInFuture"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.error.registrationDateInFuture"/>' + "";
 			alert(errorText);
 			return false;
 		}
@@ -239,7 +239,7 @@
 		
 		if(firstDate!="") {
 			if (dateInFuture(firstDate)) {
-				errorText = ""  + '<spring:message code="mdrtb.error.firstEncounterDateInFuture"/>' + "";
+				errorText = ""  + '<mdrtb:message code="mdrtb.error.firstEncounterDateInFuture"/>' + "";
 				alert(errorText);
 				return false;
 			}
@@ -248,7 +248,7 @@
 		var returnDate = document.getElementById("dateOfReturn").value;		
 		if(returnDate!="") {
 			if (dateInFuture(returnDate)) {
-				errorText = ""  + '<spring:message code="mdrtb.error.dateOfReturnInFuture"/>' + "";
+				errorText = ""  + '<mdrtb:message code="mdrtb.error.dateOfReturnInFuture"/>' + "";
 				alert(errorText);
 				return false;
 			}
@@ -258,7 +258,7 @@
 		
 		if(surveyDate!="") {
 			if (dateInFuture(surveyDate)) {
-				errorText = ""  + '<spring:message code="mdrtb.error.dateOfDecaySurveyInFuture"/>' + "";
+				errorText = ""  + '<mdrtb:message code="mdrtb.error.dateOfDecaySurveyInFuture"/>' + "";
 				alert(errorText);
 				return false;
 			}
@@ -267,7 +267,7 @@
 		var cmacDate = document.getElementById("cmacDate").value;
 		if(cmacDate!="") {
 			if (dateInFuture(cmacDate)) {
-				errorText = ""  + '<spring:message code="mdrtb.error.confirmationDateInFuture"/>' + "";
+				errorText = ""  + '<mdrtb:message code="mdrtb.error.confirmationDateInFuture"/>' + "";
 				alert(errorText);
 				return false;
 			}
@@ -276,7 +276,7 @@
 		var formDate = document.getElementById("form89Date").value;
 		if(formDate!="") {
 			if (dateInFuture(formDate)) {
-				errorText = ""  + '<spring:message code="mdrtb.error.form89DateInFuture"/>' + "";
+				errorText = ""  + '<mdrtb:message code="mdrtb.error.form89DateInFuture"/>' + "";
 				alert(errorText);
 				return false;
 			}
@@ -290,15 +290,15 @@
 
 <div> <!-- start of page div -->
 
-&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><spring:message code="mdrtb.back" text="Back"/></a>
+&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><mdrtb:message code="mdrtb.back" text="Back"/></a>
 <br/><br/>
 
 <!-- VIEW BOX -->
 <div id="viewVisit" <c:if test="${(empty form89.id) || (form89.id == -1) || fn:length(errors.allErrors) > 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.form89" text="Form89"/>
-<span style="position: absolute; right:30px;"><a id="print" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="printForm()"><spring:message code="mdrtb.print" text="TB03"/></a>&nbsp;&nbsp;<a id="export" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="tableToExcel('form89', 'Form89')"><spring:message code="mdrtb.exportToExcel" text="TB03"/></a>
+<b class="boxHeader"><mdrtb:message code="mdrtb.form89" text="Form89"/>
+<span style="position: absolute; right:30px;"><a id="print" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="printForm()"><mdrtb:message code="mdrtb.print" text="TB03"/></a>&nbsp;&nbsp;<a id="export" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="tableToExcel('form89', 'Form89')"><mdrtb:message code="mdrtb.exportToExcel" text="TB03"/></a>
 <openmrs:hasPrivilege privilege="Edit DOTS-MDR Data">
-&nbsp;&nbsp;<a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><spring:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${form89.id}&patientProgramId=${patientProgramId}&patientId=${form89.patient.id }" class="delete" onclick="return confirm('<spring:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><spring:message code="mdrtb.delete" text="delete"/></a>
+&nbsp;&nbsp;<a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><mdrtb:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${form89.id}&patientProgramId=${patientProgramId}&patientId=${form89.patient.id }" class="delete" onclick="return confirm('<mdrtb:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><mdrtb:message code="mdrtb.delete" text="delete"/></a>
 </openmrs:hasPrivilege>
 </span>
 </b>
@@ -308,161 +308,161 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.form89.registrationDate" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.registrationDate" text="Date"/>:</td>
 <td><openmrs:formatDate date="${form89.encounterDatetime}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.oblast" text="Oblast"/>:</td>
+<td><mdrtb:message code="mdrtb.oblast" text="Oblast"/>:</td>
 <td>${form89.location.stateProvince}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.district" text="District"/>:</td>
+<td><mdrtb:message code="mdrtb.district" text="District"/>:</td>
 <td>${form89.location.countyDistrict}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.facility" text="District"/>:</td>
+<td><mdrtb:message code="mdrtb.facility" text="District"/>:</td>
 <td>${form89.location.address4}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.name" text="Name"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.name" text="Name"/>:</td>
 <td>${form89.patientName}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.tb03RegistrationNumber" text="TB03 Reg Num"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.tb03RegistrationNumber" text="TB03 Reg Num"/>:</td>
 <%-- <td>${form89.tb03RegistrationNumber}</td> --%>
 <td>${tbProgram.patientIdentifier.identifier }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.yearOfRegistration" text="TB03 Reg Year"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.yearOfRegistration" text="TB03 Reg Year"/>:</td>
 <td>${form89.yearOfTB03Registration}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.gender" text="Gender"/>:</td>
+<td><mdrtb:message code="mdrtb.gender" text="Gender"/>:</td>
 <td>${form89.gender}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.ageAtRegistration" text="Age at Regisration"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.ageAtRegistration" text="Age at Regisration"/>:</td>
 <td>${form89.ageAtRegistration}</td>
 </tr>
  
  <tr>
-<td><spring:message code="mdrtb.tb03.dateOfBirth" text="Date of Birth"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.dateOfBirth" text="Date of Birth"/>:</td>
 <td><openmrs:formatDate date="${form89.dateOfBirth}" format="${_dateFormatDisplay}"/></td>
 </tr>
  
 <tr>
-<td><spring:message code="mdrtb.tb03.address" text="Residential Address"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.address" text="Residential Address"/>:</td>
 <td>${form89.address }</td>
 </tr>
 
 <c:if test="${form89.isChildbearingAge eq true}">
 <tr>
-<td><spring:message code="mdrtb.pregnant" text="pregz"/>:</td>
+<td><mdrtb:message code="mdrtb.pregnant" text="pregz"/>:</td>
 <td>${form89.pregnant.displayString }</td>
 </tr>
 </c:if>
 
 <tr>
-<td><spring:message code="mdrtb.form89.locationType" text="Resident"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.locationType" text="Resident"/>:</td>
 <td>${form89.locationType.displayString }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.profession" text="Profession"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.profession" text="Profession"/>:</td>
 <td>${form89.profession.displayString }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.populationCategory" text="PopulationCategory"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.populationCategory" text="PopulationCategory"/>:</td>
 <td>${form89.populationCategory.displayString }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.countryOfOrigin" text="countryOfOrigin"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.countryOfOrigin" text="countryOfOrigin"/>:</td>
 <td>${form89.countryOfOrigin }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.placeOfDetection" text="DetPlace"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.placeOfDetection" text="DetPlace"/>:</td>
 <td>${form89.placeOfDetection.displayString }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.dateFirstSeekingHelp" text="dateFirstSeekingHelp"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.dateFirstSeekingHelp" text="dateFirstSeekingHelp"/>:</td>
 <td><openmrs:formatDate date="${form89.dateFirstSeekingHelp}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.circumstancesOfDetection" text="DetPlace"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.circumstancesOfDetection" text="DetPlace"/>:</td>
 <td>${form89.circumstancesOfDetection.displayString }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.cityOfOrigin" text="cityOfOrigin"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cityOfOrigin" text="cityOfOrigin"/>:</td>
 <td>${form89.cityOfOrigin }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.dateOfReturn" text="dateOfReturn"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.dateOfReturn" text="dateOfReturn"/>:</td>
 <td><openmrs:formatDate date="${form89.dateOfReturn}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.methodOfDetection" text="mDet"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.methodOfDetection" text="mDet"/>:</td>
 <td>${form89.methodOfDetection.displayString }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.otherMethodOfDetection" text="mDet"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.otherMethodOfDetection" text="mDet"/>:</td>
 <td>${form89.otherMethodOfDetection}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
 <td>${form89.anatomicalSite.displayString}</td>
 </tr>
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><spring:message code="mdrtb.form89.eptbSite" text="EP Site"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.eptbSite" text="EP Site"/>:</td>
 <td>${form89.eptbSite.displayString}</td>
 </tr>
 </c:if>
 
 <c:if test="${form89.isPulmonary eq true}">
 <tr>
-<td><spring:message code="mdrtb.form89.ptbSite" text="P Site"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.ptbSite" text="P Site"/>:</td>
 <td>${form89.ptbLocation.displayString}</td>
 </tr>
 </c:if>
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><spring:message code="mdrtb.form89.eptbLocation" text="EP Location"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.eptbLocation" text="EP Location"/>:</td>
 <td>${form89.epLocation.displayString}</td>
 </tr>
 </c:if>
 
 <tr>
-<td><spring:message code="mdrtb.form89.presenceOfDecay" text="Decay"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.presenceOfDecay" text="Decay"/>:</td>
 <td>${form89.presenceOfDecay.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.dateOfDecaySurvey" text="dateOfDecaySurvey"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.dateOfDecaySurvey" text="dateOfDecaySurvey"/>:</td>
 <td><openmrs:formatDate date="${form89.dateOfDecaySurvey}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.complication" text="mDet"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.complication" text="mDet"/>:</td>
 <td>${form89.complication}</td>
 </tr>
 
@@ -470,14 +470,14 @@
 
 <br/>
 
-<spring:message code="mdrtb.smears" text="Smearz"/>
+<mdrtb:message code="mdrtb.smears" text="Smearz"/>
 <table border="1">
 <tr>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.monthOfTreatment"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.result"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.dateCollected"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.lab"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.specimenId"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.monthOfTreatment"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.result"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.dateCollected"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.lab"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.specimenId"/></td>
 </tr>
 <c:forEach var="smear" items="${form89.smears}">
 <c:if test="${smear.monthOfTreatment eq 0 }">
@@ -496,14 +496,14 @@
 
 <br/>
 
-<spring:message code="mdrtb.xperts" text="Xpert"/>
+<mdrtb:message code="mdrtb.xperts" text="Xpert"/>
 <table border="1">
 <tr>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.monthOfTreatment"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.result"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.dateCollected"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.lab"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.specimenId"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.monthOfTreatment"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.result"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.dateCollected"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.lab"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.specimenId"/></td>
 </tr>
 
 <c:forEach var="xpert" items="${form89.xperts}">
@@ -519,14 +519,14 @@
 
 <br/>
 
-<spring:message code="mdrtb.hains" text="Hain"/>
+<mdrtb:message code="mdrtb.hains" text="Hain"/>
 <table border="1">
 <tr>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.monthOfTreatment"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.result"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.dateCollected"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.lab"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.specimenId"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.monthOfTreatment"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.result"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.dateCollected"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.lab"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.specimenId"/></td>
 </tr>
 
 <c:forEach var="hain" items="${form89.hains}">
@@ -542,14 +542,14 @@
 
 <br/>
 
-<spring:message code="mdrtb.hain2s" text="Hain"/>
+<mdrtb:message code="mdrtb.hain2s" text="Hain"/>
 <table border="1">
 <tr>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.monthOfTreatment"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.result"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.dateCollected"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.lab"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.specimenId"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.monthOfTreatment"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.result"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.dateCollected"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.lab"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.specimenId"/></td>
 </tr>
 
 <c:forEach var="hain2" items="${form89.hain2s}">
@@ -565,64 +565,64 @@
 
 <br/>
 
-<spring:message code="mdrtb.form89.comorbidities" text="Comorb"/>
+<mdrtb:message code="mdrtb.form89.comorbidities" text="Comorb"/>
 <table>
 
 
 <tr>
-<td><spring:message code="mdrtb.form89.mentalDisorder" text="mentalDisorder"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.mentalDisorder" text="mentalDisorder"/>:</td>
 <td>${form89.mentalDisorder.displayString}</td>
 </tr>
 
 
 <tr>
-<td><spring:message code="mdrtb.form89.cnsdl" text="cnsdl"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cnsdl" text="cnsdl"/>:</td>
 <td>${form89.cnsdl.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.htHeartDisease" text="htheart"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.htHeartDisease" text="htheart"/>:</td>
 <td>${form89.htHeartDisease.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.ulcer" text="ulcer"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.ulcer" text="ulcer"/>:</td>
 <td>${form89.ulcer.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.mentalDisorder" text="mentalDisorder"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.mentalDisorder" text="mentalDisorder"/>:</td>
 <td>${form89.mentalDisorder.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.ibc20" text="ibc20"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.ibc20" text="ibc20"/>:</td>
 <td>${form89.ibc20.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.cancer" text="cancer"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cancer" text="cancer"/>:</td>
 <td>${form89.cancer.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.hepatitis" text="hepatitis"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.hepatitis" text="hepatitis"/>:</td>
 <td>${form89.hepatitis.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.kidneyDisease" text="kidneyDisease"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.kidneyDisease" text="kidneyDisease"/>:</td>
 <td>${form89.kidneyDisease.displayString}</td>
 </tr>
 
 
 <%-- <tr>
-<td><spring:message code="mdrtb.form89.noDisease" text="noDisease"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.noDisease" text="noDisease"/>:</td>
 <td>${form89.noDisease.displayString}</td>
 </tr> --%>
 
 <tr>
-<td><spring:message code="mdrtb.form89.otherDisease" text="otherDisease"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.otherDisease" text="otherDisease"/>:</td>
 <td>${form89.otherDisease}</td>
 </tr>
 
@@ -633,32 +633,32 @@
 <table>
 
 <tr>
-<td><spring:message code="mdrtb.form89.cmacDate" text="CMAC Date"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cmacDate" text="CMAC Date"/>:</td>
 <td><openmrs:formatDate date="${form89.cmacDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.cmacNumber" text="CMAC Number"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cmacNumber" text="CMAC Number"/>:</td>
 <td>${form89.cmacNumber}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.prescribedTreatment" text="prescribedTreatment"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.prescribedTreatment" text="prescribedTreatment"/>:</td>
 <td>${form89.prescribedTreatment.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.placeOfCommission" text="placeOfCommission"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.placeOfCommission" text="placeOfCommission"/>:</td>
 <td>${form89.placeOfCommission.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.nameOfDoctor" text="DocName"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.nameOfDoctor" text="DocName"/>:</td>
 <td>${form89.nameOfDoctor}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.form89Date" text="form89Date"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.form89Date" text="form89Date"/>:</td>
 <td><openmrs:formatDate date="${form89.form89Date}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
@@ -674,14 +674,14 @@
 
 <!-- EDIT BOX -->
 <div id="editVisit" <c:if test="${(!empty form89.id) && (form89.id != -1) && fn:length(errors.allErrors) == 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.form89" text="Form89"/></b>
+<b class="boxHeader"><mdrtb:message code="mdrtb.form89" text="Form89"/></b>
 <div class="box">
 
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
 		<c:if test="${error.code != 'methodInvocation'}">
-			<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+			<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 		</c:if>	
 	</c:forEach>
 	<br/>
@@ -695,7 +695,7 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.form89.registrationDate" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.registrationDate" text="Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="encounterDatetime" startValue="${form89.encounterDatetime}"/></td>
 </tr>
 
@@ -703,7 +703,7 @@
 
 <table>
 <tr id="oblastDiv">
-			<td align="right"><spring:message code="mdrtb.oblast" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.oblast" /></td>
 			<td><select name="oblast" id="oblast" onchange="fun1()" >
 					<option value=""></option>
 					<c:forEach var="o" items="${oblasts}">
@@ -713,7 +713,7 @@
 		</tr>
 		
 		<tr id="districtDiv">
-			<td align="right"><spring:message code="mdrtb.district" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.district" /></td>
 			<td><select name="district" id="district" onchange="fun2()" >
 					<option value=""></option>
 					<c:forEach var="dist" items="${districts}">
@@ -723,7 +723,7 @@
 		</tr>
 		
 		<tr id="facilityDiv">
-			<td align="right"><spring:message code="mdrtb.facility" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.facility" /></td>
 			<td><select name="facility" id="facility">
 					<option value=""></option>
 					<c:forEach var="f" items="${facilities}">
@@ -738,47 +738,47 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.tb03.name" text="Name"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.name" text="Name"/>:</td>
 <td>${form89.patientName}</td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.tb03.tb03RegistrationNumber" text="TB03RegistrationNumber"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.tb03.tb03RegistrationNumber" text="TB03RegistrationNumber"/>:</td>
 <%-- <td><input name="tb03RegistrationNumber" size="12" value="${form89.tb03RegistrationNumber}"/></td> --%>
 <td>${tbProgram.patientIdentifier.identifier }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.yearOfRegistration" text="TB03 Reg Year"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.yearOfRegistration" text="TB03 Reg Year"/>:</td>
 <td>${form89.yearOfTB03Registration}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.gender" text="Gender"/>:</td>
+<td><mdrtb:message code="mdrtb.gender" text="Gender"/>:</td>
 <td>${form89.gender}</td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.form89.ageAtRegistration" text="Age at Registration"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.form89.ageAtRegistration" text="Age at Registration"/>:</td>
 <%-- <td><input name="ageAtRegistration" size="8" value="${form89.ageAtRegistration}"/></td> --%>
 <td>${form89.ageAtRegistration}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.dateOfBirth" text="Date of Birth"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.dateOfBirth" text="Date of Birth"/>:</td>
 <td><openmrs:formatDate date="${form89.dateOfBirth}" format="${_dateFormatDisplay}"/></td>
 </tr>
  
 
 
 <tr>
-<td><spring:message code="mdrtb.tb03.address" text="Residential Address"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.address" text="Residential Address"/>:</td>
 <td>${form89.address }</td>
 </tr>
 
 <c:if test="${form89.isChildbearingAge eq true}">
 <tr>
-<td><spring:message code="mdrtb.pregnant" text="pregz"/>:</td>
+<td><mdrtb:message code="mdrtb.pregnant" text="pregz"/>:</td>
 <td><select name="pregnant">
 <option value=""></option>
 <c:forEach var="opt" items="${yesno}">
@@ -790,7 +790,7 @@
 </c:if>
 
 <tr>
-<td><spring:message code="mdrtb.form89.locationType" text="Resident"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.locationType" text="Resident"/>:</td>
 <td><select name="locationType">
 <option value=""></option>
 <c:forEach var="type" items="${locationtypes}">
@@ -801,7 +801,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.profession" text="Profession"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.profession" text="Profession"/>:</td>
 <td><select name="profession">
 <option value=""></option>
 <c:forEach var="prof" items="${professions}">
@@ -812,7 +812,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.populationCategory" text="PopCat" />:</td>
+<td><mdrtb:message code="mdrtb.form89.populationCategory" text="PopCat" />:</td>
 <td><select name="populationCategory" id="populationCategory" onChange="cooToggle()">
 <option value=""></option>
 <c:forEach var="cat" items="${populationcategories}">
@@ -824,12 +824,12 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.form89.countryOfOrigin" text="countryOfOrigin"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.countryOfOrigin" text="countryOfOrigin"/>:</td>
 <td><input name="countryOfOrigin" id="countryOfOrigin" size="30" value="${form89.countryOfOrigin}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.placeOfDetection" text="DetPlace"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.placeOfDetection" text="DetPlace"/>:</td>
 <td><select name="placeOfDetection">
 <option value=""></option>
 <c:forEach var="p" items="${places}">
@@ -840,12 +840,12 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.dateFirstSeekingHelp" text="dateFirstSeekingHelp"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.dateFirstSeekingHelp" text="dateFirstSeekingHelp"/>:</td>
 <td><openmrs_tag:dateField formFieldName="dateFirstSeekingHelp" startValue="${form89.dateFirstSeekingHelp}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.circumstancesOfDetection" text="CPlace"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.circumstancesOfDetection" text="CPlace"/>:</td>
 <td><select name="circumstancesOfDetection" id="circumstancesOfDetection" onChange="codToggle()">
 <option value=""></option>
 <c:forEach var="p" items="${circumstances}">
@@ -856,17 +856,17 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.cityOfOrigin" text="cityOfOrigin"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cityOfOrigin" text="cityOfOrigin"/>:</td>
 <td><input name="cityOfOrigin" id="cityOfOrigin" size="30" value="${form89.cityOfOrigin}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.dateOfReturn" text="dateOfReturn"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.dateOfReturn" text="dateOfReturn"/>:</td>
 <td><openmrs_tag:dateField formFieldName="dateOfReturn" startValue="${form89.dateOfReturn}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.methodOfDetection" text="mDet"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.methodOfDetection" text="mDet"/>:</td>
 <td><select name="methodOfDetection" id="methodOfDetection" onChange="modToggle()">
 <option value=""></option>
 <c:forEach var="p" items="${methods}">
@@ -877,18 +877,18 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.otherMethodOfDetection" text="otherMethodOfDetection"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.otherMethodOfDetection" text="otherMethodOfDetection"/>:</td>
 <td><input name="otherMethodOfDetection" id="otherMethodOfDetection" size="30" value="${form89.otherMethodOfDetection}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
 <td>${form89.anatomicalSite.displayString}</td>
 </tr>
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><spring:message code="mdrtb.form89.eptbSite" text="EP Site"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.eptbSite" text="EP Site"/>:</td>
 <td><select name="eptbSite">
 <option value=""></option>
 <c:forEach var="p" items="${epsites}">
@@ -901,7 +901,7 @@
 
 <c:if test="${form89.isPulmonary eq true}">
 <tr>
-<td><spring:message code="mdrtb.form89.ptbSite" text="P Site"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.ptbSite" text="P Site"/>:</td>
 <td><select name="ptbLocation">
 <option value=""></option>
 <c:forEach var="p" items="${psites}">
@@ -914,7 +914,7 @@
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><spring:message code="mdrtb.form89.eptbLocation" text="EP Location"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.eptbLocation" text="EP Location"/>:</td>
 <td><select name="epLocation">
 <option value=""></option>
 <c:forEach var="p" items="${eplocations}">
@@ -926,7 +926,7 @@
 </c:if>
 
 <tr>
-<td><spring:message code="mdrtb.form89.presenceOfDecay" text="Decay"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.presenceOfDecay" text="Decay"/>:</td>
 <td>
 <select name="presenceOfDecay">
 <option value=""></option>
@@ -940,22 +940,22 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.form89.dateOfDecaySurvey" text="dateOfDecaySurvey"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.dateOfDecaySurvey" text="dateOfDecaySurvey"/>:</td>
 <td><openmrs_tag:dateField formFieldName="dateOfDecaySurvey" startValue="${form89.dateOfDecaySurvey}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.complication" text="complication"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.complication" text="complication"/>:</td>
 <td><input name="complication" id="complication" size="45" value="${form89.complication}"/></td>
 </tr>
 
 </table>
 
-<spring:message code="mdrtb.form89.comorbidities" text="Comorb"/>
+<mdrtb:message code="mdrtb.form89.comorbidities" text="Comorb"/>
 <table>
 
 <tr>
-<td><spring:message code="mdrtb.form89.diabetes" text="diabetes"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.diabetes" text="diabetes"/>:</td>
 <td><select name="diabetes">
 <option value=""></option>
 <c:forEach var="p" items="${diabetesOptions}">
@@ -966,7 +966,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.cnsdl" text="cnsdl"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cnsdl" text="cnsdl"/>:</td>
 <td><select name="cnsdl">
 <option value=""></option>
 <c:forEach var="p" items="${cnsdlOptions}">
@@ -977,7 +977,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.htHeartDisease" text="htHeartDisease"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.htHeartDisease" text="htHeartDisease"/>:</td>
 <td><select name="htHeartDisease">
 <option value=""></option>
 <c:forEach var="p" items="${htHeartDiseaseOptions}">
@@ -988,7 +988,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.ulcer" text="ulcer"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.ulcer" text="ulcer"/>:</td>
 <td><select name="ulcer">
 <option value=""></option>
 <c:forEach var="p" items="${ulcerOptions}">
@@ -999,7 +999,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.mentalDisorder" text="mentalDisorder"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.mentalDisorder" text="mentalDisorder"/>:</td>
 <td><select name="mentalDisorder">
 <option value=""></option>
 <c:forEach var="p" items="${mentalDisorderOptions}">
@@ -1012,7 +1012,7 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.form89.ibc20" text="ibc20"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.ibc20" text="ibc20"/>:</td>
 <td>${form89.ibc20.displayString}</td>
 <%-- <td><select name="ibc20">
 <option value=""></option>
@@ -1024,7 +1024,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.cancer" text="cancer"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cancer" text="cancer"/>:</td>
 <td><select name="cancer">
 <option value=""></option>
 <c:forEach var="p" items="${cancerOptions}">
@@ -1035,7 +1035,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.hepatitis" text="hepatitis"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.hepatitis" text="hepatitis"/>:</td>
 <td><select name="hepatitis">
 <option value=""></option>
 <c:forEach var="p" items="${hepatitisOptions}">
@@ -1046,7 +1046,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.kidneyDisease" text="kidneyDisease"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.kidneyDisease" text="kidneyDisease"/>:</td>
 <td><select name="kidneyDisease">
 <option value=""></option>
 <c:forEach var="p" items="${kidneyDiseaseOptions}">
@@ -1057,7 +1057,7 @@
 </tr>
 
 <%-- <tr>
-<td><spring:message code="mdrtb.form89.noDisease" text="noDisease"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.noDisease" text="noDisease"/>:</td>
 <td><select name="noDisease">
 <option value=""></option>
 <c:forEach var="p" items="${noDiseaseOptions}">
@@ -1068,7 +1068,7 @@
 </tr> --%>
 
 <tr>
-<td><spring:message code="mdrtb.form89.otherDisease" text="otherDisease"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.otherDisease" text="otherDisease"/>:</td>
 <td><input name="otherDisease" size="8" value="${form89.otherDisease}"/></td>
 </tr>
 
@@ -1079,17 +1079,17 @@
 <table>
 
 <tr>
-<td><spring:message code="mdrtb.form89.cmacDate" text="CMAC Date"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cmacDate" text="CMAC Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="cmacDate" startValue="${form89.cmacDate}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.cmacNumber" text="CMAC Number"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.cmacNumber" text="CMAC Number"/>:</td>
 <td><input name="cmacNumber" size="8" value="${form89.cmacNumber}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.prescribedTreatment" text="prescribedTreatment"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.prescribedTreatment" text="prescribedTreatment"/>:</td>
 <td><select name="prescribedTreatment">
 <option value=""></option>
 <c:forEach var="p" items="${gptOptions}">
@@ -1100,7 +1100,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.placeOfCommission" text="placeOfCommission"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.placeOfCommission" text="placeOfCommission"/>:</td>
 <td><select name="placeOfCommission">
 <option value=""></option>
 <c:forEach var="p" items="${cecOptions}">
@@ -1111,19 +1111,19 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.nameOfDoctor" text="DocName"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.nameOfDoctor" text="DocName"/>:</td>
 <td><input name="nameOfDoctor" size="20" value="${form89.nameOfDoctor}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.form89.form89Date" text="form89Date"/>:</td>
+<td><mdrtb:message code="mdrtb.form89.form89Date" text="form89Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="form89Date" startValue="${form89.form89Date}"/></td>
 </tr>
 
 
 </table>
 
-<button type="submit"><spring:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><spring:message code="mdrtb.cancel" text="Cancel"/></button>
+<button type="submit"><mdrtb:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><mdrtb:message code="mdrtb.cancel" text="Cancel"/></button>
 	
 </form>
 

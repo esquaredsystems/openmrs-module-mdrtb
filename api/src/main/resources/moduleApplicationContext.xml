@@ -44,6 +44,36 @@
         </property>
     </bean>
 
+    <!-- Wraps MessagePropertyService methods in DB transactions and OpenMRS interceptors -->
+    <bean id="mdrtb.MessagePropertyService"
+            class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager">
+            <ref bean="transactionManager" />
+        </property>
+        <property name="target">
+            <bean class="org.openmrs.module.mdrtb.api.MessagePropertyServiceImpl">
+				<property name="messagePropertyDao" ref="mdrtb.MessagePropertyDao" />
+            </bean>
+        </property>
+        <property name="preInterceptors">
+            <ref bean="serviceInterceptors" />
+        </property>
+        <property name="transactionAttributeSource">
+            <ref bean="transactionAttributeSource" />
+        </property>
+    </bean>
+
+    <!-- Adds MessagePropertyService to OpenMRS context so it can be accessed
+    calling Context.getService(MessagePropertyService.class) -->
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list>
+                <value>org.openmrs.module.mdrtb.api.MessagePropertyService</value>
+                <ref bean="mdrtb.MessagePropertyService" />
+            </list>
+        </property>
+    </bean>
+
     <!-- Wraps LabTestService in a CGLIB proxy so Context.getService(LabTestService.class) works -->
     <bean id="mdrtb.LabTestService"
             class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">

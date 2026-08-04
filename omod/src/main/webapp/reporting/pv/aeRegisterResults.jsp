@@ -8,7 +8,7 @@ response.setDateHeader ("Expires", -1);
 %>
 <html>
 <head>
-	<title><spring:message code="mdrtb.pv.register.title"/></title>
+	<title><mdrtb:message code="mdrtb.pv.register.title"/></title>
 	<meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
 
 </head>
@@ -24,9 +24,9 @@ response.setDateHeader ("Expires", -1);
 		function printForm() {
 			var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-		    mywindow.document.write('<html><head><title><spring:message code="mdrtb.pv.register.title" text="AE Register"/></title>');
+		    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.pv.register.title" text="AE Register"/></title>');
 		    mywindow.document.write('</head><body >');
-		   // mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+		   // mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
 		    mywindow.document.write(document.getElementById("ae").innerHTML);
 		    
 		    mywindow.document.write('</body></html>');
@@ -167,7 +167,7 @@ response.setDateHeader ("Expires", -1);
 			}
 			$(document).ready(function(){
 				$("#tableToSql").bind("click", function() {
-					if(confirm('<spring:message code="mdrtb.closeReportMessage" />') ) {
+					if(confirm('<mdrtb:message code="mdrtb.closeReportMessage" />') ) {
 						savePdf("closeReport.form", "AE", "aeResults");
 					}
 				});
@@ -186,7 +186,7 @@ response.setDateHeader ("Expires", -1);
 <table border="0" width="100%">
 	<tbody>
 		<tr>
-			<td align="center" style="font-size:14px; font-weight:bold;border:0px" width="100%"><spring:message code="mdrtb.pv.register.title"/></td>
+			<td align="center" style="font-size:14px; font-weight:bold;border:0px" width="100%"><mdrtb:message code="mdrtb.pv.register.title"/></td>
 			<!-- <td align="right" style="font-size:14px; font-weight:bold;border:0px" valign="top" width="10%">AE</td> -->
 		</tr>
 	</tbody>
@@ -195,15 +195,15 @@ response.setDateHeader ("Expires", -1);
 <table width="100%" border="1">
 <tr>
 <td>
-<spring:message code="mdrtb.tb07u.nameOfFacility"/>: <u>${fName}</u><br/>
-<spring:message code="mdrtb.tb07u.regionCityDistrict"/>: <u> ${oName}/${dName} </u><br/>
-<spring:message code="mdrtb.tb07u.tbCoordinatorName"/>: ___________________ </br>
-<spring:message code="mdrtb.tb07u.signature"/>: _________________
+<mdrtb:message code="mdrtb.tb07u.nameOfFacility"/>: <u>${fName}</u><br/>
+<mdrtb:message code="mdrtb.tb07u.regionCityDistrict"/>: <u> ${oName}/${dName} </u><br/>
+<mdrtb:message code="mdrtb.tb07u.tbCoordinatorName"/>: ___________________ </br>
+<mdrtb:message code="mdrtb.tb07u.signature"/>: _________________
 </td>
 
 <td>
-<spring:message code="mdrtb.pv.quarter" />,<spring:message code="mdrtb.pv.year" />: <u>${quarter}, ${year}</u></br>
-<spring:message code="mdrtb.pv.reportDate" />:<u>&nbsp; ${reportDate}</u>
+<mdrtb:message code="mdrtb.pv.quarter" />,<mdrtb:message code="mdrtb.pv.year" />: <u>${quarter}, ${year}</u></br>
+<mdrtb:message code="mdrtb.pv.reportDate" />:<u>&nbsp; ${reportDate}</u>
 </td>
 </tr>
 
@@ -215,47 +215,47 @@ response.setDateHeader ("Expires", -1);
 			style="width: 980px;">
 			<tbody>
 				<tr>
-					<th rowspan="2"><spring:message code="mdrtb.pv.serialNumber"
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.serialNumber"
 							text="serialz" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.patientId" text="patz" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.patientName" text="namez" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.patientBirthdate"
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.patientId" text="patz" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.patientName" text="namez" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.patientBirthdate"
 							text="dobz" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.onsetDate" text="datez" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.adverseEvent" text="aez" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.diagnosticInvestigation"
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.onsetDate" text="datez" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.adverseEvent" text="aez" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.diagnosticInvestigation"
 							text="diz" /></th>
-					<th colspan="2"><spring:message code="mdrtb.pv.register.typeOfEvent" text="typez" /></th>
+					<th colspan="2"><mdrtb:message code="mdrtb.pv.register.typeOfEvent" text="typez" /></th>
 					
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.requiringAncillary"
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.requiringAncillary"
 							text="ancz" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.requiringChanges"
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.requiringChanges"
 							text="ancz" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.suspectedDrug" text="drugz" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.suspectedDrugTxStartDate"
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.suspectedDrug" text="drugz" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.suspectedDrugTxStartDate"
 							text="drugz" /></th>
 					
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.actionTaken" text="actionz" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.actionOutcome"
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.actionTaken" text="actionz" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.actionOutcome"
 							text="outcomez" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.treatmentRegimenAtOnset"
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.treatmentRegimenAtOnset"
 							text="regimenz" /></th>
 
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.drugRechallenge" text="rcz" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.causalityAssessment" text="car" /></th>
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.yellowCardDate"
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.drugRechallenge" text="rcz" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.causalityAssessment" text="car" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.yellowCardDate"
 							text="Yellowz" /></th>
 
-					<!-- <th rowspan="2"><spring:message code="mdrtb.pv.outcomeDate" text="datez"/></th>
-		<th rowspan="2"><spring:message code="mdrtb.pv.eventOnsetLocation" text="placez"/></th>
-		<th rowspan="2"><spring:message code="mdrtb.pv.meddraCode" text="codez"/></th>-->
+					<!-- <th rowspan="2"><mdrtb:message code="mdrtb.pv.outcomeDate" text="datez"/></th>
+		<th rowspan="2"><mdrtb:message code="mdrtb.pv.eventOnsetLocation" text="placez"/></th>
+		<th rowspan="2"><mdrtb:message code="mdrtb.pv.meddraCode" text="codez"/></th>-->
 
-					<th rowspan="2"><spring:message code="mdrtb.pv.register.comments" text="Commentz" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.comments" text="Commentz" /></th>
 				</tr>
 				
 				<tr>
-					<th><spring:message code="mdrtb.pv.register.serious" text="seriousz" /></th>
-					<th><spring:message code="mdrtb.pv.register.ofSpecialInterest" text="specialz" /></th>
+					<th><mdrtb:message code="mdrtb.pv.register.serious" text="seriousz" /></th>
+					<th><mdrtb:message code="mdrtb.pv.register.ofSpecialInterest" text="specialz" /></th>
 				</tr>
 				
 				<tr>
@@ -315,13 +315,13 @@ response.setDateHeader ("Expires", -1);
 
 </div>
 		
-		<input type="button" onclick="tableToExcel('ae', 'AE')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
-		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<spring:message code='mdrtb.exportToPdfBtn' />" /> -->
+		<input type="button" onclick="tableToExcel('ae', 'AE')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
+		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<mdrtb:message code='mdrtb.exportToPdfBtn' />" /> -->
 		<openmrs:hasPrivilege privilege="Manage Report Closing">
-		<input type="button" id="tableToSql" name="tableToSql" value="<spring:message code='mdrtb.closeReportBtn' />" />
+		<input type="button" id="tableToSql" name="tableToSql" value="<mdrtb:message code='mdrtb.closeReportBtn' />" />
 		</openmrs:hasPrivilege>
-		<input type="button" id="back" name="back" value="<spring:message code='mdrtb.back' />" onclick="document.location.href='${pageContext.request.contextPath}/module/mdrtb/mdrtbIndex.form';" />
-		<input type="button" onclick="printForm()" value="<spring:message code='mdrtb.print' />" />
+		<input type="button" id="back" name="back" value="<mdrtb:message code='mdrtb.back' />" onclick="document.location.href='${pageContext.request.contextPath}/module/mdrtb/mdrtbIndex.form';" />
+		<input type="button" onclick="printForm()" value="<mdrtb:message code='mdrtb.print' />" />
 		
 		<script> 
 			console.log("${reportStatus}");

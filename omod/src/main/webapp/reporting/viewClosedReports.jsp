@@ -11,20 +11,20 @@
 	</head>
 	<body>
 		<h2>
-			<center><spring:message code="mdrtb.viewClosedReports" /></center>
+			<center><mdrtb:message code="mdrtb.viewClosedReports" /></center>
 		</h2>
 		<br/>
 		<table class="display" id="myTable" border="1">
 			<thead>
 				<tr>
-					<th><spring:message code="mdrtb.viewClosedReports.oblast" /></th>
-					<th><spring:message code="mdrtb.viewClosedReports.district" /></th>
-					<th><spring:message code="mdrtb.viewClosedReports.facility" /></th>
-					<th><spring:message code="mdrtb.viewClosedReports.year" /></th>
-					<th><spring:message code="mdrtb.viewClosedReports.quarter" /></th>
-					<th><spring:message code="mdrtb.viewClosedReports.month" /></th>
-					<th><spring:message code="mdrtb.viewClosedReports.reportName" /></th>
-					<th><spring:message code="mdrtb.viewClosedReports.reportDate" /></th>
+					<th><mdrtb:message code="mdrtb.viewClosedReports.oblast" /></th>
+					<th><mdrtb:message code="mdrtb.viewClosedReports.district" /></th>
+					<th><mdrtb:message code="mdrtb.viewClosedReports.facility" /></th>
+					<th><mdrtb:message code="mdrtb.viewClosedReports.year" /></th>
+					<th><mdrtb:message code="mdrtb.viewClosedReports.quarter" /></th>
+					<th><mdrtb:message code="mdrtb.viewClosedReports.month" /></th>
+					<th><mdrtb:message code="mdrtb.viewClosedReports.reportName" /></th>
+					<th><mdrtb:message code="mdrtb.viewClosedReports.reportDate" /></th>
 					<th colspan="2"></th>
 				</tr>
 			</thead>
@@ -108,7 +108,7 @@
 					cell.id="quarter_${reportIdLoop.index}";
 					cell.innerHTML = "${quarters[reportIdLoop.index]}";
 					<c:if test="${quarters[reportIdLoop.index]==''}">
-						cell.innerHTML = '<spring:message code="mdrtb.annual" />';
+						cell.innerHTML = '<mdrtb:message code="mdrtb.annual" />';
 					</c:if>
 					
 					//MONTH
@@ -126,8 +126,8 @@
 					cell.id="reportDate_${reportIdLoop.index}";
 					cell.innerHTML = "${reportDates[reportIdLoop.index]}";
 					
-					var viewBtnTxt = "<spring:message code='mdrtb.viewClosedReports.viewBtn' />";
-					var unlockBtnTxt = "<spring:message code='mdrtb.viewClosedReports.unlockBtn' />";
+					var viewBtnTxt = "<mdrtb:message code='mdrtb.viewClosedReports.viewBtn' />";
+					var unlockBtnTxt = "<mdrtb:message code='mdrtb.viewClosedReports.unlockBtn' />";
 					
 					
 					//VIEW
@@ -168,7 +168,7 @@
 				submitForm(id, "view");
 			}
 			function unlock(id) { 
-				if(confirm('<spring:message code="mdrtb.unlockClosedReportMessage" />')) {
+				if(confirm('<mdrtb:message code="mdrtb.unlockClosedReportMessage" />')) {
 					submitForm(id, "unlock");
 				}
 			}

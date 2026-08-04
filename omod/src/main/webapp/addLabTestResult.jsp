@@ -158,7 +158,7 @@ input[type=checkbox] {
 						otherwise="/login.htm"
 						redirect="/module/commonlabtest/addLabTestResult.form" />
 					<legend class="scheduler-border">
-						<spring:message code="commonlabtest.result.add" />
+						<mdrtb:message code="commonlabtest.result.add" />
 					</legend>
 				</c:when>
 				<c:otherwise>
@@ -166,7 +166,7 @@ input[type=checkbox] {
 						otherwise="/login.htm"
 						redirect="/module/commonlabtest/addLabTestResult.form" />
 					<legend class="scheduler-border">
-						<spring:message code="commonlabtest.result.edit" />
+						<mdrtb:message code="commonlabtest.result.edit" />
 					</legend>
 				</c:otherwise>
 			</c:choose>
@@ -182,7 +182,7 @@ input[type=checkbox] {
 			<openmrs:hasPrivilege privilege="Delete CommonLabTest Results">
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">
-						<spring:message code="commonlabtest.result.void" />
+						<mdrtb:message code="commonlabtest.result.void" />
 					</legend>
 					<form method="post"
 						action="${pageContext.request.contextPath}/module/commonlabtest/voidlabtestresult.form">
@@ -192,7 +192,7 @@ input[type=checkbox] {
 								<input value="${testOrderId}" hidden="true" id="testOrderId"
 									name="testOrderId"></input> <input value="${patientId}"
 									hidden="true" id="patientId" name="patientId"></input> <label
-									class="control-label" path="voidReason"> <spring:message
+									class="control-label" path="voidReason"> <mdrtb:message
 										code="general.reason" /><span class="required">*</span></label>
 							</div>
 							<div class="col-md-6">
@@ -204,7 +204,7 @@ input[type=checkbox] {
 						<div class="row">
 							<div class="col-md-2">
 								<input type="submit"
-									value="<spring:message code="commonlabtest.result.void" />"></input>
+									value="<mdrtb:message code="commonlabtest.result.void" />"></input>
 							</div>
 						</div>
 					</form>
@@ -363,7 +363,7 @@ function populateResultForm() {
         resultsItems = resultsItems.concat('</div></div>');
     } else {
         resultsItems = resultsItems.concat('<div class="row"><div class="col-sm-3 col-md-3 col-lg-3"></div><div class="col-sm-6 col-md-6 col-lg-6">');
-        resultsItems = resultsItems.concat('<label class="control-label" id=""><spring:message code="error.message.noAttributeType.found" /></label>');
+        resultsItems = resultsItems.concat('<label class="control-label" id=""><mdrtb:message code="error.message.noAttributeType.found" /></label>');
         resultsItems = resultsItems.concat('</div></div>');
     }
     //end

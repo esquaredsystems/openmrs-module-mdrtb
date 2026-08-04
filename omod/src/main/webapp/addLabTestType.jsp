@@ -77,7 +77,7 @@ legend.scheduler-border {
 					otherwise="/login.htm"
 					redirect="/module/commonlabtest/addLabTestType.form" />
 				<legend class="scheduler-border">
-					<spring:message code="commonlabtest.labtesttype.add" />
+					<mdrtb:message code="commonlabtest.labtesttype.add" />
 				</legend>
 			</c:if>
 			<c:if test="${not empty testType.referenceConcept.conceptId}">
@@ -85,7 +85,7 @@ legend.scheduler-border {
 					otherwise="/login.htm"
 					redirect="/module/commonlabtest/addLabTestType.form" />
 				<legend class="scheduler-border">
-					<spring:message code="commonlabtest.labtesttype.edit" />
+					<mdrtb:message code="commonlabtest.labtesttype.edit" />
 				</legend>
 			</c:if>
 			<form:form commandName="labTestType" id="testTypeForm"
@@ -95,7 +95,7 @@ legend.scheduler-border {
 					<div class="col-md-2">
 						<form:input path="labTestTypeId" hidden="true" id="labTestTypeId"></form:input>
 						<form:label class="control-label" path="referenceConcept">
-							<spring:message code="general.referenceConcept" />
+							<mdrtb:message code="general.referenceConcept" />
 							<span class="text-danger font-weight-bold">*</span>
 						</form:label>
 					</div>
@@ -111,7 +111,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="name">
-							<spring:message code="general.testName" />
+							<mdrtb:message code="general.testName" />
 							<span class="text-danger font-weight-bold">*</span>
 						</form:label>
 					</div>
@@ -125,7 +125,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="shortName">
-							<spring:message code="general.shortName" />
+							<mdrtb:message code="general.shortName" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -139,7 +139,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="description">
-							<spring:message code="general.description" />
+							<mdrtb:message code="general.description" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -151,7 +151,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="testGroup">
-							<spring:message code="general.testGroup" />
+							<mdrtb:message code="general.testGroup" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -167,7 +167,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="form-check-label" path="requiresSpecimen">
-							<spring:message code="general.requiresSpecimen" />
+							<mdrtb:message code="general.requiresSpecimen" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -185,7 +185,7 @@ legend.scheduler-border {
 					<div class="row">
 						<div class="col-md-2">
 							<form:label class="control-label" path="creator">
-								<spring:message code="general.createdBy" />
+								<mdrtb:message code="general.createdBy" />
 							</form:label>
 						</div>
 						<div class="col-md-6">
@@ -197,7 +197,7 @@ legend.scheduler-border {
 					<!-- UUID -->
 					<div class="row">
 						<div class="col-md-2">
-							<font color="#D0D0D0"><sub> <spring:message
+							<font color="#D0D0D0"><sub> <mdrtb:message
 										code="general.uuid" /></sub></font>
 						</div>
 						<div class="col-md-6">
@@ -226,7 +226,7 @@ legend.scheduler-border {
 
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">
-						<spring:message code="general.test.retire" />
+						<mdrtb:message code="general.test.retire" />
 					</legend>
 					<form method="post"
 						action="${pageContext.request.contextPath}/module/commonlabtest/retirelabtesttype.form"
@@ -236,7 +236,7 @@ legend.scheduler-border {
 							<div class="col-md-2">
 								<input value="${labTestType.uuid}" hidden="true" id="uuid"
 									name="uuid"></input> <label class="control-label"
-									path="retireReason"> <spring:message
+									path="retireReason"> <mdrtb:message
 										code="general.retireReason" /><span class="required">*</span></label>
 							</div>
 							<div class="col-md-6">

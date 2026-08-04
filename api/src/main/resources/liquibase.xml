@@ -704,4 +704,39 @@
             columnName="description" tableName="labtest_attribute_type"/>
 	</changeSet>
 
+	<!--
+		Localised UI strings for this module. Historically these lived only in the
+		messages*.properties bundles that OpenMRS loads into its DefaultMessageSourceService.
+		They are now mirrored into this table so that translations can be corrected in a running
+		system without repackaging the omod. MdrtbActivator seeds any rows that are missing
+		(it never overwrites rows that already exist) once this changeset has been applied, and
+		MdrtbService.getMessage() serves every lookup from an in-memory cache over this table.
+
+		'code' is capped at 190 characters so that the composite primary key stays inside the
+		767 byte per-column index limit of InnoDB's COMPACT/REDUNDANT row formats on utf8mb4
+		(190 * 4 = 760). The longest key currently shipped is 61 characters.
+	-->
+	<changeSet id="mdrtb-2026-08-02-message-properties" author="owais.hussain">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="message_properties" />
+			</not>
+		</preConditions>
+		<comment>
+			Creating the message_properties table
+		</comment>
+		<createTable tableName="message_properties">
+			<column name="lang" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="code" type="varchar(190)">
+				<constraints nullable="false" />
+			</column>
+			<column name="message" type="text" />
+		</createTable>
+
+		<addPrimaryKey constraintName="message_properties_pk"
+			tableName="message_properties" columnNames="lang, code" />
+	</changeSet>
+
 </databaseChangeLog>

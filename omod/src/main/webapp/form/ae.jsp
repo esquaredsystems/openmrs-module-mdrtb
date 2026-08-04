@@ -159,9 +159,9 @@
 	function printForm() {
 		var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-	    mywindow.document.write('<html><head><title><spring:message code="mdrtb.pv.aeForm" text="AE"/></title>');
+	    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></title>');
 	    mywindow.document.write('</head><body >');
-	    mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+	    mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
 	    mywindow.document.write(document.getElementById("ae").innerHTML);
 	    
 	    mywindow.document.write('</body></html>');
@@ -256,80 +256,80 @@
 		var encDate = document.getElementById("encounterDatetime").value;
 		var errorText = "";
 		if(encDate=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingOnsetDate"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingOnsetDate"/>' + "";
 			alert(errorText);
 			return false;
 		}
 
 		if(document.getElementById("adverseEvent").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingAdverseEvent"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingAdverseEvent"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if (dateInFuture(encDate)) {
-			errorText = ""  + '<spring:message code="mdrtb.pv.onsetDateInFuture"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.onsetDateInFuture"/>' + "";
 			alert(errorText);
 			return false;
 		}
 
 		if(document.getElementById("diagnosticInvestigation").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingDiagnosticInvestigation"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingDiagnosticInvestigation"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if(document.getElementById("suspectedDrug").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingSuspectedDrug"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingSuspectedDrug"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if(document.getElementById("typeOfEvent").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingTypeOfEvent"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingTypeOfEvent"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if(document.getElementById("typeOfEvent").value==710 && document.getElementById("typeOfSAE").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingSAEType"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingSAEType"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if(document.getElementById("typeOfEvent").value==711 && document.getElementById("typeOfSpecialEvent").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingSpecialEventType"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingSpecialEventType"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		var ycDateString = document.getElementById("yellowCardDate").value;
 		if (dateInFuture(ycDateString)) {
-			errorText = ""  + '<spring:message code="mdrtb.pv.yellowCardDateBeforeOnsetDate"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.yellowCardDateBeforeOnsetDate"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if(document.getElementById("causalityDrug1").value!="" && document.getElementById("causalityAssessmentResult1").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingCAR1"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingCAR1"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if(document.getElementById("causalityDrug2").value!="" && document.getElementById("causalityAssessmentResult2").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingCAR2"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingCAR2"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if(document.getElementById("causalityDrug3").value!="" && document.getElementById("causalityAssessmentResult3").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingCAR3"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingCAR3"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if(document.getElementById("actionTaken").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.actionTaken"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.actionTaken"/>' + "";
 			alert(errorText);
 			return false;
 		}
@@ -337,14 +337,14 @@
 		var outcomeDateString = document.getElementById("outcomeDate").value;
 		
 		if(document.getElementById("actionOutcome").value!="" && document.getElementById("actionOutcome").value!=731 && document.getElementById("actionOutcome").value!=730 && outcomeDateString=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingOutcomeDate"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingOutcomeDate"/>' + "";
 			alert(errorText);
 			return false;
 		}
 		
 		if(outcomeDateString != "") {
 			if(document.getElementById("actionOutcome").value=="") {
-				errorText = ""  + '<spring:message code="mdrtb.pv.missingOutcome"/>' + "";
+				errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingOutcome"/>' + "";
 				alert(errorText);
 				return false;
 			}
@@ -356,14 +356,14 @@
 		
 			var outcomeDate = new Date(year, month, day);
 			if(outcomeDate.getTime() < onsetDate.getTime()) {
-				errorText = ""  + '<spring:message code="mdrtb.pv.outcomeDateBeforeOnsetDate"/>' + "";
+				errorText = ""  + '<mdrtb:message code="mdrtb.pv.outcomeDateBeforeOnsetDate"/>' + "";
 				alert(errorText);
 				return false;
 			}
 		}
 		
 		if(document.getElementById("meddraCode").value=="") {
-			errorText = ""  + '<spring:message code="mdrtb.pv.missingMeddraCode"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.pv.missingMeddraCode"/>' + "";
 			alert(errorText);
 			return false;
 		}
@@ -376,17 +376,17 @@
 
 <div> <!-- start of page div -->
 
-&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><spring:message code="mdrtb.back" text="Back"/></a>
+&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><mdrtb:message code="mdrtb.back" text="Back"/></a>
 <br/><br/>
 
 <!-- VIEW BOX -->
 <div id="viewVisit" <c:if test="${(empty aeForm.id) || (aeForm.id == -1) || fn:length(errors.allErrors) > 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.pv.aeForm" text="AE Formz"/>
-<span style="position: absolute; right:30px;"><a id="print" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="printForm()"><spring:message code="mdrtb.print" text="AE"/></a>
-&nbsp;&nbsp;<a id="export" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="tableToExcel('ae', 'AE')"><spring:message code="mdrtb.exportToExcel" text="Export"/></a>
+<b class="boxHeader"><mdrtb:message code="mdrtb.pv.aeForm" text="AE Formz"/>
+<span style="position: absolute; right:30px;"><a id="print" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="printForm()"><mdrtb:message code="mdrtb.print" text="AE"/></a>
+&nbsp;&nbsp;<a id="export" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="tableToExcel('ae', 'AE')"><mdrtb:message code="mdrtb.exportToExcel" text="Export"/></a>
 <openmrs:hasPrivilege privilege="Edit DOTS-MDR Data">
-&nbsp;&nbsp;<a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><spring:message code="mdrtb.edit" text="edit"/></a>
-&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${aeForm.id}&patientProgramId=${patientProgramId}&patientId=${aeForm.patient.id }" class="delete" onclick="return confirm('<spring:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><spring:message code="mdrtb.delete" text="delete"/></a>
+&nbsp;&nbsp;<a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><mdrtb:message code="mdrtb.edit" text="edit"/></a>
+&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${aeForm.id}&patientProgramId=${patientProgramId}&patientId=${aeForm.patient.id }" class="delete" onclick="return confirm('<mdrtb:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><mdrtb:message code="mdrtb.delete" text="delete"/></a>
 </openmrs:hasPrivilege>
 </span>
 
@@ -397,28 +397,28 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.pv.onsetDate" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.onsetDate" text="Date"/>:</td>
 <td><openmrs:formatDate date="${aeForm.encounterDatetime}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 
 <tr>
-<td><spring:message code="mdrtb.oblast" text="Oblast"/>:</td>
+<td><mdrtb:message code="mdrtb.oblast" text="Oblast"/>:</td>
 <td>${aeForm.location.stateProvince}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.district" text="District"/>:</td>
+<td><mdrtb:message code="mdrtb.district" text="District"/>:</td>
 <td>${aeForm.location.countyDistrict}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.facility" text="Facility"/>:</td>
+<td><mdrtb:message code="mdrtb.facility" text="Facility"/>:</td>
 <td>${aeForm.location.address4}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.adverseEvent" text="AE"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.adverseEvent" text="AE"/>:</td>
 <td>${aeForm.adverseEvent.displayString}</td>
 </tr>
 
@@ -426,116 +426,116 @@
 
 <table>
 <tr>
-<td colspan="2"><spring:message code="mdrtb.pv.diagnosticInvestigation" text="AE"/>:</td>
+<td colspan="2"><mdrtb:message code="mdrtb.pv.diagnosticInvestigation" text="AE"/>:</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.clinicalScreen" text="Cs"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.clinicalScreen" text="Cs"/>:</td>
 <td>${aeForm.clinicalScreenDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.visualAcuity" text="Va"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.visualAcuity" text="Va"/>:</td>
 <td>${aeForm.visualAcuityDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.hearingTest" text="Ht"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.hearingTest" text="Ht"/>:</td>
 <td>${aeForm.simpleHearingTestDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.audiogram" text="Aud"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.audiogram" text="Aud"/>:</td>
 <td>${aeForm.audiogramDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.neuroInvestigations" text="Ni"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.neuroInvestigations" text="Ni"/>:</td>
 <td>${aeForm.neuroInvestigationDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.serumCreatinine" text="Sc"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.serumCreatinine" text="Sc"/>:</td>
 <td>${aeForm.serumCreatnineDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.alt" text="Alt"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.alt" text="Alt"/>:</td>
 <td>${aeForm.altDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.ast" text="Ast"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.ast" text="Ast"/>:</td>
 <td>${aeForm.astDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.bilirubin" text="Brb"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.bilirubin" text="Brb"/>:</td>
 <td>${aeForm.bilirubinDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.alkalinePhosphatase" text="Akp"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.alkalinePhosphatase" text="Akp"/>:</td>
 <td>${aeForm.alkalinePhosphataseDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.ygt" text="Ygt"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.ygt" text="Ygt"/>:</td>
 <td>${aeForm.ygtDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.ecg" text="Ecg"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.ecg" text="Ecg"/>:</td>
 <td>${aeForm.ecgDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.lipase" text="Lps"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.lipase" text="Lps"/>:</td>
 <td>${aeForm.lipaseDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.amylase" text="Am"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.amylase" text="Am"/>:</td>
 <td>${aeForm.amylaseDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.potassium" text="P"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.potassium" text="P"/>:</td>
 <td>${aeForm.potassiumDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.magnesium" text="Mg"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.magnesium" text="Mg"/>:</td>
 <td>${aeForm.magnesiumDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.calcium" text="C"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.calcium" text="C"/>:</td>
 <td>${aeForm.calciumDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.albumin" text="Alb"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.albumin" text="Alb"/>:</td>
 <td>${aeForm.albuminDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.cbc" text="Cbc"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.cbc" text="Cbc"/>:</td>
 <td>${aeForm.cbcDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.bloodGlucose" text="Bg"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.bloodGlucose" text="Bg"/>:</td>
 <td>${aeForm.bloodGlucoseDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.thyroidTest" text="Tt"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.thyroidTest" text="Tt"/>:</td>
 <td>${aeForm.thyroidTestDone.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.other" text="Ot"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.other" text="Ot"/>:</td>
 <td>${aeForm.otherTestDone.displayString}</td>
 </tr>
 
@@ -543,93 +543,93 @@
 <table>
 
 <tr>
-<td><spring:message code="mdrtb.pv.treatmentRegimenAtOnset" text="Reg"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.treatmentRegimenAtOnset" text="Reg"/>:</td>
 <td>${aeForm.treatmentRegimenAtOnset}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.suspectedDrug" text="Drug"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.suspectedDrug" text="Drug"/>:</td>
 <td>${aeForm.suspectedDrug}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.typeOfEvent" text="Event"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.typeOfEvent" text="Event"/>:</td>
 <td>${aeForm.typeOfEvent.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.typeOfSAE" text="SAE"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.typeOfSAE" text="SAE"/>:</td>
 <td>${aeForm.typeOfSAE.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.typeOfSpecialEvent" text="Special"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.typeOfSpecialEvent" text="Special"/>:</td>
 <td>${aeForm.typeOfSpecialEvent.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.requiresAncillaryDrugs" text="Anc"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.requiresAncillaryDrugs" text="Anc"/>:</td>
 <td>${aeForm.requiresAncillaryDrugs.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.requiresDoseChange" text="Dose"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.requiresDoseChange" text="Dose"/>:</td>
 <td>${aeForm.requiresDoseChange.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.yellowCardDate" text="Yellow"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.yellowCardDate" text="Yellow"/>:</td>
 <td><openmrs:formatDate date="${aeForm.yellowCardDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.causalityDrug1" text="CD1"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityDrug1" text="CD1"/>:</td>
 <td>${aeForm.causalityDrug1.displayString}</td>
-<td><spring:message code="mdrtb.pv.causalityAssessmentResult1" text="CAR1"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityAssessmentResult1" text="CAR1"/>:</td>
 <td>${aeForm.causalityAssessmentResult1.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.causalityDrug2" text="CD2"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityDrug2" text="CD2"/>:</td>
 <td>${aeForm.causalityDrug2.displayString}</td>
-<td><spring:message code="mdrtb.pv.causalityAssessmentResult2" text="CAR2"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityAssessmentResult2" text="CAR2"/>:</td>
 <td>${aeForm.causalityAssessmentResult2.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.causalityDrug3" text="CD3"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityDrug3" text="CD3"/>:</td>
 <td>${aeForm.causalityDrug3.displayString}</td>
-<td><spring:message code="mdrtb.pv.causalityAssessmentResult3" text="CAR3"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityAssessmentResult3" text="CAR3"/>:</td>
 <td>${aeForm.causalityAssessmentResult3.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.actionTaken" text="Action"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.actionTaken" text="Action"/>:</td>
 <td>${aeForm.actionTakenSummary}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.actionOutcome" text="Outcome"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.actionOutcome" text="Outcome"/>:</td>
 <td>${aeForm.actionOutcome.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.outcomeDate" text="OutcmeDate"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.outcomeDate" text="OutcmeDate"/>:</td>
 <td><openmrs:formatDate date="${aeForm.outcomeDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.meddraCode" text="MeddraCode"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.meddraCode" text="MeddraCode"/>:</td>
 <td>${aeForm.meddraCode.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.drugRechallenge" text="RC"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.drugRechallenge" text="RC"/>:</td>
 <td>${aeForm.drugRechallenge.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.comments" text="comment"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.comments" text="comment"/>:</td>
 <td>${aeForm.comments}</td>
 </tr>
 
@@ -645,14 +645,14 @@
 
 <!-- EDIT BOX -->
 <div id="editVisit" <c:if test="${(!empty aeForm.id) && (aeForm.id != -1) && fn:length(errors.allErrors) == 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.pv.aeForm" text="aeForm"/></b>
+<b class="boxHeader"><mdrtb:message code="mdrtb.pv.aeForm" text="aeForm"/></b>
 <div class="box">
 
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
 		<c:if test="${error.code != 'methodInvocation'}">
-			<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+			<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 		</c:if>	
 	</c:forEach>
 	<br/>
@@ -667,12 +667,12 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.pv.onsetDate" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.onsetDate" text="Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="encounterDatetime" startValue="${aeForm.encounterDatetime}"/></td>
 </tr>
 
 <%-- <tr>
-<td><spring:message code="mdrtb.provider" text="Provider"/>:</td>
+<td><mdrtb:message code="mdrtb.provider" text="Provider"/>:</td>
 <td>
 <select name="provider">
 <option value=""></option>
@@ -684,7 +684,7 @@
 </tr> --%>
  
 <%-- <tr>
-<td><spring:message code="mdrtb.location" text="Location"/>:</td>
+<td><mdrtb:message code="mdrtb.location" text="Location"/>:</td>
 <td>
 <select name="location">
 <option value=""></option>
@@ -698,7 +698,7 @@
 
 <%-- <table>
 <tr id="oblastDiv">
-			<td align="right"><spring:message code="mdrtb.oblast" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.oblast" /></td>
 			<td><select name="oblast" id="oblast" onchange="fun1()" >
 					<option value=""></option>
 					<c:forEach var="o" items="${oblasts}">
@@ -708,7 +708,7 @@
 		</tr>
 		
 		<tr id="districtDiv">
-			<td align="right"><spring:message code="mdrtb.district" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.district" /></td>
 			<td><select name="district" id="district" onchange="fun2()" >
 					<option value=""></option>
 					<c:forEach var="dist" items="${districts}">
@@ -718,7 +718,7 @@
 		</tr>
 		
 		<tr id="facilityDiv">
-			<td align="right"><spring:message code="mdrtb.facility" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.facility" /></td>
 			<td><select name="facility" id="facility" >
 					<option value=""></option>
 					<c:forEach var="f" items="${facilities}">
@@ -732,22 +732,22 @@
 <table>
 
 <tr>
-<td><spring:message code="mdrtb.oblast" text="Oblast"/>:</td>
+<td><mdrtb:message code="mdrtb.oblast" text="Oblast"/>:</td>
 <td>${aeForm.location.stateProvince}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.district" text="District"/>:</td>
+<td><mdrtb:message code="mdrtb.district" text="District"/>:</td>
 <td>${aeForm.location.countyDistrict}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.facility" text="Facility"/>:</td>
+<td><mdrtb:message code="mdrtb.facility" text="Facility"/>:</td>
 <td>${aeForm.location.address4}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.adverseEvent" text="AE"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.adverseEvent" text="AE"/>:</td>
 <td>
 <select name="adverseEvent" id="adverseEvent">
 <option value=""></option>
@@ -763,11 +763,11 @@
 
 <table>
 <tr>
-<td colspan="2"><spring:message code="mdrtb.pv.diagnosticInvestigation" text="AE"/>:</td>
+<td colspan="2"><mdrtb:message code="mdrtb.pv.diagnosticInvestigation" text="AE"/>:</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.clinicalScreen" text="Cs"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.clinicalScreen" text="Cs"/>:</td>
 <td>
 <select name="clinicalScreenDone" id="clinicalScreenDone">
 <option value=""></option>
@@ -779,7 +779,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.visualAcuity" text="Va"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.visualAcuity" text="Va"/>:</td>
 <td>
 <select name="visualAcuityDone" id="visualAcuityDone">
 <option value=""></option>
@@ -791,7 +791,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.hearingTest" text="Ht"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.hearingTest" text="Ht"/>:</td>
 <td>
 <select name="simpleHearingTestDone" id="simpleHearingTestDone">
 <option value=""></option>
@@ -803,7 +803,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.audiogram" text="Aud"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.audiogram" text="Aud"/>:</td>
 <td>
 <select name="audiogramDone" id="audiogramDone">
 <option value=""></option>
@@ -815,7 +815,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.neuroInvestigations" text="Ni"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.neuroInvestigations" text="Ni"/>:</td>
 <td>
 <select name="neuroInvestigationDone" id="neuroInvestigationDone">
 <option value=""></option>
@@ -827,7 +827,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.serumCreatinine" text="Sc"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.serumCreatinine" text="Sc"/>:</td>
 <td>
 <select name="serumCreatnineDone" id="serumCreatnineDone">
 <option value=""></option>
@@ -839,7 +839,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.alt" text="alt"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.alt" text="alt"/>:</td>
 <td>
 <select name="altDone" id="altDone">
 <option value=""></option>
@@ -851,7 +851,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.ast" text="ast"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.ast" text="ast"/>:</td>
 <td>
 <select name="astDone" id="astDone">
 <option value=""></option>
@@ -863,7 +863,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.bilirubin" text="Brb"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.bilirubin" text="Brb"/>:</td>
 <td>
 <select name="bilirubinDone" id="bilirubinDone">
 <option value=""></option>
@@ -875,7 +875,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.alkalinePhosphatase" text="akp"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.alkalinePhosphatase" text="akp"/>:</td>
 <td>
 <select name="alkalinePhosphataseDone" id="alkalinePhosphataseDone">
 <option value=""></option>
@@ -887,7 +887,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.ygt" text="ygt"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.ygt" text="ygt"/>:</td>
 <td>
 <select name="ygtDone" id="ygtDone">
 <option value=""></option>
@@ -899,7 +899,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.ecg" text="ecg"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.ecg" text="ecg"/>:</td>
 <td>
 <select name="ecgDone" id="ecgDone">
 <option value=""></option>
@@ -911,7 +911,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.lipase" text="lps"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.lipase" text="lps"/>:</td>
 <td>
 <select name="lipaseDone" id="lipaseDone">
 <option value=""></option>
@@ -923,7 +923,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.amylase" text="am"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.amylase" text="am"/>:</td>
 <td>
 <select name="amylaseDone" id="amylaseDone">
 <option value=""></option>
@@ -935,7 +935,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.potassium" text="p"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.potassium" text="p"/>:</td>
 <td>
 <select name="potassiumDone" id="potassiumDone">
 <option value=""></option>
@@ -947,7 +947,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.magnesium" text="mg"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.magnesium" text="mg"/>:</td>
 <td>
 <select name="magnesiumDone" id="magnesiumDone">
 <option value=""></option>
@@ -959,7 +959,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.calcium" text="c"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.calcium" text="c"/>:</td>
 <td>
 <select name="calciumDone" id="calciumDone">
 <option value=""></option>
@@ -971,7 +971,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.albumin" text="alb"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.albumin" text="alb"/>:</td>
 <td>
 <select name="albuminDone" id="albuminDone">
 <option value=""></option>
@@ -983,7 +983,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.cbc" text="cbc"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.cbc" text="cbc"/>:</td>
 <td>
 <select name="cbcDone" id="cbcDone">
 <option value=""></option>
@@ -995,7 +995,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.bloodGlucose" text="bg"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.bloodGlucose" text="bg"/>:</td>
 <td>
 <select name="bloodGlucoseDone" id="bloodGlucoseDone">
 <option value=""></option>
@@ -1007,7 +1007,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.thyroidTest" text="tt"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.thyroidTest" text="tt"/>:</td>
 <td>
 <select name="thyroidTestDone" id="thyroidTestDone">
 <option value=""></option>
@@ -1019,7 +1019,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.other" text="ot"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.other" text="ot"/>:</td>
 <td>
 <select name="otherTestDone" id="otherTestDone">
 <option value=""></option>
@@ -1035,7 +1035,7 @@
 <table>
 
 <tr>
-<td><spring:message code="mdrtb.pv.treatmentRegimenAtOnset" text="regimen"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.treatmentRegimenAtOnset" text="regimen"/>:</td>
 <td>
 <select name="treatmentRegimenAtOnset" id="treatmentRegimenAtOnset" onChange="drugToggle()">
 <option value=""></option>
@@ -1048,12 +1048,12 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.suspectedDrug" text="Drug"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.suspectedDrug" text="Drug"/>:</td>
 <td><input name="suspectedDrug" id="suspectedDrug" size="25" value="${aeForm.suspectedDrug}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.typeOfEvent" text="Eventz" />:</td>
+<td><mdrtb:message code="mdrtb.pv.typeOfEvent" text="Eventz" />:</td>
 <td>
 <select name="typeOfEvent" id="typeOfEvent" onChange="typeToggle()">
 <option value=""></option>
@@ -1066,7 +1066,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.typeOfSAE" text="SAE"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.typeOfSAE" text="SAE"/>:</td>
 <td>
 <select name="typeOfSAE" id="typeOfSAE">
 <option value=""></option>
@@ -1079,7 +1079,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.typeOfSpecialEvent" text="Special"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.typeOfSpecialEvent" text="Special"/>:</td>
 <td>
 <select name="typeOfSpecialEvent" id="typeOfSpecialEvent">
 <option value=""></option>
@@ -1092,7 +1092,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.requiresAncillaryDrugs" text="Ance"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.requiresAncillaryDrugs" text="Ance"/>:</td>
 <td>
 <select name="requiresAncillaryDrugs" id="requiresAncillaryDrugs">
 <option value=""></option>
@@ -1105,7 +1105,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.requiresDoseChange" text="Dose"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.requiresDoseChange" text="Dose"/>:</td>
 <td>
 <select name="requiresDoseChange" id="requiresDoseChange">
 <option value=""></option>
@@ -1119,12 +1119,12 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.pv.yellowCardDate" text="Yellow"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.yellowCardDate" text="Yellow"/>:</td>
 <td><openmrs_tag:dateField formFieldName="yellowCardDate" startValue="${aeForm.yellowCardDate}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.causalityDrug1" text="CD1"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityDrug1" text="CD1"/>:</td>
 <td>
 <select name="causalityDrug1" id="causalityDrug1" onChange="car1Toggle()">
 <option value=""></option>
@@ -1133,7 +1133,7 @@
 </c:forEach>
 </select>
 </td>
-<td><spring:message code="mdrtb.pv.causalityAssessmentResult1" text="CAR1"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityAssessmentResult1" text="CAR1"/>:</td>
 <td>
 <select name="causalityAssessmentResult1" id="causalityAssessmentResult1" >
 <option value=""></option>
@@ -1145,7 +1145,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.causalityDrug2" text="CD2"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityDrug2" text="CD2"/>:</td>
 <td>
 <select name="causalityDrug2" id="causalityDrug2" onChange="car2Toggle()">
 <option value=""></option>
@@ -1154,7 +1154,7 @@
 </c:forEach>
 </select>
 </td>
-<td><spring:message code="mdrtb.pv.causalityAssessmentResult2" text="CAR2"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityAssessmentResult2" text="CAR2"/>:</td>
 <td>
 <select name="causalityAssessmentResult2" id="causalityAssessmentResult2">
 <option value=""></option>
@@ -1166,7 +1166,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.causalityDrug3" text="CD3"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityDrug3" text="CD3"/>:</td>
 <td>
 <select name="causalityDrug3" id="causalityDrug3" onChange="car3Toggle()">
 <option value=""></option>
@@ -1175,7 +1175,7 @@
 </c:forEach>
 </select>
 </td>
-<td><spring:message code="mdrtb.pv.causalityAssessmentResult3" text="CAR3"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.causalityAssessmentResult3" text="CAR3"/>:</td>
 <td>
 <select name="causalityAssessmentResult3" id="causalityAssessmentResult3">
 <option value=""></option>
@@ -1187,7 +1187,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.actionTaken" text="Action"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.actionTaken" text="Action"/>:</td>
 <td>
 <select name="actionTaken" id="actionTaken">
 <option value=""></option>
@@ -1199,7 +1199,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.actionTaken" text="Action"/>2:</td>
+<td><mdrtb:message code="mdrtb.pv.actionTaken" text="Action"/>2:</td>
 <td>
 <select name="actionTaken2" id="actionTaken2">
 <option value=""></option>
@@ -1211,7 +1211,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.actionTaken" text="Action"/>3:</td>
+<td><mdrtb:message code="mdrtb.pv.actionTaken" text="Action"/>3:</td>
 <td>
 <select name="actionTaken3" id="actionTaken3">
 <option value=""></option>
@@ -1223,7 +1223,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.actionTaken" text="Action"/>4:</td>
+<td><mdrtb:message code="mdrtb.pv.actionTaken" text="Action"/>4:</td>
 <td>
 <select name="actionTaken4" id="actionTaken4">
 <option value=""></option>
@@ -1235,7 +1235,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.actionTaken" text="Action"/>5:</td>
+<td><mdrtb:message code="mdrtb.pv.actionTaken" text="Action"/>5:</td>
 <td>
 <select name="actionTaken5" id="actionTaken5">
 <option value=""></option>
@@ -1248,7 +1248,7 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.pv.actionOutcome" text="Action"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.actionOutcome" text="Action"/>:</td>
 <td>
 <select name="actionOutcome" id="actionOutcome" onChange="dateToggle()">
 <option value=""></option>
@@ -1260,12 +1260,12 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.outcomeDate" text="OutcomeDate"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.outcomeDate" text="OutcomeDate"/>:</td>
 <td><openmrs_tag:dateField formFieldName="outcomeDate" startValue="${aeForm.outcomeDate}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.meddraCode" text="medra"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.meddraCode" text="medra"/>:</td>
 <td>
 <select name="meddraCode" id="meddraCode">
 <option value=""></option>
@@ -1277,7 +1277,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.pv.drugRechallenge" text="RC"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.drugRechallenge" text="RC"/>:</td>
 <td>
 <select name="drugRechallenge" id="drugRechallenge">
 <option value=""></option>
@@ -1291,7 +1291,7 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.pv.comments" text="comment"/>:</td>
+<td><mdrtb:message code="mdrtb.pv.comments" text="comment"/>:</td>
 <td><textarea rows="4" cols="50" name="comments">${aeForm.comments}</textarea></td>
 </tr>
 
@@ -1301,7 +1301,7 @@
 </table>
 
 
-<button type="submit"><spring:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><spring:message code="mdrtb.cancel" text="Cancel"/></button>
+<button type="submit"><mdrtb:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><mdrtb:message code="mdrtb.cancel" text="Cancel"/></button>
 	
 </form>
 

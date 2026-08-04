@@ -15,7 +15,7 @@ function printForm() {
 	var listName = "${listName}";
     mywindow.document.write('<html><head><title>' + listName + '</title>');
     mywindow.document.write('</head><body >');
-   // mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+   // mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
     mywindow.document.write(document.getElementById("list").innerHTML);
     
     mywindow.document.write('</body></html>');
@@ -40,25 +40,25 @@ var tableToExcel = (function() {
   }
 })()
 </script>
-<b class="boxHeader" style="margin:0px"><spring:message code="mdrtb.patientLists" text="Lists"/></b>
+<b class="boxHeader" style="margin:0px"><mdrtb:message code="mdrtb.patientLists" text="Lists"/></b>
 
-<a href="${pageContext.request.contextPath}/module/mdrtb/reporting/patientLists.form"><spring:message code="mdrtb.back" text="Back"/></a><br/><br/>
+<a href="${pageContext.request.contextPath}/module/mdrtb/reporting/patientLists.form"><mdrtb:message code="mdrtb.back" text="Back"/></a><br/><br/>
 <div id="list">
-<spring:message code="mdrtb.oblast" text="Oblast"/>: ${oblast }<br/>
-<spring:message code="mdrtb.district" text="District"/>: ${district}<br/>
-<spring:message code="mdrtb.facility" text="Facility"/>: ${facility}<br/>
-<spring:message code="mdrtb.year" text="Year"/>: ${year }<br/>
-<spring:message code="mdrtb.quarter" text="Quarter"/>: ${quarter }<br/>
-<spring:message code="mdrtb.month" text="Month"/>: ${month }<br/>
-<spring:message code="mdrtb.list" text="List"/>: ${listName }<br/>
+<mdrtb:message code="mdrtb.oblast" text="Oblast"/>: ${oblast }<br/>
+<mdrtb:message code="mdrtb.district" text="District"/>: ${district}<br/>
+<mdrtb:message code="mdrtb.facility" text="Facility"/>: ${facility}<br/>
+<mdrtb:message code="mdrtb.year" text="Year"/>: ${year }<br/>
+<mdrtb:message code="mdrtb.quarter" text="Quarter"/>: ${quarter }<br/>
+<mdrtb:message code="mdrtb.month" text="Month"/>: ${month }<br/>
+<mdrtb:message code="mdrtb.list" text="List"/>: ${listName }<br/>
 <br/>
 ${report}
 
 <br/>
 </div>
-<input type="button" onclick="tableToExcel('list', 'list')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
-<input type="button" onclick="printForm()" value="<spring:message code='mdrtb.print' />" />
+<input type="button" onclick="tableToExcel('list', 'list')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
+<input type="button" onclick="printForm()" value="<mdrtb:message code='mdrtb.print' />" />
 <br><br>
-<a href="${pageContext.request.contextPath}/module/mdrtb/reporting/patientLists.form"><spring:message code="mdrtb.back" text="Back"/></a><br/><br/>
+<a href="${pageContext.request.contextPath}/module/mdrtb/reporting/patientLists.form"><mdrtb:message code="mdrtb.back" text="Back"/></a><br/><br/>
 
 <%@ include file="/WEB-INF/template/footer.jsp" %>

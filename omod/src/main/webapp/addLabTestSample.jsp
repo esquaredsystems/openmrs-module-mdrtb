@@ -76,7 +76,7 @@ legend.scheduler-border {
 					otherwise="/login.htm"
 					redirect="/module/commonlabtest/addLabTestSample.form" />
 				<legend class="scheduler-border">
-					<spring:message code="commonlabtest.labtestsample.add" />
+					<mdrtb:message code="commonlabtest.labtestsample.add" />
 				</legend>
 			</c:if>
 			<c:if test="${not empty testSample.specimenType}">
@@ -84,7 +84,7 @@ legend.scheduler-border {
 					otherwise="/login.htm"
 					redirect="/module/commonlabtest/addLabTestSample.form" />
 				<legend class="scheduler-border">
-					<spring:message code="commonlabtest.labtestsample.edit" />
+					<mdrtb:message code="commonlabtest.labtestsample.edit" />
 				</legend>
 			</c:if>
 			<form:form modelAttribute="testSample" id="testSampleform"
@@ -102,7 +102,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="specimenType">
-							<spring:message code="general.specimenType" />
+							<mdrtb:message code="general.specimenType" />
 							<span class="text-danger required">*</span>
 						</form:label>
 					</div>
@@ -124,7 +124,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="specimenSite">
-							<spring:message code="general.specimenSite" />
+							<mdrtb:message code="general.specimenSite" />
 							<span class="text-danger required">*</span>
 						</form:label>
 					</div>
@@ -147,7 +147,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="quantity">
-							<spring:message code="commonlabtest.labtestsample.quantity" />
+							<mdrtb:message code="commonlabtest.labtestsample.quantity" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -161,7 +161,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="units">
-							<spring:message code="commonlabtest.labtestsample.unit" />
+							<mdrtb:message code="commonlabtest.labtestsample.unit" />
 						</form:label>
 					</div>
 					<div class="col-md-6">
@@ -181,7 +181,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="sampleIdentifier">
-							<spring:message
+							<mdrtb:message
 								code="commonlabtest.labtestsample.sampleIdentifier" />
 							<span class="text-danger required">*</span>
 						</form:label>
@@ -197,7 +197,7 @@ legend.scheduler-border {
 				<div class="row">
 					<div class="col-md-2">
 						<form:label class="control-label" path="collectionDate">
-							<spring:message code="commonlabtest.labtestsample.collectionDate" />
+							<mdrtb:message code="commonlabtest.labtestsample.collectionDate" />
 							<span class="text-danger required">*</span>
 						</form:label>
 					</div>
@@ -226,7 +226,7 @@ legend.scheduler-border {
 
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">
-						<spring:message code="commonlabtest.labtestsample.void" />
+						<mdrtb:message code="commonlabtest.labtestsample.void" />
 					</legend>
 					<form method="post"
 						action="${pageContext.request.contextPath}/module/commonlabtest/voidlabtestsample.form">
@@ -235,7 +235,7 @@ legend.scheduler-border {
 							<div class="col-md-2">
 								<input value="${testSample.uuid}" hidden="true" id="uuid"
 									name="uuid"></input> <label class="control-label"
-									path="voidReason"> <spring:message
+									path="voidReason"> <mdrtb:message
 										code="general.reason" /><span class="required">*</span></label>
 							</div>
 							<div class="col-md-6">

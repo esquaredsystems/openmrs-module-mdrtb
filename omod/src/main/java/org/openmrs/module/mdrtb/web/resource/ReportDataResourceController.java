@@ -30,6 +30,7 @@ import io.swagger.models.ModelImpl;
 import io.swagger.models.properties.IntegerProperty;
 import io.swagger.models.properties.RefProperty;
 import io.swagger.models.properties.StringProperty;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/reportdata", supportedClass = SimpleReportData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class ReportDataResourceController extends DataDelegatingCrudResource<SimpleReportData> implements Searchable {
@@ -120,8 +121,8 @@ public class ReportDataResourceController extends DataDelegatingCrudResource<Sim
 	public SimpleReportData getByUniqueId(String uuid) {
 		ReportData reportData = service.getReportDataByUuid(uuid);
 		if (reportData == null) {
-			throw new ResourceNotFoundException(Context.getMessageSourceService()
-			        .getMessage("mdrtb.missingScannedLabReport"));
+			throw new ResourceNotFoundException(Context.getService(MessagePropertyService.class).getMessage(
+			    "mdrtb.missingScannedLabReport"));
 		}
 		return new SimpleReportData(reportData, true);
 	}

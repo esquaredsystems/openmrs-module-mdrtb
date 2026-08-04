@@ -157,7 +157,7 @@
 		var encDate = document.getElementById("encounterDatetime").value;
 		var errorText = "";
 		if(encDate=="") {
-			errorText = ""  + '<spring:message code="mdrtb.error.missingCollectionDate"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.error.missingCollectionDate"/>' + "";
 			alert(errorText);
 			return false;
 		}
@@ -171,7 +171,7 @@
 		var now = new Date();
 		
 		if(dateCollected.getTime() > now.getTime()) {
-			errorText = ""  + '<spring:message code="mdrtb.error.collectionDateInFuture"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.error.collectionDateInFuture"/>' + "";
 			alert(errorText);
 			return false;
 		}
@@ -184,14 +184,14 @@
 
 <div> <!-- start of page div -->
 
-&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><spring:message code="mdrtb.back" text="Back"/></a>
+&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><mdrtb:message code="mdrtb.back" text="Back"/></a>
 <br/><br/>
 
 <!-- VIEW BOX -->
 <div id="viewVisit" <c:if test="${(empty dst.id) || (dst.id == -1) || fn:length(errors.allErrors) > 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.dst" text="DST Form"/>
+<b class="boxHeader"><mdrtb:message code="mdrtb.dst" text="DST Form"/>
 <openmrs:hasPrivilege privilege="Edit DOTS-MDR Data">
-<span style="position: absolute; right:30px;"><a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><spring:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${dst.id}&patientProgramId=${patientProgramId}&patientId=${dst.patient.id }" class="delete" onclick="return confirm('<spring:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><spring:message code="mdrtb.delete" text="delete"/></a></span>
+<span style="position: absolute; right:30px;"><a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><mdrtb:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${dst.id}&patientProgramId=${patientProgramId}&patientId=${dst.patient.id }" class="delete" onclick="return confirm('<mdrtb:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><mdrtb:message code="mdrtb.delete" text="delete"/></a></span>
 </openmrs:hasPrivilege>
 </b>
 <div class="box">
@@ -199,28 +199,28 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.dateCollected" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.dateCollected" text="Date"/>:</td>
 <td><openmrs:formatDate date="${dst.encounterDatetime}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.monthOfTreatment" text="TxMonth"/>:</td>
+<td><mdrtb:message code="mdrtb.monthOfTreatment" text="TxMonth"/>:</td>
 <td>${dst.monthOfTreatment}</td>
 </tr>
 
 
 <%-- <tr>
-<td><spring:message code="mdrtb.provider" text="Provider"/>:</td>
+<td><mdrtb:message code="mdrtb.provider" text="Provider"/>:</td>
 <td>${dst.provider.personName}</td>
 </tr> --%>
  
 <tr>
-<td><spring:message code="mdrtb.location" text="Location"/>:</td>
+<td><mdrtb:message code="mdrtb.location" text="Location"/>:</td>
 <td>${dst.location.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.specimenId" text="SpecimenId"/>:</td>
+<td><mdrtb:message code="mdrtb.specimenId" text="SpecimenId"/>:</td>
 <td>${dst.specimenId }</td>
 </tr>
 
@@ -229,10 +229,10 @@
 <br/>
 <table cellpadding="0">
 <tr>
-<td style="font-weight:bold"><u><spring:message code="mdrtb.drug" text="Drug"/></u></td>
-<!--  <td style="font-weight:bold"><u><spring:message code="mdrtb.concentration" text="Concentration"/></u></td> -->
-<td style="font-weight:bold"><u><spring:message code="mdrtb.result" text="Result"/></u></td>
-<!--  <td style="font-weight:bold"><u><spring:message code="mdrtb.colonies" text="Colonies"/></u></td> -->
+<td style="font-weight:bold"><u><mdrtb:message code="mdrtb.drug" text="Drug"/></u></td>
+<!--  <td style="font-weight:bold"><u><mdrtb:message code="mdrtb.concentration" text="Concentration"/></u></td> -->
+<td style="font-weight:bold"><u><mdrtb:message code="mdrtb.result" text="Result"/></u></td>
+<!--  <td style="font-weight:bold"><u><mdrtb:message code="mdrtb.colonies" text="Colonies"/></u></td> -->
 </tr>
 <c:forEach var="drugType" items="${drugTypes}">
 <c:if test="${!empty resultsMap[drugType.id]}">
@@ -255,14 +255,14 @@
 
 <!-- EDIT BOX -->
 <div id="editVisit" <c:if test="${(!empty dst.id) && (dst.id != -1) && fn:length(errors.allErrors) == 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.dst" text="DST"/></b>
+<b class="boxHeader"><mdrtb:message code="mdrtb.dst" text="DST"/></b>
 <div class="box">
 
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
 		<c:if test="${error.code != 'methodInvocation'}">
-			<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+			<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 		</c:if>	
 	</c:forEach>
 	<br/>
@@ -276,17 +276,17 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.dateCollected" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.dateCollected" text="Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="encounterDatetime" startValue="${dst.encounterDatetime}"/></td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.monthOfTreatment" text="TxMonth"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.monthOfTreatment" text="TxMonth"/>:</td>
 <td><input name="monthOfTreatment" size="2" value="${dst.monthOfTreatment}"/></td>
 </tr>
 
 <%-- <tr>
-<td><spring:message code="mdrtb.provider" text="Provider"/>:</td>
+<td><mdrtb:message code="mdrtb.provider" text="Provider"/>:</td>
 <td>
 <select name="provider">
 <option value=""></option>
@@ -298,7 +298,7 @@
 </tr> --%>
  
 <tr>
-<td><spring:message code="mdrtb.location" text="Location"/>:</td>
+<td><mdrtb:message code="mdrtb.location" text="Location"/>:</td>
 <td>
 <select name="location">
 <option value=""></option>
@@ -311,7 +311,7 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.specimenId" text="SpecimenId"/>:</td>
+<td><mdrtb:message code="mdrtb.specimenId" text="SpecimenId"/>:</td>
 <td><input type="text" size="10" name="specimenId" value="${dst.specimenId}"/></td>
 </tr>
 
@@ -322,10 +322,10 @@
 <table cellpadding="0">
 
 <tr>
-<td style="font-weight:bold"><u><spring:message code="mdrtb.drug" text="Drug"/></u></td>
-<%-- <td style="font-weight:bold"><u><spring:message code="mdrtb.concentration" text="Concentration"/></u></td> --%>
-<td style="font-weight:bold"><u><spring:message code="mdrtb.result" text="Result"/></u></td>
-<%-- <td style="font-weight:bold"><u><spring:message code="mdrtb.colonies" text="Colonies"/></u></td> --%>
+<td style="font-weight:bold"><u><mdrtb:message code="mdrtb.drug" text="Drug"/></u></td>
+<%-- <td style="font-weight:bold"><u><mdrtb:message code="mdrtb.concentration" text="Concentration"/></u></td> --%>
+<td style="font-weight:bold"><u><mdrtb:message code="mdrtb.result" text="Result"/></u></td>
+<%-- <td style="font-weight:bold"><u><mdrtb:message code="mdrtb.colonies" text="Colonies"/></u></td> --%>
 </tr>
 <c:forEach var="drugType" items="${drugTypes}">
 	<c:if test="${!empty resultsMap[drugType.id]}">
@@ -335,7 +335,7 @@
 			<!-- <td><nobr>${dstResult.concentration}</nobr></td> -->
 			<td><nobr>${dstResult.result.displayString}</nobr></td>
 			<!-- <td><nobr>${dstResult.colonies}</nobr></td> -->
-			<td><button class="removeDstResult" value="${dstResult.id}" type="button"><spring:message code="mdrtb.remove" text="Remove"/></button>
+			<td><button class="removeDstResult" value="${dstResult.id}" type="button"><mdrtb:message code="mdrtb.remove" text="Remove"/></button>
 				<input type="hidden" id="removeDstResult${dstResult.id}" name="removeDstResult" value=""/></td>
 			</tr>
 		</c:forEach>
@@ -359,12 +359,12 @@
 		</select>
 	</td>
 	<%-- <td><input type="text" size="6" name="addDstResult${i.count}.colonies" value="${! empty addDstResultColonies ? addDstResultColonies[i.count - 1] : ''}" class="dstColonies" style="display:none"/></td> --%>
-	<td><button class="removeDstResultRow" value="${i.count}" type="button"><spring:message code="mdrtb.remove" text="Remove"/></button></td>	
+	<td><button class="removeDstResultRow" value="${i.count}" type="button"><mdrtb:message code="mdrtb.remove" text="Remove"/></button></td>	
 	</tr>
 </c:forEach>
 
 	<tr>
-	<td><button class="addDstResultRow" value="${test.id}" type="button"><spring:message code="mdrtb.addDSTResult" text="Add DST result"/></button></td>
+	<td><button class="addDstResultRow" value="${test.id}" type="button"><mdrtb:message code="mdrtb.addDSTResult" text="Add DST result"/></button></td>
 	<!--  set to 2 for TJK. Change to 4 if showing conc and colonies -->
 	<td colspan="2"/>
 	</tr>
@@ -374,7 +374,7 @@
 
 <!-- end of the DST table -->
 
-<button type="submit"><spring:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><spring:message code="mdrtb.cancel" text="Cancel"/></button>
+<button type="submit"><mdrtb:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><mdrtb:message code="mdrtb.cancel" text="Cancel"/></button>
 	
 </form>
 

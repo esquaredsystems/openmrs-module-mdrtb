@@ -164,9 +164,12 @@ public class TB03FormResourceController extends DataDelegatingCrudResource<Simpl
 			List<Encounter> encs = Context.getEncounterService().getEncountersByPatient(patient);
 			for (Encounter encounter : encs) {
 				if (encounter.getEncounterType().equals(MdrtbConstants.ET_TB03_TB_INTAKE)) {
-					TB03Form tb03 = new TB03Form(encounter);
-					simpleTB03Forms.add(new SimpleTB03Form(tb03));
-				}
+                    try {
+                        TB03Form tb03 = new TB03Form(encounter);
+                        simpleTB03Forms.add(new SimpleTB03Form(tb03));
+                    } catch (Exception ignored) {
+                    }
+                }
 			}
 			return new NeedsPaging<>(simpleTB03Forms, context);
 		}

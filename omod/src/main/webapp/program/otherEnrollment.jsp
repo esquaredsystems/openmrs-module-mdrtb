@@ -115,14 +115,14 @@ function fun2()
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
-		<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+		<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 	</c:forEach>
 	<br/>
 </c:if>
 
 
 <!-- PROGRAM ENROLLMENT BOX-->
-<b class="boxHeader" style="margin:0px"><spring:message code="mdrtb.enrollment.enroll" text="Enroll in Program"/></b>
+<b class="boxHeader" style="margin:0px"><mdrtb:message code="mdrtb.enrollment.enroll" text="Enroll in Program"/></b>
 <div class="box" style="margin:0px">
 
 <c:choose>
@@ -132,17 +132,17 @@ function fun2()
 <table cellspacing="2" cellpadding="2">
 
 <tr>
-<td><spring:message code="mdrtb.patientidentifier" text="Patient Identifier"/></td>
+<td><mdrtb:message code="mdrtb.patientidentifier" text="Patient Identifier"/></td>
 <td><input name="identifierValue" id="identifierValue" type="text" value="${identifierValue}"></td>
 </tr>
 
 <tr><td>
-<spring:message code="mdrtb.enrollment.date" text="Enrollment Date"/></td>
+<mdrtb:message code="mdrtb.enrollment.date" text="Enrollment Date"/></td>
 <td><openmrs_tag:dateField formFieldName="dateEnrolled" startValue="${program.dateEnrolled}"/></td>
 </td></tr>
 
 <%-- <tr><td>
-<spring:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td><td>
+<mdrtb:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td><td>
 <select name="location">
 <option value=""/>
 <c:forEach var="location" items="${locations}">
@@ -155,7 +155,7 @@ function fun2()
 
 <table>
 	<tr id="oblastDiv">
-		<td align="right"><spring:message code="mdrtb.oblast" /></td>
+		<td align="right"><mdrtb:message code="mdrtb.oblast" /></td>
 		<td><select name="oblast" id="oblast" onchange="fun1()">
 				<option value=""></option>
 				<c:forEach var="o" items="${oblasts}">
@@ -165,7 +165,7 @@ function fun2()
 	</tr>
 		
 	<tr id="districtDiv">
-		<td align="right"><spring:message code="mdrtb.district" /></td>
+		<td align="right"><mdrtb:message code="mdrtb.district" /></td>
 		<td><select name="district" id="district" onchange="fun2()">
 				<option value=""></option>
 				<c:forEach var="dist" items="${districts}">
@@ -175,7 +175,7 @@ function fun2()
 	</tr>
 		
 	<tr id="facilityDiv">
-		<td align="right"><spring:message code="mdrtb.facility" /></td>
+		<td align="right"><mdrtb:message code="mdrtb.facility" /></td>
 		<td><select name="facility" id="facility">
 				<option value=""></option>
 				<c:forEach var="f" items="${facilities}">
@@ -189,7 +189,7 @@ function fun2()
 <table>
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:<br/>
+<mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:<br/>
 <select name="classificationAccordingToPatientGroups" id="classificationAccordingToPatientGroups">
 <option value=""/>
 <c:forEach var="classificationAccordingToPatientGroups" items="${classificationsAccordingToPatientGroups}">
@@ -199,7 +199,7 @@ function fun2()
 </td></tr>
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br/>
+<mdrtb:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br/>
 <select name="classificationAccordingToPreviousDrugUse" id="classificationAccordingToPreviousDrugUse">
 <option value=""/>
 <c:forEach var="classificationAccordingToPreviousDrugUse" items="${classificationsAccordingToPreviousDrugUseDOTS}">
@@ -209,7 +209,7 @@ function fun2()
 </td></tr>
 
 </table>
-<button type="submit"><spring:message code="mdrtb.enrollment.enroll" text="Enroll in Program"/>
+<button type="submit"><mdrtb:message code="mdrtb.enrollment.enroll" text="Enroll in Program"/>
 </form>
 </c:when>
 
@@ -224,12 +224,12 @@ function fun2()
 </tr>
 
 <tr><td>
-<spring:message code="mdrtb.enrollment.date" text="Enrollment Date"/></td>
+<mdrtb:message code="mdrtb.enrollment.date" text="Enrollment Date"/></td>
 <td><openmrs_tag:dateField formFieldName="dateEnrolled" startValue="${program.dateEnrolled}"/></td>
 </tr>
 
 <%-- <tr><td>
-	<spring:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td><td>
+	<mdrtb:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td><td>
 	<select name="location">
 	<option value=""/>
 	<c:forEach var="location" items="${locations}">
@@ -242,7 +242,7 @@ function fun2()
 
 <table>
 	<tr id="oblastDiv">
-		<td align="right"><spring:message code="mdrtb.oblast" /></td>
+		<td align="right"><mdrtb:message code="mdrtb.oblast" /></td>
 		<td><select name="oblast" id="oblast" onchange="fun1()">
 				<option value=""></option>
 				<c:forEach var="o" items="${oblasts}">
@@ -252,7 +252,7 @@ function fun2()
 	</tr>
 	
 	<tr id="districtDiv">
-		<td align="right"><spring:message code="mdrtb.district" /></td>
+		<td align="right"><mdrtb:message code="mdrtb.district" /></td>
 		<td><select name="district" id="district" onchange="fun2()">
 				<option value=""></option>
 				<c:forEach var="dist" items="${districts}">
@@ -262,7 +262,7 @@ function fun2()
 	</tr>
 	
 	<tr id="facilityDiv">
-		<td align="right"><spring:message code="mdrtb.facility" /></td>
+		<td align="right"><mdrtb:message code="mdrtb.facility" /></td>
 		<td><select name="facility" id="facility">
 				<option value=""></option>
 				<c:forEach var="f" items="${facilities}">
@@ -276,7 +276,7 @@ function fun2()
 <table>
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br/>
+<mdrtb:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br/>
 <select name="classificationAccordingToPreviousDrugUse" id="classificationAccordingToPreviousDrugUse">
 <option value=""/>
 <c:forEach var="classificationAccordingToPreviousDrugUse" items="${classificationsAccordingToPreviousDrugUse}">
@@ -286,7 +286,7 @@ function fun2()
 </td></tr>
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.tb03.registrationGroup" text="Registration Group - Previous Treatment"/>:<br/>
+<mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group - Previous Treatment"/>:<br/>
 <select name="classificationAccordingToPreviousTreatment" id="classificationAccordingToPreviousTreatment">
 <option value=""/>
 <c:forEach var="classificationAccordingToPreviousTreatment" items="${classificationsAccordingToPreviousTreatment}">
@@ -296,7 +296,7 @@ function fun2()
 </td></tr>
 
 </table>
-<button type="submit"><spring:message code="mdrtb.enrollment.enroll" text="Enroll in Program"/>
+<button type="submit"><mdrtb:message code="mdrtb.enrollment.enroll" text="Enroll in Program"/>
 </form>
 
 </c:otherwise>

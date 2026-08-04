@@ -8,7 +8,7 @@ response.setDateHeader ("Expires", -1);
 %>
 <html>
 <head>
-	<title><spring:message code="mdrtb.pv.qtrReportTitle"/></title>
+	<title><mdrtb:message code="mdrtb.pv.qtrReportTitle"/></title>
 	<meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
 
 </head>
@@ -24,9 +24,9 @@ response.setDateHeader ("Expires", -1);
 		function printForm() {
 			var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-		    mywindow.document.write('<html><head><title><spring:message code="mdrtb.pv.qtrReportTitle" text="AE Report"/></title>');
+		    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.pv.qtrReportTitle" text="AE Report"/></title>');
 		    mywindow.document.write('</head><body >');
-		   // mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+		   // mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
 		    mywindow.document.write(document.getElementById("ae").innerHTML);
 		    
 		    mywindow.document.write('</body></html>');
@@ -166,7 +166,7 @@ response.setDateHeader ("Expires", -1);
 			}
 			$(document).ready(function(){
 				$("#tableToSql").bind("click", function() {
-					if(confirm('<spring:message code="mdrtb.closeReportMessage" />') ) {
+					if(confirm('<mdrtb:message code="mdrtb.closeReportMessage" />') ) {
 						savePdf("closeReport.form", "AE", "aeResults");
 					}
 				});
@@ -185,7 +185,7 @@ response.setDateHeader ("Expires", -1);
 <table border="0" width="100%">
 	<tbody>
 		<tr>
-			<td align="center" style="font-size:14px; font-weight:bold;border:0px" width="90%"><spring:message code="mdrtb.pv.qtrReportTitle"/></td>
+			<td align="center" style="font-size:14px; font-weight:bold;border:0px" width="90%"><mdrtb:message code="mdrtb.pv.qtrReportTitle"/></td>
 			<td align="right" style="font-size:14px; font-weight:bold;border:0px" valign="top" width="10%">AE</td>
 		</tr>
 	</tbody>
@@ -194,62 +194,62 @@ response.setDateHeader ("Expires", -1);
 <table width="100%" border="1">
 <tr>
 <td>
-<spring:message code="mdrtb.tb07u.nameOfFacility"/>: <u>${fName}</u><br/>
-<spring:message code="mdrtb.tb07u.regionCityDistrict"/>: <u> ${oName}/${dName} </u><br/>
-<spring:message code="mdrtb.tb07u.tbCoordinatorName"/>: ___________________ </br>
-<spring:message code="mdrtb.tb07u.signature"/>: _________________
+<mdrtb:message code="mdrtb.tb07u.nameOfFacility"/>: <u>${fName}</u><br/>
+<mdrtb:message code="mdrtb.tb07u.regionCityDistrict"/>: <u> ${oName}/${dName} </u><br/>
+<mdrtb:message code="mdrtb.tb07u.tbCoordinatorName"/>: ___________________ </br>
+<mdrtb:message code="mdrtb.tb07u.signature"/>: _________________
 </td>
 
 <td>
-<spring:message code="mdrtb.pv.quarter" />,<spring:message code="mdrtb.pv.year" />: <u> ${quarter}, ${year}</u></br>
-<spring:message code="mdrtb.pv.reportDate" />:<u>&nbsp; ${reportDate}</u>
+<mdrtb:message code="mdrtb.pv.quarter" />,<mdrtb:message code="mdrtb.pv.year" />: <u> ${quarter}, ${year}</u></br>
+<mdrtb:message code="mdrtb.pv.reportDate" />:<u>&nbsp; ${reportDate}</u>
 </td>
 </tr>
 
 
 </table>
 
-<h5><spring:message code="mdrtb.pv.table1.title"/></h5>
+<h5><mdrtb:message code="mdrtb.pv.table1.title"/></h5>
 	<table border="1" cellpadding="1" cellspacing="1" dir="ltr"
 			style="width: 980px;">
 			<tbody>
 				<tr>
-					<th><spring:message code="mdrtb.pv.regimen"/></th>
-					<th><spring:message code="mdrtb.pv.table1.startingThisQuarter"/></th>
-					<th><spring:message code="mdrtb.pv.table1.onRegimen"/></th>
+					<th><mdrtb:message code="mdrtb.pv.regimen"/></th>
+					<th><mdrtb:message code="mdrtb.pv.table1.startingThisQuarter"/></th>
+					<th><mdrtb:message code="mdrtb.pv.table1.onRegimen"/></th>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.standardRegimen"/></td>
+					<td><mdrtb:message code="mdrtb.pv.standardRegimen"/></td>
 					<td align="center">${table1.standardRegimenStarting}</td>
 					<td align="center">${table1.standardRegimenEver}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.shortRegimen"/></td>
+					<td><mdrtb:message code="mdrtb.pv.shortRegimen"/></td>
 					<td align="center">${table1.shortRegimenStarting}</td>
 					<td align="center">${table1.shortRegimenEver}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.regimenWithBdq"/></td>
+					<td><mdrtb:message code="mdrtb.pv.regimenWithBdq"/></td>
 					<td align="center">${table1.regimenWithBdqStarting}</td>
 					<td align="center">${table1.regimenWithBdqEver}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.regimenWithDlm"/></td>
+					<td><mdrtb:message code="mdrtb.pv.regimenWithDlm"/></td>
 					<td align="center">${table1.regimenWithDlmStarting}</td>
 					<td align="center">${table1.regimenWithDlmEver}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.regimenWithBdqAndDlm"/></td>
+					<td><mdrtb:message code="mdrtb.pv.regimenWithBdqAndDlm"/></td>
 					<td align="center">${table1.regimenWithBdqDlmStarting}</td>
 					<td align="center">${table1.regimenWithBdqDlmEver}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.regimenWithCfzLzd"/></td>
+					<td><mdrtb:message code="mdrtb.pv.regimenWithCfzLzd"/></td>
 					<td align="center">${table1.regimenWithCfzLzdStarting}</td>
 					<td align="center">${table1.regimenWithCfzLzdEver}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.table1.otherRegimenSpecify"/></td>
+					<td><mdrtb:message code="mdrtb.pv.table1.otherRegimenSpecify"/></td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -258,23 +258,23 @@ response.setDateHeader ("Expires", -1);
 		</table>
 		
 		<br/><br/>
-		<h5><spring:message code="mdrtb.pv.table2.title"/></h5>
+		<h5><mdrtb:message code="mdrtb.pv.table2.title"/></h5>
 		<table border="1" cellpadding="1" cellspacing="1" dir="ltr"
 			style="width: 980px;">
 			<tbody>
 			  <tr>
-			    <th align="center"><spring:message code="mdrtb.pv.adverseEvent"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.standardRegimen"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.shortRegimen"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.regimenWithBdq"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.regimenWithDlm"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.regimenWithBdqAndDlm"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.regimenWithCfzLzd"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.other"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.total"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.adverseEvent"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.standardRegimen"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.shortRegimen"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.regimenWithBdq"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.regimenWithDlm"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.regimenWithBdqAndDlm"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.regimenWithCfzLzd"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.other"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.total"/></th>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.saes"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.saes"/></td>
 			   	<td align="center">${table2.saeStandard}</td>
 			   	<td align="center">${table2.saeShort}</td>
 			   	<td align="center">${table2.saeBdq}</td>
@@ -285,7 +285,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.saeTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.death"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.death"/></td>
 			   	<td align="center">${table2.deathStandard}</td>
 			   	<td align="center">${table2.deathShort}</td>
 			   	<td align="center">${table2.deathBdq}</td>
@@ -296,7 +296,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.deathTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.hospitalization"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.hospitalization"/></td>
 			   	<td align="center">${table2.hospitalizationStandard}</td>
 			   	<td align="center">${table2.hospitalizationShort}</td>
 			   	<td align="center">${table2.hospitalizationBdq}</td>
@@ -307,7 +307,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.hospitalizationTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.disability"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.disability"/></td>
 			   	<td align="center">${table2.disabilityStandard}</td>
 			   	<td align="center">${table2.disabilityShort}</td>
 			   	<td align="center">${table2.disabilityBdq}</td>
@@ -318,7 +318,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.disabilityTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.congenitalAbnormality"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.congenitalAbnormality"/></td>
 			   	<td align="center">${table2.congenitalAbnormalityStandard}</td>
 			   	<td align="center">${table2.congenitalAbnormalityShort}</td>
 			   	<td align="center">${table2.congenitalAbnormalityBdq}</td>
@@ -329,7 +329,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.congenitalAbnormalityTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.lifeThreateningExperience"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.lifeThreateningExperience"/></td>
 			   	<td align="center">${table2.lifeThreateningExperienceStandard}</td>
 			   	<td align="center">${table2.lifeThreateningExperienceShort}</td>
 			   	<td align="center">${table2.lifeThreateningExperienceBdq}</td>
@@ -340,7 +340,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.lifeThreateningExperienceTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.specialInterest"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.specialInterest"/></td>
 			   	<td align="center">${table2.specialInterestStandard}</td>
 			   	<td align="center">${table2.specialInterestShort}</td>
 			   	<td align="center">${table2.specialInterestBdq}</td>
@@ -351,7 +351,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.specialInterestTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.peripheralNeuropathy"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.peripheralNeuropathy"/></td>
 			   	<td align="center">${table2.peripheralNeuropathyStandard}</td>
 			   	<td align="center">${table2.peripheralNeuropathyShort}</td>
 			   	<td align="center">${table2.peripheralNeuropathyBdq}</td>
@@ -362,7 +362,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.peripheralNeuropathyTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.psychiatricDisorders"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.psychiatricDisorders"/></td>
 			   	<td align="center">${table2.psychiatricDisorderStandard}</td>
 			   	<td align="center">${table2.psychiatricDisorderShort}</td>
 			   	<td align="center">${table2.psychiatricDisorderBdq}</td>
@@ -373,7 +373,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.psychiatricDisorderTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.opticNerveDisorders"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.opticNerveDisorders"/></td>
 			   	<td align="center">${table2.opticNerveDisorderStandard}</td>
 			   	<td align="center">${table2.opticNerveDisorderShort}</td>
 			   	<td align="center">${table2.opticNerveDisorderBdq}</td>
@@ -384,7 +384,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.opticNerveDisorderTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.ototoxicity"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.ototoxicity"/></td>
 			   	<td align="center">${table2.ototoxicityStandard}</td>
 			   	<td align="center">${table2.ototoxicityShort}</td>
 			   	<td align="center">${table2.ototoxicityBdq}</td>
@@ -395,7 +395,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.ototoxicityTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.myelosuppression"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.myelosuppression"/></td>
 			   	<td align="center">${table2.myelosuppressionStandard}</td>
 			   	<td align="center">${table2.myelosuppressionShort}</td>
 			   	<td align="center">${table2.myelosuppressionBdq}</td>
@@ -406,7 +406,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.myelosuppressionTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.qtProlongation"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.qtProlongation"/></td>
 			   	<td align="center">${table2.qtProlongationStandard}</td>
 			   	<td align="center">${table2.qtProlongationShort}</td>
 			   	<td align="center">${table2.qtProlongationBdq}</td>
@@ -417,7 +417,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.qtProlongationTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.lacticAcidosis"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.lacticAcidosis"/></td>
 			   	<td align="center">${table2.lacticAcidosisStandard}</td>
 			   	<td align="center">${table2.lacticAcidosisShort}</td>
 			   	<td align="center">${table2.lacticAcidosisBdq}</td>
@@ -428,7 +428,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.lacticAcidosisTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.hepatitis"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.hepatitis"/></td>
 			   	<td align="center">${table2.hepatitisStandard}</td>
 			   	<td align="center">${table2.hepatitisShort}</td>
 			   	<td align="center">${table2.hepatitisBdq}</td>
@@ -439,7 +439,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.hepatitisTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.hypothyroidism"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.hypothyroidism"/></td>
 			   	<td align="center">${table2.hypothyroidismStandard}</td>
 			   	<td align="center">${table2.hypothyroidismShort}</td>
 			   	<td align="center">${table2.hypothyroidismBdq}</td>
@@ -450,7 +450,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.hypothyroidismTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.hypokalemia"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.hypokalemia"/></td>
 			   	<td align="center">${table2.hypokalemiaStandard}</td>
 			   	<td align="center">${table2.hypokalemiaShort}</td>
 			   	<td align="center">${table2.hypokalemiaBdq}</td>
@@ -461,7 +461,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.hypokalemiaTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.pancreatitis"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.pancreatitis"/></td>
 			   	<td align="center">${table2.pancreatitisStandard}</td>
 			   	<td align="center">${table2.pancreatitisShort}</td>
 			   	<td align="center">${table2.pancreatitisBdq}</td>
@@ -472,7 +472,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.pancreatitisTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.phospholipidosis"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.phospholipidosis"/></td>
 			   	<td align="center">${table2.phospholipidosisStandard}</td>
 			   	<td align="center">${table2.phospholipidosisShort}</td>
 			   	<td align="center">${table2.phospholipidosisBdq}</td>
@@ -483,7 +483,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.phospholipidosisTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.renalFailure"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.renalFailure"/></td>
 			   	<td align="center">${table2.renalFailureStandard}</td>
 			   	<td align="center">${table2.renalFailureShort}</td>
 			   	<td align="center">${table2.renalFailureBdq}</td>
@@ -494,7 +494,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.renalFailureTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.total"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.total"/></td>
 			   	<td align="center">${table2.totalStandard}</td>
 			   	<td align="center">${table2.totalShort}</td>
 			   	<td align="center">${table2.totalBdq}</td>
@@ -508,29 +508,29 @@ response.setDateHeader ("Expires", -1);
 	     </table>
 	    
 	     <br/><br/>
-		<h5><spring:message code="mdrtb.pv.table3.title"/></h5>
+		<h5><mdrtb:message code="mdrtb.pv.table3.title"/></h5>
 		<table border="1" cellpadding="1" cellspacing="1" dir="ltr"
 			style="width: 980px;">
 			<tbody>
 			<tr>
-			    <th align="center"><spring:message code="mdrtb.pv.adverseEvent"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.bdq"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.dlm"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.cfz"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.lzd"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.am"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.cm"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.mfx"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.lfx"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.cyc"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.pas"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.pto"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.z"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.e"/></th>
-			    <th align="center"><spring:message code="mdrtb.pv.total"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.adverseEvent"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.bdq"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.dlm"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.cfz"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.lzd"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.am"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.cm"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.mfx"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.lfx"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.cyc"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.pas"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.pto"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.z"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.e"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.pv.total"/></th>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.saes"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.saes"/></td>
 			   	<td align="center">${table3.saeBdq}</td>
 			   	<td align="center">${table3.saeDlm}</td>
 			   	<td align="center">${table3.saeCfz}</td>
@@ -547,7 +547,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.saeTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.death"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.death"/></td>
 			   	<td align="center">${table3.deathBdq}</td>
 			   	<td align="center">${table3.deathDlm}</td>
 			   	<td align="center">${table3.deathCfz}</td>
@@ -564,7 +564,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.deathTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.hospitalization"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.hospitalization"/></td>
 			   	<td align="center">${table3.hospitalizationBdq}</td>
 			   	<td align="center">${table3.hospitalizationDlm}</td>
 			   	<td align="center">${table3.hospitalizationCfz}</td>
@@ -581,7 +581,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.hospitalizationTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.disability"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.disability"/></td>
 			   	<td align="center">${table3.disabilityBdq}</td>
 			   	<td align="center">${table3.disabilityDlm}</td>
 			   	<td align="center">${table3.disabilityCfz}</td>
@@ -598,7 +598,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.disabilityTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.congenitalAbnormality"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.congenitalAbnormality"/></td>
 			   	<td align="center">${table3.congenitalAbnormalityBdq}</td>
 			   	<td align="center">${table3.congenitalAbnormalityDlm}</td>
 			   	<td align="center">${table3.congenitalAbnormalityCfz}</td>
@@ -615,7 +615,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.congenitalAbnormalityTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.lifeThreateningExperience"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.lifeThreateningExperience"/></td>
 			   	<td align="center">${table3.lifeThreateningExperienceBdq}</td>
 			   	<td align="center">${table3.lifeThreateningExperienceDlm}</td>
 			   	<td align="center">${table3.lifeThreateningExperienceCfz}</td>
@@ -632,7 +632,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.lifeThreateningExperienceTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.specialInterest"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.specialInterest"/></td>
 			   	<td align="center">${table3.specialInterestBdq}</td>
 			   	<td align="center">${table3.specialInterestDlm}</td>
 			   	<td align="center">${table3.specialInterestCfz}</td>
@@ -649,7 +649,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.specialInterestTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.peripheralNeuropathy"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.peripheralNeuropathy"/></td>
 			   	<td align="center">${table3.peripheralNeuropathyBdq}</td>
 			   	<td align="center">${table3.peripheralNeuropathyDlm}</td>
 			   	<td align="center">${table3.peripheralNeuropathyCfz}</td>
@@ -666,7 +666,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.peripheralNeuropathyTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.psychiatricDisorders"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.psychiatricDisorders"/></td>
 			   	<td align="center">${table3.psychiatricDisorderBdq}</td>
 			   	<td align="center">${table3.psychiatricDisorderDlm}</td>
 			   	<td align="center">${table3.psychiatricDisorderCfz}</td>
@@ -683,7 +683,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.psychiatricDisorderTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.opticNerveDisorders"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.opticNerveDisorders"/></td>
 			   	<td align="center">${table3.opticNerveDisorderBdq}</td>
 			   	<td align="center">${table3.opticNerveDisorderDlm}</td>
 			   	<td align="center">${table3.opticNerveDisorderCfz}</td>
@@ -700,7 +700,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.opticNerveDisorderTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.ototoxicity"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.ototoxicity"/></td>
 			   	<td align="center">${table3.ototoxicityBdq}</td>
 			   	<td align="center">${table3.ototoxicityDlm}</td>
 			   	<td align="center">${table3.ototoxicityCfz}</td>
@@ -717,7 +717,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.ototoxicityTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.myelosuppression"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.myelosuppression"/></td>
 			   	<td align="center">${table3.myelosuppressionBdq}</td>
 			   	<td align="center">${table3.myelosuppressionDlm}</td>
 			   	<td align="center">${table3.myelosuppressionCfz}</td>
@@ -734,7 +734,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.myelosuppressionTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.qtProlongation"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.qtProlongation"/></td>
 			   	<td align="center">${table3.qtProlongationBdq}</td>
 			   	<td align="center">${table3.qtProlongationDlm}</td>
 			   	<td align="center">${table3.qtProlongationCfz}</td>
@@ -751,7 +751,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.qtProlongationTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.lacticAcidosis"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.lacticAcidosis"/></td>
 			   	<td align="center">${table3.lacticAcidosisBdq}</td>
 			   	<td align="center">${table3.lacticAcidosisDlm}</td>
 			   	<td align="center">${table3.lacticAcidosisCfz}</td>
@@ -768,7 +768,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.lacticAcidosisTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.hepatitis"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.hepatitis"/></td>
 			   	<td align="center">${table3.hepatitisBdq}</td>
 			   	<td align="center">${table3.hepatitisDlm}</td>
 			   	<td align="center">${table3.hepatitisCfz}</td>
@@ -785,7 +785,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.hepatitisTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.hypothyroidism"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.hypothyroidism"/></td>
 			   	<td align="center">${table3.hypothyroidismBdq}</td>
 			   	<td align="center">${table3.hypothyroidismDlm}</td>
 			   	<td align="center">${table3.hypothyroidismCfz}</td>
@@ -802,7 +802,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.hypothyroidismTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.hypokalemia"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.hypokalemia"/></td>
 			   	<td align="center">${table3.hypokalemiaBdq}</td>
 			   	<td align="center">${table3.hypokalemiaDlm}</td>
 			   	<td align="center">${table3.hypokalemiaCfz}</td>
@@ -819,7 +819,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.hypokalemiaTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.pancreatitis"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.pancreatitis"/></td>
 			   	<td align="center">${table3.pancreatitisBdq}</td>
 			   	<td align="center">${table3.pancreatitisDlm}</td>
 			   	<td align="center">${table3.pancreatitisCfz}</td>
@@ -836,7 +836,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.pancreatitisTotal}</td>
 			  </tr>
 			   <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.phospholipidosis"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.phospholipidosis"/></td>
 			   	<td align="center">${table3.phospholipidosisBdq}</td>
 			   	<td align="center">${table3.phospholipidosisDlm}</td>
 			   	<td align="center">${table3.phospholipidosisCfz}</td>
@@ -853,7 +853,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.phospholipidosisTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.report.renalFailure"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.renalFailure"/></td>
 			   	<td align="center">${table3.renalFailureBdq}</td>
 			   	<td align="center">${table3.renalFailureDlm}</td>
 			   	<td align="center">${table3.renalFailureCfz}</td>
@@ -870,7 +870,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.renalFailureTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><spring:message code="mdrtb.pv.total"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.pv.total"/></td>
 			   	<td align="center">${table3.totalBdq}</td>
 			   	<td align="center">${table3.totalDlm}</td>
 			   	<td align="center">${table3.totalCfz}</td>
@@ -890,108 +890,108 @@ response.setDateHeader ("Expires", -1);
 	     </table>
 	     
 	    <br/><br/>
-		<h5><spring:message code="mdrtb.pv.table4.title"/></h5>
+		<h5><mdrtb:message code="mdrtb.pv.table4.title"/></h5>
 		<table border="1" cellpadding="1" cellspacing="1" dir="ltr"
 			style="width: 980px;">
 			<tbody>
 				<tr>
-					<th><spring:message code="mdrtb.pv.table4.ae"/></th>
-					<th><spring:message code="mdrtb.pv.table4.numberOfPatients"/></th>
+					<th><mdrtb:message code="mdrtb.pv.table4.ae"/></th>
+					<th><mdrtb:message code="mdrtb.pv.table4.numberOfPatients"/></th>
 				</tr/>
 				<tr>
-					<td><spring:message code="mdrtb.pv.nausea"/></td>
+					<td><mdrtb:message code="mdrtb.pv.nausea"/></td>
 					<td/>${table4.nausea }</td>
 				</tr/>
 				<tr>
-					<td><spring:message code="mdrtb.pv.diarrhoea"/></td>
+					<td><mdrtb:message code="mdrtb.pv.diarrhoea"/></td>
 					<td>${table4.diarrhoea}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.arthalgia"/></td>
+					<td><mdrtb:message code="mdrtb.pv.arthalgia"/></td>
 					<td>${table4.arthalgia}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.dizziness"/></td>
+					<td><mdrtb:message code="mdrtb.pv.dizziness"/></td>
 					<td>${table4.dizziness}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.hearingDisturbances"/></td>
+					<td><mdrtb:message code="mdrtb.pv.hearingDisturbances"/></td>
 					<td>${table4.hearingDisturbances}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.headaches"/></td>
+					<td><mdrtb:message code="mdrtb.pv.headaches"/></td>
 					<td>${table4.headaches}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.sleepDisturbances"/></td>
+					<td><mdrtb:message code="mdrtb.pv.sleepDisturbances"/></td>
 					<td>${table4.sleepDisturbances}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.electrolyteDisturbances"/></td>
+					<td><mdrtb:message code="mdrtb.pv.electrolyteDisturbances"/></td>
 					<td>${table4.electrolyteDisturbance}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.abdominalPain"/></td>
+					<td><mdrtb:message code="mdrtb.pv.abdominalPain"/></td>
 					<td>${table4.abdominalPain}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.anorexia"/></td>
+					<td><mdrtb:message code="mdrtb.pv.anorexia"/></td>
 					<td>${table4.anorexia}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.gastritis"/></td>
+					<td><mdrtb:message code="mdrtb.pv.gastritis"/></td>
 					<td>${table4.gastritis}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.peripheralNeuropathy"/></td>
+					<td><mdrtb:message code="mdrtb.pv.peripheralNeuropathy"/></td>
 					<td>${table4.peripheralNeuropathy}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.depression"/></td>
+					<td><mdrtb:message code="mdrtb.pv.depression"/></td>
 					<td>${table4.depression}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.tinnitus"/></td>
+					<td><mdrtb:message code="mdrtb.pv.tinnitus"/></td>
 					<td>${table4.tinnitus}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.allergicReaction"/></td>
+					<td><mdrtb:message code="mdrtb.pv.allergicReaction"/></td>
 					<td>${table4.allergicReaction}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.rash"/></td>
+					<td><mdrtb:message code="mdrtb.pv.rash"/></td>
 					<td>${table4.rash}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.visualDisturbances"/></td>
+					<td><mdrtb:message code="mdrtb.pv.visualDisturbances"/></td>
 					<td>${table4.visualDisturbances}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.seizures"/></td>
+					<td><mdrtb:message code="mdrtb.pv.seizures"/></td>
 					<td>${table4.seizures}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.hypothyroidism"/></td>
+					<td><mdrtb:message code="mdrtb.pv.hypothyroidism"/></td>
 					<td>${table4.hypothyroidism}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.psychosis"/></td>
+					<td><mdrtb:message code="mdrtb.pv.psychosis"/></td>
 					<td>${table4.psychosis}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.suicidalIdeation"/></td>
+					<td><mdrtb:message code="mdrtb.pv.suicidalIdeation"/></td>
 					<td>${table4.suicidalIdeation}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.hepatitis"/></td>
+					<td><mdrtb:message code="mdrtb.pv.hepatitis"/></td>
 					<td>${table4.hepatitis}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.renalFailure"/></td>
+					<td><mdrtb:message code="mdrtb.pv.renalFailure"/></td>
 					<td>${table4.renalFailure}</td>
 				</tr>
 				<tr>
-					<td><spring:message code="mdrtb.pv.qtProlongation"/></td>
+					<td><mdrtb:message code="mdrtb.pv.qtProlongation"/></td>
 					<td>${table4.qtProlongation}</td>
 				</tr>
 				
@@ -1003,13 +1003,13 @@ response.setDateHeader ("Expires", -1);
 
 </div>
 		
-		<input type="button" onclick="tableToExcel('ae', 'AE')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
-		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<spring:message code='mdrtb.exportToPdfBtn' />" /> -->
+		<input type="button" onclick="tableToExcel('ae', 'AE')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
+		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<mdrtb:message code='mdrtb.exportToPdfBtn' />" /> -->
 		<openmrs:hasPrivilege privilege="Manage Report Closing">
-		<input type="button" id="tableToSql" name="tableToSql" value="<spring:message code='mdrtb.closeReportBtn' />" />
+		<input type="button" id="tableToSql" name="tableToSql" value="<mdrtb:message code='mdrtb.closeReportBtn' />" />
 		</openmrs:hasPrivilege>
-		<input type="button" id="back" name="back" value="<spring:message code='mdrtb.back' />" onclick="document.location.href='${pageContext.request.contextPath}/module/mdrtb/mdrtbIndex.form';" />
-		<input type="button" onclick="printForm()" value="<spring:message code='mdrtb.print' />" />
+		<input type="button" id="back" name="back" value="<mdrtb:message code='mdrtb.back' />" onclick="document.location.href='${pageContext.request.contextPath}/module/mdrtb/mdrtbIndex.form';" />
+		<input type="button" onclick="printForm()" value="<mdrtb:message code='mdrtb.print' />" />
 		
 		<script> 
 			console.log("${reportStatus}");

@@ -16,13 +16,13 @@
 </script>
 
 <h2>
-	<spring:message code="commonlabtest.title" />
+	<mdrtb:message code="commonlabtest.title" />
 </h2>
 
 <br />
 
 <div class="box">
-	<a href="addLabTestType"><spring:message
+	<a href="addLabTestType"><mdrtb:message
 			code="commonlabtest.labtesttype.add" /></a> <br />
 	<br />
 	<table cellpadding="2" cellspacing="1" id="labTestTypeList"

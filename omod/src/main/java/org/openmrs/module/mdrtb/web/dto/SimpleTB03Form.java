@@ -69,7 +69,8 @@ public class SimpleTB03Form extends BaseOpenmrsData {
 	public SimpleTB03Form(TB03Form tb03) {
 		setEncounter(tb03.getEncounter());
 		setUuid(getEncounter().getUuid());
-		PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgram(tb03.getPatientProgramId());
+		Integer patientProgramId = tb03.getPatientProgramId();
+		PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		setPatientProgramUuid(patientProgram.getUuid());
 		setRegistrationNumber(tb03.getRegistrationNumber());
 		setAgeAtTB03Registration(tb03.getAgeAtTB03Registration());

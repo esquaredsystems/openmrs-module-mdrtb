@@ -10,39 +10,40 @@
   Copyright (C) OpenMRS, LLC.  All Rights Reserved.
   --%>
 
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <spring:htmlEscape defaultHtmlEscape="true" />
 <ul id="menu" >
 	<li class="first"><a
-		href="${pageContext.request.contextPath}/admin"><spring:message
+		href="${pageContext.request.contextPath}/admin"><mdrtb:message
 				code="admin.title.short" /></a></li>
 	<%-- <li
 		<c:if test='<%=request.getRequestURI().contains("/commonlabtest")%>'>class="active"</c:if>>
 		<a
-		href="${pageContext.request.contextPath}/module/commonlabtest/commonlabtest.form"><spring:message
+		href="${pageContext.request.contextPath}/module/commonlabtest/commonlabtest.form"><mdrtb:message
 				code="commonlabtest.general.about" /></a>
 	</li> --%>
    
 	<li
 		<c:if test='<%=request.getRequestURI().contains("/manageLabTestTypes")%>'>class="active"</c:if>>
 		<a
-		href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTestTypes.form"><spring:message
+		href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTestTypes.form"><mdrtb:message
 				code="commonlabtest.labtesttype.manage" /></a>
 	</li>
 	<li
 		<c:if test='<%=request.getRequestURI().contains("/manageLabTestAttributeTypes")%>'>class="active"</c:if>>
 		<a href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTestAttributeTypes.form">
-		<spring:message code="commonlabtest.labtestattributetype.manage" /></a>
+		<mdrtb:message code="commonlabtest.labtestattributetype.manage" /></a>
 	</li>
 	<%-- <li
 		<c:if test='<%=request.getRequestURI().contains("/manageLabTestSamples")%>'>class="active"</c:if>>
 		<a
-		href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTestSamples.form"><spring:message
+		href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTestSamples.form"><mdrtb:message
 				code="commonlabtest.labtestsample.manage" /></a>
 	</li>
 	<li
 		<c:if test='<%=request.getRequestURI().contains("/manageLabTests")%>'>class="active"</c:if>>
 		<a
-		href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTests.form"><spring:message
+		href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTests.form"><mdrtb:message
 				code="commonlabtest.labtest.manage" /></a>
 	</li> --%>
 

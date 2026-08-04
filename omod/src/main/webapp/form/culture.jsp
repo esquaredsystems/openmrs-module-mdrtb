@@ -43,7 +43,7 @@
 		var encDate = document.getElementById("encounterDatetime").value;
 		var errorText = "";
 		if(encDate=="") {
-			errorText = ""  + '<spring:message code="mdrtb.error.missingCollectionDate"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.error.missingCollectionDate"/>' + "";
 			alert(errorText);
 			return false;
 		}
@@ -61,7 +61,7 @@
 		var now = new Date();
 		
 		if(dateCollected.getTime() > now.getTime()) {
-			errorText = ""  + '<spring:message code="mdrtb.error.collectionDateInFuture"/>' + "";
+			errorText = ""  + '<mdrtb:message code="mdrtb.error.collectionDateInFuture"/>' + "";
 			alert(errorText);
 			return false;
 		}
@@ -76,14 +76,14 @@
 
 <div> <!-- start of page div -->
 
-&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><spring:message code="mdrtb.back" text="Back"/></a>
+&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><mdrtb:message code="mdrtb.back" text="Back"/></a>
 <br/><br/>
 
 <!-- VIEW BOX -->
 <div id="viewVisit" <c:if test="${(empty culture.id) || (culture.id == -1) || fn:length(errors.allErrors) > 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.culture" text="Culture Form"/>
+<b class="boxHeader"><mdrtb:message code="mdrtb.culture" text="Culture Form"/>
 <openmrs:hasPrivilege privilege="Edit DOTS-MDR Data">
-<span style="position: absolute; right:30px;"><a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><spring:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${culture.id}&patientProgramId=${patientProgramId}&patientId=${culture.patient.id }" class="delete" onclick="return confirm('<spring:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><spring:message code="mdrtb.delete" text="delete"/></a></span>
+<span style="position: absolute; right:30px;"><a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><mdrtb:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${culture.id}&patientProgramId=${patientProgramId}&patientId=${culture.patient.id }" class="delete" onclick="return confirm('<mdrtb:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><mdrtb:message code="mdrtb.delete" text="delete"/></a></span>
 </openmrs:hasPrivilege>
 </b>
 <div class="box">
@@ -91,34 +91,34 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.dateCollected" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.dateCollected" text="Date"/>:</td>
 <td><openmrs:formatDate date="${culture.encounterDatetime}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <%-- <tr>
-<td><spring:message code="mdrtb.provider" text="Provider"/>:</td>
+<td><mdrtb:message code="mdrtb.provider" text="Provider"/>:</td>
 <td>${culture.provider.personName}</td>
 </tr> --%>
  
 <tr>
-<td><spring:message code="mdrtb.location" text="Location"/>:</td>
+<td><mdrtb:message code="mdrtb.location" text="Location"/>:</td>
 <td>${culture.location.displayString}</td>
 </tr>
 
  
 <tr>
-<td><spring:message code="mdrtb.monthOfTreatment" text="TxMonth"/>:</td>
+<td><mdrtb:message code="mdrtb.monthOfTreatment" text="TxMonth"/>:</td>
 <td>${culture.monthOfTreatment}</td>
 </tr>
 
 
 <tr>
-<td><spring:message code="mdrtb.specimenId" text="SpecimenId"/>:</td>
+<td><mdrtb:message code="mdrtb.specimenId" text="SpecimenId"/>:</td>
 <td>${culture.specimenId }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.cultureResult" text="CultureResult"/>:</td>
+<td><mdrtb:message code="mdrtb.cultureResult" text="CultureResult"/>:</td>
 <td>${culture.cultureResult.displayString}</td>
 </tr>
 
@@ -132,14 +132,14 @@
 
 <!-- EDIT BOX -->
 <div id="editVisit" <c:if test="${(!empty culture.id) && (culture.id != -1) && fn:length(errors.allErrors) == 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.culture" text="Culture"/></b>
+<b class="boxHeader"><mdrtb:message code="mdrtb.culture" text="Culture"/></b>
 <div class="box">
 
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
 		<c:if test="${error.code != 'methodInvocation'}">
-			<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+			<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 		</c:if>	
 	</c:forEach>
 	<br/>
@@ -153,13 +153,13 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.dateCollected" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.dateCollected" text="Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="encounterDatetime" startValue="${culture.encounterDatetime}"/></td>
 </tr>
 
 
 <%-- <tr>
-<td><spring:message code="mdrtb.provider" text="Provider"/>:</td>
+<td><mdrtb:message code="mdrtb.provider" text="Provider"/>:</td>
 <td>
 <select name="provider">
 <option value=""></option>
@@ -171,7 +171,7 @@
 </tr> --%>
  
 <tr>
-<td><spring:message code="mdrtb.location" text="Location"/>:</td>
+<td><mdrtb:message code="mdrtb.location" text="Location"/>:</td>
 <td>
 <select name="location">
 <option value=""></option>
@@ -184,18 +184,18 @@
 
  
 <tr>
-<td valign="top"><spring:message code="mdrtb.monthOfTreatment" text="TxMonth"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.monthOfTreatment" text="TxMonth"/>:</td>
 <td><input name="monthOfTreatment" size="2" value="${culture.monthOfTreatment}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.specimenId" text="SpecimenId"/>:</td>
+<td><mdrtb:message code="mdrtb.specimenId" text="SpecimenId"/>:</td>
 <td><input type="text" size="10" name="specimenId" value="${culture.specimenId}"/></td>
 </tr>
 
 
 <tr>
-<td><spring:message code="mdrtb.cultureResult" text="CultureResult"/>:</td>
+<td><mdrtb:message code="mdrtb.cultureResult" text="CultureResult"/>:</td>
 <td>
 <select name="cultureResult">
 <option value=""></option>
@@ -210,7 +210,7 @@
 
 </table>
 
-<button type="submit"><spring:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><spring:message code="mdrtb.cancel" text="Cancel"/></button>
+<button type="submit"><mdrtb:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><mdrtb:message code="mdrtb.cancel" text="Cancel"/></button>
 	
 </form>
 

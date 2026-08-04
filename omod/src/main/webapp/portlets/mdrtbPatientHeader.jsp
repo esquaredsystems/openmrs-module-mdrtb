@@ -28,21 +28,21 @@
 		<table id="patientHeaderGeneralInfo">
 			<tr>
 				<td id="patientHeaderPatientGender">
-					<c:if test="${model.patient.gender == 'M'}"><img src="${pageContext.request.contextPath}/images/male.gif" alt='<spring:message code="Person.gender.male"/>' id="maleGenderIcon"/></c:if>
-					<c:if test="${model.patient.gender == 'F'}"><img src="${pageContext.request.contextPath}/images/female.gif" alt='<spring:message code="Person.gender.female"/>' id="femaleGenderIcon"/></c:if>
+					<c:if test="${model.patient.gender == 'M'}"><img src="${pageContext.request.contextPath}/images/male.gif" alt='<mdrtb:message code="Person.gender.male"/>' id="maleGenderIcon"/></c:if>
+					<c:if test="${model.patient.gender == 'F'}"><img src="${pageContext.request.contextPath}/images/female.gif" alt='<mdrtb:message code="Person.gender.female"/>' id="femaleGenderIcon"/></c:if>
 				</td>
 				<td id="patientHeaderPatientAge">
 					<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.beforePatientHeaderPatientAge" type="html" parameters="patientId=${model.patient.patientId}" />
-					<c:if test="${model.patient.age > 0}">${model.patient.age} <spring:message code="Person.age.years"/></c:if>
-					<c:if test="${model.patient.age == 0}">< 1 <spring:message code="Person.age.year"/></c:if>
-					<span id="patientHeaderPatientBirthdate"><c:if test="${not empty model.patient.birthdate}">(<c:if test="${model.patient.birthdateEstimated}">~</c:if><openmrs:formatDate date="${model.patient.birthdate}" type="medium"  format="${_dateFormatDisplay}"/>)</c:if><c:if test="${empty model.patient.birthdate}"><spring:message code="Person.age.unknown"/></c:if></span>
+					<c:if test="${model.patient.age > 0}">${model.patient.age} <mdrtb:message code="Person.age.years"/></c:if>
+					<c:if test="${model.patient.age == 0}">< 1 <mdrtb:message code="Person.age.year"/></c:if>
+					<span id="patientHeaderPatientBirthdate"><c:if test="${not empty model.patient.birthdate}">(<c:if test="${model.patient.birthdateEstimated}">~</c:if><openmrs:formatDate date="${model.patient.birthdate}" type="medium"  format="${_dateFormatDisplay}"/>)</c:if><c:if test="${empty model.patient.birthdate}"><mdrtb:message code="Person.age.unknown"/></c:if></span>
 				</td>
 				
 				<!--  
 				<openmrs:globalProperty key="use_patient_attribute.tribe" defaultValue="false" var="showTribe"/>
 				<c:if test="${showTribe}">
 					<td id="patientHeaderPatientTribe">
-						<spring:message code="Patient.tribe"/>:
+						<mdrtb:message code="Patient.tribe"/>:
 						<b>${model.patient.tribe.name}</b>
 						<openmrs:extensionPoint pointId="org.openmrs.patientDashboard.afterPatientHeaderPatientTribe" type="html" parameters="patientId=${model.patient.patientId}" />
 					</td>
@@ -51,7 +51,7 @@
 				
 				<c:if test="${not empty model.patient.attributeMap['Health Center']}">
 					<td id="patientHeaderHealthCenter">
-						<spring:message code="mdrtb.healthcenter"/>:
+						<mdrtb:message code="mdrtb.healthcenter"/>:
 						<b>${model.patient.attributeMap['Health Center'].hydratedObject}</b>
 					</td>
 				</c:if>
@@ -69,11 +69,11 @@
 	<script type="text/javascript">
 		function showMoreIdentifiers() {
 			if (identifierElement.style.display == '') {
-				linkElement.innerHTML = '<spring:message code="general.nMore" arguments="${fn:length(model.patient.activeIdentifiers) - 2}"/>';
+				linkElement.innerHTML = '<mdrtb:message code="general.nMore" arguments="${fn:length(model.patient.activeIdentifiers) - 2}"/>';
 				identifierElement.style.display = "none";
 			}
 			else {
-				linkElement.innerHTML = '<spring:message code="general.nLess" arguments="${fn:length(model.patient.activeIdentifiers) - 2}"/>';
+				linkElement.innerHTML = '<mdrtb:message code="general.nLess" arguments="${fn:length(model.patient.activeIdentifiers) - 2}"/>';
 				identifierElement.style.display = "";
 			}
 		}

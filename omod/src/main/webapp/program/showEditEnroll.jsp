@@ -34,14 +34,14 @@
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
-		<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+		<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 	</c:forEach>
 	<br/>
 </c:if>
 
 
 <!-- PROGRAM ENROLLMENT BOX-->
-<b class="boxHeader" style="margin:0px"><spring:message code="mdrtb.editProgram" text="Enroll in Program"/></b>
+<b class="boxHeader" style="margin:0px"><mdrtb:message code="mdrtb.editProgram" text="Enroll in Program"/></b>
 <div class="box" style="margin:0px">
 
 <c:choose>
@@ -52,18 +52,18 @@
 
 
 <tr><td>
-<spring:message code="mdrtb.enrollment.date" text="Enrollment Date"/></td>
+<mdrtb:message code="mdrtb.enrollment.date" text="Enrollment Date"/></td>
 <td><openmrs_tag:dateField formFieldName="dateEnrolled" startValue="${program.dateEnrolled}"/></td>
 </td></tr>
 
-<tr><td colspan="2"><spring:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td></tr>
-<tr><td><spring:message code="mdrtb.oblast" text="Oblast"/>:</td><td>${program.location.stateProvince}</td></tr>
-<tr><td><spring:message code="mdrtb.district" text="District"/>:</td><td>${program.location.countyDistrict}</td></tr>
-<tr><td><spring:message code="mdrtb.facility" text="Facility"/>:</td><td>${program.location.region}</td></tr>
+<tr><td colspan="2"><mdrtb:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td></tr>
+<tr><td><mdrtb:message code="mdrtb.oblast" text="Oblast"/>:</td><td>${program.location.stateProvince}</td></tr>
+<tr><td><mdrtb:message code="mdrtb.district" text="District"/>:</td><td>${program.location.countyDistrict}</td></tr>
+<tr><td><mdrtb:message code="mdrtb.facility" text="Facility"/>:</td><td>${program.location.region}</td></tr>
 
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:<br/>
+<mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:<br/>
 <select name="classificationAccordingToPatientGroups" id="classificationAccordingToPatientGroups">
 <option value=""/>
 <c:forEach var="classificationAccordingToPatientGroups" items="${classificationsAccordingToPatientGroups}">
@@ -73,7 +73,7 @@
 </td></tr>
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br/>
+<mdrtb:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br/>
 <select name="classificationAccordingToPreviousDrugUse" id="classificationAccordingToPreviousDrugUse">
 <option value=""/>
 <c:forEach var="classificationAccordingToPreviousDrugUse" items="${classificationsAccordingToPreviousDrugUseDOTS}">
@@ -83,7 +83,7 @@
 </td></tr>
 
 </table>
-<button type="submit"><spring:message code="mdrtb.submit" text="Submitz"/>
+<button type="submit"><mdrtb:message code="mdrtb.submit" text="Submitz"/>
 </form>
 </c:when>
 
@@ -93,17 +93,17 @@
 <table cellspacing="2" cellpadding="2">
 
 <tr><td>
-<spring:message code="mdrtb.enrollment.date" text="Enrollment Date"/></td>
+<mdrtb:message code="mdrtb.enrollment.date" text="Enrollment Date"/></td>
 <td><openmrs_tag:dateField formFieldName="dateEnrolled" startValue="${program.dateEnrolled}"/></td>
 </tr>
 
-<tr><td colspan="2"><spring:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td></tr>
-<tr><td><spring:message code="mdrtb.oblast" text="Oblast"/>:</td><td>${program.location.stateProvince}</td></tr>
-<tr><td><spring:message code="mdrtb.district" text="District"/>:</td><td>${program.location.countyDistrict}</td></tr>
-<tr><td><spring:message code="mdrtb.facility" text="Facility"/>:</td><td>${program.location.region}</td></tr>
+<tr><td colspan="2"><mdrtb:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td></tr>
+<tr><td><mdrtb:message code="mdrtb.oblast" text="Oblast"/>:</td><td>${program.location.stateProvince}</td></tr>
+<tr><td><mdrtb:message code="mdrtb.district" text="District"/>:</td><td>${program.location.countyDistrict}</td></tr>
+<tr><td><mdrtb:message code="mdrtb.facility" text="Facility"/>:</td><td>${program.location.region}</td></tr>
 
 <%-- <tr><td>
-<spring:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td><td>
+<mdrtb:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td><td>
 <select name="location">
 <option value=""/>
 <c:forEach var="location" items="${locations}">
@@ -113,7 +113,7 @@
 </td></tr> --%>
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br/>
+<mdrtb:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br/>
 <select name="classificationAccordingToPreviousDrugUse" id="classificationAccordingToPreviousDrugUse">
 <option value=""/>
 <c:forEach var="classificationAccordingToPreviousDrugUse" items="${classificationsAccordingToPreviousDrugUse}">
@@ -123,7 +123,7 @@
 </td></tr>
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.tb03.registrationGroup" text="Registration Group - Previous Treatment"/>:<br/>
+<mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group - Previous Treatment"/>:<br/>
 <select name="classificationAccordingToPreviousTreatment" id="classificationAccordingToPreviousTreatment">
 <option value=""/>
 <c:forEach var="classificationAccordingToPreviousTreatment" items="${classificationsAccordingToPreviousTreatment}">
@@ -133,7 +133,7 @@
 </td></tr>
 
 </table>
-<button type="submit"><spring:message code="mdrtb.submit" text="Submit"/>
+<button type="submit"><mdrtb:message code="mdrtb.submit" text="Submit"/>
 </form>
 
 </c:otherwise>

@@ -82,7 +82,7 @@ legend.scheduler-border {
 				otherwise="/login.htm"
 				redirect="/module/commonlabtest/addLabTestRequest.form" />
 			<legend class="scheduler-border">
-				<spring:message code="commonlabtest.order.add" />
+				<mdrtb:message code="commonlabtest.order.add" />
 			</legend>
 		</c:if>
 		<c:if test="${not empty labTest.labReferenceNumber}">
@@ -90,7 +90,7 @@ legend.scheduler-border {
 				otherwise="/login.htm"
 				redirect="/module/commonlabtest/addLabTestRequest.form" />
 			<legend class="scheduler-border">
-				<spring:message code="commonlabtest.order.edit" />
+				<mdrtb:message code="commonlabtest.order.edit" />
 			</legend>
 		</c:if>
 		<form:form commandName="labTest" id="labTestForm"
@@ -108,7 +108,7 @@ legend.scheduler-border {
 			<div class="row">
 				<div class="col-md-3">
 					<form:label class="control-label" path="order.encounter">
-						<spring:message code="general.encounter" />
+						<mdrtb:message code="general.encounter" />
 						<span class=" text-danger required">*</span>
 					</form:label>
 				</div>
@@ -141,7 +141,7 @@ legend.scheduler-border {
 			<div class="row">
 				<div class="col-md-3">
 					<form:label class="control-label" path="labTestType.labTestTypeId">
-						<spring:message code="general.testType" />
+						<mdrtb:message code="general.testType" />
 						<span class="text-danger required">*</span>
 					</form:label>
 				</div>
@@ -171,7 +171,7 @@ legend.scheduler-border {
 			<div class="row">
 				<div class="col-md-3">
 					<form:label class="control-label" path="labReferenceNumber">
-						<spring:message code="commonlabtest.order.labReferenceNo" />
+						<mdrtb:message code="commonlabtest.order.labReferenceNo" />
 						<span class="text-danger required">*</span>
 					</form:label>
 				</div>
@@ -188,7 +188,7 @@ legend.scheduler-border {
 				<div class="col-md-3">
 					<form:label class="control-label"
 						path="order.CareSetting.careSettingId">
-						<spring:message code="general.careSetting" />
+						<mdrtb:message code="general.careSetting" />
 					</form:label>
 				</div>
 				<div class="col-md-6">
@@ -211,7 +211,7 @@ legend.scheduler-border {
 			<div class="row">
 				<div class="col-md-3">
 					<form:label class="control-label" path="labInstructions">
-						<spring:message code="general.instructions" />
+						<mdrtb:message code="general.instructions" />
 					</form:label>
 				</div>
 				<div class="col-md-6">
@@ -238,7 +238,7 @@ legend.scheduler-border {
 		<c:if test="${not empty testOrder.labReferenceNumber}">
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">
-					<spring:message code="commonlabtest.order.void" />
+					<mdrtb:message code="commonlabtest.order.void" />
 				</legend>
 				<form method="post"
 					action="${pageContext.request.contextPath}/module/commonlabtest/voidlabtestorder.form"
@@ -248,7 +248,7 @@ legend.scheduler-border {
 						<div class="col-md-2">
 							<input value="${testOrder.uuid}" hidden="true" id="uuid"
 								name="uuid"></input> <label class="control-label"
-								path="voidReason"> <spring:message code="general.reason" /><span
+								path="voidReason"> <mdrtb:message code="general.reason" /><span
 								class=" text-danger required">*</span></label>
 						</div>
 						<div class="col-md-6">

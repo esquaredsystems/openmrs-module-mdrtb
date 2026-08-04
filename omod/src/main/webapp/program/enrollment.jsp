@@ -109,31 +109,31 @@ function fun2() {
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
-		<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+		<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 	</c:forEach>
 	<br />
 </c:if>
 
 <c:choose>
 <c:when test="${hasPrograms}">
-<span><a href="${pageContext.request.contextPath}/module/mdrtb/mdrtbEditPatient.form?patientId=${patientId}&successUrl=/module/mdrtb/program/enrollment.form"><spring:message code="mdrtb.editPatient" text="Editz"/></a></span>
+<span><a href="${pageContext.request.contextPath}/module/mdrtb/mdrtbEditPatient.form?patientId=${patientId}&successUrl=/module/mdrtb/program/enrollment.form"><mdrtb:message code="mdrtb.editPatient" text="Editz"/></a></span>
 <c:if test="${not empty tbPrograms}">
-<b class="boxHeader" style="margin:0px"><spring:message code="mdrtb.enrollment.tbPrograms" text="TB Programs"/>
+<b class="boxHeader" style="margin:0px"><mdrtb:message code="mdrtb.enrollment.tbPrograms" text="TB Programs"/>
 <openmrs:hasPrivilege privilege="Edit DOTS-MDR Data">
 <span style="position: absolute; right: 30px;">
-<a href="${pageContext.request.contextPath}/module/mdrtb/program/otherEnrollment.form?patientId=${patientId}&patientProgramId=-1&type=tb"><spring:message code="mdrtb.add" text="Addz" /></a></span>
+<a href="${pageContext.request.contextPath}/module/mdrtb/program/otherEnrollment.form?patientId=${patientId}&patientProgramId=-1&type=tb"><mdrtb:message code="mdrtb.add" text="Addz" /></a></span>
 </openmrs:hasPrivilege>
 </b>
 <div class="box" style="margin: 0px">
 <table cellspacing="2" cellpadding="2">
 <tr>
-<th><spring:message code="mdrtb.tb03.dateOfRegistration" text="Date" /></th>
-<th><spring:message code="mdrtb.enrollment.location" text="Location" /></th>
-<th><spring:message code="mdrtb.tb03.registrationNumber" text="Location" /></th>
-<th><spring:message code="mdrtb.enrollment.completionDate" text="Completion Date" /></th>
+<th><mdrtb:message code="mdrtb.tb03.dateOfRegistration" text="Date" /></th>
+<th><mdrtb:message code="mdrtb.enrollment.location" text="Location" /></th>
+<th><mdrtb:message code="mdrtb.tb03.registrationNumber" text="Location" /></th>
+<th><mdrtb:message code="mdrtb.enrollment.completionDate" text="Completion Date" /></th>
 <th>&nbsp;</th>
 <th>&nbsp;</th>
-<th><spring:message code="mdrtb.forms" text="Forms" /></th>
+<th><mdrtb:message code="mdrtb.forms" text="Forms" /></th>
 </tr>
 
 <c:forEach var="tbProgram" items="${tbPrograms}">
@@ -142,7 +142,7 @@ function fun2() {
 <td>${tbProgram.location.name }</td>
 <td>${tbProgram.patientIdentifier.identifier }</td>
 <td><openmrs:formatDate date="${tbProgram.dateCompleted}" format="${_dateFormatDisplay}" /></td>
-<td><a href="${pageContext.request.contextPath}/module/mdrtb/dashboard/tbdashboard.form?patientId=${patientId}&patientProgramId=${tbProgram.id }"><spring:message code="mdrtb.edit" text="XXXX" /></a></td>
+<td><a href="${pageContext.request.contextPath}/module/mdrtb/dashboard/tbdashboard.form?patientId=${patientId}&patientProgramId=${tbProgram.id }"><mdrtb:message code="mdrtb.edit" text="XXXX" /></a></td>
 <td>
 <c:if test="${empty tbProgram.patientIdentifier}">
 	<c:if test="${!empty unassignedDotsIdentifiers}">
@@ -157,10 +157,10 @@ function fun2() {
 </td>
 <td>
 <c:if test="${!empty tbProgram.tb03}">
-<a href="${pageContext.request.contextPath}${tbProgram.tb03.link }"><spring:message code="mdrtb.tb03" text="TB03" /></a>&nbsp;&nbsp;
+<a href="${pageContext.request.contextPath}${tbProgram.tb03.link }"><mdrtb:message code="mdrtb.tb03" text="TB03" /></a>&nbsp;&nbsp;
 </c:if>
 <c:if test="${!empty tbProgram.form89}">
-<a href="${pageContext.request.contextPath}${tbProgram.form89.link }"><spring:message code="mdrtb.form89" text="Form89" /></a>
+<a href="${pageContext.request.contextPath}${tbProgram.form89.link }"><mdrtb:message code="mdrtb.form89" text="Form89" /></a>
 </c:if>
 </td>
 </tr>
@@ -169,18 +169,18 @@ function fun2() {
 </div>
 </c:if>
 <c:if test="${not empty mdrtbPrograms}">
-<b class="boxHeader" style="margin: 0px"><spring:message code="mdrtb.enrollment.mdrtbPrograms" text="MDR-TB Programs"/></b>
+<b class="boxHeader" style="margin: 0px"><mdrtb:message code="mdrtb.enrollment.mdrtbPrograms" text="MDR-TB Programs"/></b>
 <div class="box" style="margin: 0px">
 <table cellspacing="2" cellpadding="2">
 
 <tr>
-<th><spring:message code="mdrtb.tb03.dateOfRegistration" text="Date" /></th>
-<th><spring:message code="mdrtb.enrollment.location" text="Location" /></th>
-<th><spring:message code="mdrtb.tb03.registrationNumber" text="Location" /></th>
-<th><spring:message code="mdrtb.enrollment.completionDate" text="Completion Date" /></th>
+<th><mdrtb:message code="mdrtb.tb03.dateOfRegistration" text="Date" /></th>
+<th><mdrtb:message code="mdrtb.enrollment.location" text="Location" /></th>
+<th><mdrtb:message code="mdrtb.tb03.registrationNumber" text="Location" /></th>
+<th><mdrtb:message code="mdrtb.enrollment.completionDate" text="Completion Date" /></th>
 <th>&nbsp;</th>
 <th>&nbsp;</th>
-<th><spring:message code="mdrtb.forms" text="Forms"/></th>
+<th><mdrtb:message code="mdrtb.forms" text="Forms"/></th>
 </tr>
 <c:forEach var="mdrtbProgram" items="${mdrtbPrograms}">
 <tr>
@@ -188,7 +188,7 @@ function fun2() {
 <td>${mdrtbProgram.location.name }</td>
 <td>${mdrtbProgram.patientIdentifier.identifier }</td>
 <td><openmrs:formatDate date="${mdrtbProgram.dateCompleted}" format="${_dateFormatDisplay}" /></td>
-<td><a href="${pageContext.request.contextPath}/module/mdrtb/dashboard/dashboard.form?patientId=${patientId}&patientProgramId=${mdrtbProgram.id }"><spring:message code="mdrtb.edit" text="Edit" /></a></td>
+<td><a href="${pageContext.request.contextPath}/module/mdrtb/dashboard/dashboard.form?patientId=${patientId}&patientProgramId=${mdrtbProgram.id }"><mdrtb:message code="mdrtb.edit" text="Edit" /></a></td>
 <td>
 <c:if test="${empty mdrtbProgram.patientIdentifier}">
 	<c:if test="${!empty unassignedMdrIdentifiers}">
@@ -203,7 +203,7 @@ function fun2() {
 </td>
 <td>
 <c:if test="${!empty mdrtbProgram.tb03u}">
-<a href="${pageContext.request.contextPath}${mdrtbProgram.tb03u.link }"><spring:message code="mdrtb.tb03u" text="TB03u" /></a>
+<a href="${pageContext.request.contextPath}${mdrtbProgram.tb03u.link }"><mdrtb:message code="mdrtb.tb03u" text="TB03u" /></a>
 </c:if>
 </td>
 </tr>
@@ -216,20 +216,20 @@ function fun2() {
 <c:otherwise>
 
 <!-- PROGRAM ENROLLMENT BOX-->
-<b class="boxHeader" style="margin: 0px"><spring:message code="mdrtb.enrollment.enrollInProgram" text="Enroll in MDR-TB Program" /></b>
+<b class="boxHeader" style="margin: 0px"><mdrtb:message code="mdrtb.enrollment.enrollInProgram" text="Enroll in MDR-TB Program" /></b>
 <div class="box" style="margin: 0px">
 
 <form id="enrollment" action="${pageContext.request.contextPath}/module/mdrtb/program/firstEnrollment.form?patientId=${patientId}&patientProgramId=-1&idId=${idId}" method="post">
 
 <table cellspacing="2" cellpadding="2">
 <tr><td>
-<spring:message code="mdrtb.enrollment.date" text="Enrollment Date" />:</td><td><input id="dateEnrolled" type="text" size="14" tabindex="-1" name="dateEnrolled" value="<openmrs:formatDate date='${program.dateEnrolled}'/>" onFocus="showCalendar(this)" />
+<mdrtb:message code="mdrtb.enrollment.date" text="Enrollment Date" />:</td><td><input id="dateEnrolled" type="text" size="14" tabindex="-1" name="dateEnrolled" value="<openmrs:formatDate date='${program.dateEnrolled}'/>" onFocus="showCalendar(this)" />
 </td></tr>
 
 </table>
 
 <%-- <tr><td>
-<spring:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td><td>
+<mdrtb:message code="mdrtb.enrollment.location" text="Enrollment Location"/>:</td><td>
 <select name="location">
 <option value=""/>
 <c:forEach var="location" items="${locations}">
@@ -240,7 +240,7 @@ function fun2() {
 
 <table>
 <tr id="oblastDiv">
-		<td align="right"><spring:message code="mdrtb.oblast" /></td>
+		<td align="right"><mdrtb:message code="mdrtb.oblast" /></td>
 		<td><select name="oblast" id="oblast" onchange="fun1()">
 				<option value=""></option>
 				<c:forEach var="o" items="${oblasts}" varStatus="loop">
@@ -250,7 +250,7 @@ function fun2() {
 	</tr>
 
 	<tr id="districtDiv">
-		<td align="right"><spring:message code="mdrtb.district" /></td>
+		<td align="right"><mdrtb:message code="mdrtb.district" /></td>
 		<td><select name="district" id="district" onchange="fun2()">
 				<option value=""></option>
 				<c:forEach var="dist" items="${districts}" varStatus="loop">
@@ -260,7 +260,7 @@ function fun2() {
 	</tr>
 
 	<tr id="facilityDiv">
-		<td align="right"><spring:message code="mdrtb.facility" /></td>
+		<td align="right"><mdrtb:message code="mdrtb.facility" /></td>
 		<td><select name="facility" id="facility">
 				<option value=""></option>
 				<c:forEach var="f" items="${facilities}" varStatus="loop">
@@ -275,7 +275,7 @@ function fun2() {
 <table>
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:<br />
+<mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:<br />
 <select name="classificationAccordingToPatientGroups" id="classificationAccordingToPatientGroups">
 <option value="" />
 <c:forEach var="classificationAccordingToPatientGroups" items="${classificationsAccordingToPatientGroups}">
@@ -285,7 +285,7 @@ function fun2() {
 </td></tr>
 
 <tr><td colspan="2">
-<spring:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br />
+<mdrtb:message code="mdrtb.previousDrugClassification" text="Registration Group - Previous Drug Use"/>:<br />
 <select name="classificationAccordingToPreviousDrugUse" id="classificationAccordingToPreviousDrugUse">
 <option value="" />
 <c:forEach var="classificationAccordingToPreviousDrugUse" items="${classificationsAccordingToPreviousDrugUseDOTS}">
@@ -296,7 +296,7 @@ function fun2() {
 
 </table>
 
-<button type="submit"><spring:message code="mdrtb.enrollment.enroll" text="Enroll in Program" /></button><button type="reset" onclick=window.location='${pageContext.request.contextPath}/module/mdrtb/dashboard/dashboard.form?patientId=${patientId}'><spring:message code="mdrtb.cancel" text="Cancel" /></button>
+<button type="submit"><mdrtb:message code="mdrtb.enrollment.enroll" text="Enroll in Program" /></button><button type="reset" onclick=window.location='${pageContext.request.contextPath}/module/mdrtb/dashboard/dashboard.form?patientId=${patientId}'><mdrtb:message code="mdrtb.cancel" text="Cancel" /></button>
 </form>
 </div>
 </c:otherwise>

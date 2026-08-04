@@ -23,6 +23,7 @@ import org.openmrs.module.mdrtb.regimen.RegimenHistory;
 import org.openmrs.module.mdrtb.regimen.RegimenUtils;
 import org.openmrs.module.mdrtb.specimen.Specimen;
 import org.openmrs.module.mdrtb.specimen.SpecimenUtil;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class PatientChartFactory {
 	
@@ -100,7 +101,7 @@ public class PatientChartFactory {
 			// first, we want to get all specimens collected more than a month before the treatment start date (for the prior row)
 			recordStartDate.add(Calendar.MONTH, -1); // set the periodStartDate one month back and use it as the endDate parameter to createRecordComponents
 			record = createChartRecord(specimens, stateChangeRecordComponents, regimenHistory, null, recordStartDate);
-			record.setLabel(Context.getMessageSourceService().getMessage("mdrtb.prior"));
+			record.setLabel(Context.getService(MessagePropertyService.class).getMessage("mdrtb.prior"));
 			chart.getRecords().add(record);
 			
 			// now all the specimens collected in the month prior to treatment start date (for the baseline row)
@@ -108,7 +109,7 @@ public class PatientChartFactory {
 			recordEndDate.add(Calendar.MONTH, 1); // create an end date one month after the startDate
 			record = createChartRecord(specimens, stateChangeRecordComponents, regimenHistory, recordStartDate,
 			    recordEndDate);
-			record.setLabel(Context.getMessageSourceService().getMessage("mdrtb.baseline"));
+			record.setLabel(Context.getService(MessagePropertyService.class).getMessage("mdrtb.baseline"));
 			chart.getRecords().add(record);
 			
 			// increment
@@ -246,13 +247,13 @@ public class PatientChartFactory {
 		// the only state we are worried about at this point is the treatment start date and treatment end date
 		if (mdrtbProgram.getTreatmentStartDateDuringProgram() != null) {
 			stateChangeRecordComponents.add(new StateChangeRecordComponent(
-			        mdrtbProgram.getTreatmentStartDateDuringProgram(), Context.getMessageSourceService().getMessage(
+			        mdrtbProgram.getTreatmentStartDateDuringProgram(), Context.getService(MessagePropertyService.class).getMessage(
 			            "mdrtb.treatmentstartdate")));
 		}
 		
 		if (mdrtbProgram.getTreatmentEndDateDuringProgram() != null) {
 			stateChangeRecordComponents.add(new StateChangeRecordComponent(mdrtbProgram.getTreatmentEndDateDuringProgram(),
-			        Context.getMessageSourceService().getMessage("mdrtb.treatmentEndDate")));
+			        Context.getService(MessagePropertyService.class).getMessage("mdrtb.treatmentEndDate")));
 		}
 		
 		Collections.sort(stateChangeRecordComponents);

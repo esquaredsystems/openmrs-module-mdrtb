@@ -47,6 +47,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 @SuppressWarnings("null")
 @Controller
@@ -8913,8 +8914,9 @@ public class PatientListContoller {
 		ret += ALIGN_LEFT_TAG + p.getFamilyName() + "," + p.getGivenName() + CLOSE_TD;
 		
 		if (gender) {
-			String g = p.getGender().equals("M") ? Context.getMessageSourceService().getMessage(MDRTB_TB_03_GENDER_MALE)
-			        : Context.getMessageSourceService().getMessage(MDRTB_TB_03_GENDER_FEMALE);
+			String g = p.getGender().equals("M") ? Context.getService(MessagePropertyService.class).getMessage(
+			    MDRTB_TB_03_GENDER_MALE) : Context.getService(MessagePropertyService.class).getMessage(
+			    MDRTB_TB_03_GENDER_FEMALE);
 			ret += ALIGN_LEFT_TAG + g + CLOSE_TD;
 		}
 		ret += ALIGN_LEFT_TAG + dateFormat.format(p.getBirthdate()) + CLOSE_TD;
@@ -9107,6 +9109,6 @@ public class PatientListContoller {
 	}
 	
 	private static String getMessage(String code) {
-		return Context.getMessageSourceService().getMessage(code);
+		return Context.getService(MessagePropertyService.class).getMessage(code);
 	}
 }

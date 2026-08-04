@@ -77,14 +77,14 @@
 
 <div> <!-- start of page div -->
 
-&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><spring:message code="mdrtb.back" text="Back"/></a>
+&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><mdrtb:message code="mdrtb.back" text="Back"/></a>
 <br/><br/>
 
 <!-- VIEW BOX -->
 <div id="viewVisit" <c:if test="${(empty transferOut.id) || (transferOut.id == -1) || fn:length(errors.allErrors) > 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.transferOut" text="TOUT"/>
+<b class="boxHeader"><mdrtb:message code="mdrtb.transferOut" text="TOUT"/>
 <openmrs:hasPrivilege privilege="Edit DOTS-MDR Data">
-<span style="position: absolute; right:30px;"><a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><spring:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${transferOut.id}&patientProgramId=${patientProgramId}&patientId=${transferOut.patient.id }" class="delete" onclick="return confirm('<spring:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><spring:message code="mdrtb.delete" text="delete"/></a></span>
+<span style="position: absolute; right:30px;"><a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><mdrtb:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${transferOut.id}&patientProgramId=${patientProgramId}&patientId=${transferOut.patient.id }" class="delete" onclick="return confirm('<mdrtb:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><mdrtb:message code="mdrtb.delete" text="delete"/></a></span>
 </openmrs:hasPrivilege>
 </b>
 <div class="box">
@@ -94,22 +94,22 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.date" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.date" text="Date"/>:</td>
 <td><openmrs:formatDate date="${transferOut.encounterDatetime}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.oblast" text="Oblast"/>:</td>
+<td><mdrtb:message code="mdrtb.oblast" text="Oblast"/>:</td>
 <td>${transferOut.location.stateProvince}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.district" text="District"/>:</td>
+<td><mdrtb:message code="mdrtb.district" text="District"/>:</td>
 <td>${transferOut.location.countyDistrict}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.facility" text="Facility"/>:</td>
+<td><mdrtb:message code="mdrtb.facility" text="Facility"/>:</td>
 <td>${transferOut.location.region}</td>
 </tr>
 
@@ -122,14 +122,14 @@
 
 <!-- EDIT BOX -->
 <div id="editVisit" <c:if test="${(!empty transferOut.id) && (transferOut.id != -1) && fn:length(errors.allErrors) == 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.transferOut" text="TOUR"/></b>
+<b class="boxHeader"><mdrtb:message code="mdrtb.transferOut" text="TOUR"/></b>
 <div class="box">
 
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
 		<c:if test="${error.code != 'methodInvocation'}">
-			<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+			<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 		</c:if>	
 	</c:forEach>
 	<br/>
@@ -144,7 +144,7 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.date" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.date" text="Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="encounterDatetime" startValue="${transferOut.encounterDatetime}"/></td>
 </tr>
 
@@ -152,7 +152,7 @@
 
 <table>
 <tr id="oblastDiv">
-			<td align="right"><spring:message code="mdrtb.oblast" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.oblast" /></td>
 			<td><select name="oblast" id="oblast" onchange="fun1()">
 					<option value=""></option>
 					<c:forEach var="o" items="${oblasts}">
@@ -162,7 +162,7 @@
 		</tr>
 		
 		<tr id="districtDiv">
-			<td align="right"><spring:message code="mdrtb.district" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.district" /></td>
 			<td><select name="district" id="district" onchange="fun2()">
 					<option value=""></option>
 					<c:forEach var="dist" items="${districts}">
@@ -172,7 +172,7 @@
 		</tr>
 		
 		<tr id="facilityDiv">
-			<td align="right"><spring:message code="mdrtb.facility" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.facility" /></td>
 			<td><select name="facility" id="facility">
 					<option value=""></option>
 					<c:forEach var="f" items="${facilities}">
@@ -187,7 +187,7 @@
 
 </table>
 
-<button type="submit"><spring:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><spring:message code="mdrtb.cancel" text="Cancel"/></button>
+<button type="submit"><mdrtb:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><mdrtb:message code="mdrtb.cancel" text="Cancel"/></button>
 	
 </form>
 

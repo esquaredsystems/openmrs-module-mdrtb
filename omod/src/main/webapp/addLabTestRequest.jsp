@@ -127,13 +127,13 @@ table-layout: fixed;
 	<br>
 	<fieldset class="scheduler-border" style="margin-top: 320px;">
 		<legend class="scheduler-border">
-			<spring:message code="commonlabtest.request.add" />
+			<mdrtb:message code="commonlabtest.request.add" />
 		</legend>
 		<br>
 		<!--     <form id="labTestForm" method="post" onsubmit="return submitAndValidate()"> -->
 		<div class="row">
 			<div class="col-md-2">
-				<label class="control-label" path="encounter"> <spring:message
+				<label class="control-label" path="encounter"> <mdrtb:message
 						code="general.encounter" /><span class=" text-danger required">*</span></label>
 			</div>
 			<div class="col-md-4">
@@ -242,7 +242,7 @@ function getTestRequestList() {
 
 function showalert(message, alerttype) {
     //alertType : .alert-success, .alert-info, .alert-warning & .alert-danger
-    $('#alert_placeholder').append('<div id="alertdiv" class="alert ' + alerttype + '"><a class="close" data-dismiss="alert">×</a><span>' + message + '</span></div>')
+    $('#alert_placeholder').append('<div id="alertdiv" class="alert ' + alerttype + '"><a class="close" data-dismiss="alert">Ã—</a><span>' + message + '</span></div>')
     autoHide();
 }
 function autoHide() {

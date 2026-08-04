@@ -11,6 +11,7 @@ import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.AdverseEventsForm;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class AdverseEventsRegisterData implements Comparable<AdverseEventsRegisterData> {
 	
@@ -105,9 +106,9 @@ public class AdverseEventsRegisterData implements Comparable<AdverseEventsRegist
 		if (q == null)
 			return null;
 		if (q.getId() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SERIOUS).getId()) {
-			return Context.getMessageSourceService().getMessage(MdrtbConstants.MESSAGE_CODE_YES);
+			return Context.getService(MessagePropertyService.class).getMessage(MdrtbConstants.MESSAGE_CODE_YES);
 		} else {
-			return Context.getMessageSourceService().getMessage(MdrtbConstants.MESSAGE_CODE_NO);
+			return Context.getService(MessagePropertyService.class).getMessage(MdrtbConstants.MESSAGE_CODE_NO);
 		}
 	}
 	
@@ -118,9 +119,9 @@ public class AdverseEventsRegisterData implements Comparable<AdverseEventsRegist
 		if (q == null)
 			return null;
 		if (q.getId() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OF_SPECIAL_INTEREST).getId()) {
-			return Context.getMessageSourceService().getMessage(MdrtbConstants.MESSAGE_CODE_YES);
+			return Context.getService(MessagePropertyService.class).getMessage(MdrtbConstants.MESSAGE_CODE_YES);
 		} else {
-			return Context.getMessageSourceService().getMessage(MdrtbConstants.MESSAGE_CODE_NO);
+			return Context.getService(MessagePropertyService.class).getMessage(MdrtbConstants.MESSAGE_CODE_NO);
 		}
 	}
 	

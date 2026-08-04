@@ -1153,7 +1153,7 @@ public class MdrtbConcepts {
 	public static final String VIOMYCIN_RESISTANCE = "VIOMYCIN RESISTANCE";
 	
 	// Private Cache for Concepts
-	private Map<String, Concept> cache = new HashMap<>();
+	private final Map<String, Concept> cache = new HashMap<>();
 	
 	/**
 	 * @return all of the defined Concept Mappings

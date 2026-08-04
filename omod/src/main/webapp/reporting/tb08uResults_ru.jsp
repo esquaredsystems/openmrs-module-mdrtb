@@ -1,4 +1,4 @@
-﻿<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 <%@ include file="/WEB-INF/view/module/mdrtb/include.jsp"%>
 
 <%
@@ -22,9 +22,9 @@ response.setDateHeader ("Expires", -1);
 		function printForm() {
 			var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-		    mywindow.document.write('<html><head><title><spring:message code="mdrtb.tb08" text="TB08u"/></title>');
+		    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.tb08" text="TB08u"/></title>');
 		    mywindow.document.write('</head><body >');
-		   // mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+		   // mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
 		    mywindow.document.write(document.getElementById("tb08u").innerHTML);
 		    
 		    mywindow.document.write('</body></html>');
@@ -163,7 +163,7 @@ response.setDateHeader ("Expires", -1);
 			}
 			$(document).ready(function(){
 				$("#tableToSql").bind("click", function() {
-					if(confirm('<spring:message code="mdrtb.closeReportMessage" />') ) {
+					if(confirm('<mdrtb:message code="mdrtb.closeReportMessage" />') ) {
 						savePdf("closeReport.form", "TB-08u", "tb08uResults");
 					}
 				});
@@ -446,11 +446,11 @@ response.setDateHeader ("Expires", -1);
 			</table>
 		</div>
 		
-		<input type="button" onclick="tableToExcel('tb08u', 'TB08u')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
-		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<spring:message code='mdrtb.exportToPdfBtn' />" /> -->
+		<input type="button" onclick="tableToExcel('tb08u', 'TB08u')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
+		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<mdrtb:message code='mdrtb.exportToPdfBtn' />" /> -->
 		<openmrs:hasPrivilege privilege="Manage Report Closing">
-		<input type="button" id="tableToSql" name="tableToSql" value="<spring:message code='mdrtb.closeReportBtn' />" />
-			<input type="button" onclick="printForm()" value="<spring:message code='mdrtb.print' />" />
+		<input type="button" id="tableToSql" name="tableToSql" value="<mdrtb:message code='mdrtb.closeReportBtn' />" />
+			<input type="button" onclick="printForm()" value="<mdrtb:message code='mdrtb.print' />" />
 		</openmrs:hasPrivilege>
 		<script> 
 			console.log("${reportStatus}");

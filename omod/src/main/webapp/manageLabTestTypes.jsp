@@ -74,7 +74,7 @@ table.display tbody tr:nth-child(even):hover td {
 <!-- Heading -->
 <div>
 	<h2>
-		<b><spring:message code="commonlabtest.labtesttype.manage" /></b>
+		<b><mdrtb:message code="commonlabtest.labtesttype.manage" /></b>
 	</h2>
 </div>
 <br>
@@ -87,13 +87,13 @@ table.display tbody tr:nth-child(even):hover td {
 <div>
 	<openmrs:hasPrivilege privilege="Add CommonLabTest Metadata">
 		<a style="text-decoration: none" href="addLabTestType.form"
-			class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <spring:message
+			class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <mdrtb:message
 				code="commonlabtest.labtesttype.add" /> </a>
 	</openmrs:hasPrivilege>
 </div>
 <br>
 <div class="boxHeader" style="background-color: #1aac9b">
-	<span><i class="fa fa-list"></i> </span> <b><spring:message
+	<span><i class="fa fa-list"></i> </span> <b><mdrtb:message
 			code="commonlabtest.labtesttype.list" /></b>
 </div>
 <div class="box">
@@ -146,7 +146,7 @@ table.display tbody tr:nth-child(even):hover td {
 				<p class="heading lead white-text">Sort Weight Order</p>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
-					<span aria-hidden="true" class="white-text">×</span>
+					<span aria-hidden="true" class="white-text">Ã—</span>
 				</button>
 			</div>
 			<div class="modal-body">

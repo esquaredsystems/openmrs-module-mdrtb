@@ -6,6 +6,8 @@ import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConstants;
+import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class TB03Data implements Comparable<TB03Data> {
 	
@@ -359,11 +361,11 @@ public class TB03Data implements Comparable<TB03Data> {
 	public String getXpertRIFResultCode() {
 		if (xpertRIFResult != null) {
 			if (xpertRIFResult.equals(POSITIVE_RESULT_SHORT))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifPosShort");
+				return "/" + Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.xpertRifPosShort");
 			else if (xpertRIFResult.equals(NEGATIVE_RESULT_SHORT))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifNegShort");
+				return "/" + Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.xpertRifNegShort");
 			else if (xpertRIFResult.equals(UNDETERMINED_RESULT_SHORT))
-				return "/" + Context.getMessageSourceService().getMessage("mdrtb.tb03.xpertRifIndShort");
+				return "/" + Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.xpertRifIndShort");
 			else
 				return "/" + xpertRIFResult;
 		}
@@ -405,11 +407,11 @@ public class TB03Data implements Comparable<TB03Data> {
 	public String getHainINHResultCode() {
 		if (hainINHResult != null) {
 			if (hainINHResult.equals(POSITIVE_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.resistantShort");
 			else if (hainINHResult.equals(NEGATIVE_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.sensitiveShort");
 			else if (hainINHResult.equals(UNDETERMINED_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.indeterminateShort");
 			else
 				return hainINHResult;
 		}
@@ -428,11 +430,11 @@ public class TB03Data implements Comparable<TB03Data> {
 		
 		if (hainRIFResult != null) {
 			if (hainRIFResult.equals(POSITIVE_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.resistantShort");
 			else if (hainRIFResult.equals(NEGATIVE_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.sensitiveShort");
 			else if (hainRIFResult.equals(UNDETERMINED_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.indeterminateShort");
 			else
 				return hainRIFResult;
 		}
@@ -877,9 +879,9 @@ public class TB03Data implements Comparable<TB03Data> {
 	
 	public String getGender() {
 		if (patient.getGender().equals("M"))
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.male");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.male");
 		else if (patient.getGender().equals("F"))
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.female");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.female");
 		
 		return "";
 	}
@@ -898,11 +900,11 @@ public class TB03Data implements Comparable<TB03Data> {
 	public String getHain2InjResultCode() {
 		if (hain2InjResult != null) {
 			if (hain2InjResult.equals(POSITIVE_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.resistantShort");
 			else if (hain2InjResult.equals(NEGATIVE_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.sensitiveShort");
 			else if (hain2InjResult.equals(UNDETERMINED_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.indeterminateShort");
 			else
 				return hain2InjResult;
 		}
@@ -920,11 +922,11 @@ public class TB03Data implements Comparable<TB03Data> {
 	public String getHain2FqResultCode() {
 		if (hain2FqResult != null) {
 			if (hain2FqResult.equals(POSITIVE_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.resistantShort");
 			else if (hain2FqResult.equals(NEGATIVE_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.sensitiveShort");
 			else if (hain2FqResult.equals(UNDETERMINED_RESULT_SHORT))
-				return Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
+				return Context.getService(MessagePropertyService.class).getMessage("mdrtb.indeterminateShort");
 			else
 				return hain2FqResult;
 		}

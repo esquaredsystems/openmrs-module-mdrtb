@@ -29,6 +29,7 @@ import org.openmrs.module.mdrtb.status.LabResultsStatus;
 import org.openmrs.module.mdrtb.status.LabResultsStatusRenderer;
 import org.openmrs.module.mdrtb.status.StatusFlag;
 import org.openmrs.module.mdrtb.status.StatusItem;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class DashboardLabResultsStatusRenderer implements LabResultsStatusRenderer {
 	
@@ -52,11 +53,11 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				item.setLink("/module/mdrtb/form/smear.form?encounterId=" + smear.getSpecimenId() + "&patientProgramId="
 				        + status.getPatientTbProgram().getId());
 			}
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.smearFormatter", params,
-			    "{0} on {1}, tested at {2}", Context.getLocale()));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.smearFormatter",
+			    params, "{0} on {1}, tested at {2}"));
 			
 		} else {
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.none"));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.none"));
 			item.setLink(null);
 		}
 	}
@@ -78,10 +79,10 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				item.setLink("/module/mdrtb/form/culture.form?encounterId=" + culture.getSpecimenId() + "&patientProgramId="
 				        + status.getPatientTbProgram().getId());
 			}
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.cultureFormatter", params,
-			    "{0} on {1}, tested at {2}", Context.getLocale()));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.cultureFormatter",
+			    params, "{0} on {1}, tested at {2}"));
 		} else {
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.none"));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.none"));
 			item.setLink(null);
 		}
 	}
@@ -90,7 +91,7 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 		String drugList = DashboardStatusRendererUtil.renderDrugList(drugs);
 		
 		if (StringUtils.isBlank(drugList)) {
-			drugList = Context.getMessageSourceService().getMessage("mdrtb.unknown");
+			drugList = Context.getService(MessagePropertyService.class).getMessage("mdrtb.unknown");
 		}
 		
 		return drugList;
@@ -112,20 +113,20 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 			
 			if (testStatus == TestStatus.STARTED) {
 				String[] params = { test.getLab().getDisplayString(), df.format(test.getStartDate()), testType };
-				item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.labResultsStatus.started", params,
-				    "{2} started on {1} at {0}", Context.getLocale()));
+				item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage(
+				    "mdrtb.labResultsStatus.started", params, "{2} started on {1} at {0}"));
 			} else if (testStatus == TestStatus.RECEIVED) {
 				String[] params = { test.getLab().getDisplayString(), df.format(test.getDateReceived()), testType };
-				item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.labResultsStatus.received",
-				    params, "{2} received by {0} at {1}", Context.getLocale()));
+				item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage(
+				    "mdrtb.labResultsStatus.received", params, "{2} received by {0} at {1}"));
 			} else if (testStatus == TestStatus.ORDERED) {
 				String[] params = { test.getLab().getDisplayString(), df.format(test.getDateOrdered()), testType };
-				item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.labResultsStatus.ordered", params,
-				    "{2} ordered on {1} from {0}", Context.getLocale()));
+				item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage(
+				    "mdrtb.labResultsStatus.ordered", params, "{2} ordered on {1} from {0}"));
 			} else {
 				String[] params = { testType };
-				item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.labResultsStatus.unknown", params,
-				    "{0} with status unknown", Context.getLocale()));
+				item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage(
+				    "mdrtb.labResultsStatus.unknown", params, "{0} with status unknown"));
 			}
 		}
 	}
@@ -133,19 +134,19 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 	public String renderTbClassification(TbClassification classification) {
 		
 		StringBuffer displayString = new StringBuffer();
-		displayString.append(Context.getMessageSourceService().getMessage("mdrtb.confirmed") + " ");
+		displayString.append(Context.getService(MessagePropertyService.class).getMessage("mdrtb.confirmed") + " ");
 		
 		if (classification == TbClassification.MONO_RESISTANT_TB) {
-			displayString.append(Context.getMessageSourceService().getMessage("mdrtb.monoResistantTb"));
+			displayString.append(Context.getService(MessagePropertyService.class).getMessage("mdrtb.monoResistantTb"));
 		} else if (classification == TbClassification.POLY_RESISTANT_TB) {
-			displayString.append(Context.getMessageSourceService().getMessage("mdrtb.polyResistantTb"));
+			displayString.append(Context.getService(MessagePropertyService.class).getMessage("mdrtb.polyResistantTb"));
 		} else if (classification == TbClassification.MDR_TB) {
-			displayString.append(Context.getMessageSourceService().getMessage("mdrtb.mdrtb"));
+			displayString.append(Context.getService(MessagePropertyService.class).getMessage("mdrtb.mdrtb"));
 		} else if (classification == TbClassification.XDR_TB) {
-			displayString.append(Context.getMessageSourceService().getMessage("mdrtb.xdrtb"));
+			displayString.append(Context.getService(MessagePropertyService.class).getMessage("mdrtb.xdrtb"));
 		} else {
 			displayString = new StringBuffer();
-			displayString.append(Context.getMessageSourceService().getMessage("mdrtb.unknown"));
+			displayString.append(Context.getService(MessagePropertyService.class).getMessage("mdrtb.unknown"));
 		}
 		
 		return displayString.toString();
@@ -155,36 +156,36 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 		Concept anatomicalSite = (Concept) anatomicalStatus.getValue();
 		
 		if (anatomicalSite == null) {
-			return Context.getMessageSourceService().getMessage("mdrtb.unknown");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.unknown");
 		} else if (anatomicalSite.equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PULMONARY_TB))) {
-			return Context.getMessageSourceService().getMessage("mdrtb.pulmonary");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.pulmonary");
 		} else if (anatomicalSite
 		        .equals(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.EXTRA_PULMONARY_TB))) {
-			return Context.getMessageSourceService().getMessage("mdrtb.extrapulmonary");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.extrapulmonary");
 		} else {
-			return Context.getMessageSourceService().getMessage("mdrtb.unknown");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.unknown");
 		}
 	}
 	
 	public String renderConversion(StatusItem cultureConversion) {
 		if (!((Boolean) cultureConversion.getValue())) {
-			return Context.getMessageSourceService().getMessage("mdrtb.notConverted");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.notConverted");
 		} else {
 			String[] params = { df.format(cultureConversion.getDate()) };
-			return Context.getMessageSourceService().getMessage("mdrtb.converted", params, "Converted on {0}",
-			    Context.getLocale());
+			return Context.getService(MessagePropertyService.class)
+			        .getMessage("mdrtb.converted", params, "Converted on {0}");
 		}
 	}
 	
 	public StatusFlag createNoSmearsFlag() {
 		StatusFlag flag = new StatusFlag();
-		flag.setMessage(Context.getMessageSourceService().getMessage("mdrtb.noSmearResults"));
+		flag.setMessage(Context.getService(MessagePropertyService.class).getMessage("mdrtb.noSmearResults"));
 		return flag;
 	}
 	
 	public StatusFlag createNoCulturesFlag() {
 		StatusFlag flag = new StatusFlag();
-		flag.setMessage(Context.getMessageSourceService().getMessage("mdrtb.noCultureResults"));
+		flag.setMessage(Context.getService(MessagePropertyService.class).getMessage("mdrtb.noCultureResults"));
 		return flag;
 	}
 	
@@ -211,10 +212,10 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				        + status.getPatientTbProgram().getId());
 			}
 			
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.xpertFormatter", params,
-			    "{0} on {1}, tested at {2}", Context.getLocale()));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.xpertFormatter",
+			    params, "{0} on {1}, tested at {2}"));
 		} else {
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.none"));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.none"));
 			item.setLink(null);
 		}
 	}
@@ -237,10 +238,10 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				        + status.getPatientTbProgram().getId());
 			}
 			
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.hainFormatter", params,
-			    "{0} on {1}, tested at {2}", Context.getLocale()));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.hainFormatter", params,
+			    "{0} on {1}, tested at {2}"));
 		} else {
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.none"));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.none"));
 			item.setLink(null);
 		}
 		
@@ -264,10 +265,10 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				        + status.getPatientTbProgram().getId());
 			}
 			
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.hain2Formatter", params,
-			    "{0} on {1}, tested at {2}", Context.getLocale()));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.hain2Formatter",
+			    params, "{0} on {1}, tested at {2}"));
 		} else {
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.none"));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.none"));
 			item.setLink(null);
 		}
 		
@@ -291,10 +292,10 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				        + status.getPatientTbProgram().getId());
 			}
 			
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.dstFormatter", params,
-			    "{0} on {1}, tested at {2}", Context.getLocale()));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.dstFormatter", params,
+			    "{0} on {1}, tested at {2}"));
 		} else {
-			item.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.none"));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.none"));
 			item.setLink(null);
 		}
 		

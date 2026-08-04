@@ -117,7 +117,7 @@
 		}
 		$(document).ready(function(){
 			$("#tableToSql").bind("click", function() {
-				if(confirm('<spring:message code="mdrtb.closeReportMessage" />') ) {
+				if(confirm('<mdrtb:message code="mdrtb.closeReportMessage" />') ) {
 					savePdf("closeReport.form", "TB-07u", "tb07uResults");
 				}
 			});
@@ -939,10 +939,10 @@
 			</table>
 		</div>
 		
-		<input type="button" onclick="tableToExcel('tb07u', 'TB07u')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
-		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<spring:message code='mdrtb.exportToPdfBtn' />" /> -->
+		<input type="button" onclick="tableToExcel('tb07u', 'TB07u')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
+		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<mdrtb:message code='mdrtb.exportToPdfBtn' />" /> -->
 		<openmrs:hasPrivilege privilege="Manage Report Closing">
-		<input type="button" id="tableToSql" name="tableToSql" value="<spring:message code='mdrtb.closeReportBtn' />" />
+		<input type="button" id="tableToSql" name="tableToSql" value="<mdrtb:message code='mdrtb.closeReportBtn' />" />
 		</openmrs:hasPrivilege>
 		<script> 
 			console.log("${reportStatus}");

@@ -141,9 +141,9 @@
 	function printForm() {
 		var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-	    mywindow.document.write('<html><head><title><spring:message code="mdrtb.tb03u" text="TB03"/></title>');
+	    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.tb03u" text="TB03"/></title>');
 	    mywindow.document.write('</head><body >');
-	    mywindow.document.write('<h1><spring:message code="mdrtb.tb03u" text="TB03"/></h1>');
+	    mywindow.document.write('<h1><mdrtb:message code="mdrtb.tb03u" text="TB03"/></h1>');
 	    mywindow.document.write(document.getElementById("tb03u").innerHTML);
 	    
 	    mywindow.document.write('</body></html>');
@@ -182,15 +182,15 @@
 
 <div> <!-- start of page div -->
 
-&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><spring:message code="mdrtb.back" text="Back"/></a>
+&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><mdrtb:message code="mdrtb.back" text="Back"/></a>
 <br/><br/>
 
 <!-- VIEW BOX -->
 <div id="viewVisit" <c:if test="${(empty tb03u.id) || (tb03u.id == -1) || fn:length(errors.allErrors) > 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.tb03uXDRForm" text="tb03u Form"/>
-<span style="position: absolute; right:30px;"><a id="print" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="printForm()"><spring:message code="mdrtb.print" text="TB03"/></a>&nbsp;&nbsp;<a id="export" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="tableToExcel('tb03u', 'TB03u')"><spring:message code="mdrtb.exportToExcel" text="TB03"/></a>
+<b class="boxHeader"><mdrtb:message code="mdrtb.tb03uXDRForm" text="tb03u Form"/>
+<span style="position: absolute; right:30px;"><a id="print" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="printForm()"><mdrtb:message code="mdrtb.print" text="TB03"/></a>&nbsp;&nbsp;<a id="export" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'" onclick="tableToExcel('tb03u', 'TB03u')"><mdrtb:message code="mdrtb.exportToExcel" text="TB03"/></a>
 <openmrs:hasPrivilege privilege="Edit DOTS-MDR Data">
-&nbsp;&nbsp;<a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><spring:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${tb03u.id}&patientProgramId=${patientProgramId}&patientId=${tb03u.patient.id}" class="delete" onclick="return confirm('<spring:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><spring:message code="mdrtb.delete" text="delete"/></a>
+&nbsp;&nbsp;<a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><mdrtb:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${tb03u.id}&patientProgramId=${patientProgramId}&patientId=${tb03u.patient.id}" class="delete" onclick="return confirm('<mdrtb:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><mdrtb:message code="mdrtb.delete" text="delete"/></a>
 </openmrs:hasPrivilege>
 </span>
 </b>
@@ -200,108 +200,108 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.date" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.date" text="Date"/>:</td>
 <td><openmrs:formatDate date="${tb03u.encounterDatetime}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.oblast" text="Oblast"/>:</td>
+<td><mdrtb:message code="mdrtb.oblast" text="Oblast"/>:</td>
 <td>${tb03u.location.stateProvince}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.district" text="District"/>:</td>
+<td><mdrtb:message code="mdrtb.district" text="District"/>:</td>
 <td>${tb03u.location.countyDistrict}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.facility" text="District"/>:</td>
+<td><mdrtb:message code="mdrtb.facility" text="District"/>:</td>
 <td>${tb03u.location.region}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.name" text="Name"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.name" text="Name"/>:</td>
 <td>${tb03u.patientName}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.tb03RegistrationNumber" text="TB03 Reg Num"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.tb03RegistrationNumber" text="TB03 Reg Num"/>:</td>
 <td>${tb03u.tb03RegistrationNumber}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.tb03RegistrationYear" text="TB03 Reg Year"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.tb03RegistrationYear" text="TB03 Reg Year"/>:</td>
 <td>${tb03u.tb03RegistrationYear}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.gender" text="Gender"/>:</td>
+<td><mdrtb:message code="mdrtb.gender" text="Gender"/>:</td>
 <td>${tb03u.gender}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.ageAtMdrRegistration" text="Age at MDR Regisration"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.ageAtMdrRegistration" text="Age at MDR Regisration"/>:</td>
 <td>${tb03u.ageAtMDRRegistration}</td>
 </tr>
 
 
 <tr>
-<td><spring:message code="mdrtb.tb03.dateOfBirth" text="Date of Birth"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.dateOfBirth" text="Date of Birth"/>:</td>
 <td><openmrs:formatDate date="${tb03u.dateOfBirth}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.address" text="Residential Address"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.address" text="Residential Address"/>:</td>
 <td>${tb03u.address }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.sldRegisterNumber" text="Num in Reg2"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.sldRegisterNumber" text="Num in Reg2"/>:</td>
 <td>${tb03u.sldRegisterNumber}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
 <td>${tb03u.anatomicalSite.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:</td>
 <td>${tb03u.registrationGroup.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.previousDrugClassification" text="Registration Group By Drug"/>:</td>
+<td><mdrtb:message code="mdrtb.previousDrugClassification" text="Registration Group By Drug"/>:</td>
 <td>${tb03u.registrationGroupByDrug.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.mdrStatus" text="MDRStatus"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.mdrStatus" text="MDRStatus"/>:</td>
 <td>${tb03u.mdrStatus.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.confirmationDate" text="ConfDate"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.confirmationDate" text="ConfDate"/>:</td>
 <td><openmrs:formatDate date="${tb03u.confirmationDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.patientCategory" text="Tx Regimen"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.patientCategory" text="Tx Regimen"/>:</td>
 <td>${tb03u.patientCategory.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.xdrTreatmentStartDate" text="Mdr Treatment Start Date"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.xdrTreatmentStartDate" text="Mdr Treatment Start Date"/>:</td>
 <td><openmrs:formatDate date="${tb03u.mdrTreatmentStartDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.txLocation" text="Tx Location"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.txLocation" text="Tx Location"/>:</td>
 <td>${tb03u.txLocation.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.nameOfTreatmentLocation" text="Name ofTx Location"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.nameOfTreatmentLocation" text="Name ofTx Location"/>:</td>
 <td>${tb03u.nameOfTxLocation}</td>
 </tr>
 
@@ -309,27 +309,27 @@
 
 <br/>
 
-<spring:message code="mdrtb.dsts" text="DSTz"/>
+<mdrtb:message code="mdrtb.dsts" text="DSTz"/>
 <table border="1">
 <tr>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.monthOfTreatment"/></td>
-<td style="font-weight:bold" colspan="2" align="center"><nobr><spring:message code="mdrtb.result"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.dateCollected"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.lab"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.specimenId"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.monthOfTreatment"/></td>
+<td style="font-weight:bold" colspan="2" align="center"><nobr><mdrtb:message code="mdrtb.result"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.dateCollected"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.lab"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.specimenId"/></td>
 </tr>
 
 <c:forEach var="dst" items="${tb03u.dsts}">
 <tr>
 <td rowspan="2" valign="middle" align="center">${dst.monthOfTreatment }</td>
-<td><spring:message code="mdrtb.resistant"/></td>
+<td><mdrtb:message code="mdrtb.resistant"/></td>
 <td>${dst.di.resistantDrugs}</td>
 <td rowspan="2" valign="middle" align="center"><openmrs:formatDate date="${dst.encounter.encounterDatetime}" format="${_dateFormatDisplay}"/></td>
 <td rowspan="2" valign="middle" align="center">${dst.encounter.location.displayString}</td>
 <td rowspan="2" valign="middle" align="center"><a href="${pageContext.request.contextPath}/module/mdrtb/form/dst.form?encounterId=${dst.id}&patientProgramId=${patientProgramId}" target="_blank">${dst.specimenId}</a></td>
 </tr>
 <tr>
-<td><spring:message code="mdrtb.sensitive"/></td>
+<td><mdrtb:message code="mdrtb.sensitive"/></td>
 <td>${dst.di.sensitiveDrugs}</td>
 </tr>
 </c:forEach>
@@ -341,32 +341,32 @@
 <table>
 
 <tr>
-<td><spring:message code="mdrtb.tb03u.resistanceType" text="Type of Resistance"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03u.resistanceType" text="Type of Resistance"/>:</td>
 <td>${tb03u.resistanceType.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.basisForDiagnosis" text="Basis For Diagnosis"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.basisForDiagnosis" text="Basis For Diagnosis"/>:</td>
 <td>${tb03u.basisForDiagnosis.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.hivTestDate" text="HIV Test Date"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.hivTestDate" text="HIV Test Date"/>:</td>
 <td><openmrs:formatDate date="${tb03u.hivTestDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.hivStatus" text="HIV Status"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.hivStatus" text="HIV Status"/>:</td>
 <td>${tb03u.hivStatus.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.artStartDate" text="ART Start Date"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.artStartDate" text="ART Start Date"/>:</td>
 <td><openmrs:formatDate date="${tb03u.artStartDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.pctStartDate" text="PCT Start Date"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.pctStartDate" text="PCT Start Date"/>:</td>
 <td><openmrs:formatDate date="${tb03u.pctStartDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
@@ -376,14 +376,14 @@
 
 <br/>
 
-<spring:message code="mdrtb.smears" text="Smearz"/>
+<mdrtb:message code="mdrtb.smears" text="Smearz"/>
 <table border="1">
 <tr>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.monthOfTreatment"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.result"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.dateCollected"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.lab"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.specimenId"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.monthOfTreatment"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.result"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.dateCollected"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.lab"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.specimenId"/></td>
 </tr>
 <c:forEach var="smear" items="${tb03u.smears}">
 <tr>
@@ -398,14 +398,14 @@
 
 <br/>
 
-<spring:message code="mdrtb.cultures" text="Culturez"/>
+<mdrtb:message code="mdrtb.cultures" text="Culturez"/>
 <table border="1">
 <tr>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.monthOfTreatment"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.result"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.dateCollected"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.lab"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.specimenId"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.monthOfTreatment"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.result"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.dateCollected"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.lab"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.specimenId"/></td>
 </tr>
 
 <c:forEach var="culture" items="${tb03u.cultures}">
@@ -421,11 +421,11 @@
 
 <br/>
 
-<spring:message code="mdrtb.tb03u.resistanceDuringTx" text="Drdtz"/>
+<mdrtb:message code="mdrtb.tb03u.resistanceDuringTx" text="Drdtz"/>
 <table border="1">
 <tr>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.date"/></td>
-<td style="font-weight:bold"><nobr><spring:message code="mdrtb.drdt"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.date"/></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.drdt"/></td>
 <td style="font-weight:bold"></td>
 </tr>
 
@@ -433,7 +433,7 @@
 <tr>
 <td><openmrs:formatDate date="${drdt.encounterDatetime}" format="${_dateFormatDisplay}"/></td>
 <td>${drdt.drugResistanceDuringTreatment.displayString}</td>
-<td><a href="${pageContext.request.contextPath}/module/mdrtb/form/resistanceDuringTx.form?encounterId=${drdt.id}&patientProgramId=${patientProgramId}" target="_blank"><spring:message code="mdrtb.view"/></a></td>
+<td><a href="${pageContext.request.contextPath}/module/mdrtb/form/resistanceDuringTx.form?encounterId=${drdt.id}&patientProgramId=${patientProgramId}" target="_blank"><mdrtb:message code="mdrtb.view"/></a></td>
 </c:forEach>
 </tr>
 </table>
@@ -444,42 +444,42 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.tb03.treatmentOutcome" text="Tx Outcome"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.treatmentOutcome" text="Tx Outcome"/>:</td>
 <td>${tb03u.treatmentOutcome.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.treatmentOutcomeDateOnly" text="Outcome Date"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.treatmentOutcomeDateOnly" text="Outcome Date"/>:</td>
 <td><openmrs:formatDate date="${tb03u.treatmentOutcomeDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.causeOfDeath" text="Cause of Death"/>:</td>
+<td><mdrtb:message code="mdrtb.causeOfDeath" text="Cause of Death"/>:</td>
 <td>${tb03u.causeOfDeath.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.otherCauseOfDeath" text="Other Cause of Death"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.otherCauseOfDeath" text="Other Cause of Death"/>:</td>
 <td>${tb03u.otherCauseOfDeath}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.afterOutcomeDeathDate" text="Date of Death after Outcome"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.afterOutcomeDeathDate" text="Date of Death after Outcome"/>:</td>
 <td><openmrs:formatDate date="${tb03u.dateOfDeathAfterOutcome}"  format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.relapsed" text="Relapsed"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.relapsed" text="Relapsed"/>:</td>
 <td>${tb03u.relapsed.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.relapseMonth" text="Relapse Month"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.relapseMonth" text="Relapse Month"/>:</td>
 <td>${tb03u.relapseMonth}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.clinicalNotes" text="Clinical Notes"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.clinicalNotes" text="Clinical Notes"/>:</td>
 <td>${tb03u.cliniciansNotes}</td>
 </tr>
 
@@ -494,14 +494,14 @@
 
 <!-- EDIT BOX -->
 <div id="editVisit" <c:if test="${(!empty tb03u.id) && (tb03u.id != -1) && fn:length(errors.allErrors) == 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><spring:message code="mdrtb.tb03uXDRForm" text="tb03u Form"/></b>
+<b class="boxHeader"><mdrtb:message code="mdrtb.tb03uXDRForm" text="tb03u Form"/></b>
 <div class="box">
 
 <!--  DISPLAY ANY ERROR MESSAGES -->
 <c:if test="${fn:length(errors.allErrors) > 0}">
 	<c:forEach var="error" items="${errors.allErrors}">
 		<c:if test="${error.code != 'methodInvocation'}">
-			<span class="error"><spring:message code="${error.code}"/></span><br/><br/>
+			<span class="error"><mdrtb:message code="${error.code}"/></span><br/><br/>
 		</c:if>	
 	</c:forEach>
 	<br/>
@@ -516,7 +516,7 @@
 <table>
  
 <tr>
-<td><spring:message code="mdrtb.date" text="Date"/>:</td>
+<td><mdrtb:message code="mdrtb.date" text="Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="encounterDatetime" startValue="${tb03u.encounterDatetime}"/></td>
 </tr>
 
@@ -526,7 +526,7 @@
 
 <table>
 <tr id="oblastDiv">
-			<td align="right"><spring:message code="mdrtb.oblast" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.oblast" /></td>
 			<td><select name="oblast" id="oblast" onchange="fun1()">
 					<option value=""></option>
 					<c:forEach var="o" items="${oblasts}">
@@ -536,7 +536,7 @@
 		</tr>
 		
 		<tr id="districtDiv">
-			<td align="right"><spring:message code="mdrtb.district" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.district" /></td>
 			<td><select name="district" id="district" onchange="fun2()">
 					<option value=""></option>
 					<c:forEach var="dist" items="${districts}">
@@ -546,7 +546,7 @@
 		</tr>
 		
 		<tr id="facilityDiv">
-			<td align="right"><spring:message code="mdrtb.facility" /></td>
+			<td align="right"><mdrtb:message code="mdrtb.facility" /></td>
 			<td><select name="facility" id="facility">
 					<option value=""></option>
 					<c:forEach var="f" items="${facilities}">
@@ -560,51 +560,51 @@
 <table>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.name" text="Name"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.name" text="Name"/>:</td>
 <td>${tb03u.patientName}</td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.tb03.tb03RegistrationNumber" text="TB03RegistrationNumber"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.tb03.tb03RegistrationNumber" text="TB03RegistrationNumber"/>:</td>
 <%-- <td><input name="tb03RegistrationNumber" size="12" value="${tb03u.tb03RegistrationNumber}"/></td> --%>
 <td>${tb03u.tb03RegistrationNumber}</td>
 </tr>
 
 <tr>
-<td valign="top"><spring:message code="mdrtb.tb03.tb03RegistrationYear" text="year of tb03 registration"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.tb03.tb03RegistrationYear" text="year of tb03 registration"/>:</td>
 <%-- <td><input name="tb03RegistrationYear" size="8" value="${tb03u.tb03RegistrationYear}"/></td> --%>
 <td>${tb03u.tb03RegistrationYear}</td>
 </tr>
  
 <tr>
-<td><spring:message code="mdrtb.gender" text="Gender"/>:</td>
+<td><mdrtb:message code="mdrtb.gender" text="Gender"/>:</td>
 <td>${tb03u.gender}</td>
 </tr>
  
 <tr>
-<td valign="top"><spring:message code="mdrtb.tb03.ageAtMDRRegistration" text="Age at MDRRegisration"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.tb03.ageAtMDRRegistration" text="Age at MDRRegisration"/>:</td>
 <%-- <td><input name="ageAtMDRRegistration" size="8" value="${tb03u.ageAtMDRRegistration}"/></td> --%>
 <td>${tb03u.ageAtMDRRegistration}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.dateOfBirth" text="Date of Birth"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.dateOfBirth" text="Date of Birth"/>:</td>
 <td><openmrs:formatDate date="${tb03u.dateOfBirth}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.address" text="Residential Address"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.address" text="Residential Address"/>:</td>
 <td>${tb03u.address }</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.sldRegisterNumber" text="Num in Reg2"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.sldRegisterNumber" text="Num in Reg2"/>:</td>
 <%-- <td><input name="sldRegisterNumber" size="10" value="${tb03u.sldRegisterNumber}"/></td> --%>
 <td>${tb03u.sldRegisterNumber }</td
 </tr>
 
 <%-- <tr>
-<td><spring:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
 <td>
 <select name="anatomicalSite">
 <option value=""></option>
@@ -616,12 +616,12 @@
 </tr> --%>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.siteOfDisease" text="Anatomical Type"/>:</td>
 <td>${tb03u.anatomicalSite.displayString}</td>
 </tr>
 
 <%-- <tr>
-<td><spring:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:</td>
 <td>
 <select name="registrationGroup">
 <option value=""></option>
@@ -633,7 +633,7 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.previousDrugClassification" text="Registration Group By Drug"/>:</td>
+<td><mdrtb:message code="mdrtb.previousDrugClassification" text="Registration Group By Drug"/>:</td>
 <td>
 <select name="registrationGroupByDrug">
 <option value=""></option>
@@ -645,17 +645,17 @@
 </tr> --%>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:</td>
 <td>${tb03u.registrationGroup.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.previousDrugClassification" text="Registration Group By Drug"/>:</td>
+<td><mdrtb:message code="mdrtb.previousDrugClassification" text="Registration Group By Drug"/>:</td>
 <td>${tb03u.registrationGroupByDrug.displayString}</td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.mdrStatus" text="MDRStatusz"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.mdrStatus" text="MDRStatusz"/>:</td>
 <%-- <td>
 <select name="mdrStatus">
 <option value=""></option>
@@ -668,13 +668,13 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.confirmationDate" text="ConfDate"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.confirmationDate" text="ConfDate"/>:</td>
 <%-- <td><openmrs_tag:dateField formFieldName="confirmationDate" startValue="${tb03u.confirmationDate}"/></td> --%>
 <td><openmrs:formatDate date="${tb03u.confirmationDate}" format="${_dateFormatDisplay}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.patientCategory" text="Regimen Type"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.patientCategory" text="Regimen Type"/>:</td>
 <td>
 <select name="patientCategory">
 <option value=""></option>
@@ -687,12 +687,12 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.xdrTreatmentStartDate" text="Mdr Tx Start Date"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.xdrTreatmentStartDate" text="Mdr Tx Start Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="mdrTreatmentStartDate" startValue="${tb03u.mdrTreatmentStartDate}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.txLocation" text="Tx Location"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.txLocation" text="Tx Location"/>:</td>
 <td>
 <select name="txLocation">
 <option value=""></option>
@@ -704,12 +704,12 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.nameOfTreatmentLocation" text="Name of TxLocation"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.nameOfTreatmentLocation" text="Name of TxLocation"/>:</td>
 <td><input name="nameOfTxLocation" size="10" value="${tb03u.nameOfTxLocation}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03u.resistanceType" text="Type of Resistance"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03u.resistanceType" text="Type of Resistance"/>:</td>
 <td>
 <select name="resistanceType">
 <option value=""></option>
@@ -722,7 +722,7 @@
 
 
 <tr>
-<td><spring:message code="mdrtb.tb03.basisForDiagnosis" text="Basis For Diagnosis"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.basisForDiagnosis" text="Basis For Diagnosis"/>:</td>
 <td>
 <select name="basisForDiagnosis">
 <option value=""></option>
@@ -734,13 +734,13 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.hivTestDate" text="HIVTestDate"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.hivTestDate" text="HIVTestDate"/>:</td>
 <td><openmrs_tag:dateField formFieldName="hivTestDate" startValue="${tb03u.hivTestDate}"/></td>
 </tr>
 
 
 <tr>
-<td><spring:message code="mdrtb.tb03.hivStatus" text="HIV Status" />:</td>
+<td><mdrtb:message code="mdrtb.tb03.hivStatus" text="HIV Status" />:</td>
 <td>
 <select name="hivStatus" id="hivStatus" onChange="hivToggle()">
 <option value=""></option>
@@ -752,17 +752,17 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.artStartDate" text="ART Start Date"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.artStartDate" text="ART Start Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="artStartDate" startValue="${tb03u.artStartDate}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.pctStartDate" text="PCT Start Date"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.pctStartDate" text="PCT Start Date"/>:</td>
 <td><openmrs_tag:dateField formFieldName="pctStartDate" startValue="${tb03u.pctStartDate}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.treatmentOutcome" text="Tx Outcome"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.treatmentOutcome" text="Tx Outcome"/>:</td>
 <td>
 <select name="treatmentOutcome">
 <option value=""></option>
@@ -774,12 +774,12 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.treatmentOutcomeDateOnly" text="Outcome Dates"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.treatmentOutcomeDateOnly" text="Outcome Dates"/>:</td>
 <td><openmrs_tag:dateField formFieldName="treatmentOutcomeDate" startValue="${tb03u.treatmentOutcomeDate}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.causeOfDeath" text="Cause of Death"/>:</td>
+<td><mdrtb:message code="mdrtb.causeOfDeath" text="Cause of Death"/>:</td>
 <td>
 <select name="causeOfDeath" id="causeOfDeath" onChange="codToggle()">
 <option value=""></option>
@@ -791,14 +791,14 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.afterOutcomeDeathDate" text="Date of Death after Outcome"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.afterOutcomeDeathDate" text="Date of Death after Outcome"/>:</td>
 <td><openmrs_tag:dateField formFieldName="dateOfDeathAfterOutcome" startValue="${tb03u.dateOfDeathAfterOutcome}"/></td>
 </tr>
 
 
 
 <tr>
-<td><spring:message code="mdrtb.tb03.relapsed" text="Relapsed"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.relapsed" text="Relapsed"/>:</td>
 <td>
 <select name="relapsed">
 <option value=""></option>
@@ -810,18 +810,18 @@
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.relapseMonth" text="RelapseMonth"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.relapseMonth" text="RelapseMonth"/>:</td>
 <td><input name="relapseMonth" size="10" value="${tb03u.relapseMonth}"/></td>
 </tr>
 
 <tr>
-<td><spring:message code="mdrtb.tb03.clinicalNotes" text="Clinical Notes"/>:</td>
+<td><mdrtb:message code="mdrtb.tb03.clinicalNotes" text="Clinical Notes"/>:</td>
 <td><textarea rows="4" cols="50" name="cliniciansNotes">${tb03u.cliniciansNotes}</textarea></td>
 </tr>
 
 </table>
 
-<button type="submit"><spring:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><spring:message code="mdrtb.cancel" text="Cancel"/></button>
+<button type="submit"><mdrtb:message code="mdrtb.save" text="Save"/></button> <button id="cancel" type="reset"><mdrtb:message code="mdrtb.cancel" text="Cancel"/></button>
 	
 </form>
 

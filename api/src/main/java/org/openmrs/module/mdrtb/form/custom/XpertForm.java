@@ -14,6 +14,7 @@ import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class XpertForm extends AbstractSimpleForm implements Comparable<XpertForm> {
 	
@@ -323,35 +324,35 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		
 		if (mtbResult.getId().intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MTB_POSITIVE)
 		        .getId().intValue()) {
-			ret = ret + Context.getMessageSourceService().getMessage("mdrtb.positiveShort");
+			ret = ret + Context.getService(MessagePropertyService.class).getMessage("mdrtb.positiveShort");
 			
 			if (rifResult != null
 			        && rifResult.getId().intValue() == Context.getService(MdrtbService.class)
 			                .getConcept(MdrtbConcepts.DETECTED).getId().intValue()) {
-				ret += "/" + Context.getMessageSourceService().getMessage("mdrtb.resistantShort");
+				ret += "/" + Context.getService(MessagePropertyService.class).getMessage("mdrtb.resistantShort");
 			}
 			
 			else if (rifResult != null
 			        && rifResult.getId().intValue() == Context.getService(MdrtbService.class)
 			                .getConcept(MdrtbConcepts.NOT_DETECTED).getId().intValue()) {
-				ret += "/" + Context.getMessageSourceService().getMessage("mdrtb.sensitiveShort");
+				ret += "/" + Context.getService(MessagePropertyService.class).getMessage("mdrtb.sensitiveShort");
 			}
 			
 			else if (rifResult != null
 			        && rifResult.getId().intValue() == Context.getService(MdrtbService.class)
 			                .getConcept(MdrtbConcepts.UNDETERMINED).getId().intValue()) {
-				ret += "/" + Context.getMessageSourceService().getMessage("mdrtb.indeterminateShort");
+				ret += "/" + Context.getService(MessagePropertyService.class).getMessage("mdrtb.indeterminateShort");
 			}
 		}
 		
 		else if (mtbResult.getId().intValue() == Context.getService(MdrtbService.class)
 		        .getConcept(MdrtbConcepts.MTB_NEGATIVE).getId().intValue()) {
-			ret = ret + Context.getMessageSourceService().getMessage("mdrtb.negativeShort");
+			ret = ret + Context.getService(MessagePropertyService.class).getMessage("mdrtb.negativeShort");
 		}
 		
 		else if (mtbResult.getId().intValue() == Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ERROR)
 		        .getId().intValue()) {
-			ret = ret + Context.getMessageSourceService().getMessage("mdrtb.error");
+			ret = ret + Context.getService(MessagePropertyService.class).getMessage("mdrtb.error");
 		}
 		return ret;
 	}

@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class DQItem {
 	
@@ -74,9 +76,9 @@ public class DQItem {
 			return null;
 		}
 		if (patient.getGender().equals("M")) {
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.male");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.male");
 		} else if (patient.getGender().equals("F")) {
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.female");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.female");
 		}
 		return null;
 	}

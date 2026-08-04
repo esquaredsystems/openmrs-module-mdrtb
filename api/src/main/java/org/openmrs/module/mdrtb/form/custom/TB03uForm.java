@@ -24,6 +24,7 @@ import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 import org.openmrs.module.mdrtb.program.MdrtbPatientProgram;
 import org.openmrs.module.mdrtb.program.TbPatientProgram;
 import org.openmrs.module.mdrtb.reporting.custom.TB03Util;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class TB03uForm extends AbstractSimpleForm implements Comparable<TB03uForm> {
 	
@@ -114,9 +115,9 @@ public class TB03uForm extends AbstractSimpleForm implements Comparable<TB03uFor
 	
 	public String getGender() {
 		if (getPatient().getGender().equals("M"))
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.male");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.male");
 		if (getPatient().getGender().equals("F"))
-			return Context.getMessageSourceService().getMessage("mdrtb.tb03.gender.female");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.female");
 		return "";
 	}
 	

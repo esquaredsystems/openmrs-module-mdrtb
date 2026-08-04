@@ -17,9 +17,9 @@
 		function printForm() {
 			var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-		    mywindow.document.write('<html><head><title><spring:message code="mdrtb.tb08" text="TB08u"/></title>');
+		    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.tb08" text="TB08u"/></title>');
 		    mywindow.document.write('</head><body >');
-		   // mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+		   // mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
 		    mywindow.document.write(document.getElementById("tb08u").innerHTML);
 		    
 		    mywindow.document.write('</body></html>');
@@ -158,7 +158,7 @@
 			}
 			$(document).ready(function(){
 				$("#tableToSql").bind("click", function() {
-					if(confirm('<spring:message code="mdrtb.closeReportMessage" />') ) {
+					if(confirm('<mdrtb:message code="mdrtb.closeReportMessage" />') ) {
 						savePdf("closeReport.form", "TB-08u", "tb08uResults");
 					}
 				});
@@ -175,7 +175,7 @@
 			</style>
 			<table width="90%"><tr>
 				<td width="90" align="left" style="font-size:14px; font-weight:bold;">
-					<spring:message code="mdrtb.tb08u.titleShort"/>
+					<mdrtb:message code="mdrtb.tb08u.titleShort"/>
 				</td>
 				<td width="10%" align="right" style="font-size:14px; font-weight:bold;">TB 08y</td>
 			</tr></table>
@@ -183,14 +183,14 @@
 			<table border="1" width="100%">
 			
 			<td>
-			<spring:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
-			<spring:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
-			<spring:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<spring:message code="mdrtb.tb08u.signature"/> ____________<br/>
+			<mdrtb:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
+			<mdrtb:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
+			<mdrtb:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<mdrtb:message code="mdrtb.tb08u.signature"/> ____________<br/>
 			</td>
 		
 			<td>
-			<spring:message code="mdrtb.tb08u.tbCasesDetectedDuringQuarterYear" arguments="${quarter},${year}"/> <br/>
-			<spring:message code="mdrtb.tb08u.dateOfReport"/> ${reportDate }
+			<mdrtb:message code="mdrtb.tb08u.tbCasesDetectedDuringQuarterYear" arguments="${quarter},${year}"/> <br/>
+			<mdrtb:message code="mdrtb.tb08u.dateOfReport"/> ${reportDate }
 			</td>
 			</tr>
 			</table>	
@@ -200,22 +200,22 @@
 			
 			<table cellpadding="5" width="100%" border="1" >
 				<tr>
-					<th rowspan="2" colspan="2" align="center"><spring:message code="mdrtb.tb08u.registrationGroup"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.registered"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.cured"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.txCompleted"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.successfullyTreated"/></th>
-					<th colspan="2" align="center"><spring:message code="mdrtb.tb08u.died"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.failure"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.ltfu"/></th>
+					<th rowspan="2" colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registrationGroup"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registered"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.cured"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.txCompleted"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.successfullyTreated"/></th>
+					<th colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.died"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.failure"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.ltfu"/></th>
 					
 					
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.notAssessed"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.total"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.notAssessed"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.total"/></th>
 				</tr>
 				<tr>
-					<th align="center"><spring:message code="mdrtb.tb08u.tb"/></th>
-					<th align="center"><spring:message code="mdrtb.tb08u.notTb"/></th>
+					<th align="center"><mdrtb:message code="mdrtb.tb08u.tb"/></th>
+					<th align="center"><mdrtb:message code="mdrtb.tb08u.notTb"/></th>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -232,7 +232,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb08u.newCases"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb08u.newCases"/></td>
 					<td>${table1.newRegisteredShort }</td>
 					
 					<td>${table1.newCuredShort }</td>
@@ -254,7 +254,7 @@
 					<td>${table1.newTotalShort }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><spring:message code="mdrtb.tb08u.relapse"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.relapse"/></td>
 					<td align="center">I</td>
 					<td>${table1.relapse1RegisteredShort }</td>
 					
@@ -299,7 +299,7 @@
 					<td>${table1.relapse2TotalShort }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><spring:message code="mdrtb.tb08u.afterDefault"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterDefault"/></td>
 					<td align="center">I</td>
 					<td>${table1.default1RegisteredShort }</td>
 					
@@ -344,7 +344,7 @@
 					<td>${table1.default2TotalShort }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><spring:message code="mdrtb.tb08u.afterFailure"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterFailure"/></td>
 					<td align="center">I</td>
 					<td>${table1.failure1RegisteredShort }</td>
 					
@@ -390,7 +390,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb08u.other"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb08u.other"/></td>
 					<td>${table1.otherRegisteredShort }</td>
 					
 					<td>${table1.otherCuredShort }</td>
@@ -439,7 +439,7 @@
 			<!-- INDIV -->
 			<table width="90%"><tr>
 				<td width="90" align="left" style="font-size:14px; font-weight:bold;">
-					<spring:message code="mdrtb.tb08u.titleIndiv"/> 
+					<mdrtb:message code="mdrtb.tb08u.titleIndiv"/> 
 				</td>
 				<td width="10%" align="right" style="font-size:14px; font-weight:bold;">TB 08y</td>
 			</tr></table>
@@ -447,14 +447,14 @@
 			<table border="1" width="100%">
 			
 			<td>
-			<spring:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
-			<spring:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
-			<spring:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<spring:message code="mdrtb.tb08u.signature"/> ____________<br/>
+			<mdrtb:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
+			<mdrtb:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
+			<mdrtb:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<mdrtb:message code="mdrtb.tb08u.signature"/> ____________<br/>
 			</td>
 		
 			<td>
-			<spring:message code="mdrtb.tb08u.tbCasesDetectedDuringQuarterYear" arguments="${quarter},${year}"/> <br/>
-			<spring:message code="mdrtb.tb08u.dateOfReport"/> ${reportDate }
+			<mdrtb:message code="mdrtb.tb08u.tbCasesDetectedDuringQuarterYear" arguments="${quarter},${year}"/> <br/>
+			<mdrtb:message code="mdrtb.tb08u.dateOfReport"/> ${reportDate }
 			</td>
 			</tr>
 			</table>	
@@ -463,22 +463,22 @@
 			
 			<table cellpadding="5" width="100%" border="1" >
 				<tr>
-					<th rowspan="2" colspan="2" align="center"><spring:message code="mdrtb.tb08u.registrationGroup"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.registered"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.cured"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.txCompleted"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.successfullyTreated"/></th>
-					<th colspan="2" align="center"><spring:message code="mdrtb.tb08u.died"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.failure"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.ltfu"/></th>
+					<th rowspan="2" colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registrationGroup"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registered"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.cured"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.txCompleted"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.successfullyTreated"/></th>
+					<th colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.died"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.failure"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.ltfu"/></th>
 					
 					
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.notAssessed"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.total"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.notAssessed"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.total"/></th>
 				</tr>
 				<tr>
-					<th align="center"><spring:message code="mdrtb.tb08u.tb"/></th>
-					<th align="center"><spring:message code="mdrtb.tb08u.notTb"/></th>
+					<th align="center"><mdrtb:message code="mdrtb.tb08u.tb"/></th>
+					<th align="center"><mdrtb:message code="mdrtb.tb08u.notTb"/></th>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -495,7 +495,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb08u.newCases"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb08u.newCases"/></td>
 					<td>${table1.newRegisteredIndiv }</td>
 					
 					<td>${table1.newCuredIndiv }</td>
@@ -517,7 +517,7 @@
 					<td>${table1.newTotalIndiv }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><spring:message code="mdrtb.tb08u.relapse"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.relapse"/></td>
 					<td align="center">I</td>
 					<td>${table1.relapse1RegisteredIndiv }</td>
 					
@@ -562,7 +562,7 @@
 					<td>${table1.relapse2TotalIndiv }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><spring:message code="mdrtb.tb08u.afterDefault"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterDefault"/></td>
 					<td align="center">I</td>
 					<td>${table1.default1RegisteredIndiv }</td>
 					
@@ -607,7 +607,7 @@
 					<td>${table1.default2TotalIndiv }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><spring:message code="mdrtb.tb08u.afterFailure"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterFailure"/></td>
 					<td align="center">I</td>
 					<td>${table1.failure1RegisteredIndiv }</td>
 					
@@ -653,7 +653,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb08u.other"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb08u.other"/></td>
 					<td>${table1.otherRegisteredIndiv }</td>
 					
 					<td>${table1.otherCuredIndiv }</td>
@@ -702,7 +702,7 @@
 			<!-- STANDARD -->
 			<table width="90%"><tr>
 				<td width="90" align="left" style="font-size:14px; font-weight:bold;">
-					<spring:message code="mdrtb.tb08u.titleStandard"/>
+					<mdrtb:message code="mdrtb.tb08u.titleStandard"/>
 				</td>
 				<td width="10%" align="right" style="font-size:14px; font-weight:bold;">TB 08y</td>
 			</tr></table>
@@ -710,14 +710,14 @@
 			<table border="1" width="100%">
 			
 			<td>
-			<spring:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
-			<spring:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
-			<spring:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<spring:message code="mdrtb.tb08u.signature"/> ____________<br/>
+			<mdrtb:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
+			<mdrtb:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
+			<mdrtb:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<mdrtb:message code="mdrtb.tb08u.signature"/> ____________<br/>
 			</td>
 		
 			<td>
-			<spring:message code="mdrtb.tb08u.tbCasesDetectedDuringQuarterYear" arguments="${quarter},${year}"/> <br/>
-			<spring:message code="mdrtb.tb08u.dateOfReport"/> ${reportDate }
+			<mdrtb:message code="mdrtb.tb08u.tbCasesDetectedDuringQuarterYear" arguments="${quarter},${year}"/> <br/>
+			<mdrtb:message code="mdrtb.tb08u.dateOfReport"/> ${reportDate }
 			</td>
 			</tr>
 			</table>	
@@ -727,22 +727,22 @@
 			
 			<table cellpadding="5" width="100%" border="1" >
 				<tr>
-					<th rowspan="2" colspan="2" align="center"><spring:message code="mdrtb.tb08u.registrationGroup"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.registered"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.cured"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.txCompleted"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.successfullyTreated"/></th>
-					<th colspan="2" align="center"><spring:message code="mdrtb.tb08u.died"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.failure"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.ltfu"/></th>
+					<th rowspan="2" colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registrationGroup"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registered"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.cured"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.txCompleted"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.successfullyTreated"/></th>
+					<th colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.died"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.failure"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.ltfu"/></th>
 					
 					
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.notAssessed"/></th>
-					<th rowspan="2" align="center"><spring:message code="mdrtb.tb08u.total"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.notAssessed"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.total"/></th>
 				</tr>
 				<tr>
-					<th align="center"><spring:message code="mdrtb.tb08u.tb"/></th>
-					<th align="center"><spring:message code="mdrtb.tb08u.notTb"/></th>
+					<th align="center"><mdrtb:message code="mdrtb.tb08u.tb"/></th>
+					<th align="center"><mdrtb:message code="mdrtb.tb08u.notTb"/></th>
 				</tr>
 				<tr>
 					<td>&nbsp;</td>
@@ -759,7 +759,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb08u.newCases"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb08u.newCases"/></td>
 					<td>${table1.newRegisteredStandard }</td>
 					
 					<td>${table1.newCuredStandard }</td>
@@ -781,7 +781,7 @@
 					<td>${table1.newTotalStandard }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><spring:message code="mdrtb.tb08u.relapse"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.relapse"/></td>
 					<td align="center">I</td>
 					<td>${table1.relapse1RegisteredStandard }</td>
 					
@@ -826,7 +826,7 @@
 					<td>${table1.relapse2TotalStandard }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><spring:message code="mdrtb.tb08u.afterDefault"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterDefault"/></td>
 					<td align="center">I</td>
 					<td>${table1.default1RegisteredStandard }</td>
 					
@@ -871,7 +871,7 @@
 					<td>${table1.default2TotalStandard }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><spring:message code="mdrtb.tb08u.afterFailure"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterFailure"/></td>
 					<td align="center">I</td>
 					<td>${table1.failure1RegisteredStandard }</td>
 					
@@ -917,7 +917,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb08u.other"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb08u.other"/></td>
 					<td>${table1.otherRegisteredStandard }</td>
 					
 					<td>${table1.otherCuredStandard }</td>
@@ -964,11 +964,11 @@
 			</table>
 		</div>
 
-		<input type="button" onclick="tableToExcel('tb08u', 'TB08u')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
-		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<spring:message code='mdrtb.exportToPdfBtn' />" /> -->
+		<input type="button" onclick="tableToExcel('tb08u', 'TB08u')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
+		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<mdrtb:message code='mdrtb.exportToPdfBtn' />" /> -->
 		<openmrs:hasPrivilege privilege="Manage Report Closing">
-		<input type="button" id="tableToSql" name="tableToSql" value="<spring:message code='mdrtb.closeReportBtn' />" />		
-       	<input type="button" onclick="printForm()" value="<spring:message code='mdrtb.print' />" />
+		<input type="button" id="tableToSql" name="tableToSql" value="<mdrtb:message code='mdrtb.closeReportBtn' />" />		
+       	<input type="button" onclick="printForm()" value="<mdrtb:message code='mdrtb.print' />" />
        </openmrs:hasPrivilege>
 		<script> 
 			console.log("${reportStatus}");

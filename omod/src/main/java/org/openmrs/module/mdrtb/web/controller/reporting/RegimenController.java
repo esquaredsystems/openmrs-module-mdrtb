@@ -53,6 +53,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 @Controller
 public class RegimenController {
@@ -319,12 +320,12 @@ public class RegimenController {
 		
 		HSSFCell nameHeaderCell = headerRow.createCell((short) 1);
 		nameHeaderCell.setCellStyle(headerStyle);
-		nameHeaderCell.setCellValue(Context.getMessageSourceService().getMessage("mdrtb.tb03.name"));
+		nameHeaderCell.setCellValue(Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.name"));
 		
 		//TxStartDate
 		HSSFCell txStartHeaderCell = headerRow.createCell((short) 2);
 		txStartHeaderCell.setCellStyle(headerStyle);
-		txStartHeaderCell.setCellValue(Context.getMessageSourceService().getMessage("mdrtb.sldreport.treatmentStartDate"));
+		txStartHeaderCell.setCellValue(Context.getService(MessagePropertyService.class).getMessage("mdrtb.sldreport.treatmentStartDate"));
 		
 		//Cm
 		HSSFCell cmHeaderCell = headerRow.createCell((short) 3);

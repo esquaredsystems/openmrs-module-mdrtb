@@ -11,6 +11,8 @@ import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.status.StatusItem;
 import org.openmrs.module.mdrtb.status.VisitStatus;
 import org.openmrs.module.mdrtb.status.VisitStatusRenderer;
+import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 	
@@ -22,8 +24,8 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 		
 		String[] params = { df.format(encounter.getEncounterDatetime()), encounter.getLocation().getDisplayString() };
 		
-		visit.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.visitStatus.visit", params, "{0} at {1}",
-		    Context.getLocale()));
+		visit.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.visitStatus.visit",
+		    params, "{0} at {1}"));
 		
 		// now determine where to link to
 		// if there is a form linked to this encounter, assume it is an HTML Form Entry form
@@ -154,8 +156,8 @@ public class DashboardVisitStatusRenderer implements VisitStatusRenderer {
 		
 		String[] params = { df.format(encounter.getEncounterDatetime()), encounter.getLocation().getDisplayString() };
 		
-		visit.setDisplayString(Context.getMessageSourceService().getMessage("mdrtb.visitStatus.visit", params, "{0} at {1}",
-		    Context.getLocale()));
+		visit.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.visitStatus.visit",
+		    params, "{0} at {1}"));
 		
 		// now determine where to link to
 		// if there is a form linked to this encounter, assume it is an HTML Form Entry

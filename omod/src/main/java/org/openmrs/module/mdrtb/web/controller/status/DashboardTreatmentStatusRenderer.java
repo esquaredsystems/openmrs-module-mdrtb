@@ -10,6 +10,8 @@ import org.openmrs.module.mdrtb.regimen.Regimen;
 import org.openmrs.module.mdrtb.regimen.RegimenUtils;
 import org.openmrs.module.mdrtb.status.TreatmentStatusRenderer;
 import org.openmrs.module.reporting.common.MessageUtil;
+import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class DashboardTreatmentStatusRenderer implements TreatmentStatusRenderer {
 	
@@ -36,10 +38,10 @@ public class DashboardTreatmentStatusRenderer implements TreatmentStatusRenderer
 	
 	public String renderTreatmentState(TreatmentState state) {
 		if (state == TreatmentState.ON_TREATMENT) {
-			return Context.getMessageSourceService().getMessage("mdrtb.onTreatment");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.onTreatment");
 			
 		} else if (state == TreatmentState.NOT_ON_TREATMENT) {
-			return Context.getMessageSourceService().getMessage("mdrtb.notOnTreatment");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.notOnTreatment");
 		} else {
 			return "";
 		}

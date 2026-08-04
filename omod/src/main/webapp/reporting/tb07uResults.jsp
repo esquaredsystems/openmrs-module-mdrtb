@@ -17,9 +17,9 @@
 		function printForm() {
 			var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-		    mywindow.document.write('<html><head><title><spring:message code="mdrtb.tb07" text="TB07u"/></title>');
+		    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.tb07" text="TB07u"/></title>');
 		    mywindow.document.write('</head><body >');
-		   // mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+		   // mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
 		    mywindow.document.write(document.getElementById("tb07u").innerHTML);
 		    
 		    mywindow.document.write('</body></html>');
@@ -135,7 +135,7 @@
 		}
 		$(document).ready(function(){
 			$("#tableToSql").bind("click", function() {
-				if(confirm('<spring:message code="mdrtb.closeReportMessage" />') ) {
+				if(confirm('<mdrtb:message code="mdrtb.closeReportMessage" />') ) {
 					savePdf("closeReport.form", "TB-07u", "tb07uResults");
 				}
 			});
@@ -151,7 +151,7 @@
 			</style>
 			<table width="90%"><tr>
 				<td width="90" align="left" style="font-size:14px; font-weight:bold;">
-					<spring:message code="mdrtb.tb07u.title"/>
+					<mdrtb:message code="mdrtb.tb07u.title"/>
 				</td>
 				<td width="10%" align="right" style="font-size:14px; font-weight:bold;">TB 07y</td>
 			</tr></table>
@@ -159,35 +159,35 @@
 			<table border="1" width="100%">
 			
 			<td>
-			<spring:message code="mdrtb.tb07u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
-			<spring:message code="mdrtb.tb07u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
-			<spring:message code="mdrtb.tb07u.tbCoordinatorName"/> ____________________<spring:message code="mdrtb.tb07u.signature"/> ____________<br/>
+			<mdrtb:message code="mdrtb.tb07u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
+			<mdrtb:message code="mdrtb.tb07u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
+			<mdrtb:message code="mdrtb.tb07u.tbCoordinatorName"/> ____________________<mdrtb:message code="mdrtb.tb07u.signature"/> ____________<br/>
 			</td>
 		
 			<td>
-			<spring:message code="mdrtb.tb07u.tbCasesDetectedDuringQuarterYear" arguments="${quarter},${year}"/> <br/>
-			<spring:message code="mdrtb.tb07u.dateOfReport"/> ${reportDate }
+			<mdrtb:message code="mdrtb.tb07u.tbCasesDetectedDuringQuarterYear" arguments="${quarter},${year}"/> <br/>
+			<mdrtb:message code="mdrtb.tb07u.dateOfReport"/> ${reportDate }
 			</td>
 			</tr>
 			</table>	
 			<br/><br/>
 			
 			<span style="font-weight:bold;">
-				<spring:message code="mdrtb.tb07u.table1"/>
+				<mdrtb:message code="mdrtb.tb07u.table1"/>
 			</span>
 			<span style="font-weight:bold;">
 				<br/><br/>
 				<center><table width="100%" border="1">
 					<tr>
-					    <td rowspan="2" align="center"><spring:message code="mdrtb.tb07u.totalCasesDetected"/></td>
-					    <td colspan="4" align="center"><spring:message code="mdrtb.tb07u.ofThem"/></td>
+					    <td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb07u.totalCasesDetected"/></td>
+					    <td colspan="4" align="center"><mdrtb:message code="mdrtb.tb07u.ofThem"/></td>
 					</tr>
 					<tr>
 						
-						<td align="center"><spring:message code="mdrtb.tb07u.pdr"/></td>
-						<td align="center"><spring:message code="mdrtb.tb07u.mdr"/></td>
-						<td align="center"><spring:message code="mdrtb.tb07u.prexdr"/></td>
-						<td align="center"><spring:message code="mdrtb.tb07u.xdr"/></td>
+						<td align="center"><mdrtb:message code="mdrtb.tb07u.pdr"/></td>
+						<td align="center"><mdrtb:message code="mdrtb.tb07u.mdr"/></td>
+						<td align="center"><mdrtb:message code="mdrtb.tb07u.prexdr"/></td>
+						<td align="center"><mdrtb:message code="mdrtb.tb07u.xdr"/></td>
 					</tr>
 					<tr>
 					    <td style="border: 1px solid black; width: 50px; height: 20px; text-align:center;">
@@ -211,26 +211,26 @@
 			<br/><br/>
 			
 			<span style="font-weight:bold;">
-				<spring:message code="mdrtb.tb07u.table2"/>
+				<mdrtb:message code="mdrtb.tb07u.table2"/>
 			</span>
 			<br/><br/>
 			
 			<table border="1" cellpadding="5" width="100%">
 				<tr align="center">
 				 	<td colspan="2" rowspan="4">&nbsp;</td>
-					<td colspan="7"><spring:message code="mdrtb.tb07u.registrationGroup"/></td>
-					<td rowspan="4"><spring:message code="mdrtb.tb07u.other"/></td>
-					<td rowspan="4"><spring:message code="mdrtb.tb07u.total"/></td>
+					<td colspan="7"><mdrtb:message code="mdrtb.tb07u.registrationGroup"/></td>
+					<td rowspan="4"><mdrtb:message code="mdrtb.tb07u.other"/></td>
+					<td rowspan="4"><mdrtb:message code="mdrtb.tb07u.total"/></td>
 				</tr>
 				<tr align="center">
-					<td rowspan="3"><spring:message code="mdrtb.tb07u.newCases"/></td>
-					<td colspan="6"><spring:message code="mdrtb.tb07u.retreatmentCases"/></td>
+					<td rowspan="3"><mdrtb:message code="mdrtb.tb07u.newCases"/></td>
+					<td colspan="6"><mdrtb:message code="mdrtb.tb07u.retreatmentCases"/></td>
 					
 				</tr>
 				<tr align="center">
-					<td colspan="2"><spring:message code="mdrtb.tb07u.relapse"/></td>
-					<td colspan="2"><spring:message code="mdrtb.tb07u.afterDefault"/></td>
-					<td colspan="2"><spring:message code="mdrtb.tb07u.afterFailure"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.relapse"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.afterDefault"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.afterFailure"/></td>
 				
 				</tr>
 				<tr align="center">
@@ -243,7 +243,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb07u.pdr"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.pdr"/></td>
 					<td>${table1.newPdr }</td>
 					<td>${table1.relapse1Pdr }</td>
 					<td>${table1.relapse2Pdr }</td>
@@ -255,7 +255,7 @@
 					<td>${table1.totalPdr }</td>
 				</tr>
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				    <td>${table1.newPdr04 }</td>
 					<td>${table1.relapse1Pdr04 }</td>
@@ -292,7 +292,7 @@
 					<td>${table1.totalPdr1517 }</td>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newPdrHiv }</td>
 					<td>${table1.relapse1PdrHiv }</td>
 					<td>${table1.relapse2PdrHiv }</td>
@@ -304,7 +304,7 @@
 					<td>${table1.totalPdrHiv }</td>
 				</tr>
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb07u.mdr"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.mdr"/></td>
 					<td>${table1.newMdr }</td>
 					<td>${table1.relapse1Mdr }</td>
 					<td>${table1.relapse2Mdr }</td>
@@ -316,7 +316,7 @@
 					<td>${table1.totalMdr }</td>
 				</tr>
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				    <td>${table1.newMdr04 }</td>
 					<td>${table1.relapse1Mdr04 }</td>
@@ -353,7 +353,7 @@
 					<td>${table1.totalMdr1517 }</td>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newMdrHiv }</td>
 					<td>${table1.relapse1MdrHiv }</td>
 					<td>${table1.relapse2MdrHiv }</td>
@@ -365,7 +365,7 @@
 					<td>${table1.totalMdrHiv }</td>
 				</tr>
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb07u.prexdr"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.prexdr"/></td>
 					<td>${table1.newPreXdr }</td>
 					<td>${table1.relapse1PreXdr }</td>
 					<td>${table1.relapse2PreXdr }</td>
@@ -377,7 +377,7 @@
 					<td>${table1.totalPreXdr }</td>
 				</tr>
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				    <td>${table1.newPreXdr04 }</td>
 					<td>${table1.relapse1PreXdr04 }</td>
@@ -414,7 +414,7 @@
 					<td>${table1.totalPreXdr1517 }</td>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newPreXdrHiv }</td>
 					<td>${table1.relapse1PreXdrHiv }</td>
 					<td>${table1.relapse2PreXdrHiv }</td>
@@ -426,7 +426,7 @@
 					<td>${table1.totalPreXdrHiv }</td>
 				</tr>
 				<tr>
-					<td colspan="2"><spring:message code="mdrtb.tb07u.xdr"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.xdr"/></td>
 					<td>${table1.newXdr }</td>
 					<td>${table1.relapse1Xdr }</td>
 					<td>${table1.relapse2Xdr }</td>
@@ -438,7 +438,7 @@
 					<td>${table1.totalXdr }</td>
 				</tr>
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				    <td>${table1.newXdr04 }</td>
 					<td>${table1.relapse1Xdr04 }</td>
@@ -475,7 +475,7 @@
 					<td>${table1.totalXdr1517 }</td>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newXdrHiv }</td>
 					<td>${table1.relapse1XdrHiv }</td>
 					<td>${table1.relapse2XdrHiv }</td>
@@ -487,7 +487,7 @@
 					<td>${table1.totalXdrHiv }</td>
 				</tr>
 				<tr>
-				    <td colspan="2"><spring:message code="mdrtb.tb07u.total"/></td>
+				    <td colspan="2"><mdrtb:message code="mdrtb.tb07u.total"/></td>
 				    <td>${ table1.newTotal }</td>
 					 <td>${table1.relapse1Total }</td>
 					 <td>${table1.relapse2Total }</td>
@@ -499,7 +499,7 @@
 					 <td>${table1.newTotal + table1.relapse1Total + table1.relapse2Total + table1.default1Total + table1.default2Total + table1.failure1Total + table1.failure2Total + table1.otherTotal }</td> 
 				</tr>
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				      <td>${ table1.newTotal04 }</td>
 					 <td>${table1.relapse1Total04 }</td>
@@ -539,7 +539,7 @@
 				</tr>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				      <td>${ table1.newTotalHiv }</td>
 					 <td>${table1.relapse1TotalHiv }</td>
 					 <td>${table1.relapse2TotalHiv }</td>
@@ -555,24 +555,24 @@
 				</table>
 			<br/><br/>	
 			<span style="font-weight:bold;">
-				<spring:message code="mdrtb.tb07u.table3"/>
+				<mdrtb:message code="mdrtb.tb07u.table3"/>
 			</span>
 			<br/><br/>
 			<table border="1" cellpadding="5" width="100%">
 				<tr align="center">
 				 	<td colspan="2" rowspan="4">&nbsp;</td>
-					<td colspan="7"><spring:message code="mdrtb.tb07u.registrationGroup"/></td>
-					<td rowspan="4"><spring:message code="mdrtb.tb07u.other"/></td>
-					<td rowspan="4"><spring:message code="mdrtb.tb07u.total"/></td>
+					<td colspan="7"><mdrtb:message code="mdrtb.tb07u.registrationGroup"/></td>
+					<td rowspan="4"><mdrtb:message code="mdrtb.tb07u.other"/></td>
+					<td rowspan="4"><mdrtb:message code="mdrtb.tb07u.total"/></td>
 				</tr>
 				<tr align="center">
-					<td rowspan="3"><spring:message code="mdrtb.tb07u.newCases"/></td>
-					<td colspan="6"><spring:message code="mdrtb.tb07u.retreatmentCases"/></td>
+					<td rowspan="3"><mdrtb:message code="mdrtb.tb07u.newCases"/></td>
+					<td colspan="6"><mdrtb:message code="mdrtb.tb07u.retreatmentCases"/></td>
 				</tr>
 				<tr align="center">
-					<td colspan="2"><spring:message code="mdrtb.tb07u.relapse"/></td>
-					<td colspan="2"><spring:message code="mdrtb.tb07u.afterDefault"/></td>
-					<td colspan="2"><spring:message code="mdrtb.tb07u.afterFailure"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.relapse"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.afterDefault"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.afterFailure"/></td>
 				</tr>
 				<tr align="center">
 					<td>I</td> <!-- relapse -->
@@ -583,10 +583,10 @@
 					<td>II</td>  <!-- previously treated with Cat 2 -->
 				</tr>
 				<tr>
-				    <td colspan="11" align="center"><spring:message code="mdrtb.tb07u.mdr"/></td> 
+				    <td colspan="11" align="center"><mdrtb:message code="mdrtb.tb07u.mdr"/></td> 
 				</tr>
 				<tr>
-				  	 <td colspan="2"><spring:message code="mdrtb.tb07u.short"/></td>
+				  	 <td colspan="2"><mdrtb:message code="mdrtb.tb07u.short"/></td>
 				     <td>${table1.newShortMdr }</td>
 					 <td>${table1.relapse1ShortMdr }</td>
 					 <td>${table1.relapse2ShortMdr }</td>
@@ -599,7 +599,7 @@
 				</tr>
 				
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				     <td>${table1.newShortMdr04 }</td>
 					 <td>${table1.relapse1ShortMdr04 }</td>
@@ -636,7 +636,7 @@
 					 <td>${table1.totalShortMdr1517 }</td>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newShortMdrHiv }</td>
 					 <td>${table1.relapse1ShortMdrHiv }</td>
 					 <td>${table1.relapse2ShortMdrHiv }</td>
@@ -650,7 +650,7 @@
 				</tr>
 				
 				<tr>
-				    <td colspan="2"><spring:message code="mdrtb.tb07u.standard"/></td>
+				    <td colspan="2"><mdrtb:message code="mdrtb.tb07u.standard"/></td>
 				    <td>${table1.newStandardMdr }</td>
 					 <td>${table1.relapse1StandardMdr }</td>
 					 <td>${table1.relapse2StandardMdr }</td>
@@ -663,7 +663,7 @@
 				</tr>
 				
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				     <td>${table1.newStandardMdr04 }</td>
 					 <td>${table1.relapse1StandardMdr04 }</td>
@@ -700,7 +700,7 @@
 					 <td>${table1.totalStandardMdr1517 }</td>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newStandardMdrHiv }</td>
 					 <td>${table1.relapse1StandardMdrHiv }</td>
 					 <td>${table1.relapse2StandardMdrHiv }</td>
@@ -713,7 +713,7 @@
 					 
 				</tr>
 				<tr>
-				    <td colspan="2"><spring:message code="mdrtb.tb07u.totalMdr"/></td>
+				    <td colspan="2"><mdrtb:message code="mdrtb.tb07u.totalMdr"/></td>
 				     <td>${table1.newMdr }</td>
 					<td>${table1.relapse1Mdr }</td>
 					<td>${table1.relapse2Mdr }</td>
@@ -725,7 +725,7 @@
 					<td>${table1.totalMdr }</td>
 				</tr>
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				    <td>${table1.newMdr04 }</td>
 					<td>${table1.relapse1Mdr04 }</td>
@@ -762,7 +762,7 @@
 					<td>${table1.totalMdr1517 }</td>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newMdrHiv }</td>
 					<td>${table1.relapse1MdrHiv }</td>
 					<td>${table1.relapse2MdrHiv }</td>
@@ -776,10 +776,10 @@
 				
 				
 				<tr>
-				    <td colspan="11" align="center"><spring:message code="mdrtb.tb07u.preXdrXdr"/></td> 
+				    <td colspan="11" align="center"><mdrtb:message code="mdrtb.tb07u.preXdrXdr"/></td> 
 				</tr>
 				<tr>
-				   <td colspan="2"><spring:message code="mdrtb.tb07u.indLzd"/></td>
+				   <td colspan="2"><mdrtb:message code="mdrtb.tb07u.indLzd"/></td>
 				   <td>${table1.newIndLzdXdrPreXdr }</td>
 					 <td>${table1.relapse1IndLzdXdrPreXdr }</td>
 					 <td>${table1.relapse2IndLzdXdrPreXdr }</td>
@@ -792,7 +792,7 @@
 				</tr>
 				
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				     <td>${table1.newIndLzdXdrPreXdr04 }</td>
 					 <td>${table1.relapse1IndLzdXdrPreXdr04 }</td>
@@ -829,7 +829,7 @@
 					 <td>${table1.totalIndLzdXdrPreXdr1517 }</td>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newIndLzdXdrPreXdrHiv }</td>
 					 <td>${table1.relapse1IndLzdXdrPreXdrHiv }</td>
 					 <td>${table1.relapse2IndLzdXdrPreXdrHiv }</td>
@@ -843,7 +843,7 @@
 				</tr>
 				
 				<tr>
-				    <td colspan="2"><spring:message code="mdrtb.tb07u.indBdq"/></td>
+				    <td colspan="2"><mdrtb:message code="mdrtb.tb07u.indBdq"/></td>
 				   <td>${table1.newIndBdqXdrPreXdr }</td>
 					 <td>${table1.relapse1IndBdqXdrPreXdr }</td>
 					 <td>${table1.relapse2IndBdqXdrPreXdr }</td>
@@ -856,7 +856,7 @@
 				</tr>
 				
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				     <td>${table1.newIndBdqXdrPreXdr04 }</td>
 					 <td>${table1.relapse1IndBdqXdrPreXdr04 }</td>
@@ -893,7 +893,7 @@
 					 <td>${table1.totalIndBdqXdrPreXdr1517 }</td>
 				</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newIndBdqXdrPreXdrHiv }</td>
 					 <td>${table1.relapse1IndBdqXdrPreXdrHiv }</td>
 					 <td>${table1.relapse2IndBdqXdrPreXdrHiv }</td>
@@ -906,7 +906,7 @@
 					 
 				</tr>
 				<tr>
-				    <td colspan="2"><spring:message code="mdrtb.tb07u.totalPreXdrXdr"/></td>
+				    <td colspan="2"><mdrtb:message code="mdrtb.tb07u.totalPreXdrXdr"/></td>
 				    <td>${table1.newPreXdr + table1.newXdr}</td>
 					<td>${table1.relapse1PreXdr + table1.relapse1Xdr }</td>
 					<td>${table1.relapse2PreXdr + table1.relapse2Xdr }</td>
@@ -919,7 +919,7 @@
 
 			</tr>
 				<tr>
-				     <td rowspan=3"><spring:message code="mdrtb.tb07u.ofThem"/><br/><spring:message code="mdrtb.tb07u.children"/></td>
+				     <td rowspan=3"><mdrtb:message code="mdrtb.tb07u.ofThem"/><br/><mdrtb:message code="mdrtb.tb07u.children"/></td>
 				     <td>0-4</td>
 				    <td>${table1.newPreXdr04  + table1.newXdr04  }</td>
 				<td>${table1.relapse1PreXdr04 + table1.relapse1Xdr04 }</td>
@@ -959,7 +959,7 @@
 
 			</tr>
 				<tr>
-				     <td colspan=2"><spring:message code="mdrtb.tb07u.withHiv"/></td>
+				     <td colspan=2"><mdrtb:message code="mdrtb.tb07u.withHiv"/></td>
 				     <td>${table1.newPreXdrHiv }</td>
 				<td>${table1.relapse1PreXdrHiv }</td>
 				<td>${table1.relapse2PreXdrHiv }</td>
@@ -974,11 +974,11 @@
 			</table>
 		</div>
 		
-		<input type="button" onclick="tableToExcel('tb07u', 'TB07u')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
-		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<spring:message code='mdrtb.exportToPdfBtn' />" /> -->
+		<input type="button" onclick="tableToExcel('tb07u', 'TB07u')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
+		<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<mdrtb:message code='mdrtb.exportToPdfBtn' />" /> -->
 		<openmrs:hasPrivilege privilege="Manage Report Closing">
-		<input type="button" id="tableToSql" name="tableToSql" value="<spring:message code='mdrtb.closeReportBtn' />" />
-		<input type="button" onclick="printForm()" value="<spring:message code='mdrtb.print' />" />
+		<input type="button" id="tableToSql" name="tableToSql" value="<mdrtb:message code='mdrtb.closeReportBtn' />" />
+		<input type="button" onclick="printForm()" value="<mdrtb:message code='mdrtb.print' />" />
 		</openmrs:hasPrivilege>
 		<script> 
 			console.log("${reportStatus}");

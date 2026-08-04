@@ -119,22 +119,22 @@
 			str += '<br/><span style="margin-left: 40px">Which observations? <select name="timeModifier"><option value="ANY">Any</option><option value="NO">None</option><option value="FIRST">Earliest</option><option value="LAST" selected="true">Most Recent</option></select></span> ';
 		if (hl7Abbrev == 'NM') {
 			str += ' <br/><br/><span style="margin-left: 40px">';
-			str += ' <small><spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /></small> <spring:message code="reportingcompatibility.CohortBuilder.whatValuesQuestion" /> ';
+			str += ' <small><mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /></small> <mdrtb:message code="reportingcompatibility.CohortBuilder.whatValuesQuestion" /> ';
 			str += ' <select name="modifier" id="modifier"><option value="LESS_THAN">&lt;</option><option value="LESS_EQUAL">&lt;=</option><option value="EQUAL">=</option><option value="GREATER_EQUAL">&gt;=</option><option value="GREATER_THAN">&gt;</option></select> ';
 			str += '</span>';
 		} else if (hl7Abbrev == 'DT' || hl7Abbrev == 'TS') {
 			str += ' <br/><br/><span style="margin-left: 40px">';
-			str += ' <small><spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (valueDatetime)</small> <spring:message code="reportingcompatibility.CohortBuilder.whatValuesQuestion" /> ';
+			str += ' <small><mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (valueDatetime)</small> <mdrtb:message code="reportingcompatibility.CohortBuilder.whatValuesQuestion" /> ';
 			str += ' <select name="modifier" id="modifier"><option value="LESS_THAN">before</option><option value="LESS_EQUAL" selected="true">on or before</option><option value="EQUAL">on</option><option value="GREATER_EQUAL">on or after</option><option value="GREATER_THAN">after</option></select> ';
 			str += '</span>';
 		} else if (hl7Abbrev == 'ST' || hl7Abbrev == 'CWE') {
 			str += ' <br/><br/><span style="margin-left: 40px">';
-			str += ' <small><spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /></small> <spring:message code="reportingcompatibility.CohortBuilder.whatValueQuestion" /> ';
+			str += ' <small><mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /></small> <mdrtb:message code="reportingcompatibility.CohortBuilder.whatValueQuestion" /> ';
 			str += ' <input type="hidden" name="modifier" value="EQUAL" /> ';
 			str += '</span>';
 		} else if (hl7Abbrev == 'BIT') {
 			str += ' <br/><br/><span style="margin-left: 40px">';
-			str += ' <small><spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /></small> <spring:message code="reportingcompatibility.CohortBuilder.whatValueQuestion" /> ';
+			str += ' <small><mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /></small> <mdrtb:message code="reportingcompatibility.CohortBuilder.whatValueQuestion" /> ';
 			str += ' <input type="hidden" name="modifier" value="EQUAL" /> ';
 		}
 		if (hl7Abbrev == 'NM' || hl7Abbrev == 'ST') {
@@ -144,19 +144,19 @@
 		} else if (hl7Abbrev == 'DT' || hl7Abbrev == 'TS') {
 			str += '<input type="text" name="value" size="10" onClick="showCalendar(this)"/>';
 		} else if (hl7Abbrev == 'CWE') {
-			str += '<select name="value" id="replace_with_answer_options"><option value=""><spring:message code="general.loading"/></option></select>';
+			str += '<select name="value" id="replace_with_answer_options"><option value=""><mdrtb:message code="general.loading"/></option></select>';
 			lookupAnswers = true;
 		} else if (hl7Abbrev == 'BIT') {
-			str += '<select name="value"><option value=""></option><option value="true"><spring:message code="general.true"/><option value="false"><spring:message code="general.false"/></option></option></select>'; 
+			str += '<select name="value"><option value=""></option><option value="true"><mdrtb:message code="general.true"/><option value="false"><mdrtb:message code="general.false"/></option></option></select>'; 
 		}
 		str += ' <br/><br/><span style="margin-left: 40px">';
-		str += ' <small><spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (obsDatetime)</small> <spring:message code="reportingcompatibility.CohortBuilder.whenPrefix" /> <spring:message code="reportingcompatibility.CohortBuilder.withinMonthsAndDays" arguments="withinLastMonths,withinLastDays" />';
+		str += ' <small><mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (obsDatetime)</small> <mdrtb:message code="reportingcompatibility.CohortBuilder.whenPrefix" /> <mdrtb:message code="reportingcompatibility.CohortBuilder.withinMonthsAndDays" arguments="withinLastMonths,withinLastDays" />';
 		str += '</span>';
 		str += ' <br/><br/><span style="margin-left: 40px">';
-		str += ' <small><spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (obsDatetime)</small> <spring:message code="reportingcompatibility.CohortBuilder.dateRangePrefix" /> <spring:message code="reportingcompatibility.CohortBuilder.fromDateToDate" arguments="sinceDate,untilDate" />';
+		str += ' <small><mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (obsDatetime)</small> <mdrtb:message code="reportingcompatibility.CohortBuilder.dateRangePrefix" /> <mdrtb:message code="reportingcompatibility.CohortBuilder.fromDateToDate" arguments="sinceDate,untilDate" />';
 		str += '</span>';
 		str += ' <br/><br/><input type="submit" value="Search"/>';
-		str += ' &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="<spring:message code="general.cancel" />" onClick="hideLayer(\'concept_filter_box\')"/>';
+		str += ' &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="<mdrtb:message code="general.cancel" />" onClick="hideLayer(\'concept_filter_box\')"/>';
 		str += '</form>';
 		if (lookupAnswers) {
 			DWRConceptService.getAnswersForQuestion(concept.conceptId, function(list) {
@@ -181,20 +181,20 @@
 		str += ' <select name="timeModifier"><option value="ANY">Patients who have these observations</option><option value="NO">Patients who do not have these observations</option></select> ';
 		str += '</span>';
 		str += ' <br/><br/><span style="margin-left: 40px">';
-		str += ' <small><spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (obsDatetime)</small> When? Within the last ';
+		str += ' <small><mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (obsDatetime)</small> When? Within the last ';
 		str += ' <input type="text" name="withinLastMonths" value="" size="2" />';
 		str += ' months and/or';
 		str += ' <input type="text" name="withinLastDays" value="" size="2" />';
 		str += ' days';
 		str += '</span>';
 		str += ' <br/><br/><span style="margin-left: 40px">';
-		str += ' <small><spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (obsDatetime)</small> Date range? since ';
+		str += ' <small><mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" /> (obsDatetime)</small> Date range? since ';
 		str += ' <input type="text" name="sinceDate" size="10" value="" onClick="showCalendar(this)" />';
 		str += ' and/or until ';
 		str += ' <input type="text" name="untilDate" size="10" value="" onClick="showCalendar(this)" />';
 		str += '</span>';
 		str += ' <br/><br/><input type="submit" value="Search"/>';
-		str += ' &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="<spring:message code="general.cancel" />" onClick="hideLayer(\'concept_filter_box\')"/>';
+		str += ' &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="<mdrtb:message code="general.cancel" />" onClick="hideLayer(\'concept_filter_box\')"/>';
 		str += '</form>';
 		return str;
 	}
@@ -222,7 +222,7 @@
 	
 	function handleSaveCohort() {
 		if (currentPatientSet == null) {
-			window.alert("<spring:message code="PatientSet.stillLoading"/>");
+			window.alert("<mdrtb:message code="PatientSet.stillLoading"/>");
 			return;
 		} else {
 			var cohortName = $('saveCohortName').value;
@@ -242,15 +242,15 @@
 					var loadBox = $('loadBox');
 					loadBox.innerHTML = '';
 					if (histories.length == 0)
-						loadBox.innerHTML = '<spring:message javaScriptEscape="true" code="reportingcompatibility.CohortBuilder.searchHistory.load.none"/>';
+						loadBox.innerHTML = '<mdrtb:message javaScriptEscape="true" code="reportingcompatibility.CohortBuilder.searchHistory.load.none"/>';
 					else {
-						var str = '<h4><u><spring:message javaScriptEscape="true" code="reportingcompatibility.CohortBuilder.searchHistory.load"/></u></h4>';
+						var str = '<h4><u><mdrtb:message javaScriptEscape="true" code="reportingcompatibility.CohortBuilder.searchHistory.load"/></u></h4>';
 						str += '<ul>';
 						for (var i = 0; i < histories.length; ++i) {
 							str += '<li><a href="javascript:loadSearchHistory(' + histories[i].id + ')">' + histories[i].name + ' <small>(' + histories[i].description + ')</small></a></li>';
 						}
 						str += '</ul>';
-						str += '<input type="button" value="<spring:message code="general.cancel"/>" onClick="hideLayer(\'loadBox\')"/>';
+						str += '<input type="button" value="<mdrtb:message code="general.cancel"/>" onClick="hideLayer(\'loadBox\')"/>';
 						loadBox.innerHTML = str;
 					}
 					showLayer('loadBox');
@@ -268,7 +268,7 @@
 		if (currentPatientSet != null) {
 			return currentPatientSet.commaSeparatedPatientIds;
 		} else {
-			window.alert("<spring:message code="PatientSet.stillLoading"/>");
+			window.alert("<mdrtb:message code="PatientSet.stillLoading"/>");
 			return null;
 		}
 	}
@@ -288,7 +288,7 @@
 			document.getElementById(idPrefix + "_form").submit();
 			hideLayer('_linkMenu');
 		} else {
-			window.alert("<spring:message code="PatientSet.stillLoading"/>");
+			window.alert("<mdrtb:message code="PatientSet.stillLoading"/>");
 		}
 	}
 	
@@ -301,7 +301,7 @@
 					form.elements[i].value = currentPatientSet.commaSeparatedPatientIds;
 			form.submit();
 		} else {
-			window.alert("<spring:message code="PatientSet.stillLoading"/>");
+			window.alert("<mdrtb:message code="PatientSet.stillLoading"/>");
 		}
 	}
 	
@@ -321,13 +321,13 @@
 	
 	function handleSavedFilterMenuButton() {
 		if ($('saved_filters').style.display == 'none') {
-			$('saved_searches').innerHTML = '<li><spring:message code="general.loading"/></li>';
-			$('saved_cohorts').innerHTML = '<li><spring:message code="general.loading"/></li>';
+			$('saved_searches').innerHTML = '<li><mdrtb:message code="general.loading"/></li>';
+			$('saved_cohorts').innerHTML = '<li><mdrtb:message code="general.loading"/></li>';
 			showLayer('saved_filters');
 			DWRCohortBuilderService.getSavedSearches(false, function(searches) {
 					var str = '<ul>';
 					if (searches.length == 0)
-						str = '<spring:message code="general.none"/>';
+						str = '<mdrtb:message code="general.none"/>';
 					else {
 						for (var i = 0; i < searches.length; ++i) {
 							str += '<li><a href="cohortBuilder.form?method=addFilter&search_id=' + searches[i].id + '">' + searches[i].name + ' <small>(' + searches[i].description + ')</small></a></li>';
@@ -339,7 +339,7 @@
 			DWRCohortBuilderService.getSavedCohorts(function(cohorts) {
 					var str = '<ul>';
 					if (cohorts.length == 0)
-						str = '<spring:message code="general.none"/>';
+						str = '<mdrtb:message code="general.none"/>';
 					else {
 						for (var i = 0; i < cohorts.length; ++i) {
 							str += '<form id="load_cohort_' + cohorts[i].id + '" method="post" action="cohortBuilder.form">';
@@ -433,7 +433,7 @@
 					var result = search.cachedResult;
 					str += '<li>' + filter.name + ' <small>(' + filter.description + ')</small>';
 					if (result != null)
-						str += ' (' + result.size + ' <spring:message code="reportingcompatibility.CohortBuilder.numResults"/>)';
+						str += ' (' + result.size + ' <mdrtb:message code="reportingcompatibility.CohortBuilder.numResults"/>)';
 					str += '</li>';
 				}
 				str += '</ol>';
@@ -498,39 +498,39 @@
 
 </script>
 
-<h2><spring:message code="reportingcompatibility.CohortBuilder.title"/></h2>	
+<h2><mdrtb:message code="reportingcompatibility.CohortBuilder.title"/></h2>	
 
 <div id="cohort_builder_add_filter" style="padding: 4px">
-	<b><spring:message code="general.search"/></b>
+	<b><mdrtb:message code="general.search"/></b>
 
 	<span style="padding: 3px; margin: 0px 3px; background-color: #ffffdd; border: 1px black solid">
-		<a href="javascript:handleSavedFilterMenuButton()"><spring:message code="reportingcompatibility.CohortBuilder.savedFilterMenu"/></a>
+		<a href="javascript:handleSavedFilterMenuButton()"><mdrtb:message code="reportingcompatibility.CohortBuilder.savedFilterMenu"/></a>
 	</span>
 	<div id="saved_filters" style="position: absolute; z-index: 1; border: 1px black solid; background-color: #ffffdd; display: none; padding: 4px">
-		<h4><spring:message code="reportingcompatibility.CohortBuilder.savedSearches" /></h4>
+		<h4><mdrtb:message code="reportingcompatibility.CohortBuilder.savedSearches" /></h4>
 		<ul id="saved_searches"></ul>
-		<h4><spring:message code="reportingcompatibility.CohortBuilder.savedCohorts" /></h4>
+		<h4><mdrtb:message code="reportingcompatibility.CohortBuilder.savedCohorts" /></h4>
 		<ul id="saved_cohorts"></ul>
 		<br/>
-		&nbsp; <input type="button" value="<spring:message code="general.cancel"/>" onclick="handleSavedFilterMenuButton()"/>
+		&nbsp; <input type="button" value="<mdrtb:message code="general.cancel"/>" onclick="handleSavedFilterMenuButton()"/>
 	</div>
 
 	<c:if test="${fn:length(model.shortcuts) > 0}">
 		<c:forEach var="shortcut" items="${model.shortcuts}" varStatus="status">
 			<span style="padding: 3px 0px; margin: 0px 3px; background-color: #ffffaa; border: 1px black solid">
 				<c:if test="${shortcut.concrete}">
-					<a href="cohortBuilder.form?method=addFilter&filter_id=${shortcut.patientFilter.reportObjectId}"><spring:message code="${shortcut.label}"/></a>
+					<a href="cohortBuilder.form?method=addFilter&filter_id=${shortcut.patientFilter.reportObjectId}"><mdrtb:message code="${shortcut.label}"/></a>
 				</c:if>
 				<c:if test="${!shortcut.concrete}">
 					<form id="shortcut${shortcut.label}" method="post" action="cohortBuilder.form" style="display: inline">
 						<c:if test="${!shortcut.hasPromptArgs}">
 							<a href="javascript:document.getElementById('shortcut${shortcut.label}').submit()">
 						</c:if>
-						<spring:message code="reportingcompatibility.${shortcut.label}" var="reportingcompatibilityLabel"/>
+						<mdrtb:message code="reportingcompatibility.${shortcut.label}" var="reportingcompatibilityLabel"/>
 						<c:set var="reportingcompatibilityLabelDefault" value="reportingcompatibility.${shortcut.label}"/>
 						<c:choose>
 							<c:when test="${reportingcompatibilityLabel == reportingcompatibilityLabelDefault}" > 
-								<spring:message code="${shortcut.label}"/>
+								<mdrtb:message code="${shortcut.label}"/>
 							</c:when>
 							<c:otherwise> 
 								<c:out value="${reportingcompatibilityLabel}"/>
@@ -544,7 +544,7 @@
 						<input type="hidden" name="vars" value="${shortcut.vars}"/>
 						<c:forEach var="arg" items="${shortcut.args}">
 							<c:if test="${empty arg.argClass}">
-								<spring:message code="reportingcompatibility.${arg.argName}"/>
+								<mdrtb:message code="reportingcompatibility.${arg.argName}"/>
 							</c:if>
 							<c:if test="${arg.argClass != null}">
 								<c:choose>
@@ -552,11 +552,11 @@
 										<input type="hidden" name="${arg.argName}" value="${arg.argValue}"/>
 									</c:when>
 									<c:otherwise>
-										<spring:message code="reportingcompatibility.${shortcut.label}.${arg.argName}" var="reportingcompatibilityArgLabel"/>
+										<mdrtb:message code="reportingcompatibility.${shortcut.label}.${arg.argName}" var="reportingcompatibilityArgLabel"/>
 										<c:set var="reportingcompatibilityArgLabelDefault" value="reportingcompatibility.${shortcut.label}.${arg.argName}"/>
 										<c:choose>
 											<c:when test="${reportingcompatibilityArgLabel == reportingcompatibilityLabelArgDefault}" > 
-												<spring:message code="${shortcut.label}.${arg.argName}"/>
+												<mdrtb:message code="${shortcut.label}.${arg.argName}"/>
 											</c:when>
 											<c:otherwise> 
 												<c:out value="${reportingcompatibilityArgLabel}"/>
@@ -581,22 +581,22 @@
 	<div id="cohortSearchTabs">
 		<ul>
 			<li>&nbsp;</li>
-			<li><a id="searchTab_concept" href="#" onClick="changeSearchTab(this, 'concept_to_filter_search')"><spring:message code="reportingcompatibility.CohortBuilder.searchTab.concept"/></a></li>
+			<li><a id="searchTab_concept" href="#" onClick="changeSearchTab(this, 'concept_to_filter_search')"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchTab.concept"/></a></li>
 			<c:if test="${ENABLE_LOGIC_TAB == 'true'}">
-				<li><a id="searchTab_logic" href="#" onClick="changeSearchTab(this)"><spring:message code="reportingcompatibility.CohortBuilder.searchTab.logic"/></a></li>
+				<li><a id="searchTab_logic" href="#" onClick="changeSearchTab(this)"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchTab.logic"/></a></li>
 			</c:if>
-			<li><a id="searchTab_attribute" href="#" onClick="changeSearchTab(this)"><spring:message code="reportingcompatibility.CohortBuilder.searchTab.personAttribute"/></a></li>
-			<li><a id="searchTab_encounter" href="#" onClick="changeSearchTab(this)"><spring:message code="reportingcompatibility.CohortBuilder.searchTab.encounter"/></a></li>
-			<li><a id="searchTab_program" href="#" onClick="changeSearchTab(this)"><spring:message code="reportingcompatibility.CohortBuilder.searchTab.program"/></a></li>
-			<li><a id="searchTab_drugOrder" href="#" onClick="changeSearchTab(this)"><spring:message code="reportingcompatibility.CohortBuilder.searchTab.drugOrder"/></a></li>
-			<li><a id="searchTab_composition" href="#" onClick="changeSearchTab(this, 'composition')"><spring:message code="reportingcompatibility.CohortBuilder.searchTab.composition"/></a></li>
+			<li><a id="searchTab_attribute" href="#" onClick="changeSearchTab(this)"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchTab.personAttribute"/></a></li>
+			<li><a id="searchTab_encounter" href="#" onClick="changeSearchTab(this)"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchTab.encounter"/></a></li>
+			<li><a id="searchTab_program" href="#" onClick="changeSearchTab(this)"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchTab.program"/></a></li>
+			<li><a id="searchTab_drugOrder" href="#" onClick="changeSearchTab(this)"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchTab.drugOrder"/></a></li>
+			<li><a id="searchTab_composition" href="#" onClick="changeSearchTab(this, 'composition')"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchTab.composition"/></a></li>
 		</ul>
 	</div>
 	
 	<div id="cohortSearchTabContent" style="border: 1px black solid; border-top: none; padding: 4px 5px 2px 10px;">
 	
 		<div id="searchTab_concept_content" style="display: none">
-			<div dojoType="ConceptSearch" widgetId="concept_to_filter_search" conceptId="" searchLabel='<spring:message code="reportingcompatibility.CohortBuilder.addConceptFilter"/>' showVerboseListing="true" includeVoided="false"></div>
+			<div dojoType="ConceptSearch" widgetId="concept_to_filter_search" conceptId="" searchLabel='<mdrtb:message code="reportingcompatibility.CohortBuilder.addConceptFilter"/>' showVerboseListing="true" includeVoided="false"></div>
 			<div id="concept_filter_box" style="display: none; border-top: 1px #aaaaaa solid"></div>
 		</div>
 		
@@ -607,13 +607,13 @@
 						<input type="hidden" name="method" value="addDynamicFilter"/>
 						<input type="hidden" name="filterClass" value="org.openmrs.reporting.LogicPatientFilter" />
 						<input type="hidden" name="vars" value="criteria#org.openmrs.logic.LogicCriteria" />
-						<spring:message code="reportingcompatibility.CohortBuilder.logicCriteria"/>:
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.logicCriteria"/>:
 						<br/>
-						<small><spring:message code="reportingcompatibility.CohortBuilder.logicCriteria.help"/></small>
+						<small><mdrtb:message code="reportingcompatibility.CohortBuilder.logicCriteria.help"/></small>
 						<br/>
 						<textarea name="criteria" rows="4" cols="72"></textarea>
 						<br/>
-						<input type="submit" value="<spring:message code="general.search"/>" />
+						<input type="submit" value="<mdrtb:message code="general.search"/>" />
 					</form>
 				</div>
 			</div>
@@ -632,9 +632,9 @@
 							<td align="right">Gender:</td>
 							<td>
 								<select name="gender">
-									<option value=""><spring:message code="general.allOptions" /></option>
-									<option value="m"><spring:message code="Person.gender.male" /></option>
-									<option value="f"><spring:message code="Person.gender.female" /></option>
+									<option value=""><mdrtb:message code="general.allOptions" /></option>
+									<option value="m"><mdrtb:message code="Person.gender.male" /></option>
+									<option value="f"><mdrtb:message code="Person.gender.female" /></option>
 								</select>
 							</td>
 						</tr>
@@ -659,7 +659,7 @@
 							</td>
 						</tr>
 					</table>
-					<input type="submit" value="<spring:message code="general.search"/>" />
+					<input type="submit" value="<mdrtb:message code="general.search"/>" />
 					<br/>
 				</form>
 			</div>
@@ -679,17 +679,17 @@
 						</c:forEach>
 					</select>
 					&nbsp;&nbsp;&nbsp;
-					<spring:message code="reportingcompatibility.CohortBuilder.whatValueQuestion" />
+					<mdrtb:message code="reportingcompatibility.CohortBuilder.whatValueQuestion" />
 					<input type="text" name="value" size="30"/>
 					<br/>
-					<input type="submit" value="<spring:message code="general.search"/>" />
+					<input type="submit" value="<mdrtb:message code="general.search"/>" />
 				</form>
 			</div>
 		</div>
 		
 		<div id="searchTab_encounter_content" style="display: none">
 			<div style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.5em; margin: 0.5em">
-				<h4><spring:message code="reportingcompatibility.CohortBuilder.addEncounterFilter"/></h4>
+				<h4><mdrtb:message code="reportingcompatibility.CohortBuilder.addEncounterFilter"/></h4>
 				<ul><li>
 				<form method="post" action="cohortBuilder.form">
 					<input type="hidden" name="method" value="addDynamicFilter"/>
@@ -699,7 +699,7 @@
 					<table style="margin-left: 40px">
 						<tr valign="top">
 							<td>
-								<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+								<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 							</td>
 							<td>
 								of type
@@ -716,14 +716,14 @@
 						</tr>
 						<tr valign="top">
 							<td>
-								<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+								<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 							</td>
 							<td>
 								at location
 							</td>
 							<td>
 								<select name="location">
-									<option value=""><spring:message code="general.allOptions"/></option>
+									<option value=""><mdrtb:message code="general.allOptions"/></option>
 									<c:forEach var="location" items="${model.locations}">
 										<option value="${location.locationId}">${location.name}</option>
 									</c:forEach>
@@ -732,14 +732,14 @@
 						</tr>
 						<tr valign="top">
 							<td>
-								<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+								<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 							</td>
 							<td>
 								from form
 							</td>
 							<td>
 								<select name="form">
-									<option value=""><spring:message code="general.allOptions"/></option>
+									<option value=""><mdrtb:message code="general.allOptions"/></option>
 									<c:forEach var="form" items="${model.forms}">
 										<option value="${form.formId}">${form.name}</option>
 									</c:forEach>
@@ -748,7 +748,7 @@
 						</tr>
 						<tr valign="top">
 							<td>
-								<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+								<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 							</td>
 							<td colspan="2">
 								at least this many
@@ -759,7 +759,7 @@
 						</tr>
 						<tr valign="top">
 							<td>
-								<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+								<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 							</td>
 							<td colspan="2">
 								within the last <input type="text" size="3" name="withinLastMonths" />months
@@ -768,7 +768,7 @@
 						</tr>
 						<tr valign="top">
 							<td>
-								<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+								<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 							</td>
 							<td colspan="2">
 								since <input type="text" size="10" name="sinceDate" onClick="showCalendar(this)" />
@@ -776,13 +776,13 @@
 							</td>
 						</tr>
 					</table>
-					<input type="submit" value="<spring:message code="general.search" />"/>
+					<input type="submit" value="<mdrtb:message code="general.search" />"/>
 				</form>
 				</li></ul>
 			</div>
 			
 			<div style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.5em; margin: 0.5em">
-				<h4><spring:message code="reportingcompatibility.CohortBuilder.addLocationFilter"/></h4>
+				<h4><mdrtb:message code="reportingcompatibility.CohortBuilder.addLocationFilter"/></h4>
 				<ul><li>
 				<form method="post" action="cohortBuilder.form">
 					<input type="hidden" name="method" value="addDynamicFilter"/>
@@ -790,7 +790,7 @@
 					<input type="hidden" name="vars" value="location#org.openmrs.Location,calculationMethod#org.openmrs.api.PatientSetService$PatientLocationMethod" />
 					Patients belonging to
 					<select name="location">
-						<option value=""><spring:message code="general.none" /></option>
+						<option value=""><mdrtb:message code="general.none" /></option>
 						<c:forEach var="location" items="${model.locations}">
 							<option value="${location.locationId}">${location.name}</option>
 						</c:forEach>
@@ -803,7 +803,7 @@
 						<option value="EARLIEST_ENCOUNTER">Earliest Encounter</option>
 					</select>			
 					<br/>
-					<input type="submit" value="<spring:message code="general.search" />"/>
+					<input type="submit" value="<mdrtb:message code="general.search" />"/>
 				</form>
 				</li></ul>
 			</div>
@@ -816,7 +816,7 @@
 					<input type="hidden" name="filterClass" value="org.openmrs.reporting.ProgramStatePatientFilter" />
 					<input type="hidden" name="vars" value="program#org.openmrs.Program,stateList#*org.openmrs.ProgramWorkflowState,withinLastMonths#java.lang.Integer,withinLastDays#java.lang.Integer,sinceDate#java.util.Date,untilDate#java.util.Date" />
 		
-					<h4><spring:message code="reportingcompatibility.CohortBuilder.addProgramFilter"/></h4>
+					<h4><mdrtb:message code="reportingcompatibility.CohortBuilder.addProgramFilter"/></h4>
 					<table>
 						<tr>
 							<td>Program:</td>
@@ -844,21 +844,21 @@
 						<tr>
 							<td>When?</td>
 							<td>
-								<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+								<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 								on or after:<input type="text" size="10" name="sinceDate" onClick="showCalendar(this)" />
 								<br/>
-								<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+								<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 								on or before:<input type="text" size="10" name="untilDate" onClick="showCalendar(this)" />
 							</td>
 						</tr>
 					</table>
-					<input type="submit" value="<spring:message code="general.search" />"/>
+					<input type="submit" value="<mdrtb:message code="general.search" />"/>
 				</form>
 			</div>
 		</div>
 		
 		<div id="searchTab_drugOrder_content" style="display: none">
-			<spring:message code="reportingcompatibility.CohortBuilder.addDrugOrderFilter"/>
+			<mdrtb:message code="reportingcompatibility.CohortBuilder.addDrugOrderFilter"/>
 			<div style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.5em; margin: 0.5em">
 				<form method="post" action="cohortBuilder.form" onSubmit="removeHiddenDivs()">
 					<input type="hidden" name="method" value="addDynamicFilter"/>
@@ -920,19 +920,19 @@
 						<a href="javascript:toggleDrugOrderDateOptions()">[current]</a>
 						<br/>
 							&nbsp;&nbsp;&nbsp;&nbsp;
-							<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
-							<spring:message code="reportingcompatibility.CohortBuilder.whenPrefix" />
-							<spring:message code="reportingcompatibility.CohortBuilder.withinMonthsAndDays" arguments="withinLastMonths,withinLastDays" />
+							<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+							<mdrtb:message code="reportingcompatibility.CohortBuilder.whenPrefix" />
+							<mdrtb:message code="reportingcompatibility.CohortBuilder.withinMonthsAndDays" arguments="withinLastMonths,withinLastDays" />
 						<br/>
 							&nbsp;&nbsp;&nbsp;&nbsp;
-							<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
-							<spring:message code="reportingcompatibility.CohortBuilder.dateRangePrefix" />
-							<spring:message code="reportingcompatibility.CohortBuilder.fromDateToDate" arguments="sinceDate,untilDate" />
+							<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+							<mdrtb:message code="reportingcompatibility.CohortBuilder.dateRangePrefix" />
+							<mdrtb:message code="reportingcompatibility.CohortBuilder.fromDateToDate" arguments="sinceDate,untilDate" />
 						<br/>
 					</div>
 					
 					<br/>
-					<input type="submit" value="<spring:message code="general.search" />"/>
+					<input type="submit" value="<mdrtb:message code="general.search" />"/>
 				</form>
 			</div>
 			<div style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.5em; margin: 0.5em">
@@ -943,18 +943,18 @@
 					<input type="hidden" name="discontinued" value="true" />
 					<b>Patients who stopped or changed a drug</b>
 					<br/><br/>
-						<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
-						<spring:message code="reportingcompatibility.CohortBuilder.whenPrefix" />
-						<spring:message code="reportingcompatibility.CohortBuilder.withinMonthsAndDays" arguments="withinLastMonths,withinLastDays" />
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.whenPrefix" />
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.withinMonthsAndDays" arguments="withinLastMonths,withinLastDays" />
 					<br/>
-						<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
-						<spring:message code="reportingcompatibility.CohortBuilder.dateRangePrefix" />
-						<spring:message code="reportingcompatibility.CohortBuilder.fromDateToDate" arguments="sinceDate,untilDate" />
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.dateRangePrefix" />
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.fromDateToDate" arguments="sinceDate,untilDate" />
 					<br/>
 					<table><tr valign="top"><td style="padding-right: 20px">
-						<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 						Reason for stop/change: <br/>
-						(leave blank for <spring:message code="general.allOptions" />)
+						(leave blank for <mdrtb:message code="general.allOptions" />)
 						<br/>
 						<select name="discontinuedReasonList" size="10" multiple="true">
 							<c:forEach var="reason" items="${model.orderStopReasons}">
@@ -962,9 +962,9 @@
 							</c:forEach>
 						</select>
 					</td><td style="padding-right: 20px">
-						<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 						Only these drugs: <br/>
-						(leave blank for <spring:message code="general.allOptions" />)
+						(leave blank for <mdrtb:message code="general.allOptions" />)
 						<br/>
 						<select multiple="true" size="10" name="drugList">
 							<c:forEach var="drug" items="${model.drugs}">
@@ -972,9 +972,9 @@
 							</c:forEach>
 						</select>
 					</td><td>
-						<spring:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
+						<mdrtb:message code="reportingcompatibility.CohortBuilder.optionalPrefix" />
 						Only these generics: <br/>
-						(leave blank for <spring:message code="general.allOptions" />)
+						(leave blank for <mdrtb:message code="general.allOptions" />)
 						<br/>
 						<select multiple="true" size="10" name="genericDrugList">
 							<c:forEach var="concept" items="${model.drugConcepts}">
@@ -984,7 +984,7 @@
 					</td></tr></table>
 					
 					<br/>
-					<input type="submit" value="<spring:message code="general.search" />"/>
+					<input type="submit" value="<mdrtb:message code="general.search" />"/>
 				</form>
 			</div>
 		</div>
@@ -992,15 +992,15 @@
 		<div id="searchTab_composition_content" style="display: none">
 			<form method="post" action="cohortBuilder.form">
 				<input type="hidden" name="method" value="addFilter"/>
-				<h4><spring:message code="reportingcompatibility.CohortBuilder.addCompositionFilter"/></h4>
-				<i><spring:message code="reportingcompatibility.CohortBuilder.compositionHelp"/></i>
+				<h4><mdrtb:message code="reportingcompatibility.CohortBuilder.addCompositionFilter"/></h4>
+				<i><mdrtb:message code="reportingcompatibility.CohortBuilder.compositionHelp"/></i>
 				<br/>
 				<br/>
-				<spring:message code="general.search"/>:
+				<mdrtb:message code="general.search"/>:
 				<input type="text" name="composition" id="composition" size="72"/>
 				<br/>
 				<br/>
-				<input type="submit" value="<spring:message code="general.add"/>"/>
+				<input type="submit" value="<mdrtb:message code="general.add"/>"/>
 			</form>
 		</div>
 	</div>
@@ -1014,29 +1014,29 @@
 			<input type="hidden" name="method" value="saveHistory"/>
 			<table>
 				<tr>
-					<th colspan="2"><spring:message code="reportingcompatibility.CohortBuilder.searchHistory.save"/></th>
+					<th colspan="2"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchHistory.save"/></th>
 				</tr>
 				<tr>
-					<td><spring:message code="general.name"/></td>
+					<td><mdrtb:message code="general.name"/></td>
 					<td><input type="text" name="name" id="saveBoxName"/></td>
 				</tr>
 				<tr>
-					<td><spring:message code="general.description"/></td>
+					<td><mdrtb:message code="general.description"/></td>
 					<td><input type="text" name="description" size="60"/></td>
 				</tr>
 				<!--
 				<tr>
-					<td><spring:message code="reportingcompatibility.CohortBuilder.privateOrShared"/></td>
-					<td><spring:message code="general.notYetImplemented"/></td>
+					<td><mdrtb:message code="reportingcompatibility.CohortBuilder.privateOrShared"/></td>
+					<td><mdrtb:message code="general.notYetImplemented"/></td>
 				</tr>
 				<tr>
-					<td><spring:message code="reportingcompatibility.CohortBuilder.keepUntil"/></td>
+					<td><mdrtb:message code="reportingcompatibility.CohortBuilder.keepUntil"/></td>
 					<td>
 						<select>
-							<option value=""><spring:message code="reportingcompatibility.CohortBuilder.keepUntil.forever"/></option>
-							<option value=""><spring:message code="general.nWeeks" arguments="4"/> (<spring:message code="general.notYetImplemented"/>)</option>
-							<option value=""><spring:message code="general.nWeeks" arguments="2"/> (<spring:message code="general.notYetImplemented"/>)</option>
-							<option value=""><spring:message code="general.nWeeks" arguments="1"/> (<spring:message code="general.notYetImplemented"/>)</option>
+							<option value=""><mdrtb:message code="reportingcompatibility.CohortBuilder.keepUntil.forever"/></option>
+							<option value=""><mdrtb:message code="general.nWeeks" arguments="4"/> (<mdrtb:message code="general.notYetImplemented"/>)</option>
+							<option value=""><mdrtb:message code="general.nWeeks" arguments="2"/> (<mdrtb:message code="general.notYetImplemented"/>)</option>
+							<option value=""><mdrtb:message code="general.nWeeks" arguments="1"/> (<mdrtb:message code="general.notYetImplemented"/>)</option>
 						</select>
 					</td>
 				</tr>
@@ -1044,8 +1044,8 @@
 				<tr>
 					<td></td>
 					<td>
-						<input style="margin: 0em 1em" type="submit" value="<spring:message code="general.save"/>"/>
-						<input style="margin: 0em 1em" type="button" value="<spring:message code="general.cancel"/>" onClick="toggleLayer('saveBox');"/>
+						<input style="margin: 0em 1em" type="submit" value="<mdrtb:message code="general.save"/>"/>
+						<input style="margin: 0em 1em" type="button" value="<mdrtb:message code="general.cancel"/>" onClick="toggleLayer('saveBox');"/>
 					</td>
 				</tr>
 			</table>
@@ -1055,49 +1055,49 @@
 	<div id="loadBox" style="position: absolute; margin: 1em; padding: 1em; z-index: 1; border: 1px black solid; background-color: #ffe0e0; display: none"></div>
 
 	<h3>
-		<spring:message code="reportingcompatibility.CohortBuilder.searchHistory"/>
+		<mdrtb:message code="reportingcompatibility.CohortBuilder.searchHistory"/>
 		<c:if test="${model.searchHistory.size > 0}">
-			<a href="#" onclick="toggleLayer('saveBox'); hideLayer('loadBox'); document.getElementById('saveBoxName').focus(); return false;" title="<spring:message code="reportingcompatibility.CohortBuilder.searchHistory.save"/>">
+			<a href="#" onclick="toggleLayer('saveBox'); hideLayer('loadBox'); document.getElementById('saveBoxName').focus(); return false;" title="<mdrtb:message code="reportingcompatibility.CohortBuilder.searchHistory.save"/>">
 				<img src="${pageContext.request.contextPath}/images/save.gif" style="border: 0px" />
 			</a>
 		</c:if>
-		<a href="#" onClick="handleLoadButton(); return false;" title='<spring:message code="reportingcompatibility.CohortBuilder.searchHistory.load"/>'>
+		<a href="#" onClick="handleLoadButton(); return false;" title='<mdrtb:message code="reportingcompatibility.CohortBuilder.searchHistory.load"/>'>
 			<img src="${pageContext.request.contextPath}/images/open.gif" style="border: 0px" />
 		</a>
 		<form method="post" action="cohortBuilder.form" style="display: inline">
 			<input type="hidden" name="method" value="clearHistory"/>
-			<input type="image" title="<spring:message code="reportingcompatibility.CohortBuilder.searchHistory.clear"/>" src="${pageContext.request.contextPath}/images/delete.gif"/>
+			<input type="image" title="<mdrtb:message code="reportingcompatibility.CohortBuilder.searchHistory.clear"/>" src="${pageContext.request.contextPath}/images/delete.gif"/>
 		</form>
 	</h3>
 
 	<div id="saveFilterBox" style="padding: 1em; position: absolute; z-index: 1; border: 1px black solid; background-color: #ffe0e0; display: none">
-		<b><u><spring:message code="reportingcompatibility.CohortBuilder.cohortDefinition.save"/></u></b>
+		<b><u><mdrtb:message code="reportingcompatibility.CohortBuilder.cohortDefinition.save"/></u></b>
 		<br/><br/>
-		<spring:message code="general.saving" arguments="<span id='saveFilterTitle'></span>"/>
+		<mdrtb:message code="general.saving" arguments="<span id='saveFilterTitle'></span>"/>
 		<br/><br/>
-		<spring:message code="general.name"/>: <input type="text" id="saveFilterName"/> <br/>
-		<spring:message code="general.description"/>: <input type="text" id="saveFilterDescription" size="60"/> <br/><br/>
+		<mdrtb:message code="general.name"/>: <input type="text" id="saveFilterName"/> <br/>
+		<mdrtb:message code="general.description"/>: <input type="text" id="saveFilterDescription" size="60"/> <br/><br/>
 		<input type="hidden" id="saveFilterIndex"/>
 		<div align="center">
-			<input type="button" id="saveFilterSaveButton" value="<spring:message code="general.save"/>" onClick="handleSaveFilter()"/>
-			<input type="button" id="saveFilterCancelButton" value="<spring:message code="general.cancel"/>" onClick="toggleLayer('saveFilterBox')"/>
+			<input type="button" id="saveFilterSaveButton" value="<mdrtb:message code="general.save"/>" onClick="handleSaveFilter()"/>
+			<input type="button" id="saveFilterCancelButton" value="<mdrtb:message code="general.cancel"/>" onClick="toggleLayer('saveFilterBox')"/>
 		</div>
 	</div>	
 			
 	<c:if test="${model.searchHistory.size == 0}">
-		<div><spring:message code="reportingcompatibility.CohortBuilder.searchHistory.none"/></div>
+		<div><mdrtb:message code="reportingcompatibility.CohortBuilder.searchHistory.none"/></div>
 	</c:if>
 	<c:if test="${model.searchHistory.size > SHOW_LAST_N}">
 		<div id="fullSearchHistory" style="display: none">
 			<div style="text-align: center">
-				<a href="javascript:hideLayer('fullSearchHistory'); showLayer('showFullSearchHistoryButton')"><spring:message code="reportingcompatibility.CohortBuilder.searchHistory.showRecent"/></a>
+				<a href="javascript:hideLayer('fullSearchHistory'); showLayer('showFullSearchHistoryButton')"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchHistory.showRecent"/></a>
 			</div>
 	</c:if>
 	<c:forEach var="item" items="${model.searchHistory.items}" varStatus="iter">
 		<c:if test="${model.searchHistory.size > SHOW_LAST_N && iter.index == (model.searchHistory.size - SHOW_LAST_N)}">
 			</div>
 			<div id="showFullSearchHistoryButton" style="text-align: center">
-				<a href="javascript:showLayer('fullSearchHistory'); hideLayer('showFullSearchHistoryButton')"><spring:message code="reportingcompatibility.CohortBuilder.searchHistory.showFull"/></a>
+				<a href="javascript:showLayer('fullSearchHistory'); hideLayer('showFullSearchHistoryButton')"><mdrtb:message code="reportingcompatibility.CohortBuilder.searchHistory.showFull"/></a>
 			</div>
 		</c:if>
 		
@@ -1130,17 +1130,17 @@
 							?
 						</c:if>
 					</span>
-					<spring:message code="reportingcompatibility.CohortBuilder.numResults"/>
+					<mdrtb:message code="reportingcompatibility.CohortBuilder.numResults"/>
 					<c:if test="${item.cachedResult != null}">
 						<small>(cached)</small>
 					</c:if>
 					<c:if test="${item.saved}">
-						<small>(<spring:message code="general.saved" />)</small>
+						<small>(<mdrtb:message code="general.saved" />)</small>
 					</c:if>
 					<c:if test="${!item.saved}">
-						<a href="#" onclick="showSaveFilterDialog(${iter.index}, '${item.name}'); return false;" title='<spring:message code="reportingcompatibility.CohortBuilder.saveFilterDefinition.help"/>'><img src="${pageContext.request.contextPath}/images/save.gif" style="border: 0px;" /></a>
+						<a href="#" onclick="showSaveFilterDialog(${iter.index}, '${item.name}'); return false;" title='<mdrtb:message code="reportingcompatibility.CohortBuilder.saveFilterDefinition.help"/>'><img src="${pageContext.request.contextPath}/images/save.gif" style="border: 0px;" /></a>
 					</c:if>
-					<a href="cohortBuilder.form?method=removeFilter&index=${iter.index}" title='<spring:message code="reportingcompatibility.CohortBuilder.removeFilter.help"/>'><img src="${pageContext.request.contextPath}/images/delete.gif" style="border: 0px;"/></a>
+					<a href="cohortBuilder.form?method=removeFilter&index=${iter.index}" title='<mdrtb:message code="reportingcompatibility.CohortBuilder.removeFilter.help"/>'><img src="${pageContext.request.contextPath}/images/delete.gif" style="border: 0px;"/></a>
 				</td>
 				<c:if test="${item.cachedResult == null}">
 					<script type="text/javascript">
@@ -1162,11 +1162,11 @@
 		<table width="100%">
 			<tr>
 				<td>
-					<spring:message code="reportingcompatibility.CohortBuilder.displayMethod"/>
+					<mdrtb:message code="reportingcompatibility.CohortBuilder.displayMethod"/>
 					<select id="cohort_builder_preview_method" onChange="refreshPreview()">
-						<option value="last"><spring:message code="reportingcompatibility.CohortBuilder.displayMethod.last"/></option>
-						<option value="and"><spring:message code="reportingcompatibility.CohortBuilder.displayMethod.and"/></option>
-						<option value="or"><spring:message code="reportingcompatibility.CohortBuilder.displayMethod.or"/></option>
+						<option value="last"><mdrtb:message code="reportingcompatibility.CohortBuilder.displayMethod.last"/></option>
+						<option value="and"><mdrtb:message code="reportingcompatibility.CohortBuilder.displayMethod.and"/></option>
+						<option value="or"><mdrtb:message code="reportingcompatibility.CohortBuilder.displayMethod.or"/></option>
 						<c:set var="temp" value="${model.searchHistory.size - 2}"/>
 						<c:if test="${temp < 0}">
 							<c:set var="temp" value="0"/>
@@ -1190,19 +1190,19 @@
 			<br/><br/>
 			<table>
 				<tr>
-					<td width="30px"><spring:message code="general.name"/></td>
+					<td width="30px"><mdrtb:message code="general.name"/></td>
 					<td style="text-align:left"><input type="text" id="saveCohortName"/></td>
 				</tr>
 				<tr>
-					<td width="30px"><spring:message code="general.description"/></td>
+					<td width="30px"><mdrtb:message code="general.description"/></td>
 					<td style="text-align:left"><input type="text" id="saveCohortDescription"/></td>
 				</tr>
 				<tr>
 					<td></td>
 					<td style="text-align:left">
-						<input type="button" value="<spring:message code="general.save"/>" onClick="handleSaveCohort()" />
+						<input type="button" value="<mdrtb:message code="general.save"/>" onClick="handleSaveCohort()" />
 						&nbsp;
-						<input type="button" value="<spring:message code="general.cancel"/>" onClick="toggleLayer('saveCohortDiv')" />
+						<input type="button" value="<mdrtb:message code="general.cancel"/>" onClick="toggleLayer('saveCohortDiv')" />
 					</td>
 				</tr>
 			</table>
@@ -1211,7 +1211,7 @@
 		<c:if test="${fn:length(model.links) > 0}">
 			<div id="_linkMenu" style="	border: 1px solid black; background-color: #f0f0a0; position: absolute; bottom: 0px; padding-right: 1.2em; z-index: 1; display: none">
 				<br />
-				&nbsp;&nbsp;&nbsp;<span style="width: 200px; text-align: right;"><a href="javascript:hideLayer('_linkMenu');" >[<spring:message code="general.close" />]</a></span>
+				&nbsp;&nbsp;&nbsp;<span style="width: 200px; text-align: right;"><a href="javascript:hideLayer('_linkMenu');" >[<mdrtb:message code="general.close" />]</a></span>
 				<ul>
 					<c:forEach var="item" items="${model.links}" varStatus="loopStatus">
 						<li>
@@ -1223,20 +1223,20 @@
 								<input type="hidden" name="fDate" id="link_${loopStatus.index}_fDate" value="" />
 								<input type="hidden" name="tDate" id="link_${loopStatus.index}_tDate" value="" />
 								<a href="javascript:linkSubmitHelper('link_${loopStatus.index}')">
-									<spring:message code="${item.label}"/>
+									<mdrtb:message code="${item.label}"/>
 								</a>
 							</form>
 						</li>
 					</c:forEach>
 				</ul>
-				&nbsp;&nbsp;<spring:message code="general.dateConstraints" /> (<spring:message code="general.optional" />):<br />
+				&nbsp;&nbsp;<mdrtb:message code="general.dateConstraints" /> (<mdrtb:message code="general.optional" />):<br />
 				<table style="padding-left: 15px;">
 					<tr>
-						<td><spring:message code="general.fromDate" />:</td>
+						<td><mdrtb:message code="general.fromDate" />:</td>
 						<td><openmrs:fieldGen type="java.util.Date" formFieldName="nrFromDate" val="" /></td>
 					</tr>
 					<tr>
-						<td><spring:message code="general.toDate" />:</td>
+						<td><mdrtb:message code="general.toDate" />:</td>
 						<td><openmrs:fieldGen type="java.util.Date" formFieldName="nrToDate" val="" /></td>
 					</tr>
 				</table>
@@ -1244,20 +1244,20 @@
 			</div>
 		</c:if>
 
-		<b><spring:message code="reportingcompatibility.CohortBuilder.actionsMenu"/></b>
+		<b><mdrtb:message code="reportingcompatibility.CohortBuilder.actionsMenu"/></b>
 
 		<c:set var="shownReportsPopupAlready" value="false"/>
 		<rpt:forEachReportObject name="reportSchemaXml">
 			<c:if test="${shownReportsPopupAlready == 'false'}">
 				<span style="position: relative">
 					<div id="webReportPopupMenu" style="width: 35em; border: 1px solid black; background-color: #f0f0a0; position: absolute; bottom: 0px; padding-right: 1.2em; z-index: 1; display: none">
-						<div style="float: right"><a href="javascript:hideLayer('webReportPopupMenu');" >[<spring:message code="general.close"/>]</a></div>
+						<div style="float: right"><a href="javascript:hideLayer('webReportPopupMenu');" >[<mdrtb:message code="general.close"/>]</a></div>
 						<ul>
 			</c:if>
 							<form id="${record.reportSchemaId}" method="post" action="admin/reports/runReport.form">
 								<input type="hidden" name="reportId" value="${record.reportSchemaId}"/>
 								<input type="hidden" name="patientIds" value=""/>
-								<input type="hidden" name="cohortName" value="<spring:message code="reportingcompatibility.CohortBuilder.nameOfCohortForReport"/>"/>
+								<input type="hidden" name="cohortName" value="<mdrtb:message code="reportingcompatibility.CohortBuilder.nameOfCohortForReport"/>"/>
 								<li>
 									<a href="#" onClick="submitLink(this)">${record.name}</a> <small>${record.description}</small>
 								</li>
@@ -1266,17 +1266,17 @@
 						</ul>
 					</div>
 				</span>
-				<a href="#" onClick="toggleLayer('webReportPopupMenu')" style="border: 1px black solid"><spring:message code="reportingcompatibility.CohortBuilder.reportsPopupButton"/></a>
+				<a href="#" onClick="toggleLayer('webReportPopupMenu')" style="border: 1px black solid"><mdrtb:message code="reportingcompatibility.CohortBuilder.reportsPopupButton"/></a>
 				<c:set var="shownReportsPopupAlready" value="true"/>
 			</c:if>
 		</rpt:forEachReportObject>
 
-		<a href="#" title='<spring:message code="reportingcompatibility.CohortBuilder.saveCohort.help" />' onClick="toggleLayer('saveCohortDiv'); document.getElementById('saveCohortName').focus(); return false;">
+		<a href="#" title='<mdrtb:message code="reportingcompatibility.CohortBuilder.saveCohort.help" />' onClick="toggleLayer('saveCohortDiv'); document.getElementById('saveCohortName').focus(); return false;">
 			<img src="${pageContext.request.contextPath}/images/save.gif" style="border: 0px" />
 		</a>
 
 		<c:if test="${fn:length(model.links) > 0}">
-			<a href="#" onClick="javascript:toggleLayer('_linkMenu')" style="border: 1px black solid"><spring:message code="reportingcompatibility.Analysis.linkButton"/></a>
+			<a href="#" onClick="javascript:toggleLayer('_linkMenu')" style="border: 1px black solid"><mdrtb:message code="reportingcompatibility.Analysis.linkButton"/></a>
 		</c:if>
 
 	</div>

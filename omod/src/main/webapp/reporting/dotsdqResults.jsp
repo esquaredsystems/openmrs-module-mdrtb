@@ -12,9 +12,9 @@
 function printForm() {
 	var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-    mywindow.document.write('<html><head><title><spring:message code="mdrtb.dq.title" text="dq"/></title>');
+    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.dq.title" text="dq"/></title>');
     mywindow.document.write('</head><body >');
-   // mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+   // mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
     mywindow.document.write(document.getElementById("dq").innerHTML);
     
     mywindow.document.write('</body></html>');
@@ -146,7 +146,7 @@ function savePdf(action, reportName, formPath) {
 }
 $(document).ready(function(){
 	$("#tableToSql").bind("click", function() {
-		if(confirm('<spring:message code="mdrtb.closeReportMessage" />') ) {
+		if(confirm('<mdrtb:message code="mdrtb.closeReportMessage" />') ) {
 			savePdf("closeReport.form", "DOTSDQ", "dqResults");
 		}
 	});
@@ -261,53 +261,53 @@ $(document).ready(function(){
 
 	<table class="resultsTable">
 	   	<tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.title" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.title" /></th>
 	  	</tr>
 		<tr>
-			<th colspan="2"><spring:message code="mdrtb.oblast" /></td>
+			<th colspan="2"><mdrtb:message code="mdrtb.oblast" /></td>
 			<td colspan="2">${oName}</td>
 		</tr>
 		<tr>
-			<th colspan="2"><spring:message code="mdrtb.district" /></td>
+			<th colspan="2"><mdrtb:message code="mdrtb.district" /></td>
 			<td colspan="2">${dName}</td>
 		</tr>
 		<tr>
-			<th colspan="2"><spring:message code="mdrtb.facility" /></td>
+			<th colspan="2"><mdrtb:message code="mdrtb.facility" /></td>
 			<td colspan="2">${fName}</td>
 		</tr>
 	  	<tr>
-	     	<th colspan="2"><spring:message code="mdrtb.year" /></td>
+	     	<th colspan="2"><mdrtb:message code="mdrtb.year" /></td>
 	     	<td  colspan="2" align="right">${year}</td>
 	  	</tr>
 	  	<tr>
-	     	<th colspan="2"><spring:message code="mdrtb.quarter" /></td>
+	     	<th colspan="2"><mdrtb:message code="mdrtb.quarter" /></td>
 	     	<td align="right"  colspan="2">${quarter}</td>
 	  	</tr>
 	   	<tr>
-	     	<th colspan="2"><spring:message code="mdrtb.month" /></td>
+	     	<th colspan="2"><mdrtb:message code="mdrtb.month" /></td>
 	     	<td align="right"  colspan="2">${month}</td>
 	  	</tr>
 	  	<tr>
-	     	<th colspan="2"><spring:message code="mdrtb.dq.numberOfPatients" /></td>
+	     	<th colspan="2"><mdrtb:message code="mdrtb.dq.numberOfPatients" /></td>
 	     	<td align="right"  colspan="2">${num}</td>
 	  	</tr>
 	  	<tr>
-	     	<th colspan="2"><spring:message code="mdrtb.dq.numberWithErrors" /></td>
+	     	<th colspan="2"><mdrtb:message code="mdrtb.dq.numberWithErrors" /></td>
 	     	<td align="right"  colspan="2">${errorCount}</td>
 	  	</tr>
 	  	<tr>
-	     	<th colspan="2"><spring:message code="mdrtb.dq.errorPercentage" /></td>
+	     	<th colspan="2"><mdrtb:message code="mdrtb.dq.errorPercentage" /></td>
 	     	<td align="right"  colspan="2">${errorPercentage}</td>
 	  	</tr>
 	  	<tr><td colspan="4">&nbsp;</td></tr>
 	    <tr><td colspan="4">&nbsp;</td></tr>
 	  	<%-- <tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.missingtb03" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.missingtb03" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-	     	<td><spring:message code="mdrtb.dq.dob" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+	     	<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${missingTB03}">
 	    	<tr>
@@ -322,13 +322,13 @@ $(document).ready(function(){
 	    <tr><td colspan="4">&nbsp;</td></tr> --%>
 	    
 	    <tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.duplicateForm89" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.duplicateForm89" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td><spring:message code="mdrtb.dq.fullName" /></td>
-	     	<td><spring:message code="mdrtb.dq.dob" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.links" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.links" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${duplicateForm89}">
 	    	<tr>
@@ -338,7 +338,7 @@ $(document).ready(function(){
 	         	<td align="center">${row.gender}</td>
 	         	<td>
 	         	<c:forEach var="link" items="${row.form89Links }">
-	         	    <a href="${pageContext.request.contextPath}${link}" target="_blank"><spring:message code="mdrtb.form89" /> </a>&nbsp;
+	         	    <a href="${pageContext.request.contextPath}${link}" target="_blank"><mdrtb:message code="mdrtb.form89" /> </a>&nbsp;
 	         	</c:forEach>
 	         	</td>
 	    	</tr>  
@@ -348,13 +348,13 @@ $(document).ready(function(){
 	    <tr><td colspan="4">&nbsp;</td></tr>
 	    
 	     <tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.duplicateTB03" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.duplicateTB03" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td><spring:message code="mdrtb.dq.fullName" /></td>
-	     	<td><spring:message code="mdrtb.dq.dob" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.links" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.links" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${duplicateTB03}">
 	    	<tr>
@@ -364,7 +364,7 @@ $(document).ready(function(){
 	         	<td align="center">${row.gender}</td>
 	         	<td>
 	         	<c:forEach var="link" items="${row.tb03Links }">
-	         	    <a href="${pageContext.request.contextPath}${link}" target="_blank"><spring:message code="mdrtb.tb03" /> </a>&nbsp;
+	         	    <a href="${pageContext.request.contextPath}${link}" target="_blank"><mdrtb:message code="mdrtb.tb03" /> </a>&nbsp;
 	         	</c:forEach>
 	         	</td>
 	    	</tr>  
@@ -374,12 +374,12 @@ $(document).ready(function(){
 	    <tr><td colspan="4">&nbsp;</td></tr>
 	    
 	  	<tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.missingForm89" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.missingForm89" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-	     	<td><spring:message code="mdrtb.dq.dob" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+	     	<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${missingForm89}">
 	    	<tr>
@@ -393,12 +393,12 @@ $(document).ready(function(){
 	   	 <tr><td colspan="4">&nbsp;</td></tr>
 	    <tr><td colspan="4">&nbsp;</td></tr>
 	    <tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.invalidForm89" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.invalidForm89" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-	     	<td><spring:message code="mdrtb.dq.dob" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+	     	<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${invalidForm89}">
 	    	<tr>
@@ -413,12 +413,12 @@ $(document).ready(function(){
 	    <tr><td colspan="4">&nbsp;</td></tr>
 	    <tr><td colspan="4">&nbsp;</td></tr>
 	    <tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.missingAge" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.missingAge" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-	     	<td><spring:message code="mdrtb.dq.dob" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+	     	<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${missingAge}">
 	    	<tr>
@@ -432,12 +432,12 @@ $(document).ready(function(){
 	  	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.missingPatientGroup" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.missingPatientGroup" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-	     	<td><spring:message code="mdrtb.dq.dob" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+	     	<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${missingPatientGroup}">
 	    	<tr>
@@ -451,12 +451,12 @@ $(document).ready(function(){
 	   	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.missingDiagnosticTests" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.missingDiagnosticTests" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-	    	<td><spring:message code="mdrtb.dq.dob" /></td>
-	    	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+	     	<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	    	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	    	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${missingDiagnosticTests}">
 		   	<tr>
@@ -470,12 +470,12 @@ $(document).ready(function(){
 	  	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.notStartedTreatment" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.notStartedTreatment" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-	     	<td><spring:message code="mdrtb.dq.dob" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+	     	<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${notStartedTreatment}">
 		    <tr>
@@ -489,12 +489,12 @@ $(document).ready(function(){
 	   	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr>
-	   		<th class=normal colspan="4"><spring:message code="mdrtb.dq.missingOutcomes" /></th>
+	   		<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.missingOutcomes" /></th>
 	  	</tr>
 	  	<tr>
-	     	<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-	     	<td><spring:message code="mdrtb.dq.dob" /></td>
-	     	<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+	     	<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+	     	<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+	     	<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${missingOutcomes}">
 	    	<tr>
@@ -508,12 +508,12 @@ $(document).ready(function(){
 	   	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr><td colspan="4">&nbsp;</td></tr>
 		<tr>
-			<th class=normal colspan="4"><spring:message code="mdrtb.dq.noDOTSId" /></th>
+			<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.noDOTSId" /></th>
 		</tr>
 		<tr>
-			<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-			<td><spring:message code="mdrtb.dq.dob" /></td>
-			<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+			<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+			<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+			<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 	  	</tr>
 	  	<c:forEach var="row" items="${noDOTSId}">
 	    	<tr>
@@ -527,12 +527,12 @@ $(document).ready(function(){
 	   	<tr><td colspan="4">&nbsp;</td></tr>
 	  	<tr><td colspan="4">&nbsp;</td></tr>
 		<tr>
-			<th class=normal colspan="4"><spring:message code="mdrtb.dq.noSite" /></th>
+			<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.noSite" /></th>
 		</tr>
 		<tr>
-			<td colspan="2"><spring:message code="mdrtb.dq.fullName" /></td>
-			<td><spring:message code="mdrtb.dq.dob" /></td>
-			<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+			<td colspan="2"><mdrtb:message code="mdrtb.dq.fullName" /></td>
+			<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+			<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 		</tr>
 		<c:forEach var="row" items="${noSite}">
 			<tr>
@@ -547,13 +547,13 @@ $(document).ready(function(){
 	  	
 	  	
 		<tr>
-			<th class=normal colspan="4"><spring:message code="mdrtb.dq.noTransferIn" /></th>
+			<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.noTransferIn" /></th>
 		</tr>
 		<tr>
-			<td><spring:message code="mdrtb.dq.fullName" /></td>
-			<td><spring:message code="mdrtb.location" /></td>
-			<td><spring:message code="mdrtb.dq.dob" /></td>
-			<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+			<td><mdrtb:message code="mdrtb.dq.fullName" /></td>
+			<td><mdrtb:message code="mdrtb.location" /></td>
+			<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+			<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 		</tr>
 		<c:forEach var="row" items="${noTransferIn}">
 			<tr>
@@ -570,13 +570,13 @@ $(document).ready(function(){
 	  	
 	  	
 		<tr>
-			<th class=normal colspan="4"><spring:message code="mdrtb.dq.noTransferOut" /></th>
+			<th class=normal colspan="4"><mdrtb:message code="mdrtb.dq.noTransferOut" /></th>
 		</tr>
 		<tr>
-			<td><spring:message code="mdrtb.dq.fullName" /></td>
-			<td><spring:message code="mdrtb.location" /></td>
-			<td><spring:message code="mdrtb.dq.dob" /></td>
-			<td align="center"><spring:message code="mdrtb.dq.gender" /></td>
+			<td><mdrtb:message code="mdrtb.dq.fullName" /></td>
+			<td><mdrtb:message code="mdrtb.location" /></td>
+			<td><mdrtb:message code="mdrtb.dq.dob" /></td>
+			<td align="center"><mdrtb:message code="mdrtb.dq.gender" /></td>
 		</tr>
 		<c:forEach var="row" items="${noTransferOut}">
 			<tr>
@@ -592,13 +592,13 @@ $(document).ready(function(){
 
 <c:if test="${locale == 'tj' }"></font></c:if>
 
-<input type="button" onclick="tableToExcel('dq', 'DQ')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
-<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<spring:message code='mdrtb.exportToPdfBtn' />" /> -->
+<input type="button" onclick="tableToExcel('dq', 'DQ')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
+<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<mdrtb:message code='mdrtb.exportToPdfBtn' />" /> -->
 <openmrs:hasPrivilege privilege="Manage Report Closing">
-<input type="button" id="tableToSql" name="tableToSql" value="<spring:message code='mdrtb.closeReportBtn' />" />
+<input type="button" id="tableToSql" name="tableToSql" value="<mdrtb:message code='mdrtb.closeReportBtn' />" />
 </openmrs:hasPrivilege>
-<input type="button" id="back" name="back" value="<spring:message code='mdrtb.back' />" onclick="document.location.href='${pageContext.request.contextPath}/module/mdrtb/mdrtbIndex.form';" />
-	<input type="button" onclick="printForm()" value="<spring:message code='mdrtb.print' />" />
+<input type="button" id="back" name="back" value="<mdrtb:message code='mdrtb.back' />" onclick="document.location.href='${pageContext.request.contextPath}/module/mdrtb/mdrtbIndex.form';" />
+	<input type="button" onclick="printForm()" value="<mdrtb:message code='mdrtb.print' />" />
 <script> 
 	if("${reportStatus}" === "true") { 
 		document.getElementById("tableToSql").disabled = true; 

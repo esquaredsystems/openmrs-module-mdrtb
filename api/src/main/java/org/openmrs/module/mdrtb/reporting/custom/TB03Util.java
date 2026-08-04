@@ -41,6 +41,7 @@ import org.openmrs.module.mdrtb.specimen.custom.HAIN2Impl;
 import org.openmrs.module.mdrtb.specimen.custom.HAINImpl;
 import org.openmrs.module.mdrtb.specimen.custom.Xpert;
 import org.openmrs.module.mdrtb.specimen.custom.XpertImpl;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class TB03Util {
 	
@@ -270,7 +271,7 @@ public class TB03Util {
 	
 	public static String getRegistrationNumber(TB03Form form) {
 		if (form == null) {
-			return Context.getMessageSourceService().getMessage("mdrtb.unassigned");
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.unassigned");
 			
 		}
 		String val = "";
@@ -296,7 +297,7 @@ public class TB03Util {
 			}
 		}
 		if (val == null || val.length() == 0) {
-			val = Context.getMessageSourceService().getMessage("mdrtb.unassigned");
+			val = Context.getService(MessagePropertyService.class).getMessage("mdrtb.unassigned");
 		}
 		return val;
 	}
@@ -326,7 +327,7 @@ public class TB03Util {
 			}
 		}
 		if (val == null || val.length() == 0) {
-			val = Context.getMessageSourceService().getMessage("mdrtb.unassigned");
+			val = Context.getService(MessagePropertyService.class).getMessage("mdrtb.unassigned");
 		}
 		return val;
 	}

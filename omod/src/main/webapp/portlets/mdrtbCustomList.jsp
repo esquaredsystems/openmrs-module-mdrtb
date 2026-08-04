@@ -85,7 +85,7 @@
 				</c:if>
 			</c:forEach>
 		</select>
-		<b><spring:message code="mdrtb.optionally"/>, <spring:message code="mdrtb.sortBy"/></b><br/>
+		<b><mdrtb:message code="mdrtb.optionally"/>, <mdrtb:message code="mdrtb.sortBy"/></b><br/>
 		<select name="sort">
 			<option value=""></option>
 			<c:forEach items="${model.availableColumns}" var="entry">
@@ -95,17 +95,17 @@
 			</c:forEach>
 		</select>
 		&nbsp;&nbsp;|&nbsp;&nbsp;
-		<button><spring:message code="mdrtb.outputToList"/></button>
+		<button><mdrtb:message code="mdrtb.outputToList"/></button>
 		&nbsp;&nbsp;
-		<input type="button" value="<spring:message code="mdrtb.cancel"/>" id="cancelButton"/>
+		<input type="button" value="<mdrtb:message code="mdrtb.cancel"/>" id="cancelButton"/>
 	</div>
 </div>
 
 <div id="patientResultTable">
 	<c:if test="${!empty model.columns}">
 		<div style="padding:5px;">
-			<input type="button" id="configureButton" value="<spring:message code="mdrtb.configureColumns" text="Configure Columns"/>"/>
-			<button onclick="outputToExcel(); return false;"><spring:message code="mdrtb.exportToExcel"/></button>
+			<input type="button" id="configureButton" value="<mdrtb:message code="mdrtb.configureColumns" text="Configure Columns"/>"/>
+			<button onclick="outputToExcel(); return false;"><mdrtb:message code="mdrtb.exportToExcel"/></button>
 		</div>
 		<hr/>
 		<c:choose>
@@ -128,7 +128,7 @@
 							<tr class="patientRow patientRow${p.patientId}">
 								<td class="patientTable" style="white-space:nowrap; width:20px;">
 									<a href="dashboard/dashboard.form?patientId=${p.patientId}">
-										<img src="${pageContext.request.contextPath}/images/lookup.gif" title="<spring:message code="general.view"/>" border="0" align="top" />
+										<img src="${pageContext.request.contextPath}/images/lookup.gif" title="<mdrtb:message code="general.view"/>" border="0" align="top" />
 									</a>
 								</td>
 								<c:forEach items="${model.columns}" var="c">

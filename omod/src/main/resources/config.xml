@@ -44,20 +44,18 @@
 		<description>Allows user to access Form Entry pages/functions</description>
 	</privilege>
 
-	<!-- Internationalization -->
-	<!-- All message codes should start with @MODULE_ID@.* -->
+	<!-- Message bundles are supplied by the mdrtb-api dependency when the module is packaged. -->
 	<messages>
 		<lang>en</lang>
 		<file>messages.properties</file>
 	</messages>
 	<messages>
-		<lang>fr</lang>
-		<file>messages_fr.properties</file>
+		<lang>ru</lang>
+		<file>messages_ru.properties</file>
 	</messages>
 	<messages>
-		<lang>es</lang>
-		<file>messages_es.properties</file>
+		<lang>tj</lang>
+		<file>messages_tj.properties</file>
 	</messages>
-	<!-- /Internationalization -->
 
 </module>

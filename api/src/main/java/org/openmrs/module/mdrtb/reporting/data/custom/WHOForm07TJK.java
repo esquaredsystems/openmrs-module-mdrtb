@@ -37,6 +37,8 @@ import org.openmrs.module.reporting.report.ReportData;
 import org.openmrs.module.reporting.report.definition.ReportDefinition;
 import org.openmrs.module.reporting.report.definition.service.ReportDefinitionService;
 import org.openmrs.module.reporting.report.renderer.RenderingMode;
+import org.openmrs.module.mdrtb.api.MdrtbService;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 /**
  * WHO Form 05 Report
@@ -47,14 +49,14 @@ public class WHOForm07TJK implements ReportSpecification {
 	 * @see ReportSpecification#getName()
 	 */
 	public String getName() {
-		return Context.getMessageSourceService().getMessage("mdrtb.form07");
+		return Context.getService(MessagePropertyService.class).getMessage("mdrtb.form07");
 	}
 	
 	/**
 	 * @see ReportSpecification#getDescription()
 	 */
 	public String getDescription() {
-		return Context.getMessageSourceService().getMessage("mdrtb.form07.title");
+		return Context.getService(MessagePropertyService.class).getMessage("mdrtb.form07.title");
 	}
 	
 	/**
@@ -62,8 +64,8 @@ public class WHOForm07TJK implements ReportSpecification {
 	 */
 	public List<Parameter> getParameters() {
 		List<Parameter> l = new ArrayList<>();
-		l.add(new Parameter("location", Context.getMessageSourceService().getMessage("mdrtb.facility"), Location.class));
-		l.add(new Parameter("year", Context.getMessageSourceService().getMessage("mdrtb.yearOfTreatmentStart"),
+		l.add(new Parameter("location", Context.getService(MessagePropertyService.class).getMessage("mdrtb.facility"), Location.class));
+		l.add(new Parameter("year", Context.getService(MessagePropertyService.class).getMessage("mdrtb.yearOfTreatmentStart"),
 		        Integer.class));
 		return l;
 	}
@@ -91,7 +93,8 @@ public class WHOForm07TJK implements ReportSpecification {
 			context.addParameterValue("endDate", DateUtil.getDateTime(year, 12, 25));
 		}
 		catch (Exception e) {
-			throw new RuntimeException(Context.getMessageSourceService().getMessage("mdrtb.error.pleaseEnterAYear"));
+			throw new RuntimeException(Context.getService(MessagePropertyService.class).getMessage(
+			    "mdrtb.error.pleaseEnterAYear"));
 		}
 		return context;
 	}

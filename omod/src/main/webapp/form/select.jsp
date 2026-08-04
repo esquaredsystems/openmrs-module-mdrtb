@@ -14,18 +14,18 @@
 
 <div> <!-- start of page div -->
 
-&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><spring:message code="mdrtb.back" text="Back"/></a>
+&nbsp;&nbsp;<a href="${!empty returnUrl ? returnUrl : defaultReturnUrl}"><mdrtb:message code="mdrtb.back" text="Back"/></a>
 <br/><br/>
 
 <!-- VIEW BOX -->
-<b class="boxHeader"><spring:message code="mdrtb.forms"/></b>
+<b class="boxHeader"><mdrtb:message code="mdrtb.forms"/></b>
 <div class="box">
-<spring:message code="mdrtb.selectForm" text="Please select the form to use"/>:
+<mdrtb:message code="mdrtb.selectForm" text="Please select the form to use"/>:
 <br/>
 <table>
 <tr><td>
 <!-- <a href="${pageContext.request.contextPath}/module/mdrtb/form/${formType eq 'intake' ? 'intake' : 'followup'}.form?patientId=${patientId}&patientProgramId=${patientProgramId}&returnUrl=${returnUrl}&encounterId=-1">
-<spring:message code="mdrtb.basicForm" text="Basic Form"/>
+<mdrtb:message code="mdrtb.basicForm" text="Basic Form"/>
 </a> -->
 </td></tr>
 <c:forEach var="form" items="${forms}">

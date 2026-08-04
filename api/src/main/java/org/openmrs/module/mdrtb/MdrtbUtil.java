@@ -69,6 +69,7 @@ import org.openmrs.module.reporting.common.ObjectUtil;
 import org.openmrs.module.reporting.evaluation.EvaluationContext;
 import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.springframework.validation.Errors;
+import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class MdrtbUtil {
 	
@@ -1005,7 +1006,7 @@ public class MdrtbUtil {
 	public static void validateIdentifier(PatientIdentifier pi, Errors errors) throws PatientIdentifierException {
 		// Validate that the identifier is non-null
 		if (pi == null) {
-			errors.reject(Context.getMessageSourceService().getMessage("mdrtb.emptyId"));
+			errors.reject(Context.getService(MessagePropertyService.class).getMessage("mdrtb.emptyId"));
 		}
 		// Only validate if the PatientIdentifier is not voided
 		if (pi != null && !pi.getVoided()) {
@@ -1025,7 +1026,7 @@ public class MdrtbUtil {
 			}
 			catch (Exception e) {
 				log.error(e.getMessage());
-				errors.reject(Context.getMessageSourceService().getMessage("mdrtb.yearInIdInFuture"));
+				errors.reject(Context.getService(MessagePropertyService.class).getMessage("mdrtb.yearInIdInFuture"));
 			}
 		}
 	}
@@ -1033,7 +1034,7 @@ public class MdrtbUtil {
 	public static void validateIdentifierString(String id, Errors errors) throws PatientIdentifierException {
 		// Validate that the identifier is non-null
 		if (id == null) {
-			errors.reject(Context.getMessageSourceService().getMessage("mdrtb.emptyId"));
+			errors.reject(Context.getService(MessagePropertyService.class).getMessage("mdrtb.emptyId"));
 		}
 		
 		// Only validate if the PatientIdentifier is not voided
@@ -1049,7 +1050,7 @@ public class MdrtbUtil {
 			        + yearFromId);
 			
 			if (yearFromId > year) {
-				errors.reject(Context.getMessageSourceService().getMessage("mdrtb.yearInIdInFuture"));
+				errors.reject(Context.getService(MessagePropertyService.class).getMessage("mdrtb.yearInIdInFuture"));
 			}
 		}
 	}

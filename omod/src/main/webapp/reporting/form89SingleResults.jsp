@@ -12,9 +12,9 @@
 function printForm() {
 	var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-    mywindow.document.write('<html><head><title><spring:message code="mdrtb.form89" text="Form89"/></title>');
+    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.form89" text="Form89"/></title>');
     mywindow.document.write('</head><body >');
-   // mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+   // mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
     mywindow.document.write(document.getElementById("f89").innerHTML);
     
     mywindow.document.write('</body></html>');
@@ -153,7 +153,7 @@ function savePdf(action, reportName, formPath) {
 }
 $(document).ready(function(){
 	$("#tableToSql").bind("click", function() {
-		if(confirm('<spring:message code="mdrtb.closeReportMessage" />') ) {
+		if(confirm('<mdrtb:message code="mdrtb.closeReportMessage" />') ) {
 			savePdf("closeReport.form", "form89", "form89results");
 		}
 	});
@@ -266,84 +266,84 @@ $(document).ready(function(){
 
 	<table border="1" cellspacing="0">
 	   <tr>
-	     <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.tb03.tb03RegistrationNumber"/></span></div></th>
-	     <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.form89.form89Date"/></span></div></th>
-	     <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.name"/></th>
-	     <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.gender"/></span></div></th>
-	     <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.ageAtRegistration"/></th>
-	     <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.dateOfBirth"/></th>
-	      <th class="normal" rowspan="2"><spring:message code="mdrtb.oblast"/></th>
-	      <th class="normal" rowspan="2"><spring:message code="mdrtb.district"/></th>
-	      <th class="normal" rowspan="2"><spring:message code="mdrtb.facility"/></th>
-	     <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.address"/></th>
+	     <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.tb03RegistrationNumber"/></span></div></th>
+	     <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.form89.form89Date"/></span></div></th>
+	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.name"/></th>
+	     <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.gender"/></span></div></th>
+	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.ageAtRegistration"/></th>
+	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.dateOfBirth"/></th>
+	      <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.oblast"/></th>
+	      <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.district"/></th>
+	      <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.facility"/></th>
+	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.address"/></th>
 	     
-		 <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.pregnant"/></span></div></th>
-		 <th class="normal" rowspan="2" ><spring:message code="mdrtb.form89.locationType"/></th>
-		 <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.form89.profession"/></span></div></th>
-		 <th class="normal" rowspan="2" rowspan="2"><spring:message code="mdrtb.form89.populationCategory"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.countryOfOrigin"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.placeOfDetection"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.dateFirstSeekingHelp"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.circumstancesOfDetection"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.cityOfOrigin"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.dateOfReturn"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.methodOfDetection"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.otherMethodOfDetection"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.siteOfDisease"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.eptbSite"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.eptbLocation"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.ptbSite"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.presenceOfDecay"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.dateOfDecaySurvey"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.complication"/></th>
-		 <th class="normal" rowspan="1" colspan="4"><spring:message code="mdrtb.smear"/></th>
-		 <th class="normal" rowspan="1" colspan="4"><spring:message code="mdrtb.tb03.genexpert"/></th>
-		 <th class="normal" rowspan="1" colspan="6"><spring:message code="mdrtb.hain"/></th>
-		 <th class="normal" rowspan="1" colspan="6"><spring:message code="mdrtb.hain2"/></th>
-		 <th class="normal" rowspan="1" colspan="10"><spring:message code="mdrtb.form89.comorbidities"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.cmacDate"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.cmacNumber"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.prescribedTreatment"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.placeOfCommission"/></th>
-		 <th class="normal" rowspan="2"><spring:message code="mdrtb.form89.nameOfDoctor"/></th>
+		 <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.pregnant"/></span></div></th>
+		 <th class="normal" rowspan="2" ><mdrtb:message code="mdrtb.form89.locationType"/></th>
+		 <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.form89.profession"/></span></div></th>
+		 <th class="normal" rowspan="2" rowspan="2"><mdrtb:message code="mdrtb.form89.populationCategory"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.countryOfOrigin"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.placeOfDetection"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.dateFirstSeekingHelp"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.circumstancesOfDetection"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.cityOfOrigin"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.dateOfReturn"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.methodOfDetection"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.otherMethodOfDetection"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.siteOfDisease"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.eptbSite"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.eptbLocation"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.ptbSite"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.presenceOfDecay"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.dateOfDecaySurvey"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.complication"/></th>
+		 <th class="normal" rowspan="1" colspan="4"><mdrtb:message code="mdrtb.smear"/></th>
+		 <th class="normal" rowspan="1" colspan="4"><mdrtb:message code="mdrtb.tb03.genexpert"/></th>
+		 <th class="normal" rowspan="1" colspan="6"><mdrtb:message code="mdrtb.hain"/></th>
+		 <th class="normal" rowspan="1" colspan="6"><mdrtb:message code="mdrtb.hain2"/></th>
+		 <th class="normal" rowspan="1" colspan="10"><mdrtb:message code="mdrtb.form89.comorbidities"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.cmacDate"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.cmacNumber"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.prescribedTreatment"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.placeOfCommission"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.nameOfDoctor"/></th>
 		 <th class="normal" rowspan="2">&nbsp;</th>
 
 	  </tr>
 	   <tr>
-	   	 <th class="normal" rowspan="1"><spring:message code="mdrtb.result"/></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.date"/></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.lab"/></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.testNumber"/></th>
+	   	 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.result"/></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.date"/></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.lab"/></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.testNumber"/></th>
 		 
-	   	 <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.xpertResult"/></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.date"/></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.lab"/></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.testNumber"/></th>
+	   	 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.xpertResult"/></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.date"/></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.lab"/></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.testNumber"/></th>
 		 
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.hainCultureResult"/></th>
-		  <th rowspan="1"><spring:message code="mdrtb.tb03.hResult"/></th>
-	   	  <th rowspan="1"><spring:message code="mdrtb.tb03.rResult"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.date"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.lab"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.testNumber"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.hainCultureResult"/></th>
+		  <th rowspan="1"><mdrtb:message code="mdrtb.tb03.hResult"/></th>
+	   	  <th rowspan="1"><mdrtb:message code="mdrtb.tb03.rResult"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.date"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.lab"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.testNumber"/></th>
 		  
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.hainCultureResult"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.iResult"/></th>
-	   	  <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.fResult"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.date"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.lab"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.testNumber"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.hainCultureResult"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.iResult"/></th>
+	   	  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.fResult"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.date"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.lab"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.testNumber"/></th>
 		  
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.diabetes"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.cnsdl"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.htHeartDisease"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.ulcer"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.mentalDisorder"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.ibc20"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.cancer"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.hepatitis"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.kidneyDisease"/></th>
-		  <th class="normal" rowspan="1"><spring:message code="mdrtb.form89.otherDisease"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.diabetes"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.cnsdl"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.htHeartDisease"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.ulcer"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.mentalDisorder"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.ibc20"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.cancer"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.hepatitis"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.kidneyDisease"/></th>
+		  <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.form89.otherDisease"/></th>
 	   	 
 	   </tr>
 	  
@@ -422,7 +422,7 @@ $(document).ready(function(){
 	  <td>${row.form89.prescribedTreatment.displayString } </td>
 	  <td>${row.form89.placeOfCommission.displayString } </td>
 	  <td>${row.form89.nameOfDoctor } </td>
-	  <td><a href="${pageContext.request.contextPath}/module/mdrtb/form/form89.form?patientProgramId=${row.form89.patientProgramId}&encounterId=${row.form89.encounter.id}"><spring:message code="mdrtb.view"/></a></td>
+	  <td><a href="${pageContext.request.contextPath}/module/mdrtb/form/form89.form?patientProgramId=${row.form89.patientProgramId}&encounterId=${row.form89.encounter.id}"><mdrtb:message code="mdrtb.view"/></a></td>
 	 </tr>
 	 
 	 	
@@ -432,8 +432,8 @@ $(document).ready(function(){
 
 	<c:if test="${locale == 'tj' }"></font></c:if>
 </div>
-<input type="button" onclick="tableToExcel('tb03', 'TB03')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
+<input type="button" onclick="tableToExcel('tb03', 'TB03')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
 
-<input type="button" id="back" name="back" value="<spring:message code='mdrtb.back' />" onclick="document.location.href='${pageContext.request.contextPath}/module/mdrtb/mdrtbIndex.form';" />
-<input type="button" onclick="printForm()" value="<spring:message code='mdrtb.print' />" />
+<input type="button" id="back" name="back" value="<mdrtb:message code='mdrtb.back' />" onclick="document.location.href='${pageContext.request.contextPath}/module/mdrtb/mdrtbIndex.form';" />
+<input type="button" onclick="printForm()" value="<mdrtb:message code='mdrtb.print' />" />
 <%@ include file="../mdrtbFooter.jsp"%>

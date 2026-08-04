@@ -13,9 +13,9 @@
 function printForm() {
 	var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-    mywindow.document.write('<html><head><title><spring:message code="mdrtb.tb03u" text="TB03y"/></title>');
+    mywindow.document.write('<html><head><title><mdrtb:message code="mdrtb.tb03u" text="TB03y"/></title>');
     mywindow.document.write('</head><body >');
-   // mywindow.document.write('<h1><spring:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
+   // mywindow.document.write('<h1><mdrtb:message code="mdrtb.pv.aeForm" text="AE"/></h1>');
     mywindow.document.write(document.getElementById("tb03u").innerHTML);
     
     mywindow.document.write('</body></html>');
@@ -157,7 +157,7 @@ function savePdf(action, reportName, formPath) {
 }
 $(document).ready(function(){
 	$("#tableToSql").bind("click", function() {
-		if(confirm('<spring:message code="mdrtb.closeReportMessage" />') ) {
+		if(confirm('<mdrtb:message code="mdrtb.closeReportMessage" />') ) {
 			savePdf("closeReport.form", "TB-03u", "tb03uResults");
 		}
 	});
@@ -266,87 +266,87 @@ $(document).ready(function(){
 	</style>
 	<table class="resultsTable" >
 	   <tr>
-	     <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.registrationNumber"/></span></div></th>
-	     <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.dateOfRegistration"/></span></div></th>
-	     <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.tb03registration"/></span></div></th>
-	     <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.fullName"/></span></div></th>
-	     <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.gender"/></span></div></th>
-	     <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.ageDOB"/></span></div></th>
-	     <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.address"/></span></div></th>
-	     <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.addressRegII"/></span></div></th>
-		 <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.tbLocalization"/></span></div></th>
+	     <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.registrationNumber"/></span></div></th>
+	     <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.dateOfRegistration"/></span></div></th>
+	     <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.tb03registration"/></span></div></th>
+	     <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.fullName"/></span></div></th>
+	     <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.gender"/></span></div></th>
+	     <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.ageDOB"/></span></div></th>
+	     <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.address"/></span></div></th>
+	     <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.addressRegII"/></span></div></th>
+		 <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.tbLocalization"/></span></div></th>
 		
-		 <th class="reggroup" colspan="8" ><spring:message code="mdrtb.tb03.registrationGroup"/></th>
-		 <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.transferFrom"/></span></div></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.confirmedOrSuspect"/></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.treatmentRegimen"/></th>
-		 <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.ambulatoryHosp"/></span></div></th>
-		 <th class="normal" rowspan="1" rowspan="2"><spring:message code="mdrtb.tb03.dstSampleCollectionDate"/></th>
-		 <th class="reggroup" colspan="17" rowspan="2"><spring:message code="mdrtb.tb03.dst"/></th>
-		 <th class="normal" colspan="3"><spring:message code="mdrtb.xpert"/></th>
-	   	 <th class="normal" colspan="4" ><spring:message code="mdrtb.hain1"/></th>
-	   	 <th class="normal" colspan="4" ><spring:message code="mdrtb.hain2"/></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.hainCultureResult"/></th>
+		 <th class="reggroup" colspan="8" ><mdrtb:message code="mdrtb.tb03.registrationGroup"/></th>
+		 <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.transferFrom"/></span></div></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.confirmedOrSuspect"/></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.treatmentRegimen"/></th>
+		 <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.ambulatoryHosp"/></span></div></th>
+		 <th class="normal" rowspan="1" rowspan="2"><mdrtb:message code="mdrtb.tb03.dstSampleCollectionDate"/></th>
+		 <th class="reggroup" colspan="17" rowspan="2"><mdrtb:message code="mdrtb.tb03.dst"/></th>
+		 <th class="normal" colspan="3"><mdrtb:message code="mdrtb.xpert"/></th>
+	   	 <th class="normal" colspan="4" ><mdrtb:message code="mdrtb.hain1"/></th>
+	   	 <th class="normal" colspan="4" ><mdrtb:message code="mdrtb.hain2"/></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.hainCultureResult"/></th>
 	    
-		 <th class="reggroup" rowspan="1" colspan="4"><spring:message code="mdrtb.tb03.tbHivActivities"/></th>
-		 <th class="normal" colspan="42"><spring:message code="mdrtb.tb03.bacCultureResults"/></th>
-		  <th class="reggroup" rowspan="1" colspan="6"><spring:message code="mdrtb.tb03.treatmentOutcomeDate"/></th> 
-		 <th class="rotate" rowspan="3"><div><span><spring:message code="mdrtb.tb03.transferOut"/></span></div></th>
-		 <th class="normal" rowspan="1"><spring:message code="mdrtb.tb03.relapseYesNo"/></th>
-		 <th class="normal" rowspan="3"><spring:message code="mdrtb.tb03.notes"/></th>
+		 <th class="reggroup" rowspan="1" colspan="4"><mdrtb:message code="mdrtb.tb03.tbHivActivities"/></th>
+		 <th class="normal" colspan="42"><mdrtb:message code="mdrtb.tb03.bacCultureResults"/></th>
+		  <th class="reggroup" rowspan="1" colspan="6"><mdrtb:message code="mdrtb.tb03.treatmentOutcomeDate"/></th> 
+		 <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.transferOut"/></span></div></th>
+		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.relapseYesNo"/></th>
+		 <th class="normal" rowspan="3"><mdrtb:message code="mdrtb.tb03.notes"/></th>
 	  </tr>
 	   <tr>
 	   	 
-	   	  <th class="subrotate" rowspan="2"><div><span><spring:message code="mdrtb.tb03.new"/></span></div></th>
-	   	 <th class="subrotate" rowspan="1" colspan="2"><div><span><spring:message code="mdrtb.tb03.relapseAfter"/></span></div></th>
+	   	  <th class="subrotate" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.new"/></span></div></th>
+	   	 <th class="subrotate" rowspan="1" colspan="2"><div><span><mdrtb:message code="mdrtb.tb03.relapseAfter"/></span></div></th>
 	   	 
 	   	
-	   	 <th class="subrotate" rowspan="1" colspan="2"><div><span><spring:message code="mdrtb.tb03.defaultAfter"/></span></div></th>
-	   	<!-- <th class="subrotate" rowspan="1"><div><span><spring:message code="mdrtb.tb03.defaultAfter"/>Default After Treatment<br/>on Regimen </span></div></th> --> 
-	   	 <th class="subrotate" rowspan="1" colspan="2"><div><span><spring:message code="mdrtb.tb03.failureAfter"/></span></div></th>
-	   	 <!-- <th class="subrotate" rowspan="1"><div><span><spring:message code="mdrtb.tb03.failureAfter"/>Failure After Treatment<br/>on Regimen</span></div></th> -->
-	   	 <th class="subrotate" rowspan="2"><div><span><spring:message code="mdrtb.tb03.other"/></span></div></th>
-	     <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.dateOfConfirmation"/></th>
-	   	 <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.treatmentStartDate"/></th>
-	   	 <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.dstResultDate"/></th>
-	   	 <th class="normal" colspan="3"><spring:message code="mdrtb.tb03.xpertResult"/></th>
-	   	   <th class="normal"><spring:message code="mdrtb.date"/></th>
-	   	   <th class="normal" colspan="3"><spring:message code="mdrtb.tb03.hainCultureResult"/></th>
-	   	   <th class="normal"><spring:message code="mdrtb.date"/></th>
-	   	   <th class="normal" colspan="3"><spring:message code="mdrtb.tb03.hainCultureResult"/></th>
+	   	 <th class="subrotate" rowspan="1" colspan="2"><div><span><mdrtb:message code="mdrtb.tb03.defaultAfter"/></span></div></th>
+	   	<!-- <th class="subrotate" rowspan="1"><div><span><mdrtb:message code="mdrtb.tb03.defaultAfter"/>Default After Treatment<br/>on Regimen </span></div></th> --> 
+	   	 <th class="subrotate" rowspan="1" colspan="2"><div><span><mdrtb:message code="mdrtb.tb03.failureAfter"/></span></div></th>
+	   	 <!-- <th class="subrotate" rowspan="1"><div><span><mdrtb:message code="mdrtb.tb03.failureAfter"/>Failure After Treatment<br/>on Regimen</span></div></th> -->
+	   	 <th class="subrotate" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.other"/></span></div></th>
+	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.dateOfConfirmation"/></th>
+	   	 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.treatmentStartDate"/></th>
+	   	 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.dstResultDate"/></th>
+	   	 <th class="normal" colspan="3"><mdrtb:message code="mdrtb.tb03.xpertResult"/></th>
+	   	   <th class="normal"><mdrtb:message code="mdrtb.date"/></th>
+	   	   <th class="normal" colspan="3"><mdrtb:message code="mdrtb.tb03.hainCultureResult"/></th>
+	   	   <th class="normal"><mdrtb:message code="mdrtb.date"/></th>
+	   	   <th class="normal" colspan="3"><mdrtb:message code="mdrtb.tb03.hainCultureResult"/></th>
 	   	  
-	   	 <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.diagnosticMethod"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.hivTest"/></th>
-	   	  <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.artTest"/></th>
-	   	  <th class="normal" rowspan="2"><spring:message code="mdrtb.tb03.cpTest"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month0"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month1"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month2"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month3"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month4"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month5"/></th>
-	   	   <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month6"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month7"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month8"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month9"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month10"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month11"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month12"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month15"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month18"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month21"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month24"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month27"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month30"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month33"/></th>
-	   	  <th class="normal" rowspan="1" colspan="2"><spring:message code="mdrtb.tb03.month36"/></th>
-	   	  <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.tb03.cured"/></span></div></th>
-	   	   <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.tb03.txCompleted"/></span></div></th>
-	   	    <th class="normal" colspan="2"><spring:message code="mdrtb.tb03.died"/></th>
-	   	   <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.tb03.failure"/></span></div></th>
+	   	 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.diagnosticMethod"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.hivTest"/></th>
+	   	  <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.artTest"/></th>
+	   	  <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.cpTest"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month0"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month1"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month2"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month3"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month4"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month5"/></th>
+	   	   <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month6"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month7"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month8"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month9"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month10"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month11"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month12"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month15"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month18"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month21"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month24"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month27"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month30"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month33"/></th>
+	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month36"/></th>
+	   	  <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.cured"/></span></div></th>
+	   	   <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.txCompleted"/></span></div></th>
+	   	    <th class="normal" colspan="2"><mdrtb:message code="mdrtb.tb03.died"/></th>
+	   	   <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.failure"/></span></div></th>
 	   	
-	   	  <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.tb03.ltfu"/></span></div></th>
-	   	   <th class="normal" rowspan="2"><div><span><spring:message code="mdrtb.tb03.relapseTxMonth"/></span></div></th>
+	   	  <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.ltfu"/></span></div></th>
+	   	   <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.relapseTxMonth"/></span></div></th>
 	   	   
 	   </tr>
 	   
@@ -374,64 +374,64 @@ $(document).ready(function(){
 	   	 <th class="dst" rowspan="1"><div>Cfz</div></th>
 	   	 <th class="dst" rowspan="1"><div>Bdq</div></th>
 	   	 <th class="dst" rowspan="1"><div>Dlm</div></th>
-	   	 <th><spring:message code="mdrtb.date"/></th>
-	   		<th><spring:message code="mdrtb.tb03.testNumber"/></th>
-	   		<th><spring:message code="mdrtb.lab"/></th>
+	   	 <th><mdrtb:message code="mdrtb.date"/></th>
+	   		<th><mdrtb:message code="mdrtb.tb03.testNumber"/></th>
+	   		<th><mdrtb:message code="mdrtb.lab"/></th>
 	   		]
-	   		<th><spring:message code="mdrtb.tb03.testNumber"/></th>
-	   		<th><spring:message code="mdrtb.tb03.hResult"/></th>
-	   		<th><spring:message code="mdrtb.tb03.rResult"/></th>
-	   		<th><spring:message code="mdrtb.lab"/></th>
-	   		<th><spring:message code="mdrtb.tb03.testNumber"/></th>
-	   		<th><spring:message code="mdrtb.tb03.iResult"/></th>
-	   		<th><spring:message code="mdrtb.tb03.fResult"/></th>
-	   		<th><spring:message code="mdrtb.lab"/></th>
-	   	 <th class="normal"><spring:message code="mdrtb.tb03.yesNoDate"/></th>
-	   	 <th class="normal"><spring:message code="mdrtb.tb03.resultPosNeg"/></th>
-	   	<th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.smearShort"/></th>
-	        <th class="normal"><spring:message code="mdrtb.tb03.cultureShort"/></th>
-	        <th class="normal"><div><span><spring:message code="mdrtb.tb03.ofTb"/></span></div></th>
-	   	   <th class="normal"><div><span><spring:message code="mdrtb.tb03.ofOther"/></span></div></th>
+	   		<th><mdrtb:message code="mdrtb.tb03.testNumber"/></th>
+	   		<th><mdrtb:message code="mdrtb.tb03.hResult"/></th>
+	   		<th><mdrtb:message code="mdrtb.tb03.rResult"/></th>
+	   		<th><mdrtb:message code="mdrtb.lab"/></th>
+	   		<th><mdrtb:message code="mdrtb.tb03.testNumber"/></th>
+	   		<th><mdrtb:message code="mdrtb.tb03.iResult"/></th>
+	   		<th><mdrtb:message code="mdrtb.tb03.fResult"/></th>
+	   		<th><mdrtb:message code="mdrtb.lab"/></th>
+	   	 <th class="normal"><mdrtb:message code="mdrtb.tb03.yesNoDate"/></th>
+	   	 <th class="normal"><mdrtb:message code="mdrtb.tb03.resultPosNeg"/></th>
+	   	<th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.smearShort"/></th>
+	        <th class="normal"><mdrtb:message code="mdrtb.tb03.cultureShort"/></th>
+	        <th class="normal"><div><span><mdrtb:message code="mdrtb.tb03.ofTb"/></span></div></th>
+	   	   <th class="normal"><div><span><mdrtb:message code="mdrtb.tb03.ofOther"/></span></div></th>
 	   
 	   </tr>
 	   
@@ -606,11 +606,11 @@ $(document).ready(function(){
 	
 	</table>
 </div>
-<input type="button" onclick="tableToExcel('tb03u', 'TB03u')" value="<spring:message code='mdrtb.exportToExcelBtn' />" />
-<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<spring:message code='mdrtb.exportToPdfBtn' />" /> -->
+<input type="button" onclick="tableToExcel('tb03u', 'TB03u')" value="<mdrtb:message code='mdrtb.exportToExcelBtn' />" />
+<!-- <input type="button" id="tableToPdf" name="tableToPdf" value="<mdrtb:message code='mdrtb.exportToPdfBtn' />" /> -->
 <openmrs:hasPrivilege privilege="Manage Report Closing">
-<input type="button" id="tableToSql" name="tableToSql" value="<spring:message code='mdrtb.closeReportBtn' />" />
-<input type="button" onclick="printForm()" value="<spring:message code='mdrtb.print' />" />
+<input type="button" id="tableToSql" name="tableToSql" value="<mdrtb:message code='mdrtb.closeReportBtn' />" />
+<input type="button" onclick="printForm()" value="<mdrtb:message code='mdrtb.print' />" />
 </openmrs:hasPrivilege>
 <script> 
 	console.log("${reportStatus}");
