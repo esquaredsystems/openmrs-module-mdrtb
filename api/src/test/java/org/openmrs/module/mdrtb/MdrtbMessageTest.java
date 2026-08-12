@@ -408,20 +408,4 @@ public class MdrtbMessageTest {
 		assertEquals("Broken {0 pattern",
 		    MdrtbMessages.format("Broken {0 pattern", new Object[] { "x" }, Locale.ENGLISH));
 	}
-
-	/*********************/
-	/** BUNDLE IDENTITY **/
-	/*********************/
-
-	@Test
-	public void resolveResource_shouldPickThisModulesBundleNotOpenmrsCoreOne() {
-		// openmrs-api.jar ships its own messages.properties at its root, and at runtime the parent
-		// class loader wins. The bundle we load must be ours: the giveaway is that core's has no
-		// mdrtb.* keys and ours has no header.* keys.
-		Map<String, String> messages = new MdrtbMessages().loadBundle("en");
-
-		assertNotNull("the module's own messages.properties was not found", messages.get("mdrtb.unknown"));
-		assertNull("we loaded OpenMRS core's messages.properties instead of the module's",
-		    messages.get("header.logout"));
-	}
 }

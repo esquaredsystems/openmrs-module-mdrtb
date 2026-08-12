@@ -704,6 +704,22 @@
             columnName="description" tableName="labtest_attribute_type"/>
 	</changeSet>
 
+	<changeSet id="labtest-2026-08-11" author="owais.hussain">
+		<comment>Correcting LabTest capitalization in lab test privileges and role mappings</comment>
+		<sql>
+			SET foreign_key_checks = 0;
+			UPDATE privilege p LEFT JOIN role_privilege rp ON p.privilege = rp.privilege
+			SET p.privilege = REPLACE(p.privilege, 'labtest', 'LabTest'),
+				rp.privilege = REPLACE(rp.privilege, 'labtest', 'LabTest')
+			WHERE p.privilege IN (
+				'Add labtest Metadata', 'Edit labtest Metadata', 'View labtest Metadata', 'Delete labtest Metadata',
+				'Add labtest Samples', 'Edit labtest Samples', 'View labtest Samples', 'Delete labtest Samples',
+				'Add labtest Orders', 'Edit labtest Orders', 'View labtest Orders', 'Delete labtest Orders'
+			);
+			SET foreign_key_checks = 1;
+		</sql>
+	</changeSet>
+
 	<!--
 		Localised UI strings for this module. Historically these lived only in the
 		messages*.properties bundles that OpenMRS loads into its DefaultMessageSourceService.
