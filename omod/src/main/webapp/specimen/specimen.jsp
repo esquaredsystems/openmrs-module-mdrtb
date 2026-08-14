@@ -641,13 +641,13 @@
 
 <c:if test="${test.testType eq 'xpert'  || test.testType eq 'hain'}">
 <tr>
-<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.rifResistance" text="RIF Resistance"/>:</nobr></td><td align="left"><nobr>${test.rifResistance.displayString}</nobr></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.rifResult" text="RIF Resistance"/>:</nobr></td><td align="left"><nobr>${test.rifResistance.displayString}</nobr></td>
 <td colspan="2">&nbsp;</td>
 </tr>
 
 <c:if test="${test.testType eq 'hain'}">
 <tr>
-<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.inhResistance" text="INH Resistance"/>:</nobr></td><td align="left"><nobr>${test.inhResistance.displayString}</nobr></td>
+<td style="font-weight:bold"><nobr><mdrtb:message code="mdrtb.inhResult" text="INH Resistance"/>:</nobr></td><td align="left"><nobr>${test.inhResistance.displayString}</nobr></td>
 <td colspan="2">&nbsp;</td>
 </tr>
 </c:if>

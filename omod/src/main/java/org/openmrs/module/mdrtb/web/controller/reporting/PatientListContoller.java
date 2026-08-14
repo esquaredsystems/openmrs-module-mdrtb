@@ -123,7 +123,7 @@ public class PatientListContoller {
 	
 	static final String MDRTB_XPERT = "mdrtb.xpert";
 	
-	static final String MDRTB_HAIN_1 = "mdrtb.hain1";
+	static final String MDRTB_HAIN_1 = "mdrtb.hain";
 	
 	static final String MDRTB_HAIN_2 = "mdrtb.hain2";
 	
@@ -137,7 +137,7 @@ public class PatientListContoller {
 	
 	static final String MDRTB_HIV_STATUS = "mdrtb.hivStatus";
 	
-	static final String MDRTB_LISTS_OUTCOME = "mdrtb.lists.outcome";
+	static final String MDRTB_LISTS_OUTCOME = "mdrtb.outcome";
 	
 	static final String MDRTB_LISTS_END_OF_TREATMENT_DATE = "mdrtb.lists.endOfTreatmentDate";
 	
@@ -179,7 +179,7 @@ public class PatientListContoller {
 	
 	static final String MDRTB_TB_03_LTFU = "mdrtb.tb03.ltfu";
 	
-	static final String MDRTB_TB_03_FAILURE = "mdrtb.tb03.failure";
+	static final String MDRTB_TB_03_FAILURE = "mdrtb.forms.failure";
 	
 	static final String MDRTB_LISTS_TRANSFER_IN = "mdrtb.lists.transferIn";
 	

@@ -125,10 +125,10 @@
 <th><mdrtb:message code="mdrtb.result" text="Result"/>:</th>
 </c:if>
 <c:if test="${testType eq 'xpert' || testType eq 'hain'}" >
-<th><mdrtb:message code="mdrtb.rifResistance" text="RIF Resistance"/>:</th>
+<th><mdrtb:message code="mdrtb.rifResult" text="RIF Resistance"/>:</th>
 
 <c:if test="${testType eq 'hain'}" >
-<th><mdrtb:message code="mdrtb.inhResistance" text="INH Resistance"/>:</th>
+<th><mdrtb:message code="mdrtb.inhResult" text="INH Resistance"/>:</th>
 </c:if>
 <!-- 
 <c:if test="${testType eq 'xpert'}" >

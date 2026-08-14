@@ -20,7 +20,7 @@
 						<th class="headerStyle"><mdrtb:message code="mdrtb.frequency" text="Frequency"/></th>
 						<th class="headerStyle"><mdrtb:message code="mdrtb.startdate" text="Start Date"/></th>
 						<th class="headerStyle"><mdrtb:message code="mdrtb.scheduledStopDate" text="Scheduled Stop Date"/></th>
-						<th class="headerStyle"><mdrtb:message code="mdrtb.instructions" text="Instructions"/></th>
+						<th class="headerStyle"><mdrtb:message code="general.instructions" text="Instructions"/></th>
 						<th class="headerStyle"><mdrtb:message code="mdrtb.alerts" text="Alerts"/></th>
 					</tr>
 					<c:forEach items="${openmrs:sort(group.value.futureDrugOrders, 'startDate', true)}" var="drugOrder">

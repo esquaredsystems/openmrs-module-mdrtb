@@ -270,12 +270,12 @@ $(document).ready(function(){
 	     <th class="rotate" rowspan="4"><div><span><mdrtb:message code="mdrtb.tb03.dateOfRegistration"/></span></div></th>
 	     <th rowspan="4"><mdrtb:message code="mdrtb.tb03.fullName"/></th>
 	     <th class="rotate" rowspan="4"><div><span><mdrtb:message code="mdrtb.tb03.gender"/></span></div></th>
-	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.age"/></th>
+	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.age"/></th>
 	     <th rowspan="4"><mdrtb:message code="mdrtb.tb03.address"/></th>
 	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.mfForIP"/></th>
 		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.treatmentRegimen"/></th>
 		 <th class="rotate" rowspan="4"><div><span><mdrtb:message code="mdrtb.tb03.tbLocalization"/></span></div></th>
-		 <th class="reggroup" colspan="8" ><mdrtb:message code="mdrtb.tb03.registrationGroup"/></th>
+		 <th class="reggroup" colspan="8" ><mdrtb:message code="mdrtb.forms.patientGroup"/></th>
 		 <th class="rotate" rowspan="4"><div><span><mdrtb:message code="mdrtb.tb03.transferFrom"/></span></div></th>
 		 <th class="reggroup" colspan="3" ><mdrtb:message code="mdrtb.tb03.tbHivActivities"/></th>
 		 <th class="reggroup" colspan="17" ><mdrtb:message code="mdrtb.tb03.diagnosticMethod"/></th>
@@ -307,7 +307,7 @@ $(document).ready(function(){
 	   	 <th class="normal" colspan="3"><mdrtb:message code="mdrtb.tb03.microscopy"/></th>
 	   	 <th class="normal" colspan="3"><mdrtb:message code="mdrtb.tb03.genexpert"/></th>
 	   	 <th class="normal" colspan="4"><mdrtb:message code="mdrtb.tb03.hain"/></th>
-	   	 <th class="normal" colspan="4"><mdrtb:message code="mdrtb.tb03.hain2"/></th>
+	   	 <th class="normal" colspan="4"><mdrtb:message code="mdrtb.hain2"/></th>
 	   	 <th class="normal" colspan="3"><mdrtb:message code="mdrtb.culture"/></th>
 	   	 <th class="dst" rowspan="3"><div>R</div></th>
 	   	 <th class="dst" rowspan="3"><div>H</div></th>
@@ -329,9 +329,9 @@ $(document).ready(function(){
 	   	 <th class="normal" colspan="3"><mdrtb:message code="mdrtb.tb03.m234"/><br style="mso-data-placement:same-cell;" /><mdrtb:message code="mdrtb.tb03.month"/></th>
 	   	 <th class="normal" colspan="3"><mdrtb:message code="mdrtb.tb03.five"/> <mdrtb:message code="mdrtb.tb03.month"/></th>
 	   	 <th class="normal" colspan="3"><mdrtb:message code="mdrtb.tb03.m68"/> <mdrtb:message code="mdrtb.tb03.month"/></th>
-	   	  <th class="subrotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.cured"/></span></div></th>
-	   	   <th class="subrotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.txCompleted"/></span></div></th>
-	   	   <th class="subrotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.failure"/></span></div></th>
+	   	  <th class="subrotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.forms.cured"/></span></div></th>
+	   	   <th class="subrotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.forms.txCompleted"/></span></div></th>
+	   	   <th class="subrotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.forms.failure"/></span></div></th>
 	   	 <th class="normal" colspan="2"><mdrtb:message code="mdrtb.tb03.died"/></th>
 	   	  <th class="subrotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.ltfu"/></span></div></th>
 	   	 

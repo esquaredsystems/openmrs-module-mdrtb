@@ -50,7 +50,7 @@
 	<th><mdrtb:message code="mdrtb.pv.eventOnsetLocation" text="placez"/></th>
 	<th><mdrtb:message code="mdrtb.pv.meddraCode" text="codez"/></th>
 	<th><mdrtb:message code="mdrtb.pv.drugRechallenge" text="rcz"/></th>
-	<th><mdrtb:message code="mdrtb.pv.comments" text="Commentz"/></th>
+	<th><mdrtb:message code="mdrtb.comments" text="Commentz"/></th>
 </tr>
 
 <c:forEach var="form" items="${forms}" varStatus="loop">

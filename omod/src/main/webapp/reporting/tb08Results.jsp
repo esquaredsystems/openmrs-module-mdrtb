@@ -207,8 +207,8 @@ response.setDateHeader ("Expires", -1);
 		<tr>
 		<td>
 		<mdrtb:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
-		<mdrtb:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
-		<mdrtb:message code="mdrtb.tb08u.tbCoordinatorName"/> ____________________<mdrtb:message code="mdrtb.tb08u.signature"/> ____________<br/>
+		<mdrtb:message code="mdrtb.forms.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
+		<mdrtb:message code="mdrtb.tb08u.tbCoordinatorName"/> ____________________<mdrtb:message code="mdrtb.forms.signature"/> ____________<br/>
 		</td>
 		
 		<td>
@@ -235,10 +235,10 @@ response.setDateHeader ("Expires", -1);
 						
 					</td>
 					<td rowspan="2" style="text-align: center;">
-						<mdrtb:message code="mdrtb.tb08u.cured"/></td>
+						<mdrtb:message code="mdrtb.forms.cured"/></td>
 					<td rowspan="2">
 						<div style="text-align: center;">
-							<mdrtb:message code="mdrtb.tb08u.txCompleted"/></div>
+							<mdrtb:message code="mdrtb.forms.txCompleted"/></div>
 					</td>
 					<td colspan="2" rowspan="1">
 						<div style="text-align: center;">
@@ -246,7 +246,7 @@ response.setDateHeader ("Expires", -1);
 						
 					</td>
 					<td rowspan="2" style="text-align: center;">
-						<mdrtb:message code="mdrtb.tb08u.failure"/></td>
+						<mdrtb:message code="mdrtb.forms.failure"/></td>
 					<td rowspan="2" style="text-align: center;">
 						<mdrtb:message code="mdrtb.tb08u.ltfu"/></td>
 					
@@ -1346,7 +1346,7 @@ response.setDateHeader ("Expires", -1);
 					<td style="font: bold;">
 						3</td>
 					<td style="font: bold;">
-						<mdrtb:message code="mdrtb.tb08u.afterFailure"/></td>
+						<mdrtb:message code="mdrtb.forms.afterFailure"/></td>
 					<td>
 						&nbsp;</td>
 					<td>
@@ -1472,7 +1472,7 @@ response.setDateHeader ("Expires", -1);
 					<td>
 						&nbsp;</td>
 					<td style="font: bold;">
-						<b><mdrtb:message code="mdrtb.tb08u.total"/></b></td>
+						<b><mdrtb:message code="mdrtb.forms.total"/></b></td>
 					<td>
 						${ table1.failurePulmonaryBCDetected + table1.failurePulmonaryCDDetected + table1.failureExtrapulmonaryDetected }</td>
 					<td>
@@ -1504,7 +1504,7 @@ response.setDateHeader ("Expires", -1);
 					<td style="font: bold;">
 						4</td>
 					<td style="font: bold;">
-						<mdrtb:message code="mdrtb.tb08u.afterDefault"/>
+						<mdrtb:message code="mdrtb.forms.afterDefault"/>
 					<td>
 						&nbsp;</td>
 					<td>
@@ -1631,7 +1631,7 @@ response.setDateHeader ("Expires", -1);
 					<td>
 						&nbsp;</td>
 					<td style="font: bold;">
-						<b><mdrtb:message code="mdrtb.tb08u.total"/></b></td>
+						<b><mdrtb:message code="mdrtb.forms.total"/></b></td>
 					<td>
 						${ table1.defaultPulmonaryBCDetected + table1.defaultPulmonaryCDDetected + table1.defaultExtrapulmonaryDetected }</td>
 					<td>
@@ -1788,7 +1788,7 @@ response.setDateHeader ("Expires", -1);
 					<td>
 						&nbsp;</td>
 					<td style="font: bold;">
-						<b><mdrtb:message code="mdrtb.tb08u.total"/></b></td>
+						<b><mdrtb:message code="mdrtb.forms.total"/></b></td>
 					<td>
 						${ table1.otherPulmonaryBCDetected + table1.otherPulmonaryCDDetected + table1.otherExtrapulmonaryDetected }</td>
 					<td>

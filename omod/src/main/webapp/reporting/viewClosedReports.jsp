@@ -17,10 +17,10 @@
 		<table class="display" id="myTable" border="1">
 			<thead>
 				<tr>
-					<th><mdrtb:message code="mdrtb.viewClosedReports.oblast" /></th>
+					<th><mdrtb:message code="mdrtb.oblast" /></th>
 					<th><mdrtb:message code="mdrtb.viewClosedReports.district" /></th>
 					<th><mdrtb:message code="mdrtb.viewClosedReports.facility" /></th>
-					<th><mdrtb:message code="mdrtb.viewClosedReports.year" /></th>
+					<th><mdrtb:message code="mdrtb.year" /></th>
 					<th><mdrtb:message code="mdrtb.viewClosedReports.quarter" /></th>
 					<th><mdrtb:message code="mdrtb.viewClosedReports.month" /></th>
 					<th><mdrtb:message code="mdrtb.viewClosedReports.reportName" /></th>

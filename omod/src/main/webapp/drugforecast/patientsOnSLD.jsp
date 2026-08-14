@@ -26,7 +26,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><mdrtb:message code="mdrtb.sldreport.startDate"/>:</td>
+			<td align="right"><mdrtb:message code="mdrtb.startdate"/>:</td>
 			<td><input name="startDate" type="text" size="10" onClick="showCalendar(this)"/></td>
 		</tr>
 		<tr>

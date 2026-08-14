@@ -195,13 +195,13 @@ response.setDateHeader ("Expires", -1);
 <tr>
 <td>
 <mdrtb:message code="mdrtb.tb07u.nameOfFacility"/>: <u>${fName}</u><br/>
-<mdrtb:message code="mdrtb.tb07u.regionCityDistrict"/>: <u> ${oName}/${dName} </u><br/>
+<mdrtb:message code="mdrtb.forms.regionCityDistrict"/>: <u> ${oName}/${dName} </u><br/>
 <mdrtb:message code="mdrtb.tb07u.tbCoordinatorName"/>: ___________________ </br>
-<mdrtb:message code="mdrtb.tb07u.signature"/>: _________________
+<mdrtb:message code="mdrtb.forms.signature"/>: _________________
 </td>
 
 <td>
-<mdrtb:message code="mdrtb.pv.quarter" />,<mdrtb:message code="mdrtb.pv.year" />: <u> ${quarter}, ${year}</u></br>
+<mdrtb:message code="mdrtb.pv.quarter" />,<mdrtb:message code="mdrtb.year" />: <u> ${quarter}, ${year}</u></br>
 <mdrtb:message code="mdrtb.pv.reportDate" />:<u>&nbsp; ${reportDate}</u>
 </td>
 </tr>
@@ -271,7 +271,7 @@ response.setDateHeader ("Expires", -1);
 			    <th align="center"><mdrtb:message code="mdrtb.pv.regimenWithBdqAndDlm"/></th>
 			    <th align="center"><mdrtb:message code="mdrtb.pv.regimenWithCfzLzd"/></th>
 			    <th align="center"><mdrtb:message code="mdrtb.pv.other"/></th>
-			    <th align="center"><mdrtb:message code="mdrtb.pv.total"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.forms.total"/></th>
 			  </tr>
 			  <tr>
 			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.saes"/></td>
@@ -494,7 +494,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table2.renalFailureTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><mdrtb:message code="mdrtb.pv.total"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.forms.total"/></td>
 			   	<td align="center">${table2.totalStandard}</td>
 			   	<td align="center">${table2.totalShort}</td>
 			   	<td align="center">${table2.totalBdq}</td>
@@ -527,7 +527,7 @@ response.setDateHeader ("Expires", -1);
 			    <th align="center"><mdrtb:message code="mdrtb.pv.pto"/></th>
 			    <th align="center"><mdrtb:message code="mdrtb.pv.z"/></th>
 			    <th align="center"><mdrtb:message code="mdrtb.pv.e"/></th>
-			    <th align="center"><mdrtb:message code="mdrtb.pv.total"/></th>
+			    <th align="center"><mdrtb:message code="mdrtb.forms.total"/></th>
 			  </tr>
 			  <tr>
 			   	<td align="left"><mdrtb:message code="mdrtb.pv.report.saes"/></td>
@@ -870,7 +870,7 @@ response.setDateHeader ("Expires", -1);
 			   	<td align="center">${table3.renalFailureTotal}</td>
 			  </tr>
 			  <tr>
-			   	<td align="left"><mdrtb:message code="mdrtb.pv.total"/></td>
+			   	<td align="left"><mdrtb:message code="mdrtb.forms.total"/></td>
 			   	<td align="center">${table3.totalBdq}</td>
 			   	<td align="center">${table3.totalDlm}</td>
 			   	<td align="center">${table3.totalCfz}</td>

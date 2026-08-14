@@ -270,7 +270,7 @@ $(document).ready(function(){
 	     <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.form89.form89Date"/></span></div></th>
 	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.name"/></th>
 	     <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.gender"/></span></div></th>
-	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.ageAtRegistration"/></th>
+	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.age"/></th>
 	     <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.dateOfBirth"/></th>
 	      <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.oblast"/></th>
 	      <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.district"/></th>
@@ -291,8 +291,8 @@ $(document).ready(function(){
 		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.otherMethodOfDetection"/></th>
 		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.tb03.siteOfDisease"/></th>
 		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.eptbSite"/></th>
-		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.eptbLocation"/></th>
-		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.ptbSite"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.forms.ptbSite"/></th>
+		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.forms.ptbSite"/></th>
 		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.presenceOfDecay"/></th>
 		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.dateOfDecaySurvey"/></th>
 		 <th class="normal" rowspan="2"><mdrtb:message code="mdrtb.form89.complication"/></th>

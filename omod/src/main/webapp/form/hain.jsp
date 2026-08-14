@@ -126,7 +126,7 @@
 
 <!-- VIEW BOX -->
 <div id="viewVisit" <c:if test="${(empty hain.id) || (hain.id == -1) || fn:length(errors.allErrors) > 0}"> style="display:none" </c:if>>
-<b class="boxHeader"><mdrtb:message code="mdrtb.hain1" text="HAIN Form"/>
+<b class="boxHeader"><mdrtb:message code="mdrtb.hain" text="HAIN Form"/>
 <openmrs:hasPrivilege privilege="Edit DOTS-MDR Data">
 <span style="position: absolute; right:30px;"><a id="edit" onmouseover="document.body.style.cursor='pointer'" onmouseout="document.body.style.cursor='default'"><mdrtb:message code="mdrtb.edit" text="edit"/></a>&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/module/mdrtb/visits/delete.form?visitId=${hain.id}&patientProgramId=${patientProgramId}&patientId=${hain.patient.id }" class="delete" onclick="return confirm('<mdrtb:message code="mdrtb.confirmDeleteVisit" text="Are you sure you want to delete this visit?"/>')"><mdrtb:message code="mdrtb.delete" text="delete"/></a></span>
 </openmrs:hasPrivilege>

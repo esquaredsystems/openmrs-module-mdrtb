@@ -629,7 +629,7 @@
 </tr>
 
 <tr>
-<td><mdrtb:message code="mdrtb.pv.comments" text="comment"/>:</td>
+<td><mdrtb:message code="mdrtb.comments" text="comment"/>:</td>
 <td>${aeForm.comments}</td>
 </tr>
 
@@ -1291,7 +1291,7 @@
 
 
 <tr>
-<td><mdrtb:message code="mdrtb.pv.comments" text="comment"/>:</td>
+<td><mdrtb:message code="mdrtb.comments" text="comment"/>:</td>
 <td><textarea rows="4" cols="50" name="comments">${aeForm.comments}</textarea></td>
 </tr>
 

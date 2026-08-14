@@ -182,7 +182,7 @@
 										<th>&nbsp;</th>
 										<th class="patientTable"><mdrtb:message code="general.id"/></th>
 										<th class="patientTable"><mdrtb:message code="general.name"/></th>
-										<th class="patientTable"><mdrtb:message code="mdrtb.ageUpper"/></th>
+										<th class="patientTable"><mdrtb:message code="mdrtb.age"/></th>
 										<th class="patientTable"><mdrtb:message code="mdrtb.gender"/></th>
 									</tr>
 								</thead>

@@ -141,7 +141,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th class="headerStyle"><mdrtb:message code="mdrtb.instructions" text="Instructions"/></th>
+				<th class="headerStyle"><mdrtb:message code="general.instructions" text="Instructions"/></th>
 				<td class="cellStyle"><textarea name="instructions" rows="2" cols="30">${drugOrder.instructions}</textarea></td>
 			</tr>
 			<tr>

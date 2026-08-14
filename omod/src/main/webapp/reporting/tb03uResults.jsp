@@ -276,7 +276,7 @@ $(document).ready(function(){
 	     <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.addressRegII"/></span></div></th>
 		 <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.tbLocalization"/></span></div></th>
 		
-		 <th class="reggroup" colspan="8" ><mdrtb:message code="mdrtb.tb03.registrationGroup"/></th>
+		 <th class="reggroup" colspan="8" ><mdrtb:message code="mdrtb.forms.patientGroup"/></th>
 		 <th class="rotate" rowspan="3"><div><span><mdrtb:message code="mdrtb.tb03.transferFrom"/></span></div></th>
 		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.confirmedOrSuspect"/></th>
 		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.treatmentRegimen"/></th>
@@ -284,7 +284,7 @@ $(document).ready(function(){
 		 <th class="normal" rowspan="1" rowspan="2"><mdrtb:message code="mdrtb.tb03.dstSampleCollectionDate"/></th>
 		 <th class="reggroup" colspan="17" rowspan="2"><mdrtb:message code="mdrtb.tb03.dst"/></th>
 		 <th class="normal" colspan="3"><mdrtb:message code="mdrtb.xpert"/></th>
-	   	 <th class="normal" colspan="4" ><mdrtb:message code="mdrtb.hain1"/></th>
+	   	 <th class="normal" colspan="4" ><mdrtb:message code="mdrtb.hain"/></th>
 	   	 <th class="normal" colspan="4" ><mdrtb:message code="mdrtb.hain2"/></th>
 		 <th class="normal" rowspan="1"><mdrtb:message code="mdrtb.tb03.hainCultureResult"/></th>
 	    
@@ -340,10 +340,10 @@ $(document).ready(function(){
 	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month30"/></th>
 	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month33"/></th>
 	   	  <th class="normal" rowspan="1" colspan="2"><mdrtb:message code="mdrtb.tb03.month36"/></th>
-	   	  <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.cured"/></span></div></th>
-	   	   <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.txCompleted"/></span></div></th>
+	   	  <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.forms.cured"/></span></div></th>
+	   	   <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.forms.txCompleted"/></span></div></th>
 	   	    <th class="normal" colspan="2"><mdrtb:message code="mdrtb.tb03.died"/></th>
-	   	   <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.failure"/></span></div></th>
+	   	   <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.forms.failure"/></span></div></th>
 	   	
 	   	  <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.ltfu"/></span></div></th>
 	   	   <th class="normal" rowspan="2"><div><span><mdrtb:message code="mdrtb.tb03.relapseTxMonth"/></span></div></th>

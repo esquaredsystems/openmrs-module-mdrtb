@@ -349,7 +349,7 @@
 </tr>
 
 <tr>
-<td><mdrtb:message code="mdrtb.form89.ageAtRegistration" text="Age at Regisration"/>:</td>
+<td><mdrtb:message code="mdrtb.age" text="Age at Regisration"/>:</td>
 <td>${form89.ageAtRegistration}</td>
 </tr>
  
@@ -439,14 +439,14 @@
 
 <c:if test="${form89.isPulmonary eq true}">
 <tr>
-<td><mdrtb:message code="mdrtb.form89.ptbSite" text="P Site"/>:</td>
+<td><mdrtb:message code="mdrtb.forms.ptbSite" text="P Site"/>:</td>
 <td>${form89.ptbLocation.displayString}</td>
 </tr>
 </c:if>
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><mdrtb:message code="mdrtb.form89.eptbLocation" text="EP Location"/>:</td>
+<td><mdrtb:message code="mdrtb.forms.ptbSite" text="EP Location"/>:</td>
 <td>${form89.epLocation.displayString}</td>
 </tr>
 </c:if>
@@ -759,7 +759,7 @@
 </tr>
 
 <tr>
-<td valign="top"><mdrtb:message code="mdrtb.form89.ageAtRegistration" text="Age at Registration"/>:</td>
+<td valign="top"><mdrtb:message code="mdrtb.age" text="Age at Registration"/>:</td>
 <%-- <td><input name="ageAtRegistration" size="8" value="${form89.ageAtRegistration}"/></td> --%>
 <td>${form89.ageAtRegistration}</td>
 </tr>
@@ -901,7 +901,7 @@
 
 <c:if test="${form89.isPulmonary eq true}">
 <tr>
-<td><mdrtb:message code="mdrtb.form89.ptbSite" text="P Site"/>:</td>
+<td><mdrtb:message code="mdrtb.forms.ptbSite" text="P Site"/>:</td>
 <td><select name="ptbLocation">
 <option value=""></option>
 <c:forEach var="p" items="${psites}">
@@ -914,7 +914,7 @@
 
 <c:if test="${form89.isPulmonary eq false}">
 <tr>
-<td><mdrtb:message code="mdrtb.form89.eptbLocation" text="EP Location"/>:</td>
+<td><mdrtb:message code="mdrtb.forms.ptbSite" text="EP Location"/>:</td>
 <td><select name="epLocation">
 <option value=""></option>
 <c:forEach var="p" items="${eplocations}">

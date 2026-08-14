@@ -266,7 +266,7 @@
 </tr>
 
 <tr>
-<td><mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:</td>
+<td><mdrtb:message code="mdrtb.forms.patientGroup" text="Registration Group"/>:</td>
 <td>${tb03u.registrationGroup.displayString}</td>
 </tr>
 
@@ -621,7 +621,7 @@
 </tr>
 
 <%-- <tr>
-<td><mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:</td>
+<td><mdrtb:message code="mdrtb.forms.patientGroup" text="Registration Group"/>:</td>
 <td>
 <select name="registrationGroup">
 <option value=""></option>
@@ -645,7 +645,7 @@
 </tr> --%>
 
 <tr>
-<td><mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:</td>
+<td><mdrtb:message code="mdrtb.forms.patientGroup" text="Registration Group"/>:</td>
 <td>${tb03u.registrationGroup.displayString}</td>
 </tr>
 

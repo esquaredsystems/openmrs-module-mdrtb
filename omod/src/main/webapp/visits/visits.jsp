@@ -47,7 +47,7 @@
 
 <br/>
 
-<b class="boxHeader" style="margin:0px"><mdrtb:message code="mdrtb.followUpVisits" text="Follow Up Visits"/></b>
+<b class="boxHeader" style="margin:0px"><mdrtb:message code="mdrtb.followupForm" text="Follow Up Visits"/></b>
 <div class="box" style="margin:0px">
 <table cellpadding="0" cellspacing="0" border="0">
 <c:forEach var="encounterStatus" items="${visits.followUpVisits.value}">

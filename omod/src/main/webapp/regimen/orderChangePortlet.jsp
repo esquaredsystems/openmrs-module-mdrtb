@@ -233,7 +233,7 @@
 				<th class="headerStyle"><mdrtb:message code="mdrtb.frequency" text="Frequency"/></th>
 				<th class="headerStyle"><mdrtb:message code="mdrtb.startDate" text="Start Date"/></th>
 				<th class="headerStyle"><mdrtb:message code="mdrtb.autoExpireDate" text="Planned Stop Date"/></th>
-				<th class="headerStyle"><mdrtb:message code="mdrtb.instructions" text="Instructions"/></th>
+				<th class="headerStyle"><mdrtb:message code="general.instructions" text="Instructions"/></th>
 			</tr>
 			<tr id="${id}NewOrderMarker"><td colspan="6">&nbsp;</td></tr>
 		</table>

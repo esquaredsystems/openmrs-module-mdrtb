@@ -196,13 +196,13 @@ response.setDateHeader ("Expires", -1);
 <tr>
 <td>
 <mdrtb:message code="mdrtb.tb07u.nameOfFacility"/>: <u>${fName}</u><br/>
-<mdrtb:message code="mdrtb.tb07u.regionCityDistrict"/>: <u> ${oName}/${dName} </u><br/>
+<mdrtb:message code="mdrtb.forms.regionCityDistrict"/>: <u> ${oName}/${dName} </u><br/>
 <mdrtb:message code="mdrtb.tb07u.tbCoordinatorName"/>: ___________________ </br>
-<mdrtb:message code="mdrtb.tb07u.signature"/>: _________________
+<mdrtb:message code="mdrtb.forms.signature"/>: _________________
 </td>
 
 <td>
-<mdrtb:message code="mdrtb.pv.quarter" />,<mdrtb:message code="mdrtb.pv.year" />: <u>${quarter}, ${year}</u></br>
+<mdrtb:message code="mdrtb.pv.quarter" />,<mdrtb:message code="mdrtb.year" />: <u>${quarter}, ${year}</u></br>
 <mdrtb:message code="mdrtb.pv.reportDate" />:<u>&nbsp; ${reportDate}</u>
 </td>
 </tr>
@@ -250,7 +250,7 @@ response.setDateHeader ("Expires", -1);
 		<th rowspan="2"><mdrtb:message code="mdrtb.pv.eventOnsetLocation" text="placez"/></th>
 		<th rowspan="2"><mdrtb:message code="mdrtb.pv.meddraCode" text="codez"/></th>-->
 
-					<th rowspan="2"><mdrtb:message code="mdrtb.pv.register.comments" text="Commentz" /></th>
+					<th rowspan="2"><mdrtb:message code="mdrtb.comments" text="Commentz" /></th>
 				</tr>
 				
 				<tr>

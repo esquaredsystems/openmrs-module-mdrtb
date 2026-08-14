@@ -290,7 +290,7 @@ response.setDateHeader ("Expires", -1);
 				<td rowspan="2"><mdrtb:message code="mdrtb.form8.sex"/></td>
 				<td rowspan="2"><mdrtb:message code="mdrtb.form8.icd"/></td>
 				<td rowspan="2"><mdrtb:message code="mdrtb.form8.number"/></td>
-				<td rowspan="2"><mdrtb:message code="mdrtb.form8.total"/></td>
+				<td rowspan="2"><mdrtb:message code="mdrtb.forms.total"/></td>
 				<td colspan="10" align="center"><mdrtb:message code="mdrtb.form8.including"/></td>
 				<td rowspan="2" align="center"><mdrtb:message code="mdrtb.form8.includingRural"/></td>
 			</tr>
@@ -887,14 +887,14 @@ response.setDateHeader ("Expires", -1);
 			<td colspan="4"><mdrtb:message code="mdrtb.form8.patientsAtEndOfYear"/></td>
 		</tr>
 		<tr align="center">
-			<td rowspan="2"><mdrtb:message code="mdrtb.form8.total"/>:<br/>
+			<td rowspan="2"><mdrtb:message code="mdrtb.forms.total"/>:<br/>
 			<td colspan="3"><mdrtb:message code="mdrtb.form8.including"/>:<br/>
-			<td rowspan="2"><mdrtb:message code="mdrtb.form8.total"/></td>
-			<td rowspan="2"><mdrtb:message code="mdrtb.form8.includingPHCDiagnosed"/>:<br/>
+			<td rowspan="2"><mdrtb:message code="mdrtb.forms.total"/></td>
+			<td rowspan="2"><mdrtb:message code="mdrtb.forms.includingInPHC"/>:<br/>
 			<td colspan="3"><mdrtb:message code="mdrtb.form8.including"/>:<br/>
-			<td rowspan="2"><mdrtb:message code="mdrtb.form8.total"/>:<br/>
+			<td rowspan="2"><mdrtb:message code="mdrtb.forms.total"/>:<br/>
 			<td colspan="3"><mdrtb:message code="mdrtb.form8.including"/>:<br/>
-			<td rowspan="2"><mdrtb:message code="mdrtb.form8.total"/>:<br/>
+			<td rowspan="2"><mdrtb:message code="mdrtb.forms.total"/>:<br/>
 			<td colspan="3"><mdrtb:message code="mdrtb.form8.including"/>:<br/>
 		</tr>
 		<tr align="center">
@@ -1122,7 +1122,7 @@ response.setDateHeader ("Expires", -1);
 		<tr align="center">
 			<td width="75%"><mdrtb:message code="mdrtb.form8.item"/></td>
 			<td><mdrtb:message code="mdrtb.form8.number"/></td>
-			<td><mdrtb:message code="mdrtb.form8.total"/></td>
+			<td><mdrtb:message code="mdrtb.forms.total"/></td>
 		</tr>
 		<tr align="center">
 			<td>A</td>
@@ -1214,7 +1214,7 @@ response.setDateHeader ("Expires", -1);
 			<tr align="center">
 			 <td width="60%"><mdrtb:message code="mdrtb.form8.item"/></td>
 			 <td><mdrtb:message code="mdrtb.form8.number"/></td>
-			 <td><mdrtb:message code="mdrtb.form8.total"/></td>
+			 <td><mdrtb:message code="mdrtb.forms.total"/></td>
 			 <td>0-14 <mdrtb:message code="mdrtb.form8.years"/></td>
 			 <td>15-17 <mdrtb:message code="mdrtb.form8.years"/></td>
 			 <td>18-19 <mdrtb:message code="mdrtb.form8.years"/></td>
@@ -1360,7 +1360,7 @@ response.setDateHeader ("Expires", -1);
 		</tr>
 		<tr align="center">
 			<td rowspan="3">
-				<mdrtb:message code="mdrtb.form8.total"/>
+				<mdrtb:message code="mdrtb.forms.total"/>
 			</td>
 			<td rowspan="3">
 				<mdrtb:message code="mdrtb.form8.surveyedThisYear"/>
@@ -1378,8 +1378,8 @@ response.setDateHeader ("Expires", -1);
 		
 		</tr>
 		<tr align=center>
-			<td><mdrtb:message code="mdrtb.form8.total"/></td>
-			<td><mdrtb:message code="mdrtb.form8.includingInPHC"/></td>
+			<td><mdrtb:message code="mdrtb.forms.total"/></td>
+			<td><mdrtb:message code="mdrtb.forms.includingInPHC"/></td>
 		</tr>
 		<tr align="center">
 				
@@ -1465,10 +1465,10 @@ response.setDateHeader ("Expires", -1);
 						
 					</td>
 					<td rowspan="2" style="text-align: center;">
-						<mdrtb:message code="mdrtb.tb08u.cured"/></td>
+						<mdrtb:message code="mdrtb.forms.cured"/></td>
 					<td rowspan="2">
 						<div style="text-align: center;">
-							<mdrtb:message code="mdrtb.tb08u.txCompleted"/></div>
+							<mdrtb:message code="mdrtb.forms.txCompleted"/></div>
 					</td>
 					<td colspan="2" rowspan="1">
 						<div style="text-align: center;">
@@ -2576,7 +2576,7 @@ response.setDateHeader ("Expires", -1);
 					<td style="font: bold;">
 						3</td>
 					<td style="font: bold;">
-						<mdrtb:message code="mdrtb.tb08u.afterFailure"/></td>
+						<mdrtb:message code="mdrtb.forms.afterFailure"/></td>
 					<td>
 						&nbsp;</td>
 					<td>
@@ -2702,7 +2702,7 @@ response.setDateHeader ("Expires", -1);
 					<td>
 						&nbsp;</td>
 					<td style="font: bold;">
-						<b><mdrtb:message code="mdrtb.tb08u.total"/></b></td>
+						<b><mdrtb:message code="mdrtb.forms.total"/></b></td>
 					<td>
 						${ table6.failurePulmonaryBCDetected + table6.failurePulmonaryCDDetected + table6.failureExtrapulmonaryDetected }</td>
 					<td>
@@ -2734,7 +2734,7 @@ response.setDateHeader ("Expires", -1);
 					<td style="font: bold;">
 						4</td>
 					<td style="font: bold;">
-						<mdrtb:message code="mdrtb.tb08u.afterDefault"/>
+						<mdrtb:message code="mdrtb.forms.afterDefault"/>
 					<td>
 						&nbsp;</td>
 					<td>
@@ -2861,7 +2861,7 @@ response.setDateHeader ("Expires", -1);
 					<td>
 						&nbsp;</td>
 					<td style="font: bold;">
-						<b><mdrtb:message code="mdrtb.tb08u.total"/></b></td>
+						<b><mdrtb:message code="mdrtb.forms.total"/></b></td>
 					<td>
 						${ table6.defaultPulmonaryBCDetected + table6.defaultPulmonaryCDDetected + table6.defaultExtrapulmonaryDetected }</td>
 					<td>
@@ -3018,7 +3018,7 @@ response.setDateHeader ("Expires", -1);
 					<td>
 						&nbsp;</td>
 					<td style="font: bold;">
-						<b><mdrtb:message code="mdrtb.tb08u.total"/></b></td>
+						<b><mdrtb:message code="mdrtb.forms.total"/></b></td>
 					<td>
 						${ table6.otherPulmonaryBCDetected + table6.otherPulmonaryCDDetected + table6.otherExtrapulmonaryDetected }</td>
 					<td>

@@ -342,7 +342,7 @@
 </tr>
 
 <tr>
-<td><mdrtb:message code="mdrtb.pv.comments" text="commentz"/>:</td>
+<td><mdrtb:message code="mdrtb.comments" text="commentz"/>:</td>
 <td>${regimenForm.comments}</td>
 </tr>
 
@@ -574,7 +574,7 @@
 </tr>
 
 <tr>
-<td><mdrtb:message code="mdrtb.pv.comments" text="commentz"/>:</td>
+<td><mdrtb:message code="mdrtb.comments" text="commentz"/>:</td>
 <td><textarea rows="4" cols="50" name="comments">${regimenForm.comments}</textarea></td>
 </tr>
 

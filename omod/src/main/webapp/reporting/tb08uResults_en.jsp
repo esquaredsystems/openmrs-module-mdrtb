@@ -184,8 +184,8 @@
 			
 			<td>
 			<mdrtb:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
-			<mdrtb:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
-			<mdrtb:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<mdrtb:message code="mdrtb.tb08u.signature"/> ____________<br/>
+			<mdrtb:message code="mdrtb.forms.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
+			<mdrtb:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<mdrtb:message code="mdrtb.forms.signature"/> ____________<br/>
 			</td>
 		
 			<td>
@@ -200,18 +200,18 @@
 			
 			<table cellpadding="5" width="100%" border="1" >
 				<tr>
-					<th rowspan="2" colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registrationGroup"/></th>
+					<th rowspan="2" colspan="2" align="center"><mdrtb:message code="mdrtb.forms.patientGroup"/></th>
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registered"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.cured"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.txCompleted"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.cured"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.txCompleted"/></th>
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.successfullyTreated"/></th>
 					<th colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.died"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.failure"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.failure"/></th>
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.ltfu"/></th>
 					
 					
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.notAssessed"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.total"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.total"/></th>
 				</tr>
 				<tr>
 					<th align="center"><mdrtb:message code="mdrtb.tb08u.tb"/></th>
@@ -254,7 +254,7 @@
 					<td>${table1.newTotalShort }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.relapse"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.relapse"/></td>
 					<td align="center">I</td>
 					<td>${table1.relapse1RegisteredShort }</td>
 					
@@ -299,7 +299,7 @@
 					<td>${table1.relapse2TotalShort }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterDefault"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.afterDefault"/></td>
 					<td align="center">I</td>
 					<td>${table1.default1RegisteredShort }</td>
 					
@@ -344,7 +344,7 @@
 					<td>${table1.default2TotalShort }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterFailure"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.afterFailure"/></td>
 					<td align="center">I</td>
 					<td>${table1.failure1RegisteredShort }</td>
 					
@@ -413,7 +413,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2">mdrtb.tb08u.total</td>
+					<td colspan="2">mdrtb.forms.total</td>
 					<td>${table1.totalRegisteredShort }</td>
 					
 					<td>${table1.totalCuredShort }</td>
@@ -448,8 +448,8 @@
 			
 			<td>
 			<mdrtb:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
-			<mdrtb:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
-			<mdrtb:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<mdrtb:message code="mdrtb.tb08u.signature"/> ____________<br/>
+			<mdrtb:message code="mdrtb.forms.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
+			<mdrtb:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<mdrtb:message code="mdrtb.forms.signature"/> ____________<br/>
 			</td>
 		
 			<td>
@@ -463,18 +463,18 @@
 			
 			<table cellpadding="5" width="100%" border="1" >
 				<tr>
-					<th rowspan="2" colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registrationGroup"/></th>
+					<th rowspan="2" colspan="2" align="center"><mdrtb:message code="mdrtb.forms.patientGroup"/></th>
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registered"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.cured"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.txCompleted"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.cured"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.txCompleted"/></th>
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.successfullyTreated"/></th>
 					<th colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.died"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.failure"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.failure"/></th>
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.ltfu"/></th>
 					
 					
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.notAssessed"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.total"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.total"/></th>
 				</tr>
 				<tr>
 					<th align="center"><mdrtb:message code="mdrtb.tb08u.tb"/></th>
@@ -517,7 +517,7 @@
 					<td>${table1.newTotalIndiv }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.relapse"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.relapse"/></td>
 					<td align="center">I</td>
 					<td>${table1.relapse1RegisteredIndiv }</td>
 					
@@ -562,7 +562,7 @@
 					<td>${table1.relapse2TotalIndiv }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterDefault"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.afterDefault"/></td>
 					<td align="center">I</td>
 					<td>${table1.default1RegisteredIndiv }</td>
 					
@@ -607,7 +607,7 @@
 					<td>${table1.default2TotalIndiv }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterFailure"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.afterFailure"/></td>
 					<td align="center">I</td>
 					<td>${table1.failure1RegisteredIndiv }</td>
 					
@@ -676,7 +676,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2">mdrtb.tb08u.total</td>
+					<td colspan="2">mdrtb.forms.total</td>
 					<td>${table1.totalRegisteredIndiv }</td>
 					
 					<td>${table1.totalCuredIndiv }</td>
@@ -711,8 +711,8 @@
 			
 			<td>
 			<mdrtb:message code="mdrtb.tb08u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
-			<mdrtb:message code="mdrtb.tb08u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
-			<mdrtb:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<mdrtb:message code="mdrtb.tb08u.signature"/> ____________<br/>
+			<mdrtb:message code="mdrtb.forms.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
+			<mdrtb:message code="mdrtb.tb08u.tbCoordinator"/> ____________________<mdrtb:message code="mdrtb.forms.signature"/> ____________<br/>
 			</td>
 		
 			<td>
@@ -727,18 +727,18 @@
 			
 			<table cellpadding="5" width="100%" border="1" >
 				<tr>
-					<th rowspan="2" colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registrationGroup"/></th>
+					<th rowspan="2" colspan="2" align="center"><mdrtb:message code="mdrtb.forms.patientGroup"/></th>
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.registered"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.cured"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.txCompleted"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.cured"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.txCompleted"/></th>
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.successfullyTreated"/></th>
 					<th colspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.died"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.failure"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.failure"/></th>
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.ltfu"/></th>
 					
 					
 					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.notAssessed"/></th>
-					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.total"/></th>
+					<th rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.total"/></th>
 				</tr>
 				<tr>
 					<th align="center"><mdrtb:message code="mdrtb.tb08u.tb"/></th>
@@ -781,7 +781,7 @@
 					<td>${table1.newTotalStandard }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.relapse"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.relapse"/></td>
 					<td align="center">I</td>
 					<td>${table1.relapse1RegisteredStandard }</td>
 					
@@ -826,7 +826,7 @@
 					<td>${table1.relapse2TotalStandard }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterDefault"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.afterDefault"/></td>
 					<td align="center">I</td>
 					<td>${table1.default1RegisteredStandard }</td>
 					
@@ -871,7 +871,7 @@
 					<td>${table1.default2TotalStandard }</td>
 				</tr>
 				<tr>
-					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.tb08u.afterFailure"/></td>
+					<td rowspan="2" align="center"><mdrtb:message code="mdrtb.forms.afterFailure"/></td>
 					<td align="center">I</td>
 					<td>${table1.failure1RegisteredStandard }</td>
 					
@@ -940,7 +940,7 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2">mdrtb.tb08u.total</td>
+					<td colspan="2">mdrtb.forms.total</td>
 					<td>${table1.totalRegisteredStandard }</td>
 					
 					<td>${table1.totalCuredStandard }</td>

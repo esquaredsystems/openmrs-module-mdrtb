@@ -189,7 +189,7 @@ function fun2()
 <table>
 
 <tr><td colspan="2">
-<mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group"/>:<br/>
+<mdrtb:message code="mdrtb.forms.patientGroup" text="Registration Group"/>:<br/>
 <select name="classificationAccordingToPatientGroups" id="classificationAccordingToPatientGroups">
 <option value=""/>
 <c:forEach var="classificationAccordingToPatientGroups" items="${classificationsAccordingToPatientGroups}">
@@ -286,7 +286,7 @@ function fun2()
 </td></tr>
 
 <tr><td colspan="2">
-<mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group - Previous Treatment"/>:<br/>
+<mdrtb:message code="mdrtb.forms.patientGroup" text="Registration Group - Previous Treatment"/>:<br/>
 <select name="classificationAccordingToPreviousTreatment" id="classificationAccordingToPreviousTreatment">
 <option value=""/>
 <c:forEach var="classificationAccordingToPreviousTreatment" items="${classificationsAccordingToPreviousTreatment}">

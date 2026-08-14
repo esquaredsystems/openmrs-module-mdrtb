@@ -192,9 +192,9 @@ response.setDateHeader ("Expires", -1);
 <tr>
 <td>
 <mdrtb:message code="mdrtb.tb07u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u></br>
-<mdrtb:message code="mdrtb.tb07u.regionCityDistrict"/> <u> ${oName}/${dName} </u></br>
+<mdrtb:message code="mdrtb.forms.regionCityDistrict"/> <u> ${oName}/${dName} </u></br>
 <mdrtb:message code="mdrtb.tb07u.tbCoordinatorName"/> ___________________ </br>
-<mdrtb:message code="mdrtb.tb07u.signature"/>_________________
+<mdrtb:message code="mdrtb.forms.signature"/>_________________
 </td>
 
 <td>
@@ -224,7 +224,7 @@ response.setDateHeader ("Expires", -1);
 					<td colspan="2" rowspan="1" style="text-align: center;">45-54</td>
 					<td colspan="2" rowspan="1" style="text-align: center;">55-64</td>
 					<td colspan="2" rowspan="1" style="text-align: center;">&gt;65</td>
-					<td colspan="3" rowspan="1" style="text-align: center;"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+					<td colspan="3" rowspan="1" style="text-align: center;"><mdrtb:message code="mdrtb.forms.total"/></td>
 				</tr>
 				<tr>
 
@@ -252,7 +252,7 @@ response.setDateHeader ("Expires", -1);
 					<td style="text-align: center;"><mdrtb:message code="mdrtb.tb03.gender.female"/></td>
 					<td style="text-align: center;"><mdrtb:message code="mdrtb.tb03.gender.male"/></td>
 					<td style="text-align: center;"><mdrtb:message code="mdrtb.tb03.gender.female"/></td>
-					<td style="text-align: center;"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+					<td style="text-align: center;"><mdrtb:message code="mdrtb.forms.total"/></td>
 					
 				</tr>
 				<tr>
@@ -514,7 +514,7 @@ response.setDateHeader ("Expires", -1);
 					<td>${table1.newExtrapulmonaryHIV}</td>  
 				</tr>
 				<tr>
-					<td colspan="2" align="left"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+					<td colspan="2" align="left"><mdrtb:message code="mdrtb.forms.total"/></td>
 
 					<td>${table1.newMale04}</td>
 					<td>${table1.newFemale04}</td>
@@ -629,7 +629,7 @@ response.setDateHeader ("Expires", -1);
 				</tr>
 				<tr>
 					<td rowspan="6">
-						<mdrtb:message code="mdrtb.tb07u.relapse" />
+						<mdrtb:message code="mdrtb.forms.relapse" />
 					</td>
 						<td><mdrtb:message code="mdrtb.tb07u.pulmonaryBC" /></td>
 					<td>${table1.relapseMalePulmonaryBC04}</td>
@@ -888,7 +888,7 @@ response.setDateHeader ("Expires", -1);
 					                   
 				</tr>
 				<tr>
-					<td colspan="2" align="left"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+					<td colspan="2" align="left"><mdrtb:message code="mdrtb.forms.total"/></td>
 					<td>${table1.relapseMale04}</td>
 					<td>${table1.relapseFemale04}</td>
 					
@@ -1162,7 +1162,7 @@ response.setDateHeader ("Expires", -1);
 					<td>${table1.newExtrapulmonaryHIV + table1.relapseExtrapulmonaryHIV }
 				</tr>
 				<tr>
-					<td colspan="2" align="left"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+					<td colspan="2" align="left"><mdrtb:message code="mdrtb.forms.total"/></td>
 
 					<td>${table1.newMale04 + table1.relapseMale04 }</td>
 					<td>${table1.newFemale04 + table1.relapseFemale04 }</td>
@@ -1228,12 +1228,12 @@ response.setDateHeader ("Expires", -1);
 <tbody>
 <tr>
 <td>&nbsp;</td>
-<td style="text-align: center;" colspan="3"><mdrtb:message code="mdrtb.tb07u.afterFailure"/></td>
-<td style="text-align: center;" colspan="3"><mdrtb:message code="mdrtb.tb07u.afterDefault"/></td>
+<td style="text-align: center;" colspan="3"><mdrtb:message code="mdrtb.forms.afterFailure"/></td>
+<td style="text-align: center;" colspan="3"><mdrtb:message code="mdrtb.forms.afterDefault"/></td>
 <td style="text-align: center;" colspan="3"><mdrtb:message code="mdrtb.tb07u.others"/></td>
-<td style="text-align: center;" colspan="3"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+<td style="text-align: center;" colspan="3"><mdrtb:message code="mdrtb.forms.total"/></td>
 <td colspan="3">
-<p style="text-align: center;"><mdrtb:message code="mdrtb.tb07u.total"/></p>
+<p style="text-align: center;"><mdrtb:message code="mdrtb.forms.total"/></p>
 <p style="text-align: center;">(<mdrtb:message code="mdrtb.tb07u.t1t2"/>)</p>
 </td>
 </tr>
@@ -1241,19 +1241,19 @@ response.setDateHeader ("Expires", -1);
 <td>&nbsp;</td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.male"/></td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.female"/></td>
-<td align="center"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+<td align="center"><mdrtb:message code="mdrtb.forms.total"/></td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.male"/></td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.female"/></td>
-<td align="center"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+<td align="center"><mdrtb:message code="mdrtb.forms.total"/></td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.male"/></td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.female"/></td>
-<td align="center"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+<td align="center"><mdrtb:message code="mdrtb.forms.total"/></td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.male"/></td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.female"/></td>
-<td align="center"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+<td align="center"><mdrtb:message code="mdrtb.forms.total"/></td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.male"/></td>
 <td align="center"><mdrtb:message code="mdrtb.tb03.gender.female"/></td>
-<td align="center"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+<td align="center"><mdrtb:message code="mdrtb.forms.total"/></td>
 </tr>
 <tr>
 <td>
@@ -1366,7 +1366,7 @@ response.setDateHeader ("Expires", -1);
 <td>${table1.totalFemaleExtrapulmonaryHIV}</td>
 <td>${table1.totalExtrapulmonaryHIV}</td>
 <tr>
-<td style="margin-left: 30px; text-align: center;"><strong><mdrtb:message code="mdrtb.tb07u.total"/></strong></td>
+<td style="margin-left: 30px; text-align: center;"><strong><mdrtb:message code="mdrtb.forms.total"/></strong></td>
 <td>${table1.failureMale}</td>
 <td>${table1.failureFemale}</td>
 <td>${table1.failureAll}</td>

@@ -199,7 +199,7 @@
 <br/>
 
 <table cellpadding="0" cellspacing="0">
-<tr><td style="font-weight:bold"><mdrtb:message code="mdrtb.tb03.patientGroup" text="Registration Group - Previous Tx"/>:</td>
+<tr><td style="font-weight:bold"><mdrtb:message code="mdrtb.forms.patientGroup" text="Registration Group - Previous Tx"/>:</td>
 <td>
 <c:choose>
 	<c:when test="${! empty program.classificationAccordingToPatientGroups.concept.displayString}">

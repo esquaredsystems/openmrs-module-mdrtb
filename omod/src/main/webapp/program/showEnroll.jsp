@@ -69,7 +69,7 @@
 
 <tr><td colspan="2">
 <!-- Replaced with tb03 for Tajikistan <mdrtb:message code="mdrtb.previousTreatmentClassification" text="Registration Group - Previous Treatment"/>:<br/> -->
-<mdrtb:message code="mdrtb.tb03.registrationGroup" text="Registration Group - Previous Treatment"/>:<br/>
+<mdrtb:message code="mdrtb.forms.patientGroup" text="Registration Group - Previous Treatment"/>:<br/>
 <select name="classificationAccordingToPreviousTreatment">
 <option value=""/>
 <c:forEach var="classificationAccordingToPreviousTreatment" items="${classificationsAccordingToPreviousTreatment}">

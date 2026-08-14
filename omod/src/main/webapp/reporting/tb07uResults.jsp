@@ -160,8 +160,8 @@
 			
 			<td>
 			<mdrtb:message code="mdrtb.tb07u.nameOfFacility"/> <u>&nbsp; ${fName} &nbsp;</u> <br/>
-			<mdrtb:message code="mdrtb.tb07u.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
-			<mdrtb:message code="mdrtb.tb07u.tbCoordinatorName"/> ____________________<mdrtb:message code="mdrtb.tb07u.signature"/> ____________<br/>
+			<mdrtb:message code="mdrtb.forms.regionCityDistrict"/>  <u> ${oName}/${dName} </u><br/>
+			<mdrtb:message code="mdrtb.tb07u.tbCoordinatorName"/> ____________________<mdrtb:message code="mdrtb.forms.signature"/> ____________<br/>
 			</td>
 		
 			<td>
@@ -218,9 +218,9 @@
 			<table border="1" cellpadding="5" width="100%">
 				<tr align="center">
 				 	<td colspan="2" rowspan="4">&nbsp;</td>
-					<td colspan="7"><mdrtb:message code="mdrtb.tb07u.registrationGroup"/></td>
+					<td colspan="7"><mdrtb:message code="mdrtb.forms.patientGroup"/></td>
 					<td rowspan="4"><mdrtb:message code="mdrtb.tb07u.other"/></td>
-					<td rowspan="4"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+					<td rowspan="4"><mdrtb:message code="mdrtb.forms.total"/></td>
 				</tr>
 				<tr align="center">
 					<td rowspan="3"><mdrtb:message code="mdrtb.tb07u.newCases"/></td>
@@ -228,9 +228,9 @@
 					
 				</tr>
 				<tr align="center">
-					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.relapse"/></td>
-					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.afterDefault"/></td>
-					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.afterFailure"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.forms.relapse"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.forms.afterDefault"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.forms.afterFailure"/></td>
 				
 				</tr>
 				<tr align="center">
@@ -487,7 +487,7 @@
 					<td>${table1.totalXdrHiv }</td>
 				</tr>
 				<tr>
-				    <td colspan="2"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+				    <td colspan="2"><mdrtb:message code="mdrtb.forms.total"/></td>
 				    <td>${ table1.newTotal }</td>
 					 <td>${table1.relapse1Total }</td>
 					 <td>${table1.relapse2Total }</td>
@@ -561,18 +561,18 @@
 			<table border="1" cellpadding="5" width="100%">
 				<tr align="center">
 				 	<td colspan="2" rowspan="4">&nbsp;</td>
-					<td colspan="7"><mdrtb:message code="mdrtb.tb07u.registrationGroup"/></td>
+					<td colspan="7"><mdrtb:message code="mdrtb.forms.patientGroup"/></td>
 					<td rowspan="4"><mdrtb:message code="mdrtb.tb07u.other"/></td>
-					<td rowspan="4"><mdrtb:message code="mdrtb.tb07u.total"/></td>
+					<td rowspan="4"><mdrtb:message code="mdrtb.forms.total"/></td>
 				</tr>
 				<tr align="center">
 					<td rowspan="3"><mdrtb:message code="mdrtb.tb07u.newCases"/></td>
 					<td colspan="6"><mdrtb:message code="mdrtb.tb07u.retreatmentCases"/></td>
 				</tr>
 				<tr align="center">
-					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.relapse"/></td>
-					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.afterDefault"/></td>
-					<td colspan="2"><mdrtb:message code="mdrtb.tb07u.afterFailure"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.forms.relapse"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.forms.afterDefault"/></td>
+					<td colspan="2"><mdrtb:message code="mdrtb.forms.afterFailure"/></td>
 				</tr>
 				<tr align="center">
 					<td>I</td> <!-- relapse -->

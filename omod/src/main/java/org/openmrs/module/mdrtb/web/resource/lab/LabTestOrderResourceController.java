@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.TestOrder;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.module.mdrtb.lab.LabTest;
