@@ -755,4 +755,23 @@
 			tableName="message_properties" columnNames="lang, code" />
 	</changeSet>
 
+	<!--
+		Lab test orders in this deployment are persisted as plain org.openmrs.Order, never as
+		org.openmrs.TestOrder: commonlab_migrations.sql and the ETL job both insert lab orders into
+		`orders` with order_type_id = 3 and never write a matching `test_order` row.
+		As long as the Test Order type carries the core default 'org.openmrs.TestOrder', every lab
+		test order fails with "The java type of an order must match that set on associated order
+		type". Aligning the order type with the class this module actually creates fixes it.
+		Consequence: the `test_order` table stays empty
+	-->
+	<changeSet id="mdrtb-2026-08-13-test-order-java-class" author="owais.hussain">
+		<comment>
+			Align order_type.java_class_name for 'Test Order' with org.openmrs.Order, the class this
+			module persists lab test orders as.
+		</comment>
+		<sql>
+			UPDATE order_type SET java_class_name = 'org.openmrs.Order' WHERE name = 'Test Order';
+		</sql>
+	</changeSet>
+
 </databaseChangeLog>

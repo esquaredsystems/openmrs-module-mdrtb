@@ -29,7 +29,6 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Concept;
-import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
@@ -641,10 +640,10 @@ public class LabDao {
 	 * @return saved {@link org.openmrs.Order} object
 	 */
 	public org.openmrs.Order saveLabTestOrder(org.openmrs.Order order) {
-		OrderType expectedOrderType = order.getOrderType();
-		// Set the right order type
-		expectedOrderType.setJavaClassName(order.getClass().getName());
-		order.setOrderType(expectedOrderType);
+		// NOTE: do not call order.getOrderType().setJavaClassName(...) here. That object is a managed
+		// Hibernate entity, so writing to it rewrites the shared order_type row for the whole system.
+		// The Test Order type is aligned with org.openmrs.Order by the
+		// mdrtb-2026-08-13-test-order-java-class changeset in liquibase.xml instead.
 		boolean createNew = order.getId() == null;
 		if (!createNew) {
 			// See if the given ID actually exists or not
