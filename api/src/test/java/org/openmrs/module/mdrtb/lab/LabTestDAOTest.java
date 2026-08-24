@@ -310,7 +310,7 @@ public class LabTestDAOTest extends LabTestBase {
 		// Create CXR order for Hermione
 		Order testOrder = new TestOrder();
 		testOrder.setOrderId(Integer.MAX_VALUE);
-		testOrder.setOrderType(Context.getOrderService().getOrderType(3));
+		testOrder.setOrderType(Context.getOrderService().getOrderType(2));
 		testOrder.setConcept(Context.getConceptService().getConcept(600));
 		testOrder.setOrderer(Context.getProviderService().getProvider(300));
 		Encounter encounter = Context.getEncounterService().getEncounter(1000);
@@ -332,7 +332,7 @@ public class LabTestDAOTest extends LabTestBase {
 		// Create CXR order for Hermione
 		Order testOrder = new TestOrder();
 		testOrder.setOrderId(Integer.MAX_VALUE);
-		testOrder.setOrderType(Context.getOrderService().getOrderType(3));
+		testOrder.setOrderType(Context.getOrderService().getOrderType(2));
 		testOrder.setConcept(Context.getConceptService().getConcept(600));
 		testOrder.setOrderer(Context.getProviderService().getProvider(300));
 		Encounter encounter = Context.getEncounterService().getEncounter(1000);

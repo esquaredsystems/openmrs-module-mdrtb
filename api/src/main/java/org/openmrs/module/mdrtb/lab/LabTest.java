@@ -31,6 +31,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.openmrs.Attributable;
 import org.openmrs.BaseCustomizableData;
 import org.openmrs.Order;
+import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.LabTestService;
 
@@ -72,6 +73,12 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	private String resultComments;
 	
 	private transient Set<LabTestSample> labTestSamples = new HashSet<LabTestSample>(0);
+	
+	/**
+	 * Transient convenience property so REST clients can set/read the patient directly on a LabTest
+	 * without constructing an {@link Order}. Not persisted.
+	 */
+	private transient Patient patient;
 	
 	/**
 	 * Default constructor
@@ -250,6 +257,14 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	
 	public void setOrder(Order order) {
 		this.order = order;
+	}
+	
+	public Patient getPatient() {
+		return patient;
+	}
+	
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 	
 	public LabTestType getLabTestType() {

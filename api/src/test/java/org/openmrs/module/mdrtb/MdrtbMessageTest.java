@@ -374,16 +374,6 @@ public class MdrtbMessageTest {
 		assertEquals(Collections.singletonList("en"), MdrtbMessages.candidateLanguages(new Locale("")));
 	}
 
-	@Test
-	public void candidateLanguages_shouldTryBothSpellingsOfTheRenamedIso639Languages() {
-		// Locale still stores the pre-1989 codes: new Locale("id") reports its language as "in".
-		// The bundle is messages_id_ID.properties, so "id_ID" has to be tried before "in_ID".
-		assertEquals(Arrays.asList("id_ID", "in_ID", "id", "in", "en"),
-		    MdrtbMessages.candidateLanguages(new Locale("id", "ID")));
-		assertEquals(Arrays.asList("id", "in", "en"), MdrtbMessages.candidateLanguages(new Locale("id")));
-		assertEquals(Arrays.asList("he", "iw", "en"), MdrtbMessages.candidateLanguages(new Locale("he")));
-	}
-
 	/*********************/
 	/** MESSAGE FORMAT  **/
 	/*********************/

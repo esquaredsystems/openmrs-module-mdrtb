@@ -298,6 +298,8 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	@Transactional(readOnly = true)
 	public List<LabTest> getLabTests(Patient patient, boolean includeVoided) throws APIException {
+		if (patient == null)
+			return null;
 		return getLabTests(null, patient, null, null, null, null, null, null, includeVoided);
 	}
 	

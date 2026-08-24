@@ -265,8 +265,8 @@ public class DashboardLabResultsStatusRenderer implements LabResultsStatusRender
 				        + status.getPatientTbProgram().getId());
 			}
 			
-			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.hainFormatter",
-			    params, "{0} on {1}, tested at {2}"));
+			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.hainFormatter", params,
+			    "{0} on {1}, tested at {2}"));
 		} else {
 			item.setDisplayString(Context.getService(MessagePropertyService.class).getMessage("mdrtb.none"));
 			item.setLink(null);

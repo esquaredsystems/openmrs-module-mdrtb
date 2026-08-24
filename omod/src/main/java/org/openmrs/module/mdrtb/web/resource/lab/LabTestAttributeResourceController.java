@@ -42,18 +42,14 @@ public class LabTestAttributeResourceController extends DataDelegatingCrudResour
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("uuid");
+		description.addProperty("display");
+		description.addProperty("attributeType");
+		description.addProperty("valueReference");
 		description.addSelfLink();
 		description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
-		description.addProperty("display");
-		if (representation instanceof DefaultRepresentation || representation instanceof RefRepresentation) {
+		if (representation instanceof FullRepresentation) {
 			description.addProperty("labTest", Representation.REF);
-			description.addProperty("attributeType", Representation.REF);
-			description.addProperty("valueReference");
-			return description;
-		} else if (representation instanceof FullRepresentation) {
-			description.addProperty("labTest");
-			description.addProperty("attributeType");
-			description.addProperty("valueReference");
+			description.addProperty("attributeType", Representation.FULL);
 			description.addProperty("auditInfo");
 			return description;
 		}
