@@ -24,7 +24,6 @@ import org.openmrs.Cohort;
 import org.openmrs.CohortMembership;
 import org.openmrs.Concept;
 import org.openmrs.ConceptName;
-import org.openmrs.ConceptNameTag;
 import org.openmrs.Drug;
 import org.openmrs.DrugOrder;
 import org.openmrs.Encounter;
@@ -58,8 +57,6 @@ import org.openmrs.module.mdrtb.regimen.RegimenUtils;
 import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.reporting.data.Cohorts;
 import org.openmrs.module.mdrtb.reporting.definition.custom.AgeAtMDRRegistrationCohortDefinition;
-import org.openmrs.module.mdrtb.specimen.Specimen;
-import org.openmrs.module.mdrtb.specimen.Test;
 import org.openmrs.module.reporting.cohort.definition.CohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.InStateCohortDefinition;
 import org.openmrs.module.reporting.cohort.definition.ProgramEnrollmentCohortDefinition;
@@ -71,101 +68,17 @@ import org.openmrs.module.reporting.evaluation.EvaluationException;
 import org.springframework.validation.Errors;
 import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
-public class MdrtbUtil {
-	
-	private MdrtbUtil() {
-	}
+public class MdrtbUtil extends TbUtil {
 	
 	protected static final Log log = LogFactory.getLog(MdrtbUtil.class);
 	
-	public static String getMdrtbPatientIdentifier(Patient p) {
-		String ret = "";
-		String piList = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
-		Set<PatientIdentifier> identifiers = p.getIdentifiers();
-		for (PatientIdentifier pi : identifiers) {
-			if (pi.getIdentifierType().getName().equals(piList)) {
-				return pi.getIdentifier();
-			}
-		}
-		if (!identifiers.isEmpty()) {
-			for (PatientIdentifier pi : identifiers) {
-				return pi.getIdentifier();
-			}
-		}
-		return ret;
-	}
-	
-	public static Obs getMostRecentObs(Integer conceptId, Patient p) {
-		Concept c = Context.getConceptService().getConcept(conceptId);
-		List<Obs> oList = Context.getObsService().getObservationsByPersonAndConcept(p, c);
-		if (!oList.isEmpty())
-			return oList.get(oList.size() - 1);
-		return null;
-	}
-	
-	/**
-	 * Iterates through all the obs in the test obs group and returns the first one that the concept
-	 * matches the specified concept
-	 * 
-	 * @param group Returns null if obs not found
-	 */
-	public static Obs getObsFromObsGroup(Concept concept, Obs group) {
-		if (group.getGroupMembers() != null) {
-			for (Obs obs : group.getGroupMembers()) {
-				// need to check for voided obs here because getGroupMembers returns voided obs
-				if (Boolean.TRUE.equals(!obs.getVoided()) && obs.getConcept().equals(concept)) {
-					return obs;
-				}
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Iterates through all the top-level obs in the encounter and returns the first one that who
-	 * concept matches the specified concept Returns null if obs not found
-	 */
-	public static Obs getObsFromEncounter(Concept concept, Encounter encounter) {
-		Set<Obs> obsSet = encounter.getObsAtTopLevel(false);
-		if (obsSet == null) {
-			return null;
-		}
-		for (Obs obs : obsSet) {
-			if (Boolean.TRUE.equals(obs.getVoided())) {
-				continue;
-			}
-			if (obs.getConcept().getUuid().equals(concept.getUuid())) {
-				if (obs.getValueCoded() != null && obs.getId() != null) {
-					try {
-						return Context.getObsService().getObs(obs.getId());
-					}
-					catch (Exception e) {
-						return Context.getObsService().getObsByUuid(obs.getUuid());
-					}
-				}
-				return obs;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * Gets the antiretroviral regimens for a current patient
-	 */
-	public static List<Regimen> getAntiretroviralRegimens(Patient patient) {
-		
-		if (patient == null) {
-			return null;
-		}
-		
-		return RegimenUtils.getHivRegimenHistory(patient).getAllRegimens();
+	private MdrtbUtil() {
 	}
 	
 	/**
 	 * Returns a set of all encounter types associated with the MDR-TB Program
 	 */
 	public static Set<EncounterType> getMdrtbEncounterTypes() {
-		
 		Set<EncounterType> types = new HashSet<>();
 		types.add(MdrtbConstants.ET_TB03U_MDRTB_INTAKE);
 		types.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
@@ -278,7 +191,7 @@ public class MdrtbUtil {
 	 */
 	// returns by getMdrtbDrugs(); all non-MDR-TB drug are ignored
 	public static List<Concept> sortMdrtbDrugs(List<Concept> drugs) {
-		return MdrtbUtil.sortDrugs(drugs, Context.getService(MdrtbService.class).getMdrtbDrugs());
+		return sortDrugs(drugs, Context.getService(MdrtbService.class).getMdrtbDrugs());
 	}
 	
 	/**
@@ -286,7 +199,7 @@ public class MdrtbUtil {
 	 * non-antiretrovirals are ignored)
 	 */
 	public static List<Concept> sortAntiretrovirals(List<Concept> drugs) {
-		return MdrtbUtil.sortDrugs(drugs, Context.getService(MdrtbService.class).getAntiretrovirals());
+		return sortDrugs(drugs, Context.getService(MdrtbService.class).getAntiretrovirals());
 	}
 	
 	/**
@@ -328,33 +241,6 @@ public class MdrtbUtil {
 			    e);
 		}
 		
-		return null;
-	}
-	
-	/**
-	 * Given a concept, locale, and a string that represents a concept name tag, returns the first
-	 * concept name for that concept that matches the language and is tagged with the specified tag
-	 * 
-	 * @deprecated use getConcept.getName() instead
-	 */
-	@Deprecated
-	public static ConceptName getConceptName(Concept concept, String language, String conceptNameTag) {
-		if (concept == null) {
-			log.error("No concept provided to findConceptName");
-			return null;
-		}
-		ConceptNameTag tag = Context.getConceptService().getConceptNameTagByName(conceptNameTag);
-		if (tag == null) {
-			log.warn("Invalid concept name tag parameter " + conceptNameTag + " passed to findConceptName");
-		}
-		
-		for (ConceptName name : concept.getNames()) {
-			if ((language == null || name.getLocale() == null || name.getLocale().getLanguage() == null || name.getLocale()
-			        .getLanguage().equals(language))
-			        && ((tag == null) || (name.getTags().contains(tag)))) {
-				return name;
-			}
-		}
 		return null;
 	}
 	
@@ -409,50 +295,6 @@ public class MdrtbUtil {
 		}
 		
 		return null;
-	}
-	
-	/**
-	 * Configures the default values for a Test, based on the existing values for other tests in the
-	 * specimen Implements the following rule: If this is the first test, and the specimen has a
-	 * sample id, set the accession # field with this sample id. If this is not the first test,
-	 * then-- If the Accession # on all the existing tests and the sample ID on the specimen are all
-	 * the same, set the accession # field with this number. If the Lab, Date Ordered, or Date
-	 * Received on all the existing tests are identical, set these fields with these values.
-	 */
-	public static void setTestDefaults(Specimen specimen, Test test) {
-		
-		Set<String> accessionNumberSet = new HashSet<>();
-		Set<Date> dateOrderedSet = new HashSet<>();
-		Set<Date> dateReceivedSet = new HashSet<>();
-		Set<Location> labSet = new HashSet<>();
-		
-		// first add the identifier of the sample to the accession number set
-		accessionNumberSet.add(specimen.getIdentifier());
-		
-		// now loop through all the tests for this sample, excluding the test we want to
-		// set the defaults for
-		for (Test t : specimen.getTests()) {
-			if (t != test) {
-				accessionNumberSet.add(t.getAccessionNumber());
-				dateOrderedSet.add(t.getDateOrdered());
-				dateReceivedSet.add(t.getDateReceived());
-				labSet.add(t.getLab());
-			}
-		}
-		
-		// test if any of are sets contain exactly one non-null member
-		if (accessionNumberSet.size() == 1 && !accessionNumberSet.contains(null)) {
-			test.setAccessionNumber(accessionNumberSet.iterator().next());
-		}
-		if (dateOrderedSet.size() == 1 && !dateOrderedSet.contains(null)) {
-			test.setDateOrdered(dateOrderedSet.iterator().next());
-		}
-		if (dateReceivedSet.size() == 1 && !dateReceivedSet.contains(null)) {
-			test.setDateReceived(dateReceivedSet.iterator().next());
-		}
-		if (labSet.size() == 1 && !labSet.contains(null)) {
-			test.setLab(labSet.iterator().next());
-		}
 	}
 	
 	/**
@@ -855,7 +697,7 @@ public class MdrtbUtil {
 		List<SmearForm> smears = tf.getSmears();
 		
 		for (SmearForm sf : smears) {
-			if (MdrtbUtil.getPositiveResultConcepts().contains(sf.getSmearResult())) {
+			if (getPositiveResultConcepts().contains(sf.getSmearResult())) {
 				return true;
 			}
 		}
@@ -863,7 +705,7 @@ public class MdrtbUtil {
 		List<CultureForm> cultures = tf.getCultures();
 		
 		for (CultureForm cf : cultures) {
-			if (MdrtbUtil.getPositiveResultConcepts().contains(cf.getCultureResult())) {
+			if (getPositiveResultConcepts().contains(cf.getCultureResult())) {
 				return true;
 			}
 		}
@@ -876,9 +718,9 @@ public class MdrtbUtil {
 		Obs resultObs = null;
 		for (XpertForm xf : xperts) {
 			resultObs = null;
-			constructObs = MdrtbUtil.getObsFromEncounter(xpertConstructs, xf.getEncounter());
+			constructObs = getObsFromEncounter(xpertConstructs, xf.getEncounter());
 			if (constructObs != null) {
-				resultObs = MdrtbUtil.getObsFromObsGroup(mtbResult, constructObs);
+				resultObs = getObsFromObsGroup(mtbResult, constructObs);
 				if (resultObs != null && resultObs.getValueCoded() != null
 				        && resultObs.getValueCoded().getId().intValue() == positive.getId().intValue()) {
 					return true;
@@ -894,9 +736,9 @@ public class MdrtbUtil {
 		resultObs = null;
 		for (HAINForm hf : hains) {
 			resultObs = null;
-			constructObs = MdrtbUtil.getObsFromEncounter(hainConstructs, hf.getEncounter());
+			constructObs = getObsFromEncounter(hainConstructs, hf.getEncounter());
 			if (constructObs != null) {
-				resultObs = MdrtbUtil.getObsFromObsGroup(mtbResult, constructObs);
+				resultObs = getObsFromObsGroup(mtbResult, constructObs);
 				if (resultObs != null && resultObs.getValueCoded() != null
 				        && resultObs.getValueCoded().getId().intValue() == positive.getId().intValue()) {
 					return true;
@@ -914,7 +756,7 @@ public class MdrtbUtil {
 		
 		for (SmearForm sf : smears) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == 0
-			        && MdrtbUtil.getPositiveResultConcepts().contains(sf.getSmearResult())) {
+			        && getPositiveResultConcepts().contains(sf.getSmearResult())) {
 				return true;
 			}
 		}
@@ -923,7 +765,7 @@ public class MdrtbUtil {
 		
 		for (CultureForm cf : cultures) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == 0
-			        && MdrtbUtil.getPositiveResultConcepts().contains(cf.getCultureResult())) {
+			        && getPositiveResultConcepts().contains(cf.getCultureResult())) {
 				return true;
 			}
 		}
@@ -937,9 +779,9 @@ public class MdrtbUtil {
 		for (XpertForm xf : xperts) {
 			
 			if (xf.getMonthOfTreatment() != null && xf.getMonthOfTreatment() == 0) {
-				constructObs = MdrtbUtil.getObsFromEncounter(xpertConstructs, xf.getEncounter());
+				constructObs = getObsFromEncounter(xpertConstructs, xf.getEncounter());
 				if (constructObs != null) {
-					resultObs = MdrtbUtil.getObsFromObsGroup(mtbResult, constructObs);
+					resultObs = getObsFromObsGroup(mtbResult, constructObs);
 					if (resultObs != null && resultObs.getValueCoded() != null
 					        && resultObs.getValueCoded().getId().intValue() == positive.getId().intValue()) {
 						return true;
@@ -953,9 +795,9 @@ public class MdrtbUtil {
 		Concept hainConstructs = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN_CONSTRUCT);
 		for (HAINForm hf : hains) {
 			if (hf.getMonthOfTreatment() != null && hf.getMonthOfTreatment() == 0) {
-				constructObs = MdrtbUtil.getObsFromEncounter(hainConstructs, hf.getEncounter());
+				constructObs = getObsFromEncounter(hainConstructs, hf.getEncounter());
 				if (constructObs != null) {
-					resultObs = MdrtbUtil.getObsFromObsGroup(mtbResult, constructObs);
+					resultObs = getObsFromObsGroup(mtbResult, constructObs);
 					if (resultObs != null && resultObs.getValueCoded() != null
 					        && resultObs.getValueCoded().getId().intValue() == positive.getId().intValue()) {
 						return true;
@@ -969,9 +811,9 @@ public class MdrtbUtil {
 		Concept hain2Constructs = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HAIN2_CONSTRUCT);
 		for (HAIN2Form hf : hain2s) {
 			if (hf.getMonthOfTreatment() != null && hf.getMonthOfTreatment() == 0) {
-				constructObs = MdrtbUtil.getObsFromEncounter(hain2Constructs, hf.getEncounter());
+				constructObs = getObsFromEncounter(hain2Constructs, hf.getEncounter());
 				if (constructObs != null) {
-					resultObs = MdrtbUtil.getObsFromObsGroup(mtbResult, constructObs);
+					resultObs = getObsFromObsGroup(mtbResult, constructObs);
 					if (resultObs != null && resultObs.getValueCoded() != null
 					        && resultObs.getValueCoded().getId().intValue() == positive.getId().intValue()) {
 						return true;

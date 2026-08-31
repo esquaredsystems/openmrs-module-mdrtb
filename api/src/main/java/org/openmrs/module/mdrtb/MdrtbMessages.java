@@ -87,9 +87,7 @@ public class MdrtbMessages {
 	}
 
 	/**
-	 * Cache of individual messages, populated on demand exactly like {@link MdrtbConcepts#lookup},
-	 * keyed by {@code lang} then {@code code}.
-	 * <p>
+	 * Cache of individual messages, populated on demand
 	 * Two deliberate differences from the concept cache. First it is a {@link ConcurrentHashMap}:
 	 * entries are added by whichever request thread first asks for a code, and a plain HashMap
 	 * mutated that way is a data race. Second, misses are cached too — see {@link #NOT_STORED} —

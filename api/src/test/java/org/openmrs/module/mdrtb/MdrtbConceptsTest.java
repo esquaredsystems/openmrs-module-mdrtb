@@ -3,70 +3,88 @@
  */
 package org.openmrs.module.mdrtb;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.Field;
-import java.util.Map;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.exception.MissingConceptException;
+import org.openmrs.module.mdrtb.api.MdrtbService;
 
 /**
+ * Verifies that the constants declared in {@link MdrtbConcepts} resolve to real concepts through
+ * {@link MdrtbService#getConcept(String)}, which is the single entry point for concept lookup.
+ * 
  * @author owais
  */
 public class MdrtbConceptsTest extends MdrtbTestBase {
 	
-	private MdrtbConcepts concepts;
+	private MdrtbService service;
 	
 	@Before
 	public void setUp() throws Exception {
 		super.initTestData();
-		concepts = new MdrtbConcepts();
+		service = Context.getService(MdrtbService.class);
+		service.resetConceptMapCache();
 	}
 	
 	@Test
-	public final void testGetAllConceptMappings() {
-		assertTrue("MdrtbConcepts currently declares mappings as String constants, not String arrays", concepts
-		        .getAllConceptMappings().isEmpty());
-	}
-	
-	@Test
-	public final void testInitializeEverythingAboutConcept() {
-		Concept concept = Context.getConceptService().getConcept(12);
+	public final void shouldResolveConstantToConcept() {
+		Concept concept = service.getConcept(MdrtbConcepts.YES);
 		
-		concepts.initializeEverythingAboutConcept(concept);
+		assertNotNull(concept);
+		assertEquals(yesConcept.getConceptId(), concept.getConceptId());
+	}
+	
+	@Test
+	public final void shouldInitializeLazyCollectionsOfResolvedConcept() {
+		Concept concept = service.getConcept(MdrtbConcepts.YES);
 		
 		assertNotNull(concept.getDatatype());
-		assertFalse(concept.getNames().isEmpty());
-		assertFalse(concept.getAnswers().isEmpty());
-		assertNotNull(concept.getAnswers().iterator().next().getAnswerConcept().getNames());
-	}
-	
-	@Test(expected = MissingConceptException.class)
-	public final void testLookup() {
-		concepts.lookup("NONEXISTENT MDRTB CONCEPT");
+		assertNotNull(concept.getNames());
+		assertNotNull(concept.getAnswers());
 	}
 	
 	@Test
-	public final void testResetCache() throws Exception {
-		getCache().put(MdrtbConcepts.YES, yesConcept);
-		assertTrue(getCache().containsKey(MdrtbConcepts.YES));
-		
-		concepts.resetCache();
-		
-		assertTrue(getCache().isEmpty());
+	public final void shouldReturnNullForUnknownConcept() {
+		assertNull(service.getConcept("NONEXISTENT MDRTB CONCEPT"));
 	}
 	
-	@SuppressWarnings("unchecked")
-	private Map<String, Concept> getCache() throws Exception {
-		Field cache = MdrtbConcepts.class.getDeclaredField("cache");
-		cache.setAccessible(true);
-		return (Map<String, Concept>) cache.get(concepts);
+	@Test
+	public final void shouldReturnNullForNullOrEmptyLookup() {
+		assertNull(service.getConcept(null));
+		assertNull(service.getConcept(""));
 	}
 	
+	@Test
+	public final void shouldReturnSameConceptOnSecondLookup() {
+		Concept first = service.getConcept(MdrtbConcepts.YES);
+		Concept second = service.getConcept(MdrtbConcepts.YES);
+		
+		// Second call is served from the ID cache, but must still be a live object of this session
+		assertSame(first, second);
+	}
+	
+	@Test
+	public final void shouldStillResolveAfterCacheReset() {
+		Concept before = service.getConcept(MdrtbConcepts.YES);
+		
+		service.resetConceptMapCache();
+		Concept after = service.getConcept(MdrtbConcepts.YES);
+		
+		assertNotNull(after);
+		assertEquals(before.getConceptId(), after.getConceptId());
+	}
+	
+	@Test
+	public final void shouldResolveConceptByUuid() {
+		Concept byName = service.getConcept(MdrtbConcepts.YES);
+		
+		Concept byUuid = service.getConcept(byName.getUuid());
+		
+		assertEquals(byName.getConceptId(), byUuid.getConceptId());
+	}
 }

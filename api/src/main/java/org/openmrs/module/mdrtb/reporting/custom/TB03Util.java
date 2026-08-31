@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.openmrs.Concept;
+import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.PatientIdentifier;
 import org.openmrs.PatientProgram;
@@ -262,73 +263,39 @@ public class TB03Util {
 				minDiff = diffInTime;
 				min = tests.get(i);
 			}
-			
 		}
-		
 		return min;
 		
 	}
 	
 	public static String getRegistrationNumber(TB03Form form) {
-		if (form == null) {
-			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.unassigned");
-			
-		}
-		String val = "";
-		PatientIdentifier pi = null;
-		Integer ppid = null;
-		Concept ppidConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
-		Obs idObs = MdrtbUtil.getObsFromEncounter(ppidConcept, form.getEncounter());
-		if (idObs == null) {
-			val = null;
-		} else {
-			ppid = idObs.getValueNumeric().intValue();
-			PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(ppid);
-			
-			if (pp != null) {
-				pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
-				if (pi == null) {
-					val = null;
-				} else {
-					val = pi.getIdentifier();
-				}
-			} else {
-				val = null;
-			}
-		}
-		if (val == null || val.length() == 0) {
-			val = Context.getService(MessagePropertyService.class).getMessage("mdrtb.unassigned");
-		}
-		return val;
+		return getRegistrationNumber(form == null ? null : form.getEncounter());
 	}
 	
 	public static String getRegistrationNumber(TB03uForm form) {
-		String val = "";
-		PatientIdentifier pi = null;
-		Integer ppid = null;
+		return getRegistrationNumber(form == null ? null : form.getEncounter());
+	}
+	
+	private static String getRegistrationNumber(Encounter encounter) {
+		String registrationNumber = null;
 		Concept ppidConcept = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID);
-		Obs idObs = MdrtbUtil.getObsFromEncounter(ppidConcept, form.getEncounter());
-		if (idObs == null) {
-			val = null;
-		}
-		
-		else {
-			ppid = idObs.getValueNumeric().intValue();
-			PatientProgram pp = Context.getProgramWorkflowService().getPatientProgram(ppid);
-			if (pp != null) {
-				pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
-				if (pi == null) {
-					val = null;
-				} else {
-					val = pi.getIdentifier();
+		if (encounter != null) {
+			Obs idObs = MdrtbUtil.getObsFromEncounter(ppidConcept, encounter);
+			if (idObs != null && idObs.getValueNumeric() != null) {
+				PatientProgram patientProgram = Context.getProgramWorkflowService().getPatientProgram(
+				    idObs.getValueNumeric().intValue());
+				if (patientProgram != null) {
+					PatientIdentifier patientIdentifier = Context.getService(MdrtbService.class)
+					        .getPatientProgramIdentifier(patientProgram);
+					if (patientIdentifier != null) {
+						registrationNumber = patientIdentifier.getIdentifier();
+					}
 				}
-			} else {
-				val = null;
 			}
 		}
-		if (val == null || val.length() == 0) {
-			val = Context.getService(MessagePropertyService.class).getMessage("mdrtb.unassigned");
+		if (registrationNumber == null || registrationNumber.isEmpty()) {
+			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.unassigned");
 		}
-		return val;
+		return registrationNumber;
 	}
 }

@@ -80,9 +80,11 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	public String getSpecimenId() {
 		if (labTest != null) {
 			LabTestSample sample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(labTest);
-			// return sample.getSampleIdentifier();
-			return sample.getLabTestSampleId().toString();
-			
+			// A lab test can exist before any of its samples has been accepted, so the sample may be null
+			if (sample != null && sample.getLabTestSampleId() != null) {
+				return sample.getLabTestSampleId().toString();
+			}
+			// No accepted sample yet: fall back to the specimen ID recorded on the encounter
 		}
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SPECIMEN_ID), encounter);

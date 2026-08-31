@@ -8,6 +8,7 @@ import org.openmrs.Obs;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.api.LabTestService;
+import org.openmrs.module.mdrtb.exception.MdrtbAPIException;
 import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
@@ -42,13 +43,8 @@ public abstract class TestImpl implements Test {
 	}
 	
 	public Date getDateCollected() {
-		try {
-			LabTestSample testSample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(test);
-			return testSample.getCollectionDate();
-		}
-		catch (Exception e) {
-			return null;
-		}
+		LabTestSample testSample = getMostRecentAcceptedSample();
+		return testSample == null ? null : testSample.getCollectionDate();
 	}
 	
 	// unfortunately we have to implement this separately for each test type since
@@ -77,19 +73,16 @@ public abstract class TestImpl implements Test {
 	
 	public Date getResultDate() {
 		// Get Sample processed date
-		LabTestSample testSample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(test);
-		if (testSample != null) {
-			return testSample.getProcessedDate();
-		}
-		return null;
+		LabTestSample testSample = getMostRecentAcceptedSample();
+		return testSample == null ? null : testSample.getProcessedDate();
 		// Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_RESULT_DATE), test);
 		// return (obs == null) ? null : obs.getValueDatetime();
 	}
 	
 	public Date getStartDate() {
 		// Get Sample processed date
-		LabTestSample testSample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(test);
-		return testSample.getProcessedDate();
+		LabTestSample testSample = getMostRecentAcceptedSample();
+		return testSample == null ? null : testSample.getProcessedDate();
 		// Obs obs = MdrtbUtil.getObsFromObsGroup(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.TEST_START_DATE), test);
 		// return (obs == null) ? null : obs.getValueDatetime();
 	}
@@ -114,13 +107,38 @@ public abstract class TestImpl implements Test {
 	}
 	
 	public void setResultDate(Date resultDate) {
-		LabTestSample testSample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(test);
-		testSample.setProcessedDate(resultDate);
+		requireMostRecentAcceptedSample().setProcessedDate(resultDate);
 	}
 	
 	public void setStartDate(Date startDate) {
-		LabTestSample testSample = Context.getService(LabTestService.class).getMostRecentAcceptedSample(test);
-		testSample.setProcessedDate(startDate);
+		requireMostRecentAcceptedSample().setProcessedDate(startDate);
+	}
+	
+	/**
+	 * @return the most recently accepted or processed sample of this test, or null if the test has
+	 *         no such sample yet
+	 */
+	protected LabTestSample getMostRecentAcceptedSample() {
+		if (test == null) {
+			return null;
+		}
+		return Context.getService(LabTestService.class).getMostRecentAcceptedSample(test);
+	}
+	
+	/**
+	 * Same as {@link #getMostRecentAcceptedSample()}, but for the cases where a date is being
+	 * written and there is nowhere to write it without a sample. Fails with a readable message
+	 * rather than a NullPointerException.
+	 * 
+	 * @throws MdrtbAPIException if the test has no accepted or processed sample
+	 */
+	protected LabTestSample requireMostRecentAcceptedSample() {
+		LabTestSample testSample = getMostRecentAcceptedSample();
+		if (testSample == null) {
+			throw new MdrtbAPIException("This lab test has no accepted or processed sample, so its dates cannot be set. "
+			        + "Accept a sample for the test first.");
+		}
+		return testSample;
 	}
 	
 	public String getErrorCode() {

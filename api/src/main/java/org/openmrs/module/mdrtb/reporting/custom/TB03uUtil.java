@@ -34,30 +34,24 @@ public class TB03uUtil {
 	
 	public static SmearForm getFollowupSmearForm(TB03uForm form, Integer month) {
 		SmearForm c = null;
-		
 		for (SmearForm sf : form.getSmears()) {
 			if (sf.getMonthOfTreatment() != null && sf.getMonthOfTreatment() == month.intValue()) {
 				c = sf;
 				break;
 			}
-			
 		}
 		return c;
-		
 	}
 	
 	public static CultureForm getFollowupCultureForm(TB03uForm form, Integer month) {
 		CultureForm c = null;
-		
 		for (CultureForm cf : form.getCultures()) {
 			if (cf.getMonthOfTreatment() != null && cf.getMonthOfTreatment() == month.intValue()) {
 				c = cf;
 				break;
 			}
-			
 		}
 		return c;
-		
 	}
 	
 	public static Dst getDiagnosticDST(TB03uForm tf) {
@@ -67,7 +61,7 @@ public class TB03uUtil {
 			for (DSTForm dstForm : dsts) {
 				if (dstForm.getMonthOfTreatment() == null)
 					continue;
-				if (dstForm.getMonthOfTreatment().intValue() != 0)
+				if (dstForm.getMonthOfTreatment() != 0)
 					continue;
 				LabTest dstTest = Context.getService(LabTestService.class).getDstLabTestOrder(dstForm.getEncounter());
 				if (dstTest != null) {
@@ -84,7 +78,7 @@ public class TB03uUtil {
 			for (DSTForm dstForm : dsts) {
 				if (dstForm.getMonthOfTreatment() == null)
 					continue;
-				if (dstForm.getMonthOfTreatment().intValue() != 0)
+				if (dstForm.getMonthOfTreatment() != 0)
 					continue;
 				LabTest dstTest = Context.getService(LabTestService.class).getDstLabTestOrder(dstForm.getEncounter());
 				if (dstTest != null) {
@@ -106,8 +100,8 @@ public class TB03uUtil {
 	public static Specimen getClosestTestTo(List<Specimen> tests, Date date) {
 		
 		Specimen min = tests.get(0);
-		long minDiff = 0;
-		long diffInTime = 0;
+		long minDiff;
+		long diffInTime;
 		GregorianCalendar dateCal = new GregorianCalendar();
 		dateCal.setTime(date);
 		dateCal.set(Calendar.HOUR, 0);

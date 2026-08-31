@@ -1,10 +1,7 @@
 package org.openmrs.module.mdrtb;
 
-import java.lang.reflect.Method;
-import java.text.Collator;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -19,12 +16,9 @@ import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
-import org.openmrs.PatientIdentifier;
-import org.openmrs.PatientIdentifierType;
 import org.openmrs.PersonAddress;
 import org.openmrs.ProgramWorkflowState;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.regimen.Regimen;
 import org.openmrs.module.mdrtb.regimen.RegimenUtils;
 import org.openmrs.module.mdrtb.specimen.Specimen;
@@ -33,31 +27,6 @@ import org.openmrs.module.mdrtb.specimen.Test;
 public class TbUtil {
 	
 	protected static final Log log = LogFactory.getLog(TbUtil.class);
-	
-	public static String getDOTSPatientIdentifier(Patient p) {
-		String ret = "";
-		String piList = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE);
-		Set<PatientIdentifier> identifiers = p.getIdentifiers();
-		for (PatientIdentifier pi : identifiers) {
-			if (pi.getIdentifierType().getName().equals(piList)) {
-				return pi.getIdentifier();
-			}
-		}
-		if (!identifiers.isEmpty()) {
-			for (PatientIdentifier pi : identifiers) {
-				return pi.getIdentifier();
-			}
-		}
-		return ret;
-	}
-	
-	public static Obs getMostRecentObs(Integer conceptId, Patient p) {
-		Concept c = Context.getConceptService().getConcept(conceptId);
-		List<Obs> oList = Context.getObsService().getObservationsByPersonAndConcept(p, c);
-		if (oList.size() > 0)
-			return oList.get(oList.size() - 1);
-		return null;
-	}
 	
 	/**
 	 * Iterates through all the obs in the test obs group and returns the first one that who concept
@@ -80,11 +49,24 @@ public class TbUtil {
 	 * concept matches the specified concept Returns null if obs not found
 	 */
 	public static Obs getObsFromEncounter(Concept concept, Encounter encounter) {
-		if (encounter.getObsAtTopLevel(false) != null) {
-			for (Obs obs : encounter.getObsAtTopLevel(false)) {
-				if (!obs.getVoided() && obs.getConcept().equals(concept)) {
-					return obs;
+		Set<Obs> obsSet = encounter.getObsAtTopLevel(false);
+		if (obsSet == null) {
+			return null;
+		}
+		for (Obs obs : obsSet) {
+			if (Boolean.TRUE.equals(obs.getVoided())) {
+				continue;
+			}
+			if (obs.getConcept().getUuid().equals(concept.getUuid())) {
+				if (obs.getValueCoded() != null && obs.getId() != null) {
+					try {
+						return Context.getObsService().getObs(obs.getId());
+					}
+					catch (Exception e) {
+						return Context.getObsService().getObsByUuid(obs.getUuid());
+					}
 				}
+				return obs;
 			}
 		}
 		return null;
@@ -117,31 +99,6 @@ public class TbUtil {
 	}
 	
 	/**
-	 * Given a list of concepts, sorts them in the same order as the list of Antiretrovirals (All
-	 * non-antiretrovirals are ignored)
-	 */
-	public static List<Concept> sortAntiretrovirals(List<Concept> drugs) {
-		return TbUtil.sortDrugs(drugs, Context.getService(MdrtbService.class).getAntiretrovirals());
-	}
-	
-	/**
-	 * Given a list of drugs to sort and a drug list, sorts the first list so that the drugs are in
-	 * the same order as the second list; any drugs in the list to sort not found in the drug list
-	 * are discarded
-	 */
-	public static List<Concept> sortDrugs(List<Concept> drugsToSort, List<Concept> drugList) {
-		List<Concept> sortedDrugs = new LinkedList<>();
-		
-		for (Concept drug : drugList) {
-			if (drugsToSort.contains(drug)) {
-				sortedDrugs.add(drug);
-			}
-		}
-		
-		return sortedDrugs;
-	}
-	
-	/**
 	 * Gets a specific ProgramWorkflowState, given the concept associated with the state
 	 */
 	public static ProgramWorkflowState getProgramWorkflowState(Concept programWorkflowStateConcept) {
@@ -150,29 +107,6 @@ public class TbUtil {
 		if (!list.isEmpty()) {
 			return list.get(0);
 		}
-		return null;
-	}
-	
-	/**
-	 * Auto-assign a patient identifier for a specific identifier type, if required, if the idgen
-	 * module is installed, using reflection Auto generated method comment
-	 */
-	public static String assignIdentifier(PatientIdentifierType type) {
-		try {
-			Class<?> identifierSourceServiceClass = Context
-			        .loadClass("org.openmrs.module.idgen.service.IdentifierSourceService");
-			Object idgen = Context.getService(identifierSourceServiceClass);
-			Method generateIdentifier = identifierSourceServiceClass.getMethod("generateIdentifier",
-			    PatientIdentifierType.class, String.class);
-			// note that generate identifier returns null if this identifier type is not set to be auto-generated
-			return (String) generateIdentifier.invoke(idgen, type, "auto-assigned during patient creation");
-		}
-		catch (Exception e) {
-			log.error(
-			    "Unable to access IdentifierSourceService for automatic id generation.  Is the Idgen module installed and up-to-date?",
-			    e);
-		}
-		
 		return null;
 	}
 	
@@ -247,19 +181,6 @@ public class TbUtil {
 	}
 	
 	/**
-	 * Tests whether a String is parseable as an Integer
-	 */
-	public static boolean isInteger(String string) {
-		try {
-			Integer.valueOf(string);
-			return true;
-		}
-		catch (NumberFormatException e) {
-			return false;
-		}
-	}
-	
-	/**
 	 * Returns true/false if all the fields in the address are empty or null
 	 */
 	public static Boolean isBlank(PersonAddress address) {
@@ -272,22 +193,4 @@ public class TbUtil {
 		        && StringUtils.isBlank(address.getAddress5());
 	}
 	
-	public static boolean areRussianStringsEqual(String s1, String s2) {
-		boolean result = false;
-		
-		if (s1 == null || s2 == null)
-			return false;
-		
-		if (s1.length() == 0 || s2.length() == 0)
-			return false;
-		
-		Collator collator = Collator.getInstance();
-		collator.setStrength(Collator.SECONDARY);
-		
-		int compResult = collator.compare(s1, s2);
-		if (compResult == 0)
-			return true;
-		
-		return result;
-	}
 }

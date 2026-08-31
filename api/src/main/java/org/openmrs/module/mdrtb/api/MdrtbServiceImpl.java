@@ -21,11 +21,11 @@ import org.openmrs.module.mdrtb.reporting.ReportUtil;
 import org.openmrs.module.mdrtb.specimen.*;
 import org.openmrs.module.mdrtb.specimen.custom.*;
 import org.openmrs.module.reporting.cohort.query.service.CohortQueryService;
-import org.openmrs.module.reporting.common.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService {
@@ -39,7 +39,12 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	UserService userService;
 	
-	MdrtbConcepts conceptMap = new MdrtbConcepts();
+	/**
+	 * Cache of resolved concept IDs, keyed by the lookup string that was used to find them. Only the
+	 * ID is cached, never the Concept object itself: a Concept loaded in one Hibernate session must
+	 * not be handed out in another. Cleared by {@link #resetConceptMapCache()}.
+	 */
+	private final Map<String, Integer> conceptIdCache = new ConcurrentHashMap<>();
 	
 	Map<Integer, String> colorMapCache = null;
 	
@@ -111,7 +116,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public void resetConceptMapCache() {
-		this.conceptMap.resetCache();
+		conceptIdCache.clear();
 	}
 	
 	public void resetColorMapCache() {
@@ -184,50 +189,200 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		return map;
 	}
 	
+	/**
+	 * Resolves a concept from a lookup string. The lookup may be an MDR-TB concept mapping (see
+	 * {@link MdrtbConcepts}), a concept UUID, or a concept name.
+	 * <p>
+	 * Results are cached per lookup string, so repeated calls do not hit the database. Call
+	 * {@link #resetConceptMapCache()} after changing concept metadata.
+	 *
+	 * @param lookup mapping, UUID or name of the concept
+	 * @return the matching concept, or null if nothing could be resolved (a warning is logged)
+	 */
 	public Concept getConcept(String lookup) {
-		if (ObjectUtil.notNull(lookup)) {
-			// First try MDR-TB module's known concept mappings
-			try {
-				return conceptMap.lookup(lookup);
+		if (StringUtils.isBlank(lookup)) {
+			return null;
+		}
+		Concept concept = null;
+		Integer cachedId = conceptIdCache.get(lookup);
+		if (cachedId != null) {
+			// Re-fetch through the service so the Concept always belongs to the current session
+			concept = Context.getConceptService().getConcept(cachedId);
+			if (concept == null) {
+				// The concept was deleted since it was cached; resolve it again
+				conceptIdCache.remove(lookup);
 			}
-			catch (Exception ignored) {}
-			// Next try UUID
-			if (lookup.matches(MdrtbConstants.UUID_REGEX)) {
-				try {
-					Concept c = Context.getConceptService().getConceptByUuid(lookup);
-					if (c != null) {
-						initializeEverythingAboutConcept(c);
+		}
+		if (concept == null) {
+			concept = resolveConcept(lookup);
+			if (concept == null) {
+				log.warn("Concept: " + lookup + " was not found!");
+				return null;
+			}
+			conceptIdCache.put(lookup, concept.getConceptId());
+		}
+		initializeEverythingAboutConcept(concept);
+		return concept;
+	}
+	
+	/**
+	 * Tries each resolution strategy in turn. Order matters: the more precise the strategy, the
+	 * earlier it runs. Nothing here caches - {@link #getConcept(String)} owns the cache.
+	 */
+	private Concept resolveConcept(String lookup) {
+		// MDR-TB module's own concept mappings
+		Concept concept = findByMdrtbMapping(lookup);
+		if (concept != null) {
+			return concept;
+		}
+		// By UUID
+		if (lookup.matches(MdrtbConstants.UUID_REGEX)) {
+			concept = findByUuid(lookup);
+			if (concept != null) {
+				return concept;
+			}
+		}
+		// Exact name
+		List<Concept> namedMatches = getConceptsByNameQuietly(lookup);
+		concept = findByName(lookup, namedMatches);
+		if (concept != null) {
+			return concept;
+		}
+		// Last resort, and only when nothing at all matched by name: partial name match
+		if (namedMatches.isEmpty()) {
+			return findByPartialName(lookup);
+		}
+		return null;
+	}
+	
+	private List<Concept> getConceptsByNameQuietly(String lookup) {
+		try {
+			return Context.getConceptService().getConceptsByName(lookup, Locale.ENGLISH, false);
+		}
+		catch (Exception e) {
+			log.debug("Name search failed for '" + lookup + "'", e);
+			return Collections.emptyList();
+		}
+	}
+	
+	/**
+	 * Finds a concept by name and then only accepts it if it also carries a concept mapping in the
+	 * MDR-TB source ({@link MdrtbConstants#MDRTB_CONCEPT_MAPPING_CODE}) that points back at itself.
+	 * This is the historic behaviour of MdrtbConcepts.lookup() and is kept for databases whose
+	 * metadata was loaded with those mappings.
+	 */
+	private Concept findByMdrtbMapping(String lookup) {
+		try {
+			List<Concept> candidates = Context.getConceptService().getConceptsByName(lookup);
+			Concept exactNameMatch = null;
+			for (Concept c : candidates) {
+				for (ConceptName cn : c.getNames()) {
+					if (cn.getName().equalsIgnoreCase(lookup)) {
+						exactNameMatch = c;
+						break;
+					}
+				}
+			}
+			if (exactNameMatch != null) {
+				candidates = Collections.singletonList(exactNameMatch);
+			}
+			for (Concept c : candidates) {
+				List<Concept> mapped = Context.getConceptService().getConceptsByMapping(
+				    String.valueOf(c.getConceptId()), MdrtbConstants.MDRTB_CONCEPT_MAPPING_CODE);
+				for (Concept mapConcept : mapped) {
+					if (mapConcept.getName(Context.getLocale()).equals(c.getName(Context.getLocale()))) {
 						return c;
 					}
 				}
-				catch (Exception ignored) {}
 			}
-			// Next try precise name
-			try {
-				Concept concept = Context.getConceptService().getConceptByName(lookup);
-				if (concept != null) {
-					initializeEverythingAboutConcept(concept);
-					return concept;
-				}
-				List<Concept> list = Context.getConceptService().getConceptsByName(lookup, Locale.ENGLISH, false);
-				// If there is exactly 1 object, then return it
-				if (list.size() == 1) {
-					Concept c = list.get(0);
-					initializeEverythingAboutConcept(c);
+		}
+		catch (Exception e) {
+			log.debug("No MDR-TB concept mapping found for '" + lookup + "'", e);
+		}
+		return null;
+	}
+	
+	private Concept findByUuid(String uuid) {
+		try {
+			return Context.getConceptService().getConceptByUuid(uuid);
+		}
+		catch (Exception e) {
+			log.debug("No concept found for uuid '" + uuid + "'", e);
+			return null;
+		}
+	}
+	
+	/**
+	 * Exact name match: first through the concept service, then through the English name search
+	 * results, which must produce either a single result or an exact fully specified name.
+	 */
+	private Concept findByName(String lookup, List<Concept> namedMatches) {
+		try {
+			Concept concept = Context.getConceptService().getConceptByName(lookup);
+			if (concept != null) {
+				return concept;
+			}
+			// If there is exactly 1 object, then return it
+			if (namedMatches.size() == 1) {
+				return namedMatches.get(0);
+			}
+			// For more than 1 objects, match the exact name
+			for (Concept c : namedMatches) {
+				ConceptName fsn = c.getFullySpecifiedName(Locale.ENGLISH);
+				if (fsn != null && fsn.getName().equalsIgnoreCase(lookup)) {
 					return c;
 				}
-				// For more than 1 objects, match the exact name
-				for (Concept c : list) {
-					if (c.getFullySpecifiedName(Locale.ENGLISH).getName().equalsIgnoreCase(lookup)) {
-						initializeEverythingAboutConcept(c);
-						return c;
-					}
-				}
 			}
-			catch (Exception ignored) {}
 		}
-		log.warn("Concept: " + lookup + " was not found!");
+		catch (Exception e) {
+			log.debug("No concept found by name '" + lookup + "'", e);
+		}
 		return null;
+	}
+	
+	/**
+	 * Fallback for names that are not stored exactly as written: matches any fully specified name
+	 * that CONTAINS the lookup string. This can match the wrong concept, so every hit is logged at
+	 * WARN level and the caller should treat it as a sign that the metadata needs fixing.
+	 */
+	private Concept findByPartialName(String lookup) {
+		if (lookup.length() < 2) {
+			log.warn("Partial name too short to fetch concept: " + lookup);
+			return null;
+		}
+		// Refuse anything that could change the shape of the query below
+		if (lookup.indexOf('\'') >= 0 || lookup.indexOf('%') >= 0 || lookup.indexOf('_') >= 0
+		        || lookup.indexOf('\\') >= 0) {
+			return null;
+		}
+		try {
+			List<List<Object>> result = Context
+			        .getAdministrationService()
+			        .executeSQL(
+			            "select c.uuid from concept c inner join concept_name cn on cn.concept_id = c.concept_id where c.retired = 0 and cn.voided = 0 and cn.concept_name_type = 'FULLY_SPECIFIED' and cn.name like '%"
+			                    + lookup + "%' order by cn.concept_id", true);
+			if (result.isEmpty()) {
+				return null;
+			}
+			if (result.size() > 1) {
+				log.warn("Concept '" + lookup + "' matched " + result.size()
+				        + " concepts by partial name; using the first one. Fix the concept metadata for this lookup.");
+			}
+			String uuid = result.get(0).get(0).toString();
+			if (!uuid.matches(MdrtbConstants.UUID_REGEX)) {
+				return null;
+			}
+			Concept concept = findByUuid(uuid);
+			if (concept != null) {
+				log.warn("Concept '" + lookup + "' was resolved by PARTIAL name match to '"
+				        + concept.getName(Locale.ENGLISH) + "' (id " + concept.getConceptId() + ")");
+			}
+			return concept;
+		}
+		catch (Exception e) {
+			log.debug("No concept found by partial name '" + lookup + "'", e);
+			return null;
+		}
 	}
 	
 	public Collection<ConceptAnswer> getPossibleConceptAnswers(String conceptQuestion) {
@@ -612,15 +767,26 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public PatientIdentifier getPatientProgramIdentifier(PatientProgram pp) {
 		Concept concept = pp.getProgram().getConcept();
+		String idType = null;
 		if (concept.equals(getConcept(MdrtbConcepts.MDR_TB_PROGRAM))) {
-			String mdrtbIdName = Context.getAdministrationService().getGlobalProperty(
-			    MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
-			PatientIdentifierType mdrType = Context.getPatientService().getPatientIdentifierTypeByName(mdrtbIdName);
-			return pp.getPatient().getPatientIdentifier(mdrType);
+			idType = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_MDRTB_IDENTIFIER_TYPE);
 		} else if (concept.equals(getConcept(MdrtbConcepts.DOTS_PROGRAM))) {
-			String dotsIdName = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE);
-			PatientIdentifierType drType = Context.getPatientService().getPatientIdentifierTypeByName(dotsIdName);
-			return pp.getPatient().getPatientIdentifier(drType);
+			idType = Context.getAdministrationService().getGlobalProperty(MdrtbConstants.GP_DOTS_IDENTIFIER_TYPE);
+		}
+		List<PatientIdentifier> identifiers = pp.getPatient().getPatientIdentifiers(
+		    Context.getPatientService().getPatientIdentifierTypeByName(idType));
+		if (!identifiers.isEmpty()) {
+			// If there are multiple identifiers, then look for the one that's closest to the patient program
+			PatientIdentifier match = identifiers.get(0);
+			long minDiff = Long.MAX_VALUE;
+			for (PatientIdentifier identifier : identifiers) {
+				long diff = Math.abs(identifier.getDateCreated().getTime() - pp.getDateEnrolled().getTime());
+				if (diff < minDiff) {
+					match = identifier;
+					minDiff = diff;
+				}
+			}
+			return match;
 		}
 		return pp.getPatient().getPatientIdentifier();
 	}
