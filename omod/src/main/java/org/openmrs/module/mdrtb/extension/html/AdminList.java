@@ -46,8 +46,8 @@ public class AdminList extends AdministrationSectionExt {
 	public Map<String, String> getLinks() {
 		Map<String, String> map = new HashMap<>();
 		map.put("module/mdrtb/mdrtb.form", "mdrtb.title.homepage");
-		map.put("/module/commonlabtest/manageLabTestTypes.form", "commonlabtest.labtesttype.manage");
-		map.put("/module/commonlabtest/manageLabTestAttributeTypes.form", "commonlabtest.labtestattributetype.manage");
+		map.put("/module/mdrtb/manageLabTestTypes.form", "commonlabtest.labtesttype.manage");
+		map.put("/module/mdrtb/manageLabTestAttributeTypes.form", "commonlabtest.labtestattributetype.manage");
 		return map;
 	}
 }

@@ -35,7 +35,7 @@ public class LabTestSampleController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestSample";
+	private final String SUCCESS_ADD_FORM_VIEW = "/module/mdrtb/addLabTestSample";
 	
 	LabTestService LabTestService;
 	
@@ -46,7 +46,7 @@ public class LabTestSampleController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(simpleDateFormat, true));
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/addLabTestSample.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/addLabTestSample.form")
 	public String showForm(HttpServletRequest request, ModelMap model, @RequestParam(required = true) Integer patientId,
 	        @RequestParam(required = false) Integer testSampleId, @RequestParam(required = false) Integer orderId,
 	        @RequestParam(required = false) String error) {
@@ -119,7 +119,7 @@ public class LabTestSampleController {
 		return SUCCESS_ADD_FORM_VIEW;
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/addLabTestSample.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/addLabTestSample.form")
 	public String onSubmit(ModelMap model, HttpSession httpSession,
 	        @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
 	        @ModelAttribute("testSample") LabTestSample labTestSample, BindingResult result) {
@@ -175,7 +175,7 @@ public class LabTestSampleController {
 		        + labTestSample.getLabTest().getTestOrderId();
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/voidlabtestsample.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/voidlabtestsample.form")
 	public String onVoid(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("uuid") String uuid, @RequestParam("voidReason") String voidReason) {
 		LabTestService = Context.getService(LabTestService.class);

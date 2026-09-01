@@ -40,6 +40,7 @@
 				<prop key="**/mdrtbShortSummary.portlet">shortSummaryPortletController</prop>
 				<prop key="**/mdrtbCustomList.portlet">customSummaryPortletController</prop>
 				<prop key="**/specimenReport.portlet">specimenReportPortletController</prop>
+				<prop key="**/patientLabTests.portlet">labTestOrderPortletController</prop>
 			</props>
 		</property>
 	</bean>
@@ -70,5 +71,7 @@
 		class="org.openmrs.module.mdrtb.web.controller.reporting.CustomSummaryPortletController" />
 	<bean id="specimenReportPortletController"
 		class="org.openmrs.module.mdrtb.web.controller.portlet.SpecimenReportPortletController" />
+	<bean id="labTestOrderPortletController"
+		class="org.openmrs.module.mdrtb.web.controller.lab.LabTestOrderPortletController" />
 	
 </beans>

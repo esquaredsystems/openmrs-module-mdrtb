@@ -1,29 +1,30 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <openmrs:portlet url="patientHeader" id="patientDashboardHeader"
 	patientId="${patientId}" />
-<openmrs:require privilege="Add CommonLabTest Orders"
+<openmrs:require privilege="Add LabTest Orders"
 	otherwise="/login.htm"
-	redirect="/module/commonlabtest/addLabTestRequest.form" />
+	redirect="/module/mdrtb/addLabTestRequest.form" />
 
 <html>
 <head>
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
 	rel="stylesheet" />
-<link href="/openmrs/moduleResources/commonlabtest/css/style.css"
+<link href="/openmrs/moduleResources/mdrtb/css/style.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/dataTables.bootstrap4.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/dataTables.bootstrap4.min.css"
 	rel="stylesheet" />
 	
-<link href="/openmrs/moduleResources/commonlabtest/css/chosen.css" rel="stylesheet" >
+<link href="/openmrs/moduleResources/mdrtb/css/chosen.css" rel="stylesheet" >
 
 </head>
 <style>
@@ -161,10 +162,10 @@ table-layout: fixed;
 				</div>
 			</div>
 		</div>
-		<!-- Submit ,Edit CommonLabTest Orders -->
+		<!-- Submit ,Edit LabTest Orders -->
 		<div class="row">
 			<div class="col-md-2">
-				<openmrs:hasPrivilege privilege="Add CommonLabTest Orders">
+				<openmrs:hasPrivilege privilege="Add LabTest Orders">
 					<input type="submit" onclick="return submitAndValidate()"
 						value="Save Test Request"></input>
 				</openmrs:hasPrivilege>
@@ -181,18 +182,18 @@ table-layout: fixed;
 
 <!--JAVA SCRIPT  -->
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/jquery-3.3.1.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/popper.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/popper.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/bootstrap.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery-ui.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery-ui.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery.dataTables.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery.dataTables.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/dataTables.bootstrap4.min.js"></script>
-<script src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/chosen.jquery.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/dataTables.bootstrap4.min.js"></script>
+<script src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/chosen.jquery.js"></script>
 
 <script type="text/javascript">	
 var localTestRequest;
@@ -230,8 +231,9 @@ $(document).ready(function () {
         }
     });
     
+    // chosen.jquery.js is optional; skip silently when it is not deployed
     $(function(){ 
-    	$('select').chosen();
+    	if ($.fn.chosen) { $('select').chosen(); }
     });
 });
 
@@ -321,7 +323,7 @@ function save(data) {
     var isTure = true;
     $.ajax({
         type: "POST",
-        url: "${pageContext.request.contextPath}/module/commonlabtest/addLabTestRequest.form?patientId=" + patiendId,
+        url: "${pageContext.request.contextPath}/module/mdrtb/addLabTestRequest.form?patientId=" + patiendId,
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify(data),//used without stringify();

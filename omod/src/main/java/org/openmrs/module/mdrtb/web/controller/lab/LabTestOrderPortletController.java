@@ -12,18 +12,18 @@ import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.api.LabTestService;
 import org.openmrs.web.controller.PortletController;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
- * @author engrmahmed14@gmail.com
+ * @author engrmahmed14@gmail.com Registered as bean 'labTestOrderPortletController' in
+ *         webModuleApplicationContext.xml and mapped to **&#47;patientLabTests.portlet there. Do
+ *         NOT annotate this class with Controller/RequestMapping: that only worked upstream via
+ *         DefaultAnnotationHandlerMapping, which Spring 5 removed. Without the explicit mapping the
+ *         request falls through to the core portlet controller and the model arrives empty.
  */
-@Controller
-@RequestMapping("**/patientLabTests.portlet")
 public class LabTestOrderPortletController extends PortletController {
 	
 	@Override

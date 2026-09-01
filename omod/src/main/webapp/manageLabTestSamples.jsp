@@ -1,26 +1,27 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<openmrs:require privilege="View CommonLabTest Samples"
+<openmrs:require privilege="View LabTest Samples"
 	otherwise="/login.htm"
-	redirect="/module/commonlabtest/manageLabTestSamples.form" />
+	redirect="/module/mdrtb/manageLabTestSamples.form" />
 <openmrs:portlet url="patientHeader" id="patientDashboardHeader"
 	patientId="${patientId}" />
 
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover-min.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover-min.css" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/dataTables.bootstrap4.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/dataTables.bootstrap4.min.css"
 	rel="stylesheet" />
 
 <style>
@@ -81,7 +82,7 @@ legend.scheduler-border {
 		<div class="col-md-2">
 			<c:choose>
 				<c:when test="${sampleProcessed == 'true'}">
-					<openmrs:hasPrivilege privilege="Add CommonLabTest Samples">
+					<openmrs:hasPrivilege privilege="Add LabTest Samples">
 						<a
 							style="text-decoration: none; pointer-events: none; cursor: default;"
 							onclick="navigatedToLabTestSample();" id="addTestSamples"
@@ -90,7 +91,7 @@ legend.scheduler-border {
 					</openmrs:hasPrivilege>
 				</c:when>
 				<c:otherwise>
-					<openmrs:hasPrivilege privilege="Add CommonLabTest Samples">
+					<openmrs:hasPrivilege privilege="Add LabTest Samples">
 						<a style="text-decoration: none"
 							onclick="navigatedToLabTestSample();" id="addTestSamples"
 							class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <mdrtb:message
@@ -118,7 +119,7 @@ legend.scheduler-border {
 			style="width: 100%">
 			<thead>
 				<tr>
-					<openmrs:hasPrivilege privilege="Edit CommonLabTest Samples">
+					<openmrs:hasPrivilege privilege="Edit LabTest Samples">
 						<th>Sample ID</th>
 					</openmrs:hasPrivilege>
 					<th>Specimen Type</th>
@@ -137,10 +138,10 @@ legend.scheduler-border {
 						<c:choose>
 							<c:when test="${sampleProcessed == 'true'}">
 								<tr>
-									<openmrs:hasPrivilege privilege="Edit CommonLabTest Samples">
+									<openmrs:hasPrivilege privilege="Edit LabTest Samples">
 										<td><a
 											style="text-decoration: none; pointer-events: none; cursor: default;"
-											href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestSample.form?testSampleId=${testSample.labTestSampleId}&patientId=${patientId}&orderId=${orderId}"
+											href="${pageContext.request.contextPath}/module/mdrtb/addLabTestSample.form?testSampleId=${testSample.labTestSampleId}&patientId=${patientId}&orderId=${orderId}"
 											class="hvr-icon-grow"><span><i
 													class="fa fa-edit hvr-icon"></i></span>
 												${testSample.labTestSampleId}</a></td>
@@ -153,7 +154,7 @@ legend.scheduler-border {
 									<td>${testSample.getStatus()}</td>
 									<td hidden="true" class="uuid">${testSample.uuid}</td>
 									<openmrs:hasPrivilege
-										privilege="Add CommonLabTest Samples, Edit CommonLabTest Samples">
+										privilege="Edit LabTest Samples">
 										<td><button type="button" disabled class="btn  reject">Reject</button>
 										</td>
 										<td><button type="button" disabled class="btn  accept">Accept</button></td>
@@ -162,9 +163,9 @@ legend.scheduler-border {
 							</c:when>
 							<c:otherwise>
 								<tr>
-									<openmrs:hasPrivilege privilege="Edit CommonLabTest Samples">
+									<openmrs:hasPrivilege privilege="Edit LabTest Samples">
 										<td><a style="text-decoration: none"
-											href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestSample.form?testSampleId=${testSample.labTestSampleId}&patientId=${patientId}&orderId=${orderId}"
+											href="${pageContext.request.contextPath}/module/mdrtb/addLabTestSample.form?testSampleId=${testSample.labTestSampleId}&patientId=${patientId}&orderId=${orderId}"
 											class="hvr-icon-grow"><span><i
 													class="fa fa-edit hvr-icon"></i></span>
 												${testSample.labTestSampleId}</a></td>
@@ -177,7 +178,7 @@ legend.scheduler-border {
 									<td>${testSample.getStatus()}</td>
 									<td hidden="true" class="uuid">${testSample.uuid}</td>
 									<openmrs:hasPrivilege
-										privilege="Add CommonLabTest Samples, Edit CommonLabTest Samples">
+										privilege="Edit LabTest Samples">
 										<td><button type="button" onclick="rejection(this)"
 												class="btn  reject">Reject</button></td>
 										<td><button type="button" onclick="accept(this)"
@@ -207,7 +208,7 @@ legend.scheduler-border {
 				</div>
 				<div class="modal-body">
 					<form method="post"
-						action="${pageContext.request.contextPath}/module/commonlabtest/statuslabtestsample.form">
+						action="${pageContext.request.contextPath}/module/mdrtb/statuslabtestsample.form">
 						<div class="row">
 							<div class="col-md-4">
 								<input value="${patientId}" hidden="true" id="patientId"
@@ -237,17 +238,17 @@ legend.scheduler-border {
 
 <!--JAVA SCRIPT  -->
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/jquery-3.3.1.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/popper.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/popper.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/bootstrap.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery-ui.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery-ui.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery.dataTables.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery.dataTables.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/dataTables.bootstrap4.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/dataTables.bootstrap4.min.js"></script>
 
 
 <script type="text/javascript">
@@ -299,12 +300,12 @@ function accept(rowEl) {
         .find(".uuid")
         .text();
 	    if (uuid != "" && uuid != null) {
-	        // var url = "${pageContext.request.contextPath}/module/commonlabtest/statuslabtestsample.form?patientId="+${patientId}+"&uuid="+uuid; 
+	        // var url = "${pageContext.request.contextPath}/module/mdrtb/statuslabtestsample.form?patientId="+${patientId}+"&uuid="+uuid; 
 	        var isAccepted = checkNumberOfAcceptedSample(orderId)
 	        console.log("accepted : " + isAccepted);
 	        if (isAccepted) {
 	            $.ajax({
-	                url: '${pageContext.request.contextPath}/module/commonlabtest/statuslabtestsample.form?patientId=' + ${ patientId } + "&isAccepted=1" + "&uuid=" + uuid,
+	                url: '${pageContext.request.contextPath}/module/mdrtb/statuslabtestsample.form?patientId=' + ${ patientId } + "&isAccepted=1" + "&uuid=" + uuid,
 	                dataType: 'text',
 	                type: 'post',
 	                contentType: 'application/json',
@@ -325,7 +326,7 @@ function accept(rowEl) {
 }
 
 function navigatedToLabTestSample() {
-    window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestSample.form?patientId=" + ${ patientId } +"&orderId=${orderId}";
+    window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestSample.form?patientId=" + ${ patientId } +"&orderId=${orderId}";
 }
 function navigatedToPatientDashboard() {
     window.location.href = "${pageContext.request.contextPath}/patientDashboard.form?patientId=${patientId}";
@@ -335,13 +336,13 @@ function navigatedToPatientDashboard() {
 jQuery(function () {
 
     if (performance.navigation.type == 1) {
-        window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/manageLabTestSamples.form?patientId=" + ${ patientId } +"&testOrderId=" + ${ orderId };
+        window.location.href = "${pageContext.request.contextPath}/module/mdrtb/manageLabTestSamples.form?patientId=" + ${ patientId } +"&testOrderId=" + ${ orderId };
     }
 
     jQuery("body").keydown(function (e) {
 
         if (e.which == 116) {
-            window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/manageLabTestSamples.form?patientId=" + ${ patientId } +"&testOrderId=" + ${ orderId };
+            window.location.href = "${pageContext.request.contextPath}/module/mdrtb/manageLabTestSamples.form?patientId=" + ${ patientId } +"&testOrderId=" + ${ orderId };
         }
 
     });
@@ -352,7 +353,7 @@ function checkNumberOfAcceptedSample(testOrderId) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: '${pageContext.request.contextPath}/module/commonlabtest/getTestSampleAcceptedStatus.form?testOrderId=' + testOrderId,
+        url: '${pageContext.request.contextPath}/module/mdrtb/getTestSampleAcceptedStatus.form?testOrderId=' + testOrderId,
         async: false,
         dataType: "json",
         success: function (data) {

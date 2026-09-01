@@ -1,37 +1,38 @@
 
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include
-	file="/WEB-INF/view/module/commonlabtest/include/localHeader.jsp"%>
-<openmrs:require privilege="View CommonLabTest Metadata"
-	redirect="/module/commonlabtest/manageLabTestTypes.form"
+	file="/WEB-INF/view/module/mdrtb/include/localHeader.jsp"%>
+<openmrs:require privilege="View LabTest Metadata"
+	redirect="/module/mdrtb/manageLabTestTypes.form"
 	otherwise="/login.htm" />
 
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
-	rel="stylesheet" />
-
-<link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
-<link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
-	rel="stylesheet" />
-<link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link
-	href="/openmrs/moduleResources/commonlabtest/css/dataTables.bootstrap4.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
 	rel="stylesheet" />
 
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
+<link
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
+	rel="stylesheet" />
+<link
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link
+	href="/openmrs/moduleResources/mdrtb/css/dataTables.bootstrap4.min.css"
+	rel="stylesheet" />
+
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover-min.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover.css" />
+<link type="text/css" rel="stylesheet"
+	href="/openmrs/moduleResources/mdrtb/css/hover-min.css" />
 
 
 <style>
@@ -79,7 +80,7 @@ body {
 			<c:out value="${status}" />
 		</div>
 	</c:if>
-	<openmrs:hasPrivilege privilege="Add CommonLabTest Metadata">
+	<openmrs:hasPrivilege privilege="Add LabTest Metadata">
 		<div>
 			<a style="text-decoration: none" href="addLabTestAttributeType.form"
 				class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <mdrtb:message
@@ -97,7 +98,7 @@ body {
 			<thead>
 				<tr>
 					<th hidden="true"></th>
-					<openmrs:hasPrivilege privilege="Edit CommonLabTest Metadata">
+					<openmrs:hasPrivilege privilege="Edit LabTest Metadata">
 						<th>Name</th>
 					</openmrs:hasPrivilege>
 					<th>Description</th>
@@ -108,9 +109,9 @@ body {
 				<c:forEach var="tt" items="${labTestAttributeTypes}">
 					<tr>
 						<td hidden="true" id="uuid">${tt.uuid}</td>
-						<openmrs:hasPrivilege privilege="Edit CommonLabTest Metadata">
+						<openmrs:hasPrivilege privilege="Edit LabTest Metadata">
 							<td><a style="text-decoration: none"
-								href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestAttributeType.form?uuid=${tt.uuid}"
+								href="${pageContext.request.contextPath}/module/mdrtb/addLabTestAttributeType.form?uuid=${tt.uuid}"
 								class="hvr-icon-grow"><span><i
 										class="fa fa-edit hvr-icon"></i></span> ${tt.name}</a></td>
 						</openmrs:hasPrivilege>
@@ -126,17 +127,17 @@ body {
 
 <!--JAVA SCRIPT  -->
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/jquery-3.3.1.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/popper.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/popper.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/bootstrap.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery-ui.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery-ui.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery.dataTables.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery.dataTables.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/dataTables.bootstrap4.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/dataTables.bootstrap4.min.js"></script>
 
 
 <script>
@@ -157,7 +158,7 @@ body {
 						jQuery(function() {
 
 							if (performance.navigation.type == 1) {
-								window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/manageLabTestAttributeTypes.form";
+								window.location.href = "${pageContext.request.contextPath}/module/mdrtb/manageLabTestAttributeTypes.form";
 							}
 
 							jQuery("body")
@@ -165,7 +166,7 @@ body {
 											function(e) {
 
 												if (e.which == 116) {
-													window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/manageLabTestAttributeTypes.form";
+													window.location.href = "${pageContext.request.contextPath}/module/mdrtb/manageLabTestAttributeTypes.form";
 												}
 
 											});

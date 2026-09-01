@@ -1,27 +1,28 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include
-	file="/WEB-INF/view/module/commonlabtest/include/localHeader.jsp"%>
-<!-- <openmrs:require anyPrivilege ="Add CommonLabTest Metadata , Edit CommonLabTest Metadata" otherwise="/login.htm" redirect="/module/commonlabtest/addLabTestAttributeType.form" />
+	file="/WEB-INF/view/module/mdrtb/include/localHeader.jsp"%>
+<!-- <openmrs:require anyPrivilege ="Add LabTest Metadata , Edit LabTest Metadata" otherwise="/login.htm" redirect="/module/mdrtb/addLabTestAttributeType.form" />
  -->
 
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
 	rel="stylesheet" />
 
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover-min.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover-min.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/mdb.css" />
+	href="/openmrs/moduleResources/mdrtb/css/mdb.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/mdb.min.css" />
+	href="/openmrs/moduleResources/mdrtb/css/mdb.min.css" />
 <style>
 body {
 	font-size: 10px;
@@ -91,22 +92,22 @@ legend.scheduler-border {
 			value="${attributeType}" />
 		<fieldset class="scheduler-border">
 			<c:if test="${empty testAttributeType.name}">
-				<openmrs:require privilege="Add CommonLabTest Metadata"
+				<openmrs:require privilege="Add LabTest Metadata"
 					otherwise="/login.htm"
-					redirect="/module/commonlabtest/addLabTestAttributeType.form" />
+					redirect="/module/mdrtb/addLabTestAttributeType.form" />
 				<legend class="scheduler-border">
 					<mdrtb:message code="commonlabtest.labtestattributetype.add" />
 				</legend>
 			</c:if>
 			<c:if test="${not empty testAttributeType.name}">
-				<openmrs:require privilege="Edit CommonLabTest Metadata"
+				<openmrs:require privilege="Edit LabTest Metadata"
 					otherwise="/login.htm"
-					redirect="/module/commonlabtest/addLabTestAttributeType.form" />
+					redirect="/module/mdrtb/addLabTestAttributeType.form" />
 				<legend class="scheduler-border">
 					<mdrtb:message code="commonlabtest.labtestattributetype.edit" />
 				</legend>
 			</c:if>
-			<form:form commandName="attributeType"
+			<form:form modelAttribute="attributeType"
 				onsubmit='return validate(this);'>
 				<div class="row">
 					<div class="col-md-2">
@@ -392,21 +393,21 @@ legend.scheduler-border {
 					</div>
 					<div class="col-md-2">
 						<input type="button"
-							onclick="location.href = '${pageContext.request.contextPath}/module/commonlabtest/manageLabTestAttributeTypes.form';"
+							onclick="location.href = '${pageContext.request.contextPath}/module/mdrtb/manageLabTestAttributeTypes.form';"
 							value="Cancel"></input>
 					</div>
 				</div>
 			</form:form>
 		</fieldset>
 		<br>
-		<openmrs:hasPrivilege privilege="Delete CommonLabTest Metadata">
+		<openmrs:hasPrivilege privilege="Delete LabTest Metadata">
 			<c:if test="${not empty testAttributeType.name}">
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">
 						<mdrtb:message code="general.test.retire" />
 					</legend>
 					<form class="form-horizontal" method="post"
-						action="${pageContext.request.contextPath}/module/commonlabtest/retirelabtestattributetype.form"
+						action="${pageContext.request.contextPath}/module/mdrtb/retirelabtestattributetype.form"
 						onsubmit="return retireValidate()">
 						<!-- UUID -->
 						<div class="row">
@@ -462,13 +463,13 @@ legend.scheduler-border {
 
 <!--Java Script  -->
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/jquery-3.3.1.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/popper.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/popper.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/bootstrap.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery-ui.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery-ui.min.js"></script>
 
 <script>
 	var localSource;
@@ -992,20 +993,20 @@ legend.scheduler-border {
           var testAttributeTypeName = '${testAttributeType.name}'
 		 if (performance.navigation.type == 1) {
 			 if(testAttributeTypeName ==null || testAttributeTypeName == ""){
-				 window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestAttributeType.form";
+				 window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestAttributeType.form";
 			 	}
 				 else{
-					 window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestAttributeType.form?uuid="+uuid; 
+					 window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestAttributeType.form?uuid="+uuid; 
 				 }
 			}
 		 jQuery("body").keydown(function(e){
 
 		 if(e.which==116){
 			 if(testAttributeTypeName ==null || testAttributeTypeName == ""){
-				 window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestAttributeType.form";
+				 window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestAttributeType.form";
 			 	}
 				 else{
-					 window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestAttributeType.form?uuid="+uuid; 
+					 window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestAttributeType.form?uuid="+uuid; 
 				 }		
 		   }
 
@@ -1025,7 +1026,7 @@ legend.scheduler-border {
 		 $.ajax({
 				type : "GET",
 				contentType : "application/json",
-				url : '${pageContext.request.contextPath}/module/commonlabtest/getTestAttributeTypeSortWeight.form?testTypeId='+testTypeId,
+				url : '${pageContext.request.contextPath}/module/mdrtb/getTestAttributeTypeSortWeight.form?testTypeId='+testTypeId,
 				async:false,
 				dataType : "json",
 				success : function(data) {
@@ -1073,7 +1074,7 @@ legend.scheduler-border {
 		 $.ajax({
 				type : "GET",
 				contentType : "application/json",
-				url : '${pageContext.request.contextPath}/module/commonlabtest/getConceptExist.form?conceptUuid='+uuid,
+				url : '${pageContext.request.contextPath}/module/mdrtb/getConceptExist.form?conceptUuid='+uuid,
 				async:false,
 				dataType : "json",
 				success : function(data) {

@@ -34,11 +34,11 @@ public class LabTestOrderController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestOrder";
+	private final String SUCCESS_ADD_FORM_VIEW = "/module/mdrtb/addLabTestOrder";
 	
 	LabTestService LabTestService;
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/addLabTestOrder.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/addLabTestOrder.form")
 	public String showForm(@RequestParam(required = true) Integer patientId,
 	        @RequestParam(required = false) Integer testOrderId, @RequestParam(required = false) String error, ModelMap model) {
 		LabTestService = Context.getService(LabTestService.class);
@@ -86,7 +86,7 @@ public class LabTestOrderController {
 	}
 	
 	@Authorized(MdrtbConfig.ADD_LAB_TEST_PRIVILEGE)
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/addLabTestOrder.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/addLabTestOrder.form")
 	public String onSubmit(ModelMap model, HttpSession httpSession,
 	        @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
 	        @ModelAttribute("labTest") LabTest labTest, BindingResult result) {
@@ -122,7 +122,7 @@ public class LabTestOrderController {
 		return "redirect:../../patientDashboard.form?patientId=" + labTest.getOrder().getPatient().getPatientId();
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/voidlabtestorder.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/voidlabtestorder.form")
 	public String onVoid(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("uuid") String uuid, @RequestParam("voidReason") String voidReason) {
 		LabTestService = Context.getService(LabTestService.class);

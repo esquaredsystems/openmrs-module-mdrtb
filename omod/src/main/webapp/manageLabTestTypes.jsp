@@ -1,30 +1,31 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include
-	file="/WEB-INF/view/module/commonlabtest/include/localHeader.jsp"%>
-<openmrs:require privilege="View CommonLabTest Metadata"
-	redirect="/module/commonlabtest/manageLabTestTypes.form"
+	file="/WEB-INF/view/module/mdrtb/include/localHeader.jsp"%>
+<openmrs:require privilege="View LabTest Metadata"
+	redirect="/module/mdrtb/manageLabTestTypes.form"
 	otherwise="/login.htm" />
 
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/dataTables.bootstrap4.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/dataTables.bootstrap4.min.css"
 	rel="stylesheet" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover-min.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover-min.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/mdb.css" />
+	href="/openmrs/moduleResources/mdrtb/css/mdb.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/mdb.min.css" />
+	href="/openmrs/moduleResources/mdrtb/css/mdb.min.css" />
 
 <style>
 body {
@@ -85,7 +86,7 @@ table.display tbody tr:nth-child(even):hover td {
 	</div>
 </c:if>
 <div>
-	<openmrs:hasPrivilege privilege="Add CommonLabTest Metadata">
+	<openmrs:hasPrivilege privilege="Add LabTest Metadata">
 		<a style="text-decoration: none" href="addLabTestType.form"
 			class="hvr-icon-grow"><i class="fa fa-plus hvr-icon"></i> <mdrtb:message
 				code="commonlabtest.labtesttype.add" /> </a>
@@ -103,7 +104,7 @@ table.display tbody tr:nth-child(even):hover td {
 			<tr>
 				<th hidden="true"></th>
 				<th hidden="true"></th>
-				<openmrs:hasPrivilege privilege="Edit CommonLabTest Metadata">
+				<openmrs:hasPrivilege privilege="Edit LabTest Metadata">
 					<th>Name</th>
 				</openmrs:hasPrivilege>
 				<th>Short Name</th>
@@ -117,9 +118,9 @@ table.display tbody tr:nth-child(even):hover td {
 				<tr>
 					<td hidden="true" class="uuid">${tt.uuid}</td>
 					<td hidden="true" class="testTypeId">${tt.labTestTypeId}</td>
-					<openmrs:hasPrivilege privilege="Edit CommonLabTest Metadata">
+					<openmrs:hasPrivilege privilege="Edit LabTest Metadata">
 						<td><a style="text-decoration: none"
-							href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestType.form?uuid=${tt.uuid}"
+							href="${pageContext.request.contextPath}/module/mdrtb/addLabTestType.form?uuid=${tt.uuid}"
 							class="hvr-icon-grow"><span><i
 									class="fa fa-edit hvr-icon"></i></span> ${tt.name}</a></td>
 					</openmrs:hasPrivilege>
@@ -162,17 +163,17 @@ table.display tbody tr:nth-child(even):hover td {
 
 <!--JAVA SCRIPT  -->
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/jquery-3.3.1.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/popper.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/popper.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/bootstrap.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery-ui.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery-ui.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery.dataTables.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery.dataTables.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/dataTables.bootstrap4.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/dataTables.bootstrap4.min.js"></script>
 
 <script>
 	function editTestOrder(ele) {
@@ -203,7 +204,7 @@ table.display tbody tr:nth-child(even):hover td {
 				.ajax({
 					type : "GET",
 					contentType : "application/json",
-					url : '${pageContext.request.contextPath}/module/commonlabtest/getTestAttributeTypeSortWeight.form?testTypeId='
+					url : '${pageContext.request.contextPath}/module/mdrtb/getTestAttributeTypeSortWeight.form?testTypeId='
 							+ testTypeId,
 					async : false,
 					dataType : "json",

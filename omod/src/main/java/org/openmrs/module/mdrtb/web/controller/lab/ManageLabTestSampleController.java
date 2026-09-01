@@ -25,11 +25,11 @@ public class ManageLabTestSampleController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/manageLabTestSamples";
+	private final String SUCCESS_ADD_FORM_VIEW = "/module/mdrtb/manageLabTestSamples";
 	
 	LabTestService LabTestService;
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/manageLabTestSamples.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/manageLabTestSamples.form")
 	public String showLabTestSample(HttpServletRequest request, @RequestParam(required = true) Integer patientId,
 	        @RequestParam(required = false) Integer testOrderId, @RequestParam(required = false) String save, ModelMap model) {
 		LabTestService = Context.getService(LabTestService.class);
@@ -65,7 +65,7 @@ public class ManageLabTestSampleController {
 		return SUCCESS_ADD_FORM_VIEW;
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/statuslabtestsample.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/statuslabtestsample.form")
 	public String onStatuChange(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("uuid") String uuid, @RequestParam("patientId") String patientId,
 	        @RequestParam(value = "rejectedReason", required = false) String rejectedReason,

@@ -1,27 +1,28 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<openmrs:require privilege="View CommonLabTest Results" otherwise="/login.htm"
-	redirect="/module/commonlabtest/addLabTestResult.form" />
+<openmrs:require privilege="View LabTest Results" otherwise="/login.htm"
+	redirect="/module/mdrtb/addLabTestResult.form" />
 
 <openmrs:portlet url="patientHeader" id="patientDashboardHeader"
 	patientId="${patientId}" />
 
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/dataTables.bootstrap4.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/dataTables.bootstrap4.min.css"
 	rel="stylesheet" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover-min.css" />
-<link href="/openmrs/moduleResources/commonlabtest/css/style.css"
+	href="/openmrs/moduleResources/mdrtb/css/hover-min.css" />
+<link href="/openmrs/moduleResources/mdrtb/css/style.css"
 	rel="stylesheet" />
 
 
@@ -154,17 +155,17 @@ input[type=checkbox] {
 
 			<c:choose>
 				<c:when test="${update == false}">
-					<openmrs:require privilege="Add CommonLabTest Results"
+					<openmrs:require privilege="Add LabTest Results"
 						otherwise="/login.htm"
-						redirect="/module/commonlabtest/addLabTestResult.form" />
+						redirect="/module/mdrtb/addLabTestResult.form" />
 					<legend class="scheduler-border">
 						<mdrtb:message code="commonlabtest.result.add" />
 					</legend>
 				</c:when>
 				<c:otherwise>
-					<openmrs:require privilege="Edit CommonLabTest Results"
+					<openmrs:require privilege="Edit LabTest Results"
 						otherwise="/login.htm"
-						redirect="/module/commonlabtest/addLabTestResult.form" />
+						redirect="/module/mdrtb/addLabTestResult.form" />
 					<legend class="scheduler-border">
 						<mdrtb:message code="commonlabtest.result.edit" />
 					</legend>
@@ -179,13 +180,13 @@ input[type=checkbox] {
 		</fieldset>
 		<br>
 		<c:if test="${update == true}">
-			<openmrs:hasPrivilege privilege="Delete CommonLabTest Results">
+			<openmrs:hasPrivilege privilege="Delete LabTest Results">
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">
 						<mdrtb:message code="commonlabtest.result.void" />
 					</legend>
 					<form method="post"
-						action="${pageContext.request.contextPath}/module/commonlabtest/voidlabtestresult.form">
+						action="${pageContext.request.contextPath}/module/mdrtb/voidlabtestresult.form">
 						<!-- UUID -->
 						<div class="row">
 							<div class="col-md-2">
@@ -217,17 +218,17 @@ input[type=checkbox] {
 
 <!--JAVA SCRIPT  -->
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/jquery-3.3.1.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/popper.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/popper.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/bootstrap.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery-ui.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery-ui.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery.dataTables.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery.dataTables.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/dataTables.bootstrap4.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/dataTables.bootstrap4.min.js"></script>
 
 
 <script type="text/javascript">
@@ -298,7 +299,7 @@ function populateResultForm() {
 
     var resultsItems = "";
 
-    resultsItems = resultsItems.concat('<form method="post" id="entryForm" onsubmit="return validation()" action="${pageContext.request.contextPath}/module/commonlabtest/addLabTestResult.form" enctype="multipart/form-data">');
+    resultsItems = resultsItems.concat('<form method="post" id="entryForm" onsubmit="return validation()" action="${pageContext.request.contextPath}/module/mdrtb/addLabTestResult.form" enctype="multipart/form-data">');
     resultsItems = resultsItems.concat('<input hidden="true" id="testOrderId" name ="testOrderId" value="' + testOrder + '" />');
     resultsItems = resultsItems.concat('<input hidden="true" id="patientId" name ="patientId" value="' + patientId + '" />');
     resultsItems = resultsItems.concat('<center><h4>' + testTypeName + '</h4></center><hr class="style-three">');

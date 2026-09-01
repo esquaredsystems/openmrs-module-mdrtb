@@ -34,6 +34,18 @@
 		<class>org.openmrs.module.mdrtb.extension.html.MdrtbGutterItem</class>
 	</extension>
 
+	<!-- Administration section: MDR-TB home + lab test metadata management -->
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>org.openmrs.module.mdrtb.extension.html.AdminList</class>
+	</extension>
+
+	<!-- "Lab Tests" tab on the legacy patient dashboard (patientLabTests portlet) -->
+	<extension>
+		<point>org.openmrs.patientDashboardTab</point>
+		<class>org.openmrs.module.mdrtb.extension.html.LabTestDashboardTabExt</class>
+	</extension>
+
 	<aware_of_modules>
 		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
 	</aware_of_modules>
@@ -42,6 +54,73 @@
 	<privilege>
 		<name>Edit DOTS-MDR Data</name>
 		<description>Allows user to access Form Entry pages/functions</description>
+	</privilege>
+
+	<!-- Lab test privileges. Names must match the constants in MdrtbConfig, which
+	     the @Authorized annotations on LabTestService refer to. -->
+	<privilege>
+		<name>View LabTest Orders</name>
+		<description>Allows user to view lab test orders</description>
+	</privilege>
+	<privilege>
+		<name>Add LabTest Orders</name>
+		<description>Allows user to create lab test orders</description>
+	</privilege>
+	<privilege>
+		<name>Edit LabTest Orders</name>
+		<description>Allows user to edit lab test orders</description>
+	</privilege>
+	<privilege>
+		<name>Delete LabTest Orders</name>
+		<description>Allows user to void lab test orders</description>
+	</privilege>
+	<privilege>
+		<name>View LabTest Samples</name>
+		<description>Allows user to view lab test samples</description>
+	</privilege>
+	<privilege>
+		<name>Add LabTest Samples</name>
+		<description>Allows user to create lab test samples</description>
+	</privilege>
+	<privilege>
+		<name>Edit LabTest Samples</name>
+		<description>Allows user to edit lab test samples</description>
+	</privilege>
+	<privilege>
+		<name>Delete LabTest Samples</name>
+		<description>Allows user to void lab test samples</description>
+	</privilege>
+	<privilege>
+		<name>View LabTest Results</name>
+		<description>Allows user to view lab test results</description>
+	</privilege>
+	<privilege>
+		<name>Add LabTest Results</name>
+		<description>Allows user to enter lab test results</description>
+	</privilege>
+	<privilege>
+		<name>Edit LabTest Results</name>
+		<description>Allows user to edit lab test results</description>
+	</privilege>
+	<privilege>
+		<name>Delete LabTest Results</name>
+		<description>Allows user to void lab test results</description>
+	</privilege>
+	<privilege>
+		<name>View LabTest Metadata</name>
+		<description>Allows user to view lab test types and attribute types</description>
+	</privilege>
+	<privilege>
+		<name>Add LabTest Metadata</name>
+		<description>Allows user to create lab test types and attribute types</description>
+	</privilege>
+	<privilege>
+		<name>Edit LabTest Metadata</name>
+		<description>Allows user to edit lab test types and attribute types</description>
+	</privilege>
+	<privilege>
+		<name>Delete LabTest Metadata</name>
+		<description>Allows user to retire lab test types and attribute types</description>
 	</privilege>
 
 	<!-- Message bundles are supplied by the mdrtb-api dependency when the module is packaged. -->

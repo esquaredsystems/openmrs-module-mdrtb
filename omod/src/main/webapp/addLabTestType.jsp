@@ -1,16 +1,17 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include
-	file="/WEB-INF/view/module/commonlabtest/include/localHeader.jsp"%>
-<!-- <openmrs:require anyPrivilege="Add CommonLabTest Metadata, Edit CommonLabTest Metadata" otherwise="/login.htm" redirect="/module/commonlabtest/addLabTestType.form" />
+	file="/WEB-INF/view/module/mdrtb/include/localHeader.jsp"%>
+<!-- <openmrs:require anyPrivilege="Add LabTest Metadata,Edit LabTest Metadata" otherwise="/login.htm" redirect="/module/mdrtb/addLabTestType.form" />
  -->
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
 	rel="stylesheet" />
 
 <style>
@@ -73,22 +74,22 @@ legend.scheduler-border {
 
 		<fieldset class="scheduler-border">
 			<c:if test="${empty testType.referenceConcept.conceptId}">
-				<openmrs:require privilege="Add CommonLabTest Metadata"
+				<openmrs:require privilege="Add LabTest Metadata"
 					otherwise="/login.htm"
-					redirect="/module/commonlabtest/addLabTestType.form" />
+					redirect="/module/mdrtb/addLabTestType.form" />
 				<legend class="scheduler-border">
 					<mdrtb:message code="commonlabtest.labtesttype.add" />
 				</legend>
 			</c:if>
 			<c:if test="${not empty testType.referenceConcept.conceptId}">
-				<openmrs:require privilege="Edit CommonLabTest Metadata"
+				<openmrs:require privilege="Edit LabTest Metadata"
 					otherwise="/login.htm"
-					redirect="/module/commonlabtest/addLabTestType.form" />
+					redirect="/module/mdrtb/addLabTestType.form" />
 				<legend class="scheduler-border">
 					<mdrtb:message code="commonlabtest.labtesttype.edit" />
 				</legend>
 			</c:if>
-			<form:form commandName="labTestType" id="testTypeForm"
+			<form:form modelAttribute="labTestType" id="testTypeForm"
 				onsubmit='return validate(this);'>
 				<!-- Concept Reference -->
 				<div class="row">
@@ -213,7 +214,7 @@ legend.scheduler-border {
 					</div>
 					<div class="col-md-2">
 						<input type="button"
-							onclick="location.href = '${pageContext.request.contextPath}/module/commonlabtest/manageLabTestTypes.form';"
+							onclick="location.href = '${pageContext.request.contextPath}/module/mdrtb/manageLabTestTypes.form';"
 							value="Cancel"></input>
 					</div>
 				</div>
@@ -221,7 +222,7 @@ legend.scheduler-border {
 
 		</fieldset>
 		<br>
-		<openmrs:hasPrivilege privilege="Delete CommonLabTest Metadata">
+		<openmrs:hasPrivilege privilege="Delete LabTest Metadata">
 			<c:if test="${not empty testType.referenceConcept.conceptId}">
 
 				<fieldset class="scheduler-border">
@@ -229,7 +230,7 @@ legend.scheduler-border {
 						<mdrtb:message code="general.test.retire" />
 					</legend>
 					<form method="post"
-						action="${pageContext.request.contextPath}/module/commonlabtest/retirelabtesttype.form"
+						action="${pageContext.request.contextPath}/module/mdrtb/retirelabtesttype.form"
 						onsubmit="return retireValidate()">
 						<!-- UUID -->
 						<div class="row">
@@ -261,13 +262,13 @@ legend.scheduler-border {
 </body>
 
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/jquery-3.3.1.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/popper.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/popper.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/bootstrap.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery-ui.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery-ui.min.js"></script>
 
 <script>
 var localSource;
@@ -417,9 +418,9 @@ jQuery(function () {
     var labReferenceId = '${testType.referenceConcept.conceptId}'
     if (performance.navigation.type == 1) {
         if (labReferenceId == null || labReferenceId == "") {
-            window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestType.form";
+            window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestType.form";
         } else {
-            window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestType.form?uuid=" + uuid;
+            window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestType.form?uuid=" + uuid;
         }
     }
 
@@ -427,9 +428,9 @@ jQuery(function () {
 
         if (e.which == 116) {
             if (labReferenceId == null || labReferenceId == "") {
-                window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestType.form";
+                window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestType.form";
             } else {
-                window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestType.form?uuid=" + uuid;
+                window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestType.form?uuid=" + uuid;
             }
         }
 

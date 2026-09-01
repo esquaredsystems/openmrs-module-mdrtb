@@ -17,33 +17,33 @@
 		href="${pageContext.request.contextPath}/admin"><mdrtb:message
 				code="admin.title.short" /></a></li>
 	<%-- <li
-		<c:if test='<%=request.getRequestURI().contains("/commonlabtest")%>'>class="active"</c:if>>
+		<c:if test='<%=request.getRequestURI().contains("/mdrtb/commonlabtest")%>'>class="active"</c:if>>
 		<a
-		href="${pageContext.request.contextPath}/module/commonlabtest/commonlabtest.form"><mdrtb:message
+		href="${pageContext.request.contextPath}/module/mdrtb/commonlabtest.form"><mdrtb:message
 				code="commonlabtest.general.about" /></a>
 	</li> --%>
    
 	<li
 		<c:if test='<%=request.getRequestURI().contains("/manageLabTestTypes")%>'>class="active"</c:if>>
 		<a
-		href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTestTypes.form"><mdrtb:message
+		href="${pageContext.request.contextPath}/module/mdrtb/manageLabTestTypes.form"><mdrtb:message
 				code="commonlabtest.labtesttype.manage" /></a>
 	</li>
 	<li
 		<c:if test='<%=request.getRequestURI().contains("/manageLabTestAttributeTypes")%>'>class="active"</c:if>>
-		<a href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTestAttributeTypes.form">
+		<a href="${pageContext.request.contextPath}/module/mdrtb/manageLabTestAttributeTypes.form">
 		<mdrtb:message code="commonlabtest.labtestattributetype.manage" /></a>
 	</li>
 	<%-- <li
 		<c:if test='<%=request.getRequestURI().contains("/manageLabTestSamples")%>'>class="active"</c:if>>
 		<a
-		href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTestSamples.form"><mdrtb:message
+		href="${pageContext.request.contextPath}/module/mdrtb/manageLabTestSamples.form"><mdrtb:message
 				code="commonlabtest.labtestsample.manage" /></a>
 	</li>
 	<li
 		<c:if test='<%=request.getRequestURI().contains("/manageLabTests")%>'>class="active"</c:if>>
 		<a
-		href="${pageContext.request.contextPath}/module/commonlabtest/manageLabTests.form"><mdrtb:message
+		href="${pageContext.request.contextPath}/module/mdrtb/manageLabTests.form"><mdrtb:message
 				code="commonlabtest.labtest.manage" /></a>
 	</li> --%>
 

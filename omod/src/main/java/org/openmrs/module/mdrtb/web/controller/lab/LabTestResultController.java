@@ -41,13 +41,13 @@ public class LabTestResultController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestResult";
+	private final String SUCCESS_ADD_FORM_VIEW = "/module/mdrtb/addLabTestResult";
 	
 	LabTestService LabTestService;
 	
 	public static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/addLabTestResult.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/addLabTestResult.form")
 	public String showForm(HttpServletRequest request, @RequestParam(required = false) Integer testOrderId,
 	        @RequestParam(required = false) Integer patientId, ModelMap model) {
 		
@@ -109,7 +109,7 @@ public class LabTestResultController {
 		return SUCCESS_ADD_FORM_VIEW;
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/addLabTestResult.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/addLabTestResult.form")
 	public String onSubmit(ModelMap model, HttpServletRequest request, @RequestParam(required = true) Integer testOrderId,
 	        @RequestParam(required = false) Integer testAttributeId,
 	        @RequestParam(required = false) MultipartFile documentTypeFile, @RequestParam(required = false) Boolean update) {
@@ -289,7 +289,7 @@ public class LabTestResultController {
 		return "redirect:../../patientDashboard.form?patientId=" + labTest.getOrder().getPatient().getPatientId();
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/voidlabtestresult.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/voidlabtestresult.form")
 	public String onVoid(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("testOrderId") Integer testOrderId, @RequestParam("patientId") Integer patientId,
 	        @RequestParam("voidReason") String voidReason) {

@@ -37,11 +37,11 @@ public class LabTestRequestController {
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestRequest";
+	private final String SUCCESS_ADD_FORM_VIEW = "/module/mdrtb/addLabTestRequest";
 	
 	LabTestService LabTestService;
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/addLabTestRequest.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/addLabTestRequest.form")
 	public String showForm(HttpServletRequest request, @RequestParam(required = false) String error,
 	        @RequestParam(required = false) Integer patientId, ModelMap model) {
 		LabTestService = Context.getService(LabTestService.class);
@@ -113,7 +113,7 @@ public class LabTestRequestController {
 		return SUCCESS_ADD_FORM_VIEW;
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/addLabTestRequest.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/addLabTestRequest.form")
 	@ResponseBody
 	public boolean onSubmit(ModelMap model, HttpSession httpSession, HttpServletRequest request, @RequestBody String json,
 	        @RequestParam(required = false) Integer patientId) {

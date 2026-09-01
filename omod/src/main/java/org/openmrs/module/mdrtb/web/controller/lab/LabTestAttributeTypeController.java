@@ -29,7 +29,7 @@ public class LabTestAttributeTypeController {
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private final String SUCCESS_ADD_FORM_VIEW = "/module/commonlabtest/addLabTestAttributeType";
+	private final String SUCCESS_ADD_FORM_VIEW = "/module/mdrtb/addLabTestAttributeType";
 	
 	LabTestService LabTestService;
 	
@@ -43,7 +43,7 @@ public class LabTestAttributeTypeController {
 		return CustomDatatypeUtil.getHandlerClassnames();
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/addLabTestAttributeType.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/addLabTestAttributeType.form")
 	public String showForm(ModelMap model, @RequestParam(value = "error", required = false) String error,
 	        @RequestParam(value = "uuid", required = false) String uuid) {
 		LabTestService = Context.getService(LabTestService.class);
@@ -65,7 +65,7 @@ public class LabTestAttributeTypeController {
 		return SUCCESS_ADD_FORM_VIEW;
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/addLabTestAttributeType.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/addLabTestAttributeType.form")
 	public String onSubmit(ModelMap model, HttpSession httpSession,
 	        @ModelAttribute("anyRequestObject") Object anyRequestObject, HttpServletRequest request,
 	        @ModelAttribute("attributeType") LabTestAttributeType attributeType, BindingResult result) {
@@ -104,7 +104,7 @@ public class LabTestAttributeTypeController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/retirelabtestattributetype.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/retirelabtestattributetype.form")
 	public String onRetire(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("uuid") String uuid, @RequestParam("retireReason") String retireReason) {
 		LabTestService = Context.getService(LabTestService.class);
@@ -139,7 +139,7 @@ public class LabTestAttributeTypeController {
 		
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/module/commonlabtest/deletelabtestattributetype.form")
+	@RequestMapping(method = RequestMethod.POST, value = "/module/mdrtb/deletelabtestattributetype.form")
 	public String onDelete(ModelMap model, HttpSession httpSession, HttpServletRequest request,
 	        @RequestParam("uuid") String uuid) {
 		LabTestService = Context.getService(LabTestService.class);

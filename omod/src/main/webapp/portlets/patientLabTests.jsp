@@ -1,23 +1,24 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/dataTables.bootstrap4.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/dataTables.bootstrap4.min.css"
 	rel="stylesheet" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover.css" />
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/hover-min.css" />
+	href="/openmrs/moduleResources/mdrtb/css/hover-min.css" />
 <style>
 
 
@@ -73,12 +74,12 @@ tbody.collapse.in {
 <%-- 	<c:set var="testOrder" scope="session" value="${model.testOrder}" />
  --%>	
    <div class="row">
-	<openmrs:hasPrivilege privilege="Add CommonLabTest Orders">
+	<openmrs:hasPrivilege privilege="Add LabTest Orders">
 		  <div class="col-sm-4 col-md-2">
-		 	 <a style="text-decoration:none" href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestOrder.form?patientId=${model.patient.patientId}" class="hvr-icon-grow"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/plus.png"> <span> </span> <mdrtb:message code="commonlabtest.order.add" /> </a>
+		 	 <a style="text-decoration:none" href="${pageContext.request.contextPath}/module/mdrtb/addLabTestOrder.form?patientId=${model.patient.patientId}" class="hvr-icon-grow"><img class="manImg hvr-icon" src="/openmrs/moduleResources/mdrtb/img/plus.png"> <span> </span> <mdrtb:message code="commonlabtest.order.add" /> </a>
 		  </div>
 		   <div class="col-sm-4 col-md-2">
-		   	 <a style="text-decoration:none" href="${pageContext.request.contextPath}/module/commonlabtest/addLabTestRequest.form?patientId=${model.patient.patientId}" class="hvr-icon-grow"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/plus.png"> <span> </span>  <mdrtb:message code="commonlabtest.request.add" /> </a>
+		   	 <a style="text-decoration:none" href="${pageContext.request.contextPath}/module/mdrtb/addLabTestRequest.form?patientId=${model.patient.patientId}" class="hvr-icon-grow"><img class="manImg hvr-icon" src="/openmrs/moduleResources/mdrtb/img/plus.png"> <span> </span>  <mdrtb:message code="commonlabtest.request.add" /> </a>
 		  </div>
 	  </openmrs:hasPrivilege>
 	</div>
@@ -99,15 +100,15 @@ tbody.collapse.in {
 					<th>Encounter</th>
 					<th>Encounter Date</th>
 					<th>View</th>
-					<openmrs:hasPrivilege privilege="Edit CommonLabTest Orders">
+					<openmrs:hasPrivilege privilege="Edit LabTest Orders">
 					  <th>Edit</th>
 					</openmrs:hasPrivilege>
 					<c:if test="${model.anyTestRequireSample eq 'true'}">
-						<openmrs:hasPrivilege privilege="View CommonLabTest Samples">
+						<openmrs:hasPrivilege privilege="View LabTest Samples">
 						  <th>Manage Test Sample</th>
 						</openmrs:hasPrivilege>
 					</c:if>
-					 <openmrs:hasPrivilege privilege="View CommonLabTest Results">
+					 <openmrs:hasPrivilege privilege="View LabTest Results">
 					 <th>Test Result</th>
 					 <th>Result Date</th>
 					</openmrs:hasPrivilege>
@@ -137,7 +138,7 @@ tbody.collapse.in {
 	     			 
 	     			 </div>
 	            </fieldset>    
-  			 <openmrs:hasPrivilege privilege="View CommonLabTest Samples">
+  			 <openmrs:hasPrivilege privilege="View LabTest Samples">
                <!--Test Sample Details -->
                <fieldset  class="scheduler-border">
       	 		  <legend  class="scheduler-border"><mdrtb:message code="commonlabtest.labtestsample.detail" /></legend>
@@ -146,7 +147,7 @@ tbody.collapse.in {
 			       </div>
        			 </fieldset>
        		</openmrs:hasPrivilege>	
-       		<openmrs:hasPrivilege privilege="View CommonLabTest Results">	 
+       		<openmrs:hasPrivilege privilege="View LabTest Results">	 
        			  <!--Test Result Details -->
                <fieldset  class="scheduler-border">
       	 		  <legend  class="scheduler-border"><mdrtb:message code="commonlabtest.result.detail" /></legend>
@@ -163,25 +164,25 @@ tbody.collapse.in {
 
 <!--JAVA SCRIPT  -->
  <%--<script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/jquery-3.3.1.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/popper.min.js"></script> --%>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/popper.min.js"></script> --%>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/bootstrap.min.js"></script>
  <%--<script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery-ui.min.js"></script> --%>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery-ui.min.js"></script> --%>
  <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery.dataTables.min.js"></script> 
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery.dataTables.min.js"></script> 
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/dataTables.bootstrap4.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/dataTables.bootstrap4.min.js"></script>
 
 <script type="text/javascript">	
  var testOrderArray ;
  var anyTestRequireSpecimen = false;
  var isStatusAccepted = false;
 jQuery(document).ready(function () {
-	  testOrderArray = ${model.testOrder};
-	  anyTestRequireSpecimen = ${model.anyTestRequireSample};
+	  testOrderArray = ${empty model.testOrder ? '[]' : model.testOrder};
+	  anyTestRequireSpecimen = ${empty model.anyTestRequireSample ? 'false' : model.anyTestRequireSample};
 	 // console.log("Array: "+ JSON.stringify(testOrderArray));
 	   generateOrderTable(testOrderArray, anyTestRequireSpecimen);
 	   
@@ -219,25 +220,25 @@ jQuery(document).ready(function () {
 		        resultsItems = resultsItems.concat(' <td>'+this.labReferenceNumber+'</td>');
 		        resultsItems = resultsItems.concat(' <td>'+this.encounterName+'</td>');
 		        resultsItems = resultsItems.concat(' <td>'+this.encounterDate+'</td>');
-		        resultsItems = resultsItems.concat('<td style="text-align:center"> <span class="table-view hvr-icon-grow" onclick="viewTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/view.png"></span></td>');
-		        resultsItems = resultsItems.concat('<openmrs:hasPrivilege privilege="Edit CommonLabTest Orders">');
-		        resultsItems = resultsItems.concat('<td style="text-align:center"> <span class="table-edit hvr-icon-grow" onclick="editTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/edit.png"></span></td>');
+		        resultsItems = resultsItems.concat('<td style="text-align:center"> <span class="table-view hvr-icon-grow" onclick="viewTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/mdrtb/img/view.png"></span></td>');
+		        resultsItems = resultsItems.concat('<openmrs:hasPrivilege privilege="Edit LabTest Orders">');
+		        resultsItems = resultsItems.concat('<td style="text-align:center"> <span class="table-edit hvr-icon-grow" onclick="editTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/mdrtb/img/edit.png"></span></td>');
 		        resultsItems = resultsItems.concat('</openmrs:hasPrivilege>');
 		        if(anyTestRequireSpecimen)  {
 		        	if(this.requiredSpecimen) {
-				        resultsItems = resultsItems.concat('<openmrs:hasPrivilege privilege="View CommonLabTest Samples">');
-				        resultsItems = resultsItems.concat('<td style="text-align:center"> <span class="table-sample hvr-icon-grow" onclick="samplesTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/testSample.png"></img></span></span></td>');
+				        resultsItems = resultsItems.concat('<openmrs:hasPrivilege privilege="View LabTest Samples">');
+				        resultsItems = resultsItems.concat('<td style="text-align:center"> <span class="table-sample hvr-icon-grow" onclick="samplesTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/mdrtb/img/testSample.png"></img></span></span></td>');
 				        resultsItems = resultsItems.concat('</openmrs:hasPrivilege>');
 		        	}
 			        else {
 			        	resultsItems = resultsItems.concat('<td style="text-align:center">Sample not required</td>');
 			        }
 		        }
-		        resultsItems = resultsItems.concat('<openmrs:hasPrivilege privilege="View CommonLabTest Results">');
+		        resultsItems = resultsItems.concat('<openmrs:hasPrivilege privilege="View LabTest Results">');
 		        if(this.resultFilled){
-		          resultsItems = resultsItems.concat('<td style="text-align:center"> <span class="table-result hvr-icon-grow" onclick="resultsTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/testResult.png"></img></span></span><span style="margin-left: 35px">  </span><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/greenchecked.png"></img></td>');
+		          resultsItems = resultsItems.concat('<td style="text-align:center"> <span class="table-result hvr-icon-grow" onclick="resultsTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/mdrtb/img/testResult.png"></img></span></span><span style="margin-left: 35px">  </span><img class="manImg hvr-icon" src="/openmrs/moduleResources/mdrtb/img/greenchecked.png"></img></td>');
 		        }else{
-			    resultsItems = resultsItems.concat('<td> <span class="table-result hvr-icon-grow" onclick="resultsTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/testResult.png"></img></span></span></td>');
+			    resultsItems = resultsItems.concat('<td> <span class="table-result hvr-icon-grow" onclick="resultsTestOrder(this)"><img class="manImg hvr-icon" src="/openmrs/moduleResources/mdrtb/img/testResult.png"></img></span></span></td>');
 		        }
 			    resultsItems = resultsItems.concat('<td style="text-align:center">'+this.resultDate+'</td>');
 		        resultsItems = resultsItems.concat('</openmrs:hasPrivilege>');
@@ -266,7 +267,7 @@ function autoHide(){
 		if(testOrderId == ""){		  
 		}
 		else{
-			window.location = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestOrder.form?patientId="+${model.patient.patientId}+"&testOrderId="+testOrderId; //+"&testOrderId="+2;  
+			window.location = "${pageContext.request.contextPath}/module/mdrtb/addLabTestOrder.form?patientId="+${model.patient.patientId}+"&testOrderId="+testOrderId; //+"&testOrderId="+2;  
 		}
 	}
 	
@@ -295,7 +296,7 @@ function autoHide(){
 			showalert("This test order is does not required test sample...","alert-info");
 		}
 		else{
-			window.location = "${pageContext.request.contextPath}/module/commonlabtest/manageLabTestSamples.form?patientId="+${model.patient.patientId}+"&testOrderId="+testOrderId; 
+			window.location = "${pageContext.request.contextPath}/module/mdrtb/manageLabTestSamples.form?patientId="+${model.patient.patientId}+"&testOrderId="+testOrderId; 
 		}
 	}
 	/* results Test Order */
@@ -312,14 +313,14 @@ function autoHide(){
 		else if(requiresSpecimen == 'true'){
 			//console.log("Called");
 		    if(isStatusAccepted == true){
-				window.location = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestResult.form?patientId="+${model.patient.patientId}+"&testOrderId="+testOrderId;  
+				window.location = "${pageContext.request.contextPath}/module/mdrtb/addLabTestResult.form?patientId="+${model.patient.patientId}+"&testOrderId="+testOrderId;  
 			}
 			else {
 				showalert("To enter a test result, one sample with ACCEPTED status should exist","alert-info");
 			}
 		}
 		else {
-			    window.location = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestResult.form?patientId="+${model.patient.patientId}+"&testOrderId="+testOrderId;
+			    window.location = "${pageContext.request.contextPath}/module/mdrtb/addLabTestResult.form?patientId="+${model.patient.patientId}+"&testOrderId="+testOrderId;
 		}
 		
 	}
@@ -328,7 +329,7 @@ function autoHide(){
 		 jQuery.ajax({
 				type : "GET",
 				contentType : "application/json",
-				url : '${pageContext.request.contextPath}/module/commonlabtest/getTestSampleStatus.form?testOrderId='+testOrderId,
+				url : '${pageContext.request.contextPath}/module/mdrtb/getTestSampleStatus.form?testOrderId='+testOrderId,
 				async:false,
 				dataType : "json",
 				success : function(data) {
@@ -412,7 +413,7 @@ function autoHide(){
 		 jQuery.ajax({
 				  type : "GET",
 				  contentType: "application/json;charset=ISO-8859-1",
-				  url : '${pageContext.request.contextPath}/module/commonlabtest/getTestResults.form?testOrderId='+testOrderId,
+				  url : '${pageContext.request.contextPath}/module/mdrtb/getTestResults.form?testOrderId='+testOrderId,
 					success : function(data) {
 						console.log("testing");
 					    console.log(data);
@@ -429,10 +430,10 @@ function autoHide(){
 	
 	function parsData(data){
 		  var parseData = JSON.parse(data)
-			  <openmrs:hasPrivilege privilege="View CommonLabTest Samples">
+			  <openmrs:hasPrivilege privilege="View LabTest Samples">
 			  		renderTestSample(parseData['sample']);
 			  </openmrs:hasPrivilege>
-			<openmrs:hasPrivilege privilege="View CommonLabTest Results">
+			<openmrs:hasPrivilege privilege="View LabTest Results">
 		       // renderTestResult(parseData['result'])
 		        renderResult(parseData['result']);
 		    </openmrs:hasPrivilege>
@@ -479,7 +480,7 @@ function autoHide(){
 					 	    let groupIden = this.groupName.split(" ").join("");
 						    let groupIdentity =groupIden.replace(/[&\/\\#,+()$~%.:*?<>{}]/g, '');
 					    		resultsItems = resultsItems.concat('<tbody><tr class="clickable" data-toggle="collapse" data-target="#group-of-rows-'+groupIdentity+'" aria-expanded="false" aria-controls="group-of-rows-'+groupIdentity+'">'); 
-								resultsItems = resultsItems.concat('<td style="color: #1aac9b"><img class="manImg hvr-icon" src="/openmrs/moduleResources/commonlabtest/img/add.png"><label style="margin-left: 20px">'+this.groupName+'</label></td>');
+								resultsItems = resultsItems.concat('<td style="color: #1aac9b"><img class="manImg hvr-icon" src="/openmrs/moduleResources/mdrtb/img/add.png"><label style="margin-left: 20px">'+this.groupName+'</label></td>');
 					    		resultsItems = resultsItems.concat('<td></td>');
 								resultsItems = resultsItems.concat('<td><label></label></td>');
 								resultsItems = resultsItems.concat('</tr></tbody>'); 

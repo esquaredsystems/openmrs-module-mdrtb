@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value = "/module/commonlabtest/manageLabTestAttributeTypes.form")
+@RequestMapping(value = "/module/mdrtb/manageLabTestAttributeTypes.form")
 public class ManageLabTestAttributeTypesController {
 	
 	/** Success form view name */
-	private final String SUCCESS_FORM_VIEW = "/module/commonlabtest/manageLabTestAttributeTypes";
+	private final String SUCCESS_FORM_VIEW = "/module/mdrtb/manageLabTestAttributeTypes";
 	
 	/** Logger for this class */
 	protected final Log log = LogFactory.getLog(getClass());

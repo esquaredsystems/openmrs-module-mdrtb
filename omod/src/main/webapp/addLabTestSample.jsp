@@ -1,17 +1,18 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<%@ taglib prefix="mdrtb" uri="/WEB-INF/view/module/mdrtb/taglibs/mdrtb.tld" %>
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<!-- <openmrs:require anyPrivilege="Add CommonLabTest Samples , Edit CommonLabTest Samples" otherwise="/login.htm" redirect="/module/commonlabtest/addLabTestSample.form" />
+<!-- <openmrs:require anyPrivilege="Add LabTest Samples,Edit LabTest Samples" otherwise="/login.htm" redirect="/module/mdrtb/addLabTestSample.form" />
  -->
 <link type="text/css" rel="stylesheet"
-	href="/openmrs/moduleResources/commonlabtest/css/commonlabtest.css" />
+	href="/openmrs/moduleResources/mdrtb/css/commonlabtest.css" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/font-awesome/css/font-awesome.min.css"
+	href="/openmrs/moduleResources/mdrtb/font-awesome/css/font-awesome.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/bootstrap.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/bootstrap.min.css"
 	rel="stylesheet" />
 <link
-	href="/openmrs/moduleResources/commonlabtest/css/dataTables.bootstrap4.min.css"
+	href="/openmrs/moduleResources/mdrtb/css/dataTables.bootstrap4.min.css"
 	rel="stylesheet" />
 
 <style>
@@ -72,17 +73,17 @@ legend.scheduler-border {
 		<c:set var="testSample" scope="session" value="${testSample}" />
 		<fieldset class="scheduler-border">
 			<c:if test="${empty testSample.specimenType}">
-				<openmrs:require privilege="Add CommonLabTest Samples"
+				<openmrs:require privilege="Add LabTest Samples"
 					otherwise="/login.htm"
-					redirect="/module/commonlabtest/addLabTestSample.form" />
+					redirect="/module/mdrtb/addLabTestSample.form" />
 				<legend class="scheduler-border">
 					<mdrtb:message code="commonlabtest.labtestsample.add" />
 				</legend>
 			</c:if>
 			<c:if test="${not empty testSample.specimenType}">
-				<openmrs:require privilege="Edit CommonLabTest Samples"
+				<openmrs:require privilege="Edit LabTest Samples"
 					otherwise="/login.htm"
-					redirect="/module/commonlabtest/addLabTestSample.form" />
+					redirect="/module/mdrtb/addLabTestSample.form" />
 				<legend class="scheduler-border">
 					<mdrtb:message code="commonlabtest.labtestsample.edit" />
 				</legend>
@@ -221,7 +222,7 @@ legend.scheduler-border {
 			</form:form>
 		</fieldset>
 		<br>
-		<openmrs:hasPrivilege privilege="Delete CommonLabTest Samples">
+		<openmrs:hasPrivilege privilege="Delete LabTest Samples">
 			<c:if test="${not empty testSample.specimenType}">
 
 				<fieldset class="scheduler-border">
@@ -229,7 +230,7 @@ legend.scheduler-border {
 						<mdrtb:message code="commonlabtest.labtestsample.void" />
 					</legend>
 					<form method="post"
-						action="${pageContext.request.contextPath}/module/commonlabtest/voidlabtestsample.form">
+						action="${pageContext.request.contextPath}/module/mdrtb/voidlabtestsample.form">
 						<!-- UUID -->
 						<div class="row">
 							<div class="col-md-2">
@@ -260,17 +261,17 @@ legend.scheduler-border {
 
 <!--JAVA SCRIPT  -->
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/jquery-3.3.1.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/jquery-3.3.1.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/popper.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/popper.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/bootstrap/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/bootstrap/js/bootstrap.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery-ui.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery-ui.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/jquery.dataTables.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/jquery.dataTables.min.js"></script>
 <script
-	src="${pageContext.request.contextPath}/moduleResources/commonlabtest/js/dataTables.bootstrap4.min.js"></script>
+	src="${pageContext.request.contextPath}/moduleResources/mdrtb/js/dataTables.bootstrap4.min.js"></script>
 
 
 <script type="text/javascript">
@@ -286,7 +287,7 @@ function isNumber(evt) {
 }
 
 function goTo() {
-    window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/manageLabTestSamples.form?patientId=" + ${ patientId } +"&testOrderId=${orderId}";
+    window.location.href = "${pageContext.request.contextPath}/module/mdrtb/manageLabTestSamples.form?patientId=" + ${ patientId } +"&testOrderId=${orderId}";
 
 }
 
@@ -410,13 +411,13 @@ function validate(form) {
 jQuery(function () {
 
     if (performance.navigation.type == 1) {
-        window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestSample.form?patientId=" + ${ patientId } +"&orderId=" + ${ orderId };
+        window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestSample.form?patientId=" + ${ patientId } +"&orderId=" + ${ orderId };
     }
 
     jQuery("body").keydown(function (e) {
 
         if (e.which == 116) {
-            window.location.href = "${pageContext.request.contextPath}/module/commonlabtest/addLabTestSample.form?patientId=" + ${ patientId } +"&orderId=" + ${ orderId };
+            window.location.href = "${pageContext.request.contextPath}/module/mdrtb/addLabTestSample.form?patientId=" + ${ patientId } +"&orderId=" + ${ orderId };
         }
 
     });

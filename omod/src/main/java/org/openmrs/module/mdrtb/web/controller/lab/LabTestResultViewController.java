@@ -30,7 +30,7 @@ public class LabTestResultViewController {
 	
 	LabTestService LabTestService;
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/getTestResults.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/getTestResults.form")
 	@ResponseBody
 	public String getLabTestResult(@RequestParam Integer testOrderId) {
 		LabTestService = Context.getService(LabTestService.class);
@@ -78,7 +78,7 @@ public class LabTestResultViewController {
 		return testResultList.toString();
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/getTestSampleStatus.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/getTestSampleStatus.form")
 	@ResponseBody
 	public Boolean getLabTestSampleStatus(@RequestParam Integer testOrderId) {
 		LabTestService = Context.getService(LabTestService.class);
@@ -94,7 +94,7 @@ public class LabTestResultViewController {
 		return Boolean.FALSE;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/getTestSampleAcceptedStatus.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/getTestSampleAcceptedStatus.form")
 	@ResponseBody
 	public Boolean getLabTestSampleAcceptedStatus(@RequestParam Integer testOrderId) {
 		LabTestService = Context.getService(LabTestService.class);
@@ -113,7 +113,7 @@ public class LabTestResultViewController {
 			return Boolean.TRUE;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/getTestAttributeTypeSortWeight.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/getTestAttributeTypeSortWeight.form")
 	@ResponseBody
 	public String getLabTestAttributeType(@RequestParam Integer testTypeId) {
 		LabTestService = Context.getService(LabTestService.class);
@@ -136,7 +136,7 @@ public class LabTestResultViewController {
 		return testAttributeList.toString();
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/module/commonlabtest/getConceptExist.form")
+	@RequestMapping(method = RequestMethod.GET, value = "/module/mdrtb/getConceptExist.form")
 	@ResponseBody
 	public Boolean conceptExist(@RequestParam String conceptUuid) {
 		boolean isExist = false;
