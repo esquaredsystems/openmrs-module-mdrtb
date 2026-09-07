@@ -774,4 +774,40 @@
 		</sql>
 	</changeSet>
 
+	<!--
+		A LabTest had no link to the TB program episode it belongs to. The only program marker in
+		the lab path was the PATIENT_PROGRAM_ID obs on the order's encounter: an unconstrained
+		numeric obs holding an unenforced pointer into patient_program, so nothing stopped it going
+		stale or pointing at a row that no longer exists.
+
+		MdrtbServiceImpl.getSmearForms and its five siblings therefore could not filter lab tests by
+		program at all, and returned every common lab test the patient has ever had, across every
+		episode. On a re-treatment patient that puts the first episode's results on the second
+		episode's TB03.
+
+		patient_program_id is nullable on purpose: rows predating this column have no program until
+		the backfill runs, and the foreign key means a row whose program cannot be resolved stays
+		NULL rather than carrying a bad pointer. Counting those NULLs is how we size what the
+		backfill could not resolve.
+	-->
+	<changeSet id="mdrtb-2026-09-01-patient-program" author="owais.hussain">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<columnExists tableName="labtest_test" columnName="patient_program_id" />
+			</not>
+		</preConditions>
+		<comment>
+			Links the labtest_test to the respective patient_program_id to identify the set of tests which fell under that program
+		</comment>
+		<addColumn tableName="labtest_test">
+			<column name="patient_program_id" type="int" />
+		</addColumn>
+		<addForeignKeyConstraint constraintName="labtest_test_patient_program_fk"
+			baseTableName="labtest_test" baseColumnNames="patient_program_id"
+			referencedTableName="patient_program" referencedColumnNames="patient_program_id" />
+		<createIndex tableName="labtest_test" indexName="labtest_test_patient_program_idx">
+			<column name="patient_program_id" />
+		</createIndex>
+	</changeSet>
+
 </databaseChangeLog>

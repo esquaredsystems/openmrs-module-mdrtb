@@ -18,6 +18,7 @@ import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.RestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.PropertyGetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
+import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.api.Searchable;
@@ -35,18 +36,31 @@ public class LabIntegrationResource extends DataDelegatingCrudResource<LabTest> 
 	
 	private LabTestService commonLabService = Context.getService(LabTestService.class);
 	
+	/**
+	 * NOTE: this resource and
+	 * {@link org.openmrs.module.mdrtb.web.resource.lab.LabTestOrderResourceController} both declare
+	 * supportedClass = LabTest.class. Whenever some other resource converts a nested LabTest
+	 * property, the framework resolves the handler by class through
+	 * RestService.getResourceBySupportedClass -- it does not consider which endpoint is being
+	 * served -- so the description below can be reached from anywhere, not just from GET
+	 * /mdrtb/lab. It must therefore terminate on its own.
+	 */
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
 		description.addProperty("uuid");
 		description.addProperty("display");
-		description.addProperty("order");
-		description.addProperty("labTestType");
-		description.addProperty("labReferenceNumber");
-		description.addProperty("labTestSamples");
-		description.addProperty("attributes", Representation.FULL);
-		description.addProperty("auditInfo");
 		description.addSelfLink();
+		// Terminating representation: no collection here may lead back to a LabTest.
+		if (representation instanceof RefRepresentation) {
+			return description;
+		}
+		description.addProperty("order");
+		description.addProperty("labTestType", Representation.REF);
+		description.addProperty("labReferenceNumber");
+		description.addProperty("labTestSamples", Representation.REF);
+		description.addProperty("attributes", Representation.REF);
+		description.addProperty("auditInfo");
 		return description;
 	}
 	

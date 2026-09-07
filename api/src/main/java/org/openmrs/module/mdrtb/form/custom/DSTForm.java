@@ -1,5 +1,7 @@
 package org.openmrs.module.mdrtb.form.custom;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +48,15 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	public DSTForm(Encounter encounter, LabTest labTest) {
 		super(encounter);
 		this.setLabTest(labTest);
+		// The DST results live on the DST MGIT / DST LJ lab test for this encounter, not on the
+		// COMMON TEST lab test passed here -- that one only supplies the shared specimen fields
+		// (specimen id, program, month of treatment). Unlike DSTForm(Encounter) this never creates
+		// an order, because a read path must not write. di stays null when the encounter has no DST
+		// order, and the result accessors below tolerate that instead of throwing.
+		LabTest dst = Context.getService(LabTestService.class).getDstLabTestOrder(encounter);
+		if (dst != null) {
+			di = new DstImpl(dst);
+		}
 	}
 	
 	public DstResult addResult() {
@@ -53,16 +64,16 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	}
 	
 	public List<DstResult> getResults() {
-		return di.getResults();
+		return di == null ? new ArrayList<DstResult>() : di.getResults();
 	}
 	
 	@Deprecated
 	public Map<Integer, List<DstResult>> getResultsMap() {
-		return di.getResultsMap();
+		return di == null ? new HashMap<Integer, List<DstResult>>() : di.getResultsMap();
 	}
 	
 	public List<DstResult> getResultsList() {
-		return di.getResults();
+		return di == null ? new ArrayList<DstResult>() : di.getResults();
 	}
 	
 	public void removeResult(DstResult result) {

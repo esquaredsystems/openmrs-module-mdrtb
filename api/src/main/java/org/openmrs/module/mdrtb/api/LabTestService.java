@@ -17,6 +17,7 @@ import org.openmrs.Concept;
 import org.openmrs.Encounter;
 import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.PatientProgram;
 import org.openmrs.Provider;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.APIException;
@@ -242,6 +243,36 @@ public interface LabTestService extends OpenmrsService {
 	
 	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
 	List<LabTest> getLabTests(Patient patient, LabTestType labTestType);
+	
+	/**
+	 * Returns the lab tests belonging to one program episode, using the
+	 * labtest_test.patient_program_id foreign key rather than the PATIENT PROGRAM ID obs.
+	 * <p>
+	 * A null patientProgram selects rows whose program is unresolved, not "any program".
+	 * 
+	 * @param patient the {@link Patient} whose tests to return
+	 * @param labTestType optional {@link LabTestType} filter
+	 * @param patientProgram the episode, or null for rows with no program resolved
+	 * @return the matching non-voided {@link LabTest} objects, attributes loaded
+	 */
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
+	List<LabTest> getLabTests(Patient patient, LabTestType labTestType, PatientProgram patientProgram);
+	
+	/**
+	 * Reports whether a lab test carries at least one non-voided attribute belonging to the given
+	 * attribute group (SMEAR, XPERT, CULTURE, HAIN, HAIN2, DST).
+	 * <p>
+	 * A single COMMON TEST lab test can hold results for several methods at once, and its shared
+	 * attributes (date, test number, lab) are readable whether or not any result was recorded for a
+	 * particular method. Without this check, one lab test yields a row in every register column --
+	 * a date and a specimen number under HAIN, HAIN2 and Culture alike, each with an empty result.
+	 * 
+	 * @param labTest the {@link LabTest} to inspect
+	 * @param attributeGroupName the group name, see MdrtbConstants.*_TEST_GROUP
+	 * @return true if at least one active attribute belongs to that group
+	 */
+	@Authorized(MdrtbConfig.VIEW_LAB_TEST_PRIVILEGE)
+	boolean hasAttributeInGroup(LabTest labTest, String attributeGroupName);
 	
 	@Authorized(MdrtbConfig.VIEW_LAB_TEST_METADATA_PRIVILEGE)
 	LabTestType getCommonTestType();

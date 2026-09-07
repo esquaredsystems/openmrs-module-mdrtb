@@ -32,6 +32,7 @@ import org.openmrs.Attributable;
 import org.openmrs.BaseCustomizableData;
 import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.PatientProgram;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.LabTestService;
 
@@ -59,6 +60,10 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "test_type_id")
 	private LabTestType labTestType;
+	
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "patient_program_id")
+	private PatientProgram patientProgram;
 	
 	@Column(name = "lab_reference_number", length = 255)
 	private String labReferenceNumber;
@@ -273,6 +278,14 @@ public class LabTest extends BaseCustomizableData<LabTestAttribute> implements j
 	
 	public void setLabTestType(LabTestType labTestType) {
 		this.labTestType = labTestType;
+	}
+	
+	public PatientProgram getPatientProgram() {
+		return patientProgram;
+	}
+	
+	public void setPatientProgram(PatientProgram patientProgram) {
+		this.patientProgram = patientProgram;
 	}
 	
 	public String getLabReferenceNumber() {

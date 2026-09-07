@@ -22,6 +22,7 @@ import org.openmrs.Encounter;
 import org.openmrs.Order;
 import org.openmrs.OrderType;
 import org.openmrs.Patient;
+import org.openmrs.PatientProgram;
 import org.openmrs.Provider;
 import org.openmrs.Order.Action;
 import org.openmrs.Order.Urgency;
@@ -672,6 +673,37 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 			labTest.setAttributes(new HashSet<>(attributes));
 		}
 		return labTests;
+	}
+	
+	@Transactional(readOnly = true)
+	public List<LabTest> getLabTests(Patient patient, LabTestType labTestType, PatientProgram patientProgram) {
+		if (patient == null) {
+			return new ArrayList<>();
+		}
+		List<LabTest> labTests = dao.getLabTests(patient, labTestType, patientProgram);
+		for (LabTest labTest : labTests) {
+			List<LabTestAttribute> attributes = getLabTestAttributes(labTest.getTestOrderId());
+			labTest.setAttributes(new HashSet<>(attributes));
+		}
+		return labTests;
+	}
+	
+	@Transactional(readOnly = true)
+	public boolean hasAttributeInGroup(LabTest labTest, String attributeGroupName) {
+		if (labTest == null || attributeGroupName == null) {
+			return false;
+		}
+		Collection<LabTestAttribute> attributes = labTest.getActiveAttributes();
+		if (attributes == null) {
+			return false;
+		}
+		for (LabTestAttribute attribute : attributes) {
+			LabTestAttributeType attributeType = attribute.getAttributeType();
+			if (attributeType != null && attributeGroupName.equalsIgnoreCase(attributeType.getGroupName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Transactional(readOnly = true)

@@ -30,6 +30,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.Concept;
 import org.openmrs.Patient;
+import org.openmrs.PatientProgram;
 import org.openmrs.Provider;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.lab.LabTest;
@@ -344,6 +345,41 @@ public class LabDao {
 			criteria.add(Restrictions.eq("o.voided", false));
 		}
 		criteria.addOrder(Order.asc("testOrderId")).addOrder(Order.asc("voided")).list();
+		return criteria.list();
+	}
+	
+	/**
+	 * Returns the lab tests belonging to one program episode. Unlike the broader overload above,
+	 * this filters on labtest_test.patient_program_id, the real foreign key, so a patient with more
+	 * than one TB episode does not get one episode's results attributed to another.
+	 * <p>
+	 * A null patientProgram is NOT treated as "any program": it selects the rows whose program is
+	 * still unresolved, which is a deliberate choice so callers cannot silently widen the query by
+	 * passing null.
+	 * 
+	 * @param patient the {@link Patient} whose tests to return
+	 * @param labTestType optional {@link LabTestType} filter
+	 * @param patientProgram the {@link PatientProgram} episode, or null for unresolved rows
+	 * @return the matching non-voided {@link LabTest} objects
+	 */
+	public List<LabTest> getLabTests(Patient patient, LabTestType labTestType, PatientProgram patientProgram) {
+		@SuppressWarnings("deprecation")
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTest.class);
+		criteria.createAlias("order", "o");
+		if (patient != null) {
+			criteria.add(Restrictions.eq("o.patient.id", patient.getPatientId()));
+		}
+		if (labTestType != null) {
+			criteria.add(Restrictions.eq("labTestType", labTestType));
+		}
+		if (patientProgram == null) {
+			criteria.add(Restrictions.isNull("patientProgram"));
+		} else {
+			criteria.add(Restrictions.eq("patientProgram", patientProgram));
+		}
+		criteria.add(Restrictions.eq("o.voided", false));
+		criteria.add(Restrictions.eq("voided", false));
+		criteria.addOrder(Order.asc("testOrderId"));
 		return criteria.list();
 	}
 	

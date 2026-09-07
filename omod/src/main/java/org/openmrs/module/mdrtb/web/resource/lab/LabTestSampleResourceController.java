@@ -86,7 +86,7 @@ public class LabTestSampleResourceController extends DataDelegatingCrudResource<
 			description.addProperty("comments");
 			return description;
 		} else if (representation instanceof FullRepresentation) {
-			description.addProperty("labTest");
+			description.addProperty("labTest", Representation.DEFAULT);
 			description.addProperty("specimenType");
 			description.addProperty("specimenSite");
 			description.addProperty("collectionDate");

@@ -1540,30 +1540,52 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	/***********/
 	/** FORMS **/
 	/***********/
+	/*
+	 * The form-list methods below all follow the same shape. Lab tests come first because the lab module is the system of record for anything entered
+	 * after the upgrade, and every form class already prefers its LabTest over the encounter obs field by field.
+	 * Encounters follow as a fallback for historical specimens entered through the old forms, which the lab module may have.
+	 *
+	 * Three filters decide what is included, and they are repeated in each method:
+	 * - Program. Lab tests filter on labtest_test.patient_program_id, the foreign key. Encounters filter on the PATIENT PROGRAM ID obs, which is all an encounter has.
+	 * - Method. A lab test is included only if it carries an attribute in this method's group. One COMMON TEST lab test can hold Smear, Xpert, HAIN, HAIN2 and Culture results at once, and its shared attributes (date, specimen number, lab) read the same for all of them.
+	 * - Construct. An encounter is included only if it holds the obs group for this method. getDstForms is the exception and checks no construct, as it always has.
+	 */
 	public List<SmearForm> getSmearForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<SmearForm> smears = new ArrayList<>();
+		LabTestService labTestService = Context.getService(LabTestService.class);
+		// Encounters already covered by a lab test, so the encounter pass does not add them twice
+		Set<Integer> labTestEncounterIds = new HashSet<>();
+		// Search in Lab Tests
+		List<LabTest> labTests = labTestService.getLabTests(tpp.getPatient(), labTestService.getCommonTestType(), tpp);
+		for (LabTest labTest : labTests) {
+			if (!labTestService.hasAttributeInGroup(labTest, MdrtbConstants.SMEAR_TEST_GROUP)) {
+				continue;
+			}
+			// An order may legitimately have no encounter, and then there is no form to build
+			if (labTest.getOrder() == null || labTest.getOrder().getEncounter() == null) {
+				continue;
+			}
+			Encounter e = labTest.getOrder().getEncounter();
+			SmearForm sf = new SmearForm(e, labTest);
+			sf.setPatient(tpp.getPatient());
+			smears.add(sf);
+			labTestEncounterIds.add(e.getEncounterId());
+		}
 		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
+			if (labTestEncounterIds.contains(e.getEncounterId())) {
+				continue;
+			}
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.SMEAR_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
+				// getValueNumeric() can be null on a malformed obs; intValue() on it would throw
+				if (temp != null && temp.getValueNumeric() != null
+				        && temp.getValueNumeric().intValue() == patientProgramId) {
 					SmearForm sf = new SmearForm(e);
-					sf.setPatient(tpp.getPatient());
-					smears.add(sf);
-				}
-			}
-		}
-		// Search in Lab Tests
-		if (smears.isEmpty()) {
-			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
-			if (!labTests.isEmpty()) {
-				for (LabTest labTest : labTests) {
-					Encounter e = labTest.getOrder().getEncounter();
-					SmearForm sf = new SmearForm(e, labTest);
 					sf.setPatient(tpp.getPatient());
 					smears.add(sf);
 				}
@@ -1576,27 +1598,39 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<CultureForm> getCultureForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<CultureForm> cultures = new ArrayList<>();
+		LabTestService labTestService = Context.getService(LabTestService.class);
+		// Encounters already covered by a lab test, so the encounter pass does not add them twice
+		Set<Integer> labTestEncounterIds = new HashSet<>();
+		// Search in Lab Tests
+		List<LabTest> labTests = labTestService.getLabTests(tpp.getPatient(), labTestService.getCommonTestType(), tpp);
+		for (LabTest labTest : labTests) {
+			if (!labTestService.hasAttributeInGroup(labTest, MdrtbConstants.CULTURE_TEST_GROUP)) {
+				continue;
+			}
+			// An order may legitimately have no encounter, and then there is no form to build
+			if (labTest.getOrder() == null || labTest.getOrder().getEncounter() == null) {
+				continue;
+			}
+			Encounter e = labTest.getOrder().getEncounter();
+			CultureForm sf = new CultureForm(e, labTest);
+			sf.setPatient(tpp.getPatient());
+			cultures.add(sf);
+			labTestEncounterIds.add(e.getEncounterId());
+		}
 		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
+			if (labTestEncounterIds.contains(e.getEncounterId())) {
+				continue;
+			}
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.CULTURE_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
+				// getValueNumeric() can be null on a malformed obs; intValue() on it would throw
+				if (temp != null && temp.getValueNumeric() != null
+				        && temp.getValueNumeric().intValue() == patientProgramId) {
 					CultureForm sf = new CultureForm(e);
-					sf.setPatient(tpp.getPatient());
-					cultures.add(sf);
-				}
-			}
-		}
-		// Search in Lab Tests
-		if (cultures.isEmpty()) {
-			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
-			if (!labTests.isEmpty()) {
-				for (LabTest labTest : labTests) {
-					Encounter e = labTest.getOrder().getEncounter();
-					CultureForm sf = new CultureForm(e, labTest);
 					sf.setPatient(tpp.getPatient());
 					cultures.add(sf);
 				}
@@ -1609,27 +1643,39 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<XpertForm> getXpertForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<XpertForm> xperts = new ArrayList<>();
-		// Fallback to Lab module
+		LabTestService labTestService = Context.getService(LabTestService.class);
+		// Encounters already covered by a lab test, so the encounter pass does not add them twice
+		Set<Integer> labTestEncounterIds = new HashSet<>();
+		// Search in Lab Tests
+		List<LabTest> labTests = labTestService.getLabTests(tpp.getPatient(), labTestService.getCommonTestType(), tpp);
+		for (LabTest labTest : labTests) {
+			if (!labTestService.hasAttributeInGroup(labTest, MdrtbConstants.XPERT_TEST_GROUP)) {
+				continue;
+			}
+			// An order may legitimately have no encounter, and then there is no form to build
+			if (labTest.getOrder() == null || labTest.getOrder().getEncounter() == null) {
+				continue;
+			}
+			Encounter e = labTest.getOrder().getEncounter();
+			XpertForm sf = new XpertForm(e, labTest);
+			sf.setPatient(tpp.getPatient());
+			xperts.add(sf);
+			labTestEncounterIds.add(e.getEncounterId());
+		}
+		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
+			if (labTestEncounterIds.contains(e.getEncounterId())) {
+				continue;
+			}
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.XPERT_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
+				// getValueNumeric() can be null on a malformed obs; intValue() on it would throw
+				if (temp != null && temp.getValueNumeric() != null
+				        && temp.getValueNumeric().intValue() == patientProgramId) {
 					XpertForm sf = new XpertForm(e);
-					sf.setPatient(tpp.getPatient());
-					xperts.add(sf);
-				}
-			}
-		}
-		// Search in Lab Tests
-		if (xperts.isEmpty()) {
-			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
-			if (!labTests.isEmpty()) {
-				for (LabTest labTest : labTests) {
-					Encounter e = labTest.getOrder().getEncounter();
-					XpertForm sf = new XpertForm(e, labTest);
 					sf.setPatient(tpp.getPatient());
 					xperts.add(sf);
 				}
@@ -1642,27 +1688,39 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<HAINForm> getHAINForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<HAINForm> hains = new ArrayList<>();
+		LabTestService labTestService = Context.getService(LabTestService.class);
+		// Encounters already covered by a lab test, so the encounter pass does not add them twice
+		Set<Integer> labTestEncounterIds = new HashSet<>();
+		// Search in Lab Tests
+		List<LabTest> labTests = labTestService.getLabTests(tpp.getPatient(), labTestService.getCommonTestType(), tpp);
+		for (LabTest labTest : labTests) {
+			if (!labTestService.hasAttributeInGroup(labTest, MdrtbConstants.HAIN_TEST_GROUP)) {
+				continue;
+			}
+			// An order may legitimately have no encounter, and then there is no form to build
+			if (labTest.getOrder() == null || labTest.getOrder().getEncounter() == null) {
+				continue;
+			}
+			Encounter e = labTest.getOrder().getEncounter();
+			HAINForm sf = new HAINForm(e, labTest);
+			sf.setPatient(tpp.getPatient());
+			hains.add(sf);
+			labTestEncounterIds.add(e.getEncounterId());
+		}
 		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
+			if (labTestEncounterIds.contains(e.getEncounterId())) {
+				continue;
+			}
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.HAIN_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
+				// getValueNumeric() can be null on a malformed obs; intValue() on it would throw
+				if (temp != null && temp.getValueNumeric() != null
+				        && temp.getValueNumeric().intValue() == patientProgramId) {
 					HAINForm sf = new HAINForm(e);
-					sf.setPatient(tpp.getPatient());
-					hains.add(sf);
-				}
-			}
-		}
-		// Search in Lab Tests
-		if (hains.isEmpty()) {
-			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
-			if (!labTests.isEmpty()) {
-				for (LabTest labTest : labTests) {
-					Encounter e = labTest.getOrder().getEncounter();
-					HAINForm sf = new HAINForm(e, labTest);
 					sf.setPatient(tpp.getPatient());
 					hains.add(sf);
 				}
@@ -1675,27 +1733,39 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	public List<HAIN2Form> getHAIN2Forms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<HAIN2Form> hains = new ArrayList<>();
+		LabTestService labTestService = Context.getService(LabTestService.class);
+		// Encounters already covered by a lab test, so the encounter pass does not add them twice
+		Set<Integer> labTestEncounterIds = new HashSet<>();
+		// Search in Lab Tests
+		List<LabTest> labTests = labTestService.getLabTests(tpp.getPatient(), labTestService.getCommonTestType(), tpp);
+		for (LabTest labTest : labTests) {
+			if (!labTestService.hasAttributeInGroup(labTest, MdrtbConstants.HAIN_2_TEST_GROUP)) {
+				continue;
+			}
+			// An order may legitimately have no encounter, and then there is no form to build
+			if (labTest.getOrder() == null || labTest.getOrder().getEncounter() == null) {
+				continue;
+			}
+			Encounter e = labTest.getOrder().getEncounter();
+			HAIN2Form sf = new HAIN2Form(e, labTest);
+			sf.setPatient(tpp.getPatient());
+			hains.add(sf);
+			labTestEncounterIds.add(e.getEncounterId());
+		}
 		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
+			if (labTestEncounterIds.contains(e.getEncounterId())) {
+				continue;
+			}
 			if (MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.HAIN2_CONSTRUCT), e) != null) {
 				Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
-				if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
+				// getValueNumeric() can be null on a malformed obs; intValue() on it would throw
+				if (temp != null && temp.getValueNumeric() != null
+				        && temp.getValueNumeric().intValue() == patientProgramId) {
 					HAIN2Form sf = new HAIN2Form(e);
-					sf.setPatient(tpp.getPatient());
-					hains.add(sf);
-				}
-			}
-		}
-		// Search in Lab Tests
-		if (hains.isEmpty()) {
-			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
-			if (!labTests.isEmpty()) {
-				for (LabTest labTest : labTests) {
-					Encounter e = labTest.getOrder().getEncounter();
-					HAIN2Form sf = new HAIN2Form(e, labTest);
 					sf.setPatient(tpp.getPatient());
 					hains.add(sf);
 				}
@@ -1708,34 +1778,48 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	/**
 	 * Looks for an Encounter in the given program against which a Specimen sample should exist, and
 	 * returns all such encounters.
+	 * <p>
+	 * Unlike the five above, a DST specimen encounter is identified by being a specimen collection
+	 * encounter in this program, not by holding a particular obs group, so no construct is checked.
 	 */
 	public List<DSTForm> getDstForms(Integer patientProgramId) {
 		PatientProgram tpp = Context.getProgramWorkflowService().getPatientProgram(patientProgramId);
 		ArrayList<DSTForm> dsts = new ArrayList<>();
+		LabTestService labTestService = Context.getService(LabTestService.class);
+		// Encounters already covered by a lab test, so the encounter pass does not add them twice
+		Set<Integer> labTestEncounterIds = new HashSet<>();
+		// Search in Lab Tests
+		List<LabTest> labTests = labTestService.getLabTests(tpp.getPatient(), labTestService.getCommonTestType(), tpp);
+		for (LabTest labTest : labTests) {
+			if (!labTestService.hasAttributeInGroup(labTest, MdrtbConstants.DST_TEST_GROUP)) {
+				continue;
+			}
+			// An order may legitimately have no encounter, and then there is no form to build
+			if (labTest.getOrder() == null || labTest.getOrder().getEncounter() == null) {
+				continue;
+			}
+			Encounter e = labTest.getOrder().getEncounter();
+			DSTForm sf = new DSTForm(e, labTest);
+			sf.setPatient(tpp.getPatient());
+			dsts.add(sf);
+			labTestEncounterIds.add(e.getEncounterId());
+		}
 		// Search in Encounters
 		ArrayList<EncounterType> et = new ArrayList<>();
 		et.add(MdrtbConstants.ET_SPECIMEN_COLLECTION);
 		// Search for all Specimen collection encounters containing this patientProgramId
 		List<Encounter> encs = getEncountersByPatientAndTypes(tpp.getPatient(), et);
 		for (Encounter e : encs) {
+			if (labTestEncounterIds.contains(e.getEncounterId())) {
+				continue;
+			}
 			Obs temp = MdrtbUtil.getObsFromEncounter(getConcept(MdrtbConcepts.PATIENT_PROGRAM_ID), e);
 			// Add the DST form to list
-			if (temp != null && temp.getValueNumeric().intValue() == patientProgramId) {
+			// getValueNumeric() can be null on a malformed obs; intValue() on it would throw
+			if (temp != null && temp.getValueNumeric() != null && temp.getValueNumeric().intValue() == patientProgramId) {
 				DSTForm sf = new DSTForm(e);
 				sf.setPatient(tpp.getPatient());
 				dsts.add(sf);
-			}
-		}
-		// Search in Lab Tests
-		if (dsts.isEmpty()) {
-			List<LabTest> labTests = Context.getService(LabTestService.class).getLabTests(tpp.getPatient(), Context.getService(LabTestService.class).getCommonTestType());
-			if (!labTests.isEmpty()) {
-				for (LabTest labTest : labTests) {
-					Encounter e = labTest.getOrder().getEncounter();
-					DSTForm sf = new DSTForm(e, labTest);
-					sf.setPatient(tpp.getPatient());
-					dsts.add(sf);
-				}
 			}
 		}
 		return dsts;

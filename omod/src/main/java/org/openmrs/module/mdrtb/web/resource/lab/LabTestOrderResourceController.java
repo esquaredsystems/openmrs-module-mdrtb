@@ -39,12 +39,13 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 	 */
 	protected final Log log = LogFactory.getLog(getClass());
 	
-	private LabTestService LabTestService = Context.getService(LabTestService.class);
+	private LabTestService labTestService = Context.getService(LabTestService.class);
 	
 	@Override
 	public LabTest getByUniqueId(String s) {
-		LabTest labTest = LabTestService.getLabTestByUuid(s);
-		labTest.setAttributes(new HashSet<>(LabTestService.getLabTestAttributes(labTest.getTestOrderId())));
+		LabTest labTest = labTestService.getLabTestByUuid(s);
+		labTest.setAttributes(new HashSet<>(labTestService.getLabTestAttributes(labTest.getTestOrderId())));
+		labTest.setLabTestSamples(new HashSet<>(labTestService.getLabTestSamples(labTest, false)));
 		if (labTest.getOrder() != null) {
 			labTest.setPatient(labTest.getOrder().getPatient());
 		}
@@ -53,7 +54,7 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 	
 	@Override
 	protected void delete(LabTest labTest, String s, RequestContext requestContext) throws ResponseException {
-		LabTestService.voidLabTest(labTest, s);
+		labTestService.voidLabTest(labTest, s);
 	}
 	
 	@Override
@@ -83,7 +84,7 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 			} else {
 				labTest.setOrder(existing);
 			}
-			return LabTestService.saveLabTest(labTest, labTestSample, labTestAttributes);
+			return labTestService.saveLabTest(labTest, labTestSample, labTestAttributes);
 		}
 		catch (Exception e) {
 			throw new ResourceDoesNotSupportOperationException("Test Order was not saved", e);
@@ -104,14 +105,15 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 		description.addProperty("order");
 		description.addProperty("labTestType", Representation.REF);
 		description.addProperty("labReferenceNumber");
+		description.addProperty("patientProgram", Representation.REF);
 		if (representation instanceof DefaultRepresentation) {
-			description.addProperty("labTestSamples");
+			description.addProperty("labTestSamples", Representation.REF);
 			description.addProperty("attributes", Representation.REF);
 			description.addSelfLink();
 			description.addLink("full", ".?v=" + RestConstants.REPRESENTATION_FULL);
 			return description;
 		} else if (representation instanceof FullRepresentation) {
-			description.addProperty("labTestSamples");
+			description.addProperty("labTestSamples", Representation.DEFAULT);
 			description.addProperty("attributes", Representation.DEFAULT);
 			description.addProperty("auditInfo");
 			description.addSelfLink();
@@ -139,6 +141,7 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 		delegatingResourceDescription.addRequiredProperty("labReferenceNumber");
 		delegatingResourceDescription.addProperty("labInstructions");
 		delegatingResourceDescription.addProperty("resultComments");
+		delegatingResourceDescription.addProperty("patientProgram");
 		delegatingResourceDescription.addProperty("labTestSamples");
 		delegatingResourceDescription.addProperty("attributes");
 		return delegatingResourceDescription;
@@ -169,7 +172,7 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 	@PropertySetter("attributes")
 	public void setAttributes(LabTest instance, List<LabTestAttribute> attributes) {
 		for (LabTestAttribute attr : attributes) {
-			LabTestAttribute existingAttribute = instance.getAttribute(LabTestService.getLabTestAttributeTypeByUuid(attr
+			LabTestAttribute existingAttribute = instance.getAttribute(labTestService.getLabTestAttributeTypeByUuid(attr
 			        .getAttributeType().getUuid()));
 			if (existingAttribute != null) {
 				if (attr.getValue() == null) {
@@ -203,6 +206,6 @@ public class LabTestOrderResourceController extends DataDelegatingCrudResource<L
 		if (patient == null) {
 			throw new ObjectNotFoundException("Patient with uuid " + uuid + " not found");
 		}
-		return new NeedsPaging<>(LabTestService.getLabTests(patient, false), context);
+		return new NeedsPaging<>(labTestService.getLabTests(patient, false), context);
 	}
 }
