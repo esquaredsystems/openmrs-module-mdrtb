@@ -9,49 +9,49 @@ import org.openmrs.Person;
 
 public interface SimpleForm {
 	
-	public Integer getId();
+	Integer getId();
 	
-	public void setEncounter(Encounter encounter);
+	void setEncounter(Encounter encounter);
 	
-	public Encounter getEncounter();
+	Encounter getEncounter();
 	
-	public Person getProvider();
+	Person getProvider();
 	
-	public void setProvider(Person provider);
+	void setProvider(Person provider);
 	
-	public Patient getPatient();
+	Patient getPatient();
 	
-	public void setPatient(Patient patient);
+	void setPatient(Patient patient);
 	
-	public Date getEncounterDatetime();
+	Date getEncounterDatetime();
 	
-	public void setEncounterDatetime(Date date);
+	void setEncounterDatetime(Date date);
 	
-	public Location getLocation();
+	Location getLocation();
 	
-	public void setLocation(Location location);
+	void setLocation(Location location);
 	
-	public String getWeight();
+	String getWeight();
 	
-	public void setWeight(String weight);
+	void setWeight(String weight);
 	
-	public String getPulse();
+	String getPulse();
 	
-	public void setPulse(String pulse);
+	void setPulse(String pulse);
 	
-	public String getTemperature();
+	String getTemperature();
 	
-	public void setTemperature(String temperature);
+	void setTemperature(String temperature);
 	
-	public String getSystolicBloodPressure();
+	String getSystolicBloodPressure();
 	
-	public void setSystolicBloodPressure(String pressure);
+	void setSystolicBloodPressure(String pressure);
 	
-	public String getRespiratoryRate();
+	String getRespiratoryRate();
 	
-	public void setRespiratoryRate(String rate);
+	void setRespiratoryRate(String rate);
 	
-	public String getClinicianNotes();
+	String getClinicianNotes();
 	
-	public void setClinicianNotes(String comments);
+	void setClinicianNotes(String comments);
 }

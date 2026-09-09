@@ -29,7 +29,7 @@ import org.openmrs.module.mdrtb.regimen.RegimenUtils;
 
 public class DrugForecastUtil {
 	
-	private static Log log = LogFactory.getLog(DrugForecastUtil.class);
+	private static final Log log = LogFactory.getLog(DrugForecastUtil.class);
 	
 	public static final long MS_PER_DAY = 864086400;
 	
@@ -68,12 +68,12 @@ public class DrugForecastUtil {
 				addToSet(temp, o.getConcept(), o.getPatient().getPatientId());
 			}
 		}
-		Map<Concept, Integer> ret = new TreeMap<>(new Comparator<Concept>() {
+		Map<Concept, Integer> ret = new TreeMap<>(new Comparator<>() {
 
-			public int compare(Concept left, Concept right) {
-				return left.getName(Context.getLocale()).getName().compareTo(right.getName(Context.getLocale()).getName());
-			}
-		});
+            public int compare(Concept left, Concept right) {
+                return left.getName(Context.getLocale()).getName().compareTo(right.getName(Context.getLocale()).getName());
+            }
+        });
 		for (Map.Entry<Concept, Set<Integer>> e : temp.entrySet()) {
 			ret.put(e.getKey(), e.getValue().size());
 		}
@@ -125,7 +125,7 @@ public class DrugForecastUtil {
 		double pillsPerDose = (o.getDose() != null ? o.getDose() : 0);
 		if (pillsPerDose == 0)
 			return 0;
-		if (drug != null && drug.getStrength() != null) {
+		if (drug.getStrength() != null) {
 			// pillsPerDose = pillsPerDose / drug.getDoseStrength();
 		}
 		double dosesPerDay = 0;
@@ -135,33 +135,20 @@ public class DrugForecastUtil {
 			dosesPerDay = o.getFrequency().getFrequencyPerDay();
 		}
 		catch (Exception ignored) {}
-		double total = pillsPerDose * dosesPerDay * days;
-		return total;
+		return pillsPerDose * dosesPerDay * days;
 	}
 	
 	public static <T> void increment(Map<T, Double> map, T key, double amount) {
-		Double d = map.get(key);
-		if (d == null)
-			map.put(key, amount);
-		else
-			map.put(key, d + amount);
+        map.merge(key, amount, Double::sum);
 	}
 	
 	public static <T> void increment(Map<T, Integer> map, T key, int amount) {
-		Integer i = map.get(key);
-		if (i == null)
-			map.put(key, amount);
-		else
-			map.put(key, i + amount);
+        map.merge(key, amount, Integer::sum);
 	}
 	
 	public static <T> void addToSet(Map<T, Set<Integer>> map, T key, Integer value) {
-		Set<Integer> s = map.get(key);
-		if (s == null) {
-			s = new HashSet<>();
-			map.put(key, s);
-		}
-		s.add(value);
+        Set<Integer> s = map.computeIfAbsent(key, k -> new HashSet<>());
+        s.add(value);
 	}
 	
 	public static int daysOfOverlap(DrugOrder o, Date startDate, Date endDate) {
@@ -277,10 +264,8 @@ public class DrugForecastUtil {
 		}
 		
 		log.debug("MAP: " + patientDrugs.size());
-		
-		for (PatientSLDMap psm : patientDrugs.values()) {
-			patients.add(psm);
-		}
+
+        patients.addAll(patientDrugs.values());
 		
 		log.debug("LIST: " + patients.size());
 		

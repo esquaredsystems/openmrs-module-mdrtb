@@ -56,8 +56,7 @@ public class HibernateMdrtbDAOTest extends MdrtbTestBase {
 		List<String> encounterTypeNames = Arrays.asList(owlExam.getName(), transferIn.getName(), transferOut.getName());
 		LocalDate startDate = new LocalDate(2022, 8, 1);
 		LocalDate endDate = new LocalDate(2022, 8, 8);
-		List<Encounter> list = dao.getEncountersByEncounterTypes(encounterTypeNames, startDate.toDate(), endDate.toDate(),
-		    null);
+		List<Encounter> list = dao.getEncountersByEncounterTypes(encounterTypeNames, startDate.toDate(), endDate.toDate());
 		assertEquals(4, list.size());
 	}
 	

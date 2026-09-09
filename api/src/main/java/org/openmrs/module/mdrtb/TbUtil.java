@@ -127,9 +127,8 @@ public class TbUtil {
 		}
 		
 		for (ConceptName name : concept.getNames()) {
-			if ((language == null || name.getLocale() == null || name.getLocale().getLanguage() == null || name.getLocale()
-			        .getLanguage().equals(language))
-			        && ((tag == null) || (name.getTags().contains(tag)))) {
+			if ((language == null || name.getLocale() == null || name.getLocale().getLanguage().equals(language))
+			        && (tag == null || name.getTags().contains(tag))) {
 				return name;
 			}
 		}

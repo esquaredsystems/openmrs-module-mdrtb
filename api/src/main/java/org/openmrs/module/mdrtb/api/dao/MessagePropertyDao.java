@@ -19,12 +19,15 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.jdbc.Work;
 import org.openmrs.api.db.DAOException;
 import org.openmrs.module.mdrtb.MessageProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * Persistence for {@link MessageProperty}
@@ -53,9 +56,12 @@ public class MessagePropertyDao {
 	 * 
 	 * @return every persisted {@link MessageProperty}
 	 */
-	@SuppressWarnings("unchecked")
 	public List<MessageProperty> getAllMessageProperties() throws DAOException {
-		return sessionFactory.getCurrentSession().createCriteria(MessageProperty.class).list();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<MessageProperty> query = cb.createQuery(MessageProperty.class);
+		Root<MessageProperty> root = query.from(MessageProperty.class);
+		query.select(root);
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -64,11 +70,11 @@ public class MessagePropertyDao {
 	 * @return the matching {@link MessageProperty}, or null when the pair is not persisted
 	 */
 	public MessageProperty getMessageProperty(String lang, String code) throws DAOException {
-		if (lang == null || code == null) {
-			return null;
-		}
-		return (MessageProperty) sessionFactory.getCurrentSession().createCriteria(MessageProperty.class)
-		        .add(Restrictions.eq("lang", lang)).add(Restrictions.eq("code", code)).uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<MessageProperty> query = cb.createQuery(MessageProperty.class);
+		Root<MessageProperty> root = query.from(MessageProperty.class);
+		query.select(root).where(cb.equal(root.get("lang"), lang), cb.equal(root.get("code"), code));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	/**

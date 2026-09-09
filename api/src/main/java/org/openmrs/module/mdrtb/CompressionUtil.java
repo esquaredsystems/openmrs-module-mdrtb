@@ -18,7 +18,7 @@ import com.thoughtworks.xstream.core.util.Base64Encoder;
 public class CompressionUtil {
 	
 	public static String compressCode(String str) throws IOException {
-		if (str == null || str.length() == 0) {
+		if (str == null || str.isEmpty()) {
 			return str;
 		}
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -29,7 +29,7 @@ public class CompressionUtil {
 	}
 	
 	public static String decompressCode(String str) throws IOException {
-		if (str == null || str.length() == 0) {
+		if (str == null || str.isEmpty()) {
 			return str;
 		}
 		byte[] bytes = new Base64Encoder().decode(str);

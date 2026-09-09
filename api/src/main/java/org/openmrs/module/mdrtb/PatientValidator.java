@@ -84,7 +84,7 @@ public class PatientValidator implements Validator {
 		
 		// Validate PatientIdentifers
 		PatientIdentifierValidator piv = new PatientIdentifierValidator();
-		if (patient != null && patient.getIdentifiers() != null) {
+		if (patient.getIdentifiers() != null) {
 			for (PatientIdentifier identifier : patient.getIdentifiers()) {
 				piv.validate(identifier, errors);
 			}

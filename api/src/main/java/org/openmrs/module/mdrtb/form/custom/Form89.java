@@ -49,12 +49,9 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		if (tpp != null) {
 			encounters = tpp.getTb03EncountersDuringProgramObs();
 		}
-		
-		//EncounterType intakeType = Context.getEncounterService().getEncounterType(Context.getAdministrationService().getGlobalProperty("mdrtb.intake_encounter_type"));
-		if (encounters != null && encounters.size() != 0) {
+		if (encounters != null && !encounters.isEmpty()) {
 			tb03 = new TB03Form(encounters.get(0));
 		}
-		
 	}
 	
 	public TB03Form getTB03() {
@@ -68,18 +65,14 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	public Integer getYearOfTB03Registration() {
 		if (tb03 == null || tb03.getEncounterDatetime() == null)
 			return null;
-		
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTimeInMillis(tb03.getEncounterDatetime().getTime());
-		Integer year = gc.get(Calendar.YEAR);
-		
-		return year;
+		return gc.get(Calendar.YEAR);
 		
 	}
 	
 	public String getPatientName() {
 		PersonName p = getPatient().getPersonName();
-		
 		return p.getFamilyName() + "," + p.getGivenName();
 	}
 	
@@ -107,9 +100,9 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			return null;
 		
 		String address = pa.getCountry() + "," + pa.getStateProvince() + "," + pa.getCountyDistrict();
-		if (pa.getAddress1() != null && pa.getAddress1().length() != 0) {
+		if (pa.getAddress1() != null && !pa.getAddress1().isEmpty()) {
 			address += "," + pa.getAddress1();
-			if (pa.getAddress2() != null && pa.getAddress2().length() != 0)
+			if (pa.getAddress2() != null && !pa.getAddress2().isEmpty())
 				address += "," + pa.getAddress2();
 		}
 		
@@ -1203,12 +1196,9 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 	}
 	
 	public Boolean getIsChildbearingAge() {
-		Boolean result = false;
-		
-		if (encounter.getPatient().getGender().equals("F") && getAgeAtRegistration() >= 15 && getAgeAtRegistration() <= 49) {
-			result = true;
-		}
-		return result;
+		int ageFrom = 15, ageTo = 49;
+		return encounter.getPatient().getGender().equals("F") && getAgeAtRegistration() >= ageFrom
+		        && getAgeAtRegistration() <= ageTo;
 	}
 	
 	public String getNameOfDoctor() {

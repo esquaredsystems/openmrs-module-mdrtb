@@ -69,10 +69,10 @@ public class PatientChartFactory {
 		Date treatmentEndDate = mdrtbProgram.getTreatmentEndDateDuringProgram();
 		
 		// determine if the patient have ever been on treatment
-		Boolean hasBeenOnTreatment = (treatmentStartDate != null);
+		boolean hasBeenOnTreatment = (treatmentStartDate != null);
 		
 		// if not on treatment, and no specimens, nothing to chart, return null!
-		if (!hasBeenOnTreatment && (specimens == null || specimens.isEmpty())) {
+		if (!hasBeenOnTreatment && specimens.isEmpty()) {
 			return null;
 		}
 		
@@ -118,10 +118,10 @@ public class PatientChartFactory {
 		}
 		
 		// now go through the add all the other specimens
-		Integer iteration = 0;
+		int iteration = 0;
 		
 		// loop until we are out of specimens, or until we've passed the treatment end date, whatever is later
-		while (specimens.size() > 0
+		while (!specimens.isEmpty()
 		        || (treatmentEndDate != null && (!recordStartDate.getTime().after(treatmentEndDate)) && (!recordEndDate
 		                .getTime().after(new Date())))) {
 			record = createChartRecord(specimens, stateChangeRecordComponents, regimenHistory, recordStartDate,
@@ -129,7 +129,7 @@ public class PatientChartFactory {
 			
 			// label rows by treatment month if has been on treatment, otherwise label by actual month
 			if (hasBeenOnTreatment) {
-				record.setLabel(iteration.toString());
+				record.setLabel(Integer.toString(iteration));
 			} else {
 				DateFormat format = new SimpleDateFormat(MdrtbConstants.DATE_FORMAT_DISPLAY, Context.getLocale());
 				record.setLabel(format.format(recordStartDate.getTime()));
@@ -145,16 +145,16 @@ public class PatientChartFactory {
 		}
 		
 		// add the possible drug types
-		List<Concept> drugTypes = getDrugTypesForChart(chart);
+		List<Concept> drugTypes = getDrugTypesForChart();
 		
 		chart.setDrugTypes(drugTypes);
 		
 		return chart;
 	}
 	
-	/**
+	/********************
 	 * Utility functions
-	 */
+	 *******************/
 	
 	/**
 	 * Creates a record for the patient chart in the specified range
@@ -167,7 +167,7 @@ public class PatientChartFactory {
 		
 		// if there are no specimen components, simply gather all the regimens the patient was on during this time period
 		// and put it on a specimen component
-		if (components.size() == 0) {
+		if (components.isEmpty()) {
 			List<Regimen> regimens = regimenHistory.getRegimensDuring((recordStartDate != null ? recordStartDate.getTime()
 			        : null), recordEndDate.getTime());
 			// note that we set the date for this component to be one millisecond after the start date for the record; this way regimen-only components
@@ -203,7 +203,7 @@ public class PatientChartFactory {
 			dateCounter = startDate.getTime();
 		} else {
 			// if the startdate is null (i.e., this is the "prior" case) set start date to the collection date of the first specimen
-			if (specimensToAdd != null && specimensToAdd.size() > 0) {
+			if (!specimensToAdd.isEmpty()) {
 				dateCounter = specimensToAdd.get(0).getDateCollected();
 			} else {
 				// otherwise, return an empty set
@@ -212,7 +212,7 @@ public class PatientChartFactory {
 		}
 		
 		// now create a new record component for each specimen
-		if (specimensToAdd.size() > 0) {
+		if (!specimensToAdd.isEmpty()) {
 			ListIterator<Specimen> i = specimensToAdd.listIterator();
 			
 			while (i.hasNext()) {
@@ -307,7 +307,7 @@ public class PatientChartFactory {
 	/**
 	 * Retrieves the drug types to display in the chart from global property
 	 */
-	private List<Concept> getDrugTypesForChart(PatientChart patientChart) {
+	private List<Concept> getDrugTypesForChart() {
 		// get all the possible drug types to display--this method also returns them in the order we want to display them
 		return Context.getService(MdrtbService.class).getMdrtbDrugs();
 	}

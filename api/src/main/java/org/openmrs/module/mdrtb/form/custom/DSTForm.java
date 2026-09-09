@@ -1,9 +1,6 @@
 package org.openmrs.module.mdrtb.form.custom;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.openmrs.Encounter;
 import org.openmrs.Obs;
@@ -64,7 +61,7 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	}
 	
 	public List<DstResult> getResults() {
-		return di == null ? new ArrayList<DstResult>() : di.getResults();
+		return di == null ? new ArrayList<>() : di.getResults();
 	}
 	
 	@Deprecated
@@ -73,7 +70,7 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 	}
 	
 	public List<DstResult> getResultsList() {
-		return di == null ? new ArrayList<DstResult>() : di.getResults();
+		return di == null ? new ArrayList<>() : di.getResults();
 	}
 	
 	public void removeResult(DstResult result) {
@@ -112,7 +109,7 @@ public class DSTForm extends AbstractSimpleForm implements Comparable<DSTForm> {
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || obs.getValueText() != id) {
+		if (obs == null || obs.getValueText() == null || !Objects.equals(obs.getValueText(), id)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)

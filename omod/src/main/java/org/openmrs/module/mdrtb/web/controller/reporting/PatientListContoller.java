@@ -303,9 +303,13 @@ public class PatientListContoller {
 	
 	static final String MDRTB_DR_TB_PATIENTS_SUCCESSFUL_TREATMENT = "mdrtb.drTbPatientsSuccessfulTreatment";
 	
-	static final String MDRTB_TB_03_GENDER_MALE = "mdrtb.tb03.gender.male";
-	
-	static final String MDRTB_TB_03_GENDER_FEMALE = "mdrtb.tb03.gender.female";
+	/**
+	 * Message key prefix for a gender label. The stored code ("M" / "F") is appended to build the
+	 * key, and the bare prefix is itself a key meaning "unspecified". This is the same family the
+	 * web app's report templates use, so the Patient List reads the same as every other register;
+	 * the older mdrtb.tb03.gender.male/female keys hold single letters instead.
+	 */
+	static final String MDRTB_GENDER_PREFIX = "mdrtb.gender.";
 	
 	static final String MDRTB_UNASSIGNED = "mdrtb.unassigned";
 	
@@ -8914,10 +8918,9 @@ public class PatientListContoller {
 		ret += ALIGN_LEFT_TAG + p.getFamilyName() + "," + p.getGivenName() + CLOSE_TD;
 		
 		if (gender) {
-			String g = p.getGender().equals("M") ? Context.getService(MessagePropertyService.class).getMessage(
-			    MDRTB_TB_03_GENDER_MALE) : Context.getService(MessagePropertyService.class).getMessage(
-			    MDRTB_TB_03_GENDER_FEMALE);
-			ret += ALIGN_LEFT_TAG + g + CLOSE_TD;
+			// Was a second, independent copy of the same two-bucket logic, mapping every non-"M"
+			// code to female and throwing on a null gender. One lookup now serves both call sites.
+			ret += ALIGN_LEFT_TAG + getGender(p) + CLOSE_TD;
 		}
 		ret += ALIGN_LEFT_TAG + dateFormat.format(p.getBirthdate()) + CLOSE_TD;
 		return ret;
@@ -8969,9 +8972,22 @@ public class PatientListContoller {
 		return link;
 	}
 	
+	/**
+	 * The translated gender label for the Patient List.
+	 * <p>
+	 * This report is rendered to HTML here on the server and returned as stringData, so unlike every
+	 * other register - where the REST resource returns the stored "M" / "F" and the web app
+	 * translates - the lookup has to happen in this renderer.
+	 * <p>
+	 * Every code gets its own key rather than being sorted into two buckets. The previous version
+	 * returned the male label for anything that was not exactly "F", so an unrecorded gender was
+	 * reported as male, and threw on a null gender.
+	 */
 	public static String getGender(Person p) {
-		String gender = p.getGender();
-		return gender.equals("F") ? getMessage(MDRTB_TB_03_GENDER_FEMALE) : getMessage(MDRTB_TB_03_GENDER_MALE);
+		if (p == null || p.getGender() == null) {
+			return getMessage(MDRTB_GENDER_PREFIX);
+		}
+		return getMessage(MDRTB_GENDER_PREFIX + p.getGender());
 	}
 	
 	public static String getTransferFrom(TB03Form tf) {

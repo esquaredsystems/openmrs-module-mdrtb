@@ -157,7 +157,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		if (classification != null
 		        && !Context.getService(MdrtbService.class).getPossibleClassificationsAccordingToPatientGroups()
 		                .contains(classification)) {
-			throw new MdrtbAPIException(classification.toString()
+			throw new MdrtbAPIException(classification
 			        + " is not a valid state for Classification According To Patient Groups workflow");
 		}
 		
@@ -260,7 +260,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.HOSPITALIZATION_WORKFLOW),
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.PATIENT_HOSPITALIZED));
 		
-		Collections.sort(states, Collections.reverseOrder(new PatientStateComparator()));
+		states.sort(Collections.reverseOrder(new PatientStateComparator()));
 		return states;
 	}
 	
@@ -286,13 +286,11 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		if (date == null) {
 			return false;
 		}
-		
 		if ((getPreviousProgramDateCompleted() != null && date.before(getPreviousProgramDateCompleted()))
 		        || (!isMostRecentProgram() && date.after(program.getDateCompleted()))) {
 			return false;
-		} else {
-			return true;
 		}
+		return true;
 	}
 	
 	/**
@@ -372,7 +370,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		    Arrays.asList(anatomicalSiteConcept), null, null, null, null, null, null, getPreviousProgramDateCompleted(),
 		    (!isMostRecentProgram() ? program.getDateCompleted() : new Date()), false);
 		
-		if (anatomicalSites.size() > 0) {
+		if (!anatomicalSites.isEmpty()) {
 			return anatomicalSites.get(0).getValueCoded();
 		} else {
 			return null;
@@ -382,7 +380,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 	public Date getTreatmentStartDateDuringProgram() {
 		Date startDate = null;
 		List<Regimen> regimens = getTbRegimensDuringProgram();
-		if (regimens != null && regimens.size() > 0) {
+		if (regimens != null && !regimens.isEmpty()) {
 			startDate = regimens.get(0).getStartDate();
 			Date previousProgramDateCompleted = getPreviousProgramDateCompleted();
 			if (previousProgramDateCompleted != null && startDate.before(previousProgramDateCompleted)) {
@@ -395,7 +393,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 	public Date getTreatmentEndDateDuringProgram() {
 		Date endDate = null;
 		List<Regimen> regimens = getTbRegimensDuringProgram();
-		if (regimens != null && regimens.size() > 0) {
+		if (regimens != null && !regimens.isEmpty()) {
 			endDate = regimens.get(regimens.size() - 1).getEndDate();
 		}
 		return endDate;
@@ -442,7 +440,7 @@ public class TbPatientProgram implements Comparable<TbPatientProgram>, Validator
 		List<TbPatientProgram> programs = Context.getService(MdrtbService.class).getTbPatientPrograms(
 		    this.program.getPatient());
 		
-		if (programs.size() > 0) {
+		if (!programs.isEmpty()) {
 			return this.equals(programs.get(programs.size() - 1));
 		} else {
 			return false;

@@ -16,6 +16,8 @@ import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
+import java.util.Objects;
+
 public class XpertForm extends AbstractSimpleForm implements Comparable<XpertForm> {
 	
 	private LabTest labTest;
@@ -64,7 +66,7 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || obs.getValueText() != id) {
+		if (obs == null || obs.getValueText() == null || !Objects.equals(obs.getValueText(), id)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -141,7 +143,6 @@ public class XpertForm extends AbstractSimpleForm implements Comparable<XpertFor
 				obsgroup.addGroupMember(obs);
 				encounter.addObs(obs);
 				encounter.addObs(obsgroup);
-				//encounter.
 			}
 		}
 	}

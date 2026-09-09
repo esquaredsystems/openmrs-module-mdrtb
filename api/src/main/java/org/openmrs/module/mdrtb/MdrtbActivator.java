@@ -30,7 +30,6 @@ import java.util.*;
 public class MdrtbActivator extends BaseModuleActivator {
 	
 	/***************************/
-	
 	private final Log log = LogFactory.getLog(this.getClass());
 	
 	public static final String SPECIMEN_TYPE_CONCEPT_UUID = "commonlabtest.specimenTypeConceptUuid";

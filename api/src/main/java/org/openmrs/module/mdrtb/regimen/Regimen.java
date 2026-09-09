@@ -86,7 +86,7 @@ public class Regimen {
 	 * Returns whether the current regimen is empty (empty defined as having no drug orders)
 	 */
 	public boolean isEmpty() {
-		return (getDrugOrders() == null || getDrugOrders().size() == 0);
+		return (getDrugOrders() == null || getDrugOrders().isEmpty());
 	}
 	
 	/**
@@ -99,7 +99,7 @@ public class Regimen {
 		if (fromDate == null || fromDate.after(toDate)) {
 			return -1;
 		}
-		double days = (toDate.getTime() - fromDate.getTime()) / 1000 / 60 / 60 / 24;
+		double days = (double) (toDate.getTime() - fromDate.getTime()) / 1000 / 60 / 60 / 24;
 		return (int) days;
 	}
 	
@@ -178,9 +178,9 @@ public class Regimen {
 	public String toString() {
 		StringBuilder ret = new StringBuilder();
 		for (DrugOrder o : getDrugOrders()) {
-			ret.append((ret.length() == 0 ? "" : " + ") + o.toString());
+			ret.append(ret.length() == 0 ? "" : " + ").append(o.toString());
 		}
-		ret.append(" from " + startDate + " to " + endDate + " ");
+		ret.append(" from ").append(startDate).append(" to ").append(endDate).append(" ");
 		return ret.toString();
 	}
 	
@@ -189,7 +189,7 @@ public class Regimen {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj != null && obj instanceof Regimen) {
+		if (obj instanceof Regimen) {
 			Regimen that = (Regimen) obj;
 			if (ObjectUtil.areEqual(this.getStartDate(), that.getStartDate())) {
 				if (ObjectUtil.areEqual(this.getEndDate(), that.getEndDate())) {

@@ -15,22 +15,11 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -101,7 +90,7 @@ public class MdrtbMessages {
 	 * null values, and we need to tell "not looked up yet" apart from "looked up, does not exist".
 	 * Compared by identity, so it can never collide with a real message.
 	 */
-	private static final String NOT_STORED = new String("mdrtb.message.notStored");
+	private static final String NOT_STORED = "mdrtb.message.notStored";
 
 	private MessageStore store;
 
@@ -156,7 +145,7 @@ public class MdrtbMessages {
 		String cached = messages.get(code);
 		if (cached != null) {
 			// identity comparison: only our own sentinel instance means "known to be absent"
-			return cached == NOT_STORED ? null : cached;
+			return cached.equals(NOT_STORED) ? null : cached;
 		}
 
 		if (store == null) {
@@ -184,7 +173,7 @@ public class MdrtbMessages {
 	String peek(String lang, String code) {
 		Map<String, String> messages = cache.get(lang);
 		String cached = messages == null ? null : messages.get(code);
-		return cached == NOT_STORED ? null : cached;
+		return Objects.equals(cached, NOT_STORED) ? null : cached;
 	}
 
 	/**
@@ -192,7 +181,7 @@ public class MdrtbMessages {
 	 */
 	boolean isCachedAsMissing(String lang, String code) {
 		Map<String, String> messages = cache.get(lang);
-		return messages != null && messages.get(code) == NOT_STORED;
+		return messages != null && Objects.equals(messages.get(code), NOT_STORED);
 	}
 
 	/**
@@ -245,7 +234,7 @@ public class MdrtbMessages {
 			String modernLanguage = modernLanguageCode(legacyLanguage);
 			String full = locale.toString();
 
-			if (full != null && !full.isEmpty()) {
+			if (!full.isEmpty()) {
 				if (!modernLanguage.equals(legacyLanguage) && full.startsWith(legacyLanguage)) {
 					// "in_ID" as Locale renders it becomes "id_ID" as the bundle names it
 					addIfAbsent(candidates, modernLanguage + full.substring(legacyLanguage.length()));
@@ -410,7 +399,7 @@ public class MdrtbMessages {
 	
 	private Set<String> languagesInDirectory(URL url) throws Exception {
 		Set<String> languages = new LinkedHashSet<>();
-		File bundle = new File(URLDecoder.decode(url.getFile(), "UTF-8"));
+		File bundle = new File(URLDecoder.decode(url.getFile(), StandardCharsets.UTF_8));
 		File directory = bundle.getParentFile();
 		if (directory == null || !directory.isDirectory()) {
 			return languages;

@@ -246,7 +246,7 @@ public class RegimenUtils {
 		if (obs == null || obs.getValueCoded() == null) {
 			return emptyCode;
 		}
-		return formatCodedObs(Arrays.asList(obs), "", emptyCode);
+		return formatCodedObs(List.of(obs), "", emptyCode);
 	}
 	
 	/**

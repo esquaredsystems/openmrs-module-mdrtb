@@ -260,12 +260,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 	        final Boolean isSpecimenRequired, Concept referenceConcept, boolean includeRetired) throws APIException {
 		List<LabTestType> labTestTypes = dao.getLabTestTypes(name, shortName, testGroup, referenceConcept, includeRetired);
 		if (isSpecimenRequired != null) {
-			for (Iterator<LabTestType> iterator = labTestTypes.iterator(); iterator.hasNext();) {
-				LabTestType labTestType = iterator.next();
-				if (!labTestType.getRequiresSpecimen().equals(isSpecimenRequired)) {
-					iterator.remove();
-				}
-			}
+            labTestTypes.removeIf(labTestType -> !labTestType.getRequiresSpecimen().equals(isSpecimenRequired));
 		}
 		return labTestTypes;
 	}
@@ -362,7 +357,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 			labTest.addLabTestSample(saveLabTestSample);
 		}
 		if (labTestAttributes != null) {
-			Set<LabTestAttribute> attributes = new HashSet<LabTestAttribute>();
+			Set<LabTestAttribute> attributes = new HashSet<>();
 			for (LabTestAttribute labTestAttribute : labTestAttributes) {
 				attributes.add(saveLabTestAttribute(labTestAttribute));
 			}
@@ -494,7 +489,7 @@ public class LabTestServiceImpl extends BaseOpenmrsService implements LabTestSer
 		for (LabTestSample labTestSample : labTestSamples) {
 			if (labTestSample.getStatus() == LabTestSampleStatus.PROCESSED) {
 				labTestSample.setStatus(LabTestSampleStatus.COLLECTED);
-				labTestSample = dao.saveLabTestSample(labTestSample);
+				dao.saveLabTestSample(labTestSample);
 			}
 		}
 		List<LabTestAttribute> labTestAttributes = getLabTestAttributes(labTest.getTestOrderId());

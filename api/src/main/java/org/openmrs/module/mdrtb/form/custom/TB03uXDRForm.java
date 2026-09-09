@@ -3,6 +3,7 @@ package org.openmrs.module.mdrtb.form.custom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
@@ -123,14 +124,12 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 	public String getAddress() {
 		
 		PersonAddress pa = getPatient().getPersonAddress();
-		
 		if (pa == null)
 			return null;
-		
 		String address = pa.getCountry() + "," + pa.getStateProvince() + "," + pa.getCountyDistrict();
-		if (pa.getAddress1() != null && pa.getAddress1().length() != 0) {
+		if (pa.getAddress1() != null && !pa.getAddress1().isEmpty()) {
 			address += "," + pa.getAddress1();
-			if (pa.getAddress2() != null && pa.getAddress2().length() != 0)
+			if (pa.getAddress2() != null && !pa.getAddress2().isEmpty())
 				address += "," + pa.getAddress2();
 		}
 		
@@ -739,7 +738,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_DEATH_AFTER_TREATMENT_OUTCOME));
 		Obs obs = null;
 		
-		if (obsList != null && obsList.size() > 0)
+		if (obsList != null && !obsList.isEmpty())
 			obs = obsList.get(0);
 		
 		if (obs == null) {
@@ -757,7 +756,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 		
 		Obs obs = null;
 		
-		if (obsList != null && obsList.size() > 0)
+		if (obsList != null && !obsList.isEmpty())
 			obs = obsList.get(0);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
@@ -872,7 +871,7 @@ public class TB03uXDRForm extends AbstractSimpleForm {
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || obs.getValueText() != notes) {
+		if (obs == null || obs.getValueText() == null || !Objects.equals(obs.getValueText(), notes)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)

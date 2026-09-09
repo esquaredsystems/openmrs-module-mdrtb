@@ -574,12 +574,12 @@ public class MdrtbPatient {
 	 * sort Encounters by encounterDatetime, desc
 	 */
 	public void sortHtmlEncListByEncounterDatetime() {
-		Collections.sort(this.htmlEncList, new Comparator<Encounter>() {
-			
-			public int compare(Encounter u1, Encounter u2) {
-				return u2.getEncounterDatetime().compareTo(u1.getEncounterDatetime());
-			}
-		});
+		this.htmlEncList.sort(new Comparator<Encounter>() {
+
+            public int compare(Encounter u1, Encounter u2) {
+                return u2.getEncounterDatetime().compareTo(u1.getEncounterDatetime());
+            }
+        });
 	}
 	
 }

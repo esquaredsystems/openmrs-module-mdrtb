@@ -23,7 +23,6 @@ import org.openmrs.module.mdrtb.specimen.custom.*;
 import org.openmrs.module.reporting.cohort.query.service.CohortQueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -70,30 +69,6 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	/***********************/
 	/** UTILITY FUNCTIONS **/
 	/***********************/
-	private static void initializeEverythingAboutConcept(Concept c) {
-		if (c != null) {
-			c.getDatatype().getHl7Abbreviation();
-			for (ConceptName cns : c.getNames()) {
-				Collection<ConceptNameTag> tags = cns.getTags();
-				for (ConceptNameTag cnTag : tags) {
-					cnTag.getTag();
-				}
-			}
-			Collection<ConceptAnswer> cas = c.getAnswers();
-			if (cas != null) {
-				for (ConceptAnswer ca : cas) {
-					Collection<ConceptName> cnsTmp = ca.getAnswerConcept().getNames();
-					for (ConceptName cn : cnsTmp) {
-						Collection<ConceptNameTag> tags = cn.getTags();
-						for (ConceptNameTag cnTag : tags) {
-							cnTag.getTag();
-						}
-					}
-				}
-			}
-		}
-	}
-	
 	public String getColorForConcept(Concept concept) {
 		if (concept == null) {
 			log.error("Cannot fetch color for null concept");
@@ -221,7 +196,26 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			}
 			conceptIdCache.put(lookup, concept.getConceptId());
 		}
-		initializeEverythingAboutConcept(concept);
+		// Initialize concept (the obsolete, dirty way)
+		concept.getDatatype().getHl7Abbreviation();
+		for (ConceptName cns : concept.getNames()) {
+			Collection<ConceptNameTag> tags = cns.getTags();
+			for (ConceptNameTag cnTag : tags) {
+				cnTag.getTag();
+			}
+		}
+		Collection<ConceptAnswer> cas = concept.getAnswers();
+		if (cas != null) {
+			for (ConceptAnswer ca : cas) {
+				Collection<ConceptName> cnsTmp = ca.getAnswerConcept().getNames();
+				for (ConceptName cn : cnsTmp) {
+					Collection<ConceptNameTag> tags = cn.getTags();
+					for (ConceptNameTag cnTag : tags) {
+						cnTag.getTag();
+					}
+				}
+			}
+		}
 		return concept;
 	}
 	
@@ -530,7 +524,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getTbProgram(),
 				startDate, endDate, null, null, false);
 		// sort the programs so oldest is first and most recent is last
-		Collections.sort(programs, new PatientProgramComparator());
+		programs.sort(new PatientProgramComparator());
 		List<TbPatientProgram> tbPrograms = new LinkedList<>();
 		TbPatientProgram temp = null;
 		// convert to mdrtb patient programs
@@ -578,7 +572,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 				null, null, null, null, false);
 		TbPatientProgram temp = null;
 		// sort the programs so oldest is first and most recent is last
-		Collections.sort(programs, new PatientProgramComparator());
+		programs.sort(new PatientProgramComparator());
 		List<TbPatientProgram> tbPrograms = new LinkedList<>();
 		// convert to mdrtb patient programs
 		for (PatientProgram program : programs) {
@@ -621,7 +615,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getMdrtbProgram(),
 				startDate, endDate, null, null, false);
 		// sort the programs so oldest is first and most recent is last
-		Collections.sort(programs, new PatientProgramComparator());
+		programs.sort(new PatientProgramComparator());
 		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<>();
 		// convert to mdrtb patient programs
 		for (PatientProgram program : programs) {
@@ -641,7 +635,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getMdrtbProgram(),
 				startDate, endDate, null, null, false);
 		// sort the programs so oldest is first and most recent is last
-		Collections.sort(programs, new PatientProgramComparator());
+		programs.sort(new PatientProgramComparator());
 		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<>();
 		// convert to mdrtb patient programs
 		for (PatientProgram program : programs) {
@@ -656,7 +650,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(null, getMdrtbProgram(),
 				startDate, endDate, null, null, false);
 		// sort the programs so oldest is first and most recent is last
-		Collections.sort(programs, new PatientProgramComparator());
+		programs.sort(new PatientProgramComparator());
 		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<>();
 		MdrtbPatientProgram temp = null;
 		// convert to mdrtb patient programs
@@ -718,7 +712,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 		List<PatientProgram> programs = Context.getProgramWorkflowService().getPatientPrograms(patient, getMdrtbProgram(),
 				null, null, null, null, false);
 		// sort the programs so oldest is first and most recent is last
-		Collections.sort(programs, new PatientProgramComparator());
+		programs.sort(new PatientProgramComparator());
 		List<MdrtbPatientProgram> mdrtbPrograms = new LinkedList<>();
 		// convert to mdrtb patient programs
 		for (PatientProgram program : programs) {
@@ -737,12 +731,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	}
 	
 	public ProgramWorkflowState getProgramWorkflowState(Concept programWorkflowStateConcept) {
-		List<ProgramWorkflowState> list = Context.getProgramWorkflowService().getProgramWorkflowStatesByConcept(
-		    programWorkflowStateConcept);
-		if (!list.isEmpty()) {
-			return list.get(0);
-		}
-		return null;
+        return TbUtil.getProgramWorkflowState(programWorkflowStateConcept);
 	}
 	
 	public Set<ProgramWorkflowState> getPossibleClassificationsAccordingToPreviousDrugUse() {
@@ -982,7 +971,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames, Date startDate, Date endDate,
 	        Date closeDate) {
-		return dao.getEncountersByEncounterTypes(encounterTypeNames, startDate, endDate, closeDate);
+		return dao.getEncountersByEncounterTypes(encounterTypeNames, startDate, endDate);
 	}
 	
 	public List<Encounter> getEncountersWithNoProgram(EncounterType encounterType, Patient patient) {

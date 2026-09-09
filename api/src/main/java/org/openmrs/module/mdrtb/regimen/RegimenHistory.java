@@ -58,12 +58,8 @@ public class RegimenHistory {
 		
 		Date endDate = (ObjectUtil.nvl(order.getEffectiveStopDate(), order.getAutoExpireDate()));
 		if (endDate != null) {
-			RegimenChange endChange = getRegimenChanges().get(endDate);
-			if (endChange == null) {
-				endChange = new RegimenChange(endDate);
-				getRegimenChanges().put(endDate, endChange);
-			}
-			endChange.getOrdersEnded().add(order);
+            RegimenChange endChange = getRegimenChanges().computeIfAbsent(endDate, RegimenChange::new);
+            endChange.getOrdersEnded().add(order);
 		}
 	}
 	
@@ -71,12 +67,8 @@ public class RegimenHistory {
 	 * Adds an Observation, which modifies a Regimen Change to indicate the reason for starting
 	 */
 	public void addReasonForStarting(Obs obs) {
-		RegimenChange obsDateChange = getRegimenChanges().get(obs.getObsDatetime());
-		if (obsDateChange == null) {
-			obsDateChange = new RegimenChange(obs.getObsDatetime());
-			getRegimenChanges().put(obs.getObsDatetime(), obsDateChange);
-		}
-		obsDateChange.setReasonForStarting(obs);
+        RegimenChange obsDateChange = getRegimenChanges().computeIfAbsent(obs.getObsDatetime(), k -> new RegimenChange(obs.getObsDatetime()));
+        obsDateChange.setReasonForStarting(obs);
 	}
 	
 	/**
@@ -104,7 +96,7 @@ public class RegimenHistory {
 	}
 	
 	/**
-	 * @return the List of future Drug Orders
+	 * @return the Set of future Drug Orders
 	 */
 	public Set<DrugOrder> getPastDrugOrders() {
 		Set<DrugOrder> s = new HashSet<>();
@@ -118,7 +110,7 @@ public class RegimenHistory {
 	}
 	
 	/**
-	 * @return the List of future Drug Orders
+	 * @return the Set of future Drug Orders
 	 */
 	public Set<DrugOrder> getFutureDrugOrders() {
 		Set<DrugOrder> s = new HashSet<>();
@@ -214,7 +206,7 @@ public class RegimenHistory {
 	}
 	
 	/**
-	 * @param effectiveDate the date to check
+	 * @param fromDate, toDate the dates to check
 	 * @return all Regimens active after the passed Date
 	 */
 	public List<Regimen> getRegimensDuring(Date fromDate, Date toDate) {

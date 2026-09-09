@@ -27,9 +27,7 @@ public class MdrtbAllergyUtils {
 		Map<Patient, List<MdrtbAllergyStringObj>> ret = new HashMap<>();
 		List<Concept> cList = new ArrayList<>();
 		cList.add(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT));
-		List<Person> persList = new ArrayList<>();
-		for (Patient p : pList)
-			persList.add(p);
+        List<Person> persList = new ArrayList<>(pList);
 		List<Obs> oList = Context.getObsService().getObservations(persList, null, cList, null, null, null, null, null, null,
 		    null, null, false);
 		Concept effect = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.ADVERSE_EVENT);
@@ -63,25 +61,20 @@ public class MdrtbAllergyUtils {
 				}
 			}
 			
-			Collections.sort(allergyList, new Comparator<MdrtbAllergyStringObj>() {
-				
-				public int compare(MdrtbAllergyStringObj left, MdrtbAllergyStringObj right) {
-					
-					Date leftDate = left.getDate();
-					Date rightDate = right.getDate();
-					
-					if (leftDate == null && rightDate == null) {
-						return 0;
-					} else if (leftDate == null) {
-						return 1;
-					} else if (rightDate == null) {
-						return -1;
-					} else {
-						return (left.getDate()).compareTo(right.getDate());
-					}
-				}
-				
-			});
+			allergyList.sort((left, right) -> {
+                Date leftDate = left.getDate();
+                Date rightDate = right.getDate();
+
+                if (leftDate == null && rightDate == null) {
+                    return 0;
+                } else if (leftDate == null) {
+                    return 1;
+                } else if (rightDate == null) {
+                    return -1;
+                } else {
+                    return (left.getDate()).compareTo(right.getDate());
+                }
+            });
 			
 			ret.put(p, allergyList);
 		}

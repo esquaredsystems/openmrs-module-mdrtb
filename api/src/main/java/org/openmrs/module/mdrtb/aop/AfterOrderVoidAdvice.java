@@ -13,6 +13,7 @@ import java.lang.reflect.Method;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.openmrs.Encounter;
 import org.openmrs.Order;
 import org.openmrs.api.context.Context;
@@ -34,7 +35,7 @@ public class AfterOrderVoidAdvice implements AfterReturningAdvice {
 	 * depends on org.openmrs.api.impl.OrderServiceImpl
 	 */
 	@Override
-	public void afterReturning(Object returnValue, Method method, Object[] args, Object target) throws Throwable {
+	public void afterReturning(Object returnValue, Method method, Object @NonNull [] args, Object target) throws Throwable {
 		
 		LabTestService labTestService;
 		
@@ -63,7 +64,7 @@ public class AfterOrderVoidAdvice implements AfterReturningAdvice {
 			if (returnValue != null) {
 				
 				Encounter encounter = (Encounter) returnValue;
-				Set<Order> orders = (Set<Order>) encounter.getOrders();
+				Set<Order> orders = encounter.getOrders();
 				
 				for (Order o : orders) {
 					if (!o.getVoided()) {

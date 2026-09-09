@@ -17,17 +17,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.openmrs.Concept;
 import org.openmrs.Patient;
 import org.openmrs.PatientProgram;
@@ -68,30 +69,32 @@ public class LabDao {
 	 * @param includeRetired include retired objects
 	 * @return {@link LabTestAttributeType} objects
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestAttributeType> getAllLabTestAttributeTypes(boolean includeRetired) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttributeType.class);
-		criteria.addOrder(Order.asc("name"));
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestAttributeType> query = cb.createQuery(LabTestAttributeType.class);
+		Root<LabTestAttributeType> root = query.from(LabTestAttributeType.class);
+		List<Predicate> predicates = new ArrayList<>();
 		if (!includeRetired) {
-			criteria.add(Restrictions.eq("retired", false));
+			predicates.add(cb.equal(root.get("retired"), false));
 		}
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0])).orderBy(cb.asc(root.get("name")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
 	 * @param includeRetired include retired objects
 	 * @return {@link LabTestType} objects
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestType> getAllLabTestTypes(boolean includeRetired) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestType.class);
-		criteria.addOrder(Order.asc("name"));
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestType> query = cb.createQuery(LabTestType.class);
+		Root<LabTestType> root = query.from(LabTestType.class);
+		List<Predicate> predicates = new ArrayList<>();
 		if (!includeRetired) {
-			criteria.add(Restrictions.eq("retired", false));
+			predicates.add(cb.equal(root.get("retired"), false));
 		}
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0])).orderBy(cb.asc(root.get("name")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -102,28 +105,30 @@ public class LabDao {
 	 * @param includeRetired include retired objects
 	 * @return {@link LabTestType} objects
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestType> getLabTestTypes(String name, String shortName, LabTestGroup testGroup,
 	        Concept referenceConcept, boolean includeRetired) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestType.class);
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestType> query = cb.createQuery(LabTestType.class);
+		Root<LabTestType> root = query.from(LabTestType.class);
+		List<Predicate> predicates = new ArrayList<>();
 		if (name != null) {
-			criteria.add(Restrictions.ilike("name", name, MatchMode.START));
+			predicates.add(cb.like(cb.lower(root.get("name")), name.toLowerCase() + "%"));
 		}
 		if (shortName != null) {
-			criteria.add(Restrictions.ilike("shortName", name, MatchMode.START));
+			predicates.add(cb.like(cb.lower(root.get("shortName")), shortName.toLowerCase() + "%"));
 		}
 		if (testGroup != null) {
-			criteria.add(Restrictions.eq("testGroup", testGroup));
+			predicates.add(cb.equal(root.get("testGroup"), testGroup));
 		}
 		if (referenceConcept != null) {
-			criteria.add(Restrictions.ilike("referenceConcept", referenceConcept));
+			predicates.add(cb.equal(root.get("referenceConcept"), referenceConcept));
 		}
 		if (!includeRetired) {
-			criteria.add(Restrictions.eq("retired", false));
+			predicates.add(cb.equal(root.get("retired"), false));
 		}
-		criteria.addOrder(Order.asc("name")).addOrder(Order.asc("retired")).list();
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0]))
+		        .orderBy(cb.asc(root.get("name")), cb.asc(root.get("retired")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -131,10 +136,11 @@ public class LabDao {
 	 * @return {@link LabTest} object by matching given {@link org.openmrs.Order} object
 	 */
 	public LabTest getLabTest(org.openmrs.Order order) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTest.class);
-		criteria.add(Restrictions.eq("testOrderId", order.getId()));
-		return (LabTest) criteria.uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTest> query = cb.createQuery(LabTest.class);
+		Root<LabTest> root = query.from(LabTest.class);
+		query.select(root).where(cb.equal(root.get("testOrderId"), order.getId()));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	/**
@@ -142,7 +148,7 @@ public class LabDao {
 	 * @return {@link LabTest} object
 	 */
 	public LabTest getLabTest(Integer labTestId) {
-		return (LabTest) sessionFactory.getCurrentSession().get(LabTest.class, labTestId);
+		return sessionFactory.getCurrentSession().get(LabTest.class, labTestId);
 	}
 	
 	/**
@@ -150,7 +156,7 @@ public class LabDao {
 	 * @return {@link LabTestAttribute} object
 	 */
 	public LabTestAttribute getLabTestAttribute(Integer labTestAttributeId) {
-		return (LabTestAttribute) sessionFactory.getCurrentSession().get(LabTestAttribute.class, labTestAttributeId);
+		return sessionFactory.getCurrentSession().get(LabTestAttribute.class, labTestAttributeId);
 	}
 	
 	/**
@@ -158,22 +164,23 @@ public class LabDao {
 	 * @return {@link LabTestAttribute} object
 	 */
 	public LabTestAttribute getLabTestAttributeByUuid(String uuid) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttribute.class);
-		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
-		return (LabTestAttribute) criteria.uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestAttribute> query = cb.createQuery(LabTestAttribute.class);
+		Root<LabTestAttribute> root = query.from(LabTestAttribute.class);
+		query.select(root).where(cb.equal(root.get("uuid"), uuid.toLowerCase()));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	/**
 	 * @param testOrderId the Id
 	 * @return {@link LabTestAttribute} object(s)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestAttribute> getLabTestAttributes(Integer testOrderId) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttribute.class);
-		criteria.add(Restrictions.eq("labTest.testOrderId", testOrderId));
-		return criteria.list();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestAttribute> query = cb.createQuery(LabTestAttribute.class);
+		Root<LabTestAttribute> root = query.from(LabTestAttribute.class);
+		query.select(root).where(cb.equal(root.get("labTest").get("testOrderId"), testOrderId));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -184,24 +191,27 @@ public class LabDao {
 	 * @param includeVoided include retired objects
 	 * @return {@link LabTestAttribute} object(s)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestAttribute> getLabTestAttributes(LabTestAttributeType labTestAttributeType, String valueReference,
 	        Date from, Date to, boolean includeVoided) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttribute.class);
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestAttribute> query = cb.createQuery(LabTestAttribute.class);
+		Root<LabTestAttribute> root = query.from(LabTestAttribute.class);
+		List<Predicate> predicates = new ArrayList<>();
 		if (labTestAttributeType != null) {
-			criteria.add(Restrictions.eqOrIsNull("attributeType.labTestAttributeTypeId", labTestAttributeType.getId()));
+			predicates.add(cb.equal(root.get("attributeType").get("labTestAttributeTypeId"), labTestAttributeType.getId()));
 		}
 		if (valueReference != null) {
-			criteria.add(Restrictions.ilike("valueReference", valueReference, MatchMode.START));
+			predicates.add(cb.like(cb.lower(root.<String>get("valueReference")), valueReference.toLowerCase() + "%"));
 		}
 		if (from != null && to != null) {
-			criteria.add(Restrictions.between("dateCreated", from, to));
+			predicates.add(cb.between(root.<Date>get("dateCreated"), from, to));
 		}
 		if (!includeVoided) {
-			criteria.add(Restrictions.eq("voided", false));
+			predicates.add(cb.equal(root.get("voided"), false));
 		}
-		return criteria.addOrder(Order.asc("labTestAttributeId")).addOrder(Order.asc("voided")).list();
+		query.select(root).where(predicates.toArray(new Predicate[0]))
+		        .orderBy(cb.asc(root.get("labTestAttributeId")), cb.asc(root.get("voided")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -243,10 +253,11 @@ public class LabDao {
 	 * @return {@link LabTestAttributeType} object
 	 */
 	public LabTestAttributeType getLabTestAttributeTypeByUuid(String uuid) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttributeType.class);
-		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
-		return (LabTestAttributeType) criteria.uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestAttributeType> query = cb.createQuery(LabTestAttributeType.class);
+		Root<LabTestAttributeType> root = query.from(LabTestAttributeType.class);
+		query.select(root).where(cb.equal(root.get("uuid"), uuid.toLowerCase()));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	/**
@@ -255,23 +266,23 @@ public class LabDao {
 	 * @param includeRetired include retired objects
 	 * @return {@link LabTestAttributeType} object(s)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestAttributeType> getLabTestAttributeTypes(String name, String datatypeClassname, boolean includeRetired) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttributeType.class);
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestAttributeType> query = cb.createQuery(LabTestAttributeType.class);
+		Root<LabTestAttributeType> root = query.from(LabTestAttributeType.class);
+		List<Predicate> predicates = new ArrayList<>();
 		if (name != null) {
-			criteria.add(Restrictions.ilike("name", name, MatchMode.START));
+			predicates.add(cb.like(cb.lower(root.get("name")), name.toLowerCase() + "%"));
 		}
-		
 		if (datatypeClassname != null) {
-			criteria.add(Restrictions.eq("datatypeClassname", datatypeClassname));
+			predicates.add(cb.equal(root.get("datatypeClassname"), datatypeClassname));
 		}
 		if (!includeRetired) {
-			criteria.add(Restrictions.eq("retired", false));
+			predicates.add(cb.equal(root.get("retired"), false));
 		}
-		criteria.addOrder(Order.asc("name")).addOrder(Order.asc("retired")).list();
-		
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0]))
+		        .orderBy(cb.asc(root.get("name")), cb.asc(root.get("retired")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -279,16 +290,18 @@ public class LabDao {
 	 * @param includeRetired include retired objects
 	 * @return {@link LabTestAttributeType} object(s)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestAttributeType> getLabTestAttributeTypes(LabTestType labTestType, boolean includeRetired) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestAttributeType.class);
-		criteria.add(Restrictions.eq("labTestType", labTestType));
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestAttributeType> query = cb.createQuery(LabTestAttributeType.class);
+		Root<LabTestAttributeType> root = query.from(LabTestAttributeType.class);
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(cb.equal(root.get("labTestType"), labTestType));
 		if (!includeRetired) {
-			criteria.add(Restrictions.eq("retired", false));
+			predicates.add(cb.equal(root.get("retired"), false));
 		}
-		criteria.addOrder(Order.asc("sortWeight")).addOrder(Order.asc("retired")).list();
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0]))
+		        .orderBy(cb.asc(root.get("sortWeight")), cb.asc(root.get("retired")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -296,10 +309,11 @@ public class LabDao {
 	 * @return {@link LabTest} object
 	 */
 	public LabTest getLabTestByUuid(String uuid) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTest.class);
-		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
-		return (LabTest) criteria.uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTest> query = cb.createQuery(LabTest.class);
+		Root<LabTest> root = query.from(LabTest.class);
+		query.select(root).where(cb.equal(root.get("uuid"), uuid.toLowerCase()));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	/**
@@ -314,38 +328,40 @@ public class LabDao {
 	 * @param includeVoided include retired objects
 	 * @return {@link LabTest} object(s)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTest> getLabTests(LabTestType labTestType, Patient patient, String orderNumber, String referenceNumber,
 	        Concept orderConcept, Provider orderer, Date from, Date to, boolean includeVoided) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTest.class);
-		criteria.createAlias("order", "o");
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTest> query = cb.createQuery(LabTest.class);
+		Root<LabTest> root = query.from(LabTest.class);
+		Join<?, ?> orderJoin = root.join("order", JoinType.INNER);
+		List<Predicate> predicates = new ArrayList<>();
 		if (labTestType != null) {
-			criteria.add(Restrictions.eq("labTestType", labTestType));
+			predicates.add(cb.equal(root.get("labTestType"), labTestType));
 		}
 		if (patient != null) {
-			criteria.add(Restrictions.eq("o.patient.id", patient.getPatientId()));
+			predicates.add(cb.equal(orderJoin.get("patient").get("patientId"), patient.getPatientId()));
 		}
 		if (orderNumber != null) {
-			criteria.add(Restrictions.ilike("o.orderReference", orderNumber, MatchMode.START));
+			predicates.add(cb.like(cb.lower(orderJoin.get("orderReference")), orderNumber.toLowerCase() + "%"));
 		}
 		if (orderConcept != null) {
-			criteria.add(Restrictions.eq("o.concept.conceptId", orderConcept.getConceptId()));
+			predicates.add(cb.equal(orderJoin.get("concept").get("conceptId"), orderConcept.getConceptId()));
 		}
 		if (orderer != null) {
-			criteria.add(Restrictions.eq("o.orderer.providerId", orderer.getProviderId()));
+			predicates.add(cb.equal(orderJoin.get("orderer").get("providerId"), orderer.getProviderId()));
 		}
 		if (referenceNumber != null) {
-			criteria.add(Restrictions.ilike("labReferenceNumber", referenceNumber, MatchMode.START));
+			predicates.add(cb.like(cb.lower(root.get("labReferenceNumber")), referenceNumber.toLowerCase() + "%"));
 		}
 		if (from != null && to != null) {
-			criteria.add(Restrictions.between("dateCreated", from, to));
+			predicates.add(cb.between(root.get("dateCreated"), from, to));
 		}
 		if (!includeVoided) {
-			criteria.add(Restrictions.eq("o.voided", false));
+			predicates.add(cb.equal(orderJoin.get("voided"), false));
 		}
-		criteria.addOrder(Order.asc("testOrderId")).addOrder(Order.asc("voided")).list();
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0]))
+		        .orderBy(cb.asc(root.get("testOrderId")), cb.asc(root.get("voided")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -363,24 +379,26 @@ public class LabDao {
 	 * @return the matching non-voided {@link LabTest} objects
 	 */
 	public List<LabTest> getLabTests(Patient patient, LabTestType labTestType, PatientProgram patientProgram) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTest.class);
-		criteria.createAlias("order", "o");
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTest> query = cb.createQuery(LabTest.class);
+		Root<LabTest> root = query.from(LabTest.class);
+		Join<?, ?> orderJoin = root.join("order", JoinType.INNER);
+		List<Predicate> predicates = new ArrayList<>();
 		if (patient != null) {
-			criteria.add(Restrictions.eq("o.patient.id", patient.getPatientId()));
+			predicates.add(cb.equal(orderJoin.get("patient").get("patientId"), patient.getPatientId()));
 		}
 		if (labTestType != null) {
-			criteria.add(Restrictions.eq("labTestType", labTestType));
+			predicates.add(cb.equal(root.get("labTestType"), labTestType));
 		}
 		if (patientProgram == null) {
-			criteria.add(Restrictions.isNull("patientProgram"));
+			predicates.add(cb.isNull(root.get("patientProgram")));
 		} else {
-			criteria.add(Restrictions.eq("patientProgram", patientProgram));
+			predicates.add(cb.equal(root.get("patientProgram"), patientProgram));
 		}
-		criteria.add(Restrictions.eq("o.voided", false));
-		criteria.add(Restrictions.eq("voided", false));
-		criteria.addOrder(Order.asc("testOrderId"));
-		return criteria.list();
+		predicates.add(cb.equal(orderJoin.get("voided"), false));
+		predicates.add(cb.equal(root.get("voided"), false));
+		query.select(root).where(predicates.toArray(new Predicate[0])).orderBy(cb.asc(root.get("testOrderId")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -396,10 +414,11 @@ public class LabDao {
 	 * @return {@link LabTestSample} object
 	 */
 	public LabTestSample getLabTestSampleByUuid(String uuid) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
-		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
-		return (LabTestSample) criteria.uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestSample> query = cb.createQuery(LabTestSample.class);
+		Root<LabTestSample> root = query.from(LabTestSample.class);
+		query.select(root).where(cb.equal(root.get("uuid"), uuid.toLowerCase()));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	/**
@@ -407,16 +426,18 @@ public class LabDao {
 	 * @param includeVoided include retired objects
 	 * @return {@link LabTestSample} object(s)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestSample> getLabTestSamples(LabTest labTest, boolean includeVoided) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
-		criteria.add(Restrictions.eq("labTest.testOrderId", labTest.getId()));
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestSample> query = cb.createQuery(LabTestSample.class);
+		Root<LabTestSample> root = query.from(LabTestSample.class);
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(cb.equal(root.get("labTest").get("testOrderId"), labTest.getId()));
 		if (!includeVoided) {
-			criteria.add(Restrictions.eq("voided", false));
+			predicates.add(cb.equal(root.get("voided"), false));
 		}
-		criteria.addOrder(Order.asc("sampleIdentifier")).addOrder(Order.asc("voided")).list();
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0]))
+		        .orderBy(cb.asc(root.get("sampleIdentifier")), cb.asc(root.get("voided")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -424,26 +445,20 @@ public class LabDao {
 	 * @param includeVoided include retired objects
 	 * @return {@link LabTestSample} object(s)
 	 */
-	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<LabTestSample> getLabTestSamples(Patient patient, boolean includeVoided) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
-		
-		criteria.createAlias("labTest", "labTest", CriteriaSpecification.INNER_JOIN)
-		        .setFetchMode("labTest", FetchMode.JOIN)
-		        // .add(Restrictions.eq("labTest.order.patient.personId",
-		        // patient.getPatientId()))
-		        .createAlias("labTest.order", "order", CriteriaSpecification.INNER_JOIN)
-		        .setFetchMode("order", FetchMode.JOIN)
-		        .add(Restrictions.eq("order.patient.personId", patient.getPatientId()));
-		// .createAlias("labTest", "labTest",
-		// CriteriaSpecification.INNER_JOIN).setFetchMode("labTest", FetchMode.JOIN);
-		// criteria.add(Restrictions.eq("order.patient.patientId",
-		// patient.getPatientId()));
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestSample> query = cb.createQuery(LabTestSample.class);
+		Root<LabTestSample> root = query.from(LabTestSample.class);
+		Join<?, ?> labTestJoin = root.join("labTest", JoinType.INNER);
+		Join<?, ?> orderJoin = labTestJoin.join("order", JoinType.INNER);
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(cb.equal(orderJoin.get("patient").get("personId"), patient.getPatientId()));
 		if (!includeVoided) {
-			criteria.add(Restrictions.eq("voided", false));
+			predicates.add(cb.equal(root.get("voided"), false));
 		}
-		criteria.addOrder(Order.asc("sampleIdentifier")).addOrder(Order.asc("voided")).list();
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0]))
+		        .orderBy(cb.asc(root.get("sampleIdentifier")), cb.asc(root.get("voided")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -451,16 +466,18 @@ public class LabDao {
 	 * @param includeVoided include retired objects
 	 * @return {@link LabTestSample} object(s)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestSample> getLabTestSamples(Provider collector, boolean includeVoided) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
-		criteria.add(Restrictions.eq("collector.providerId", collector.getProviderId()));
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestSample> query = cb.createQuery(LabTestSample.class);
+		Root<LabTestSample> root = query.from(LabTestSample.class);
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(cb.equal(root.get("collector").get("providerId"), collector.getProviderId()));
 		if (!includeVoided) {
-			criteria.add(Restrictions.eq("voided", false));
+			predicates.add(cb.equal(root.get("voided"), false));
 		}
-		criteria.addOrder(Order.asc("sampleIdentifier")).addOrder(Order.asc("voided")).list();
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0]))
+		        .orderBy(cb.asc(root.get("sampleIdentifier")), cb.asc(root.get("voided")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -478,42 +495,43 @@ public class LabDao {
 	 * @param includeVoided include retired objects
 	 * @return {@link LabTestSample} object(s)
 	 */
-	@SuppressWarnings("unchecked")
 	public List<LabTestSample> getLabTestSamples(LabTest labTest, Patient patient, String sampleIdentifier,
 	        Concept specimenType, LabTestSampleStatus status, Provider collector, Date from, Date to, boolean includeVoided) {
 		if (labTest == null && patient == null && sampleIdentifier == null) {
 			return null;
 		}
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestSample> query = cb.createQuery(LabTestSample.class);
+		Root<LabTestSample> root = query.from(LabTestSample.class);
+		List<Predicate> predicates = new ArrayList<>();
 		if (labTest != null) {
-			criteria.add(Restrictions.eq("labTest.testOrderId", labTest.getTestOrderId()));
+			predicates.add(cb.equal(root.get("labTest").get("testOrderId"), labTest.getTestOrderId()));
 		}
 		if (patient != null) {
-			criteria.createAlias("labTest", "labTest").setFetchMode("labTest", FetchMode.JOIN)
-			        .createAlias("labTest.order", "order").setFetchMode("order", FetchMode.JOIN)
-			        .add(Restrictions.eq("order.patient.personId", patient.getPatientId()));
+			Join<?, ?> labTestJoin = root.join("labTest", JoinType.INNER);
+			Join<?, ?> orderJoin = labTestJoin.join("order", JoinType.INNER);
+			predicates.add(cb.equal(orderJoin.get("patient").get("personId"), patient.getPatientId()));
 		}
 		if (sampleIdentifier != null) {
-			criteria.add(Restrictions.ilike("sampleIdentifier", sampleIdentifier, MatchMode.START));
+			predicates.add(cb.like(cb.lower(root.get("sampleIdentifier")), sampleIdentifier.toLowerCase() + "%"));
 		}
 		if (specimenType != null) {
-			criteria.add(Restrictions.eq("specimenType.conceptId", specimenType.getConceptId()));
+			predicates.add(cb.equal(root.get("specimenType").get("conceptId"), specimenType.getConceptId()));
 		}
 		if (status != null) {
-			criteria.add(Restrictions.eq("status", status));
+			predicates.add(cb.equal(root.get("status"), status));
 		}
 		if (collector != null) {
-			criteria.add(Restrictions.eq("collector.providerId", collector.getProviderId()));
+			predicates.add(cb.equal(root.get("collector").get("providerId"), collector.getProviderId()));
 		}
 		if (from != null && to != null) {
-			criteria.add(Restrictions.between("dateCreated", from, to));
+			predicates.add(cb.between(root.get("dateCreated"), from, to));
 		}
 		if (!includeVoided) {
-			criteria.add(Restrictions.eq("voided", false));
+			predicates.add(cb.equal(root.get("voided"), false));
 		}
-		criteria.addOrder(Order.asc("sampleIdentifier"));
-		return criteria.list();
+		query.select(root).where(predicates.toArray(new Predicate[0])).orderBy(cb.asc(root.get("sampleIdentifier")));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	/**
@@ -529,10 +547,11 @@ public class LabDao {
 	 * @return {@link LabTestType} object
 	 */
 	public LabTestType getLabTestTypeByUuid(String uuid) {
-		@SuppressWarnings("deprecation")
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestType.class);
-		criteria.add(Restrictions.eq("uuid", uuid.toLowerCase()));
-		return (LabTestType) criteria.uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<LabTestType> query = cb.createQuery(LabTestType.class);
+		Root<LabTestType> root = query.from(LabTestType.class);
+		query.select(root).where(cb.equal(root.get("uuid"), uuid.toLowerCase()));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	/**
@@ -548,30 +567,39 @@ public class LabDao {
 	 * @param includeVoided include retired objects
 	 * @return {@link LabTest} object
 	 */
-	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<LabTest> getNLabTests(Patient patient, int n, boolean firstNObjects, boolean lastNObjects,
 	        boolean includeVoided) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTest.class);
 		List<LabTest> firstN = null;
 		List<LabTest> lastN = null;
-		// Disallow fetching more than 100 records per query
-		criteria.setMaxResults(n > MAX_FETCH_LIMIT ? MAX_FETCH_LIMIT : n);
-		if (patient != null) {
-			criteria.createAlias("order", "o", CriteriaSpecification.INNER_JOIN).setFetchMode("o", FetchMode.JOIN)
-			        .add(Restrictions.eq("o.patient.personId", patient.getPatientId()));
-		}
-		if (!includeVoided) {
-			criteria.add(Restrictions.eq("voided", false));
-		}
+		int maxResults = Math.min(n, MAX_FETCH_LIMIT);
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		if (firstNObjects) {
-			criteria.addOrder(Order.asc("dateCreated"));
-			firstN = criteria.list();
+			CriteriaQuery<LabTest> query = cb.createQuery(LabTest.class);
+			Root<LabTest> root = query.from(LabTest.class);
+			List<Predicate> queryPredicates = new ArrayList<>();
+			if (patient != null) {
+				queryPredicates.add(cb.equal(root.join("order", JoinType.INNER).get("patient").get("personId"), patient.getPatientId()));
+			}
+			if (!includeVoided) {
+				queryPredicates.add(cb.equal(root.get("voided"), false));
+			}
+			query.select(root).where(queryPredicates.toArray(new Predicate[0])).orderBy(cb.asc(root.get("dateCreated")));
+			firstN = sessionFactory.getCurrentSession().createQuery(query).setMaxResults(maxResults).getResultList();
 		}
 		if (lastNObjects) {
-			criteria.addOrder(Order.desc("dateCreated"));
-			lastN = criteria.list();
+			CriteriaQuery<LabTest> query = cb.createQuery(LabTest.class);
+			Root<LabTest> root = query.from(LabTest.class);
+			List<Predicate> queryPredicates = new ArrayList<>();
+			if (patient != null) {
+				queryPredicates.add(cb.equal(root.join("order", JoinType.INNER).get("patient").get("personId"), patient.getPatientId()));
+			}
+			if (!includeVoided) {
+				queryPredicates.add(cb.equal(root.get("voided"), false));
+			}
+			query.select(root).where(queryPredicates.toArray(new Predicate[0])).orderBy(cb.desc(root.get("dateCreated")));
+			lastN = sessionFactory.getCurrentSession().createQuery(query).setMaxResults(maxResults).getResultList();
 		}
-		List<LabTest> list = new ArrayList<LabTest>();
+		List<LabTest> list = new ArrayList<>();
 		if (firstN != null) {
 			list.addAll(firstN);
 		}
@@ -596,34 +624,37 @@ public class LabDao {
 	 * @param includeVoided include retired objects
 	 * @return {@link LabTestSample} object
 	 */
-	@SuppressWarnings({ "unchecked", "deprecation" })
 	public List<LabTestSample> getNLabTestSamples(Patient patient, LabTestSampleStatus status, int n, boolean firstNObjects,
 	        boolean lastNObjects, boolean includeVoided) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(LabTestSample.class);
 		List<LabTestSample> firstN = null;
 		List<LabTestSample> lastN = null;
-		// Disallow fetching more than 100 records per query
-		criteria.setMaxResults(n > MAX_FETCH_LIMIT ? MAX_FETCH_LIMIT : n);
-		criteria.createAlias("labTest", "labTest", CriteriaSpecification.INNER_JOIN).setFetchMode("labTest", FetchMode.JOIN)
-		        .createAlias("labTest.order", "order", CriteriaSpecification.INNER_JOIN)
-		        .setFetchMode("order", FetchMode.JOIN)
-		        .add(Restrictions.eq("order.patient.personId", patient.getPatientId()));
-		if (status != null) {
-			criteria.add(Restrictions.eq("status", status));
-		}
-		if (!includeVoided) {
-			criteria.add(Restrictions.eq("voided", false));
-		}
+		int maxResults = Math.min(n, MAX_FETCH_LIMIT);
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
 		if (firstNObjects) {
-			criteria.addOrder(Order.asc("dateCreated"));
-			firstN = criteria.list();
+			CriteriaQuery<LabTestSample> query = cb.createQuery(LabTestSample.class);
+			Root<LabTestSample> root = query.from(LabTestSample.class);
+			Join<?, ?> labTestJoin = root.join("labTest", JoinType.INNER);
+			Join<?, ?> orderJoin = labTestJoin.join("order", JoinType.INNER);
+			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(cb.equal(orderJoin.get("patient").get("personId"), patient.getPatientId()));
+			if (status != null) predicates.add(cb.equal(root.get("status"), status));
+			if (!includeVoided) predicates.add(cb.equal(root.get("voided"), false));
+			query.select(root).where(predicates.toArray(new Predicate[0])).orderBy(cb.asc(root.get("dateCreated")));
+			firstN = sessionFactory.getCurrentSession().createQuery(query).setMaxResults(maxResults).getResultList();
 		}
 		if (lastNObjects) {
-			criteria.addOrder(Order.desc("dateCreated"));
-			lastN = criteria.list();
+			CriteriaQuery<LabTestSample> query = cb.createQuery(LabTestSample.class);
+			Root<LabTestSample> root = query.from(LabTestSample.class);
+			Join<?, ?> labTestJoin = root.join("labTest", JoinType.INNER);
+			Join<?, ?> orderJoin = labTestJoin.join("order", JoinType.INNER);
+			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(cb.equal(orderJoin.get("patient").get("personId"), patient.getPatientId()));
+			if (status != null) predicates.add(cb.equal(root.get("status"), status));
+			if (!includeVoided) predicates.add(cb.equal(root.get("voided"), false));
+			query.select(root).where(predicates.toArray(new Predicate[0])).orderBy(cb.desc(root.get("dateCreated")));
+			lastN = sessionFactory.getCurrentSession().createQuery(query).setMaxResults(maxResults).getResultList();
 		}
-		criteria.setMaxResults(n);
-		List<LabTestSample> list = new ArrayList<LabTestSample>();
+		List<LabTestSample> list = new ArrayList<>();
 		if (firstN != null) {
 			list.addAll(firstN);
 		}

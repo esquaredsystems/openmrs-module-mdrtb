@@ -1,18 +1,7 @@
 package org.openmrs.module.mdrtb;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
@@ -335,15 +324,15 @@ public class MdrtbUtil extends TbUtil {
 		}
 		
 		if ("current".equals(enrollment)) {
-			Cohort current = Context.getService(CohortQueryService.class).getPatientsInProgram(Arrays.asList(mdrtbProgram),
-			    now, now);
+			Cohort current = Context.getService(CohortQueryService.class).getPatientsInProgram(
+			    Collections.singletonList(mdrtbProgram), now, now);
 			cohort = nullSafeIntersect(cohort, current);
 		} else {
-			Cohort ever = Context.getService(CohortQueryService.class).getPatientsInProgram(Arrays.asList(mdrtbProgram),
-			    null, null);
+			Cohort ever = Context.getService(CohortQueryService.class).getPatientsInProgram(
+			    Collections.singletonList(mdrtbProgram), null, null);
 			if ("previous".equals(enrollment)) {
 				Cohort current = Context.getService(CohortQueryService.class).getPatientsInProgram(
-				    Arrays.asList(mdrtbProgram), now, now);
+				    Collections.singletonList(mdrtbProgram), now, now);
 				Cohort previous = Cohort.subtract(ever, current);
 				cohort = nullSafeIntersect(cohort, previous);
 			} else if ("never".equals(enrollment)) {
@@ -488,7 +477,7 @@ public class MdrtbUtil extends TbUtil {
 			o = Context.getService(MdrtbService.class).getRegion(Integer.parseInt(oblast));
 		
 		List<Location> locList = new ArrayList<>();
-		if (o != null && location == null)
+		if (o != null)
 			locList = Context.getService(MdrtbService.class).getLocationsFromRegion(o);
 		else if (location != null)
 			locList.add(location);

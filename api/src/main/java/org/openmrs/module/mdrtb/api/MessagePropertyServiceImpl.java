@@ -11,7 +11,6 @@ package org.openmrs.module.mdrtb.api;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -91,14 +90,10 @@ public class MessagePropertyServiceImpl extends BaseOpenmrsService implements Me
 	 */
 	private MdrtbMessages messages() {
 		if (!messageStoreWired) {
-			mdrtbMessages.setStore(new MdrtbMessages.MessageStore() {
-				
-				@Override
-				public String find(String lang, String code) {
-					MessageProperty stored = messagePropertyDao.getMessageProperty(lang, code);
-					return stored == null ? null : stored.getMessage();
-				}
-			});
+			mdrtbMessages.setStore((lang, code) -> {
+                MessageProperty stored = messagePropertyDao.getMessageProperty(lang, code);
+                return stored == null ? null : stored.getMessage();
+            });
 			messageStoreWired = true;
 		}
 		return mdrtbMessages;

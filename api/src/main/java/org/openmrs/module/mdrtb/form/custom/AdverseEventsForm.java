@@ -105,8 +105,6 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 	}
 	
-	/////////////////////
-	
 	public String getSuspectedDrug() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.SUSPECTED_DRUG), encounter);
@@ -123,7 +121,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || (drug == null && obs != null) || !obs.getValueText().equals(drug)) {
+		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(drug)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -157,8 +155,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || (regimen == null && obs != null)
-		        || !obs.getValueText().equals(regimen)) {
+		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(regimen)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -299,8 +296,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueDatetime() == null || (date == null && obs != null)
-		        || !obs.getValueDatetime().equals(date)) {
+		if (obs == null || obs.getValueDatetime() == null || !obs.getValueDatetime().equals(date)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -755,8 +751,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueDatetime() == null || (date == null && obs != null)
-		        || !obs.getValueDatetime().equals(date)) {
+		if (obs == null || obs.getValueDatetime() == null || !obs.getValueDatetime().equals(date)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -775,12 +770,14 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 	}
 	
+	@Deprecated
 	public Concept getMeddraCode() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MEDDRA_CODE), encounter);
 		return obs == null ? null : obs.getValueCoded();
 	}
 	
+	@Deprecated
 	public void setMeddraCode(Concept type) {
 		Obs obs = MdrtbUtil.getObsFromEncounter(
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.MEDDRA_CODE), encounter);
@@ -861,8 +858,7 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || (comment == null && obs != null)
-		        || !obs.getValueText().equals(comment)) {
+		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(comment)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -926,13 +922,18 @@ public class AdverseEventsForm extends AbstractSimpleForm implements Comparable<
 		}
 	}
 	
+	/**
+	 * CAUTION! There are plenty of address fields, the Facility is mapped to address6 herer
+	 * 
+	 * @return
+	 */
 	public String getFacility() {
 		Location loc = this.getEncounter().getLocation();
 		String ret = loc.getStateProvince();
 		if (loc.getCountyDistrict() != null) {
 			ret += "/" + loc.getCountyDistrict();
 		}
-		if (loc.getAddress6() != null && loc.getAddress6().length() > 0) {
+		if (loc.getAddress6() != null && !loc.getAddress6().isEmpty()) {
 			ret += "/" + loc.getAddress6();
 		}
 		return ret;

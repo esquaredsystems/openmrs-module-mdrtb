@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openmrs.Patient;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.api.MdrtbService;
-import org.openmrs.module.mdrtb.api.MessagePropertyService;
 
 public class DQItem {
 	
@@ -71,16 +69,21 @@ public class DQItem {
 		tb03Links.add(lnk);
 	}
 	
+	/**
+	 * Returns the gender exactly as stored on the Patient, "M" or "F", and never a translated
+	 * label. Translation of this field belongs to the consuming client alone: this getter used to
+	 * resolve mdrtb.tb03.gender.male/female here, which put display text in the API payload and
+	 * left the web app unable to render it in the user's own locale (a Russian client received the
+	 * string the server had already chosen). The web templates now build the message key from this
+	 * value.
+	 * 
+	 * @return "M", "F", or "" when no gender is recorded
+	 */
 	public String getGender() {
 		if (patient == null || patient.getGender() == null) {
-			return null;
+			return "";
 		}
-		if (patient.getGender().equals("M")) {
-			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.male");
-		} else if (patient.getGender().equals("F")) {
-			return Context.getService(MessagePropertyService.class).getMessage("mdrtb.tb03.gender.female");
-		}
-		return null;
+		return patient.getGender();
 	}
 	
 	public List<String> getForm89Links() {

@@ -15,6 +15,8 @@ import org.openmrs.module.mdrtb.lab.LabTest;
 import org.openmrs.module.mdrtb.lab.LabTestAttribute;
 import org.openmrs.module.mdrtb.lab.LabTestSample;
 
+import java.util.Objects;
+
 public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2Form> {
 	
 	private static final String VOID_MESSAGE = "voided by MDRTB module";
@@ -70,7 +72,7 @@ public class HAIN2Form extends AbstractSimpleForm implements Comparable<HAIN2For
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || obs.getValueText() != id) {
+		if (obs == null || obs.getValueText() == null || !Objects.equals(obs.getValueText(), id)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)

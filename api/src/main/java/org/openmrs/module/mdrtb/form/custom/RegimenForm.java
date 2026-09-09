@@ -55,7 +55,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isDateNull = date == null;
 		boolean isValueDifferent = (obs != null && obs.getValueDatetime() != null && !obs.getValueDatetime().equals(date));
 		
-		if (isObsNull || isObsValueNull || (isDateNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDateNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -99,7 +99,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isNumberNull = number == null;
 		boolean isValueDifferent = (obs != null && obs.getValueText() != null && !obs.getValueText().equals(number));
 		
-		if (isObsNull || isObsValueNull || (isNumberNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isNumberNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -344,7 +344,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -356,7 +356,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CM_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -391,7 +391,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -404,7 +404,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.AM_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -439,7 +439,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -452,7 +452,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.MFX_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -487,7 +487,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -500,7 +500,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.LFX_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -535,7 +535,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -548,7 +548,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PTO_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -583,7 +583,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -596,7 +596,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CS_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -631,7 +631,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -644,7 +644,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PAS_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -679,7 +679,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -692,7 +692,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.Z_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -727,7 +727,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -740,7 +740,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.E_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -775,7 +775,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -788,13 +788,11 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.H_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
 	}
-	
-	///
 	
 	public Double getLzdDose() {
 		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.LZD_DOSE),
@@ -825,7 +823,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -838,7 +836,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.LZD_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -873,7 +871,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -886,7 +884,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.CFZ_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -921,7 +919,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -934,7 +932,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.BDQ_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -969,7 +967,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -982,7 +980,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.DLM_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -1017,7 +1015,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1030,7 +1028,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.IMP_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -1065,7 +1063,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1078,7 +1076,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.HR_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -1113,7 +1111,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1126,7 +1124,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.HRZE_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -1161,7 +1159,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1174,7 +1172,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class)
 				        .getConcept(MdrtbConcepts.S_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -1209,7 +1207,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1222,7 +1220,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.OTHER_DRUG_1_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -1254,7 +1252,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isNameNull = name == null;
 		boolean isValueDifferent = (obs != null && obs.getValueText() != null && !obs.getValueText().equals(name));
 		
-		if (isObsNull || isObsValueNull || (isNameNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isNameNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -1301,7 +1299,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isValueDifferent = (obs != null && obs.getValueNumeric() != null && dose != null && obs.getValueNumeric() != dose
 		        .doubleValue());
 		
-		if (isObsNull || isObsValueNull || (isDoseNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isDoseNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs
 			// when saved via encounters)
@@ -1314,7 +1312,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			if (dose != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.AMX_DOSE), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueNumeric(dose.doubleValue());
+				obs.setValueNumeric(dose);
 				encounter.addObs(obs);
 			}
 		}
@@ -1346,7 +1344,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isNameNull = name == null;
 		boolean isValueDifferent = (obs != null && obs.getValueText() != null && !obs.getValueText().equals(name));
 		
-		if (isObsNull || isObsValueNull || (isNameNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isNameNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {
@@ -1366,7 +1364,6 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 	
 	public String getRegimenSummary() {
 		String ret = "";
-		
 		if (getCmDose() != null)
 			ret += "Cm-";
 		if (getAmDose() != null)
@@ -1407,11 +1404,9 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 			ret += "Amx/Clv-";
 		if (getOtherDrug1Name() != null)
 			ret += getOtherDrug1Name();
-		
 		if (ret.endsWith("-")) {
 			ret = ret.substring(0, ret.length() - 1);
 		}
-		
 		return ret;
 	}
 	
@@ -1451,7 +1446,7 @@ public class RegimenForm extends AbstractSimpleForm implements Comparable<Regime
 		boolean isCommentNull = comment == null;
 		boolean isValueDifferent = (obs != null && obs.getValueText() != null && !obs.getValueText().equals(comment));
 		
-		if (isObsNull || isObsValueNull || (isCommentNull && !isObsNull) || isValueDifferent) {
+		if (isObsNull || isObsValueNull || isCommentNull || isValueDifferent) {
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
 			if (obs != null) {

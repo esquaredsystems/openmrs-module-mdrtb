@@ -12,8 +12,6 @@ package org.openmrs.module.mdrtb.api.dao;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.*;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.jdbc.Work;
 import org.openmrs.*;
 import org.openmrs.api.context.Context;
 import org.openmrs.api.db.DAOException;
@@ -22,13 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 @Repository("mdrtb.MdrtbDao")
 public class MdrtbDao {
@@ -47,13 +46,19 @@ public class MdrtbDao {
 	}
 	
 	public ReportData getReportData(Integer id) {
-		return (ReportData) sessionFactory.getCurrentSession().createCriteria(ReportData.class)
-		        .add(Restrictions.eq("id", id)).uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<ReportData> query = cb.createQuery(ReportData.class);
+		Root<ReportData> root = query.from(ReportData.class);
+		query.select(root).where(cb.equal(root.get("id"), id));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	public ReportData getReportDataByUuid(String uuid) {
-		return (ReportData) sessionFactory.getCurrentSession().createCriteria(ReportData.class)
-		        .add(Restrictions.eq("uuid", uuid)).uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<ReportData> query = cb.createQuery(ReportData.class);
+		Root<ReportData> root = query.from(ReportData.class);
+		query.select(root).where(cb.equal(root.get("uuid"), uuid));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	public ReportData saveReportData(ReportData reportData) {
@@ -81,26 +86,27 @@ public class MdrtbDao {
 		return names;
 	}
 	
-	@SuppressWarnings({ "unchecked", "deprecation" })
 	public Map<Integer, List<DrugOrder>> getDrugOrders(Cohort patients, List<Concept> drugConcepts) throws DAOException {
 		Map<Integer, List<DrugOrder>> ret = new HashMap<>();
-		if (patients != null && patients.size() == 0)
+		if (patients != null && patients.isEmpty())
 			return ret;
 
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(DrugOrder.class);
-		criteria.setFetchMode("patient", FetchMode.JOIN);
-		criteria.setCacheMode(CacheMode.IGNORE);
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<DrugOrder> query = cb.createQuery(DrugOrder.class);
+		Root<DrugOrder> root = query.from(DrugOrder.class);
+		root.fetch("patient", JoinType.LEFT);
+		List<Predicate> predicates = new ArrayList<>();
 
 		// only include this where clause if patients were passed in
 		if (patients != null)
-			criteria.add(Restrictions.in("patient.personId", patients.getMemberIds()));
+			predicates.add(root.get("patient").get("personId").in(patients.getMemberIds()));
 
 		if (drugConcepts != null)
-			criteria.add(Restrictions.in("concept", drugConcepts));
-		criteria.add(Restrictions.eq("voided", false));
-		criteria.addOrder(org.hibernate.criterion.Order.asc("startDate"));
-		log.debug("criteria: " + criteria);
-		List<DrugOrder> temp = criteria.list();
+			predicates.add(root.get("concept").in(drugConcepts));
+		predicates.add(cb.equal(root.get("voided"), false));
+		query.select(root).where(predicates.toArray(new Predicate[0])).orderBy(cb.asc(root.get("startDate")));
+		List<DrugOrder> temp = sessionFactory.getCurrentSession().createQuery(query)
+		        .setCacheMode(CacheMode.IGNORE).getResultList();
 		for (DrugOrder regimen : temp) {
 			Integer ptId = regimen.getPatient().getPatientId();
 			List<DrugOrder> list = ret.get(ptId);
@@ -114,8 +120,11 @@ public class MdrtbDao {
 	}
 	
 	public PatientIdentifier getPatientIdentifierById(Integer patientIdentifierId) {
-		return (PatientIdentifier) sessionFactory.getCurrentSession().createCriteria(PatientIdentifier.class)
-		        .add(Restrictions.eq("patientIdentifierId", patientIdentifierId)).uniqueResult();
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<PatientIdentifier> query = cb.createQuery(PatientIdentifier.class);
+		Root<PatientIdentifier> root = query.from(PatientIdentifier.class);
+		query.select(root).where(cb.equal(root.get("patientIdentifierId"), patientIdentifierId));
+		return sessionFactory.getCurrentSession().createQuery(query).uniqueResult();
 	}
 	
 	/**
@@ -124,25 +133,26 @@ public class MdrtbDao {
 	public List<List<Object>> getReports(String reportType) {
 		String sql = "select report_id, region_id, district_id, facility_id, report_name, year, quarter, month, report_date, report_type, report_status from report_data where report_type = "
 		        + reportType;
-		List<List<Object>> list = Context.getAdministrationService().executeSQL(sql, true);
-		return list;
+		return Context.getAdministrationService().executeSQL(sql, true);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<ReportData> searchReportData(Location region, Location district, Location facility, Integer year, Integer quarter,
 	                                         Integer month, String reportName, ReportType reportType) {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ReportData.class);
-		criteria.add(Restrictions.eq("year", year));
+		CriteriaBuilder cb = sessionFactory.getCurrentSession().getCriteriaBuilder();
+		CriteriaQuery<ReportData> query = cb.createQuery(ReportData.class);
+		Root<ReportData> root = query.from(ReportData.class);
+		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(cb.equal(root.get("year"), year));
 		if (reportType != null) {
-			criteria.add(Restrictions.eq("reportType", reportType));
+			predicates.add(cb.equal(root.get("reportType"), reportType));
 		}
 		if (reportName != null) {
-			criteria.add(Restrictions.eq("reportName", reportName));
+			predicates.add(cb.equal(root.get("reportName"), reportName));
 		}
 		if (quarter != null) {
-			criteria.add(Restrictions.eq("quarter", quarter));
+			predicates.add(cb.equal(root.get("quarter"), quarter));
 		} else if (month != null) {
-			criteria.add(Restrictions.eq("month", month));
+			predicates.add(cb.equal(root.get("month"), month));
 		}
 		List<Location> locationList = new ArrayList<>();
 		boolean regionProvided = region != null;
@@ -158,9 +168,7 @@ public class MdrtbDao {
 			// If District is provided, then retrieve all its children
 			BaseLocation parent = new BaseLocation(district, LocationHierarchy.DISTRICT);
 			List<BaseLocation> facilities = getLocationsByParent(parent);
-			for (BaseLocation f : facilities) {
-				locationList.add(f);
-			}
+            locationList.addAll(facilities);
 		}
 		// If only Region is provided, then Region, and its entire tree of children and grandchildren
 		else if (regionProvided) {
@@ -171,13 +179,12 @@ public class MdrtbDao {
 			for (BaseLocation d : districts) {
 				locationList.add(d);
 				List<BaseLocation> facilities = getLocationsByParent(d);
-				for (BaseLocation f : facilities) {
-					locationList.add(f);
-				}
+                locationList.addAll(facilities);
 			}
 		}
-		criteria.add(Restrictions.in("location", locationList.toArray()));
-		return criteria.list();
+		predicates.add(root.get("location").in(locationList));
+		query.select(root).where(predicates.toArray(new Predicate[0]));
+		return sessionFactory.getCurrentSession().createQuery(query).getResultList();
 	}
 	
 	public List<String> getReportDataAsList(Integer regionId, Integer districtId, Integer facilityId, Integer year, Integer quarter,
@@ -208,16 +215,15 @@ public class MdrtbDao {
 	}
 	
 	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames) {
-		return getEncountersByEncounterTypes(encounterTypeNames, null, null, null);
+		return getEncountersByEncounterTypes(encounterTypeNames, null, null);
 	}
 	
 	@SuppressWarnings("unchecked")
 	/* TODO: Remove unused closeDate parameter */
-	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames, Date startDate, Date endDate,
-	                                                     Date closeDate) {
+	public List<Encounter> getEncountersByEncounterTypes(List<String> encounterTypeNames, Date startDate, Date endDate) {
 		SimpleDateFormat dbDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		List<Integer> encounterIds = new ArrayList<>();
-		List<Integer> tempList = new ArrayList<>();
+		List<Integer> tempList;
 		String sql = "";
 		Session session = sessionFactory.getCurrentSession();
 		for (String encounterTypeName : encounterTypeNames) {

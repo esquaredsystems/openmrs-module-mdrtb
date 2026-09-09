@@ -3,6 +3,7 @@ package org.openmrs.module.mdrtb.form.custom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
@@ -755,7 +756,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.DATE_OF_DEATH_AFTER_TREATMENT_OUTCOME));
 		Obs obs = null;
 		
-		if (obsList != null && obsList.size() > 0)
+		if (obsList != null && !obsList.isEmpty())
 			obs = obsList.get(0);
 		
 		if (obs == null) {
@@ -773,7 +774,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 		
 		Obs obs = null;
 		
-		if (obsList != null && obsList.size() > 0)
+		if (obsList != null && !obsList.isEmpty())
 			obs = obsList.get(0);
 		
 		// if this obs have not been created, and there is no data to add, do nothing
@@ -823,7 +824,7 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 		}
 		
 		// we only need to update this if this is a new obs or if the value has changed.
-		if (obs == null || obs.getValueText() == null || obs.getValueText() != notes) {
+		if (obs == null || obs.getValueText() == null || !Objects.equals(obs.getValueText(), notes)) {
 			
 			// void the existing obs if it exists
 			// (we have to do this manually because openmrs doesn't void obs when saved via encounters)
@@ -1062,20 +1063,16 @@ public class TB03Form extends AbstractSimpleForm implements Comparable<TB03Form>
 				pi = Context.getService(MdrtbService.class).getPatientProgramIdentifier(pp);
 				if (pi == null) {
 					val = null;
-				}
-				
-				else {
+				} else {
 					val = pi.getIdentifier();
 				}
-			}
-			
-			else {
+			} else {
 				val = null;
 			}
 		}
-		
-		if (val == null || val.length() == 0) {
-			val = null;// Context.getService(MessagePropertyService.class).getMessage("mdrtb.unassigned");
+		if (val == null || val.isEmpty()) {
+			// Context.getService(MessagePropertyService.class).getMessage("mdrtb.unassigned");
+			val = null;
 		}
 		
 		regNum = val;

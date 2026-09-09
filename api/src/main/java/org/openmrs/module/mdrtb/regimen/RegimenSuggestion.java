@@ -118,7 +118,7 @@ public class RegimenSuggestion implements Serializable {
 	}
 	
 	/**
-	 * @param drugSuggestion the suggestion to add
+	 * @param drugComponent the suggestion to add
 	 */
 	public void addDrugComponent(DrugSuggestion drugComponent) {
 		getDrugComponents().add(drugComponent);

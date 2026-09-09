@@ -16,7 +16,7 @@ public class TbPatientProgramHospitalizationValidator implements Validator {
 		TbPatientProgram program = (TbPatientProgram) target;
 		
 		// to make sure we don't throw more than one overlap error message
-		Boolean overlap = false;
+		boolean overlap = false;
 		
 		Date previousHospitalizationStartDate = null;
 		
