@@ -2,7 +2,7 @@
 # Java OpenMRS module(Maven). Packaged as modules/mdrtb-x.y.z.omod. Requires OpenMRS ≥2.3.1.
 # Shared facts (domain model, concept/encounter-type/identifier UUIDs, topology): ../.agents/graph.md
 # Usage + notation legend + maintenance rules: ../.agents/instructions.md
-# Last updated: 2026-07-02
+# Last updated: 2026-09-15 (mdrtb/yellowcard resource)
 
 ## § MODULE LAYOUT
 ```
@@ -45,6 +45,14 @@ mdrtb/patientlist
 mdrtb/tb03report / mdrtb/tb03ureport / mdrtb/form89report
 mdrtb/tb07report / mdrtb/tb07ureport / mdrtb/tb08report / mdrtb/tb08ureport
 mdrtb/dataquality
+mdrtb/yellowcard?formUuid={AE encounter uuid} | ?year=&quarter=|month=&location=   # Yellow Card (Annex 4), read only
+    # YellowCardData (api reporting/pv) -> SimpleYellowCardData (dto) -> YellowCardDataResourceController
+    # one card per filled causality drug (0 filled -> 1 card, causalityIndex=0)
+    # RULE: only 1:1 recorded obs; checkboxes returned as CODES; no-box answers -> NOT_ON_CARD/OTHER + warnings[]
+    # never filled: 6-14, 17, 19-29, 35, 43, 45-47, "reported first time"; SUSPECTED causality and
+    # hospitalization (initial vs prolonged) tick nothing. Dates yyyy-MM-dd.
+    # TESTS (no DB): api reporting/pv/YellowCardDataTest (68), omod web/dto/SimpleYellowCardDataTest (4).
+    #   YellowCardData.Lookups is the seam: tests pass fakes instead of Context/MdrtbService.
 ```
 
 ## § GLOBAL PROPERTIES (mdrtb.* namespace — stored in global_property table)
