@@ -8975,8 +8975,8 @@ public class PatientListContoller {
 	/**
 	 * The translated gender label for the Patient List.
 	 * <p>
-	 * This report is rendered to HTML here on the server and returned as stringData, so unlike every
-	 * other register - where the REST resource returns the stored "M" / "F" and the web app
+	 * This report is rendered to HTML here on the server and returned as stringData, so unlike
+	 * every other register - where the REST resource returns the stored "M" / "F" and the web app
 	 * translates - the lookup has to happen in this renderer.
 	 * <p>
 	 * Every code gets its own key rather than being sorted into two buckets. The previous version

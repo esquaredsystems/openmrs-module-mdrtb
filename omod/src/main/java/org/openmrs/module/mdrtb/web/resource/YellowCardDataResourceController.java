@@ -27,18 +27,18 @@ import org.openmrs.module.webservices.rest.web.resource.impl.NeedsPaging;
  * <p>
  * Usage:
  * <ul>
- * <li>GET mdrtb/yellowcard?formUuid={adverse events form (encounter) uuid} - the card(s) of one AE form
- * (one card per filled causality drug)</li>
- * <li>GET mdrtb/yellowcard?year=&amp;quarter=|month=[&amp;month2=]&amp;location= - the cards of every AE form
- * filled in the period, same parameters as mdrtb/tb03report</li>
+ * <li>GET mdrtb/yellowcard?formUuid={adverse events form (encounter) uuid} - the card(s) of one AE
+ * form (one card per filled causality drug)</li>
+ * <li>GET mdrtb/yellowcard?year=&amp;quarter=|month=[&amp;month2=]&amp;location= - the cards of
+ * every AE form filled in the period, same parameters as mdrtb/tb03report</li>
  * </ul>
  * Mapping rules: see {@link YellowCardData}.
  */
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/yellowcard", supportedClass = SimpleYellowCardData.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class YellowCardDataResourceController extends BaseReportResource<SimpleYellowCardData> {
-
+	
 	public static final String PARAM_FORM_UUID = "formUuid";
-
+	
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation representation) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
@@ -85,7 +85,7 @@ public class YellowCardDataResourceController extends BaseReportResource<SimpleY
 		description.addProperty("warnings");
 		return description;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
@@ -121,7 +121,7 @@ public class YellowCardDataResourceController extends BaseReportResource<SimpleY
 		}
 		return new NeedsPaging<>(list, context);
 	}
-
+	
 	private void addCards(List<SimpleYellowCardData> list, AdverseEventsForm form) {
 		for (YellowCardData card : YellowCardData.fromAdverseEventsForm(form)) {
 			list.add(new SimpleYellowCardData(card));
