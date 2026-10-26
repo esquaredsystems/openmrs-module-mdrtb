@@ -2,7 +2,7 @@
 # Java OpenMRS module(Maven). Packaged as modules/mdrtb-x.y.z.omod. Requires OpenMRS ≥2.3.1.
 # Shared facts (domain model, concept/encounter-type/identifier UUIDs, topology): ../.agents/graph.md
 # Usage + notation legend + maintenance rules: ../.agents/instructions.md
-# Last updated: 2026-10-19 (mdrtb/endoftreatment resource, scaffold only)
+# Last updated: 2026-10-26 (Form 89: multi-valued methodOfDetection + exposure/risk fields)
 
 ## § MODULE LAYOUT
 ```
@@ -36,7 +36,27 @@ mdrtb → legacyui 2.1.0          # aware-of only
 ```
 mdrtb/tb03 / mdrtb/tb03/{uuid}
 mdrtb/tb03u / mdrtb/tb03u/{uuid}
-mdrtb/form89 / mdrtb/form89/{uuid}
+mdrtb/form89 / mdrtb/form89/{uuid}   # Form 89; ?q={patientUuid}; POST needs patientProgramUuid
+    # chain: Form89 (api form/custom) -> SimpleForm89 (dto) -> Form89ResourceController
+    # save: does NOT use SimpleForm89.toForm() (dead code, as for every form here). It builds
+    #       Form89 from the POSTed encounter's obs, so the DTO's flat fields are GET-only and
+    #       writes happen purely through encounter.obs.
+    # anatomicalSite is NOT a Form 89 obs: Form89.getAnatomicalSite() delegates to the linked
+    #       TB03 form, unguarded, so it NPEs when tb03 is null. getByUniqueId calls initTB03
+    #       first; doSearch does NOT, which is why ?q= would throw (web never calls it - the
+    #       dashboard lists Form 89s through the generic /encounter endpoint instead).
+    # methodOfDetection is MULTI-VALUED (2026-10-26): one obs per selected method.
+    #       Form89.getMethodOfDetection() -> List<Concept> via TbUtil.getObsListFromEncounter;
+    #       the setter reconciles (voids deselected, keeps obs of retained answers, adds new).
+    #       processForm89 keeps otherMethodOfDetection when OTHER is AMONG the selected.
+    #       Report PatientListContoller.getCasesByMethodOfDetectionTable lists a case under
+    #       EVERY method it was detected by, so section counts no longer sum to the case total.
+    # exposure/risk questions added 2026-10-26, each a single coded obs:
+    #       contactWithTbPatient, laborMigration, afterReleaseFromPrison, riskyBehaviorFactors
+    # EDIT CAVEAT: the web omits unanswered fields from the POST rather than voiding them, so
+    #       clearing a field (or deselecting a method) leaves the previous obs live.
+    # TESTS: Form89ResourceControllerTest + Form89DataResourceControllerTest are @Ignore stubs,
+    #       and omod runs 0 tests anyway (see § TEST EXECUTION).
 mdrtb/transferout / mdrtb/transferout/{uuid}
 mdrtb/endoftreatment / mdrtb/endoftreatment/{uuid}   # End of Treatment form; ?q={patientUuid}; POST needs patientProgramUuid
     # SCAFFOLD ONLY (2026-10-19): fields pending -> grep "TODO (EoT" for every place a field must be added
@@ -64,6 +84,19 @@ mdrtb/yellowcard?formUuid={AE encounter uuid} | ?year=&quarter=|month=&location=
     # hospitalization (initial vs prolonged) tick nothing. Dates yyyy-MM-dd.
     # TESTS (no DB): api reporting/pv/YellowCardDataTest (68), omod web/dto/SimpleYellowCardDataTest (4).
     #   YellowCardData.Lookups is the seam: tests pass fakes instead of Context/MdrtbService.
+```
+
+## § TEST EXECUTION (measured 2026-10-26 — read before trusting "the tests pass")
+```
+mvn -o test  ->  api: 288 run, 0 failures, 16 skipped   |   omod: 0 run
+omod runs NONE of its 32 compiled test classes:
+  omod/pom.xml pins maven-surefire-plugin 2.9 (parent uses 2.22.2) and org.testng:testng:7.5
+  is on the omod compile classpath, so surefire 2.9 picks the TestNG provider, which finds no
+  JUnit tests. Proof: omod/target/surefire-reports/ holds TestNG's HTML assets
+  ("Command line suite", bullet_point.png, collapseall.gif), not JUnit output.
+  => a new omod test is dead on arrival; put module tests in api/ until this is fixed.
+Formatter: net.revelc.code.formatter runs on every build and re-wraps long javadoc in files
+  that were committed unformatted (currently the 4 EndOfTreatment* files), polluting diffs.
 ```
 
 ## § GLOBAL PROPERTIES (mdrtb.* namespace — stored in global_property table)
