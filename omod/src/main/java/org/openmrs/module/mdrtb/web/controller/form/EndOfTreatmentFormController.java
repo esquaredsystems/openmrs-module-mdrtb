@@ -38,7 +38,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 /**
- * Legacy (JSP) controller for the End of Treatment form, same shape as TransferOutController. Works for both DOTS (TB03) and MDR-TB (TB03u) programs.
+ * Legacy (JSP) controller for the End of Treatment form, same shape as TransferOutController. Works
+ * for both DOTS (TB03) and MDR-TB (TB03u) programs.
  */
 @Controller
 @RequestMapping("/module/mdrtb/form/endOfTreatment.form")

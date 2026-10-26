@@ -1,6 +1,7 @@
 package org.openmrs.module.mdrtb.web.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Concept;
@@ -87,7 +88,7 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	
 	private Concept mentalDisorder;
 	
-	private Concept methodOfDetection;
+	private List<Concept> methodOfDetection;
 	
 	private Concept noDisease;
 	
@@ -106,6 +107,14 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	private Concept profession;
 	
 	private Concept ulcer;
+	
+	private Concept contactWithTbPatient;
+	
+	private Concept laborMigration;
+	
+	private Concept afterReleaseFromPrison;
+	
+	private Concept riskyBehaviorFactors;
 	
 	public SimpleForm89() {
 	}
@@ -160,6 +169,10 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		setRegistrationNumber(form89.getRegistrationNumber());
 		setUlcer(form89.getUlcer());
 		setYearOfTB03Registration(form89.getYearOfTB03Registration());
+		setContactWithTbPatient(form89.getContactWithTbPatient());
+		setLaborMigration(form89.getLaborMigration());
+		setAfterReleaseFromPrison(form89.getAfterReleaseFromPrison());
+		setRiskyBehaviorFactors(form89.getRiskyBehaviorFactors());
 	}
 	
 	/**
@@ -506,11 +519,11 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		this.mentalDisorder = mentalDisorder;
 	}
 	
-	public Concept getMethodOfDetection() {
+	public List<Concept> getMethodOfDetection() {
 		return methodOfDetection;
 	}
 	
-	public void setMethodOfDetection(Concept methodOfDetection) {
+	public void setMethodOfDetection(List<Concept> methodOfDetection) {
 		this.methodOfDetection = methodOfDetection;
 	}
 	
@@ -584,6 +597,38 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	
 	public void setUlcer(Concept ulcer) {
 		this.ulcer = ulcer;
+	}
+	
+	public Concept getContactWithTbPatient() {
+		return contactWithTbPatient;
+	}
+	
+	public void setContactWithTbPatient(Concept contactWithTbPatient) {
+		this.contactWithTbPatient = contactWithTbPatient;
+	}
+	
+	public Concept getLaborMigration() {
+		return laborMigration;
+	}
+	
+	public void setLaborMigration(Concept laborMigration) {
+		this.laborMigration = laborMigration;
+	}
+	
+	public Concept getAfterReleaseFromPrison() {
+		return afterReleaseFromPrison;
+	}
+	
+	public void setAfterReleaseFromPrison(Concept afterReleaseFromPrison) {
+		this.afterReleaseFromPrison = afterReleaseFromPrison;
+	}
+	
+	public Concept getRiskyBehaviorFactors() {
+		return riskyBehaviorFactors;
+	}
+	
+	public void setRiskyBehaviorFactors(Concept riskyBehaviorFactors) {
+		this.riskyBehaviorFactors = riskyBehaviorFactors;
 	}
 	
 	public Concept getIbc20() {

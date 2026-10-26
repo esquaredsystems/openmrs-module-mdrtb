@@ -9,6 +9,8 @@
  */
 package org.openmrs.module.mdrtb.api;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
@@ -246,10 +248,21 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 			form89.setCityOfOrigin(null);
 			form89.setDateOfReturn(null);
 		}
-		if (form89.getMethodOfDetection() != null
-		        && form89.getMethodOfDetection().getId().intValue() != Context.getService(MdrtbService.class)
-		                .getConcept(MdrtbConcepts.OTHER).getId().intValue()) {
-			form89.setOtherMethodOfDetection(null);
+		// Method of detection is multi-select, so the free-text "other" is kept whenever OTHER is
+		// among the selected methods, not only when it is the single one chosen.
+		List<Concept> methodsOfDetection = form89.getMethodOfDetection();
+		if (!methodsOfDetection.isEmpty()) {
+			Concept other = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.OTHER);
+			boolean otherSelected = false;
+			for (Concept method : methodsOfDetection) {
+				if (method != null && method.getId().intValue() == other.getId().intValue()) {
+					otherSelected = true;
+					break;
+				}
+			}
+			if (!otherSelected) {
+				form89.setOtherMethodOfDetection(null);
+			}
 		}
 		// Save the actual update
 		Context.getEncounterService().saveEncounter(form89.getEncounter());

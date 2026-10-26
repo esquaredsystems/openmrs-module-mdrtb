@@ -7,7 +7,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.form.custom.EndOfTreatmentForm;
 
 /**
- * REST representation of {@link EndOfTreatmentForm}. The link to the patient's treatment flow is carried as patientProgramUuid (stored on the encounter as the PATIENT_PROGRAM_ID obs).
+ * REST representation of {@link EndOfTreatmentForm}. The link to the patient's treatment flow is
+ * carried as patientProgramUuid (stored on the encounter as the PATIENT_PROGRAM_ID obs).
  */
 public class SimpleEndOfTreatmentForm extends BaseOpenmrsData {
 	

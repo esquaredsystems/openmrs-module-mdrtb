@@ -319,38 +319,47 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		}
 	}
 	
-	public Concept getMethodOfDetection() {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.METHOD_OF_DETECTION), encounter);
-		
-		if (obs == null) {
-			return null;
-		} else {
-			return obs.getValueCoded();
+	/**
+	 * Method of detection is answered with one obs per selected method, so this returns every
+	 * answer rather than just the first. A form filled before the question became multi-select has
+	 * a single obs and reads back as a one-element list.
+	 */
+	public List<Concept> getMethodOfDetection() {
+		List<Concept> methods = new ArrayList<>();
+		for (Obs obs : MdrtbUtil.getObsListFromEncounter(
+		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.METHOD_OF_DETECTION), encounter)) {
+			if (obs.getValueCoded() != null) {
+				methods.add(obs.getValueCoded());
+			}
 		}
+		return methods;
 	}
 	
-	public void setMethodOfDetection(Concept type) {
-		Obs obs = MdrtbUtil.getObsFromEncounter(
-		    Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.METHOD_OF_DETECTION), encounter);
-		
-		if (obs == null && type == null) {
-			return;
-		}
-		
-		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
-			
-			if (obs != null) {
+	/**
+	 * Reconciles the stored answers with the given ones: answers no longer selected are voided,
+	 * answers already stored are left on their existing obs so their history is kept, and newly
+	 * selected ones get an obs of their own.
+	 */
+	public void setMethodOfDetection(List<Concept> types) {
+		Concept question = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.METHOD_OF_DETECTION);
+		List<Concept> wanted = types == null ? new ArrayList<>() : new ArrayList<>(types);
+
+		for (Obs obs : MdrtbUtil.getObsListFromEncounter(question, encounter)) {
+			// remove() returns true when this answer is still wanted, and takes it off the list
+			// so what remains at the end is exactly the set that needs a new obs.
+			if (obs.getValueCoded() == null || !wanted.remove(obs.getValueCoded())) {
 				obs.setVoided(true);
 				obs.setVoidReason(VOID_MESSAGE);
 			}
-			
-			if (type != null) {
-				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
-				    MdrtbConcepts.METHOD_OF_DETECTION), encounter.getEncounterDatetime(), encounter.getLocation());
-				obs.setValueCoded(type);
-				encounter.addObs(obs);
+		}
+
+		for (Concept type : wanted) {
+			if (type == null) {
+				continue;
 			}
+			Obs obs = new Obs(encounter.getPatient(), question, encounter.getEncounterDatetime(), encounter.getLocation());
+			obs.setValueCoded(type);
+			encounter.addObs(obs);
 		}
 	}
 	
@@ -1476,6 +1485,74 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 			if (type != null) {
 				obs = new Obs(encounter.getPatient(), Context.getService(MdrtbService.class).getConcept(
 				    MdrtbConcepts.PREGNANT), encounter.getEncounterDatetime(), encounter.getLocation());
+				obs.setValueCoded(type);
+				encounter.addObs(obs);
+			}
+		}
+	}
+	
+	public Concept getContactWithTbPatient() {
+		return getCodedObsValue(MdrtbConcepts.CONTACT_WITH_TB_PATIENT);
+	}
+	
+	public void setContactWithTbPatient(Concept type) {
+		setCodedObsValue(MdrtbConcepts.CONTACT_WITH_TB_PATIENT, type);
+	}
+	
+	public Concept getLaborMigration() {
+		return getCodedObsValue(MdrtbConcepts.LABOR_MIGRATION);
+	}
+	
+	public void setLaborMigration(Concept type) {
+		setCodedObsValue(MdrtbConcepts.LABOR_MIGRATION, type);
+	}
+	
+	public Concept getAfterReleaseFromPrison() {
+		return getCodedObsValue(MdrtbConcepts.AFTER_RELEASE_FROM_PRISON);
+	}
+	
+	public void setAfterReleaseFromPrison(Concept type) {
+		setCodedObsValue(MdrtbConcepts.AFTER_RELEASE_FROM_PRISON, type);
+	}
+	
+	public Concept getRiskyBehaviorFactors() {
+		return getCodedObsValue(MdrtbConcepts.RISKY_BEHAVIOR_FACTORS);
+	}
+	
+	public void setRiskyBehaviorFactors(Concept type) {
+		setCodedObsValue(MdrtbConcepts.RISKY_BEHAVIOR_FACTORS, type);
+	}
+	
+	/**
+	 * Reads the value_coded of this encounter's obs for the given concept. Same contract as the
+	 * hand-written coded getters above (null when the question was never answered).
+	 */
+	private Concept getCodedObsValue(String conceptUuid) {
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(conceptUuid), encounter);
+		return obs == null ? null : obs.getValueCoded();
+	}
+	
+	/**
+	 * Voids the existing obs and adds a replacement, exactly as the hand-written coded setters
+	 * above do, so obs history is preserved rather than overwritten.
+	 */
+	private void setCodedObsValue(String conceptUuid, Concept type) {
+		Concept question = Context.getService(MdrtbService.class).getConcept(conceptUuid);
+		Obs obs = MdrtbUtil.getObsFromEncounter(question, encounter);
+		
+		if (obs == null && type == null) {
+			return;
+		}
+		
+		if (obs == null || obs.getValueCoded() == null || !obs.getValueCoded().equals(type)) {
+			
+			if (obs != null) {
+				obs.setVoided(true);
+				obs.setVoidReason(VOID_MESSAGE);
+			}
+			
+			if (type != null) {
+				obs = new Obs(encounter.getPatient(), question, encounter.getEncounterDatetime(), encounter.getLocation());
 				obs.setValueCoded(type);
 				encounter.addObs(obs);
 			}

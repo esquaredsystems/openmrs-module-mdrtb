@@ -12,9 +12,10 @@ import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.AbstractSimpleForm;
 
 /**
- * End of Treatment form 
- * Filled inside a patient's treatment flow once treatment is complete. It belongs to one patient program, linked through the PATIENT_PROGRAM_ID obs (the REST layer exposes it as patientProgramUuid). 
- * A TB03 form (DOTS program) or TB03u form (MDR-TB program) must already exist for that program.
+ * End of Treatment form Filled inside a patient's treatment flow once treatment is complete. It
+ * belongs to one patient program, linked through the PATIENT_PROGRAM_ID obs (the REST layer exposes
+ * it as patientProgramUuid). A TB03 form (DOTS program) or TB03u form (MDR-TB program) must already
+ * exist for that program.
  */
 public class EndOfTreatmentForm extends AbstractSimpleForm {
 	

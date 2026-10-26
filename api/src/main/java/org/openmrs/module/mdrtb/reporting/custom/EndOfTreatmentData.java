@@ -4,7 +4,8 @@ import org.openmrs.Patient;
 import org.openmrs.module.mdrtb.form.custom.EndOfTreatmentForm;
 
 /**
- * One row of the End of Treatment report: one filled {@link EndOfTreatmentForm} together with the patient details the report shows next to it. Same role as TB03Data / Form89Data.
+ * One row of the End of Treatment report: one filled {@link EndOfTreatmentForm} together with the
+ * patient details the report shows next to it. Same role as TB03Data / Form89Data.
  */
 public class EndOfTreatmentData implements Comparable<EndOfTreatmentData> {
 	

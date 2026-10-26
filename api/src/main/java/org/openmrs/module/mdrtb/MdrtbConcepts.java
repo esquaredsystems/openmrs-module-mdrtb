@@ -863,6 +863,22 @@ public class MdrtbConcepts {
 	
 	public static final String PENSIONER = "e4dc23da-746f-49e6-83dc-cbd34271118e"; // PENSIONER
 	
+	public static final String HEALTHCARE_WORKER_OTHER_MEDICAL_INSTITUTIONS = "868cd19c-d047-11f1-8e3f-0c01de59229d"; // Healthcare Worker - Other Medical Institutions
+	
+	public static final String VETERINARIAN = "945822ca-d04e-11f1-8e3f-0c01de59229d"; // Veterinarian
+	
+	public static final String PRESCHOOL_INSTITUTION_EMPLOYEE = "48570a44-d053-11f1-8e3f-0c01de59229d"; // Employee of a Preschool Educational Institution
+	
+	public static final String GENERAL_EDUCATION_INSTITUTION_EMPLOYEE = "f5ae7916-d053-11f1-8e3f-0c01de59229d"; // Employee of a General Educational Institution
+	
+	public static final String VOCATIONAL_EDUCATION_INSTITUTION_EMPLOYEE = "8457288e-d054-11f1-8e3f-0c01de59229d"; // Employee of a Vocational Educational Institution
+	
+	public static final String HIGHER_EDUCATION_INSTITUTION_EMPLOYEE = "100b7c68-d055-11f1-8e3f-0c01de59229d"; // Employee of a Higher Educational Institution
+	
+	public static final String OTHER_EDUCATION_INSTITUTION_EMPLOYEE = "6d7292f6-d055-11f1-8e3f-0c01de59229d"; // Employee of Another Educational Institution
+	
+	public static final String AGRICULTURE = "07d140b8-d056-11f1-8e3f-0c01de59229d"; // Agreculture
+	
 	public static final String RESIDENT_OF_TERRITORY = "d0f575ab-e355-495c-853d-5336cd188611"; // RESIDENT OF TERRITORY
 	
 	public static final String RESIDENT_OTHER_TERRITORY = "60f4284f-9cbb-4b49-8b28-c7ca5101484d"; // RESIDENT OTHER TERRITORY
@@ -876,6 +892,8 @@ public class MdrtbConcepts {
 	public static final String CONVICTED = "ebea61de-addc-4179-b17b-f3c4afbdd210"; // CONVICTED
 	
 	public static final String ON_REMAND = "e03b47c8-1554-4d1d-86bf-f09a17d53f65"; // ON REMAND
+	
+	public static final String REFUGEE = "cf19f322-d05b-11f1-8e3f-0c01de59229d"; // Refugee
 	
 	public static final String CITY = "3fa634b6-88b6-418c-b3d5-7f4bf35ef879"; // CITY
 	
@@ -897,6 +915,29 @@ public class MdrtbConcepts {
 	
 	//public static final String CONTACT  = "CONTACT";
 	public static final String MIGRANT = "c5a59d21-aae6-4a15-9732-13a51ec58d26"; // MIGRANT
+	
+	// Circumstances of detection: newer answers. CONTACT_WITH_TB_PATIENT is itself a
+	// question whose answers are the three contact types below it.
+	public static final String CONTACT_WITH_TB_PATIENT = "9fbe3f60-d066-11f1-8e3f-0c01de59229d"; // Contact with a TB Patient
+	
+	public static final String FAMILY_CONTACT_VISITING = "c51eabc2-d067-11f1-8e3f-0c01de59229d"; // Yes: Family contact/visiting
+	
+	public static final String CLOSE_CONTACT = "abc7dcba-d068-11f1-8e3f-0c01de59229d"; // Close Contact
+	
+	public static final String PROFESSIONAL_CONTACT = "577ba2b2-d069-11f1-8e3f-0c01de59229d"; // Professional Contact
+	
+	public static final String LABOR_MIGRATION = "2c37c35a-d06a-11f1-8e3f-0c01de59229d"; // Labor Migration
+	
+	public static final String AFTER_RELEASE_FROM_PRISON = "bdc72f26-d06b-11f1-8e3f-0c01de59229d"; // After Release from Prison
+	
+	// Risky behaviour: question plus its three answers.
+	public static final String RISKY_BEHAVIOR_FACTORS = "721e2e7e-d06d-11f1-8e3f-0c01de59229d"; // Risky Behavior Factors
+	
+	public static final String USE_OF_DRUGS = "28fcebc6-d06e-11f1-8e3f-0c01de59229d"; // Use of Drugs
+	
+	public static final String ALCOHOL_ABUSE = "72225d90-d06e-11f1-8e3f-0c01de59229d"; // Alcohol Abuse
+	
+	public static final String SMOKING = "dbe0f94e-d06e-11f1-8e3f-0c01de59229d"; // Smoking
 	
 	public static final String COUNTRY_OF_ORIGIN = "04e4d0d6-d7a3-43c3-a920-7fb593539975"; // COUNTRY OF ORIGIN
 	
@@ -922,6 +963,12 @@ public class MdrtbConcepts {
 	public static final String DST = "ef3aa16d-c8df-4d8c-9164-99e0e05499db"; // DST
 	
 	public static final String CXR_RESULT = "47a92a60-588e-4ee4-80a7-83ee919792b9"; // CXR RESULT
+	
+	public static final String GENEXPERT_ULTRA = "95a1db0e-d098-11f1-8e3f-0c01de59229d"; // GeneXpert Ultra
+	
+	public static final String GENEXPERT_XDR = "e270212a-d098-11f1-8e3f-0c01de59229d"; // GeneXpert XDR
+	
+	public static final String XRAY = "20139d76-d09a-11f1-8e3f-0c01de59229d"; // X-ray
 	
 	public static final String OTHER_METHOD_OF_DETECTION = "56a27e54-4dd2-4fde-83d8-44761a3a4213"; // OTHER METHOD OF DETECTION
 	

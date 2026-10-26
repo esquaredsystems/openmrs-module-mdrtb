@@ -6339,10 +6339,15 @@ public class PatientListContoller {
 				continue;
 			}
 			f89 = fList.get(0);
-			method = f89.getMethodOfDetection();
-			if (method == null)
+			// Method of detection is multi-select: a case detected by more than one method is
+			// listed under each of them, so the sections together can hold more entries than
+			// there are cases. Each section still lists a case at most once.
+			List<Concept> methodsOfDetection = f89.getMethodOfDetection();
+			if (methodsOfDetection.isEmpty())
 				continue;
 			f89.setTB03(tb03);
+			for (Concept methodOfDetection : methodsOfDetection) {
+			method = methodOfDetection;
 			methodId = method.getConceptId();
 			if (methodId == fluorographyId)
 				fluorographyList.add(f89);
@@ -6360,8 +6365,9 @@ public class PatientListContoller {
 				cxrList.add(f89);
 			else if (methodId == otherId)
 				otherList.add(f89);
+			}
 		}
-		
+
 		//FLUOROGRAPHY
 		Concept q = Context.getService(MdrtbService.class).getConcept(MdrtbConcepts.FLURORESCENT_MICROSCOPY);
 		report.append(OPEN_H4).append(q.getName().getName()).append(CLOSE_H4);

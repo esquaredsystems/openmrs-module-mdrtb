@@ -1,5 +1,6 @@
 package org.openmrs.module.mdrtb;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -70,6 +71,42 @@ public class TbUtil {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Every non-voided top-level obs in the encounter for the given concept, in encounter order.
+	 * <p>
+	 * {@link #getObsFromEncounter(Concept, Encounter)} answers a question asked once. This answers
+	 * one that may be answered several times, such as Form 89's method of detection, where each
+	 * selected answer is its own obs. Returns an empty list when the question was never answered.
+	 */
+	public static List<Obs> getObsListFromEncounter(Concept concept, Encounter encounter) {
+		List<Obs> matches = new ArrayList<>();
+		Set<Obs> obsSet = encounter.getObsAtTopLevel(false);
+		if (obsSet == null) {
+			return matches;
+		}
+		for (Obs obs : obsSet) {
+			if (Boolean.TRUE.equals(obs.getVoided())) {
+				continue;
+			}
+			if (!obs.getConcept().getUuid().equals(concept.getUuid())) {
+				continue;
+			}
+			// Same re-read as the single-obs lookup: a coded obs already persisted is fetched
+			// through the service so callers get a live object of the current session.
+			if (obs.getValueCoded() != null && obs.getId() != null) {
+				try {
+					matches.add(Context.getObsService().getObs(obs.getId()));
+				}
+				catch (Exception e) {
+					matches.add(Context.getObsService().getObsByUuid(obs.getUuid()));
+				}
+			} else {
+				matches.add(obs);
+			}
+		}
+		return matches;
 	}
 	
 	/**

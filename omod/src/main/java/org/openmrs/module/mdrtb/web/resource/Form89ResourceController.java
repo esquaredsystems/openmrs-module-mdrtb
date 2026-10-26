@@ -38,6 +38,7 @@ import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.PatientR
 
 import io.swagger.models.Model;
 import io.swagger.models.ModelImpl;
+import io.swagger.models.properties.ArrayProperty;
 import io.swagger.models.properties.DateProperty;
 import io.swagger.models.properties.IntegerProperty;
 import io.swagger.models.properties.RefProperty;
@@ -99,6 +100,10 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 		description.addProperty("presenceOfDecay", representation);
 		description.addProperty("profession", representation);
 		description.addProperty("ulcer", representation);
+		description.addProperty("contactWithTbPatient", representation);
+		description.addProperty("laborMigration", representation);
+		description.addProperty("afterReleaseFromPrison", representation);
+		description.addProperty("riskyBehaviorFactors", representation);
 		return description;
 	}
 	
@@ -138,7 +143,7 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 			        .property("kidneyDisease", new RefProperty("#/definitions/ConceptGet"))
 			        .property("locationType", new RefProperty("#/definitions/ConceptGet"))
 			        .property("mentalDisorder", new RefProperty("#/definitions/ConceptGet"))
-			        .property("methodOfDetection", new RefProperty("#/definitions/ConceptGet"))
+			        .property("methodOfDetection", new ArrayProperty(new RefProperty("#/definitions/ConceptGet")))
 			        .property("noDisease", new RefProperty("#/definitions/ConceptGet"))
 			        .property("placeOfCommission", new RefProperty("#/definitions/ConceptGet"))
 			        .property("placeOfDetection", new RefProperty("#/definitions/ConceptGet"))
@@ -147,7 +152,11 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 			        .property("prescribedTreatment", new RefProperty("#/definitions/ConceptGet"))
 			        .property("presenceOfDecay", new RefProperty("#/definitions/ConceptGet"))
 			        .property("profession", new RefProperty("#/definitions/ConceptGet"))
-			        .property("ulcer", new RefProperty("#/definitions/ConceptGet"));
+			        .property("ulcer", new RefProperty("#/definitions/ConceptGet"))
+			        .property("contactWithTbPatient", new RefProperty("#/definitions/ConceptGet"))
+			        .property("laborMigration", new RefProperty("#/definitions/ConceptGet"))
+			        .property("afterReleaseFromPrison", new RefProperty("#/definitions/ConceptGet"))
+			        .property("riskyBehaviorFactors", new RefProperty("#/definitions/ConceptGet"));
 		}
 		return modelImpl;
 	}

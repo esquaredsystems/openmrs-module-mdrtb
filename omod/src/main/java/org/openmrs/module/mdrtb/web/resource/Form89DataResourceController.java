@@ -93,6 +93,10 @@ public class Form89DataResourceController extends BaseReportResource<SimpleForm8
 		description.addProperty("otherMethodOfDetection");
 		description.addProperty("complication");
 		description.addProperty("form89Uuid");
+		description.addProperty("contactWithTbPatient");
+		description.addProperty("laborMigration");
+		description.addProperty("afterReleaseFromPrison");
+		description.addProperty("riskyBehaviorFactors");
 		return description;
 	}
 	

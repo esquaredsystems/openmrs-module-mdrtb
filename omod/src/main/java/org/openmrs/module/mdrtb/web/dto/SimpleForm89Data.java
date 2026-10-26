@@ -1,6 +1,7 @@
 package org.openmrs.module.mdrtb.web.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.openmrs.BaseOpenmrsData;
 import org.openmrs.Concept;
@@ -98,7 +99,7 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	private Concept circumstancesOfDetection;
 	
-	private Concept methodOfDetection;
+	private List<Concept> methodOfDetection;
 	
 	private Concept anatomicalSite;
 	
@@ -142,6 +143,14 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	private Concept placeOfCommission;
 	
+	private Concept contactWithTbPatient;
+	
+	private Concept laborMigration;
+	
+	private Concept afterReleaseFromPrison;
+	
+	private Concept riskyBehaviorFactors;
+	
 	private String cityOfOrigin;
 	
 	private String otherMethodOfDetection;
@@ -184,6 +193,10 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 		this.cityOfOrigin = form89Data.getForm89().getCityOfOrigin();
 		this.otherMethodOfDetection = form89Data.getForm89().getOtherMethodOfDetection();
 		this.complication = form89Data.getForm89().getComplication();
+		this.contactWithTbPatient = form89Data.getForm89().getContactWithTbPatient();
+		this.laborMigration = form89Data.getForm89().getLaborMigration();
+		this.afterReleaseFromPrison = form89Data.getForm89().getAfterReleaseFromPrison();
+		this.riskyBehaviorFactors = form89Data.getForm89().getRiskyBehaviorFactors();
 		this.form89Uuid = form89Data.getForm89().getEncounter().getUuid();
 		this.identifier = form89Data.getIdentifier();
 		this.tb03RegistrationDate = form89Data.getTb03RegistrationDate();
@@ -576,11 +589,11 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 		this.circumstancesOfDetection = circumstancesOfDetection;
 	}
 	
-	public Concept getMethodOfDetection() {
+	public List<Concept> getMethodOfDetection() {
 		return methodOfDetection;
 	}
 	
-	public void setMethodOfDetection(Concept methodOfDetection) {
+	public void setMethodOfDetection(List<Concept> methodOfDetection) {
 		this.methodOfDetection = methodOfDetection;
 	}
 	
@@ -654,6 +667,38 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	public void setUlcer(Concept ulcer) {
 		this.ulcer = ulcer;
+	}
+	
+	public Concept getContactWithTbPatient() {
+		return contactWithTbPatient;
+	}
+	
+	public void setContactWithTbPatient(Concept contactWithTbPatient) {
+		this.contactWithTbPatient = contactWithTbPatient;
+	}
+	
+	public Concept getLaborMigration() {
+		return laborMigration;
+	}
+	
+	public void setLaborMigration(Concept laborMigration) {
+		this.laborMigration = laborMigration;
+	}
+	
+	public Concept getAfterReleaseFromPrison() {
+		return afterReleaseFromPrison;
+	}
+	
+	public void setAfterReleaseFromPrison(Concept afterReleaseFromPrison) {
+		this.afterReleaseFromPrison = afterReleaseFromPrison;
+	}
+	
+	public Concept getRiskyBehaviorFactors() {
+		return riskyBehaviorFactors;
+	}
+	
+	public void setRiskyBehaviorFactors(Concept riskyBehaviorFactors) {
+		this.riskyBehaviorFactors = riskyBehaviorFactors;
 	}
 	
 	public Concept getMentalDisorder() {
