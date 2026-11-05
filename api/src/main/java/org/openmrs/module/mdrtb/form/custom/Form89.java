@@ -1523,6 +1523,66 @@ public class Form89 extends AbstractSimpleForm implements Comparable<Form89> {
 		setCodedObsValue(MdrtbConcepts.RISKY_BEHAVIOR_FACTORS, type);
 	}
 	
+	public Concept getAfterBirth() {
+		return getCodedObsValue(MdrtbConcepts.AFTER_BIRTH);
+	}
+	
+	public void setAfterBirth(Concept type) {
+		setCodedObsValue(MdrtbConcepts.AFTER_BIRTH, type);
+	}
+	
+	public String getPlaceOfWorkOrStudy() {
+		return getTextObsValue(MdrtbConcepts.PLACE_OF_WORK_OR_STUDY);
+	}
+	
+	public void setPlaceOfWorkOrStudy(String text) {
+		setTextObsValue(MdrtbConcepts.PLACE_OF_WORK_OR_STUDY, text);
+	}
+	
+	public String getPosition() {
+		return getTextObsValue(MdrtbConcepts.POSITION);
+	}
+	
+	public void setPosition(String text) {
+		setTextObsValue(MdrtbConcepts.POSITION, text);
+	}
+	
+	/**
+	 * Reads the value_text of this encounter's obs for the given concept (null when the question
+	 * was never answered).
+	 */
+	private String getTextObsValue(String conceptUuid) {
+		Obs obs = MdrtbUtil.getObsFromEncounter(Context.getService(MdrtbService.class).getConcept(conceptUuid), encounter);
+		return obs == null ? null : obs.getValueText();
+	}
+	
+	/**
+	 * Text counterpart of setCodedObsValue: voids the existing obs and adds a replacement, as
+	 * setCityOfOrigin does, so obs history is preserved rather than overwritten.
+	 */
+	private void setTextObsValue(String conceptUuid, String text) {
+		Concept question = Context.getService(MdrtbService.class).getConcept(conceptUuid);
+		Obs obs = MdrtbUtil.getObsFromEncounter(question, encounter);
+		
+		if (obs == null && text == null) {
+			return;
+		}
+		
+		if (obs == null || obs.getValueText() == null || !obs.getValueText().equals(text)) {
+			
+			if (obs != null) {
+				obs.setVoided(true);
+				obs.setVoidReason(VOID_MESSAGE);
+			}
+			
+			if (text != null) {
+				obs = new Obs(encounter.getPatient(), question, encounter.getEncounterDatetime(), encounter.getLocation());
+				obs.setValueText(text);
+				encounter.addObs(obs);
+			}
+		}
+	}
+	
 	/**
 	 * Reads the value_coded of this encounter's obs for the given concept. Same contract as the
 	 * hand-written coded getters above (null when the question was never answered).

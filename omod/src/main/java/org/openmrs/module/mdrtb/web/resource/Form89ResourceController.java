@@ -104,6 +104,9 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 		description.addProperty("laborMigration", representation);
 		description.addProperty("afterReleaseFromPrison", representation);
 		description.addProperty("riskyBehaviorFactors", representation);
+		description.addProperty("afterBirth", representation);
+		description.addProperty("placeOfWorkOrStudy");
+		description.addProperty("position");
 		return description;
 	}
 	
@@ -126,6 +129,7 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 			        .property("complication", new StringProperty()).property("countryOfOrigin", new StringProperty())
 			        .property("link", new StringProperty()).property("nameOfDoctor", new StringProperty())
 			        .property("otherDisease", new StringProperty()).property("otherMethodOfDetection", new StringProperty())
+			        .property("placeOfWorkOrStudy", new StringProperty()).property("position", new StringProperty())
 			        .property("cmacDate", new DateProperty()).property("dateOfBirth", new DateProperty())
 			        .property("dateFirstSeekingHelp", new DateProperty()).property("dateOfDecaySurvey", new DateProperty())
 			        .property("dateOfReturn", new DateProperty()).property("form89Date", new DateProperty())
@@ -156,7 +160,8 @@ public class Form89ResourceController extends DataDelegatingCrudResource<SimpleF
 			        .property("contactWithTbPatient", new RefProperty("#/definitions/ConceptGet"))
 			        .property("laborMigration", new RefProperty("#/definitions/ConceptGet"))
 			        .property("afterReleaseFromPrison", new RefProperty("#/definitions/ConceptGet"))
-			        .property("riskyBehaviorFactors", new RefProperty("#/definitions/ConceptGet"));
+			        .property("riskyBehaviorFactors", new RefProperty("#/definitions/ConceptGet"))
+			        .property("afterBirth", new RefProperty("#/definitions/ConceptGet"));
 		}
 		return modelImpl;
 	}

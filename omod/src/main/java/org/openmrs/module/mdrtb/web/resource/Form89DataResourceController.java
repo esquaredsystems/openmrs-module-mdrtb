@@ -97,6 +97,9 @@ public class Form89DataResourceController extends BaseReportResource<SimpleForm8
 		description.addProperty("laborMigration");
 		description.addProperty("afterReleaseFromPrison");
 		description.addProperty("riskyBehaviorFactors");
+		description.addProperty("afterBirth");
+		description.addProperty("placeOfWorkOrStudy");
+		description.addProperty("position");
 		return description;
 	}
 	

@@ -945,6 +945,12 @@ public class MdrtbConcepts {
 	
 	public static final String DATE_OF_RETURN = "910d67fd-78db-4b93-aec7-303d03241941"; // DATE OF RETURN
 	
+	public static final String PLACE_OF_WORK_OR_STUDY = "5813b3be-687f-45e2-88ed-b1d1bed76caa"; // PLACE OF WORK/STUDY
+	
+	public static final String POSITION = "ff9b099b-0b1f-459d-bb65-e8c171338b8d"; // POSITION
+	
+	public static final String AFTER_BIRTH = "ad9bb158-2392-4232-9f02-7c44f98d19c8"; // AFTER BIRTH
+	
 	//public static final String FLUOROGRAPHY = "FLUOROGRAPHY";
 	public static final String TUBERCULIN_TEST = "e513429f-b390-494d-86f8-1c5bed0f180f"; // TUBERCULIN TEST
 	

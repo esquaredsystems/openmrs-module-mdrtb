@@ -116,6 +116,12 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	
 	private Concept riskyBehaviorFactors;
 	
+	private Concept afterBirth;
+	
+	private String placeOfWorkOrStudy;
+	
+	private String position;
+	
 	public SimpleForm89() {
 	}
 	
@@ -173,6 +179,9 @@ public class SimpleForm89 extends BaseOpenmrsData {
 		setLaborMigration(form89.getLaborMigration());
 		setAfterReleaseFromPrison(form89.getAfterReleaseFromPrison());
 		setRiskyBehaviorFactors(form89.getRiskyBehaviorFactors());
+		setAfterBirth(form89.getAfterBirth());
+		setPlaceOfWorkOrStudy(form89.getPlaceOfWorkOrStudy());
+		setPosition(form89.getPosition());
 	}
 	
 	/**
@@ -629,6 +638,30 @@ public class SimpleForm89 extends BaseOpenmrsData {
 	
 	public void setRiskyBehaviorFactors(Concept riskyBehaviorFactors) {
 		this.riskyBehaviorFactors = riskyBehaviorFactors;
+	}
+	
+	public Concept getAfterBirth() {
+		return afterBirth;
+	}
+	
+	public void setAfterBirth(Concept afterBirth) {
+		this.afterBirth = afterBirth;
+	}
+	
+	public String getPlaceOfWorkOrStudy() {
+		return placeOfWorkOrStudy;
+	}
+	
+	public void setPlaceOfWorkOrStudy(String placeOfWorkOrStudy) {
+		this.placeOfWorkOrStudy = placeOfWorkOrStudy;
+	}
+	
+	public String getPosition() {
+		return position;
+	}
+	
+	public void setPosition(String position) {
+		this.position = position;
 	}
 	
 	public Concept getIbc20() {

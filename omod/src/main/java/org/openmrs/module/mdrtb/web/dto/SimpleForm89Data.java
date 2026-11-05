@@ -151,6 +151,12 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	private Concept riskyBehaviorFactors;
 	
+	private Concept afterBirth;
+	
+	private String placeOfWorkOrStudy;
+	
+	private String position;
+	
 	private String cityOfOrigin;
 	
 	private String otherMethodOfDetection;
@@ -197,6 +203,9 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 		this.laborMigration = form89Data.getForm89().getLaborMigration();
 		this.afterReleaseFromPrison = form89Data.getForm89().getAfterReleaseFromPrison();
 		this.riskyBehaviorFactors = form89Data.getForm89().getRiskyBehaviorFactors();
+		this.afterBirth = form89Data.getForm89().getAfterBirth();
+		this.placeOfWorkOrStudy = form89Data.getForm89().getPlaceOfWorkOrStudy();
+		this.position = form89Data.getForm89().getPosition();
 		this.form89Uuid = form89Data.getForm89().getEncounter().getUuid();
 		this.identifier = form89Data.getIdentifier();
 		this.tb03RegistrationDate = form89Data.getTb03RegistrationDate();
@@ -699,6 +708,30 @@ public class SimpleForm89Data extends BaseOpenmrsData {
 	
 	public void setRiskyBehaviorFactors(Concept riskyBehaviorFactors) {
 		this.riskyBehaviorFactors = riskyBehaviorFactors;
+	}
+	
+	public Concept getAfterBirth() {
+		return afterBirth;
+	}
+	
+	public void setAfterBirth(Concept afterBirth) {
+		this.afterBirth = afterBirth;
+	}
+	
+	public String getPlaceOfWorkOrStudy() {
+		return placeOfWorkOrStudy;
+	}
+	
+	public void setPlaceOfWorkOrStudy(String placeOfWorkOrStudy) {
+		this.placeOfWorkOrStudy = placeOfWorkOrStudy;
+	}
+	
+	public String getPosition() {
+		return position;
+	}
+	
+	public void setPosition(String position) {
+		this.position = position;
 	}
 	
 	public Concept getMentalDisorder() {
