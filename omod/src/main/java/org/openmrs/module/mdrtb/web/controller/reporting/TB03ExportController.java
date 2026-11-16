@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.openmrs.Concept;
+import org.openmrs.ConceptName;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
@@ -236,11 +237,15 @@ public class TB03ExportController {
 			if (txStart != null)
 				tb03Data.setTb03TreatmentStartDate(sdf.format(txStart));
 			
-			//SITE OF DISEASE (P/EP)
+			//SITE OF DISEASE (P/EP) - the concept's short name; the full name only if the concept has no short name
 			q = tf.getAnatomicalSite();
 			
-			if (q != null)
-				tb03Data.setSiteOfDisease(q.getName(Context.getLocale()).getName());
+			if (q != null) {
+				ConceptName siteName = q.getShortestName(Context.getLocale(), false);
+				if (siteName == null)
+					siteName = q.getName(Context.getLocale());
+				tb03Data.setSiteOfDisease(siteName.getName());
+			}
 			
 			//HIV TEST RESULT
 			q = tf.getHivStatus();

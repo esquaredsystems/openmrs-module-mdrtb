@@ -90,7 +90,7 @@ public class OutcomeReport implements ReportSpecification {
 		Integer year = (Integer) parameters.get("year");
 		Integer quarter = (Integer) parameters.get("quarter");
 		Integer month = (Integer) parameters.get("month");
-		context.getParameterValues().putAll(ReportUtil.getPeriodDates(year, quarter, month));
+		context.getParameterValues().putAll(ReportUtil.getPeriodDates(year, quarter, month, month));
 		
 		return context;
 	}

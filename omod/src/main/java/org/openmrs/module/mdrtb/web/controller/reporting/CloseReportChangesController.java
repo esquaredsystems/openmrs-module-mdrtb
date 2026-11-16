@@ -76,7 +76,7 @@ public class CloseReportChangesController {
 			quarter = null;
 		}
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month);
 		
 		Date startDate = dateMap.get("startDate");
 		Date endDate = dateMap.get("endDate");

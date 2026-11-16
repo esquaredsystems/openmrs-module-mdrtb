@@ -193,10 +193,6 @@ public class AdverseEventsReportController {
 	
 	public static List<Object> getPVDataTables(Integer year, Integer quarter, Integer month, Integer month2, List<Location> locList) {
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
-		Date startDate = (dateMap.get("startDate"));
-		Date endDate = (dateMap.get("endDate"));
-		
 		List<RegimenForm> regimenList = Context.getService(MdrtbService.class).getRegimenFormsFilled(locList, year, quarter,
 		    month);
 		ArrayList<Patient> countedPatients = new ArrayList<>();
@@ -328,7 +324,11 @@ public class AdverseEventsReportController {
 				}
 			}
 		}
-		
+
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
+		Date startDate = (dateMap.get("startDate"));
+		Date endDate = (dateMap.get("endDate"));
+
 		for (Patient p : allPatients) {
 			if (!countedPatients.contains(p)) {
 				RegimenForm rfp = Context.getService(MdrtbService.class).getPreviousRegimenForm(p, locList, endDate);

@@ -155,7 +155,7 @@ public class RegimenController {
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsWithTreatmentStartedDuring(locList,
 		    year, quarterInt, monthInt, monthInt);
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month);
 		
 		//		Date startDate = (Date) (dateMap.get("startDate"));
 		Date endDate = dateMap.get("endDate");

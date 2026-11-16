@@ -96,7 +96,7 @@ public class TB07TJK implements ReportSpecification {
 			    "mdrtb.error.pleaseEnterAQuarterOrMonth"));
 		}
 		context.getParameterValues().putAll(
-		    ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month)));
+		    ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month), Integer.parseInt(month)));
 		return context;
 	}
 	

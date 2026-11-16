@@ -89,7 +89,7 @@ public class WHOForm05 implements ReportSpecification {
 			throw new IllegalArgumentException(Context.getService(MessagePropertyService.class).getMessage(
 			    "mdrtb.error.pleaseEnterAQuarter"));
 		}
-		context.getParameterValues().putAll(ReportUtil.getPeriodDates(year, quarter, null));
+		context.getParameterValues().putAll(ReportUtil.getPeriodDates(year, quarter, null, null));
 		return context;
 	}
 	

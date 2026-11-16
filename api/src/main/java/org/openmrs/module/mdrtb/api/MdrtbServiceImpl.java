@@ -769,11 +769,18 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 			PatientIdentifier match = identifiers.get(0);
 			long minDiff = Long.MAX_VALUE;
 			for (PatientIdentifier identifier : identifiers) {
+				if (identifier.getPreferred()) {
+					return identifier;
+				}
+				/* OWAIS: DO NOT DELETE THIS COMMENT
+				// Currently, the preferred identifier is returned. But if the requirement is to return the identifier closest to the enrollment date,
+				// then comment the above and uncomment the lines below
 				long diff = Math.abs(identifier.getDateCreated().getTime() - pp.getDateEnrolled().getTime());
 				if (diff < minDiff) {
 					match = identifier;
 					minDiff = diff;
 				}
+				*/
 			}
 			return match;
 		}
@@ -961,8 +968,12 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	@SuppressWarnings("deprecation")
 	public List<Encounter> getEncounters(Patient patient, Location location, Date start, Date end,
 	        Collection<EncounterType> types) {
-		return Context.getEncounterService().getEncounters(patient, location, start, end, null, types, null, null, null,
-		    false);
+		List<Encounter> encounters = Context.getEncounterService().getEncounters(patient, location, start, end, null, types, null, null, null,
+				false);
+		if (patient == null) {
+			encounters.removeIf(e -> e.getPatient().getVoided());
+		}
+		return encounters;
 	}
 	
 	public List<Encounter> getEncountersByPatientAndTypes(Patient patient, Collection<EncounterType> types) {
@@ -2015,7 +2026,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<TB03Form> getTB03FormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month, Integer month2) {
 		ArrayList<TB03Form> forms = new ArrayList<>();
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
 		Calendar start = Calendar.getInstance();
@@ -2306,7 +2317,7 @@ public class MdrtbServiceImpl extends BaseOpenmrsService implements MdrtbService
 	
 	public List<RegimenForm> getRegimenFormsFilled(List<Location> locations, Integer year, Integer quarter, Integer month) {
 		ArrayList<RegimenForm> forms = new ArrayList<>();
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month);
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
 		Calendar endCal = Calendar.getInstance();

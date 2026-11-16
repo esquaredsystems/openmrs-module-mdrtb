@@ -247,7 +247,7 @@ public class ReportUtil {
 			endMonth = month;
 		}
 		if (month2Provided && month2Obj instanceof Integer) {
-			month2 = Integer.parseInt(String.valueOf(monthObj));
+			month2 = Integer.parseInt(String.valueOf(month2Obj));
 			if (month2 < 1 || month2 > 12) {
 				throw new IllegalArgumentException("Please enter a valid month (1-12)");
 			}
@@ -274,10 +274,6 @@ public class ReportUtil {
 		periodDates.put("startDate", start.getTime());
 		periodDates.put("endDate", end.getTime());
 		return periodDates;
-	}
-	
-	public static Map<String, Date> getPeriodDates(Object yearObj, Object quarterObj, Object monthObj) {
-		return getPeriodDates(yearObj, quarterObj, monthObj, monthObj);
 	}
 	
 	public static Map<String, CohortDefinition> getMdrtbOutcomesFilterSet(Date startDate, Date endDate) {

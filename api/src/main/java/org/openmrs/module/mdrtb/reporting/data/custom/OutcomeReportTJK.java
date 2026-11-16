@@ -96,7 +96,7 @@ public class OutcomeReportTJK implements ReportSpecification {
 		String quarter = (String) parameters.get("quarter");
 		String month = (String) parameters.get("month");
 		context.getParameterValues().putAll(
-		    ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month)));
+		    ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month), Integer.parseInt(month)));
 		
 		return context;
 	}

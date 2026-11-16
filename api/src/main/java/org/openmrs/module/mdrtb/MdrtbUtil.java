@@ -443,7 +443,7 @@ public class MdrtbUtil extends TbUtil {
 		Date now = new Date();
 		Context.getService(MdrtbService.class).getMdrtbProgram();
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month);
 		
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));
@@ -574,7 +574,7 @@ public class MdrtbUtil extends TbUtil {
 		Date now = new Date();
 		Context.getService(MdrtbService.class).getMdrtbProgram();
 		
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month));
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, Integer.parseInt(quarter), Integer.parseInt(month), Integer.parseInt(month));
 		
 		Date startDate = (dateMap.get("startDate"));
 		Date endDate = (dateMap.get("endDate"));

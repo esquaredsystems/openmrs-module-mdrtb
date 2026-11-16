@@ -183,7 +183,7 @@ public class MissingTb03uController {
 		List<Patient> errList = new ArrayList<>();
 		
 		List<TB03uForm> tb03uList = Context.getService(MdrtbService.class).getTB03uFormsFilled(locList, year, quarter, month, month2);
-		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month);
+		Map<String, Date> dateMap = ReportUtil.getPeriodDates(year, quarter, month, month2);
 
 		SimpleDateFormat sdf = Context.getDateFormat();
 		DQItem dqi = null;
