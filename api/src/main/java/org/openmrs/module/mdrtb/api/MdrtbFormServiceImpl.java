@@ -9,19 +9,22 @@
  */
 package org.openmrs.module.mdrtb.api;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.naming.Context;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
-import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.PatientProgram;
 import org.openmrs.PatientState;
 import org.openmrs.Program;
 import org.openmrs.ProgramWorkflow;
 import org.openmrs.ProgramWorkflowState;
-import org.openmrs.api.context.Context;
 import org.openmrs.api.impl.BaseOpenmrsService;
 import org.openmrs.module.mdrtb.MdrtbConcepts;
 import org.openmrs.module.mdrtb.MdrtbConstants;
@@ -327,7 +330,7 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 	/**
 	 * Process the {@link EndOfTreatmentForm} for DOTS-TB and MDR-TB patients. The form must belong
 	 * to a patient program, and that program must already have its intake form: TB03 for the DOTS
-	 * program, TB03u for the MDR-TB program. Otherwise nothing is saved and an exception is thrown.
+	 * program, TB03u for the MDR-TB program.
 	 */
 	public EndOfTreatmentForm processEndOfTreatmentForm(EndOfTreatmentForm eotForm) throws MdrtbAPIException {
 		// Should have encounter property
@@ -354,32 +357,89 @@ public class MdrtbFormServiceImpl extends BaseOpenmrsService {
 		}
 		// TB03 (DOTS) or TB03u (MDR-TB) must exist before treatment can be ended
 		MdrtbService mdrtbService = Context.getService(MdrtbService.class);
+		// End of treatment = the treatment outcome date on that TB03 / TB03u (the latest one, if the
+		// program has several forms). Null when no outcome date is recorded yet.
+		Date endOfTreatmentDate = null;
 		Concept mdrtbProgramConcept = mdrtbService.getConcept(MdrtbConcepts.MDR_TB_PROGRAM);
 		if (patientProgram.getProgram().getConcept().equals(mdrtbProgramConcept)) {
 			// TODO (EoT): only TB03u - MDR is checked, as specified. Confirm whether an XDR patient
 			// (TB03u - XDR encounter, MdrtbConstants.ET_TB03U_XDRTB_INTAKE) must also be accepted.
-			if (mdrtbService.getTB03uFormsForProgram(patient, patientProgramId).isEmpty()) {
+			List<TB03uForm> tb03uForms = mdrtbService.getTB03uFormsForProgram(patient, patientProgramId);
+			if (tb03uForms.isEmpty()) {
 				throw new MdrtbAPIException("TB03u form must be filled before the End of Treatment form!");
 			}
+			for (TB03uForm tb03u : tb03uForms) {
+				Date outcomeDate = tb03u.getTreatmentOutcomeDate();
+				if (outcomeDate != null && (endOfTreatmentDate == null || outcomeDate.after(endOfTreatmentDate))) {
+					endOfTreatmentDate = outcomeDate;
+				}
+			}
 		} else {
-			if (mdrtbService.getTB03FormsForProgram(patient, patientProgramId).isEmpty()) {
+			List<TB03Form> tb03Forms = mdrtbService.getTB03FormsForProgram(patient, patientProgramId);
+			if (tb03Forms.isEmpty()) {
 				throw new MdrtbAPIException("TB03 form must be filled before the End of Treatment form!");
 			}
+			for (TB03Form tb03 : tb03Forms) {
+				Date outcomeDate = tb03.getTreatmentOutcomeDate();
+				if (outcomeDate != null && (endOfTreatmentDate == null || outcomeDate.after(endOfTreatmentDate))) {
+					endOfTreatmentDate = outcomeDate;
+				}
+			}
 		}
-		// TODO (EoT): decide whether a second End of Treatment form for the same program is allowed.
-		// If not, reject when getEndOfTreatmentFormsForProgram(patient, patientProgramId) already
-		// contains a different encounter (an update of the same encounter must still pass).
+		// Only one End of Treatment form per program
+		for (EndOfTreatmentForm existing : mdrtbService.getEndOfTreatmentFormsForProgram(patient, patientProgramId)) {
+			if (!existing.getEncounter().getUuid().equals(eotForm.getEncounter().getUuid())) {
+				throw new MdrtbAPIException("This patient program already has an End of Treatment form!");
+			}
+		}
+		// Follow-up X-rays: each has a month of treatment, at most one X-ray per month, no limit on how
+		// many (agreed 2026-11-17)
+		Set<Integer> xrayMonths = new HashSet<>();
+		for (EndOfTreatmentForm.FollowupXray xray : eotForm.getFollowupXrays()) {
+			Integer month = xray.getMonthOfTreatment();
+			if (month == null || month < 0) {
+				throw new MdrtbAPIException("Follow-up X-ray must have a month of treatment (0 or more): " + month);
+			}
+			if (!xrayMonths.add(month)) {
+				throw new MdrtbAPIException("Follow-up X-ray of month " + month + " is entered more than once!");
+			}
+			rejectFutureDate(xray.getDate(), "Date of follow-up X-ray of month " + month);
+			// A follow-up X-ray is taken after treatment has ended (agreed 2026-11-17)
+			if (xray.getDate() != null && endOfTreatmentDate != null && !xray.getDate().after(endOfTreatmentDate)) {
+				throw new MdrtbAPIException("Date of follow-up X-ray of month " + month
+				        + " must be after the end of treatment (treatment outcome date on TB03/TB03u)!");
+			}
+		}
+		// No date of this form can be in the future
+		rejectFutureDate(eotForm.getTransferToGroup2Date(), "Date of transfer to group II");
+		rejectFutureDate(eotForm.getTransferToGroup3Date(), "Date of transfer to group III");
+		rejectFutureDate(eotForm.getRemovalFromObservationDate(), "Date of removal from dispensary observation");
 		
-		// TODO (EoT fields): clear dependent fields here once fields exist (e.g. "other" free text
-		// when the coded answer is not "Other"), as processTB03Form does for otherCauseOfDeath.
-		
-		// TODO (EoT fields): if the form records a treatment outcome, agree first whether it must
-		// match / update the TB03 (or TB03u) outcome and the program workflow state. Do NOT copy the
-		// workflow code from processTB03Form until that is agreed - it closes the patient program
-		// and can mark the patient as dead.
+		// Transfer to group III comes after transfer to group II (agreed 2026-11-17)
+		Date group2Date = eotForm.getTransferToGroup2Date();
+		Date group3Date = eotForm.getTransferToGroup3Date();
+		if (group2Date != null && group3Date != null && !group3Date.after(group2Date)) {
+			throw new MdrtbAPIException("Date of transfer to group III must be after the date of transfer to group II!");
+		}
+		// The reason for group III goes with the group III date (agreed 2026-11-17): required when the
+		// date is entered, and cleared when there is no date.
+		if (group3Date != null && eotForm.getTransferToGroup3Reason() == null) {
+			throw new MdrtbAPIException("Reason for transfer to group III is required when the date of transfer is entered!");
+		}
+		if (group3Date == null && eotForm.getTransferToGroup3Reason() != null) {
+			eotForm.setTransferToGroup3Reason(null);
+		}
+		// TODO: currently this form has no treatment outcome, so it never changes the program workflow or the patient
 		
 		// Save the actual update
 		Context.getEncounterService().saveEncounter(eotForm.getEncounter());
 		return eotForm;
+	}
+	
+	/** Throws when the date is later than now; a missing date is accepted */
+	private void rejectFutureDate(Date date, String label) {
+		if (date != null && date.after(new Date())) {
+			throw new MdrtbAPIException(label + " cannot be in the future!");
+		}
 	}
 }

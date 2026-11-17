@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.Context;
-import javax.swing.plaf.synth.Region;
-
 import org.openmrs.Concept;
+import org.openmrs.Location;
 import org.openmrs.Patient;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.mdrtb.District;
 import org.openmrs.module.mdrtb.Facility;
+import org.openmrs.module.mdrtb.Region;
 import org.openmrs.module.mdrtb.ReportType;
 import org.openmrs.module.mdrtb.api.MdrtbService;
 import org.openmrs.module.mdrtb.form.custom.TB03Form;

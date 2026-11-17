@@ -37,11 +37,20 @@ import org.openmrs.module.webservices.rest.web.v1_0.resource.openmrs1_8.PatientR
 
 import io.swagger.models.Model;
 import io.swagger.models.ModelImpl;
+import io.swagger.models.properties.ArrayProperty;
+import io.swagger.models.properties.DateProperty;
+import io.swagger.models.properties.ObjectProperty;
 import io.swagger.models.properties.RefProperty;
 import io.swagger.models.properties.StringProperty;
 
 /**
- * REST endpoint for the End of Treatment form: GET/POST {base}/ws/rest/v1/mdrtb/endoftreatment.
+ * REST endpoint for the End of Treatment form: GET/POST {base}/ws/rest/v1/mdrtb/endoftreatment. One
+ * form per patient program (enforced in MdrtbFormServiceImpl.processEndOfTreatmentForm).
+ * <p>
+ * GET returns the fields of {@link SimpleEndOfTreatmentForm}; followupLabTests is read only (taken
+ * from the lab results). POST writes through encounter.obs, like every form here: the follow-up
+ * X-rays are obs groups (FOLLOWUP_XRAY_CONSTRUCT) with groupMembers MONTH_OF_TREATMENT, XRAY_DATE
+ * and FOLLOWUP_XRAY_RESULT.
  */
 @Resource(name = RestConstants.VERSION_1 + "/mdrtb/endoftreatment", supportedClass = SimpleEndOfTreatmentForm.class, supportedOpenmrsVersions = { "2.2.*,2.3.*,2.4.*,2.8.*" })
 public class EndOfTreatmentFormResourceController extends DataDelegatingCrudResource<SimpleEndOfTreatmentForm> {
@@ -54,7 +63,14 @@ public class EndOfTreatmentFormResourceController extends DataDelegatingCrudReso
 		description.addProperty("uuid");
 		description.addProperty("encounter", representation);
 		description.addProperty("patientProgramUuid");
-		// TODO (EoT fields): description.addProperty("<field>"[, representation for Concept fields]);
+		description.addProperty("dispensaryGroup", representation);
+		description.addProperty("followupXrays", representation);
+		description.addProperty("followupLabTests", representation);
+		description.addProperty("transferToGroup2Date");
+		description.addProperty("transferToGroup3Date");
+		description.addProperty("transferToGroup3Reason", representation);
+		description.addProperty("removalFromObservationDate");
+		description.addProperty("removalFromObservationReason");
 		return description;
 	}
 	
@@ -68,8 +84,15 @@ public class EndOfTreatmentFormResourceController extends DataDelegatingCrudReso
 		} else if (rep instanceof FullRepresentation) {
 			modelImpl.property("uuid", new StringProperty()).property("display", new StringProperty())
 			        .property("encounter", new RefProperty("#/definitions/EncounterGet"))
-			        .property("patientProgramUuid", new StringProperty());
-			// TODO (EoT fields): add each field (StringProperty / DateProperty / RefProperty ConceptGet).
+			        .property("patientProgramUuid", new StringProperty())
+			        .property("dispensaryGroup", new RefProperty("#/definitions/ConceptGet"))
+			        .property("followupXrays", new ArrayProperty(new ObjectProperty()))
+			        .property("followupLabTests", new ArrayProperty(new ObjectProperty()))
+			        .property("transferToGroup2Date", new DateProperty())
+			        .property("transferToGroup3Date", new DateProperty())
+			        .property("transferToGroup3Reason", new RefProperty("#/definitions/ConceptGet"))
+			        .property("removalFromObservationDate", new DateProperty())
+			        .property("removalFromObservationReason", new StringProperty());
 		}
 		return modelImpl;
 	}

@@ -48,6 +48,8 @@
 	<patient_program patient_program_id="10002" patient_id="1000" program_id="2" date_enrolled="2022-08-10 00:00:00" date_completed="2009-06-25 00:00:00" location_id="102" creator="1" date_created="2022-08-01 00:00:00" changed_by="1" date_changed="2022-08-21 00:00:00" voided="0" uuid="1060fb5a-8e0c-4f9d-b098-2b679f17b255" />
 	<patient_program patient_program_id="10003" patient_id="2000" program_id="1" date_enrolled="2022-07-12 00:00:00" location_id="101" creator="1" date_created="2012-12-24 11:19:39" voided="0" uuid="13061d65-8b84-46d2-b908-0ce71ac15e0b" />
 	<patient_program patient_program_id="10004" patient_id="2000" program_id="2" date_enrolled="2022-07-22 00:00:00" date_completed="2007-10-26 00:00:00" location_id="102" creator="1" date_created="2012-12-24 11:23:52" changed_by="1" date_changed="2012-12-24 11:24:47" voided="0" uuid="4515ee1a-503e-4b74-b14c-77043b052470" />
+	<!-- End of Treatment tests: hermione's second DOTS enrollment, with a TB03 WITHOUT treatment outcome date -->
+	<patient_program patient_program_id="10005" patient_id="2000" program_id="2" date_enrolled="2023-01-10 00:00:00" location_id="102" creator="1" date_created="2023-01-10 00:00:00" voided="0" uuid="5d3c0f62-8a7e-4b0e-9a65-2f3c1e7d4b10" />
 
 	<!-- Care Settings -->
 
@@ -56,6 +58,11 @@
 	<encounter_type encounter_type_id="92" name="Transfer Out" description="Whenever a student or wizard is transferred into the healing chambers" creator="1" date_created="2022-08-12 05:38:38" retired="0" uuid="e27d997c-3f93-460b-ad84-77db79e2773e" />
 	<encounter_type encounter_type_id="93" name="Transfer In" description="Whenever a student or wizard is transferred out of the healing chambers" creator="1" date_created="2022-08-22 15:28:28" retired="0" uuid="1eb25540-552c-4641-9913-c7545fe0666f" />
 	<encounter_type encounter_type_id="94" name="Specimen Collection" description="Whenever a student or wizard submits a specimen sample extracted from hiself or some other living creature" creator="1" date_created="2022-08-22 15:28:28" retired="0" uuid="c3e540-552c-4641-9913-c8495fe0123f" />
+
+	<!-- Encounter types used by MdrtbConstants (names = the mdrtb.encounterType.* global properties) -->
+	<encounter_type encounter_type_id="95" name="TB03" description="TB03" creator="1" date_created="2026-11-17 00:00:00" retired="0" uuid="0479de9f-e5ea-45d7-b7a8-cda85bc8bc3d" />
+	<encounter_type encounter_type_id="96" name="TB03u - MDR" description="TB03u - MDR" creator="1" date_created="2026-11-17 00:00:00" retired="0" uuid="d25e1cb2-ef3b-40bb-a8d8-6010d1d431c0" />
+	<encounter_type encounter_type_id="97" name="End of Treatment" description="End of Treatment" creator="1" date_created="2026-11-17 00:00:00" retired="0" uuid="6159db06-cb90-11f1-b723-57d5294d0531" />
 
 	<encounter encounter_id="100001" encounter_type="91" patient_id="1000" location_id="101" encounter_datetime="2022-08-01 00:00:00" creator="1" date_created="2022-08-04 20:03:52" voided="0" uuid="deafb58e-e2e2-49ae-96ebf09ad-adbe40" />
 	<encounter encounter_id="100002" encounter_type="92" patient_id="1000" location_id="101" encounter_datetime="2022-08-08 00:00:00" creator="1" date_created="2022-08-08 15:45:55" voided="0" uuid="5743ee15-61fe-4cba-88ebf086d-adbcfa" />
@@ -66,6 +73,21 @@
 	<encounter encounter_id="100008" encounter_type="92" patient_id="2000" location_id="102" encounter_datetime="2022-08-22 00:00:00" creator="1" date_created="2022-08-11 15:07:24" voided="0" uuid="bd4fd19a-9847-455e-bbebf02ed-a32ace" />
 	<encounter encounter_id="100008" encounter_type="94" patient_id="1000" location_id="102" encounter_datetime="2022-08-31 00:00:00" creator="1" date_created="2022-08-11 15:07:24" voided="0" uuid="5060f963-2396-11ed-881f-00ff10882c85" />
 
+	<!-- End of Treatment tests (EndOfTreatmentFormProcessTest): TB03 / TB03u intake forms, all on HERMIONE so that
+	     harry keeps no observations (MdrtbPatientSummaryTest relies on that). Harry's programs 10001 / 10002 have
+	     no TB03u / TB03, for the "must exist" cases. 576 = PATIENT PROGRAM ID, 288 = TREATMENT OUTCOME DATE.
+	     hermione MDR-TB 10003: TB03u - MDR, outcome date 2023-06-30
+	     hermione DOTS   10004: TB03,        outcome date 2023-02-28
+	     hermione DOTS   10005: TB03 WITHOUT outcome date -->
+	<encounter encounter_id="200001" encounter_type="96" patient_id="2000" location_id="101" encounter_datetime="2022-07-13 00:00:00" creator="1" date_created="2022-07-13 00:00:00" voided="0" uuid="0c2f5a3e-6c4b-4d8e-9f1a-7b2e3d4c5a61" />
+	<encounter encounter_id="200002" encounter_type="95" patient_id="2000" location_id="102" encounter_datetime="2022-07-23 00:00:00" creator="1" date_created="2022-07-23 00:00:00" voided="0" uuid="1d3a6b4f-7d5c-4e9f-8a2b-8c3f4e5d6b72" />
+	<encounter encounter_id="200003" encounter_type="95" patient_id="2000" location_id="102" encounter_datetime="2023-01-11 00:00:00" creator="1" date_created="2023-01-11 00:00:00" voided="0" uuid="2e4b7c5a-8e6d-4f0a-9b3c-9d4a5f6e7c83" />
+
 	<!-- Observations -->
+	<obs obs_id="300001" person_id="2000" concept_id="576" encounter_id="200001" obs_datetime="2022-07-13 00:00:00" location_id="101" value_numeric="10003" creator="1" date_created="2022-07-13 00:00:00" voided="0" status="FINAL" uuid="3f5c8d6b-9f7e-4a1b-8c4d-0e5b6a7f8d94" />
+	<obs obs_id="300002" person_id="2000" concept_id="288" encounter_id="200001" obs_datetime="2022-07-13 00:00:00" location_id="101" value_datetime="2023-06-30 00:00:00" creator="1" date_created="2022-07-13 00:00:00" voided="0" status="FINAL" uuid="4a6d9e7c-0a8f-4b2c-9d5e-1f6c7b8a9ea5" />
+	<obs obs_id="300003" person_id="2000" concept_id="576" encounter_id="200002" obs_datetime="2022-07-23 00:00:00" location_id="102" value_numeric="10004" creator="1" date_created="2022-07-23 00:00:00" voided="0" status="FINAL" uuid="5b7eaf8d-1b9a-4c3d-8e6f-2a7d8c9b0fb6" />
+	<obs obs_id="300004" person_id="2000" concept_id="288" encounter_id="200002" obs_datetime="2022-07-23 00:00:00" location_id="102" value_datetime="2023-02-28 00:00:00" creator="1" date_created="2022-07-23 00:00:00" voided="0" status="FINAL" uuid="6c8fb09e-2cab-4d4e-9f7a-3b8e9dac1ac7" />
+	<obs obs_id="300005" person_id="2000" concept_id="576" encounter_id="200003" obs_datetime="2023-01-11 00:00:00" location_id="102" value_numeric="10005" creator="1" date_created="2023-01-11 00:00:00" voided="0" status="FINAL" uuid="7d9ac1af-3dbc-4e5f-8a8b-4c9faebd2bd8" />
 
 </dataset>

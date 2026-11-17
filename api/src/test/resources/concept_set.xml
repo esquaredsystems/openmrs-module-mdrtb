@@ -268,4 +268,8 @@
     <concept_set concept_set_id="272" concept_id="797" concept_set="789" sort_weight="7.0000000000000000000000000000000" creator="1" date_created="2022-09-22 15:54:07" uuid="e4756744-c5e5-430f-a170-7bdde2c90fe7"/>
     <concept_set concept_set_id="273" concept_id="798" concept_set="789" sort_weight="8.0000000000000000000000000000000" creator="1" date_created="2022-09-22 15:54:07" uuid="8bfc67b7-a135-4728-9bbd-6016659da416"/>
     <concept_set concept_set_id="274" concept_id="303" concept_set="789" sort_weight="9.0000000000000000000000000000000" creator="1" date_created="2022-09-22 15:54:07" uuid="f8946735-935b-4cfb-a4fb-815fef9219f1"/>
+    <!-- End of Treatment concepts, 2026-11-17 -->
+    <concept_set concept_set_id="275" concept_id="272" concept_set="833" sort_weight="1.0" creator="1" date_created="2026-11-17 00:00:00" uuid="c7827fed-9452-4fe0-99d4-a1d0d236ae42"/>
+    <concept_set concept_set_id="276" concept_id="586" concept_set="833" sort_weight="2.0" creator="1" date_created="2026-11-17 00:00:00" uuid="2690a321-e3e2-44c9-92f2-aa199ba328a4"/>
+    <concept_set concept_set_id="277" concept_id="835" concept_set="833" sort_weight="3.0" creator="1" date_created="2026-11-17 00:00:00" uuid="14f6f056-c608-455e-be7b-e3609f6ffcc2"/>
 </dataset>

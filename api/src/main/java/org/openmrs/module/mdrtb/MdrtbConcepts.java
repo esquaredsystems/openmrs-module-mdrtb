@@ -1180,4 +1180,43 @@ public class MdrtbConcepts {
 	public static final String THIOACETAZONE_RESISTANCE = "3892c5f2-3b71-4d34-a7d9-261dabcdbd5f"; // THIOACETAZONE RESISTANCE
 	
 	public static final String VIOMYCIN_RESISTANCE = "95b09178-3928-11ee-9784-e86a64440f18"; // VIOMYCIN RESISTANCE
+	
+	// End of Treatment Concepts (ETL concept CSVs 890-906, 2026-11-17). Also used: MONTH_OF_TREATMENT, XRAY_DATE, DISABILITY
+	// Dispensary registration group (coded) and its answers Ia, Ib, Ic, Id
+	public static final String DISPENSARY_REGISTRATION_GROUP = "39109fb8-e215-11f1-a96b-4b168d83ea09"; // DISPENSARY REGISTRATION GROUP (coded)
+	
+	public static final String DISPENSARY_GROUP_IA = "3910a7ce-e215-11f1-a96b-4b168d83ea09"; // Ia: ALL BACTERIOLOGICALLY CONFIRMED / Ia-All BC+
+	
+	public static final String DISPENSARY_GROUP_IB = "3910a7e2-e215-11f1-a96b-4b168d83ea09"; // Ib: ALL CLINICALLY CONFIRMED / Ib-All clinically confirmed
+	
+	public static final String DISPENSARY_GROUP_IC = "3910a7ec-e215-11f1-a96b-4b168d83ea09"; // Ic: DRUG-RESISTANT TB / Ic-DR TB
+	
+	public static final String DISPENSARY_GROUP_ID = "6813fb8e-e215-11f1-a96b-4b168d83ea09"; // Id: TOTAL DRUG-RESISTANT TB / Id-TDR
+	
+	// One follow-up X-ray = one obs group with three members: MONTH_OF_TREATMENT, XRAY_DATE, FOLLOWUP_XRAY_RESULT
+	public static final String FOLLOWUP_XRAY_CONSTRUCT = "16d34414-e21a-11f1-a96b-4b168d83ea09"; // FOLLOW-UP X-RAY CONSTRUCT (obs group, set)
+	
+	public static final String FOLLOWUP_XRAY_RESULT = "16d34446-e21a-11f1-a96b-4b168d83ea09"; // FOLLOW-UP X-RAY RESULT (coded; CXR_RESULT is text so it cannot be reused)
+	
+	public static final String XRAY_NORMAL = "16d34447-e21a-11f1-a96b-4b168d83ea09"; // NORMAL (answer of FOLLOWUP_XRAY_RESULT)
+	
+	public static final String XRAY_ABNORMAL = "16d34450-e21a-11f1-a96b-4b168d83ea09"; // ABNORMAL (answer of FOLLOWUP_XRAY_RESULT)
+	
+	public static final String XRAY_INCONCLUSIVE = "16d34451-e21a-11f1-a96b-4b168d83ea09"; // INCONCLUSIVE (answer of FOLLOWUP_XRAY_RESULT)
+	
+	// Transfers between dispensary groups
+	public static final String DATE_OF_TRANSFER_TO_DISPENSARY_GROUP_2 = "bf0c891e-e21b-11f1-a96b-4b168d83ea09"; // DATE OF TRANSFER TO GROUP II (date)
+	
+	public static final String DATE_OF_TRANSFER_TO_DISPENSARY_GROUP_3 = "bf0c89aa-e21b-11f1-a96b-4b168d83ea09"; // DATE OF TRANSFER TO GROUP III (date)
+	
+	public static final String REASON_FOR_TRANSFER_TO_DISPENSARY_GROUP_3 = "bf0c89b4-e21b-11f1-a96b-4b168d83ea09"; // REASON FOR TRANSFER TO GROUP III (coded, one answer)
+	
+	public static final String MAJOR_RESIDUAL_CHANGES = "bf0c89b5-e21b-11f1-a96b-4b168d83ea09"; // MAJOR RESIDUAL CHANGES (answer; DISABILITY is the existing 2nd answer)
+	
+	public static final String TB_HIV = "bf0c89be-e21b-11f1-a96b-4b168d83ea09"; // TB/HIV (answer of REASON_FOR_TRANSFER_TO_DISPENSARY_GROUP_3)
+	
+	// Removal from dispensary observation
+	public static final String DATE_OF_REMOVAL_FROM_DISPENSARY_OBSERVATION = "bf0c89bf-e21b-11f1-a96b-4b168d83ea09"; // DATE OF REMOVAL FROM DISPENSARY OBSERVATION (date)
+	
+	public static final String REASON_FOR_REMOVAL_FROM_DISPENSARY_OBSERVATION = "bf0c89c0-e21b-11f1-a96b-4b168d83ea09"; // REASON FOR REMOVAL FROM DISPENSARY OBSERVATION (text)
 }

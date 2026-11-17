@@ -2,7 +2,7 @@
 # Java OpenMRS module(Maven). Packaged as modules/mdrtb-x.y.z.omod. Requires OpenMRS ≥2.3.1.
 # Shared facts (domain model, concept/encounter-type/identifier UUIDs, topology): ../.agents/graph.md
 # Usage + notation legend + maintenance rules: ../.agents/instructions.md
-# Last updated: 2026-10-26 (Form 89: multi-valued methodOfDetection + exposure/risk fields)
+# Last updated: 2026-11-17 (End of Treatment form fields + concepts 890-906, one form per program)
 
 ## § MODULE LAYOUT
 ```
@@ -59,16 +59,54 @@ mdrtb/form89 / mdrtb/form89/{uuid}   # Form 89; ?q={patientUuid}; POST needs pat
     #       and omod runs 0 tests anyway (see § TEST EXECUTION).
 mdrtb/transferout / mdrtb/transferout/{uuid}
 mdrtb/endoftreatment / mdrtb/endoftreatment/{uuid}   # End of Treatment form; ?q={patientUuid}; POST needs patientProgramUuid
-    # SCAFFOLD ONLY (2026-10-19): fields pending -> grep "TODO (EoT" for every place a field must be added
+    # Dispensary observation after treatment, ONE per patient program, shown on the program dashboard.
+    # Source: End_of_Treatment_new.xlsx (ru/tj/en register columns), fields agreed 2026-11-17.
     # chain: EndOfTreatmentForm (api form/custom) -> SimpleEndOfTreatmentForm (dto) -> EndOfTreatmentFormResourceController
     #        legacy EndOfTreatmentFormController (controller/form, /module/mdrtb/form/endOfTreatment.form, NO JSP on purpose)
-    # save: MdrtbFormServiceImpl.processEndOfTreatmentForm -> rejects if no location / no program / program of
-    #       another patient / no TB03 (DOTS) / no TB03u-MDR (MDR-TB). Does NOT touch program workflow or patient.dead.
+    # fields (GET): dispensaryGroup (Concept: Ia/Ib/Ic/Id), followupXrays [{monthOfTreatment, date, result}],
+    #        followupLabTests [{monthOfTreatment, date, result, testNumber, lab}] READ ONLY,
+    #        transferToGroup2Date, transferToGroup3Date, transferToGroup3Reason (Concept, ONE answer:
+    #        MAJOR_RESIDUAL_CHANGES / DISABILITY / TB_HIV), removalFromObservationDate, removalFromObservationReason (text)
+    #        Row values (Date/Concept) inside the lists are converted by ConversionUtil like top-level fields.
+    # X-rays: NOT 5 fields - one obs group per month, NO limit on how many (agreed 2026-11-17):
+    #        FOLLOWUP_XRAY_CONSTRUCT {MONTH_OF_TREATMENT, XRAY_DATE, FOLLOWUP_XRAY_RESULT}
+    #        Concepts are reusable across encounter types; prefer an existing concept over creating a new one.
+    #        result answers XRAY_NORMAL / XRAY_ABNORMAL / XRAY_INCONCLUSIVE. Changing one voids the old group.
+    # lab tests: NOT stored. EndOfTreatmentForm.getFollowupSmears() = MdrtbService.getSmearForms(ppId) (COMMON TEST
+    #        lab results + old specimen encounters) filtered by MONTH OF TREATMENT in FOLLOWUP_SMEAR_MONTHS {1,3,5},
+    #        first per month (as TB03Util). date=encounterDatetime, testNumber=getSpecimenId(), lab=location name
+    #        (same as the TB03 diagnostic smear columns).
+    # concepts: 890-906 in the ETL concept CSVs (2026-11-17), see root graph. If one is missing in a database
+    #        (ETL not run yet), its getter returns null/empty and its setter THROWS on any value (never stored
+    #        under a wrong concept), and a POST with that obs fails. Reused: XRAY_DATE, DISABILITY.
+    # save: MdrtbFormServiceImpl.processEndOfTreatmentForm rejects: no location / no program / program of another
+    #       patient / no TB03 (DOTS) / no TB03u-MDR (MDR-TB) / a 2nd EoT on the same program (compared by encounter
+    #       uuid, so editing passes) / X-ray month missing, negative or repeated / any form date in the future /
+    #       X-ray date not AFTER end of treatment (= latest treatment outcome date on the program's TB03/TB03u;
+    #       NOT checked, and form NOT refused, when no outcome date is recorded) / group III date not AFTER group II date /
+    #       group III date without a group III reason.  "After" = Date.after (dates are entered without time, so the same day is refused).
+    #       Clears the group III reason when there is no group III date. Removal reason is OPTIONAL.
+    #       (rules agreed 2026-11-17)
+    #       Has no outcome: does NOT touch program workflow or patient.dead.
     # getters: MdrtbService.getEndOfTreatmentFormsForProgram(patient, ppId), getEndOfTreatmentFormsFilled(locs, period)
-    # report: EndOfTreatmentData (api reporting/custom) exists; DTO + mdrtb/endoftreatmentreport resource NOT yet created
-    # OPEN: XDR (TB03u - XDR) accepted?  duplicate EoT per program allowed?  outcome sync with TB03/TB03u?
-    # TESTS: api EndOfTreatmentDataTest (runs), EndOfTreatmentFormProcessTest (@Ignore), MdrtbServiceTest 2 smoke;
-    #        omod EndOfTreatmentFormResourceControllerTest (@Ignore)
+    # report: EndOfTreatmentData (api reporting/custom) still a stub; DTO + report resource NOT yet created
+    # OPEN: XDR (TB03u - XDR) accepted?
+    #       month 3 and 5 smears are ALSO the TB03 treatment-period follow-up smears - same lab test shows in both.
+    # TESTS (api, none @Ignore, written 2026-11-17 WITHOUT being run - no Maven here; first run on Uzair's machine):
+    #        EndOfTreatmentFormTest (12: getters/setters, voiding, X-rays by month), EndOfTreatmentFormProcessTest (27: every
+    #        save rule; seed in MdrtbTestService-initialData.xml: TB03/TB03u forms on HERMIONE 10003/10004/10005,
+    #        harry keeps no obs - MdrtbPatientSummaryTest needs that), EndOfTreatmentDataTest (3), MdrtbServiceTest 2 smoke.
+    #        omod EndOfTreatmentFormResourceControllerTest = dead (see § TEST EXECUTION)
+    # TEST DATA: production concepts 890-906 are test ids 828-833 + 835-845 (UUIDs are what match, not ids). concept_numeric rows for 272 (MONTH OF TREATMENT)
+    #        and 576 (PATIENT PROGRAM ID): OpenMRS 2.x ObsValidator NPEs on a numeric obs whose concept has no
+    #        concept_numeric row. Encounter types TB03 (95), TB03u - MDR (96), End of Treatment (97) are in
+    #        MdrtbTestService-initialData.xml and their mdrtb.encounterType.* GPs in global_property.xml, so
+    #        MdrtbConstants.ET_TB03_TB_INTAKE / ET_TB03U_MDRTB_INTAKE / ET_END_OF_TREATMENT resolve in tests (they are
+    #        static, resolved once per JVM at first use; encounter_type.xml is NOT in MdrtbTestBase.DATASETS).
+    # !! TEST TRAP: MdrtbTestBase.initTestData() runs "CREATE TABLE IF NOT EXISTS", which COMMITS in H2, and the
+    #        inherited test shouldInitiateTestData() calls it again. So put seed data in the shared datasets
+    #        (MdrtbTestService-initialData.xml), not in an extra file loaded in @Before: that data would be committed
+    #        and leak into later classes (seen 2026-11-17).
 mdrtb/drugresistance / mdrtb/drugresistance/{uuid}
 mdrtb/adverseevents / mdrtb/adverseevents/{uuid}
 mdrtb/regimen / mdrtb/regimen/{uuid}

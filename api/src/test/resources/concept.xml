@@ -826,4 +826,25 @@
     <concept concept_id="825" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2022-11-10 19:30:25" uuid="9f1c2f3c-9b61-463b-ae8d-1298a1ada403"/>
     <concept concept_id="826" retired="0" datatype_id="2" class_id="10" is_set="0" creator="1" date_created="2022-11-10 19:50:41" uuid="742d9630-1190-483c-8bc6-1e8d50cdd543"/>
     <concept concept_id="827" retired="0" datatype_id="2" class_id="10" is_set="0" creator="1" date_created="2022-11-10 19:52:24" uuid="fdbc018e-be36-4e2d-b39d-d38cba605b7a"/>
+    <!-- End of Treatment concepts (production 890-906 = test 828-833 and 835-845, matched by UUID; X-rays use MONTH OF TREATMENT 272), 2026-11-17 -->
+    <concept concept_id="828" retired="0" datatype_id="2" class_id="10" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="39109fb8-e215-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="829" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="3910a7ce-e215-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="830" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="3910a7e2-e215-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="831" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="3910a7ec-e215-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="832" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="6813fb8e-e215-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="833" retired="0" datatype_id="4" class_id="10" is_set="1" creator="1" date_created="2026-11-17 00:00:00" uuid="16d34414-e21a-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="835" retired="0" datatype_id="2" class_id="10" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="16d34446-e21a-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="836" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="16d34447-e21a-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="837" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="16d34450-e21a-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="838" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="16d34451-e21a-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="839" retired="0" datatype_id="6" class_id="7" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="bf0c891e-e21b-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="840" retired="0" datatype_id="6" class_id="7" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="bf0c89aa-e21b-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="841" retired="0" datatype_id="2" class_id="10" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="bf0c89b4-e21b-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="842" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="bf0c89b5-e21b-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="843" retired="0" datatype_id="4" class_id="11" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="bf0c89be-e21b-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="844" retired="0" datatype_id="6" class_id="7" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="bf0c89bf-e21b-11f1-a96b-4b168d83ea09"/>
+    <concept concept_id="845" retired="0" datatype_id="3" class_id="7" is_set="0" creator="1" date_created="2026-11-17 00:00:00" uuid="bf0c89c0-e21b-11f1-a96b-4b168d83ea09"/>
+    <!-- Numeric details: MONTH OF TREATMENT and PATIENT PROGRAM ID (whole numbers) -->
+    <concept_numeric concept_id="272" allow_decimal="0"/>
+    <concept_numeric concept_id="576" allow_decimal="0"/>
 </dataset>

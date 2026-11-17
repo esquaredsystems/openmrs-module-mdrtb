@@ -954,4 +954,15 @@
     <concept_answer concept_answer_id="978" concept_id="827" answer_concept="822" creator="1" date_created="2022-11-10 19:52:24" sort_weight="1.0000000000000000000000000000000" uuid="3ebe6292-2d6b-4db4-928b-4ba9d7e096cd"/>
     <concept_answer concept_answer_id="979" concept_id="827" answer_concept="823" creator="1" date_created="2022-11-10 19:52:24" sort_weight="2.0000000000000000000000000000000" uuid="425e3585-8dd9-4d3a-bd82-aeb72a57daf2"/>
     <concept_answer concept_answer_id="980" concept_id="827" answer_concept="825" creator="1" date_created="2022-11-10 19:52:24" sort_weight="4.0000000000000000000000000000000" uuid="1ab5eebb-e541-4ba5-a20a-681fad46ab09"/>
+    <!-- End of Treatment concepts, 2026-11-17 -->
+    <concept_answer concept_answer_id="981" concept_id="828" answer_concept="829" creator="1" date_created="2026-11-17 00:00:00" uuid="a6b975aa-f251-4e4f-bb77-907572a054c5"/>
+    <concept_answer concept_answer_id="982" concept_id="828" answer_concept="830" creator="1" date_created="2026-11-17 00:00:00" uuid="b294b7cb-5b9e-4f70-8023-d173bd32fa83"/>
+    <concept_answer concept_answer_id="983" concept_id="828" answer_concept="831" creator="1" date_created="2026-11-17 00:00:00" uuid="11b954ba-c5e3-44fc-b9a4-0570ce31c547"/>
+    <concept_answer concept_answer_id="984" concept_id="828" answer_concept="832" creator="1" date_created="2026-11-17 00:00:00" uuid="18c7011e-cb7a-4dd6-9c0e-1af54f395264"/>
+    <concept_answer concept_answer_id="985" concept_id="835" answer_concept="836" creator="1" date_created="2026-11-17 00:00:00" uuid="51bee8bc-d6ef-4dc4-9198-fa08399be8f3"/>
+    <concept_answer concept_answer_id="986" concept_id="835" answer_concept="837" creator="1" date_created="2026-11-17 00:00:00" uuid="f51d0242-0770-4629-9250-4906b6d1ea59"/>
+    <concept_answer concept_answer_id="987" concept_id="835" answer_concept="838" creator="1" date_created="2026-11-17 00:00:00" uuid="81761308-96a9-459c-9c94-1a68cbb0dc7b"/>
+    <concept_answer concept_answer_id="988" concept_id="841" answer_concept="842" creator="1" date_created="2026-11-17 00:00:00" uuid="d9d3506a-66ff-4d43-8812-7cc5efb11569"/>
+    <concept_answer concept_answer_id="989" concept_id="841" answer_concept="748" creator="1" date_created="2026-11-17 00:00:00" uuid="a70bcdf3-efeb-4387-8eb9-38be3b979c43"/>
+    <concept_answer concept_answer_id="990" concept_id="841" answer_concept="843" creator="1" date_created="2026-11-17 00:00:00" uuid="bae63e81-7571-429a-9788-11ac5aae4c7e"/>
 </dataset>

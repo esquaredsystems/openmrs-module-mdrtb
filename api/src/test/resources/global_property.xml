@@ -588,4 +588,7 @@ path is used.The %Y and %M are replaced with 4 digit year and 2 digit month resp
     <global_property property="xforms.xformUploadFolder" description="" uuid="dee6f298-e718-46dc-9986-8372496828c6"/>
 	 -->
 
+    <global_property property="mdrtb.encounterType.tb03" property_value="TB03" description="" uuid="df6d1293-8789-4f70-b2e0-fa2601ba8f1c"/>
+    <global_property property="mdrtb.encounterType.tb03u.mdr" property_value="TB03u - MDR" description="" uuid="c9ffbe60-c455-4523-a3ed-09f866a5453d"/>
+    <global_property property="mdrtb.encounterType.endOfTreatment" property_value="End of Treatment" description="" uuid="81741d33-427d-41f8-86b6-c4ef2fa4f287"/>
 </dataset>
