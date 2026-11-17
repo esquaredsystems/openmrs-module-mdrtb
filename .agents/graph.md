@@ -89,7 +89,7 @@ mdrtb/endoftreatment / mdrtb/endoftreatment/{uuid}   # End of Treatment form; ?q
     #       (rules agreed 2026-11-17)
     #       Has no outcome: does NOT touch program workflow or patient.dead.
     # getters: MdrtbService.getEndOfTreatmentFormsForProgram(patient, ppId), getEndOfTreatmentFormsFilled(locs, period)
-    # report: EndOfTreatmentData (api reporting/custom) still a stub; DTO + report resource NOT yet created
+    # report: see mdrtb/endoftreatmentreport below
     # OPEN: XDR (TB03u - XDR) accepted?
     #       month 3 and 5 smears are ALSO the TB03 treatment-period follow-up smears - same lab test shows in both.
     # TESTS (api, none @Ignore, written 2026-11-17 WITHOUT being run - no Maven here; first run on Uzair's machine):
@@ -112,6 +112,19 @@ mdrtb/adverseevents / mdrtb/adverseevents/{uuid}
 mdrtb/regimen / mdrtb/regimen/{uuid}
 mdrtb/patientlist
 mdrtb/tb03report / mdrtb/tb03ureport / mdrtb/form89report
+mdrtb/endoftreatmentreport?type=dots|mdr&year=&quarter=|month=&location=   # End of Treatment report (register back page)
+    # EndOfTreatmentData (api reporting/custom) -> SimpleEndOfTreatmentData (dto) -> EndOfTreatmentResourceController
+    # patient set: EndOfTreatmentController (controller/reporting, static methods, NO request mappings/JSP):
+    #   type=dots -> same patients as tb03report (getTB03FormsFilled), type=mdr -> same as tb03ureport
+    #   (getTB03uFormsFilled); other/missing type -> 400 (IllegalRequestException), never a silent default.
+    # each row joins the EoT form of the same patient program (getEndOfTreatmentFormsForProgram, first = only one);
+    #   no EoT form -> endOfTreatmentUuid null and EoT columns empty. Labs come from the EoT form, so they
+    #   are empty too until the form is saved (same as the form page).
+    # followupXrays / followupLabTests = lists in one cell (ALL X-rays by month; smears of months 1,3,5)
+    #   (agreed 2026-11-17, instead of the Excel's 5 X-ray + 2 lab columns). Dates as Context.getDateFormat(),
+    #   concepts as names in Context.getLocale(), gender raw M/F (as TB03Data).
+    # TESTS: api reporting/custom/EndOfTreatmentDataColumnsTest (5, DB); omod EndOfTreatmentResourceControllerTest
+    #   = @Ignore placeholders (dead, see § TEST EXECUTION).
 mdrtb/tb07report / mdrtb/tb07ureport / mdrtb/tb08report / mdrtb/tb08ureport
 mdrtb/dataquality
 mdrtb/yellowcard?formUuid={AE encounter uuid} | ?year=&quarter=|month=&location=   # Yellow Card (Annex 4), read only

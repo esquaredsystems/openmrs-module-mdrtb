@@ -20,14 +20,6 @@ import org.openmrs.module.webservices.rest.web.ConversionUtil;
 /**
  * REST representation of {@link EndOfTreatmentForm}. The link to the patient's treatment flow is
  * carried as patientProgramUuid (stored on the encounter as the PATIENT_PROGRAM_ID obs).
- * <p>
- * followupXrays: one row per recorded X-ray (at most one per month), ordered by month of treatment:
- * {monthOfTreatment: Integer, date: Date, result: Concept (XRAY_NORMAL/ABNORMAL/INCONCLUSIVE)}
- * <p>
- * followupLabTests: READ ONLY, one row per follow-up month (1, 3, 5) that has a smear result in the
- * program's lab tests: {monthOfTreatment, date, result: Concept, testNumber, lab}. It is never
- * written back; lab results are entered through the lab (CommonLab) screens.
- * <p>
  * Values inside the rows (Date, Concept) are converted by webservices.rest exactly like the
  * top-level fields, so dates and concepts look the same everywhere in the response.
  */
@@ -96,10 +88,6 @@ public class SimpleEndOfTreatmentForm extends BaseOpenmrsData {
 	
 	/**
 	 * Provide {@link EndOfTreatmentForm} representation of {@link SimpleEndOfTreatmentForm}.
-	 * <p>
-	 * NOTE: like every form resource in this module, EndOfTreatmentFormResourceController.save()
-	 * does not call this; it builds the form from the POSTed encounter obs. followupLabTests is
-	 * read only and is not copied back.
 	 */
 	public EndOfTreatmentForm toForm() {
 		EndOfTreatmentForm endOfTreatmentForm = new EndOfTreatmentForm();
